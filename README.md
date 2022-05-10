@@ -1,8 +1,8 @@
 # Project_FG
 
-> 졸업 기념 개인 작품입니다.
+> 개인 작품입니다.
 
-It's a personal work to celebrate my graduation.
+It's a personal work.
 
 
 ---
