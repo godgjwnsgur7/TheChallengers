@@ -8,9 +8,9 @@ It's a personal work.
 ---
 
 
-> **2D** / **2인 격투** / **안드로이드? PC?** 게임입니다.
+> **2D** / **2인 격투** / **안드로이드** 게임입니다.
 
-It's based on 2D two-man fighting , Android? PC? game. 
+It's based on 2D two-man fighting , Android game. 
 
 
 > 개발기간 : 2022.06.01 ~ ing
