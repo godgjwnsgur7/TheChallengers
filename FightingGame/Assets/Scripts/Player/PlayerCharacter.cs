@@ -35,17 +35,6 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    public void RegisterCommand()
-    {
-
-    }
-
-    public void UnregisterCommand()
-    {
-
-    }
-
-
     private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
         if (activeCharacter == null)

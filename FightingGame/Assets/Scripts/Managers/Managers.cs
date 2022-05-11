@@ -7,20 +7,28 @@ public class Managers : MonoBehaviour
     static Managers s_Instance;
     static Managers Instance { get { Init(); return s_Instance; } }
 
-    InputManager input = new InputManager();
-    public static InputManager Input { get { return Instance.input; } }
+    private InputMgr input = new InputMgr();
+    private ResourceMgr resouce = new ResourceMgr();
+    private SceneMgr scene = new SceneMgr();
+    private UIMgr ui = new UIMgr();
 
-    void Start()
+    public static InputMgr Input { get { return Instance.input; } }
+    public static ResourceMgr Resource { get { return Instance.resouce; } }
+    public static SceneMgr Scene { get { return Instance.scene; } }
+    public static UIMgr UIMgr { get { return Instance.ui; } }
+
+
+    private void Start()
     {
         Init();
     }
 
-    void Update()
+    private void Update()
     {
         input.OnUpdate();
     }
 
-    static void Init()
+    private static void Init()
     {
         if (s_Instance == null)
         {

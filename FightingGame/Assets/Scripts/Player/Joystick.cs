@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// 지금 하려는 방식 자체에 의문을 갖는 중...
+/// 조이스틱의 기준점을 이미지 크기로 잡는 게 아닌,
+/// 데이터화하여 데이터만으로 연산하도록 변경하는 등
+/// </summary>
+
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     Image imageBackgroud;
@@ -19,8 +25,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     void Update()
     {
+        // 임시
         Managers.Input.SetTouchPosition(touchPos);
-        Debug.Log(touchPos);
     }
 
     public void OnPointerDown(PointerEventData eventData)
