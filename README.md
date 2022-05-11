@@ -2,7 +2,7 @@
 
 > 개인 작품입니다.
 
-It's a personal work. 
+It's a personal work.
 
 
 ---
