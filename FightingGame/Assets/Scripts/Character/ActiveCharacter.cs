@@ -6,6 +6,14 @@ using FGDefine;
 
 public class ActiveCharacter : Character
 {
+    public Animator anim;
+
+    public override void Init()
+    {
+        base.Init();
+        anim = GetComponent<Animator>();
+    }
+
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
@@ -21,7 +29,8 @@ public class ActiveCharacter : Character
 
         if (moveParam != null)
         {
-
+            anim.SetFloat("DirX", moveParam.inputVec.x);
+            anim.SetFloat("DirY", moveParam.inputVec.y);
         }
     }
 }

@@ -4,18 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-/// <summary>
-/// 지금 하려는 방식 자체에 의문을 갖는 중...
-/// 조이스틱의 기준점을 이미지 크기로 잡는 게 아닌,
-/// 데이터화하여 데이터만으로 연산하도록 변경하는 등
-/// </summary>
-
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     Image imageBackgroud;
     Image imageController;
 
-    Vector2 touchPos;
+    public Vector2 touchPos;
+
+    private float criteriaValue = 0.2f;
 
     void Awake()
     {
@@ -23,9 +19,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         imageController = transform.GetChild(0).GetComponent<Image>();
     }
 
-    void Update()
+    private void SendTouchPosition()
     {
-        // 임시
+        Horizontal();
+        Vertical();
         Managers.Input.SetTouchPosition(touchPos);
     }
 
@@ -43,8 +40,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
             touchPos = (touchPos.magnitude > 1) ? touchPos.normalized : touchPos;
 
             imageController.rectTransform.anchoredPosition = new Vector2(
-                touchPos.x * imageBackgroud.rectTransform.sizeDelta.x * 0.4f,
-                touchPos.y * imageBackgroud.rectTransform.sizeDelta.y * 0.4f);
+                touchPos.x * imageBackgroud.rectTransform.sizeDelta.x * 0.5f,
+                touchPos.y * imageBackgroud.rectTransform.sizeDelta.y * 0.5f);
+
+            SendTouchPosition();
         }
     }
     public void OnDrag(PointerEventData eventData)
@@ -65,8 +64,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
             // #4. 컨트롤러 이미지 이동 가두기
             imageController.rectTransform.anchoredPosition = new Vector2(
-                touchPos.x * imageBackgroud.rectTransform.sizeDelta.x * 0.3f,
-                touchPos.y * imageBackgroud.rectTransform.sizeDelta.y * 0.3f);
+                touchPos.x * imageBackgroud.rectTransform.sizeDelta.x * 0.5f,
+                touchPos.y * imageBackgroud.rectTransform.sizeDelta.y * 0.5f);
+
+            SendTouchPosition();
         }
     }
 
@@ -74,28 +75,24 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     {
         imageController.rectTransform.anchoredPosition = Vector2.zero;
         touchPos = Vector2.zero;
+
+        SendTouchPosition();
     }
 
     public float Horizontal()
     {
-        if (touchPos.x > 0.3f)
-            touchPos.x = 1.0f;
-        else if (touchPos.x < -0.3f)
-            touchPos.x = -1.0f;
-        else
-            touchPos.x = 0.0f;
+        if (touchPos.x > criteriaValue) touchPos.x = 1.0f;
+        else if (touchPos.x < criteriaValue * -1f) touchPos.x = -1.0f;
+        else touchPos.x = 0.0f;
 
         return touchPos.x;
     }
 
     public float Vertical()
     {
-        if (touchPos.y > 0.3f)
-            touchPos.y = 1.0f;
-        else if (touchPos.y < -0.3f)
-            touchPos.y = -1.0f;
-        else
-            touchPos.y = 0.0f;
+        if (touchPos.y > criteriaValue) touchPos.y = 1.0f;
+        else if (touchPos.y < criteriaValue * -1f) touchPos.y = -1.0f;
+        else touchPos.y = 0.0f;
 
         return touchPos.y;
     }

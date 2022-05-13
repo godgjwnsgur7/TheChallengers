@@ -34,10 +34,12 @@ namespace FGDefine
         Max
     }
 
-    public enum ENUM_EVENT_TYPE
+    public enum ENUM_INPUT_TYPE
     {
-        Joystick = 0,
+        Null = 0,
+        Joystick = 1,
 
+        Max
     }
 
     public enum ENUM_PLAYER_STATE

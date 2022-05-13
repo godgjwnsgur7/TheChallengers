@@ -14,20 +14,24 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Awake()
     {
-        activeCharacter = FindObjectOfType<ActiveCharacter>();
+        if(activeCharacter == null)
+            activeCharacter = FindObjectOfType<ActiveCharacter>();
+        activeCharacter.Init();
     }
 
     private void Start()
     {
+        Managers.Input.Action -= OnMove;
+        Managers.Input.Action += OnMove;
     }
 
-    private void OnMove()
+    private void OnMove(ENUM_INPUT_TYPE evt)
     {
         dirVec = Managers.Input.touchPos;
-        if (dirVec == Vector2.zero)
+
+        if (dirVec == Vector2.zero && activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
         {
-            if (activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
-                PlayerCommand(ENUM_PLAYER_STATE.Idle);
+            PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
         else
         {

@@ -6,22 +6,20 @@ using FGDefine;
 
 public class InputMgr
 {
-    public Action<ENUM_EVENT_TYPE> Action = null;
+    public Action<ENUM_INPUT_TYPE> Action = null;
 
     public Vector2 touchPos
-    {
+    { 
         get;
         private set;
     }
 
     public void OnUpdate()
     {
-        if (!Input.anyKey)
-            return;
-
-        if(Action != null)
+        if (Action != null)
         {
-            
+            if (touchPos != Vector2.zero) // ¿Ãµø
+                Action.Invoke(ENUM_INPUT_TYPE.Joystick);
         }
     }
 

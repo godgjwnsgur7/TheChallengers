@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 199593074938717673}
   - component: {fileID: 199593074938717679}
   - component: {fileID: 199593074938717676}
+  - component: {fileID: 2945452947980228931}
+  - component: {fileID: 2064862049458948270}
   m_Layer: 6
   m_Name: Character
   m_TagString: Untagged
@@ -96,6 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5530f1f01a8fada4591cf189b3086870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid2D: {fileID: 0}
+  characterType: 0
+  currState: 0
 --- !u!61 &199593074938717676
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -122,3 +127,43 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &2945452947980228931
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199593074938717672}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!95 &2064862049458948270
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199593074938717672}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b7f7581c1d76f414791171b096520a7d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

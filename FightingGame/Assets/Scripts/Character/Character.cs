@@ -6,26 +6,26 @@ using FGDefine;
 
 public class Character : MonoBehaviour
 {
-    private Rigidbody rigid;
+    public Rigidbody2D rigid2D;
     public Collider Col
     {
         get;
         protected set;
     }
 
-    private ENUM_CHARACTER_TYPE characterType;
+    public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
     public virtual void Init()
     {
-        rigid = GetComponent<Rigidbody>();
+        rigid2D = GetComponent<Rigidbody2D>();
         
     }
 
     public virtual void Idle(CharacterParam param = null)
     {
         currState = ENUM_PLAYER_STATE.Idle;
-        rigid.velocity = Vector2.zero;
+        rigid2D.velocity = Vector2.zero;
     }
 
     public virtual void Move(CharacterParam param)
@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
 
         currState = moveParam.isRun ? ENUM_PLAYER_STATE.Run : ENUM_PLAYER_STATE.Move;
 
-        Vector2 direction = transform.forward * moveParam.inputVec.y + transform.right * moveParam.inputVec.x;
-        rigid.velocity = direction;
+        Vector2 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x;
+        rigid2D.velocity = direction;
     }
 }
