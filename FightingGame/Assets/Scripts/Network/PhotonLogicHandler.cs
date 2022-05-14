@@ -54,7 +54,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool IsMine(MonoBehaviourPhoton pun)
     {
-        var obj = punList.Find(pun => pun.Equals(pun));
+        var obj = punList.Find(p => p.Equals(pun));
 
         if (obj != null && obj.photonView != null)
         {
@@ -67,7 +67,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     #region Register 계열 외부 함수, MonobehaviourPun을 등록, 파기할 때 사용
     public static void Register(MonoBehaviourPhoton pun)
     {
-        if (!punList.Exists(pun => pun.Equals(pun)))
+        if (!punList.Exists(p => p.Equals(pun)))
         {
             punList.Add(pun);
         }
@@ -79,7 +79,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public static void Unregister(MonoBehaviourPhoton pun)
     {
-        if (punList.Exists(pun => pun.Equals(pun)))
+        if (punList.Exists(p => p.Equals(pun)))
         {
             punList.Remove(pun);
         }
