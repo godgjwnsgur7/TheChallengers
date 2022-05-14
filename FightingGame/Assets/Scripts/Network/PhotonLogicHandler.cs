@@ -64,7 +64,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return false;
     }
 
-    #region Register 계열 외부 함수, MonobehaviourPun을 등록, 파기할 때 사용
+    #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static void Register(MonoBehaviourPhoton pun)
     {
         if (!punList.Exists(p => p.Equals(pun)))
