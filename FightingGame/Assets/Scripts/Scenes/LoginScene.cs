@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class LoginScene : BaseScene
 {
+    PlatformAuth auth = new PlatformAuth();
+
     protected override void Init()
     {
         base.Init();
 
         SceneType = ENUM_SCENE_TYPE.Login;
-
-
     }
 
     private void Update()

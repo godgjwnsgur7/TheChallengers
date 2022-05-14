@@ -13,11 +13,21 @@ public interface IPlatformAuth
     {
         get;
     }
+
+    public string userId
+    {
+        get;
+    }
 }
+
+/// <summary>
+/// íŒŒì´ì–´ë² ì´ìŠ¤ ì¸ì¦ì„ í•˜ëŠ” ë°ì— ì‚¬ìš©ë˜ëŠ” ë„êµ¬
+/// </summary>
 
 public class PlatformAuth : IPlatformAuth
 {
     private FirebaseApp app;
+    private FirebaseAuth auth;
     public bool IsAuthValid
     {
         get
@@ -25,9 +35,14 @@ public class PlatformAuth : IPlatformAuth
             return app != null && auth != null;
         }
     }
+
+    public FirebaseUser user;
+    public string userId
+    {
+        get;
+        private set;
+    } = string.Empty;
     
-    private FirebaseAuth auth;
-    public static FirebaseUser user;
 
     public void TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
     {
@@ -40,12 +55,12 @@ public class PlatformAuth : IPlatformAuth
                 {
                     InitFirebase();
                     OnConnectAuthSuccess?.Invoke();
-                    Debug.Log("ÆÄÀÌ¾îº£ÀÌ½º ÀÎÁõ ¼º°ø");
+                    Debug.Log("íŒŒì´ì–´ë² ì´ìŠ¤ ì¸ì¦ ì„±ê³µ");
                 }
                 else
                 {
                     OnConnectAuthFail?.Invoke();
-                    Debug.LogError("ÆÄÀÌ¾îº£ÀÌ½º ÀÎÁõ ½ÇÆĞ");
+                    Debug.LogError("íŒŒì´ì–´ë² ì´ìŠ¤ ì¸ì¦ ì‹¤íŒ¨");
                 }
             });
     }
@@ -54,6 +69,17 @@ public class PlatformAuth : IPlatformAuth
     {
         app = FirebaseApp.DefaultInstance;
         auth = FirebaseAuth.DefaultInstance;
+    }
+
+    private void InitFirebaseCurrentUser(FirebaseUser currentUser)
+    {
+        if (currentUser == null)
+            return;
+
+        user = currentUser;
+        userId = currentUser.UserId;
+
+        LoginSession.RegisterAuth(this);
     }
     
     public void SignInWithEmailAndPassword(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
@@ -64,17 +90,19 @@ public class PlatformAuth : IPlatformAuth
                 if(task.IsCompleted)
                 {
                     OnSignInSuccess?.Invoke();
-                    Debug.Log("ÀÌ¸ŞÀÏ ·Î±×ÀÎ ¼º°ø");
+                    Debug.Log($"ì´ë©”ì¼ ë¡œê·¸ì¸ ì„±ê³µ : {task.Result.Email}");
+
+                    InitFirebaseCurrentUser(task.Result);
                 }
                 else if(task.IsFaulted)
                 {
                     OnSignInFailed?.Invoke();
-                    Debug.LogError($"ÀÌ¸ŞÀÏ ·Î±×ÀÎ ½ÇÆĞ : {task.Result.Email}");
+                    Debug.LogError($"ì´ë©”ì¼ ë¡œê·¸ì¸ ì‹¤íŒ¨ : {task.Result.Email}");
                 }
                 else if(task.IsCanceled)
                 {
                     OnSignCanceled?.Invoke();
-                    Debug.LogError($"ÀÌ¸ŞÀÏ ·Î±×ÀÎ Ãë¼Ò : {task.Result.Email}");
+                    Debug.LogWarning($"ì´ë©”ì¼ ë¡œê·¸ì¸ ì·¨ì†Œ : {task.Result.Email}");
                 }
             });
     }

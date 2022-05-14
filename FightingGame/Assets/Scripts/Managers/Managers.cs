@@ -12,10 +12,14 @@ public class Managers : MonoBehaviour
     private SceneMgr scene = new SceneMgr();
     private UIMgr ui = new UIMgr();
 
+    private LoginSession loginSession = new LoginSession(); // 이 곳에 우선 세션을 추가하였으나, 클라가 검토해서 사용하는 것을 추천
+
     public static InputMgr Input { get { return Instance.input; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static UIMgr UIMgr { get { return Instance.ui; } }
+
+    public static LoginSession LoginSession { get { return Instance.loginSession; } }
 
 
     private void Start()
