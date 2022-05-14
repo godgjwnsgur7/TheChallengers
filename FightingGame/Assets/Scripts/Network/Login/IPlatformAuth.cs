@@ -14,7 +14,7 @@ public interface IPlatformAuth
         get;
     }
 
-    public string userId
+    public string UserId
     {
         get;
     }
@@ -37,13 +37,12 @@ public class PlatformAuth : IPlatformAuth
     }
 
     public FirebaseUser user;
-    public string userId
+    public string UserId
     {
         get;
         private set;
     } = string.Empty;
     
-
     public void TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
     {
         FirebaseApp.CheckAndFixDependenciesAsync()
@@ -77,7 +76,7 @@ public class PlatformAuth : IPlatformAuth
             return;
 
         user = currentUser;
-        userId = currentUser.UserId;
+        UserId = currentUser.UserId;
 
         LoginSession.RegisterAuth(this);
     }

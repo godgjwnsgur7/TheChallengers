@@ -12,13 +12,17 @@ public class Managers : MonoBehaviour
     private SceneMgr scene = new SceneMgr();
     private UIMgr ui = new UIMgr();
 
-    private LoginSession loginSession = new LoginSession(); // 이 곳에 우선 세션을 추가하였으나, 클라가 검토해서 사용하는 것을 추천
+    // 아래 네트워크 관련 세션, 핸들러는 우선 마땅히 둘 곳이 없어 이 곳에 배치하였음
+    // 클라 편한 대로 구워 삶으면 될 듯함
+    private LoginSession loginSession = new LoginSession(); 
+    private PhotonLogicHandler logicHandler = new PhotonLogicHandler(); 
 
     public static InputMgr Input { get { return Instance.input; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static UIMgr UIMgr { get { return Instance.ui; } }
 
+    public static PhotonLogicHandler LogicHandler { get { return Instance.logicHandler; } }
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
 
 
