@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Firebase;
 using Firebase.Auth;
+using Firebase.Extensions;
 using System;
 using System.Threading.Tasks;
 
@@ -45,8 +46,11 @@ public class PlatformAuth : IPlatformAuth
     
     public void TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
     {
+        if (IsAuthValid) // 이미 파이어베이스 인증을 끝낸 경우임
+            return;
+        
         FirebaseApp.CheckAndFixDependenciesAsync()
-            .ContinueWith(task =>
+            .ContinueWithOnMainThread(task =>
             {
                 var result = task.Result;
 
@@ -56,7 +60,7 @@ public class PlatformAuth : IPlatformAuth
                     OnConnectAuthSuccess?.Invoke();
                     Debug.Log("파이어베이스 인증 성공");
                 }
-                else
+                else // 호출 시도 아직 안 해봄
                 {
                     OnConnectAuthFail?.Invoke();
                     Debug.LogError("파이어베이스 인증 실패");
@@ -83,8 +87,9 @@ public class PlatformAuth : IPlatformAuth
     
     public void SignInWithEmailAndPassword(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
     {
+        // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
         auth?.SignInWithEmailAndPasswordAsync(email, password)
-            .ContinueWith(task =>
+            .ContinueWithOnMainThread(task =>
             {
                 if(task.IsFaulted)
                 {
