@@ -86,14 +86,7 @@ public class PlatformAuth : IPlatformAuth
         auth?.SignInWithEmailAndPasswordAsync(email, password)
             .ContinueWith(task =>
             {
-                if(task.IsCompleted)
-                {
-                    OnSignInSuccess?.Invoke();
-                    Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
-
-                    InitFirebaseCurrentUser(task.Result);
-                }
-                else if(task.IsFaulted)
+                if(task.IsFaulted)
                 {
                     OnSignInFailed?.Invoke();
                     Debug.LogError($"이메일 로그인 실패 : {task.Result.Email}");
@@ -102,6 +95,12 @@ public class PlatformAuth : IPlatformAuth
                 {
                     OnSignCanceled?.Invoke();
                     Debug.LogWarning($"이메일 로그인 취소 : {task.Result.Email}");
+                }
+                else
+                {
+                    OnSignInSuccess?.Invoke();
+                    Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
+                    InitFirebaseCurrentUser(task.Result);
                 }
             });
     }

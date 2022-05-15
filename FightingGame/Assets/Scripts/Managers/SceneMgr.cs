@@ -14,7 +14,7 @@ public class SceneMgr
     {
         CurrentScene.Clear();
 
-        // ·¡ÇÎÇÒ±î ¸»±î °í¹ÎÁß (ÀÓ½Ã)
+        // ë˜í•‘í• ê¹Œ ë§ê¹Œ ê³ ë¯¼ì¤‘ (ì„ì‹œ)
         string name = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
         SceneManager.LoadScene(name);
     }

@@ -14,6 +14,14 @@ public class LoginScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Login;
     }
 
+    public void SignIn(string email, string password)
+    {
+        auth.TryConnectAuth(OnConnectAuthSuccess: () =>
+        {
+            auth.SignInWithEmailAndPassword(email, password);
+        });
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
