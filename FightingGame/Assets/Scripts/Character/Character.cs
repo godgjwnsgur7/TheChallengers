@@ -34,11 +34,11 @@ public class Character : MonoBehaviour
             param is CharacterMoveParam == false)
             return;
 
+        currState = ENUM_PLAYER_STATE.Move;
         var moveParam = param as CharacterMoveParam;
 
-        currState = moveParam.isRun ? ENUM_PLAYER_STATE.Run : ENUM_PLAYER_STATE.Move;
-
-        Vector2 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x;
-        rigid2D.velocity = direction;
+        Vector3 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x ;
+        transform.position += direction * moveParam.speed * Time.deltaTime;
     }
+   
 }

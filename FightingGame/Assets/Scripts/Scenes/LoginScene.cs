@@ -22,12 +22,6 @@ public class LoginScene : BaseScene
         });
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-            Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Game);
-    }
-
     public override void Clear()
     {
         Debug.Log("LoginScene Clear!");

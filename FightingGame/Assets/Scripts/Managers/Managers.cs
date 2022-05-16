@@ -20,7 +20,7 @@ public class Managers : MonoBehaviour
     public static InputMgr Input { get { return Instance.input; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
-    public static UIMgr UIMgr { get { return Instance.ui; } }
+    public static UIMgr UI { get { return Instance.ui; } }
 
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }

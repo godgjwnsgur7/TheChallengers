@@ -10,22 +10,22 @@ namespace FGDefine
     public enum ENUM_LAYER_TYPE
     {
         /// <summary>
-        /// ¿©±â´Â Built-In ·¹ÀÌ¾î
+        /// ì—¬ê¸°ëŠ” Built-In ë ˆì´ì–´
         /// </summary>
         Default = 0,
         TransparentFX = 1,
-        IgnoreRaycast = 2, // ·¹ÀÌÄ³½ºÆ® ¹«½Ã
-        Water = 4, // ¹° µî Æ¯ÀÌ Àå¾Ö¹°
+        IgnoreRaycast = 2, // ë ˆì´ìºìŠ¤íŠ¸ ë¬´ì‹œ
+        Water = 4, // ë¬¼ ë“± íŠ¹ì´ ì¥ì• ë¬¼
         UI = 5,
 
         /// <summary>
-        /// ¿©±âºÎÅÍ User Ä¿½ºÅÒ ·¹ÀÌ¾î
+        /// ì—¬ê¸°ë¶€í„° User ì»¤ìŠ¤í…€ ë ˆì´ì–´
         /// </summary>
-        Player = 6, // À¯Àú
+        Player = 6, // ìœ ì €
     }
 
     /// <summary>
-    /// ÇØ´ç Ä³¸¯ÅÍ Å¸ÀÔ
+    /// í•´ë‹¹ ìºë¦­í„° íƒ€ì…
     /// </summary>
     public enum ENUM_CHARACTER_TYPE
     {
@@ -38,6 +38,7 @@ namespace FGDefine
     {
         Null = 0,
         Joystick = 1,
+        Keyboard = 2,
 
         Max
     }
@@ -46,7 +47,6 @@ namespace FGDefine
     {
         Idle,
         Move,
-        Run,
         Jump,
         Attack,
         Interect,

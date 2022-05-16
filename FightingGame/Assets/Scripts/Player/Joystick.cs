@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,16 +19,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         imageController = transform.GetChild(0).GetComponent<Image>();
     }
 
-    private void SendTouchPosition()
-    {
-        Horizontal();
-        Vertical();
-        Managers.Input.SetTouchPosition(touchPos);
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
-        touchPos = Vector2.zero;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             imageBackgroud.rectTransform, eventData.position, eventData.pressEventCamera, out touchPos))
         {
@@ -77,6 +69,13 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         touchPos = Vector2.zero;
 
         SendTouchPosition();
+    }
+
+    private void SendTouchPosition()
+    {
+        Horizontal();
+        Vertical();
+        Managers.Input.SetTouchPosition(touchPos);
     }
 
     public float Horizontal()

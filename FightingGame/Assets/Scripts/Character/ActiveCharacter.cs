@@ -17,6 +17,9 @@ public class ActiveCharacter : Character
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
+
+        anim.SetFloat("DirX", 0.0f);
+        anim.SetFloat("DirY", 0.0f);
     }
 
     public override void Move(CharacterParam param)
