@@ -38,7 +38,6 @@ namespace FGDefine
     {
         Null = 0,
         Joystick = 1,
-        Keyboard = 2,
 
         Max
     }
@@ -47,10 +46,16 @@ namespace FGDefine
     {
         Idle,
         Move,
-        Jump,
         Attack,
-        Interect,
+        Expression,
         Die,
+
+        Max
+    }
+
+    public enum ENUM_WEAPON_TYPE
+    {
+        
 
         Max
     }

@@ -36,4 +36,32 @@ public class ActiveCharacter : Character
             anim.SetFloat("DirY", moveParam.inputVec.y);
         }
     }
+
+    public override void Attack(CharacterParam param)
+    {
+        base.Attack(param);
+
+        if (param == null) return;
+
+        var attackParam = param as CharacterAttackParam;
+
+        if (attackParam != null)
+        {
+            anim.SetTrigger("Attack");
+        }
+    }
+
+    public override void Expression(CharacterParam param)
+    {
+        base.Expression(param);
+
+
+    }
+
+    public override void Die(CharacterParam param = null)
+    {
+        base.Die(param);
+
+
+    }
 }

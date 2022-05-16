@@ -13,12 +13,22 @@ public class CharacterMoveParam : CharacterParam
 {
     public Vector2 inputVec;
     public float speed = 3.0f;
-
+    
     private float runSpeed = 5.0f;
-
-    public CharacterMoveParam(Vector3 inputVec, bool isRun)
+    
+    public CharacterMoveParam(Vector3 _inputVec, bool _isRun)
     {
-        speed = isRun ? runSpeed : speed;
-        this.inputVec = inputVec;
+        speed = _isRun ? runSpeed : speed;
+        this.inputVec = _inputVec;
+    }
+}
+
+public class CharacterAttackParam : CharacterParam
+{
+    int attackType = 0;
+
+    public CharacterAttackParam(int _attackType)
+    {
+        attackType = _attackType;
     }
 }

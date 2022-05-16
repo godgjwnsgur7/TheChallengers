@@ -30,8 +30,7 @@ public class Character : MonoBehaviour
 
     public virtual void Move(CharacterParam param)
     {
-        if (param == null ||
-            param is CharacterMoveParam == false)
+        if (param == null || param is CharacterMoveParam == false)
             return;
 
         currState = ENUM_PLAYER_STATE.Move;
@@ -41,4 +40,21 @@ public class Character : MonoBehaviour
         transform.position += direction * moveParam.speed * Time.deltaTime;
     }
    
+    public virtual void Attack(CharacterParam param)
+    {
+        if (param == null || param is CharacterAttackParam == false)
+            return;
+
+        currState = ENUM_PLAYER_STATE.Attack;
+    }
+
+    public virtual void Expression(CharacterParam param)
+    {
+        currState = ENUM_PLAYER_STATE.Expression;
+    }
+
+    public virtual void Die(CharacterParam param)
+    {
+        currState = ENUM_PLAYER_STATE.Die;
+    }
 }

@@ -78,6 +78,15 @@ public class PlayerCharacter : MonoBehaviour
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
                 break;
+            case ENUM_PLAYER_STATE.Attack:
+                activeCharacter.Attack(param);
+                break;
+            case ENUM_PLAYER_STATE.Expression:
+                activeCharacter.Expression(param);
+                break;
+            case ENUM_PLAYER_STATE.Die:
+                activeCharacter.Die();
+                break;
         }
     }
 }

@@ -22,8 +22,6 @@ public class InputMgr
         {
             if (touchPos != Vector2.zero) // 이동
                 Action.Invoke(ENUM_INPUT_TYPE.Joystick);
-
-            
         }
         
     }
