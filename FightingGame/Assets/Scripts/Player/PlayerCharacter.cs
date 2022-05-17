@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
@@ -10,7 +10,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public Vector2 dirVec = Vector2.zero;
 
-    public bool isRun = false;
+    public Vector2 _dirVec2 = Vector2.zero;
 
     private void Awake()
     {
@@ -21,11 +21,17 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Start()
     {
-        Managers.Input.Action -= OnMove;
-        Managers.Input.Action += OnMove;
+        // #.Mobile Controller
+        Managers.Input.Action -= OnJoystick;
+        Managers.Input.Action += OnJoystick;
     }
 
-    private void OnMove(ENUM_INPUT_TYPE evt)
+    private void Update()
+    {
+        OnKeyboard();
+    }
+
+    private void OnJoystick(ENUM_INPUT_TYPE evt)
     {
         dirVec = Managers.Input.touchPos;
 
@@ -35,7 +41,27 @@ public class PlayerCharacter : MonoBehaviour
         }
         else
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(dirVec, isRun));
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(dirVec, Input.GetKey(KeyCode.LeftShift)));
+        }
+    }
+    
+    private void OnKeyboard()
+    {
+        // 디버깅용이니 쿨하게 다 때려박기
+        _dirVec2 = Vector2.zero;
+
+        if (Input.GetKey(KeyCode.W)) _dirVec2.y = 1.0f;
+        if (Input.GetKey(KeyCode.A)) _dirVec2.x = -1.0f;
+        if (Input.GetKey(KeyCode.S)) _dirVec2.y = -1.0f;
+        if (Input.GetKey(KeyCode.D)) _dirVec2.x = 1.0f;
+
+        if (_dirVec2 == Vector2.zero && activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Idle);
+        }
+        else
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(_dirVec2, Input.GetKey(KeyCode.LeftShift)));
         }
     }
 
@@ -51,6 +77,15 @@ public class PlayerCharacter : MonoBehaviour
                 break;
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
+                break;
+            case ENUM_PLAYER_STATE.Attack:
+                activeCharacter.Attack(param);
+                break;
+            case ENUM_PLAYER_STATE.Expression:
+                activeCharacter.Expression(param);
+                break;
+            case ENUM_PLAYER_STATE.Die:
+                activeCharacter.Die();
                 break;
         }
     }

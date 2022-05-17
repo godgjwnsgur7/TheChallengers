@@ -16,11 +16,14 @@ public class InputMgr
 
     public void OnUpdate()
     {
+        if (!Input.anyKey) return;
+
         if (Action != null)
         {
-            if (touchPos != Vector2.zero) // ¿Ãµø
+            if (touchPos != Vector2.zero) // Ïù¥Îèô
                 Action.Invoke(ENUM_INPUT_TYPE.Joystick);
         }
+        
     }
 
     public void SetTouchPosition(Vector2 _touchPos)

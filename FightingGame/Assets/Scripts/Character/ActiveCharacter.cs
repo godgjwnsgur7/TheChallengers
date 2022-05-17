@@ -17,6 +17,9 @@ public class ActiveCharacter : Character
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
+
+        anim.SetFloat("DirX", 0.0f);
+        anim.SetFloat("DirY", 0.0f);
     }
 
     public override void Move(CharacterParam param)
@@ -32,5 +35,33 @@ public class ActiveCharacter : Character
             anim.SetFloat("DirX", moveParam.inputVec.x);
             anim.SetFloat("DirY", moveParam.inputVec.y);
         }
+    }
+
+    public override void Attack(CharacterParam param)
+    {
+        base.Attack(param);
+
+        if (param == null) return;
+
+        var attackParam = param as CharacterAttackParam;
+
+        if (attackParam != null)
+        {
+            anim.SetTrigger("Attack");
+        }
+    }
+
+    public override void Expression(CharacterParam param)
+    {
+        base.Expression(param);
+
+
+    }
+
+    public override void Die(CharacterParam param = null)
+    {
+        base.Die(param);
+
+
     }
 }

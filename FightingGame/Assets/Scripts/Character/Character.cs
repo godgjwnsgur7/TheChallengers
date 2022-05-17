@@ -30,15 +30,31 @@ public class Character : MonoBehaviour
 
     public virtual void Move(CharacterParam param)
     {
-        if (param == null ||
-            param is CharacterMoveParam == false)
+        if (param == null || param is CharacterMoveParam == false)
             return;
 
+        currState = ENUM_PLAYER_STATE.Move;
         var moveParam = param as CharacterMoveParam;
 
-        currState = moveParam.isRun ? ENUM_PLAYER_STATE.Run : ENUM_PLAYER_STATE.Move;
+        Vector3 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x ;
+        transform.position += direction * moveParam.speed * Time.deltaTime;
+    }
+   
+    public virtual void Attack(CharacterParam param)
+    {
+        if (param == null || param is CharacterAttackParam == false)
+            return;
 
-        Vector2 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x;
-        rigid2D.velocity = direction;
+        currState = ENUM_PLAYER_STATE.Attack;
+    }
+
+    public virtual void Expression(CharacterParam param)
+    {
+        currState = ENUM_PLAYER_STATE.Expression;
+    }
+
+    public virtual void Die(CharacterParam param)
+    {
+        currState = ENUM_PLAYER_STATE.Die;
     }
 }

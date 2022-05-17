@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Ä³¸¯ÅÍÀÇ ½ºÅ×ÀÌÆ®¸¦ º¯°æÇÏ±â À§ÇØ »ç¿ëÇÏ´Â ÆÄ¶ó¹ÌÅÍ ¸ñ·Ï
+/// ìºë¦­í„°ì˜ ìŠ¤í…Œì´íŠ¸ë¥¼ ë³€ê²½í•˜ê¸° ìœ„í•´ ì‚¬ìš©í•˜ëŠ” íŒŒë¼ë¯¸í„° ëª©ë¡
 /// </summary>
 /// 
 
@@ -12,11 +12,23 @@ public class CharacterParam { }
 public class CharacterMoveParam : CharacterParam
 {
     public Vector2 inputVec;
-    public bool isRun;
-
-    public CharacterMoveParam(Vector3 inputVec, bool isRun)
+    public float speed = 3.0f;
+    
+    private float runSpeed = 5.0f;
+    
+    public CharacterMoveParam(Vector3 _inputVec, bool _isRun)
     {
-        this.inputVec = inputVec;
-        this.isRun = isRun;
+        speed = _isRun ? runSpeed : speed;
+        this.inputVec = _inputVec;
+    }
+}
+
+public class CharacterAttackParam : CharacterParam
+{
+    int attackType = 0;
+
+    public CharacterAttackParam(int _attackType)
+    {
+        attackType = _attackType;
     }
 }
