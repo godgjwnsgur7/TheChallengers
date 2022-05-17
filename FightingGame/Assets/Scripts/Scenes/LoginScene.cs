@@ -16,20 +16,19 @@ public class LoginScene : BaseScene
 
     public void SignIn(string email, string password)
     {
-        auth.TryConnectAuth(OnConnectAuthSuccess: () =>
+        bool isFirstConnect = auth.TryConnectAuth(OnConnectAuthSuccess: () =>
         {
             auth.SignInWithEmailAndPassword(email, password);
         });
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-            Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Game);
+        if(!isFirstConnect)
+        {
+            auth.SignInWithEmailAndPassword(email, password);
+        }
     }
 
     public override void Clear()
     {
-        Debug.Log("LoginScene Clear!");
+        
     }
 }
