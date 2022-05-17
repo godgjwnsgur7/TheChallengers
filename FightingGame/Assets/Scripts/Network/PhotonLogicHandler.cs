@@ -52,6 +52,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             {
                 GameObject g = new GameObject("PhotonLogicHandler");
                 instance = g.AddComponent<PhotonLogicHandler>();
+                
+                DontDestroyOnLoad(g);
             }
 
             return instance;
