@@ -11,7 +11,6 @@ public class Managers : MonoBehaviour
     private ResourceMgr resouce = new ResourceMgr();
     private SceneMgr scene = new SceneMgr();
     private UIMgr ui = new UIMgr();
-    private AnimationMgr anim = new AnimationMgr();
 
     // 네트워크 관련 세션
     private LoginSession loginSession = new LoginSession();
@@ -21,8 +20,8 @@ public class Managers : MonoBehaviour
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static UIMgr UI { get { return Instance.ui; } }
-    public static AnimationMgr Animation { get { return Instance.anim; } }
 
+    // 네트워크 관련 세션
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }
 

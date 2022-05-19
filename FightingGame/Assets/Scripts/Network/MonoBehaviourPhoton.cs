@@ -66,7 +66,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     protected virtual void OnMasterSerializeView(PhotonMessageInfo info)
     {
-
+        
     }
 
     /// <summary>

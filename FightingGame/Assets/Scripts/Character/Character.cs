@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using FGDefine;
+using Photon.Pun;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviourPhoton
 {
     public Rigidbody2D rigid2D;
     public Collider Col
@@ -19,7 +20,18 @@ public class Character : MonoBehaviour
     public virtual void Init()
     {
         rigid2D = GetComponent<Rigidbody2D>();
-        
+
+    }
+
+    // ㅎㅇㅋㅋ
+    protected override void OnMasterSerializeView(PhotonMessageInfo info)
+    {
+        base.OnMasterSerializeView(info);
+    }
+
+    protected override void OnSlaveSerializeView(PhotonMessageInfo info)
+    {
+        base.OnSlaveSerializeView(info);
     }
 
     public virtual void Idle(CharacterParam param = null)

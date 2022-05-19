@@ -24,8 +24,8 @@ public class PlayerCharacter : MonoBehaviour
     private void Start()
     {
         // #.Mobile Controller
-        Managers.Input.Action -= OnJoystick;
-        Managers.Input.Action += OnJoystick;
+        // Managers.Input.Action -= OnJoystick;
+        // Managers.Input.Action += OnJoystick;
     }
 
     private void Update()
@@ -58,9 +58,10 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) _dirVec2.y = -1.0f;
         if (Input.GetKey(KeyCode.D)) _dirVec2.x = 1.0f;
 
-        if (_dirVec2 == Vector2.zero && activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
+        if (_dirVec2 == Vector2.zero)
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Idle);
+            if(activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
+                PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
         else
         {

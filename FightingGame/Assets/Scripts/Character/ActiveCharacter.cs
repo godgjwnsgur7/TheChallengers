@@ -6,17 +6,21 @@ using FGDefine;
 
 public class ActiveCharacter : Character
 {
+    public PlayerAnimation playerAnim;
+
     public override void Init()
     {
         base.Init();
-
-        
+        playerAnim = GetComponent<PlayerAnimation>();
     }
 
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
-
+        
+        Debug.Log("Idle");
+        // if (playerAnim.GetBool("isMove"))
+            playerAnim.SetBool("isMove", false);
     }
 
     public override void Move(CharacterParam param)
@@ -29,6 +33,12 @@ public class ActiveCharacter : Character
 
         if (moveParam != null)
         {
+            playerAnim.SetFloat("DirX", moveParam.inputVec.x);
+            playerAnim.SetFloat("DirY", moveParam.inputVec.y);
+
+            Debug.Log("Move");
+            // if(!playerAnim.GetBool("isMove"))
+            playerAnim.SetBool("isMove", true);
         }
     }
 

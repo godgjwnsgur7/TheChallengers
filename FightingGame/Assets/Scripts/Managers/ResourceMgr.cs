@@ -21,6 +21,11 @@ public class ResourceMgr
         return Object.Instantiate(prefab, parent);
     }
 
+    public void GetAnimator(string type)
+    {
+        // 여기서 3개를 가져와서 셋팅하게 만들어야 되나본데... 맘에안드네 ㅋㅋ
+    }
+
     public void Destroy(GameObject go)
     {
         if (go == null)
