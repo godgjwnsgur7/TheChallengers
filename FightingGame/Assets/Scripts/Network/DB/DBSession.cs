@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class DBSession
 {
+    private IPlatformDB db;
 
 }

@@ -10,6 +10,10 @@ using System;
 
 public interface IPlatformDB
 {
+    void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
+    void DeleteDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
+    void InsertDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
+    void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
 
 }
 

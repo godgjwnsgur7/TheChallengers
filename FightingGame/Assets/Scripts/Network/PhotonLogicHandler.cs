@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using UnityEngine.SceneManagement;
+using System.Reflection;
 
 public interface IPhotonNetwork
 {
@@ -18,6 +19,15 @@ public interface IPhotonNetwork
         get;
     }
 }
+
+public enum ENUM_RPC_TARGET
+{
+    All,
+    MASTER,
+    OTHER
+}
+
+public class BroadcastMethodAttribute : PunRPC { }
 
 public partial class PhotonLogicHandler : IPhotonNetwork
 {
@@ -88,6 +98,58 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnJoinRoom = null;
         _OnJoinRoomFailed = null;
     }
+
+    /// <summary>
+    /// 1. 넘기는 Action Method에 람다식은 허용되지 않습니다.
+    /// 2. Method의 속성에 [BroadcastMethodAttribute]가 추가되어야 합니다.
+    /// </summary>
+    /// <param name="targetMethod"></param>
+    /// <param name="targetType"></param>
+    // [BroadcastMethodAttribute] 다음과 같이 함수 위에 추가
+    public void TryBroadcastMethod<T>(T owner, Action targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All) where T : MonoBehaviourPhoton
+    {
+        MethodInfo methodInfo = targetMethod.Method;
+        string methodName = methodInfo.Name;
+
+        if (owner == null || owner.photonView == null)
+        {
+            Debug.LogError("동기화될 객체가 없거나 네트워킹 가능 상태가 아닙니다. 객체의 상태를 확인해주세요.");
+            return;
+        }
+        else if(typeof(T).GetMethod(methodName) == null)
+        {
+            Debug.LogError("넘기는 Action Method에 람다식은 허용되지 않습니다. 객체 내부에 Method를 구현 후 인자로 넘겨주세요.");
+            return;
+        }
+        else if(!methodInfo.IsDefined(typeof(BroadcastMethodAttribute)))
+        {
+            Debug.LogError("Broadcast할 메소드에 [BroadcastMethodAttribute] 속성이 없습니다. 추가해주세요.");
+            return;
+        }
+
+        RpcTarget RPCTargetType = RpcTarget.All;
+
+        switch (targetType)
+        {
+            case ENUM_RPC_TARGET.All:
+                RPCTargetType = RpcTarget.AllBuffered;
+                break;
+
+            case ENUM_RPC_TARGET.MASTER:
+                RPCTargetType = RpcTarget.MasterClient;
+                break;
+
+            case ENUM_RPC_TARGET.OTHER:
+                RPCTargetType = RpcTarget.OthersBuffered;
+                break;
+
+            default:
+                break;
+        }
+
+        owner.photonView.RPC(methodName, RPCTargetType);
+    }
+
 
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static void Register(MonoBehaviourPhoton pun)

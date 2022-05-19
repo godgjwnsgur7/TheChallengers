@@ -5,7 +5,7 @@ using Photon.Pun;
 /// </summary>
 /// 
 
-public class MonoBehaviourPhoton : MonoBehaviourPun
+public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 {
     protected virtual void Awake()
     {
@@ -57,5 +57,37 @@ public class MonoBehaviourPhoton : MonoBehaviourPun
     protected virtual void OnDisable()
     {
         PhotonLogicHandler.Unregister(this);
+    }
+
+    /// <summary>
+    /// 마스터 클라이언트가 모든 슬레이브들을 동기화시킬 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
+    /// </summary>
+    /// <param name="info"></param>
+
+    protected virtual void OnMasterSerializeView(PhotonMessageInfo info)
+    {
+
+    }
+
+    /// <summary>
+    /// 슬레이브 클라이언트가 마스터로부터 받은 변수로 동기화를 받을 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
+    /// </summary>
+    /// <param name="info"></param>
+
+    protected virtual void OnSlaveSerializeView(PhotonMessageInfo info)
+    {
+
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            OnMasterSerializeView(info);
+        }
+        else if(stream.IsReading)
+        {
+            OnSlaveSerializeView(info);
+        }
     }
 }
