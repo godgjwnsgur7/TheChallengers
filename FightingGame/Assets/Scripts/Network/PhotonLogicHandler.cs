@@ -43,6 +43,23 @@ public delegate void FailedCallBack(short returnCode, string message);
 
 public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 {
+    private static PhotonLogicHandler instance;
+    public static PhotonLogicHandler Instance
+    {
+        get
+        {
+            if(instance == null)
+            {
+                GameObject g = new GameObject("PhotonLogicHandler");
+                instance = g.AddComponent<PhotonLogicHandler>();
+                
+                DontDestroyOnLoad(g);
+            }
+
+            return instance;
+        }
+    }
+
     private readonly string GameVersion = "1";
     private static List<MonoBehaviourPhoton> punList = new List<MonoBehaviourPhoton>();
 
@@ -52,7 +69,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private Action _OnJoinRoom = null;
     private FailedCallBack _OnJoinRoomFailed = null;
 
-    public bool IsMine(MonoBehaviourPhoton pun)
+    public static bool IsMine(MonoBehaviourPhoton pun)
     {
         var obj = punList.Find(p => p.Equals(pun));
 
@@ -62,6 +79,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
 
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        _OnConnectedToMaster = null;
+        _OnDisconnectedFromMaster = null;
+        _OnJoinRoom = null;
+        _OnJoinRoomFailed = null;
     }
 
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용

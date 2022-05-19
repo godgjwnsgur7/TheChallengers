@@ -16,14 +16,19 @@ public class LoginScene : BaseScene
 
     public void SignIn(string email, string password)
     {
-        auth.TryConnectAuth(OnConnectAuthSuccess: () =>
+        bool isFirstConnect = auth.TryConnectAuth(OnConnectAuthSuccess: () =>
         {
             auth.SignInWithEmailAndPassword(email, password);
         });
+
+        if(!isFirstConnect)
+        {
+            auth.SignInWithEmailAndPassword(email, password);
+        }
     }
 
     public override void Clear()
     {
-        Debug.Log("LoginScene Clear!");
+        
     }
 }

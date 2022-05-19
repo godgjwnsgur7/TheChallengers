@@ -44,10 +44,10 @@ public class PlatformAuth : IPlatformAuth
         private set;
     } = string.Empty;
     
-    public void TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
+    public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
     {
         if (IsAuthValid) // 이미 파이어베이스 인증을 끝낸 경우임
-            return;
+            return false;
         
         FirebaseApp.CheckAndFixDependenciesAsync()
             .ContinueWithOnMainThread(task =>
@@ -66,6 +66,8 @@ public class PlatformAuth : IPlatformAuth
                     Debug.LogError("파이어베이스 인증 실패");
                 }
             });
+
+        return true;
     }
 
     private void InitFirebase()
