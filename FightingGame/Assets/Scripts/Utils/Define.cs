@@ -48,6 +48,7 @@ namespace FGDefine
         Move,
         Attack,
         Expression,
+        Hit,
         Die,
 
         Max

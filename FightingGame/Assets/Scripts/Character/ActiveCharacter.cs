@@ -6,20 +6,17 @@ using FGDefine;
 
 public class ActiveCharacter : Character
 {
-    public Animator anim;
-
     public override void Init()
     {
         base.Init();
-        anim = GetComponent<Animator>();
+
+        
     }
 
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
 
-        anim.SetFloat("DirX", 0.0f);
-        anim.SetFloat("DirY", 0.0f);
     }
 
     public override void Move(CharacterParam param)
@@ -32,8 +29,6 @@ public class ActiveCharacter : Character
 
         if (moveParam != null)
         {
-            anim.SetFloat("DirX", moveParam.inputVec.x);
-            anim.SetFloat("DirY", moveParam.inputVec.y);
         }
     }
 
@@ -47,13 +42,19 @@ public class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            anim.SetTrigger("Attack");
         }
     }
 
     public override void Expression(CharacterParam param)
     {
         base.Expression(param);
+
+
+    }
+
+    public override void Hit(CharacterParam param)
+    {
+        base.Hit(param);
 
 
     }

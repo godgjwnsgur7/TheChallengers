@@ -12,6 +12,8 @@ public class PlayerCharacter : MonoBehaviour
 
     public Vector2 _dirVec2 = Vector2.zero;
 
+    public bool inabilityState = false;
+
     private void Awake()
     {
         if(activeCharacter == null)
@@ -35,9 +37,10 @@ public class PlayerCharacter : MonoBehaviour
     {
         dirVec = Managers.Input.touchPos;
 
-        if (dirVec == Vector2.zero && activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
+        if (dirVec == Vector2.zero)
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Idle);
+            if (activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
+                PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
         else
         {

@@ -52,6 +52,11 @@ public class Character : MonoBehaviour
     {
         currState = ENUM_PLAYER_STATE.Expression;
     }
+    
+    public virtual void Hit(CharacterParam param)
+    {
+        currState = ENUM_PLAYER_STATE.Hit;
+    }
 
     public virtual void Die(CharacterParam param)
     {
