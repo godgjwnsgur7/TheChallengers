@@ -4,34 +4,43 @@ using UnityEngine;
 
 public class AnimatorPair
 {
-    Animator dd;
-    SpriteRenderer rr;
-
-}
-
-public enum zzz
-{
-    BODY,
-    WEAPON,
-    HAND
+    Animator anim;
+    SpriteRenderer sprite;
 }
 
 public class PlayerAnimation : MonoBehaviour
 {
-    AnimatorPair[] pairs = new AnimatorPair[(int)zzz.HAND + 1];
+    // 페어로 묶을지도 고민중 아직 사용x
+    AnimatorPair bodyPair = new AnimatorPair();
 
     public Animator bodyAnim;
     // public Animator weaponAnim;
     // public Animator handAnim;
 
     public SpriteRenderer bodySprite;
-    // public SpriteRenderer weaponSprite;
-    // public SpriteRenderer handSprite;
+    public SpriteRenderer weaponSprite;
+    public SpriteRenderer coverSprite;
 
+    private bool reverseState = false;
 
-    public void SetFloat(string name, float value)
+    public void SetVector(Vector2 vec, bool isRun)
     {
-        bodyAnim.SetFloat(name, value);
+       ReverseSprites(vec.x == 1.0f);
+
+        float f = isRun ? 2.0f : 1.0f;
+        bodyAnim.SetFloat("DirX", vec.x * f);
+        bodyAnim.SetFloat("DirY", vec.y * f);
+    }
+
+    private void ReverseSprites(bool _reverseState)
+    {
+        if (reverseState == _reverseState)
+            return;
+
+        bodySprite.flipX = _reverseState;
+        weaponSprite.flipX = _reverseState;
+        coverSprite.flipX = _reverseState;
+        reverseState = _reverseState;
     }
 
     public void SetBool(string str, bool value)
@@ -41,7 +50,6 @@ public class PlayerAnimation : MonoBehaviour
 
     public bool GetBool(string str)
     {
-        // 이거 ㅋㅋㅋ 에바참친데 일단 해ㅋㅋ
         return bodyAnim.GetBool(str);
     }
 }

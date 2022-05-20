@@ -57,12 +57,16 @@ namespace FGDefine
     public enum ENUM_WEAPON_TYPE
     {
         Null = 0,
-        Hammer = 1,
-        Sword = 2,
+        
+        // Near
+        Hammer = 1, 
+        Sword = 2, 
         Sycthe = 3,
-        Bow = 4,
-        Gun = 5,
-        Rifle = 6,
+        
+        // Far
+        Bow = 4, 
+        Gun = 5, 
+        Rifle = 6, 
 
         Max
     }

@@ -34,8 +34,7 @@ public class ActiveCharacter : Character
 
         if (moveParam != null)
         {
-            playerAnim.SetFloat("DirX", moveParam.inputVec.x);
-            playerAnim.SetFloat("DirY", moveParam.inputVec.y);
+            playerAnim.SetVector(moveParam.inputVec, moveParam.isRun);
 
             if(!playerAnim.GetBool("isMove"))
                 playerAnim.SetBool("isMove", true);

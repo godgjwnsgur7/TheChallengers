@@ -12,13 +12,13 @@ public class CharacterParam { }
 public class CharacterMoveParam : CharacterParam
 {
     public Vector2 inputVec;
+    public bool isRun;
     public float speed = 3.0f;
-    
-    private float runSpeed = 5.0f;
     
     public CharacterMoveParam(Vector3 _inputVec, bool _isRun)
     {
-        speed = _isRun ? runSpeed : speed;
+        isRun = _isRun;
+        speed = _isRun ? (speed * 1.5f) : speed;
         this.inputVec = _inputVec;
     }
 }

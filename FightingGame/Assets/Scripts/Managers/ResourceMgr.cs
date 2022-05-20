@@ -23,7 +23,7 @@ public class ResourceMgr
 
     public void GetAnimator(string type)
     {
-        // 여기서 3개를 가져와서 셋팅하게 만들어야 되나본데... 맘에안드네 ㅋㅋ
+        // 여기서 3개를 가져와서 셋팅하게 만들어야쥐~
     }
 
     public void Destroy(GameObject go)

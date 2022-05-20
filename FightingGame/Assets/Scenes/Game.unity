@@ -152,7 +152,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1176628394}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &266559709
 SpriteRenderer:
@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 1003863204}
   - component: {fileID: 1003863205}
   m_Layer: 0
-  m_Name: Hand
+  m_Name: Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -497,7 +497,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1176628394}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1003863205
 SpriteRenderer:
@@ -582,8 +582,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1834321087}
-  - {fileID: 1003863204}
   - {fileID: 266559708}
+  - {fileID: 1003863204}
   - {fileID: 1416385224}
   m_Father: {fileID: 1822689654}
   m_RootOrder: 0
@@ -617,7 +617,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyAnim: {fileID: 1834321088}
-  bodySprite: {fileID: 0}
+  bodySprite: {fileID: 1834321089}
+  weaponSprite: {fileID: 266559709}
+  coverSprite: {fileID: 1003863205}
 --- !u!50 &1176628397
 Rigidbody2D:
   serializedVersion: 4
