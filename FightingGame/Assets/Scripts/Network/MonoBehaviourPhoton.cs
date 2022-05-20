@@ -1,12 +1,42 @@
 using Photon.Pun;
+using System;
 
 /// <summary>
 /// 네트워크 통신이 필요한 MonoBehaviour 클래스는 대신 해당 클래스를 사용하시오. 
 /// </summary>
 /// 
 
+public class PhotonCustomStreamBase
+{
+    protected PhotonStream stream;
+
+    public void SetStream(PhotonStream stream)
+    {
+        this.stream = stream;
+    }
+}
+
+public class PhotonWriteStream : PhotonCustomStreamBase
+{
+    public void Write(object data)
+    {
+        stream.SendNext(data);
+    }
+}
+
+public class PhotonReadStream : PhotonCustomStreamBase
+{
+    public object Read()
+    {
+        return stream.ReceiveNext();
+    }
+}
+
 public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 {
+    private PhotonWriteStream writeStream = new PhotonWriteStream();
+    private PhotonReadStream readStream = new PhotonReadStream();
+
     protected virtual void Awake()
     {
         gameObject.AddComponent<PhotonView>();
@@ -64,9 +94,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     /// </summary>
     /// <param name="info"></param>
 
-    protected virtual void OnMasterSerializeView(PhotonMessageInfo info)
+    protected virtual void OnMasterSerializeView(PhotonWriteStream writeStream, PhotonMessageInfo info)
     {
-
+        writeStream.Write(null);
     }
 
     /// <summary>
@@ -74,20 +104,22 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     /// </summary>
     /// <param name="info"></param>
 
-    protected virtual void OnSlaveSerializeView(PhotonMessageInfo info)
+    protected virtual void OnSlaveSerializeView(PhotonReadStream readStream, PhotonMessageInfo info)
     {
-
+        var obj = readStream.Read();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if(stream.IsWriting)
         {
-            OnMasterSerializeView(info);
+            writeStream.SetStream(stream);
+            OnMasterSerializeView(writeStream, info);
         }
         else if(stream.IsReading)
         {
-            OnSlaveSerializeView(info);
+            readStream.SetStream(stream);
+            OnSlaveSerializeView(readStream, info);
         }
     }
 }
