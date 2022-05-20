@@ -19,16 +19,16 @@ public class CharacterMoveParam : CharacterParam
     {
         isRun = _isRun;
         speed = _isRun ? (speed * 1.5f) : speed;
-        this.inputVec = _inputVec;
+        inputVec = _inputVec;
     }
 }
 
-public class CharacterAttackParam : CharacterParam
+public class CharacterHitParam : CharacterParam
 {
-    int attackType = 0;
+    public float damage;
 
-    public CharacterAttackParam(int _attackType)
+    public CharacterHitParam(float _damage)
     {
-        attackType = _attackType;
+        damage = _damage;
     }
 }

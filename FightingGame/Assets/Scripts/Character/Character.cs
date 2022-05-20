@@ -26,17 +26,6 @@ public class Character : MonoBehaviourPhoton
         weaponType = ENUM_WEAPON_TYPE.Sword;
     }
 
-    // ㅎㅇㅋㅋ
-    protected override void OnMasterSerializeView(PhotonMessageInfo info)
-    {
-        base.OnMasterSerializeView(info);
-    }
-
-    protected override void OnSlaveSerializeView(PhotonMessageInfo info)
-    {
-        base.OnSlaveSerializeView(info);
-    }
-
     public virtual void Idle(CharacterParam param = null)
     {
         currState = ENUM_PLAYER_STATE.Idle;
@@ -67,6 +56,9 @@ public class Character : MonoBehaviourPhoton
     
     public virtual void Hit(CharacterParam param)
     {
+        if (param == null || param is CharacterHitParam == false)
+            return;
+
         currState = ENUM_PLAYER_STATE.Hit;
     }
 

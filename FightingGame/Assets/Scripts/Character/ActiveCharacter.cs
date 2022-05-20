@@ -70,7 +70,14 @@ public class ActiveCharacter : Character
     {
         base.Hit(param);
 
-        playerAnim.SetTrigger("HitTrigger");
+        if (param == null) return;
+
+        var hitParam = param as CharacterHitParam;
+
+        if (hitParam != null)
+        {
+            playerAnim.SetTrigger("HitTrigger");
+        }
     }
 
     public override void Die(CharacterParam param = null)

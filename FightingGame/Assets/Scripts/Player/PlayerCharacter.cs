@@ -60,7 +60,7 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             // 셀프 히트ㅋㅋ
-            PlayerCommand(ENUM_PLAYER_STATE.Hit);
+            PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterHitParam(10.0f));
         }
 
         _dirVec2 = Vector2.zero;
