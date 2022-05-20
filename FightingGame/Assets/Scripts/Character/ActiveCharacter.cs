@@ -11,6 +11,8 @@ public class ActiveCharacter : Character
     public override void Init()
     {
         base.Init();
+
+        // 일단 가시적으로 볼려고
         playerAnim = GetComponent<PlayerAnimation>();
     }
 
@@ -18,8 +20,7 @@ public class ActiveCharacter : Character
     {
         base.Idle(param);
         
-        Debug.Log("Idle");
-        // if (playerAnim.GetBool("isMove"))
+        if (playerAnim.GetBool("isMove"))
             playerAnim.SetBool("isMove", false);
     }
 
@@ -36,9 +37,8 @@ public class ActiveCharacter : Character
             playerAnim.SetFloat("DirX", moveParam.inputVec.x);
             playerAnim.SetFloat("DirY", moveParam.inputVec.y);
 
-            Debug.Log("Move");
-            // if(!playerAnim.GetBool("isMove"))
-            playerAnim.SetBool("isMove", true);
+            if(!playerAnim.GetBool("isMove"))
+                playerAnim.SetBool("isMove", true);
         }
     }
 

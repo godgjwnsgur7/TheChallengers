@@ -30,7 +30,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        OnKeyboard();
+        OnKeyboard(); // 디버깅용
     }
 
     private void OnJoystick(ENUM_INPUT_TYPE evt)
@@ -57,6 +57,12 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) _dirVec2.x = -1.0f;
         if (Input.GetKey(KeyCode.S)) _dirVec2.y = -1.0f;
         if (Input.GetKey(KeyCode.D)) _dirVec2.x = 1.0f;
+
+        if (Input.GetKey(KeyCode.J))
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Attack);
+            return;
+        }
 
         if (_dirVec2 == Vector2.zero)
         {
