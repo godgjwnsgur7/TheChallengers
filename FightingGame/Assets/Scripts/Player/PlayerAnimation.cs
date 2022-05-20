@@ -43,9 +43,24 @@ public class PlayerAnimation : MonoBehaviour
         reverseState = _reverseState;
     }
 
+    public void SetFloat(string str, float value)
+    {
+        bodyAnim.SetFloat(str, value);
+    }
+
+    public void SetInteger(string str, int value)
+    {
+        bodyAnim.SetInteger(str, value);
+    }
+
     public void SetBool(string str, bool value)
     {
         bodyAnim.SetBool(str, value);
+    }
+
+    public void SetTrigger(string str)
+    {
+        bodyAnim.SetTrigger(str);
     }
 
     public bool GetBool(string str)

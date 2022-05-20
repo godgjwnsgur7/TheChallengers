@@ -15,12 +15,15 @@ public class Character : MonoBehaviourPhoton
     }
 
     public ENUM_CHARACTER_TYPE characterType;
+    public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
     public virtual void Init()
     {
         rigid2D = GetComponent<Rigidbody2D>();
 
+        // 디버그용
+        weaponType = ENUM_WEAPON_TYPE.Sword;
     }
 
     // ㅎㅇㅋㅋ
@@ -54,15 +57,12 @@ public class Character : MonoBehaviourPhoton
    
     public virtual void Attack(CharacterParam param)
     {
-        if (param == null || param is CharacterAttackParam == false)
-            return;
-
         currState = ENUM_PLAYER_STATE.Attack;
     }
 
     public virtual void Expression(CharacterParam param)
     {
-        currState = ENUM_PLAYER_STATE.Expression;
+        // 아이템 습득, 캐릭터 상태 변화는 없음?, 소지한 아이템 변경
     }
     
     public virtual void Hit(CharacterParam param)

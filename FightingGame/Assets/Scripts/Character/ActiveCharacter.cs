@@ -12,8 +12,11 @@ public class ActiveCharacter : Character
     {
         base.Init();
 
-        // 일단 가시적으로 볼려고
+        // playerAnim = new PlayerAnimation();
+
+        // 디버그용
         playerAnim = GetComponent<PlayerAnimation>();
+        playerAnim.SetInteger("WeaponType", 2); // 검 들고 시작
     }
 
     public override void Idle(CharacterParam param = null)
@@ -26,6 +29,10 @@ public class ActiveCharacter : Character
 
     public override void Move(CharacterParam param)
     {
+        if (currState != ENUM_PLAYER_STATE.Idle && 
+            currState != ENUM_PLAYER_STATE.Move)
+            return;
+
         base.Move(param);
 
         if (param == null) return;
@@ -43,15 +50,13 @@ public class ActiveCharacter : Character
 
     public override void Attack(CharacterParam param)
     {
+        if (weaponType == ENUM_WEAPON_TYPE.Null ||
+            currState == ENUM_PLAYER_STATE.Hit)
+            return;
+
         base.Attack(param);
 
-        if (param == null) return;
-
-        var attackParam = param as CharacterAttackParam;
-
-        if (attackParam != null)
-        {
-        }
+        playerAnim.SetTrigger("AttackTrigger");
     }
 
     public override void Expression(CharacterParam param)
@@ -65,7 +70,7 @@ public class ActiveCharacter : Character
     {
         base.Hit(param);
 
-
+        playerAnim.SetTrigger("HitTrigger");
     }
 
     public override void Die(CharacterParam param = null)
