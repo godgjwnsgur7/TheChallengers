@@ -23,13 +23,13 @@ public class Character : MonoBehaviourPhoton
         rigid2D = GetComponent<Rigidbody2D>();
 
         // 디버그용
-        weaponType = ENUM_WEAPON_TYPE.Sword;
+        characterType = ENUM_CHARACTER_TYPE.Knight;
+        weaponType = ENUM_WEAPON_TYPE.Gun;
     }
 
     public virtual void Idle(CharacterParam param = null)
     {
         currState = ENUM_PLAYER_STATE.Idle;
-        rigid2D.velocity = Vector2.zero;
     }
 
     public virtual void Move(CharacterParam param)

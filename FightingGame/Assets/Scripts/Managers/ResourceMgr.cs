@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public class ResourceMgr
 {
     public T Load<T>(string path) where T : Object
     {
         return Resources.Load<T>(path);
+    }
+    public T[] LoadAll<T>(string path) where T : Object
+    {
+        return Resources.LoadAll<T>(path);
     }
 
     public GameObject Instantiate(string path, Transform parent = null)
@@ -24,6 +29,20 @@ public class ResourceMgr
     public void GetAnimator(string type)
     {
         // 여기서 3개를 가져와서 셋팅하게 만들어야쥐~
+    }
+
+    public FarWeaponSprites GetWeaponSprites(ENUM_CHARACTER_TYPE type)
+    {
+        string path = type.ToString();
+
+        // Resources/Art 경로에 이름과 같은 폴더가 존재해야 함
+        FarWeaponSprites farWeaponSprites = new FarWeaponSprites();
+
+        farWeaponSprites.bowSprites = LoadAll<Sprite>($"Art/{path}/Sprites/character_bow");
+        farWeaponSprites.gunSprites = LoadAll<Sprite>($"Art/{path}/Sprites/character_gun");
+        farWeaponSprites.rifleSprites = LoadAll<Sprite>($"Art/{path}/Sprites/character_rifle");
+
+        return farWeaponSprites;
     }
 
     public void Destroy(GameObject go)
