@@ -26,19 +26,17 @@ public class Character : MonoBehaviourPhoton
         // 디버그용
         characterType = ENUM_CHARACTER_TYPE.Knight;
         weaponType = ENUM_WEAPON_TYPE.Gun;
-        weaponType = ENUM_WEAPON_TYPE.Sword;
 
         if(PhotonLogicHandler.IsMine(this))
         {
             Debug.Log("컨트롤이 가능한 객체");
-        }
+        }   
         else
         {
             Debug.Log("컨트롤이 불가능한 객체");
         }
     }
 
-    // ㅎㅇㅋㅋ
     protected override void OnMasterSerializeView(PhotonWriteStream stream)
     {
         base.OnMasterSerializeView(stream);
