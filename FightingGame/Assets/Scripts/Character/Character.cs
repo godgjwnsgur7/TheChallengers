@@ -27,14 +27,20 @@ public class Character : MonoBehaviourPhoton
     }
 
     // ㅎㅇㅋㅋ
-    protected override void OnMasterSerializeView(PhotonMessageInfo info)
+    protected override void OnMasterSerializeView(PhotonWriteStream stream, PhotonMessageInfo info)
     {
-        base.OnMasterSerializeView(info);
+        base.OnMasterSerializeView(stream, info);
+
+        stream.Write(characterType);
+        Debug.Log($"{characterType} Write 성공");
     }
 
-    protected override void OnSlaveSerializeView(PhotonMessageInfo info)
+    protected override void OnSlaveSerializeView(PhotonReadStream stream, PhotonMessageInfo info)
     {
-        base.OnSlaveSerializeView(info);
+        base.OnSlaveSerializeView(stream, info);
+
+        characterType = (ENUM_CHARACTER_TYPE)stream.Read();
+        Debug.Log($"{characterType} Read 성공");
     }
 
     public virtual void Idle(CharacterParam param = null)

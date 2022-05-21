@@ -57,16 +57,19 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     private void SyncAnimatorView()
     {
         var component = GetOrAddComponent<PhotonAnimatorView>();
+        photonView.ObservedComponents.Add(component);
     }
 
     private void SyncTransformView()
     {
         var component = GetOrAddComponent<PhotonTransformView>();
+        photonView.ObservedComponents.Add(component);
     }
 
     private void SyncPhysics()
     {
         var component = GetOrAddComponent<PhotonRigidbody2DView>();
+        photonView.ObservedComponents.Add(component);
     }
 
     private T GetOrAddComponent<T>() where T : MonoBehaviourPun
@@ -96,7 +99,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     protected virtual void OnMasterSerializeView(PhotonWriteStream writeStream, PhotonMessageInfo info)
     {
-        writeStream.Write(null);
+        
     }
 
     /// <summary>
@@ -106,7 +109,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     protected virtual void OnSlaveSerializeView(PhotonReadStream readStream, PhotonMessageInfo info)
     {
-        var obj = readStream.Read();
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
