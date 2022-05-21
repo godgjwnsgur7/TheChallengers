@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using FGDefine;
-using Photon.Pun;
 
 public class Character : MonoBehaviourPhoton
 {
@@ -24,20 +23,29 @@ public class Character : MonoBehaviourPhoton
 
         // 디버그용
         weaponType = ENUM_WEAPON_TYPE.Sword;
+
+        if(PhotonLogicHandler.IsMine(this))
+        {
+            Debug.Log("컨트롤이 가능한 객체");
+        }
+        else
+        {
+            Debug.Log("컨트롤이 불가능한 객체");
+        }
     }
 
     // ㅎㅇㅋㅋ
-    protected override void OnMasterSerializeView(PhotonWriteStream stream, PhotonMessageInfo info)
+    protected override void OnMasterSerializeView(PhotonWriteStream stream)
     {
-        base.OnMasterSerializeView(stream, info);
+        base.OnMasterSerializeView(stream);
 
         stream.Write(characterType);
         Debug.Log($"{characterType} Write 성공");
     }
 
-    protected override void OnSlaveSerializeView(PhotonReadStream stream, PhotonMessageInfo info)
+    protected override void OnSlaveSerializeView(PhotonReadStream stream)
     {
-        base.OnSlaveSerializeView(stream, info);
+        base.OnSlaveSerializeView(stream);
 
         characterType = (ENUM_CHARACTER_TYPE)stream.Read();
         Debug.Log($"{characterType} Read 성공");
