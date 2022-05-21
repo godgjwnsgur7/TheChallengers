@@ -39,6 +39,8 @@ public class PlatformDB : IPlatformDB
 
         database = FirebaseDatabase.DefaultInstance;
         dbRootReference = database.GetReferenceFromUrl(URL);
+
+        DBSession.RegisterDB(this);
     }
      
     public void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class
