@@ -47,52 +47,67 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     private Dictionary<string, Rigidbody2D> syncRigidbodyDictionary = new Dictionary<string, Rigidbody2D>();
     private Dictionary<string, Transform> syncTransformDictionary = new Dictionary<string, Transform>();
 
-    protected virtual void Awake()
+    public virtual void Init()
     {
         gameObject.AddComponent<PhotonView>();
     }
 
     public void SyncAnimator(string key, Animator anim)
     {
-        if(syncAnimatorDictionary.ContainsKey(key))
+        if (key.Equals(string.Empty) || anim == null)
+            return;
+
+        if (syncAnimatorDictionary.ContainsKey(key))
             syncAnimatorDictionary.Add(key, anim);
 
         GameObject ownerObj = anim.gameObject;
 
         var component = ownerObj.GetComponent<PhotonAnimatorView>();
-
         if (component == null)
             component = ownerObj.AddComponent<PhotonAnimatorView>();
 
         photonView.ObservedComponents.Add(component);
     }
 
-    public void SyncTransformView(string key, Transform tr)
+    public void SyncTransformView(string key, Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
     {
+        if (key.Equals(string.Empty) || tr == null)
+            return;
+
         if (syncTransformDictionary.ContainsKey(key))
             syncTransformDictionary.Add(key, tr);
 
         GameObject ownerObj = tr.gameObject;
 
         var component = ownerObj.GetComponent<PhotonTransformView>();
-
         if (component == null)
             component = ownerObj.AddComponent<PhotonTransformView>();
+
+        component.m_SynchronizePosition = isSyncPosition;
+        component.m_SynchronizeRotation = isSyncRotation;
+        component.m_SynchronizeScale = isSyncScale;
 
         photonView.ObservedComponents.Add(component);
     }
 
-    public void SyncPhysics(string key, Rigidbody2D rigid)
+    public void SyncPhysics(string key, Rigidbody2D rigid, bool isSyncAngleVelocity = true, bool isSyncVelocity = true, bool isEnableTeleport = false, float distanceForTeleport = 10.0f)
     {
+        if (key.Equals(string.Empty) || rigid == null)
+            return;
+
         if (syncRigidbodyDictionary.ContainsKey(key))
             syncRigidbodyDictionary.Add(key, rigid);
 
         GameObject ownerObj = rigid.gameObject;
 
         var component = ownerObj.GetComponent<PhotonRigidbody2DView>();
-
         if (component == null)
             component = ownerObj.AddComponent<PhotonRigidbody2DView>();
+
+        component.m_SynchronizeAngularVelocity = isSyncAngleVelocity;
+        component.m_SynchronizeVelocity = isSyncVelocity;
+        component.m_TeleportEnabled = isEnableTeleport;
+        component.m_TeleportIfDistanceGreaterThan = distanceForTeleport;
 
         photonView.ObservedComponents.Add(component);
     }

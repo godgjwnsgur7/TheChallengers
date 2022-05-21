@@ -17,8 +17,10 @@ public class Character : MonoBehaviourPhoton
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
-    public virtual void Init()
+    public override void Init()
     {
+        base.Init();
+
         rigid2D = GetComponent<Rigidbody2D>();
 
         // 디버그용
