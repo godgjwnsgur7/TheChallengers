@@ -11,19 +11,17 @@ public class Managers : MonoBehaviour
     private ResourceMgr resouce = new ResourceMgr();
     private SceneMgr scene = new SceneMgr();
     private UIMgr ui = new UIMgr();
-
-    // 네트워크 관련 세션
     private LoginSession loginSession = new LoginSession();
     private DBSession dbSession = new DBSession();
+    private AdBannerController adMob = new AdBannerController();
 
     public static InputMgr Input { get { return Instance.input; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static UIMgr UI { get { return Instance.ui; } }
-
-    // 네트워크 관련 세션
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }
+    public static AdBannerController AdMob { get { return Instance.adMob; } }
 
     private void Start()
     {

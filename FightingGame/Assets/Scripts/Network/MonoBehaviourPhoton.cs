@@ -1,5 +1,7 @@
 using Photon.Pun;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// 네트워크 통신이 필요한 MonoBehaviour 클래스는 대신 해당 클래스를 사용하시오. 
@@ -37,46 +39,77 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
 
-    protected virtual void Awake()
+    /// <summary>
+    /// 우선 Key를 string으로 지정, 추후 클라 관리를 위해 ENUM으로 수정하도록 함
+    /// </summary>
+
+    private Dictionary<string, Animator> syncAnimatorDictionary = new Dictionary<string, Animator>();
+    private Dictionary<string, Rigidbody2D> syncRigidbodyDictionary = new Dictionary<string, Rigidbody2D>();
+    private Dictionary<string, Transform> syncTransformDictionary = new Dictionary<string, Transform>();
+
+    public virtual void Init()
     {
         gameObject.AddComponent<PhotonView>();
     }
 
-    protected void Init(bool isAnimatingSync, bool isTransformSync, bool isPhysicsSync)
+    public void SyncAnimator(string key, Animator anim)
     {
-        if (isAnimatingSync)
-            SyncAnimatorView();
+        if (key.Equals(string.Empty) || anim == null)
+            return;
 
-        if (isTransformSync)
-            SyncTransformView();
+        if (syncAnimatorDictionary.ContainsKey(key))
+            syncAnimatorDictionary.Add(key, anim);
 
-        if (isPhysicsSync)
-            SyncPhysics();
-    }
+        GameObject ownerObj = anim.gameObject;
 
-    private void SyncAnimatorView()
-    {
-        var component = GetOrAddComponent<PhotonAnimatorView>();
-    }
-
-    private void SyncTransformView()
-    {
-        var component = GetOrAddComponent<PhotonTransformView>();
-    }
-
-    private void SyncPhysics()
-    {
-        var component = GetOrAddComponent<PhotonRigidbody2DView>();
-    }
-
-    private T GetOrAddComponent<T>() where T : MonoBehaviourPun
-    {
-        T component = GetComponent<T>();
-
+        var component = ownerObj.GetComponent<PhotonAnimatorView>();
         if (component == null)
-            component = gameObject.AddComponent<T>();
+            component = ownerObj.AddComponent<PhotonAnimatorView>();
 
-        return component;
+        photonView.ObservedComponents.Add(component);
+    }
+
+    public void SyncTransformView(string key, Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
+    {
+        if (key.Equals(string.Empty) || tr == null)
+            return;
+
+        if (syncTransformDictionary.ContainsKey(key))
+            syncTransformDictionary.Add(key, tr);
+
+        GameObject ownerObj = tr.gameObject;
+
+        var component = ownerObj.GetComponent<PhotonTransformView>();
+        if (component == null)
+            component = ownerObj.AddComponent<PhotonTransformView>();
+
+        component.m_SynchronizePosition = isSyncPosition;
+        component.m_SynchronizeRotation = isSyncRotation;
+        component.m_SynchronizeScale = isSyncScale;
+
+        photonView.ObservedComponents.Add(component);
+    }
+
+    public void SyncPhysics(string key, Rigidbody2D rigid, bool isSyncAngleVelocity = true, bool isSyncVelocity = true, bool isEnableTeleport = false, float distanceForTeleport = 10.0f)
+    {
+        if (key.Equals(string.Empty) || rigid == null)
+            return;
+
+        if (syncRigidbodyDictionary.ContainsKey(key))
+            syncRigidbodyDictionary.Add(key, rigid);
+
+        GameObject ownerObj = rigid.gameObject;
+
+        var component = ownerObj.GetComponent<PhotonRigidbody2DView>();
+        if (component == null)
+            component = ownerObj.AddComponent<PhotonRigidbody2DView>();
+
+        component.m_SynchronizeAngularVelocity = isSyncAngleVelocity;
+        component.m_SynchronizeVelocity = isSyncVelocity;
+        component.m_TeleportEnabled = isEnableTeleport;
+        component.m_TeleportIfDistanceGreaterThan = distanceForTeleport;
+
+        photonView.ObservedComponents.Add(component);
     }
 
     protected virtual void OnEnable()
@@ -94,9 +127,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     /// </summary>
     /// <param name="info"></param>
 
-    protected virtual void OnMasterSerializeView(PhotonWriteStream writeStream, PhotonMessageInfo info)
+    protected virtual void OnMasterSerializeView(PhotonWriteStream writeStream)
     {
-        writeStream.Write(null);
+        
     }
 
     /// <summary>
@@ -104,9 +137,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     /// </summary>
     /// <param name="info"></param>
 
-    protected virtual void OnSlaveSerializeView(PhotonReadStream readStream, PhotonMessageInfo info)
+    protected virtual void OnSlaveSerializeView(PhotonReadStream readStream)
     {
-        var obj = readStream.Read();
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -114,12 +147,18 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         if(stream.IsWriting)
         {
             writeStream.SetStream(stream);
-            OnMasterSerializeView(writeStream, info);
+            OnMasterSerializeView(writeStream);
         }
         else if(stream.IsReading)
         {
             readStream.SetStream(stream);
-            OnSlaveSerializeView(readStream, info);
+            OnSlaveSerializeView(readStream);
         }
+
+        Debug.Log("--- OnPhotonSerializeView ---");
+        Debug.Log($"정보 보낸 이 : {info.Sender?.NickName}");
+        Debug.Log($"보낸 시간 : {info.SentServerTime}");
+        Debug.Log($"보낸 시간 스탬프 : {info.SentServerTimestamp}");
+        Debug.Log("--- --------------------- ---");
     }
 }

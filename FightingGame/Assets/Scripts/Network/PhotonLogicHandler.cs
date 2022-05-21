@@ -7,19 +7,6 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Reflection;
 
-public interface IPhotonNetwork
-{
-    public bool IsConnected
-    {
-        get;
-    }
-
-    public bool IsMasterClient
-    {
-        get;
-    }
-}
-
 public enum ENUM_RPC_TARGET
 {
     All,
@@ -29,9 +16,9 @@ public enum ENUM_RPC_TARGET
 
 public class BroadcastMethodAttribute : PunRPC { }
 
-public partial class PhotonLogicHandler : IPhotonNetwork
+public partial class PhotonLogicHandler
 {
-    public bool IsConnected
+    public static bool IsConnected
     {
         get 
         {
@@ -39,7 +26,7 @@ public partial class PhotonLogicHandler : IPhotonNetwork
         }
     }
 
-    public bool IsMasterClient
+    public static bool IsMasterClient
     {
         get
         {
@@ -71,7 +58,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     }
 
     private readonly string GameVersion = "1";
-    private static List<MonoBehaviourPhoton> punList = new List<MonoBehaviourPhoton>();
+    private static List<MonoBehaviourPhoton> photonObjectList = new List<MonoBehaviourPhoton>();
 
     private Action _OnConnectedToMaster = null;
     private DisconnectCallBack _OnDisconnectedFromMaster = null;
@@ -81,7 +68,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public static bool IsMine(MonoBehaviourPhoton pun)
     {
-        var obj = punList.Find(p => p.Equals(pun));
+        var obj = photonObjectList.Find(p => p.Equals(pun));
 
         if (obj != null && obj.photonView != null)
         {
@@ -154,9 +141,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static void Register(MonoBehaviourPhoton pun)
     {
-        if (!punList.Exists(p => p.Equals(pun)))
+        if (!photonObjectList.Exists(p => p.Equals(pun)))
         {
-            punList.Add(pun);
+            photonObjectList.Add(pun);
         }
         else
         {
@@ -166,9 +153,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public static void Unregister(MonoBehaviourPhoton pun)
     {
-        if (punList.Exists(p => p.Equals(pun)))
+        if (photonObjectList.Exists(p => p.Equals(pun)))
         {
-            punList.Remove(pun);
+            photonObjectList.Remove(pun);
         }
         else
         {

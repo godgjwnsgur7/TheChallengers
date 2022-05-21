@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using FGDefine;
-using Photon.Pun;
 
 public class Character : MonoBehaviourPhoton
 {
@@ -18,13 +17,42 @@ public class Character : MonoBehaviourPhoton
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
-    public virtual void Init()
+    public override void Init()
     {
+        base.Init();
+
         rigid2D = GetComponent<Rigidbody2D>();
 
         // 디버그용
         characterType = ENUM_CHARACTER_TYPE.Knight;
         weaponType = ENUM_WEAPON_TYPE.Gun;
+        weaponType = ENUM_WEAPON_TYPE.Sword;
+
+        if(PhotonLogicHandler.IsMine(this))
+        {
+            Debug.Log("컨트롤이 가능한 객체");
+        }
+        else
+        {
+            Debug.Log("컨트롤이 불가능한 객체");
+        }
+    }
+
+    // ㅎㅇㅋㅋ
+    protected override void OnMasterSerializeView(PhotonWriteStream stream)
+    {
+        base.OnMasterSerializeView(stream);
+
+        stream.Write(characterType);
+        Debug.Log($"{characterType} Write 성공");
+    }
+
+    protected override void OnSlaveSerializeView(PhotonReadStream stream)
+    {
+        base.OnSlaveSerializeView(stream);
+
+        characterType = (ENUM_CHARACTER_TYPE)stream.Read();
+        Debug.Log($"{characterType} Read 성공");
     }
 
     public virtual void Idle(CharacterParam param = null)
@@ -56,9 +84,6 @@ public class Character : MonoBehaviourPhoton
     
     public virtual void Hit(CharacterParam param)
     {
-        if (param == null || param is CharacterHitParam == false)
-            return;
-
         currState = ENUM_PLAYER_STATE.Hit;
     }
 

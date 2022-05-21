@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public interface ISession
+{
+    bool IsValid
+    {
+        get;
+    }
+}
+
+
 /// <summary>
 /// 로그인 정보가 남아있는 세션, 한 번 인증한 후엔 더 이상 인증을 할 수 없도록 세션만 남기는 것을 추천
 /// </summary>
-public class LoginSession : IDisposable
+public class LoginSession : IDisposable, ISession
 {
     private bool disposedValue;
 
-    public static bool IsSessionValid
+    public bool IsValid
     {
         get
         {
