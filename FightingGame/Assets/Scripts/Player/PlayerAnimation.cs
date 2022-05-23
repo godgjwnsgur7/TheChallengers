@@ -27,8 +27,8 @@ public class PlayerAnimation : MonoBehaviour
     // AnimatorPair bodyPair = new AnimatorPair();
 
     public Animator bodyAnim;
-    // public Animator weaponAnim;
-    // public Animator handAnim;
+    public Animator weaponAnim;
+    public Animator coverAnim;
 
     public SpriteRenderer bodySpriteRender;
     public SpriteRenderer weaponSpriteRender;
@@ -36,27 +36,35 @@ public class PlayerAnimation : MonoBehaviour
 
     public FarWeaponSprites farWeaponSprites = new FarWeaponSprites();
 
-    public Sprite[] bowSprites = new Sprite[5];
-    public Sprite[] gunSprites = new Sprite[4];
-    public Sprite[] rifleSprites = new Sprite[4];
-
     private bool reverseState = false;
 
     public void Init(ENUM_CHARACTER_TYPE charType)
     {
-        Debug.Log("확인");
-
         farWeaponSprites = Managers.Resource.GetWeaponSprites(charType);
 
-        bodySpriteRender = gameObject.transform.Find("Body").gameObject.GetComponent<SpriteRenderer>();
-        weaponSpriteRender = gameObject.transform.Find("Weapon").gameObject.GetComponent<SpriteRenderer>();
-        coverSpriteRender = gameObject.transform.Find("Cover").gameObject.GetComponent<SpriteRenderer>();
+        GetObjectInfo();
 
         weaponSpriteRender.sprite = farWeaponSprites.bowSprites[1];
+    }
 
+    private void GetObjectInfo()
+    {
+        GameObject g;
+
+        g = gameObject.transform.Find("Body").gameObject;
+        bodyAnim = g.GetComponent<Animator>();
+        bodySpriteRender = g.GetComponent<SpriteRenderer>();
+
+        g = gameObject.transform.Find("Weapon").gameObject;
+        weaponAnim = g.GetComponent<Animator>();
+        weaponSpriteRender = g.GetComponent<SpriteRenderer>();
+
+        g = gameObject.transform.Find("Cover").gameObject;
+        coverAnim = g.GetComponent <Animator>();
+        coverSpriteRender = g.GetComponent<SpriteRenderer>();
     }
     
-    public void SetSprite(ENUM_WEAPON_TYPE weaponType)
+    public void SetSprites(ENUM_WEAPON_TYPE weaponType)
     {
         Vector2 vec = GetVector();
 
@@ -141,6 +149,12 @@ public class PlayerAnimation : MonoBehaviour
         float f = isRun ? 2.0f : 1.0f;
         bodyAnim.SetFloat("DirX", vec.x * f);
         bodyAnim.SetFloat("DirY", vec.y * f);
+
+        weaponAnim.SetFloat("DirX", vec.x);
+        weaponAnim.SetFloat("DirY", vec.y);
+
+        coverAnim.SetFloat("DirX", vec.x);
+        coverAnim.SetFloat("DirY", vec.y);
     }
 
     public Vector2 GetVector()
@@ -164,21 +178,29 @@ public class PlayerAnimation : MonoBehaviour
     public void SetFloat(string str, float value)
     {
         bodyAnim.SetFloat(str, value);
+        weaponAnim.SetFloat(str, value);
+        coverAnim.SetFloat(str, value);
     }
 
     public void SetInteger(string str, int value)
     {
         bodyAnim.SetInteger(str, value);
+        weaponAnim.SetInteger(str, value);
+        coverAnim.SetInteger(str, value);
     }
 
     public void SetBool(string str, bool value)
     {
         bodyAnim.SetBool(str, value);
+        weaponAnim.SetBool(str, value);
+        coverAnim.SetBool(str, value);
     }
 
     public void SetTrigger(string str)
     {
         bodyAnim.SetTrigger(str);
+        weaponAnim.SetTrigger(str);
+        coverAnim.SetTrigger(str);
     }
 
     public bool GetBool(string str)

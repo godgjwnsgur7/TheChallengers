@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 266559708}
   - component: {fileID: 266559709}
+  - component: {fileID: 266559710}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -205,6 +206,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &266559710
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266559707}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: be38068308fa0e94987975f00d71d15d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &453909802
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +498,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1003863204}
   - component: {fileID: 1003863205}
+  - component: {fileID: 1003863206}
   m_Layer: 0
   m_Name: Cover
   m_TagString: Untagged
@@ -550,6 +571,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1003863206
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003863203}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 37695a18249e99243b60b59a2ef8aa79, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1176628393
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,26 +657,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 437d6b405eaa1c94abc5df5ad2b8b5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyAnim: {fileID: 1834321088}
+  bodyAnim: {fileID: 0}
+  weaponAnim: {fileID: 0}
+  coverAnim: {fileID: 0}
   bodySpriteRender: {fileID: 0}
   weaponSpriteRender: {fileID: 0}
   coverSpriteRender: {fileID: 0}
-  bowSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  gunSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  rifleSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!50 &1176628397
 Rigidbody2D:
   serializedVersion: 4

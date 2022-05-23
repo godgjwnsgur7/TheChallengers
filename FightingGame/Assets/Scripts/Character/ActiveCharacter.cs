@@ -12,12 +12,10 @@ public class ActiveCharacter : Character
     {
         base.Init();
 
-        // 디버그용
         playerAnim = GetComponent<PlayerAnimation>();
-        playerAnim.SetInteger("WeaponType", (int)weaponType);
-
-        // playerAnim = new PlayerAnimation();
         playerAnim.Init(characterType);
+
+        playerAnim.SetInteger("WeaponType", (int)weaponType);
     }
 
     public override void Idle(CharacterParam param = null)
@@ -60,7 +58,7 @@ public class ActiveCharacter : Character
         base.Attack(param);
 
         if ((int)weaponType > 3) // 원거리 무기일 경우 위탁
-            playerAnim.SetSprite(weaponType);
+            playerAnim.SetSprites(weaponType);
 
         playerAnim.SetTrigger("AttackTrigger");
     }

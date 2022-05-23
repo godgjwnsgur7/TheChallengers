@@ -30,6 +30,7 @@ namespace FGDefine
     public enum ENUM_CHARACTER_TYPE
     {
         Knight = 0,
+        Astronaut = 1,
 
         Max
     }

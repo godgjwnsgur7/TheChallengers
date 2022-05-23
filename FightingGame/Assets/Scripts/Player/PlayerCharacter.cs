@@ -16,6 +16,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if(activeCharacter == null)
             activeCharacter = FindObjectOfType<ActiveCharacter>();
+        
         activeCharacter.Init();
     }
 
