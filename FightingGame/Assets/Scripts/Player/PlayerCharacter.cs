@@ -10,11 +10,8 @@ public class PlayerCharacter : MonoBehaviour
 
     public Vector2 dirVec = Vector2.zero;
 
-    public Vector2 _dirVec2 = Vector2.zero;
-
     public bool inabilityState = false;
     
-
     private void Awake()
     {
         if(activeCharacter == null)
@@ -63,21 +60,21 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterHitParam(10.0f));
         }
 
-        _dirVec2 = Vector2.zero;
+        dirVec = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.W)) _dirVec2.y = 1.0f;
-        if (Input.GetKey(KeyCode.A)) _dirVec2.x = -1.0f;
-        if (Input.GetKey(KeyCode.S)) _dirVec2.y = -1.0f;
-        if (Input.GetKey(KeyCode.D)) _dirVec2.x = 1.0f;
+        if (Input.GetKey(KeyCode.W)) dirVec.y = 1.0f;
+        if (Input.GetKey(KeyCode.A)) dirVec.x = -1.0f;
+        if (Input.GetKey(KeyCode.S)) dirVec.y = -1.0f;
+        if (Input.GetKey(KeyCode.D)) dirVec.x = 1.0f;
 
-        if (_dirVec2 == Vector2.zero)
+        if (dirVec == Vector2.zero)
         {
             if(activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
                 PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
         else
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(_dirVec2, Input.GetKey(KeyCode.LeftShift)));
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(dirVec, Input.GetKey(KeyCode.LeftShift)));
         }
     }
 

@@ -199,7 +199,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.4461539, y: 3.323077}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -618,9 +618,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyAnim: {fileID: 1834321088}
-  bodySprite: {fileID: 1834321089}
-  weaponSprite: {fileID: 266559709}
-  coverSprite: {fileID: 1003863205}
+  bodySpriteRender: {fileID: 0}
+  weaponSpriteRender: {fileID: 0}
+  coverSpriteRender: {fileID: 0}
+  bowSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gunSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  rifleSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!50 &1176628397
 Rigidbody2D:
   serializedVersion: 4
@@ -1159,7 +1175,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeCharacter: {fileID: 0}
   dirVec: {x: 0, y: 0}
-  _dirVec2: {x: 0, y: 0}
   inabilityState: 0
 --- !u!4 &1822689654
 Transform:

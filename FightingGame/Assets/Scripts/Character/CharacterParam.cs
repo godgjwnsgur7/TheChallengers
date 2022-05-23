@@ -15,7 +15,7 @@ public class CharacterMoveParam : CharacterParam
     public bool isRun;
     public float speed = 3.0f;
     
-    public CharacterMoveParam(Vector3 _inputVec, bool _isRun)
+    public CharacterMoveParam(Vector3 _inputVec, bool _isRun = false)
     {
         isRun = _isRun;
         speed = _isRun ? (speed * 1.5f) : speed;

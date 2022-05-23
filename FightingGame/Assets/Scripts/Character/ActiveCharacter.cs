@@ -23,7 +23,9 @@ public class ActiveCharacter : Character
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
-        
+
+        playerAnim.SetIdle();
+
         if (playerAnim.GetBool("isMove"))
             playerAnim.SetBool("isMove", false);
     }
