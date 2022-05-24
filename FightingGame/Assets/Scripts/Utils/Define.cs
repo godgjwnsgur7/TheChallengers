@@ -22,6 +22,8 @@ namespace FGDefine
         /// 여기부터 User 커스텀 레이어
         /// </summary>
         Player = 6, // 유저
+        Item = 7,
+        Wall = 8, // 레이어로해? 태그로해? 고민중 (임시)
     }
 
     /// <summary>

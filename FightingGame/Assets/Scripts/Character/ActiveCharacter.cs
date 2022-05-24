@@ -12,6 +12,8 @@ public partial class ActiveCharacter : Character
 
         SetObjectInfo(characterType);
         SetSpriteOrderLayer(Vector2.zero);
+
+        // 디버그용
         SetInteger("WeaponType", (int)weaponType);
     }
 
@@ -55,7 +57,7 @@ public partial class ActiveCharacter : Character
 
         base.Attack(param);
 
-        SetTrigger("AttackTrigger");
+        SetTrigger("AttackTrigger");    
     }
 
     public override void Expression(CharacterParam param)

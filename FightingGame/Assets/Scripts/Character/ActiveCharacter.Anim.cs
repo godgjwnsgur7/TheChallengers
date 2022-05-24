@@ -12,21 +12,15 @@ public enum ENUM_ANIMATOR_TYPE
 
 public partial class ActiveCharacter
 {
-    public Animator bodyAnim;
-    public Animator weaponAnim;
-    public Animator coverAnim;
+    private Animator bodyAnim;
+    private Animator weaponAnim;
+    private Animator coverAnim;
 
-    public SpriteRenderer bodySpriteRender;
-    public SpriteRenderer weaponSpriteRender;
-    public SpriteRenderer coverSpriteRender;
+    private SpriteRenderer bodySpriteRender;
+    private SpriteRenderer weaponSpriteRender;
+    private SpriteRenderer coverSpriteRender;
 
     private bool reverseState = false;
-
-    public void Init(ENUM_CHARACTER_TYPE charType)
-    {
-        SetObjectInfo(charType);
-        SetSpriteOrderLayer(Vector2.zero);
-    }
 
     private void SetObjectInfo(ENUM_CHARACTER_TYPE charType)
     {
@@ -64,7 +58,7 @@ public partial class ActiveCharacter
         }
     }
 
-    public void SetVector(Vector2 vec, bool isRun)
+    private void SetVector(Vector2 vec, bool isRun)
     {
         ReverseSprites(vec.x);
         SetSpriteOrderLayer(vec);
@@ -80,7 +74,7 @@ public partial class ActiveCharacter
         coverAnim.SetFloat("DirY", vec.y);
     }
 
-    public Vector2 GetVector()
+    private Vector2 GetVector()
     {
         return new Vector2(bodyAnim.GetFloat("DirX"), bodyAnim.GetFloat("DirY"));
     }
@@ -98,40 +92,40 @@ public partial class ActiveCharacter
         reverseState = _reverseState;
     }
 
-    public void SetFloat(string str, float value)
+    private void SetFloat(string str, float value)
     {
         bodyAnim.SetFloat(str, value);
         weaponAnim.SetFloat(str, value);
         coverAnim.SetFloat(str, value);
     }
 
-    public void SetInteger(string str, int value)
+    private void SetInteger(string str, int value)
     {
         bodyAnim.SetInteger(str, value);
         weaponAnim.SetInteger(str, value);
         coverAnim.SetInteger(str, value);
     }
 
-    public void SetBool(string str, bool value)
+    private void SetBool(string str, bool value)
     {
         bodyAnim.SetBool(str, value);
         weaponAnim.SetBool(str, value);
         coverAnim.SetBool(str, value);
     }
 
-    public void SetTrigger(string str)
+    private void SetTrigger(string str)
     {
         bodyAnim.SetTrigger(str);
         weaponAnim.SetTrigger(str);
         coverAnim.SetTrigger(str);
     }
 
-    public bool GetBool(string str)
+    private bool GetBool(string str)
     {
         return bodyAnim.GetBool(str);
     }
 
-    public int GetInteger(string str)
+    private int GetInteger(string str)
     {
         return bodyAnim.GetInteger(str);
     }

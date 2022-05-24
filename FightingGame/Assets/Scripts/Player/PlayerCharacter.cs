@@ -17,6 +17,7 @@ public class PlayerCharacter : MonoBehaviour
         if(activeCharacter == null)
             activeCharacter = FindObjectOfType<ActiveCharacter>();
         
+        // 나중에 스폰으로 변경할 예정
         activeCharacter.Init();
     }
 

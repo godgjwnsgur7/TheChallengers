@@ -49,6 +49,11 @@ public class Character : MonoBehaviourPhoton
         Debug.Log($"{characterType} Read 성공");
     }
 
+    public void Scan()
+    {
+        // 레이캐스트 예정
+    }
+
     public virtual void Idle(CharacterParam param = null)
     {
         currState = ENUM_PLAYER_STATE.Idle;
@@ -78,7 +83,6 @@ public class Character : MonoBehaviourPhoton
     
     public virtual void Hit(CharacterParam param)
     {
-        Debug.Log("Hit");
         currState = ENUM_PLAYER_STATE.Hit;
     }
 
