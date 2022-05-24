@@ -7,16 +7,5 @@ using UnityEngine;
 /// </summary>
 public class FarAttack : StateMachineBehaviour
 {
-    public PlayerAnimation playerAnim = null;
-
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if(playerAnim == null)
-        {
-            // 불안불안한데 일단 트라이 (임시)
-            playerAnim = animator.gameObject.GetComponent<ActiveCharacter>().playerAnim;
-        }
-
-        // playerAnim = 
-    }
 }
+

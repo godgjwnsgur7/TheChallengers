@@ -4,26 +4,23 @@ using UnityEngine;
 using System;
 using FGDefine;
 
-public class ActiveCharacter : Character
+public partial class ActiveCharacter : Character
 {
-    public PlayerAnimation playerAnim;
-
     public override void Init()
     {
         base.Init();
 
-        playerAnim = GetComponent<PlayerAnimation>();
-        playerAnim.Init(characterType);
-
-        playerAnim.SetInteger("WeaponType", (int)weaponType);
+        SetObjectInfo(characterType);
+        SetSpriteOrderLayer(Vector2.zero);
+        SetInteger("WeaponType", (int)weaponType);
     }
 
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
 
-        if (playerAnim.GetBool("isMove"))
-            playerAnim.SetBool("isMove", false);
+        if (GetBool("isMove"))
+            SetBool("isMove", false);
     }
 
     public override void Move(CharacterParam param)
@@ -40,10 +37,10 @@ public class ActiveCharacter : Character
 
         if (moveParam != null)
         {
-            playerAnim.SetVector(moveParam.inputVec, moveParam.isRun);
+            SetVector(moveParam.inputVec, moveParam.isRun);
 
-            if(!playerAnim.GetBool("isMove"))
-                playerAnim.SetBool("isMove", true);
+            if(!GetBool("isMove"))
+                SetBool("isMove", true);
         }
     }
 
@@ -58,7 +55,7 @@ public class ActiveCharacter : Character
 
         base.Attack(param);
 
-        playerAnim.SetTrigger("AttackTrigger");
+        SetTrigger("AttackTrigger");
     }
 
     public override void Expression(CharacterParam param)
@@ -78,7 +75,7 @@ public class ActiveCharacter : Character
 
         if (hitParam != null)
         {
-            playerAnim.SetTrigger("HitTrigger");
+            SetTrigger("HitTrigger");
         }
     }
 

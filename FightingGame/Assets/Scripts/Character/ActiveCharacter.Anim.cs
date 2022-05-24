@@ -3,7 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class PlayerAnimation : MonoBehaviour
+public enum ENUM_ANIMATOR_TYPE
+{
+    Body = 0,
+    Weapon = 1,
+    Cover = 2,
+}
+
+public partial class ActiveCharacter
 {
     public Animator bodyAnim;
     public Animator weaponAnim;
@@ -17,24 +24,27 @@ public class PlayerAnimation : MonoBehaviour
 
     public void Init(ENUM_CHARACTER_TYPE charType)
     {
-        GetObjectInfo();
+        SetObjectInfo(charType);
         SetSpriteOrderLayer(Vector2.zero);
     }
 
-    private void GetObjectInfo()
+    private void SetObjectInfo(ENUM_CHARACTER_TYPE charType)
     {
         GameObject g;
 
         g = gameObject.transform.Find("Body").gameObject;
         bodyAnim = g.GetComponent<Animator>();
+        bodyAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Body);
         bodySpriteRender = g.GetComponent<SpriteRenderer>();
 
         g = gameObject.transform.Find("Weapon").gameObject;
         weaponAnim = g.GetComponent<Animator>();
+        weaponAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Weapon);
         weaponSpriteRender = g.GetComponent<SpriteRenderer>();
 
         g = gameObject.transform.Find("Cover").gameObject;
         coverAnim = g.GetComponent <Animator>();
+        coverAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Cover);
         coverSpriteRender = g.GetComponent<SpriteRenderer>();
     }
 

@@ -9,6 +9,7 @@ public class ResourceMgr
     {
         return Resources.Load<T>(path);
     }
+
     public T[] LoadAll<T>(string path) where T : Object
     {
         return Resources.LoadAll<T>(path);
@@ -26,9 +27,14 @@ public class ResourceMgr
         return Object.Instantiate(prefab, parent);
     }
 
-    public void GetAnimator(string type)
+    public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType, ENUM_ANIMATOR_TYPE animType)
     {
-        // 여기서 3개를 가져와서 셋팅하게 만들어야쥐~
+        string charPath = charType.ToString();
+        string animPath = animType.ToString();
+
+        RuntimeAnimatorController animator = Load<RuntimeAnimatorController>($"Art/{charPath}/{animPath}");
+
+        return animator;
     }
 
     public void Destroy(GameObject go)
