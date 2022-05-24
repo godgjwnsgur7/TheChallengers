@@ -22,8 +22,6 @@ public class ActiveCharacter : Character
     {
         base.Idle(param);
 
-        playerAnim.SetIdle();
-
         if (playerAnim.GetBool("isMove"))
             playerAnim.SetBool("isMove", false);
     }
@@ -51,14 +49,14 @@ public class ActiveCharacter : Character
 
     public override void Attack(CharacterParam param)
     {
-        if (weaponType == ENUM_WEAPON_TYPE.Null ||
+        if (weaponType == ENUM_WEAPON_TYPE.Null)
+            return;
+
+        if(currState == ENUM_PLAYER_STATE.Attack||
             currState == ENUM_PLAYER_STATE.Hit)
             return;
 
         base.Attack(param);
-
-        if ((int)weaponType > 3) // 원거리 무기일 경우 위탁
-            playerAnim.SetSprites(weaponType);
 
         playerAnim.SetTrigger("AttackTrigger");
     }

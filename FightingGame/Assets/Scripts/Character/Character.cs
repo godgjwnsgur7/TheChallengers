@@ -23,10 +23,6 @@ public class Character : MonoBehaviourPhoton
 
         rigid2D = GetComponent<Rigidbody2D>();
 
-        // 디버그용
-        characterType = ENUM_CHARACTER_TYPE.Knight;
-        weaponType = ENUM_WEAPON_TYPE.Gun;
-
         if(PhotonLogicHandler.IsMine(this))
         {
             Debug.Log("컨트롤이 가능한 객체");
@@ -82,6 +78,7 @@ public class Character : MonoBehaviourPhoton
     
     public virtual void Hit(CharacterParam param)
     {
+        Debug.Log("Hit");
         currState = ENUM_PLAYER_STATE.Hit;
     }
 

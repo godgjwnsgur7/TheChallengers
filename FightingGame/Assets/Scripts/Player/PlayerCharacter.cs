@@ -70,7 +70,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (dirVec == Vector2.zero)
         {
-            if(activeCharacter.currState != ENUM_PLAYER_STATE.Idle)
+            if(activeCharacter.currState == ENUM_PLAYER_STATE.Move)
                 PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
         else

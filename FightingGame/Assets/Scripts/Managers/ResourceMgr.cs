@@ -31,20 +31,6 @@ public class ResourceMgr
         // 여기서 3개를 가져와서 셋팅하게 만들어야쥐~
     }
 
-    public FarWeaponSprites GetWeaponSprites(ENUM_CHARACTER_TYPE type)
-    {
-        string path = type.ToString();
-
-        // Resources/Art 경로에 이름과 같은 폴더가 존재해야 함
-        FarWeaponSprites farWeaponSprites = new FarWeaponSprites();
-
-        farWeaponSprites.bowSprites = LoadAll<Sprite>($"Art/{path}/Sprites/character_bow");
-        farWeaponSprites.gunSprites = LoadAll<Sprite>($"Art/{path}/Sprites/character_gun");
-        farWeaponSprites.rifleSprites = LoadAll<Sprite>($"Art/{path}/Sprites/character_rifle");
-
-        return farWeaponSprites;
-    }
-
     public void Destroy(GameObject go)
     {
         if (go == null)

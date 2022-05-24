@@ -64,11 +64,6 @@ namespace FGDefine
         Sword = 2, 
         Sycthe = 3,
         
-        // Far
-        Bow = 4, 
-        Gun = 5, 
-        Rifle = 6, 
-
         Max
     }
 }
