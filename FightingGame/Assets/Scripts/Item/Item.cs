@@ -1,16 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum ENUM_ITEM_TYPE
-{
-    Boom = 0,
-    Hammer = 1,
-    Sword = 2,
-    Sycthe = 3,
-
-    Max
-}
+using FGDefine;
 
 public class Item : MonoBehaviour
 {
@@ -18,8 +9,18 @@ public class Item : MonoBehaviour
 
     private float rotateSpeed = 100.0f;
 
+    public virtual void Init()
+    {
+        gameObject.layer = (int)ENUM_LAYER_TYPE.Item;
+    }
+
     private void Update()
     {
         transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
+    }
+
+    public void Interact()
+    {
+        
     }
 }
