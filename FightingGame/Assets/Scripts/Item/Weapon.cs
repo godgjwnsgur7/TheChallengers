@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapon : Item
 {
 
+
     public override void Init()
     {
         base.Init();
@@ -12,5 +13,5 @@ public class Weapon : Item
         
     }
 
-
+    
 }

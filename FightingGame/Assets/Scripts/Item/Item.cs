@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class Item : MonoBehaviour
+public class Item : InteractableObject
 {
     [SerializeField] ENUM_ITEM_TYPE itemType;
 
     private float rotateSpeed = 100.0f;
 
-    public virtual void Init()
+    public override void Init()
     {
+        base.Init();
+
         gameObject.layer = (int)ENUM_LAYER_TYPE.Item;
     }
 
@@ -19,7 +21,7 @@ public class Item : MonoBehaviour
         transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
     }
 
-    public void Interact()
+    public override void Interact()
     {
         
     }
