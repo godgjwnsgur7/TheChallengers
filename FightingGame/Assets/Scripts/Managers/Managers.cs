@@ -14,6 +14,7 @@ public class Managers : MonoBehaviour
     private LoginSession loginSession = new LoginSession();
     private DBSession dbSession = new DBSession();
     private AdMobController adMob = new AdMobController();
+    private CoffeeMachine iapController = new IAPController();
 
     public static InputMgr Input { get { return Instance.input; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
@@ -22,6 +23,7 @@ public class Managers : MonoBehaviour
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }
     public static AdMobController AdMob { get { return Instance.adMob; } }
+    public static CoffeeMachine IAPController { get { return Instance.iapController; } }
 
     private void Start()
     {

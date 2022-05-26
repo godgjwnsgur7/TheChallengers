@@ -55,6 +55,18 @@ public partial class AdMobController
         bannerView.Destroy();
     }
 
+    public void ShowBanner(Action<EventArgs> OnShow = null)
+    {
+        OnAdOpening += OnShow;
+        bannerView?.Show();
+    }
+
+    public void HideBanner(Action<EventArgs> OnHide = null)
+    {
+        OnAdClosed += OnHide;
+        bannerView?.Hide();
+    }
+
     private void RegisterEvent()
     {
         bannerView.OnAdLoaded += BannerView_OnAdLoaded;
@@ -104,15 +116,5 @@ public partial class AdMobController
         OnAdLoaded?.Invoke(e);
     }
 
-    public void ShowBanner(Action<EventArgs> OnShow = null)
-    {
-        OnAdOpening += OnShow;
-        bannerView?.Show();
-    }
 
-    public void HideBanner(Action<EventArgs> OnHide = null)
-    {
-        OnAdClosed += OnHide;
-        bannerView?.Hide();
-    }
 }
