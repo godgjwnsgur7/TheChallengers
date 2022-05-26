@@ -15,7 +15,11 @@ public enum BannerPosition
     Center = 6
 }
 
-public class AdBannerController
+/// <summary>
+/// 배너
+/// </summary>
+
+public partial class AdMobController
 {
     private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
     private readonly string TestKeyword = "ProjectFG";

@@ -13,7 +13,7 @@ public class Managers : MonoBehaviour
     private UIMgr ui = new UIMgr();
     private LoginSession loginSession = new LoginSession();
     private DBSession dbSession = new DBSession();
-    private AdBannerController adMob = new AdBannerController();
+    private AdMobController adMob = new AdMobController();
 
     public static InputMgr Input { get { return Instance.input; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
@@ -21,7 +21,7 @@ public class Managers : MonoBehaviour
     public static UIMgr UI { get { return Instance.ui; } }
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }
-    public static AdBannerController AdMob { get { return Instance.adMob; } }
+    public static AdMobController AdMob { get { return Instance.adMob; } }
 
     private void Start()
     {
