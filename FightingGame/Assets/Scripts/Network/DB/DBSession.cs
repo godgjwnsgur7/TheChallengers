@@ -3,6 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (ID 토큰, 플랫폼) - 닉네임 - 승점 - 커피 구매 갯수
+/// 너무 적어서 디비를 나눌 필요도 없음, UserInfo로 통일~
+/// </summary>
+
+public enum DB_CATEGORY
+{
+    Nickname,
+    VictoryPoint,
+    PurchaseCoffee
+}
+
 public class DBSession : IDisposable, ISession
 {
     private bool disposedValue;
@@ -28,6 +40,18 @@ public class DBSession : IDisposable, ISession
         get;
         private set;
     }
+
+    public static void Update<T>(DB_CATEGORY category, T Data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    {
+        // 카테고리가 이건데... T는 왜이래를 검증
+        // 카테고리로 hierachy path를 추출
+    }
+
+    public static void Select<T>(DB_CATEGORY category, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    {
+       // 위에꺼랑 머 마찬가지
+    }
+
 
     public static void RegisterDB(IPlatformDB db)
     {

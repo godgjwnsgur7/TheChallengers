@@ -39,7 +39,7 @@ public class IAPController : IStoreListener, CoffeeMachine
     private ConfigurationBuilder builder = null;
     private StandardPurchasingModule module = null;
 
-    private IAPProduct productInfo = new IAPProduct("커피", "Coffee", ProductType.Consumable, 1000);
+    private readonly IAPProduct productInfo = new IAPProduct("커피", "Coffee", ProductType.Consumable, 1000);
 
     public bool IsValid =>
         storeController != null

@@ -8,12 +8,14 @@ using Firebase.Extensions;
 using System.Threading.Tasks;
 using System;
 
+/// <summary>
+/// Insert나 Delete는 클라에서 해줄 요청이 아니다.
+/// </summary>
+
 public interface IPlatformDB
 {
-    void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
-    void DeleteDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
-    void InsertDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
-    void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class;
+    void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+    void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
 }
 
@@ -43,7 +45,7 @@ public class PlatformDB : IPlatformDB
         DBSession.RegisterDB(this);
     }
      
-    public void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class
+    public void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!typeof(T).IsSerializable)
             return;
@@ -74,17 +76,7 @@ public class PlatformDB : IPlatformDB
         });
     }
 
-    public void DeleteDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class
-    {
-
-    }
-
-    public void InsertDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class
-    {
-
-    }
-
-    public void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null) where T : class
+    public void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!typeof(T).IsSerializable)
             return;

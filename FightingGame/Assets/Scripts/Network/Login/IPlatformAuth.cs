@@ -112,4 +112,6 @@ public class PlatformAuth : IPlatformAuth
             });
     }
 
+    // 구글, 페이스북 추가
+    // 토큰과 플랫폼 키를 해싱하여 디비에 추가
 }
