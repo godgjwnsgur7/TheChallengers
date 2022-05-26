@@ -29,10 +29,9 @@ public class ResourceMgr
 
     public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType, ENUM_ANIMATOR_TYPE animType)
     {
-        string charPath = charType.ToString();
-        string animPath = animType.ToString();
+        string path = charType.ToString() + animType.ToString();
 
-        RuntimeAnimatorController animator = Load<RuntimeAnimatorController>($"Art/{charPath}/{animPath}");
+        RuntimeAnimatorController animator = Load<RuntimeAnimatorController>($"Art/Animators/{path}");
 
         return animator;
     }

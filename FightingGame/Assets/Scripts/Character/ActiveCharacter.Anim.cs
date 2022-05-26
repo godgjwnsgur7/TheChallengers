@@ -5,12 +5,9 @@ using FGDefine;
 
 public enum ENUM_ANIMATOR_TYPE
 {
-    // Controller 테스트를 위해 임시로 변경(우진)
-    KnightBody = 0,
-    /*Weapon = 1,
-    Cover = 2,*/
-    KnightWeapon = 1,
-    KnightCover = 2,
+    Body = 0,
+    Weapon = 1,
+    Cover = 2,
 }
 
 public partial class ActiveCharacter
@@ -31,17 +28,17 @@ public partial class ActiveCharacter
 
         g = gameObject.transform.Find("Body").gameObject;
         bodyAnim = g.GetComponent<Animator>();
-        bodyAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.KnightBody);//타입임시변경 (우진)
+        bodyAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Body);
         bodySpriteRender = g.GetComponent<SpriteRenderer>();
 
         g = gameObject.transform.Find("Weapon").gameObject;
         weaponAnim = g.GetComponent<Animator>();
-        weaponAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.KnightWeapon);//타입임시변경 (우진)
+        weaponAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Weapon);
         weaponSpriteRender = g.GetComponent<SpriteRenderer>();
 
         g = gameObject.transform.Find("Cover").gameObject;
         coverAnim = g.GetComponent <Animator>();
-        coverAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.KnightCover);//타입임시변경 (우진)
+        coverAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Cover);
         coverSpriteRender = g.GetComponent<SpriteRenderer>();
     }
 
