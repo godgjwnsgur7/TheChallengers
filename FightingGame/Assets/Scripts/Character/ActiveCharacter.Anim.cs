@@ -45,11 +45,17 @@ public partial class ActiveCharacter
     private void SetSpriteOrderLayer(Vector2 vec)
     {
         bool isUpState = (vec.y > 0.9f && vec.x == 0.0f) ? true : false;
+        bool isDownState = (vec.y <= 0.0f && vec.x == 0.0f) ? true : false;
 
-        if(isUpState)
+        if (isUpState)
         {
             weaponSpriteRender.sortingOrder = 4;
             coverSpriteRender.sortingOrder = 3;
+        }
+        else if (isDownState) 
+        {
+            weaponSpriteRender.sortingOrder = 7;
+            coverSpriteRender.sortingOrder = 6;
         }
         else
         {
