@@ -57,7 +57,7 @@ public partial class ActiveCharacter : Character
 
         base.Attack(param);
 
-        SetTrigger("AttackTrigger");    
+        SetTrigger("AttackTrigger");
     }
 
     public override void Expression(CharacterParam param)

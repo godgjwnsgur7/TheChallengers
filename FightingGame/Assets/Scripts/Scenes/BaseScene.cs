@@ -8,7 +8,7 @@ public enum ENUM_SCENE_TYPE
     Unknown,
     Login,
     Lobby,
-    Game,
+    Battle,
 }
 
 public abstract class BaseScene : MonoBehaviour

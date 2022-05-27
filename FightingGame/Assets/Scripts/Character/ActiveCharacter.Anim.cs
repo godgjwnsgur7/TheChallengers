@@ -52,7 +52,7 @@ public partial class ActiveCharacter
             weaponSpriteRender.sortingOrder = 4;
             coverSpriteRender.sortingOrder = 3;
         }
-        else if (isDownState) 
+        else if (isDownState && (int)weaponType > 3)
         {
             weaponSpriteRender.sortingOrder = 7;
             coverSpriteRender.sortingOrder = 6;

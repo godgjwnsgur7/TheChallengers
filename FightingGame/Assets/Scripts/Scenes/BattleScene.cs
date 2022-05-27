@@ -1,14 +1,14 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using FGDefine;
 
-public class GameScene : BaseScene
+public class BattleScene : BaseScene
 {
     protected override void Init()
     {
         base.Init();
 
-        SceneType = ENUM_SCENE_TYPE.Game;
+        SceneType = ENUM_SCENE_TYPE.Battle;
 
 
     }

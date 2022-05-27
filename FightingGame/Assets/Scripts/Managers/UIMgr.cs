@@ -5,26 +5,26 @@ using System;
 
 public class UIMgr
 {
-    public void Init()
+    public BaseCanvas gameCanvas;
+    public PopupCanvas popupCanvas = null;
+
+    public void GetCanvas()
     {
+        gameCanvas = GameObject.FindObjectOfType<BaseCanvas>();
+        popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
+    }
+    
+    public void Open<T>()
+    {
+        if (typeof(T).IsSubclassOf(typeof(UIElement))) gameCanvas.Open<T>();
+        else if (typeof(T).IsSubclassOf(typeof(UIPopup))) popupCanvas.Open<T>();
+        else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 
-    public T GetUI<T>() where T : BaseUI
+    public void Close<T>()
     {
-
-        return null;
-    }
-
-    public void OpenUI<T>(UIParam param = null) where T : BaseUI
-    {
-        T window = GetUI<T>();
-
-        
-    }
-
-    public void CloseUI<T>() where T : BaseUI
-    {
-        T window = GetUI<T>();
-
+        if (typeof(T) == typeof(UIElement)) gameCanvas.Close<T>();
+        else if (typeof(T) == typeof(UIPopup)) popupCanvas.Close<T>();
+        else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 }

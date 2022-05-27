@@ -4,20 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UICanvas : MonoBehaviour
+public abstract class BaseCanvas : MonoBehaviour
 {
-    public Canvas canvas = null;
-    public CanvasScaler scaler = null;
+    CanvasScaler scaler = null;
 
     private void Start()
     {
-        
+        Init();
     }
 
     public void Init()
     {
-        canvas = GetComponent<Canvas>();
-
         scaler = GetComponent<CanvasScaler>();
         SetCanvasScaler();
     }
@@ -28,4 +25,9 @@ public class UICanvas : MonoBehaviour
         scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
     }
+
+    public abstract void Open<T>();
+    public abstract void Close<T>();
+
 }
+

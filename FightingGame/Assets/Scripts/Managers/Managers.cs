@@ -28,7 +28,7 @@ public class Managers : MonoBehaviour
     private void Start()
     {
         Init();
-        UI.Init();
+        UI.GetCanvas();
     }
 
     private void Update()
