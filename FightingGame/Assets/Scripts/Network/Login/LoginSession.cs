@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum ENUM_LOGIN_TYPE
+{
+    Google,
+    Facebook,
+}
+
 public interface ISession
 {
     bool IsValid
@@ -10,7 +16,6 @@ public interface ISession
         get;
     }
 }
-
 
 /// <summary>
 /// 로그인 정보가 남아있는 세션, 한 번 인증한 후엔 더 이상 인증을 할 수 없도록 세션만 남기는 것을 추천
