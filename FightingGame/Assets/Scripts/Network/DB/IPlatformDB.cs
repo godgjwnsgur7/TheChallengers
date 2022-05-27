@@ -14,8 +14,8 @@ using System;
 
 public interface IPlatformDB
 {
-    void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
-    void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+    bool UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+    bool SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
 }
 
@@ -45,10 +45,13 @@ public class PlatformDB : IPlatformDB
         DBSession.RegisterDB(this);
     }
      
-    public void UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    public bool UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!typeof(T).IsSerializable)
-            return;
+        {
+            Debug.LogError("넣을 데이터가 Serializable한 형식이 아닙니다.");
+            return false;
+        }
 
         DatabaseReference reference = dbRootReference;
 
@@ -74,13 +77,18 @@ public class PlatformDB : IPlatformDB
                 OnSuccess?.Invoke();
             }
         });
+
+        return true;
     }
 
-    public void SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    public bool SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!typeof(T).IsSerializable)
-            return;
-
+        {
+            Debug.LogError("넣을 데이터가 Serializable한 형식이 아닙니다.");
+            return false;
+        }
+            
         DatabaseReference reference = dbRootReference;
 
         foreach (string path in hierachyPath)
@@ -96,5 +104,7 @@ public class PlatformDB : IPlatformDB
                 pushData?.Invoke((T)snapshot.Value);
             }
         });
+
+        return true;
     }
 }
