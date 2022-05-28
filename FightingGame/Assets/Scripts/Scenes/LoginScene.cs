@@ -14,16 +14,16 @@ public class LoginScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Login;
     }
 
-    public void SignIn(string email, string password)
+    public void SignIn(ENUM_LOGIN_TYPE loginType, string email, string password)
     {
         bool isFirstConnect = auth.TryConnectAuth(OnConnectAuthSuccess: () =>
         {
-            auth.SignInWithEmailAndPassword(email, password);
+            auth.SignIn(loginType, email, password);
         });
 
         if(!isFirstConnect)
         {
-            auth.SignInWithEmailAndPassword(email, password);
+            auth.SignIn(loginType, email, password);
         }
     }
 

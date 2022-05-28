@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum ENUM_LOGIN_TYPE
-{
-    Google,
-    Facebook,
-}
-
 public interface ISession
 {
     bool IsValid
