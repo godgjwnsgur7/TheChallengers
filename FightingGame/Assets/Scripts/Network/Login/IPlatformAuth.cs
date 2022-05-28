@@ -51,7 +51,7 @@ public class PlatformAuth : IPlatformAuth
         }
     }
 
-    public FirebaseUser user;
+    private FirebaseUser user;
     public string UserId
     {
         get;
