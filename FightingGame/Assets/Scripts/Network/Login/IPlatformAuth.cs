@@ -12,7 +12,7 @@ using GooglePlayGames.OurUtils;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
-
+using Google;
 
 public enum ENUM_LOGIN_TYPE
 {
@@ -58,6 +58,8 @@ public class PlatformAuth : IPlatformAuth
         private set;
     } = string.Empty;
 
+    private readonly string ClientID = "";
+
     public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
     {
         if (IsAuthValid) // 이미 파이어베이스 인증을 끝낸 경우임
@@ -102,7 +104,7 @@ public class PlatformAuth : IPlatformAuth
         LoginSession.RegisterAuth(this);
     }
 
-    public void SignIn(ENUM_LOGIN_TYPE loginType, string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+    public void SignIn(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
     {
         switch (loginType)
         {
@@ -111,9 +113,13 @@ public class PlatformAuth : IPlatformAuth
                 break;
 
             case ENUM_LOGIN_TYPE.Google:
+                GoogleAuthenticate(
+                    OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
+                    OnSignInSuccess, OnSignInFailed);
+                break;
+
             case ENUM_LOGIN_TYPE.GooglePlayStore:
-                SocialAuthenticate(
-                    IsUsedPlatformService: loginType == ENUM_LOGIN_TYPE.GooglePlayStore,
+                GooglePlayStoreAuthenticate(
                     OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
                     OnSignInSuccess, OnSignInFailed);
                 break;
@@ -150,21 +156,40 @@ public class PlatformAuth : IPlatformAuth
             });
     }
 
-    private void SocialAuthenticate(bool IsUsedPlatformService, Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
+    private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
     {
-        var credential = GetUserCredential(IsUsedPlatformService);
+        // 여기 클라이언트 ID의 정체를 아직 모름
+        GoogleSignIn.Configuration = new GoogleSignInConfiguration { WebClientId = ClientID, RequestEmail = true, RequestIdToken = true };
+        GoogleSignIn.Configuration.UseGameSignIn = false;
+        GoogleSignIn.Configuration.RequestIdToken = true;
 
-        if(!IsUsedPlatformService)
-        {
-            OnGetToken?.Invoke(credential);
-            return;
-        }
+        GoogleSignIn.DefaultInstance.SignIn()
+            .ContinueWithOnMainThread((task) => 
+            {
+                if(task.IsFaulted)
+                {
+                    OnFailed?.Invoke();
+                }
+                else if(task.IsCompleted)
+                {
+                    OnSuccess?.Invoke();
 
+                    var credential = GetUserCredential(false, task.Result.IdToken);
+                    OnGetToken?.Invoke(credential);
+                }
+            });
+    }
+
+    private void GooglePlayStoreAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
+    {
         Social.localUser.Authenticate((bool success) =>
         {
             if (success)
             {
                 OnSuccess?.Invoke();
+
+                // 여기 오토 코드 수정해야 함
+                var credential = GetUserCredential(true, "구글 플레이 전용 오토코드");
                 OnGetToken?.Invoke(credential);
             }
             else
@@ -174,18 +199,18 @@ public class PlatformAuth : IPlatformAuth
         });
     }
 
-    private Credential GetUserCredential(bool IsUsedPlatformService)
+    private Credential GetUserCredential(bool IsUsedPlatformService, string token)
     {
         Credential credential = null;
 
         if(IsUsedPlatformService)
         {
-            string autoCode = GetAutoCodeToken();
+            string autoCode = token;
             credential = PlayGamesAuthProvider.GetCredential(autoCode);
         }
         else
         {
-            string idToken = GetGoogleIDToken();
+            string idToken = token;
             string accessToken = GetGoogleAccessToken();
             credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
         }
@@ -193,26 +218,9 @@ public class PlatformAuth : IPlatformAuth
         return credential;
     }
 
-    /// <summary>
-    /// 현재 ID Token을 얻는 곳에 문제가 있어서 임시 방편, 이 곳을 수정하는 것이 일
-    /// 구글은 자바 쪽 코드를 읽어야 하는 건가..? https://firebase.google.com/docs/auth/unity/google-signin?hl=ko
-    /// 플레이 스토어 쪽 소셜 코드는 구글 플레이 콘솔과 앱이 연동이 되어 있어야 작동하므로, 추후 수정 https://firebase.google.com/docs/auth/unity/play-games?hl=ko
-    /// </summary>
-    /// <returns></returns>
-
-    private string GetGoogleIDToken()
-    {
-        return "googleIdToken";
-    }
-
-    private string GetAutoCodeToken()
-    {
-        return "authCode";
-    }
-
     private string GetGoogleAccessToken()
     {
-        return null;
+        return null; // 무슨 의미가 있는 지 모름, 다들 null로 함zz
     }
 
     private void SignInByCredential(Credential credential, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
