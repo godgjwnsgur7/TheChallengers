@@ -10,6 +10,7 @@ public enum ENUM_SCENE_TYPE
     Lobby,
     Selection,
     Battle,
+    Loading,
 }
 
 public abstract class BaseScene : MonoBehaviour
