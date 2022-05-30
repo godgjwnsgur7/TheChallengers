@@ -7,7 +7,7 @@ using UnityEngine;
 
 /// <summary>
 /// (ID 토큰, 플랫폼) - 닉네임 - 승점 - 커피 구매 갯수
-/// 너무 적어서 디비를 나눌 필요도 없음, UserInfo로 통일~
+/// 너무 적어서 디비를 나눌 필요도 없음
 /// </summary>
 
 public enum DB_CATEGORY
