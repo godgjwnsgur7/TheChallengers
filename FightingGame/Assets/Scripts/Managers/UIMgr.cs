@@ -17,7 +17,13 @@ public class UIMgr
     public void Open<T>()
     {
         if (typeof(T).IsSubclassOf(typeof(UIElement))) gameCanvas.Open<T>();
-        else if (typeof(T).IsSubclassOf(typeof(UIPopup))) popupCanvas.Open<T>();
+        // else if (typeof(T).IsSubclassOf(typeof(UIPopup))) popupCanvas.Open<T>();
+        else Debug.Log($"범위 벗어남 : {typeof(T)}");
+    }
+    
+    public void OpenPopup<T>()
+    {
+        if (typeof(T).IsSubclassOf(typeof(UIPopup))) popupCanvas.Open<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 

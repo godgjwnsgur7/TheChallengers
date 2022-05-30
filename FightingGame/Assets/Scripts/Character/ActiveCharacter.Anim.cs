@@ -73,11 +73,11 @@ public partial class ActiveCharacter
         bodyAnim.SetFloat("DirX", vec.x * f);
         bodyAnim.SetFloat("DirY", vec.y * f);
 
-        weaponAnim.SetFloat("DirX", vec.x);
-        weaponAnim.SetFloat("DirY", vec.y);
+        weaponAnim.SetFloat("DirX", vec.x * f);
+        weaponAnim.SetFloat("DirY", vec.y * f);
 
-        coverAnim.SetFloat("DirX", vec.x);
-        coverAnim.SetFloat("DirY", vec.y);
+        coverAnim.SetFloat("DirX", vec.x * f);
+        coverAnim.SetFloat("DirY", vec.y * f);
     }
 
     private Vector2 GetVector()
