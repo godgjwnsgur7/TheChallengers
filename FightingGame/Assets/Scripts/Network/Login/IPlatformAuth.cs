@@ -4,11 +4,6 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
-using UnityEngine.SocialPlatforms;
-using GooglePlayGames.OurUtils;
-
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
@@ -18,9 +13,7 @@ public enum ENUM_LOGIN_TYPE
 {
     Guest,// 게스트 계정 (디버깅 모드 포함)
     Google, // 구글 계정
-    GooglePlayStore // 구글 플레이 스토어 계정 (플랫폼 서비스 이용)
 }
-
 
 public interface IPlatformAuth
 {
@@ -58,7 +51,8 @@ public class PlatformAuth : IPlatformAuth
         private set;
     } = string.Empty;
 
-    private readonly string ClientID = "";
+    private GoogleSignIn googleModule = null;
+    private readonly string ClientID = "834296008969-ha5c3bfbqjqfh21jo08nggjho53s9tt0.apps.googleusercontent.com";
 
     public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
     {
@@ -117,20 +111,17 @@ public class PlatformAuth : IPlatformAuth
                     OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
                     OnSignInSuccess, OnSignInFailed);
                 break;
-
-            case ENUM_LOGIN_TYPE.GooglePlayStore:
-                GooglePlayStoreAuthenticate(
-                    OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
-                    OnSignInSuccess, OnSignInFailed);
-                break;
         }
     }
 
     public void SignOut()
     {
-        auth?.SignOut();
+        if (googleModule != null)
+            googleModule.SignOut();
+
+        auth?.SignOut(); 
     }
-    
+      
     private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
     {
         // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
@@ -158,12 +149,12 @@ public class PlatformAuth : IPlatformAuth
 
     private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
     {
-        // 여기 클라이언트 ID의 정체를 아직 모름
         GoogleSignIn.Configuration = new GoogleSignInConfiguration { WebClientId = ClientID, RequestEmail = true, RequestIdToken = true };
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
 
-        GoogleSignIn.DefaultInstance.SignIn()
+        googleModule = GoogleSignIn.DefaultInstance;
+        googleModule.SignIn()
             .ContinueWithOnMainThread((task) => 
             {
                 if(task.IsFaulted)
@@ -174,53 +165,22 @@ public class PlatformAuth : IPlatformAuth
                 {
                     OnSuccess?.Invoke();
 
-                    var credential = GetUserCredential(false, task.Result.IdToken);
+                    var credential = GetUserCredential(task.Result.IdToken);
                     OnGetToken?.Invoke(credential);
                 }
             });
     }
 
-    private void GooglePlayStoreAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
+    private Credential GetUserCredential(string token)
     {
-        Social.localUser.Authenticate((bool success) =>
-        {
-            if (success)
-            {
-                OnSuccess?.Invoke();
-
-                // 여기 오토 코드 수정해야 함
-                var credential = GetUserCredential(true, "구글 플레이 전용 오토코드");
-                OnGetToken?.Invoke(credential);
-            }
-            else
-            {
-                OnFailed?.Invoke();
-            }
-        });
-    }
-
-    private Credential GetUserCredential(bool IsUsedPlatformService, string token)
-    {
-        Credential credential = null;
-
-        if(IsUsedPlatformService)
-        {
-            string autoCode = token;
-            credential = PlayGamesAuthProvider.GetCredential(autoCode);
-        }
-        else
-        {
-            string idToken = token;
-            string accessToken = GetGoogleAccessToken();
-            credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-        }
-
-        return credential;
+        string idToken = token;
+        string accessToken = GetGoogleAccessToken();
+        return GoogleAuthProvider.GetCredential(idToken, accessToken);
     }
 
     private string GetGoogleAccessToken()
     {
-        return null; // 무슨 의미가 있는 지 모름, 다들 null로 함zz
+        return null; // 무슨 의미가 있는 지 모름, 다들 null로 함... 문제 생길 시 수정
     }
 
     private void SignInByCredential(Credential credential, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
