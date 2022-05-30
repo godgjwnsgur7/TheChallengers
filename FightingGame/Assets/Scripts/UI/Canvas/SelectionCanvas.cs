@@ -1,22 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class LobbyCanvas : BaseCanvas
+
+public class SelectionCanvas : BaseCanvas
 {
+
     public override void Open<T>()
     {
-
+        throw new System.NotImplementedException();
     }
 
     public override void Close<T>()
     {
-
-    }
-
-    public void GameStart()
-    {
-        // 디버그용
-        
+        throw new System.NotImplementedException();
     }
 }

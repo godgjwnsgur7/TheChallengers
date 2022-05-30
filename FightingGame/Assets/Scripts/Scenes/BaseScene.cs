@@ -8,6 +8,7 @@ public enum ENUM_SCENE_TYPE
     Unknown,
     Login,
     Lobby,
+    Selection,
     Battle,
 }
 
