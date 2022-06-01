@@ -21,6 +21,10 @@ public interface IPlatformAuth
     {
         get;
     }
+    public bool IsAuthPlatform
+    {
+        get;
+    }
 
     public string UserId
     {
@@ -29,18 +33,26 @@ public interface IPlatformAuth
 }
 
 /// <summary>
-/// 파이어베이스 인증을 하는 데에 사용되는 도구
+/// 파이어베이스 및 구글 인증을 하는 데에 사용되는 도구
 /// </summary>
 
 public class PlatformAuth : IPlatformAuth
 {
-    private FirebaseApp app;
-    private FirebaseAuth auth;
+    private FirebaseApp app = null;
+    private FirebaseAuth auth = null;
     public bool IsAuthValid
     {
         get
         {
             return app != null && auth != null;
+        }
+    }
+
+    public bool IsAuthPlatform
+    {
+        get
+        {
+            return IsAuthValid && googleModule != null;
         }
     }
 
@@ -149,11 +161,14 @@ public class PlatformAuth : IPlatformAuth
 
     private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
     {
-        GoogleSignIn.Configuration = new GoogleSignInConfiguration { WebClientId = ClientID, RequestEmail = true, RequestIdToken = true };
-        GoogleSignIn.Configuration.UseGameSignIn = false;
-        GoogleSignIn.Configuration.RequestIdToken = true;
-
-        googleModule = GoogleSignIn.DefaultInstance;
+        if(googleModule == null)
+        {
+            GoogleSignIn.Configuration = new GoogleSignInConfiguration { WebClientId = ClientID, RequestEmail = true, RequestIdToken = true };
+            GoogleSignIn.Configuration.UseGameSignIn = false;
+            GoogleSignIn.Configuration.RequestIdToken = true;
+            googleModule = GoogleSignIn.DefaultInstance;
+        }
+       
         googleModule.SignIn()
             .ContinueWithOnMainThread((task) => 
             {
