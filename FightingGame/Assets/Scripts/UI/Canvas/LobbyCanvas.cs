@@ -14,9 +14,8 @@ public class LobbyCanvas : BaseCanvas
 
     }
 
-    public void GameStart()
+    public void OnClickStart()
     {
-        // 디버그용
-        
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Battle);
     }
 }

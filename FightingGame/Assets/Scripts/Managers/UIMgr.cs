@@ -11,7 +11,8 @@ public class UIMgr
     public void GetCanvas()
     {
         gameCanvas = GameObject.FindObjectOfType<BaseCanvas>();
-        popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
+        if(popupCanvas == null)
+            popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
     }
     
     public void Open<T>()
@@ -23,14 +24,14 @@ public class UIMgr
     
     public void OpenPopup<T>()
     {
-        if (typeof(T).IsSubclassOf(typeof(UIPopup))) popupCanvas.Open<T>();
+        if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Open<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 
     public void Close<T>()
     {
         if (typeof(T) == typeof(UIElement)) gameCanvas.Close<T>();
-        else if (typeof(T) == typeof(UIPopup)) popupCanvas.Close<T>();
+        else if (typeof(T) == typeof(PopupUI)) popupCanvas.Close<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 }

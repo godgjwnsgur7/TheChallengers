@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class PopupCanvas : MonoBehaviour
 {
-    CanvasScaler scaler = null;
+    [SerializeField] public PopupUI popupUI;
+
 
     private void Start()
     {
@@ -14,16 +15,7 @@ public class PopupCanvas : MonoBehaviour
 
     public void Init()
     {
-        DontDestroyOnLoad(gameObject);
-        scaler = GetComponent<CanvasScaler>();
-        SetCanvasScaler();
-    }
 
-    private void SetCanvasScaler()
-    {
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920, 1080);
-        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
     }
 
     public void Open<T>()

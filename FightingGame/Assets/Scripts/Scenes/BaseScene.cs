@@ -25,7 +25,6 @@ public abstract class BaseScene : MonoBehaviour
 
     protected virtual void Init()
     {
-        
     }
 
     public abstract void Clear();

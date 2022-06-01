@@ -4,20 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class SceneMgr
+public class SceneMgr : MonoBehaviour
 {
     public BaseScene CurrentScene
-    {
-        get { return GameObject.FindObjectOfType<BaseScene>(); }
-    }
+    { get { return GameObject.FindObjectOfType<BaseScene>(); } }
 
     public void LoadScene(ENUM_SCENE_TYPE type)
     {
-        CurrentScene.Clear();
-
-        // 래핑할까 말까 고민중 (임시)
-        string name = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
-        SceneManager.LoadScene(name);
+        string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
+        LoadingSceneManagement.LoadScene(nextScene);
     }
-
 }
