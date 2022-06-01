@@ -11,8 +11,8 @@ public class UIMgr
     public void GetCanvas()
     {
         gameCanvas = GameObject.FindObjectOfType<BaseCanvas>();
-        if(popupCanvas == null)
-            popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
+        //if(popupCanvas == null)
+        popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
     }
     
     public void Open<T>()

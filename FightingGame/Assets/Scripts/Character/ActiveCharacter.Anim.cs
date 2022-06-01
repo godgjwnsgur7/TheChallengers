@@ -112,7 +112,7 @@ public partial class ActiveCharacter
         coverAnim.SetInteger(str, value);
     }
 
-    private void SetBool(string str, bool value)
+    public void SetBool(string str, bool value)
     {
         bodyAnim.SetBool(str, value);
         weaponAnim.SetBool(str, value);

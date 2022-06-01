@@ -8,6 +8,7 @@ public class Managers : MonoBehaviour
     static Managers Instance { get { Init(); return s_Instance; } }
 
     private InputMgr input = new InputMgr();
+    private ObjectPoolMgr pool = new ObjectPoolMgr();
     private ResourceMgr resouce = new ResourceMgr();
     private SceneMgr scene = new SceneMgr();
     private UIMgr ui = new UIMgr();
@@ -17,6 +18,7 @@ public class Managers : MonoBehaviour
     private CoffeeMachine iapController = new IAPController();
 
     public static InputMgr Input { get { return Instance.input; } }
+    public static ObjectPoolMgr Pool { get { return Instance.pool; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static UIMgr UI { get { return Instance.ui; } }

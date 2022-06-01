@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 애니메이터 Body에 붙어있는 애니메이션 Idle
+/// 애니메이터 KnightBody에 붙어있는 애니메이션 Idle
 /// </summary>
 public class Idle : StateMachineBehaviour
 {
@@ -11,5 +11,6 @@ public class Idle : StateMachineBehaviour
     {
         // 임시 처리
         animator.transform.parent.gameObject.GetComponent<ActiveCharacter>().Idle(); 
+        
     }
 }

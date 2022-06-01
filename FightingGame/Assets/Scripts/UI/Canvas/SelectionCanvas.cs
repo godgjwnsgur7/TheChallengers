@@ -9,11 +9,11 @@ public class SelectionCanvas : BaseCanvas
 
     public override void Open<T>()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void Close<T>()
     {
-        throw new System.NotImplementedException();
+        
     }
 }
