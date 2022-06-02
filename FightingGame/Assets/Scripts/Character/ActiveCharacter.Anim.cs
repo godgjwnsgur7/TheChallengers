@@ -19,6 +19,7 @@ public partial class ActiveCharacter
     private SpriteRenderer bodySpriteRender;
     private SpriteRenderer weaponSpriteRender;
     private SpriteRenderer coverSpriteRender;
+    private SpriteRenderer effectSpriteRender;
 
     private bool reverseState = false;
 
@@ -37,15 +38,41 @@ public partial class ActiveCharacter
         weaponSpriteRender = g.GetComponent<SpriteRenderer>();
 
         g = gameObject.transform.Find("Cover").gameObject;
-        coverAnim = g.GetComponent <Animator>();
+        coverAnim = g.GetComponent<Animator>();
         coverAnim.runtimeAnimatorController = Managers.Resource.GetAnimator(charType, ENUM_ANIMATOR_TYPE.Cover);
         coverSpriteRender = g.GetComponent<SpriteRenderer>();
+
+        g = gameObject.transform.Find("Effect").gameObject;
+        effectSpriteRender = g.GetComponent<SpriteRenderer>();
+
+        // 총기 종류에 따른 이펙트 스프라이트 변경
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/BulletEffect/");
+        Character c = gameObject.GetComponent<Character>();
+        if (c.weaponType.ToString().Equals("Gun"))
+        {
+            effectSpriteRender.sprite = sprites[0];
+            effectSpriteRender.transform.localPosition = new Vector2(0.04f, -0.4f);
+            effectSpriteRender.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
+        }
+        else if (c.weaponType.ToString().Equals("Rifle"))
+        {
+            effectSpriteRender.sprite = sprites[1];
+            effectSpriteRender.transform.localPosition = new Vector2(0.05f, -0.5f);
+            effectSpriteRender.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
+        }
+        else
+        {
+
+        }
+
     }
 
     private void SetSpriteOrderLayer(Vector2 vec)
     {
         bool isUpState = (vec.y > 0.9f && vec.x == 0.0f) ? true : false;
         bool isDownState = (vec.y <= 0.0f && vec.x == 0.0f) ? true : false;
+
+        effectSpriteRender.sortingOrder = 8;
 
         if (isUpState)
         {
@@ -78,6 +105,32 @@ public partial class ActiveCharacter
 
         coverAnim.SetFloat("DirX", vec.x * f);
         coverAnim.SetFloat("DirY", vec.y * f);
+
+
+        if (GetInteger("WeaponType") > 4)
+        {
+            // 캐릭터 방향에 따른 이펙트 위치와 각도 조정
+            if (vec.y != 0)
+            {
+                Vector2[] transYEffect = new Vector2[2];
+                transYEffect[0] = new Vector2((vec.y <= 0) ? 0.04f : -0.05f, (vec.y <= 0) ? -0.4f : 1.9f);
+                transYEffect[1] = new Vector2((vec.y <= 0) ? 0.05f : -0.05f, (vec.y <= 0) ? -0.5f : 2.0f);
+                float rotateZ = (vec.y <= 0) ? 90 : -90;
+
+                effectSpriteRender.transform.localPosition = transYEffect[GetInteger("WeaponType") - 5];
+                effectSpriteRender.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotateZ));
+            }
+            else if (vec.x != 0)
+            {
+                Vector2[] transXEffect = new Vector2[2];
+                transXEffect[0] = new Vector2(vec.x * 1.0f, 0.5f);
+                transXEffect[1] = new Vector2(vec.x * 1.25f, 0.5f);
+                float rotateY = (vec.x == 1) ? 180 : 0;
+
+                effectSpriteRender.transform.localPosition = transXEffect[GetInteger("WeaponType") - 5];
+                effectSpriteRender.transform.rotation = Quaternion.Euler(new Vector3(0, rotateY, 0));
+            }
+        }
     }
 
     private Vector2 GetVector()
@@ -112,7 +165,7 @@ public partial class ActiveCharacter
         coverAnim.SetInteger(str, value);
     }
 
-    public void SetBool(string str, bool value)
+    private void SetBool(string str, bool value)
     {
         bodyAnim.SetBool(str, value);
         weaponAnim.SetBool(str, value);
@@ -126,7 +179,7 @@ public partial class ActiveCharacter
         coverAnim.SetTrigger(str);
     }
 
-    private bool GetBool(string str)
+    public bool GetBool(string str)
     {
         return bodyAnim.GetBool(str);
     }

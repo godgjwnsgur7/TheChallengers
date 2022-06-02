@@ -10,7 +10,7 @@ public class Idle : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // 임시 처리
-        animator.transform.parent.gameObject.GetComponent<ActiveCharacter>().Idle(); 
+        animator.transform.parent.gameObject.GetComponent<ActiveCharacter>().Idle();
         
     }
 }

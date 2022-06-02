@@ -23,6 +23,12 @@ public partial class ActiveCharacter : Character
 
         if (GetBool("isMove"))
             SetBool("isMove", false);
+
+        if (GetBool("isAttack")) 
+            SetBool("isAttack", false);
+
+        if (GetBool("isHit"))
+            SetBool("isHit", false);
     }
 
     public override void Move(CharacterParam param)
@@ -57,7 +63,7 @@ public partial class ActiveCharacter : Character
 
         base.Attack(param);
 
-        SetTrigger("AttackTrigger");
+        SetBool("isAttack", true);
     }
 
     public override void Expression(CharacterParam param)
@@ -77,7 +83,7 @@ public partial class ActiveCharacter : Character
 
         if (hitParam != null)
         {
-            SetTrigger("HitTrigger");
+            SetBool("isHit", true);
         }
     }
 

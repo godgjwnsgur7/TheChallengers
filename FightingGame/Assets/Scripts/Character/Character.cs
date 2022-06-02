@@ -73,6 +73,9 @@ public class Character : MonoBehaviourPhoton
    
     public virtual void Attack(CharacterParam param)
     {
+        if (currState == ENUM_PLAYER_STATE.Hit)
+            return;
+
         currState = ENUM_PLAYER_STATE.Attack;
     }
 
