@@ -7,6 +7,7 @@ using System;
 public class PlayerCharacter : MonoBehaviour
 {
     public ActiveCharacter activeCharacter;
+    public PlayerCamera playerCamera;
 
     public Vector2 dirVec = Vector2.zero;
 

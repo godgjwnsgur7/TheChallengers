@@ -49,6 +49,8 @@ public partial class ActiveCharacter : Character
 
             if(!GetBool("isMove"))
                 SetBool("isMove", true);
+
+            dirVec = moveParam.inputVec.normalized;
         }
     }
 

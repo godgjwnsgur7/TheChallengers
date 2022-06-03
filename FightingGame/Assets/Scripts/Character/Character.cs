@@ -13,9 +13,27 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
+    public Vector2 dirVec = Vector2.down;
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
+
+    private void FixedUpdate()
+    {
+        Scan();
+    }
+
+    private void Scan()
+    {
+        Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
+
+        Debug.DrawRay(CriteriaPos, dirVec * 1.5f, Color.green);
+        RaycastHit2D rayHit;
+
+        rayHit = Physics2D.Raycast(CriteriaPos, dirVec, 1.5f, LayerMask.GetMask("Item"));
+        // if (rayHit.collider == null) scanObject = null;
+        // else scanObject = rayHit.collider.gameObject;
+    }
 
     public override void Init()
     {
@@ -47,11 +65,6 @@ public class Character : MonoBehaviourPhoton
 
         characterType = (ENUM_CHARACTER_TYPE)stream.Read();
         Debug.Log($"{characterType} Read 성공");
-    }
-
-    public void Scan()
-    {
-        // 레이캐스트 예정
     }
 
     public virtual void Idle(CharacterParam param = null)
