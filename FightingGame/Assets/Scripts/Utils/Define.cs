@@ -49,14 +49,6 @@ namespace FGDefine
         Max
     }
 
-    public enum ENUM_SOUND_TYPE
-    {
-        BGM,
-        SFX,
-
-        Max
-    }
-
     /// <summary>
     /// "Resources/Sounds/BGM/"
     /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
