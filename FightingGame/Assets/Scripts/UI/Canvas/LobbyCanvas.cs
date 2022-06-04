@@ -9,12 +9,14 @@ public class LobbyCanvas : BaseCanvas
 
     public override void Open<T>()
     {
-
+        if (typeof(T) == typeof(SelectionUI)) selectionUI.Open();
+        else Debug.Log("범위 벗어남");
     }
 
     public override void Close<T>()
     {
-
+        if (typeof(T) == typeof(SelectionUI)) selectionUI.Close();
+        else Debug.Log("범위 벗어남");
     }
 
     public void OnClickSeleteChar(ENUM_CHARACTER_TYPE type)

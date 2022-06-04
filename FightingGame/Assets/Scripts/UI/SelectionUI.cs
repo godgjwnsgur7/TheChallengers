@@ -1,8 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
-public class SelectionUI : MonoBehaviour
+public class SelectionUI : UIElement
 {
+    public ENUM_CHARACTER_TYPE charType;
 
+    public override void Open()
+    {
+
+    }
+
+    public override void Close()
+    {
+
+    }
+
+    public void OnCilckCharType(int intType)
+    {
+        charType = (ENUM_CHARACTER_TYPE)intType;
+    }
+    
 }

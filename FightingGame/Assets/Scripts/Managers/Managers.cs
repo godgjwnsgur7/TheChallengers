@@ -11,6 +11,7 @@ public class Managers : MonoBehaviour
     private ObjectPoolMgr pool = new ObjectPoolMgr();
     private ResourceMgr resouce = new ResourceMgr();
     private SceneMgr scene = new SceneMgr();
+    private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
     private LoginSession loginSession = new LoginSession();
     private DBSession dbSession = new DBSession();
@@ -21,6 +22,7 @@ public class Managers : MonoBehaviour
     public static ObjectPoolMgr Pool { get { return Instance.pool; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
+    public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }
@@ -30,7 +32,6 @@ public class Managers : MonoBehaviour
     private void Start()
     {
         Init();
-        UI.GetCanvas();
     }
 
     private void Update()
@@ -51,6 +52,19 @@ public class Managers : MonoBehaviour
 
             DontDestroyOnLoad(go);
             s_Instance = go.GetComponent<Managers>();
+
+            s_Instance.sound.Init();
+            s_Instance.ui.Init();
         }
+    }
+
+    public static void Clear()
+    {
+        // Input도 필요시에 액션 null 넣어주고 다시 셋팅? (임시)
+
+        Sound.Clear();
+        Scene.Clear();
+        UI.Clear();
+       
     }
 }

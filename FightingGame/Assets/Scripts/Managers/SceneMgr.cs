@@ -10,7 +10,14 @@ public class SceneMgr : MonoBehaviour
 
     public void LoadScene(ENUM_SCENE_TYPE type)
     {
+        Managers.Clear();
+
         string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
         LoadingSceneManagement.LoadScene(nextScene);
+    }
+
+    public void Clear()
+    {
+        CurrentScene.Clear();
     }
 }

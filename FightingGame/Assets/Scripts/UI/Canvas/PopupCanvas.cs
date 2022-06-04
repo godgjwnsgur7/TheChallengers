@@ -15,7 +15,7 @@ public class PopupCanvas : MonoBehaviour
 
     public void Init()
     {
-
+        DontDestroyOnLoad(this);
     }
 
     public void Open<T>()

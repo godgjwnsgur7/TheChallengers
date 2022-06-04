@@ -16,9 +16,11 @@ public class PlayerCharacter : MonoBehaviour
     private void Awake()
     {
         if(activeCharacter == null)
-            activeCharacter = FindObjectOfType<ActiveCharacter>();
+        {
+            activeCharacter = Managers.Resource.Instantiate("Character", this.transform).GetComponent<ActiveCharacter>();
+            activeCharacter.tag = ENUM_TAG_TYPE.Ally.ToString();
+        }
         
-        // 나중에 스폰으로 변경할 예정
         activeCharacter.Init();
     }
 

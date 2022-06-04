@@ -26,15 +26,53 @@ namespace FGDefine
         Wall = 8, // 레이어로해? 태그로해? 고민중 (임시)
     }
 
+
+    /// <summary>
+    /// 일단 User 커스텀 태그만 둠
+    /// </summary>
+    [Serializable]
+    public enum ENUM_TAG_TYPE
+    {
+        Ally = 0,
+        Enemy = 1,
+    }
+
     /// <summary>
     /// 해당 캐릭터 타입
     /// </summary>
     public enum ENUM_CHARACTER_TYPE
     {
-        Knight = 0,
-        Astronaut = 1,
+        Default = 0,
+        Knight = 1,
+        Astronaut = 2,
 
         Max
+    }
+
+    public enum ENUM_SOUND_TYPE
+    {
+        BGM,
+        SFX,
+
+        Max
+    }
+
+    /// <summary>
+    /// "Resources/Sounds/BGM/"
+    /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
+    /// </summary>
+    public enum ENUM_BGM_TYPE
+    {
+        TestBGM, // 테스트용
+    }
+
+    /// <summary>
+    /// "Resources/Sounds/SFX/"
+    /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
+    /// </summary>
+    public enum ENUM_SFX_TYPE
+    {
+        win, // 테스트용
     }
 
     public enum ENUM_INPUT_TYPE

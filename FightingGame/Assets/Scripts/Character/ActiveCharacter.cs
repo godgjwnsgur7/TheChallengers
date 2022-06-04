@@ -10,6 +10,9 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
+        if (characterType == ENUM_CHARACTER_TYPE.Default)
+            characterType = ENUM_CHARACTER_TYPE.Knight;
+
         SetObjectInfo(characterType);
         SetSpriteOrderLayer(Vector2.zero);
 

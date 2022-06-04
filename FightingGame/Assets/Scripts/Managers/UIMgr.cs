@@ -8,11 +8,17 @@ public class UIMgr
     public BaseCanvas gameCanvas;
     public PopupCanvas popupCanvas = null;
 
-    public void GetCanvas()
+    public void Init()
     {
         gameCanvas = GameObject.FindObjectOfType<BaseCanvas>();
-        //if(popupCanvas == null)
-        popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
+        if(popupCanvas == null)
+            popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
+            
+    }
+
+    public void Clear()
+    {
+        gameCanvas = null;
     }
     
     public void Open<T>()

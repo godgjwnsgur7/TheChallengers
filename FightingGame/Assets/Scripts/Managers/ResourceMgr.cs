@@ -25,9 +25,7 @@ public class ResourceMgr
         }
 
         GameObject go = Object.Instantiate(prefab, parent);
-        int index = go.name.IndexOf("(Clone)");
-        if (index > 0)
-            go.name = go.name.Substring(0, index);
+        go.name = prefab.name;
 
         return go;
     }
@@ -45,6 +43,8 @@ public class ResourceMgr
     {
         if (go == null)
             return;
+
+        // 만약 풀링이 필요하면 오브젝트 풀 매니저한테 위탁
 
         Object.Destroy(go);
     }

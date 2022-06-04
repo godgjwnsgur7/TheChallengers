@@ -7,7 +7,7 @@ public class LoginScene : BaseScene
 {
     PlatformAuth auth = new PlatformAuth();
 
-    protected override void Init()
+    public override void Init()
     {
         base.Init();
 
