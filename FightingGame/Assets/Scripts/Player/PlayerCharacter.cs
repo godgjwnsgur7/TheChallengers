@@ -7,7 +7,7 @@ using System;
 public class PlayerCharacter : MonoBehaviour
 {
     public ActiveCharacter activeCharacter;
-    public PlayerCamera playerCamera;
+    [SerializeField] PlayerCamera playerCamera;
 
     public Vector2 dirVec = Vector2.zero;
 
@@ -22,6 +22,7 @@ public class PlayerCharacter : MonoBehaviour
         }
         
         activeCharacter.Init();
+        playerCamera.Init(activeCharacter.transform);
     }
 
     private void Start()

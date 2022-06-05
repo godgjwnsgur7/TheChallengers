@@ -53,6 +53,7 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_Instance = go.GetComponent<Managers>();
 
+            s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();
         }
@@ -61,10 +62,9 @@ public class Managers : MonoBehaviour
     public static void Clear()
     {
         // Input도 필요시에 액션 null 넣어주고 다시 셋팅? (임시)
-
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
-        
+        Pool.Clear();
     }
 }

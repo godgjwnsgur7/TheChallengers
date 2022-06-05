@@ -10,7 +10,6 @@ public class BattleScene : BaseScene
 
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-
     }
 
     public override void Clear()

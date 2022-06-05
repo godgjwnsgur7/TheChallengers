@@ -26,7 +26,6 @@ namespace FGDefine
         Wall = 8, // 레이어로해? 태그로해? 고민중 (임시)
     }
 
-
     /// <summary>
     /// 일단 User 커스텀 태그만 둠
     /// </summary>
