@@ -10,6 +10,7 @@ public class BattleScene : BaseScene
 
         SceneType = ENUM_SCENE_TYPE.Battle;
 
+        Managers.Resource.Instantiate("TestPrefab");
     }
 
     public override void Clear()

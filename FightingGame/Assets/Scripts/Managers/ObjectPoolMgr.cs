@@ -12,13 +12,13 @@ public class ObjectPoolMgr
 
         Stack<Poolable> poolStack = new Stack<Poolable>(); 
 
-        public void Init(GameObject original, int count = 5)
+        public void Init(GameObject original, int poolCount)
         {
             Original = original;
             Root = new GameObject().transform;
             Root.name = $"{original.name}_Root";
         
-            for(int i = 0; i < count; i++)
+            for(int i = 0; i < poolCount; i++)
                 Push(Create());
         }
 
@@ -62,6 +62,8 @@ public class ObjectPoolMgr
 
     Transform root;
 
+    int poolCount = 20;
+
     public void Init()
     {
         if (root == null)
@@ -71,10 +73,10 @@ public class ObjectPoolMgr
         }
     }
 
-    public void CreatePool(GameObject original, int count = 5)
+    public void CreatePool(GameObject original)
     {
         Pool pool = new Pool();
-        pool.Init(original, count);
+        pool.Init(original, poolCount); // poolCount만큼 생성
         pool.Root.parent = root;
 
         pools.Add(original.name, pool);
@@ -109,7 +111,6 @@ public class ObjectPoolMgr
         return pools[name].Original;
     }
 
-    // 게임 특성상 사용할 일이 없을 듯 함. (미사용)
     public void Clear()
     {
         foreach(Transform child in root)
