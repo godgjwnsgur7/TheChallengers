@@ -7,6 +7,18 @@ public class ResourceMgr
 {
     public T Load<T>(string path) where T : Object
     {
+        if (typeof(T) == typeof(GameObject))
+        {
+            string name = path;
+            int index = name.LastIndexOf('/'); // 마지막 인덱스
+            if (index >= 0)
+                name = name.Substring(index + 1);
+
+            GameObject go = Managers.Pool.GetOriginal(name);
+            if(go != null)
+                return go as T;
+        }
+
         return Resources.Load<T>(path);
     }
 
@@ -17,16 +29,19 @@ public class ResourceMgr
 
     public GameObject Instantiate(string path, Transform parent = null)
     {
-        GameObject prefab = Load<GameObject>($"Prefabs/{path}");
-        if (prefab == null)
+        GameObject original = Load<GameObject>($"Prefabs/{path}");
+        if (original == null)
         {
             Debug.Log($"Failed to load prefab : {path}");
             return null;
         }
 
-        GameObject go = Object.Instantiate(prefab, parent);
-        go.name = prefab.name;
+        // 풀링된 오브젝트일 경우 위탁
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original, parent).gameObject;
 
+        GameObject go = Object.Instantiate(original, parent);
+        go.name = original.name;
         return go;
     }
 
@@ -44,7 +59,13 @@ public class ResourceMgr
         if (go == null)
             return;
 
-        // 만약 풀링이 필요하면 오브젝트 풀 매니저한테 위탁
+        // 풀링된 오브젝트일 경우 위탁
+        Poolable poolable = go.GetComponent<Poolable>();
+        if (poolable != null)
+        {
+            Managers.Pool.Push(poolable);
+            return;
+        }
 
         Object.Destroy(go);
     }
