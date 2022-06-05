@@ -21,6 +21,8 @@ public partial class ActiveCharacter
     private SpriteRenderer coverSpriteRender;
     private SpriteRenderer effectSpriteRender;
 
+    private FirearmsEffect firearmsEffect;
+
     private bool reverseState = false;
 
     private void SetObjectInfo(ENUM_CHARACTER_TYPE charType)
@@ -44,27 +46,8 @@ public partial class ActiveCharacter
 
         g = gameObject.transform.Find("Effect").gameObject;
         effectSpriteRender = g.GetComponent<SpriteRenderer>();
-
-        // 총기 종류에 따른 이펙트 스프라이트 변경
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Art/BulletEffect/");
-        Character c = gameObject.GetComponent<Character>();
-        if (c.weaponType.ToString().Equals("Gun"))
-        {
-            effectSpriteRender.sprite = sprites[0];
-            effectSpriteRender.transform.localPosition = new Vector2(0.04f, -0.4f);
-            effectSpriteRender.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
-        }
-        else if (c.weaponType.ToString().Equals("Rifle"))
-        {
-            effectSpriteRender.sprite = sprites[1];
-            effectSpriteRender.transform.localPosition = new Vector2(0.05f, -0.5f);
-            effectSpriteRender.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90));
-        }
-        else
-        {
-
-        }
-
+        firearmsEffect = g.GetComponent<FirearmsEffect>();
+        firearmsEffect.init();
     }
 
     private void SetSpriteOrderLayer(Vector2 vec)
@@ -106,31 +89,8 @@ public partial class ActiveCharacter
         coverAnim.SetFloat("DirX", vec.x * f);
         coverAnim.SetFloat("DirY", vec.y * f);
 
-
-        if (GetInteger("WeaponType") > 4)
-        {
-            // 캐릭터 방향에 따른 이펙트 위치와 각도 조정
-            if (vec.y != 0)
-            {
-                Vector2[] transYEffect = new Vector2[2];
-                transYEffect[0] = new Vector2((vec.y <= 0) ? 0.04f : -0.05f, (vec.y <= 0) ? -0.4f : 1.9f);
-                transYEffect[1] = new Vector2((vec.y <= 0) ? 0.05f : -0.05f, (vec.y <= 0) ? -0.5f : 2.0f);
-                float rotateZ = (vec.y <= 0) ? 90 : -90;
-
-                effectSpriteRender.transform.localPosition = transYEffect[GetInteger("WeaponType") - 5];
-                effectSpriteRender.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotateZ));
-            }
-            else if (vec.x != 0)
-            {
-                Vector2[] transXEffect = new Vector2[2];
-                transXEffect[0] = new Vector2(vec.x * 1.0f, 0.5f);
-                transXEffect[1] = new Vector2(vec.x * 1.25f, 0.5f);
-                float rotateY = (vec.x == 1) ? 180 : 0;
-
-                effectSpriteRender.transform.localPosition = transXEffect[GetInteger("WeaponType") - 5];
-                effectSpriteRender.transform.rotation = Quaternion.Euler(new Vector3(0, rotateY, 0));
-            }
-        }
+        if(GetInteger("WeaponType") > 4)
+            firearmsEffect.SetEffectPosition(vec);
     }
 
     private Vector2 GetVector()

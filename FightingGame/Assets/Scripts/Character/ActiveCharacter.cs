@@ -18,6 +18,11 @@ public partial class ActiveCharacter : Character
 
         // 디버그용
         SetInteger("WeaponType", (int)weaponType);
+        
+        if (GetInteger("WeaponType") > 4)
+        {
+            firearmsEffect.SetWeaponEffect(weaponType);
+        }
     }
 
     public override void Idle(CharacterParam param = null)
