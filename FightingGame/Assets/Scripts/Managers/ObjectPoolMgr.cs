@@ -62,7 +62,7 @@ public class ObjectPoolMgr
 
     Transform root;
 
-    int poolCount = 20;
+    int poolCount = 5;
 
     public void Init()
     {
@@ -73,10 +73,10 @@ public class ObjectPoolMgr
         }
     }
 
-    public void CreatePool(GameObject original)
+    public void CreatePool(GameObject original, int count)
     {
         Pool pool = new Pool();
-        pool.Init(original, poolCount); // poolCount만큼 생성
+        pool.Init(original, count);
         pool.Root.parent = root;
 
         pools.Add(original.name, pool);
@@ -98,9 +98,20 @@ public class ObjectPoolMgr
     public Poolable Pop(GameObject original, Transform parent = null)
     {
         if (pools.ContainsKey(original.name) == false)
-            CreatePool(original);
+            CreatePool(original, poolCount); // poolCount만큼 생성
 
         return pools[original.name].Pop(parent);
+    }
+
+    public void GeneratePool(GameObject original, int count, Transform parent = null)
+    {
+        if (pools.ContainsKey(original.name) == true)
+        {
+            Debug.Log($"{original} is Already Existing Pool");
+            return;        
+        }
+
+        CreatePool(original, count);
     }
 
     public GameObject GetOriginal(string name)

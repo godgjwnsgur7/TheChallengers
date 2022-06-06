@@ -61,7 +61,6 @@ public class Managers : MonoBehaviour
 
     public static void Clear()
     {
-        // Input도 필요시에 액션 null 넣어주고 다시 셋팅? (임시)
         Sound.Clear();
         Scene.Clear();
         UI.Clear();

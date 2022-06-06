@@ -54,6 +54,18 @@ public class ResourceMgr
         return animator;
     }
 
+    public void GenerateInPool(string path,int count ,Transform parent = null)
+    {
+        GameObject original = Load<GameObject>($"Prefabs/{path}");
+        if(original == null)
+        {
+            Debug.Log($"Failed to load prefab : {path}");
+            return;
+        }
+
+        Managers.Pool.GeneratePool(original, count, parent);
+    }
+
     public void Destroy(GameObject go)
     {
         if (go == null)
