@@ -54,7 +54,7 @@ public class ResourceMgr
         return animator;
     }
 
-    public void GenerateInPool(string path,int count ,Transform parent = null)
+    public void GenerateInPool(string path, int count, Transform parent = null)
     {
         GameObject original = Load<GameObject>($"Prefabs/{path}");
         if(original == null)

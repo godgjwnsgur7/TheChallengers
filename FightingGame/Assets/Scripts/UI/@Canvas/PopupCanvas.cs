@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PopupCanvas : MonoBehaviour
 {
-    [SerializeField] public PopupUI popupUI;
 
 
     private void Start()
@@ -20,7 +19,6 @@ public class PopupCanvas : MonoBehaviour
 
     public void Open<T>()
     {
-
     }
 
     public void Close<T>()

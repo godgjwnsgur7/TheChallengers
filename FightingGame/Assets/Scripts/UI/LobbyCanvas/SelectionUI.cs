@@ -7,7 +7,7 @@ public class SelectionUI : UIElement
 {
     public ENUM_CHARACTER_TYPE charType;
 
-    public override void Open()
+    public override void Open(UIParam param = null)
     {
 
     }

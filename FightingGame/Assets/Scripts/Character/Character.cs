@@ -18,20 +18,18 @@ public class Character : MonoBehaviourPhoton
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
-    private void FixedUpdate()
-    {
-        Scan();
-    }
-
-    private void Scan()
+    public InteractableObject ForwardScan()
     {
         Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
 
-        Debug.DrawRay(CriteriaPos, dirVec * 1.5f, Color.green);
+        Debug.DrawRay(CriteriaPos, dirVec * 1f, Color.green);
         RaycastHit2D rayHit;
 
-        rayHit = Physics2D.Raycast(CriteriaPos, dirVec, 1.5f, LayerMask.GetMask("Item"));
-        // if (rayHit.collider == null) scanObject = null;
+        rayHit = Physics2D.Raycast(CriteriaPos, dirVec, 1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Interaction.ToString()));
+        if (rayHit.collider != null)
+            return rayHit.collider.gameObject.GetComponent<InteractableObject>();
+
+        return null;
         // else scanObject = rayHit.collider.gameObject;
     }
 
@@ -94,7 +92,7 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Expression(CharacterParam param)
     {
-        // 아이템 습득, 캐릭터 상태 변화는 없음?, 소지한 아이템 변경
+        // 감정표현
     }
     
     public virtual void Hit(CharacterParam param)

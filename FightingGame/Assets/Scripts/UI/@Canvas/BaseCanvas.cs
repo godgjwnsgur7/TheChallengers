@@ -25,7 +25,7 @@ public abstract class BaseCanvas : MonoBehaviour
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
     }
 
-    public abstract void Open<T>();
+    public abstract void Open<T>(UIParam param = null);
     public abstract void Close<T>();
 
 }

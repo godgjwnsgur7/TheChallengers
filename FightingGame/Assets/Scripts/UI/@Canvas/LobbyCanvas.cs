@@ -7,7 +7,7 @@ public class LobbyCanvas : BaseCanvas
 {
     [SerializeField] SelectionUI selectionUI;
 
-    public override void Open<T>()
+    public override void Open<T>(UIParam param = null)
     {
         if (typeof(T) == typeof(SelectionUI)) selectionUI.Open();
         else Debug.Log("범위 벗어남");

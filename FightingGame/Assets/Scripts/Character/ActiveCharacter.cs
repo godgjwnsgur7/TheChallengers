@@ -17,12 +17,9 @@ public partial class ActiveCharacter : Character
         SetSpriteOrderLayer(Vector2.zero);
 
         // 디버그용
-        SetInteger("WeaponType", (int)weaponType);
-        
-        if (GetInteger("WeaponType") > 4)
-        {
-            firearmsEffect.SetWeaponEffect(weaponType);
-        }
+
+        weaponType = ENUM_WEAPON_TYPE.Hammer;
+        SetWeapon(weaponType);
     }
 
     public override void Idle(CharacterParam param = null)
@@ -102,5 +99,16 @@ public partial class ActiveCharacter : Character
         base.Die(param);
 
 
+    }
+
+    public void SetWeapon(ENUM_WEAPON_TYPE _weaponType)
+    {
+        weaponType = _weaponType;
+        SetInteger("WeaponType", (int)weaponType);
+
+        if (GetInteger("WeaponType") > 4)
+        {
+            firearmsEffect.SetWeaponEffect(weaponType);
+        }
     }
 }

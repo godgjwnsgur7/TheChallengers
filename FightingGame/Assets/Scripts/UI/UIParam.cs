@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public class UIParam { }
 
@@ -12,4 +13,9 @@ public class UIPopupParam : UIParam
     {
         pos = _pos;
     }
+}
+
+public class InteractionUIParam : UIParam
+{
+
 }

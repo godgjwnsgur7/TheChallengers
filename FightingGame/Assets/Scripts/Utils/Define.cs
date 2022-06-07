@@ -22,7 +22,7 @@ namespace FGDefine
         /// 여기부터 User 커스텀 레이어
         /// </summary>
         Player = 6, // 유저
-        Item = 7,
+        Interaction = 7,
         Wall = 8, // 레이어로해? 태그로해? 고민중 (임시)
     }
 
@@ -97,19 +97,6 @@ namespace FGDefine
         Gun = 5,
         Rifle = 6,
         
-        Max
-    }
-
-    public enum ENUM_ITEM_TYPE
-    {
-        Boom = 0,
-        Hammer = 1,
-        Sword = 2,
-        Sycthe = 3,
-        Bow = 4,
-        Gun = 5,
-        Rifle = 6,
-
         Max
     }
 }

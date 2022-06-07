@@ -10,6 +10,6 @@ public abstract class PopupUI : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    public abstract void Open<T>() where T : PopupUI;
-    public abstract void Close<T>() where T : PopupUI;
+    public abstract void Open();
+    public abstract void Close();
 }

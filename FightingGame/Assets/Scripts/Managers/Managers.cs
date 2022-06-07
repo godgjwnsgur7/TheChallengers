@@ -7,6 +7,7 @@ public class Managers : MonoBehaviour
     static Managers s_Instance;
     static Managers Instance { get { Init(); return s_Instance; } }
 
+    private DataMgr data = new DataMgr();
     private InputMgr input = new InputMgr();
     private ObjectPoolMgr pool = new ObjectPoolMgr();
     private ResourceMgr resouce = new ResourceMgr();
@@ -18,6 +19,7 @@ public class Managers : MonoBehaviour
     private AdMobController adMob = new AdMobController();
     private CoffeeMachine iapController = new IAPController();
 
+    public static DataMgr Data { get { return Instance.data; } }
     public static InputMgr Input { get { return Instance.input; } }
     public static ObjectPoolMgr Pool { get { return Instance.pool; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
@@ -53,6 +55,7 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_Instance = go.GetComponent<Managers>();
 
+            s_Instance.data.Init();
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();

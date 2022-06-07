@@ -69,7 +69,7 @@ public class ObjectPoolMgr
         if (root == null)
         {
             root = new GameObject { name = "@Pool_Root" }.transform;
-            Object.DontDestroyOnLoad(root); // 임시
+            // Object.DontDestroyOnLoad(root);
         }
     }
 
@@ -107,7 +107,7 @@ public class ObjectPoolMgr
     {
         if (pools.ContainsKey(original.name) == true)
         {
-            Debug.Log($"{original} is Already Existing Pool");
+            Debug.Log($"Already Existing Pool : {original}");
             return;        
         }
 

@@ -21,20 +21,20 @@ public class UIMgr
         gameCanvas = null;
     }
     
-    public void Open<T>()
+    public void OpenUI<T>()
     {
         if (typeof(T).IsSubclassOf(typeof(UIElement))) gameCanvas.Open<T>();
-        // else if (typeof(T).IsSubclassOf(typeof(UIPopup))) popupCanvas.Open<T>();
+        else if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Open<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
     
-    public void OpenPopup<T>()
+    public void OpenPopupUI<T>()
     {
         if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Open<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 
-    public void Close<T>()
+    public void CloseUI<T>()
     {
         if (typeof(T) == typeof(UIElement)) gameCanvas.Close<T>();
         else if (typeof(T) == typeof(PopupUI)) popupCanvas.Close<T>();

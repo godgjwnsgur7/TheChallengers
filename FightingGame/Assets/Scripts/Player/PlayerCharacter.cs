@@ -9,6 +9,8 @@ public class PlayerCharacter : MonoBehaviour
     public ActiveCharacter activeCharacter;
     [SerializeField] PlayerCamera playerCamera;
 
+    public InteractableObject interactableObject;
+
     public Vector2 dirVec = Vector2.zero;
 
     public bool inabilityState = false;
@@ -35,6 +37,14 @@ public class PlayerCharacter : MonoBehaviour
     private void Update()
     {
         OnKeyboard(); // 디버깅용
+    }
+
+    private void LateUpdate()
+    {
+        interactableObject = activeCharacter.ForwardScan();
+        
+        if (interactableObject != null)
+            interactableObject.SetInteractable();
     }
 
     private void OnJoystick(ENUM_INPUT_TYPE evt)
@@ -64,6 +74,17 @@ public class PlayerCharacter : MonoBehaviour
         {
             // 셀프 히트ㅋㅋ
             PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterHitParam(10.0f));
+        }
+
+        if(Input.GetKeyDown(KeyCode.G) && interactableObject != null)
+        {
+            interactableObject.Interact();
+
+            if(interactableObject.interactionType == ENUM_INTERACTION_TYPE.Weapon)
+            {
+                WeaponObject weaponObject = interactableObject as WeaponObject;
+                activeCharacter.SetWeapon(weaponObject.GetInfo());
+            }
         }
 
         dirVec = Vector2.zero;
