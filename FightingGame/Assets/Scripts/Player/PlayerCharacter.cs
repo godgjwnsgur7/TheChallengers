@@ -39,12 +39,16 @@ public class PlayerCharacter : MonoBehaviour
         OnKeyboard(); // 디버깅용
     }
 
-    private void LateUpdate()
+    private void ForwardScan()
     {
-        interactableObject = activeCharacter.ForwardScan();
-        
-        if (interactableObject != null)
-            interactableObject.SetInteractable();
+        var currObj = activeCharacter.GetForwardObjectWithRay();
+
+        if(currObj != null)
+            currObj.SetInteractable();
+        else
+            interactableObject?.UnsetInteractable();
+
+        interactableObject = currObj;
     }
 
     private void OnJoystick(ENUM_INPUT_TYPE evt)
@@ -61,21 +65,24 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(dirVec, Input.GetKey(KeyCode.LeftShift)));
         }
     }
-    
+
+
+    // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
     {
-        // 디버깅용이니 쿨하게 다 때려박기
+        // 공격
         if (Input.GetKeyDown(KeyCode.J))
         {
             PlayerCommand(ENUM_PLAYER_STATE.Attack);
         }
 
+        // 셀프 히트ㅋㅋ
         if (Input.GetKeyDown(KeyCode.L))
         {
-            // 셀프 히트ㅋㅋ
             PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterHitParam(10.0f));
         }
 
+        // 상호작용 (무기)
         if(Input.GetKeyDown(KeyCode.G) && interactableObject != null)
         {
             interactableObject.Interact();
@@ -117,6 +124,7 @@ public class PlayerCharacter : MonoBehaviour
                 break;
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
+                ForwardScan();
                 break;
             case ENUM_PLAYER_STATE.Attack:
                 activeCharacter.Attack(param);

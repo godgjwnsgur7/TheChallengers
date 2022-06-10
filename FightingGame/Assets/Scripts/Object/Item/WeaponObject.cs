@@ -16,18 +16,14 @@ public class WeaponObject : InteractableObject
         interactionType = ENUM_INTERACTION_TYPE.Weapon;
     }
 
-    private void Update()
-    {
-        transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
-    }
-
     public override void Interact()
     {
         if (!isInteractableState) return;
 
+        Managers.Resource.Destroy(gameObject);
+
         base.Interact();
 
-        Managers.Resource.Destroy(gameObject);
     }
 
     public override void EndInteract()

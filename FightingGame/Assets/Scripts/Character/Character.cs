@@ -18,7 +18,7 @@ public class Character : MonoBehaviourPhoton
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
-    public InteractableObject ForwardScan()
+    public InteractableObject GetForwardObjectWithRay()
     {
         Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
 
@@ -30,7 +30,6 @@ public class Character : MonoBehaviourPhoton
             return rayHit.collider.gameObject.GetComponent<InteractableObject>();
 
         return null;
-        // else scanObject = rayHit.collider.gameObject;
     }
 
     public override void Init()
@@ -81,7 +80,7 @@ public class Character : MonoBehaviourPhoton
         Vector3 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x ;
         transform.position += direction * moveParam.speed * Time.deltaTime;
     }
-   
+
     public virtual void Attack(CharacterParam param)
     {
         if (currState == ENUM_PLAYER_STATE.Hit)

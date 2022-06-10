@@ -22,6 +22,7 @@ public class InteractableObject : MonoBehaviour
     public virtual void Init()
     {
         gameObject.layer = (int)ENUM_LAYER_TYPE.Interaction;
+        isInteractableState = true;
     }
     
     public virtual void Interact()
@@ -37,7 +38,11 @@ public class InteractableObject : MonoBehaviour
 
     public void SetInteractable()
     {
-
         Managers.UI.OpenUI<InteractableUI>();
+    }
+
+    public void UnsetInteractable()
+    {
+        Managers.UI.CloseUI<InteractableUI>();
     }
 }

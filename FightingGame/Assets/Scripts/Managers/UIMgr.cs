@@ -36,8 +36,8 @@ public class UIMgr
 
     public void CloseUI<T>()
     {
-        if (typeof(T) == typeof(UIElement)) gameCanvas.Close<T>();
-        else if (typeof(T) == typeof(PopupUI)) popupCanvas.Close<T>();
+        if (typeof(T).IsSubclassOf(typeof(UIElement))) gameCanvas.Close<T>();
+        else if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Close<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 }
