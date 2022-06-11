@@ -18,7 +18,7 @@ public partial class ActiveCharacter : Character
 
         // 디버그용
 
-        weaponType = ENUM_WEAPON_TYPE.Hammer;
+        weaponType = ENUM_WEAPON_TYPE.Rifle;
         SetWeapon(weaponType);
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -7,17 +8,23 @@ using UnityEngine;
 /// </summary>
 public class Rifle : StateMachineBehaviour
 {
+    GameObject effect;
+    TestBulletShot tbShot;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Effect Object SetActive True When Rifle Animation Start
-        animator.transform.parent.Find("Effect").gameObject.SetActive(true);
+        effect = animator.transform.parent.Find("Effect").gameObject;
+        effect.SetActive(true);
+
+        tbShot = animator.transform.GetComponent<TestBulletShot>();
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (animator.transform.parent.Find("Effect").gameObject.activeSelf == true)
+        if (layerIndex == 2) 
         {
-            animator.transform.parent.Find("Effect").gameObject.SetActive(false);
+            tbShot.init("rifleBullet");
         }
     }
 }

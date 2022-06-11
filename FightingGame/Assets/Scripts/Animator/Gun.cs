@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,17 +8,16 @@ using UnityEngine;
 /// </summary>
 public class Gun : StateMachineBehaviour
 {
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        // Effect Object SetActive True When Gun Animation Start
-        animator.transform.parent.Find("Effect").gameObject.SetActive(true);
-    }
+    GameObject effect;
+    TestBulletShot tbshot;
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (animator.transform.parent.Find("Effect").gameObject.activeSelf == true)
-        {
-            animator.transform.parent.Find("Effect").gameObject.SetActive(false);
-        }
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    { 
+        // Effect Object SetActive True When Gun Animation Start
+        effect = animator.transform.parent.Find("Effect").gameObject;
+        effect.SetActive(true);
+
+        tbshot = animator.transform.GetComponent<TestBulletShot>();
+        tbshot.init("gunBullet");
     }
 }
