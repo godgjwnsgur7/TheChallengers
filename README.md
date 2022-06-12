@@ -23,7 +23,7 @@ Dev Period : 2020.06.01 ~ ing
 
 > 개발인원 : 3명
 
-> **기획** : 허준혁(메인 기획 겸 프로그래머)
+> **기획** : 신윤철, 허준혁
 
 > **서버 프로그래머** : 박솔휘
 
@@ -32,7 +32,7 @@ Dev Period : 2020.06.01 ~ ing
 ---
 
 
-Game Designer (1) : Heo Jun Hyeok
+Game Designer (1) : Shin Yoon Chul, Heo Jun Hyeok
 
 Server Programmer (1) : Park Sol Hwi
 
