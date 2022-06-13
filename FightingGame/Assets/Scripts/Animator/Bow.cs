@@ -7,18 +7,14 @@ using UnityEngine;
 /// </summary>
 public class Bow : StateMachineBehaviour
 {
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        
-    }
+    TestBulletShot tbShot;
 
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
-    }
-
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        
+        if (stateInfo.normalizedTime >= 1)
+        {
+            tbShot = animator.transform.GetComponent<TestBulletShot>();
+            tbShot.init("BowArrow");
+        }
     }
 }

@@ -7,11 +7,5 @@ using UnityEngine;
 /// </summary>
 public class Hit : StateMachineBehaviour
 {
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (animator.transform.parent.Find("Effect").gameObject.activeSelf == true)
-        {
-            animator.transform.parent.Find("Effect").gameObject.SetActive(false);
-        }
-    }
+
 }

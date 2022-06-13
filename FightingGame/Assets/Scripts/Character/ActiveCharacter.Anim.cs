@@ -89,7 +89,7 @@ public partial class ActiveCharacter
         coverAnim.SetFloat("DirX", vec.x * f);
         coverAnim.SetFloat("DirY", vec.y * f);
 
-        if(GetInteger("WeaponType") > 4)
+        if(GetInteger("WeaponType") > 3)
             firearmsEffect.SetEffectPosition(vec);
     }
 

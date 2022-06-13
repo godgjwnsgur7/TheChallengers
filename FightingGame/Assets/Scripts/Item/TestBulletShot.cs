@@ -6,14 +6,12 @@ public class TestBulletShot : MonoBehaviour
 {
     GameObject bulletGo;
     GameObject effectGo;
-    GameObject weaponGo;
     Animator anim;
     Rigidbody2D rigid;
     
 
     void Awake()
     {
-        weaponGo = gameObject;
         effectGo = gameObject.transform.parent.Find("Effect").gameObject;
         anim = gameObject.GetComponent<Animator>();
     }
@@ -21,14 +19,15 @@ public class TestBulletShot : MonoBehaviour
     public void init(string bulletName)
     {
         // 발사 세팅
-        bulletGo = Managers.Resource.Instantiate(bulletName, weaponGo.transform);
+        bulletGo = Managers.Resource.Instantiate(bulletName, gameObject.transform);
         rigid = bulletGo.GetComponent<Rigidbody2D>();
 
         SetBulletPosition();
 
-        Invoke("ShotBullet", 0.1f);
+        ShotBullet();
+        //Invoke("ShotBullet", 0.1f);
 
-        Invoke("Destroy", 0.35f);
+        //Invoke("Destroy", 0.35f);
     }
 
     private void SetBulletPosition()
@@ -37,7 +36,7 @@ public class TestBulletShot : MonoBehaviour
         bulletGo.transform.rotation = effectGo.transform.rotation;
     }
 
-    private void ShotBullet()
+    public void ShotBullet()
     {
         if (anim.GetFloat("DirY") >= 1f)
         {
@@ -55,9 +54,11 @@ public class TestBulletShot : MonoBehaviour
         {
             rigid.AddForce(new Vector2(-0.1f, 0), ForceMode2D.Force);
         }
+
+        Invoke("Destroy", 0.25f);
     }
 
-    public void Destroy()
+    private void Destroy()
     {
         if (bulletGo == null)
             return;

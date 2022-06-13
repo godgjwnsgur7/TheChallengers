@@ -9,15 +9,23 @@ using UnityEngine;
 public class Gun : StateMachineBehaviour
 {
     GameObject effect;
-    TestBulletShot tbshot;
+    TestBulletShot tbShot;
 
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    { 
-        // Effect Object SetActive True When Gun Animation Start
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
         effect = animator.transform.parent.Find("Effect").gameObject;
-        effect.SetActive(true);
+    }
 
-        tbshot = animator.transform.GetComponent<TestBulletShot>();
-        tbshot.init("gunBullet");
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (stateInfo.normalizedTime >= 1)
+        {
+            // Effect Object SetActive True When Gun Animation Start
+            effect.SetActive(true);
+
+            // Bullet Shot
+            tbShot = animator.transform.GetComponent<TestBulletShot>();
+            tbShot.init("GunBullet");
+        }
     }
 }

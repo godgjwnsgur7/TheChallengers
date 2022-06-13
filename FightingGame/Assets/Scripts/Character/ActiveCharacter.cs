@@ -106,7 +106,7 @@ public partial class ActiveCharacter : Character
         weaponType = _weaponType;
         SetInteger("WeaponType", (int)weaponType);
 
-        if (GetInteger("WeaponType") > 4)
+        if (GetInteger("WeaponType") > 3)
         {
             firearmsEffect.SetWeaponEffect(weaponType);
         }

@@ -11,20 +11,21 @@ public class Rifle : StateMachineBehaviour
     GameObject effect;
     TestBulletShot tbShot;
 
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // Effect Object SetActive True When Rifle Animation Start
         effect = animator.transform.parent.Find("Effect").gameObject;
-        effect.SetActive(true);
-
-        tbShot = animator.transform.GetComponent<TestBulletShot>();
     }
 
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (layerIndex == 2) 
+        if (stateInfo.normalizedTime >= 1)
         {
-            tbShot.init("rifleBullet");
+            // Effect Object SetActive True When Rifle Animation Start
+            effect.SetActive(true);
+
+            // Bullet Shot
+            tbShot = animator.transform.GetComponent<TestBulletShot>();
+            tbShot.init("RifleBullet");
         }
     }
 }
