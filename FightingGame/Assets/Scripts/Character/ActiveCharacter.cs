@@ -16,10 +16,6 @@ public partial class ActiveCharacter : Character
         SetObjectInfo(characterType);
         SetSpriteOrderLayer(Vector2.zero);
 
-        // 디버그용
-
-        weaponType = ENUM_WEAPON_TYPE.Rifle;
-        SetWeapon(weaponType);
     }
 
     public override void Idle(CharacterParam param = null)
