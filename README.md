@@ -25,6 +25,8 @@ Dev Period : 2020.06.01 ~ ing
 
 > **기획** : 신윤철, 허준혁
 
+**그래픽** : 이경주
+
 > **서버 프로그래머** : 박솔휘
 
 > **클라이언트 프로그래머** : 허준혁, 김우진
@@ -32,7 +34,9 @@ Dev Period : 2020.06.01 ~ ing
 ---
 
 
-Game Designer (1) : Shin Yoon Chul, Heo Jun Hyeok
+Game Designer (1) : Shin Yoon Chul, Heo Jun Hyeok(메인 클라 겸 서브 기획)
+
+Game Artists (1) : Lee Gyeong Ju
 
 Server Programmer (1) : Park Sol Hwi
 
