@@ -13,9 +13,9 @@ It's a personal work.
 It's based on 2D two-man fighting , Android game. 
 
 
-> 개발기간 : 2022.06.01 ~ ing
+> 개발기간 : 2022.05.09 ~ ing
 
-Dev Period : 2020.06.01 ~ ing
+Dev Period : 2020.05.09 ~ ing
 
 
 ---
@@ -23,7 +23,7 @@ Dev Period : 2020.06.01 ~ ing
 
 > 개발인원 : 5명
 
-> **기획** : 신윤철, 허준혁
+> **기획** : 허준혁, 신윤철
 
 > **그래픽** : 이경주
 
@@ -34,7 +34,7 @@ Dev Period : 2020.06.01 ~ ing
 ---
 
 
-Game Designer (1) : Shin Yoon Chul, Heo Jun Hyeok(메인 클라 겸 서브 기획)
+Game Designer (1) : Heo Jun Hyeok, Shin Yoon Chul
 
 Game Artists (1) : Lee Gyeong Ju
 
