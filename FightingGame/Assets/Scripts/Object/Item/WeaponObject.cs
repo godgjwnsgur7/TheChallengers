@@ -7,13 +7,16 @@ public class WeaponObject : InteractableObject
 {
     [SerializeField] ENUM_WEAPON_TYPE weaponType;
 
-    private float rotateSpeed = 100.0f;
-
     public override void Init()
     {
         base.Init();
 
         interactionType = ENUM_INTERACTION_TYPE.Weapon;
+    }
+
+    private void Update()
+    {
+        transform.eulerAngles = new Vector3(0, 10f, 0);
     }
 
     public override void Interact()
