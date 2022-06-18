@@ -66,6 +66,7 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Idle(CharacterParam param = null)
     {
+        rigid2D.velocity = Vector2.zero;
         currState = ENUM_PLAYER_STATE.Idle;
     }
 
@@ -77,8 +78,11 @@ public class Character : MonoBehaviourPhoton
         currState = ENUM_PLAYER_STATE.Move;
         var moveParam = param as CharacterMoveParam;
 
-        Vector3 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x ;
-        transform.position += direction * moveParam.speed * Time.deltaTime;
+        // Vector3 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x ;
+        // transform.position += direction * moveParam.speed * Time.deltaTime;
+
+        Vector2 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x;
+        rigid2D.velocity = direction * moveParam.speed;
     }
 
     public virtual void Attack(CharacterParam param)
@@ -86,16 +90,19 @@ public class Character : MonoBehaviourPhoton
         if (currState == ENUM_PLAYER_STATE.Hit)
             return;
 
+        rigid2D.velocity = Vector2.zero;
         currState = ENUM_PLAYER_STATE.Attack;
     }
 
     public virtual void Expression(CharacterParam param)
     {
+        rigid2D.velocity = Vector2.zero;
         // 감정표현
     }
     
     public virtual void Hit(CharacterParam param)
     {
+        rigid2D.velocity = Vector2.zero;
         currState = ENUM_PLAYER_STATE.Hit;
     }
 

@@ -23,7 +23,7 @@ namespace FGDefine
         /// </summary>
         Player = 6, // 유저
         Interaction = 7,
-        Wall = 8, // 레이어로해? 태그로해? 고민중 (임시)
+        Wall = 8,
     }
 
     /// <summary>
