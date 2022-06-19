@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class WeaponSetting : MonoBehaviour
 {
-    private GameObject bulletGo;
-    private GameObject weaponGo;
+    private GameObject bulletGo, weaponGo;
 
     private SpriteRenderer effectSpriteRender;
     private Sprite[] sprites;
@@ -46,10 +45,10 @@ public class WeaponSetting : MonoBehaviour
     // 근거리무기 Collider 초기화
     public void SetWeaponCollider2D(ENUM_WEAPON_TYPE weaponType) 
     {
-        weaponCirCollider = this.transform.parent.gameObject.GetComponent<CircleCollider2D>();
+        weaponCirCollider = weaponGo.GetComponent<CircleCollider2D>();
 
         if (weaponCirCollider == null) { 
-            weaponCirCollider = this.transform.parent.gameObject.AddComponent<CircleCollider2D>();
+            weaponCirCollider = weaponGo.AddComponent<CircleCollider2D>();
         }
 
         weaponCirCollider.isTrigger = true;

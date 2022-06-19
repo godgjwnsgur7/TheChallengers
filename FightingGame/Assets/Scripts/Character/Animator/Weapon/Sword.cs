@@ -11,4 +11,9 @@ public class Sword : StateMachineBehaviour
             animator.transform.parent.gameObject.GetComponent<ActiveCharacter>().SetBool("isAttack", false);
         }
     }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.GetComponent<CircleCollider2D>().enabled = false;
+    }
 }

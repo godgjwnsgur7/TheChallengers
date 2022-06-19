@@ -14,7 +14,7 @@ public class Hammer : StateMachineBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.transform.parent.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        animator.GetComponent<CircleCollider2D>().enabled = false;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

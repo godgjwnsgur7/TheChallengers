@@ -17,6 +17,7 @@ public class Rifle : StateMachineBehaviour
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         count++;
+        Debug.Log(count);
         if (count == 20)
         {
             animator.transform.parent.Find("Effect").gameObject.SetActive(true);
