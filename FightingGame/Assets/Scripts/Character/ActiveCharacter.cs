@@ -24,12 +24,6 @@ public partial class ActiveCharacter : Character
 
         if (GetBool("isMove"))
             SetBool("isMove", false);
-
-        if (GetBool("isAttack")) 
-            SetBool("isAttack", false);
-
-        if (GetBool("isHit"))
-            SetBool("isHit", false);
     }
 
     public override void Move(CharacterParam param)
@@ -67,6 +61,15 @@ public partial class ActiveCharacter : Character
         base.Attack(param);
 
         SetBool("isAttack", true);
+
+        if (GetInteger("WeaponType") <= 3) 
+        {
+            weaponSetting.enabledWeapon(dirVec);
+        }
+        else if (GetInteger("WeaponType") > 3)
+        {
+            weaponSetting.SetEffectPosition(dirVec);
+        }
     }
 
     public override void Expression(CharacterParam param)
@@ -78,6 +81,9 @@ public partial class ActiveCharacter : Character
 
     public override void Hit(CharacterParam param)
     {
+        if (GetBool("isAttack"))
+            SetBool("isAttack", false);
+
         base.Hit(param);
 
         if (param == null) return;
@@ -102,9 +108,13 @@ public partial class ActiveCharacter : Character
         weaponType = _weaponType;
         SetInteger("WeaponType", (int)weaponType);
 
-        if (GetInteger("WeaponType") > 3)
+        if (GetInteger("WeaponType") <= 3)
         {
-            firearmsEffect.SetWeaponEffect(weaponType);
+            weaponSetting.SetWeaponCollider2D(weaponType);
+        }
+        else if (GetInteger("WeaponType") > 3)
+        {
+            weaponSetting.SetWeaponEffect(weaponType);
         }
     }
 }

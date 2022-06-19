@@ -21,7 +21,7 @@ public partial class ActiveCharacter
     private SpriteRenderer coverSpriteRender;
     private SpriteRenderer effectSpriteRender;
 
-    private FirearmsEffect firearmsEffect;
+    private WeaponSetting weaponSetting;
 
     private bool reverseState = false;
 
@@ -46,8 +46,8 @@ public partial class ActiveCharacter
 
         g = gameObject.transform.Find("Effect").gameObject;
         effectSpriteRender = g.GetComponent<SpriteRenderer>();
-        firearmsEffect = g.GetComponent<FirearmsEffect>();
-        firearmsEffect.init();
+        weaponSetting = g.GetComponent<WeaponSetting>();
+        weaponSetting.init();
     }
 
     private void SetSpriteOrderLayer(Vector2 vec)
@@ -88,9 +88,6 @@ public partial class ActiveCharacter
 
         coverAnim.SetFloat("DirX", vec.x * f);
         coverAnim.SetFloat("DirY", vec.y * f);
-
-        if(GetInteger("WeaponType") > 3)
-            firearmsEffect.SetEffectPosition(vec);
     }
 
     private Vector2 GetVector()
@@ -111,6 +108,12 @@ public partial class ActiveCharacter
         reverseState = _reverseState;
     }
 
+    public void Shot() 
+    {
+        if (GetBool("isAttack"))
+            weaponSetting.Shot(weaponType);
+    }
+
     private void SetFloat(string str, float value)
     {
         bodyAnim.SetFloat(str, value);
@@ -125,7 +128,7 @@ public partial class ActiveCharacter
         coverAnim.SetInteger(str, value);
     }
 
-    private void SetBool(string str, bool value)
+    public void SetBool(string str, bool value)
     {
         bodyAnim.SetBool(str, value);
         weaponAnim.SetBool(str, value);

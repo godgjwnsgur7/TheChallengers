@@ -11,9 +11,9 @@ public class BattleScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Battle;
 
         Managers.Resource.GenerateInPool("TestPrefab", 20); // 테스트 코드
-        Managers.Resource.GenerateInPool("GunBullet", 20);
-        Managers.Resource.GenerateInPool("RifleBullet", 20);
-        Managers.Resource.GenerateInPool("BowArrow", 20);
+        Managers.Resource.GenerateInPool("Bullet/Gun", 20);
+        Managers.Resource.GenerateInPool("Bullet/Rifle", 20);
+        Managers.Resource.GenerateInPool("Bullet/Bow", 20);
     }
 
     public override void Clear()

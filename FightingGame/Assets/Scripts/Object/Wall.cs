@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class Bullet : Poolable
+public class Wall : MonoBehaviour
 {
-   
+
 }

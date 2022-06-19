@@ -11,6 +11,5 @@ public class Idle : StateMachineBehaviour
     {
         // 임시 처리
         animator.transform.parent.gameObject.GetComponent<ActiveCharacter>().Idle();
-        
     }
 }
