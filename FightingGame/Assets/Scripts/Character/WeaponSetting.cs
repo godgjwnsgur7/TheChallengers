@@ -23,6 +23,26 @@ public class WeaponSetting : MonoBehaviour
     private float[] curOffset = new float[4];
     private float[] hammerOffset, swordOffset, syctheOffset, weaponRadius;
 
+    // 이펙트 코루틴
+    private void OnEnable()
+    {
+        StartCoroutine("EffectCoroutine");
+    }
+
+    IEnumerator EffectCoroutine()
+    {
+        float fadeValue = 1;
+        while (fadeValue > 0f)
+        {
+            fadeValue -= 0.1f;
+            yield return new WaitForSeconds(0.01f);
+            effectSpriteRender.color = new Color(255, 255, 255, fadeValue); ;
+        }
+
+        gameObject.SetActive(false);
+    }
+
+    // 초기화 설정
     public void init()
     {
         sprites = Resources.LoadAll<Sprite>("Art/BulletEffect/");
@@ -38,7 +58,7 @@ public class WeaponSetting : MonoBehaviour
         // 근거리무기 Radius, Offset Value Base
         weaponRadius = new float[3] { 1f, 0.8f, 1f };
         hammerOffset = new float[4] { 0.2f, 0.6f, 1.1f, 0.6f };
-        swordOffset = new float[4] { 0.3f, 0.5f, 1f, 0.8f };
+        swordOffset = new float[4] { 0.3f, 0.5f, 1f, 0.6f };
         syctheOffset = new float[4] { 0f, 0.85f, 1.4f, 0.6f };
     }
 
