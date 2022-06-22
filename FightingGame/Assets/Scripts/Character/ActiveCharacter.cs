@@ -51,8 +51,7 @@ public partial class ActiveCharacter : Character
             if(!anim.GetBool("isMove"))
                 anim.SetBool("isMove", true);
 
-            dirVec = moveParam.inputVec.normalized;
-            SetAnimParamVector(dirVec, moveParam.isRun);
+            SetAnimParamVector(moveParam.moveDir);
         }
     }
 
@@ -112,14 +111,11 @@ public partial class ActiveCharacter : Character
 
     }
 
-    public void SetAnimParamVector(Vector2 vec, bool isRun)
+    public void SetAnimParamVector(float moveDir)
     {
-        ReverseSprites(vec.x);
+        ReverseSprites(moveDir);
 
-        float f = isRun ? 2.0f : 1.0f;
-
-        anim.SetFloat("DirX", vec.x * f);
-        anim.SetFloat("DirY", vec.y * f);
+        anim.SetFloat("DirX", moveDir);
     }
 
     public void SetWeapon(ENUM_WEAPON_TYPE _weaponType)

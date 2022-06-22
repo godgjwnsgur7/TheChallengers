@@ -13,7 +13,7 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    public Vector2 dirVec = Vector2.down;
+    public float moveDir = 0f;
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
@@ -25,10 +25,10 @@ public class Character : MonoBehaviourPhoton
     {
         Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
 
-        Debug.DrawRay(CriteriaPos, dirVec * 1f, Color.green);
+        Debug.DrawRay(CriteriaPos, new Vector2(moveDir, 0f), Color.green);
         RaycastHit2D rayHit;
 
-        rayHit = Physics2D.Raycast(CriteriaPos, dirVec, 1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Interaction.ToString()));
+        rayHit = Physics2D.Raycast(CriteriaPos, new Vector2(moveDir, 0f), 1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Interaction.ToString()));
         if (rayHit.collider != null)
             return rayHit.collider.gameObject.GetComponent<InteractableObject>();
 
@@ -83,7 +83,7 @@ public class Character : MonoBehaviourPhoton
         currState = ENUM_PLAYER_STATE.Move;
         var moveParam = param as CharacterMoveParam;
 
-        rigid2D.velocity = new Vector2(moveParam.inputVec.x * 10f, rigid2D.velocity.y);
+        rigid2D.velocity = new Vector2(moveParam.moveDir * 10f, rigid2D.velocity.y);
     }
 
     public virtual void Jump()

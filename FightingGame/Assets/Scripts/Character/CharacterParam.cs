@@ -11,15 +11,15 @@ public class CharacterParam { }
 
 public class CharacterMoveParam : CharacterParam
 {
-    public Vector2 inputVec;
+    public float moveDir;
     public bool isRun;
     public float speed = 3.0f;
     
-    public CharacterMoveParam(Vector3 _inputVec, bool _isRun = false)
+    public CharacterMoveParam(float _moveDir, bool _isRun = false)
     {
         isRun = _isRun;
         speed = _isRun ? (speed * 1.5f) : speed;
-        inputVec = _inputVec;
+        moveDir = _moveDir;
     }
 }
 
