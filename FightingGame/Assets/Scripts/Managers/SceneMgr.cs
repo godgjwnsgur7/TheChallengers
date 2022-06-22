@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneMgr : MonoBehaviour
+public class SceneMgr
 {
     public BaseScene CurrentScene
     { get { return GameObject.FindObjectOfType<BaseScene>(); } }
