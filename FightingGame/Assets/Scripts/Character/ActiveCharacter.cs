@@ -6,6 +6,11 @@ using FGDefine;
 
 public partial class ActiveCharacter : Character
 {
+    public Animator anim;
+    public SpriteRenderer spriteRenderer;
+
+    public bool reverseState = false;
+
     public override void Init()
     {
         base.Init();
@@ -13,17 +18,20 @@ public partial class ActiveCharacter : Character
         if (characterType == ENUM_CHARACTER_TYPE.Default)
             characterType = ENUM_CHARACTER_TYPE.Knight;
 
-        SetObjectInfo(characterType);
-        SetSpriteOrderLayer(Vector2.zero);
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
+        // Animator
+        anim = GetComponent<Animator>();
+        if (anim == null) gameObject.AddComponent<Animator>();
+        anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
     }
 
     public override void Idle(CharacterParam param = null)
     {
         base.Idle(param);
 
-        if (GetBool("isMove"))
-            SetBool("isMove", false);
+        if (anim.GetBool("isMove"))
+            anim.SetBool("isMove", false);
     }
 
     public override void Move(CharacterParam param)
@@ -40,13 +48,22 @@ public partial class ActiveCharacter : Character
 
         if (moveParam != null)
         {
-            SetVector(moveParam.inputVec, moveParam.isRun);
-
-            if(!GetBool("isMove"))
-                SetBool("isMove", true);
+            if(!anim.GetBool("isMove"))
+                anim.SetBool("isMove", true);
 
             dirVec = moveParam.inputVec.normalized;
+            SetAnimParamVector(dirVec, moveParam.isRun);
         }
+    }
+
+    public override void Jump()
+    {
+        if (currState == ENUM_PLAYER_STATE.Jump)
+            return;
+
+        base.Jump();
+
+
     }
 
     public override void Attack(CharacterParam param)
@@ -60,16 +77,8 @@ public partial class ActiveCharacter : Character
 
         base.Attack(param);
 
-        SetBool("isAttack", true);
+        anim.SetBool("isAttack", true);
 
-        if (GetInteger("WeaponType") <= 3) 
-        {
-            weaponSetting.enabledWeapon(dirVec);
-        }
-        else if (GetInteger("WeaponType") > 3)
-        {
-            weaponSetting.SetEffectPosition(dirVec);
-        }
     }
 
     public override void Expression(CharacterParam param)
@@ -81,18 +90,18 @@ public partial class ActiveCharacter : Character
 
     public override void Hit(CharacterParam param)
     {
-        if (GetBool("isAttack"))
-            SetBool("isAttack", false);
+        if (anim.GetBool("isAttack"))
+            anim.SetBool("isAttack", false);
 
         base.Hit(param);
 
         if (param == null) return;
 
-        var hitParam = param as CharacterHitParam;
+        var attackParam = param as CharacterAttackParam;
 
-        if (hitParam != null)
+        if (attackParam != null)
         {
-            SetBool("isHit", true);
+            anim.SetBool("isHit", true);
         }
     }
 
@@ -103,18 +112,31 @@ public partial class ActiveCharacter : Character
 
     }
 
+    public void SetAnimParamVector(Vector2 vec, bool isRun)
+    {
+        ReverseSprites(vec.x);
+
+        float f = isRun ? 2.0f : 1.0f;
+
+        anim.SetFloat("DirX", vec.x * f);
+        anim.SetFloat("DirY", vec.y * f);
+    }
+
     public void SetWeapon(ENUM_WEAPON_TYPE _weaponType)
     {
         weaponType = _weaponType;
-        SetInteger("WeaponType", (int)weaponType);
+        anim.SetInteger("WeaponType", (int)weaponType);
 
-        if (GetInteger("WeaponType") <= 3)
-        {
-            weaponSetting.SetWeaponCollider2D(weaponType);
-        }
-        else if (GetInteger("WeaponType") > 3)
-        {
-            weaponSetting.SetWeaponEffect(weaponType);
-        }
+    }
+
+    private void ReverseSprites(float vecX)
+    {
+        bool _reverseState = (vecX > 0.9f);
+
+        if (reverseState == _reverseState)
+            return;
+
+        spriteRenderer.flipX = _reverseState;
+        reverseState = _reverseState;
     }
 }

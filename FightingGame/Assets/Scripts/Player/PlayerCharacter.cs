@@ -79,10 +79,16 @@ public class PlayerCharacter : MonoBehaviour
         // 셀프 히트ㅋㅋ
         if (Input.GetKeyDown(KeyCode.L))
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterHitParam(10.0f));
+            // 데미지는 일단 10으로 ㅋㅋ
+            PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterAttackParam(10.0f));
         }
 
-        // 상호작용 (무기)
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Jump);
+        }
+
+        // 상호작용 (무기) // 필요할까?
         if(Input.GetKeyDown(KeyCode.G) && interactableObject != null)
         {
             interactableObject.Interact();
@@ -96,10 +102,11 @@ public class PlayerCharacter : MonoBehaviour
 
         dirVec = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.W)) dirVec.y = 1.0f;
         if (Input.GetKey(KeyCode.A)) dirVec.x = -1.0f;
-        if (Input.GetKey(KeyCode.S)) dirVec.y = -1.0f;
         if (Input.GetKey(KeyCode.D)) dirVec.x = 1.0f;
+
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+            dirVec.x = 0f;
 
         if (dirVec == Vector2.zero)
         {
@@ -125,6 +132,9 @@ public class PlayerCharacter : MonoBehaviour
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
                 ForwardScan();
+                break;
+            case ENUM_PLAYER_STATE.Jump:
+                activeCharacter.Jump();
                 break;
             case ENUM_PLAYER_STATE.Attack:
                 activeCharacter.Attack(param);

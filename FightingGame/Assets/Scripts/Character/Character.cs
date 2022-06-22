@@ -18,6 +18,9 @@ public class Character : MonoBehaviourPhoton
     public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
+
+    public float jumpPower = 10f;
+
     public InteractableObject GetForwardObjectWithRay()
     {
         Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
@@ -66,8 +69,10 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Idle(CharacterParam param = null)
     {
-        rigid2D.velocity = Vector2.zero;
+        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
         currState = ENUM_PLAYER_STATE.Idle;
+
+        
     }
 
     public virtual void Move(CharacterParam param)
@@ -78,17 +83,18 @@ public class Character : MonoBehaviourPhoton
         currState = ENUM_PLAYER_STATE.Move;
         var moveParam = param as CharacterMoveParam;
 
-        // Vector3 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x ;
-        // transform.position += direction * moveParam.speed * Time.deltaTime;
+        rigid2D.velocity = new Vector2(moveParam.inputVec.x * 10f, rigid2D.velocity.y);
+    }
 
-        Vector2 direction = transform.up * moveParam.inputVec.y + transform.right * moveParam.inputVec.x;
-        rigid2D.velocity = direction * moveParam.speed;
+    public virtual void Jump()
+    {
+        // currState = ENUM_PLAYER_STATE.Jump;
+
+        rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     }
 
     public virtual void Attack(CharacterParam param)
     {
-        if (currState == ENUM_PLAYER_STATE.Hit)
-            return;
 
         rigid2D.velocity = Vector2.zero;
         currState = ENUM_PLAYER_STATE.Attack;

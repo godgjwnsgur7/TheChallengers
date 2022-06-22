@@ -45,9 +45,9 @@ public class ResourceMgr
         return go;
     }
 
-    public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType, ENUM_ANIMATOR_TYPE animType)
+    public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType)
     {
-        string path = charType.ToString() + animType.ToString();
+        string path = charType.ToString();
 
         RuntimeAnimatorController animator = Load<RuntimeAnimatorController>($"Art/Animators/{path}");
 

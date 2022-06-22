@@ -24,6 +24,7 @@ namespace FGDefine
         Player = 6, // 유저
         Interaction = 7,
         Wall = 8,
+        Ground = 9,
     }
 
     /// <summary>
@@ -78,6 +79,7 @@ namespace FGDefine
     {
         Idle,
         Move,
+        Jump,
         Attack,
         Expression,
         Hit,

@@ -85,6 +85,16 @@ Tilemap:
   m_GameObject: {fileID: 9043750138784668934}
   m_Enabled: 1
   m_Tiles:
+  - first: {x: -3, y: -8, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 96
+      m_TileSpriteIndex: 96
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -4, y: -5, z: 0}
     second:
       serializedVersion: 2
@@ -1239,6 +1249,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 98aac7ac5d6240b8bd493b24a706d341, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: aa2070c64ea14284bc6d4f6253658ce0, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: ee27e3c0c19794540a170988cdeec2e7, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: 603645287242772497, guid: 22e7748413e14a4799c3434f2e4a1f60, type: 3}
@@ -1432,8 +1444,10 @@ Tilemap:
     m_Data: {fileID: 3905137884391206336, guid: 22e7748413e14a4799c3434f2e4a1f60, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 8889998157150073025, guid: 22e7748413e14a4799c3434f2e4a1f60, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: -2784247815669728694, guid: e85c6e02fda4a004b84664f435ad4d73, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 96
+  - m_RefCount: 97
     m_Data:
       e00: 1
       e01: 0
@@ -1452,13 +1466,13 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 96
+  - m_RefCount: 97
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -4, y: -5, z: 0}
-  m_Size: {x: 12, y: 8, z: 1}
+  m_Origin: {x: -4, y: -8, z: 0}
+  m_Size: {x: 12, y: 11, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -1526,7 +1540,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &113015075972264594
+--- !u!114 &1521875022024215396
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1539,3 +1553,5 @@ MonoBehaviour:
   m_Name: Palette Settings
   m_EditorClassIdentifier: 
   cellSizing: 0
+  m_TransparencySortMode: 0
+  m_TransparencySortAxis: {x: 0, y: 0, z: 1}

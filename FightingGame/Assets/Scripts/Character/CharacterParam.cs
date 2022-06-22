@@ -23,11 +23,11 @@ public class CharacterMoveParam : CharacterParam
     }
 }
 
-public class CharacterHitParam : CharacterParam
+public class CharacterAttackParam : CharacterParam
 {
     public float damage;
 
-    public CharacterHitParam(float _damage)
+    public CharacterAttackParam(float _damage)
     {
         damage = _damage;
     }
