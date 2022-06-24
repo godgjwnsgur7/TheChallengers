@@ -17,6 +17,9 @@ public class Character : MonoBehaviourPhoton
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
+    public float moveSpeed;
+    public float jumpPower;
+
     public InteractableObject GetForwardObjectWithRay()
     {
         Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
@@ -79,21 +82,20 @@ public class Character : MonoBehaviourPhoton
         currState = ENUM_PLAYER_STATE.Move;
         var moveParam = param as CharacterMoveParam;
 
-        rigid2D.velocity = new Vector2(moveParam.moveDir * 10f, rigid2D.velocity.y);
+        rigid2D.velocity = new Vector2(moveParam.moveDir * moveSpeed, rigid2D.velocity.y);
     }
 
     public virtual void Jump()
     {
         // currState = ENUM_PLAYER_STATE.Jump;
 
-        // rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     }
 
     public virtual void Attack(CharacterParam param)
     {
-
-        rigid2D.velocity = Vector2.zero;
         currState = ENUM_PLAYER_STATE.Attack;
+        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
     public virtual void Expression(CharacterParam param)
@@ -104,8 +106,8 @@ public class Character : MonoBehaviourPhoton
     
     public virtual void Hit(CharacterParam param)
     {
-        rigid2D.velocity = Vector2.zero;
         currState = ENUM_PLAYER_STATE.Hit;
+        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
     public virtual void Die(CharacterParam param)
