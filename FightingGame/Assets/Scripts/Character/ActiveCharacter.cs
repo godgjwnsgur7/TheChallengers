@@ -15,9 +15,6 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
-        if (characterType == ENUM_CHARACTER_TYPE.Default)
-            characterType = ENUM_CHARACTER_TYPE.Knight;
-
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         // Animator
@@ -30,8 +27,8 @@ public partial class ActiveCharacter : Character
     {
         base.Idle(param);
 
-        if (anim.GetBool("isMove"))
-            anim.SetBool("isMove", false);
+        if (anim.GetBool("IsMove"))
+            anim.SetBool("IsMove", false);
     }
 
     public override void Move(CharacterParam param)
@@ -48,8 +45,8 @@ public partial class ActiveCharacter : Character
 
         if (moveParam != null)
         {
-            if(!anim.GetBool("isMove"))
-                anim.SetBool("isMove", true);
+            if(!anim.GetBool("IsMove"))
+                anim.SetBool("IsMove", true);
 
             SetAnimParamVector(moveParam.moveDir);
         }
@@ -67,17 +64,12 @@ public partial class ActiveCharacter : Character
 
     public override void Attack(CharacterParam param)
     {
-        if (weaponType == ENUM_WEAPON_TYPE.Null)
-            return;
-
-        if(currState == ENUM_PLAYER_STATE.Attack||
-            currState == ENUM_PLAYER_STATE.Hit)
+        if(currState == ENUM_PLAYER_STATE.Attack)
             return;
 
         base.Attack(param);
 
-        anim.SetBool("isAttack", true);
-
+        anim.SetTrigger("AttackTrigger");
     }
 
     public override void Expression(CharacterParam param)
@@ -89,9 +81,6 @@ public partial class ActiveCharacter : Character
 
     public override void Hit(CharacterParam param)
     {
-        if (anim.GetBool("isAttack"))
-            anim.SetBool("isAttack", false);
-
         base.Hit(param);
 
         if (param == null) return;
@@ -100,7 +89,7 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            anim.SetBool("isHit", true);
+
         }
     }
 
@@ -118,16 +107,9 @@ public partial class ActiveCharacter : Character
         anim.SetFloat("DirX", moveDir);
     }
 
-    public void SetWeapon(ENUM_WEAPON_TYPE _weaponType)
-    {
-        weaponType = _weaponType;
-        anim.SetInteger("WeaponType", (int)weaponType);
-
-    }
-
     private void ReverseSprites(float vecX)
     {
-        bool _reverseState = (vecX > 0.9f);
+        bool _reverseState = (vecX < 0.9f);
 
         if (reverseState == _reverseState)
             return;

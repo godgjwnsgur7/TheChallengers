@@ -2217,7 +2217,7 @@ MonoBehaviour:
   activeCharacter: {fileID: 865992058532031767}
   playerCamera: {fileID: 373246399}
   interactableObject: {fileID: 0}
-  dirVec: {x: 0, y: 0}
+  moveDir: 0
   inabilityState: 0
 --- !u!4 &1822689654
 Transform:
@@ -3403,11 +3403,11 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.5}
+  m_Offset: {x: 0, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.1}
-    oldSize: {x: 2.7692308, y: 2.3076923}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3, y: 3}
     newSize: {x: 2.7692308, y: 2.3076923}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -3465,11 +3465,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 0}
-  dirVec: {x: 0, y: 0}
-  characterType: 0
-  weaponType: 0
+  moveDir: 0
+  characterType: 1
   currState: 0
-  jumpPower: 10
   anim: {fileID: 0}
   spriteRenderer: {fileID: 0}
   reverseState: 0
@@ -3531,8 +3529,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 8793639957104055765, guid: 45e7bd145dd74867a177c436a2102e6d, type: 3}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: -4001241994715439478, guid: c4d5c56880b686745aec8576c75c9c30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3551,7 +3549,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865992058770412411}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.65, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0}
   m_Children: []
   m_Father: {fileID: 865992058532031766}

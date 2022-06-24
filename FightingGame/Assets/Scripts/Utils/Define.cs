@@ -43,8 +43,7 @@ namespace FGDefine
     public enum ENUM_CHARACTER_TYPE
     {
         Default = 0,
-        Knight = 1,
-        Astronaut = 2,
+        Test = 1, // 지워질거임ㅋ
 
         Max
     }

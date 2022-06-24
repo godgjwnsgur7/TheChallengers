@@ -79,8 +79,7 @@ public class PlayerCharacter : MonoBehaviour
 
             if(interactableObject.interactionType == ENUM_INTERACTION_TYPE.Weapon)
             {
-                WeaponObject weaponObject = interactableObject as WeaponObject;
-                activeCharacter.SetWeapon(weaponObject.GetInfo());
+            
             }
         }
 

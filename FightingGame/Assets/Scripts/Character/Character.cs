@@ -15,11 +15,7 @@ public class Character : MonoBehaviourPhoton
 
     public float moveDir = 0f;
     public ENUM_CHARACTER_TYPE characterType;
-    public ENUM_WEAPON_TYPE weaponType = ENUM_WEAPON_TYPE.Null;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
-
-
-    public float jumpPower = 10f;
 
     public InteractableObject GetForwardObjectWithRay()
     {
@@ -90,7 +86,7 @@ public class Character : MonoBehaviourPhoton
     {
         // currState = ENUM_PLAYER_STATE.Jump;
 
-        rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        // rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     }
 
     public virtual void Attack(CharacterParam param)
