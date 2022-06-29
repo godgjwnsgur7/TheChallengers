@@ -23,9 +23,9 @@ Dev Period : 2020.05.09 ~ ing
 
 > 개발인원 : 5명
 
-> **기획** : 허준혁, 신윤철
+> **기획** : 허준혁(메인 기획 겸 프로그래머), 신윤철
 
-> **그래픽** : 이경주
+> **그래픽** : 이경주(캐릭터 디자인), 백서아(일러스트 디자인)
 
 > **서버 프로그래머** : 박솔휘
 
@@ -36,7 +36,7 @@ Dev Period : 2020.05.09 ~ ing
 
 Game Designer (1) : Heo Jun Hyeok, Shin Yoon Chul
 
-Game Artists (1) : Lee Gyeong Ju
+Game Artists (2) : Lee Gyeong Ju, Baek Seo A
 
 Server Programmer (1) : Park Sol Hwi
 
