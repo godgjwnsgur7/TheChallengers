@@ -14,11 +14,14 @@ public class Character : MonoBehaviourPhoton
     }
 
     public float moveDir = 0f;
+    public float moveSpeed;
+    public float jumpPower;
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
-    public float moveSpeed;
-    public float jumpPower;
+    public bool reverseState = false;
+    public bool jumpState = false;
+
 
     public InteractableObject GetForwardObjectWithRay()
     {
@@ -40,10 +43,10 @@ public class Character : MonoBehaviourPhoton
 
         rigid2D = GetComponent<Rigidbody2D>();
 
-        if(PhotonLogicHandler.IsMine(this))
+        if (PhotonLogicHandler.IsMine(this))
         {
             Debug.Log("컨트롤이 가능한 객체");
-        }   
+        }
         else
         {
             Debug.Log("컨트롤이 불가능한 객체");
@@ -71,7 +74,7 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
         currState = ENUM_PLAYER_STATE.Idle;
 
-        
+
     }
 
     public virtual void Move(CharacterParam param)
@@ -87,9 +90,8 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Jump()
     {
-        // currState = ENUM_PLAYER_STATE.Jump;
-
         rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+
     }
 
     public virtual void Attack(CharacterParam param)
@@ -98,12 +100,6 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
-    public virtual void Expression(CharacterParam param)
-    {
-        rigid2D.velocity = Vector2.zero;
-        // 감정표현
-    }
-    
     public virtual void Hit(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Hit;

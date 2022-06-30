@@ -24,7 +24,7 @@ namespace FGDefine
         Player = 6, // 유저
         Interaction = 7,
         Wall = 8,
-        Ground = 9,
+        Ground = 9, // 없애기 직전 (임시)
     }
 
     /// <summary>
@@ -35,6 +35,7 @@ namespace FGDefine
     {
         Ally = 0,
         Enemy = 1,
+        Ground = 2,
     }
 
     /// <summary>
@@ -80,7 +81,6 @@ namespace FGDefine
         Move,
         Jump,
         Attack,
-        Expression,
         Hit,
         Die,
 

@@ -9,8 +9,6 @@ public partial class ActiveCharacter : Character
     public Animator anim;
     public SpriteRenderer spriteRenderer;
 
-    public bool reverseState = false;
-
     public override void Init()
     {
         base.Init();
@@ -54,12 +52,12 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
-        if (currState == ENUM_PLAYER_STATE.Jump)
+        if (jumpState || currState == ENUM_PLAYER_STATE.Attack)
             return;
 
         base.Jump();
 
-
+        anim.SetTrigger("JumpTrigger");
     }
 
     public override void Attack(CharacterParam param)
@@ -70,13 +68,6 @@ public partial class ActiveCharacter : Character
         base.Attack(param);
 
         anim.SetTrigger("AttackTrigger");
-    }
-
-    public override void Expression(CharacterParam param)
-    {
-        base.Expression(param);
-
-
     }
 
     public override void Hit(CharacterParam param)
@@ -100,11 +91,11 @@ public partial class ActiveCharacter : Character
 
     }
 
-    public void SetAnimParamVector(float moveDir)
+    public void SetAnimParamVector(float _moveDir)
     {
-        ReverseSprites(moveDir);
+        ReverseSprites(_moveDir);
 
-        anim.SetFloat("DirX", moveDir);
+        anim.SetFloat("DirX", _moveDir);
     }
 
     private void ReverseSprites(float vecX)
@@ -116,5 +107,25 @@ public partial class ActiveCharacter : Character
 
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
+    }
+
+    public void SetJumpState(bool _jumpState)
+    {
+        if (jumpState == _jumpState) return;
+
+        jumpState = _jumpState;
+        anim.SetBool("IsJump", jumpState);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == ENUM_TAG_TYPE.Ground.ToString())
+            SetJumpState(false);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == ENUM_TAG_TYPE.Ground.ToString())
+            SetJumpState(true);
     }
 }

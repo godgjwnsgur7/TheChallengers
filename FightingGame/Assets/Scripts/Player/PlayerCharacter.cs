@@ -122,9 +122,6 @@ public class PlayerCharacter : MonoBehaviour
             case ENUM_PLAYER_STATE.Attack:
                 activeCharacter.Attack(param);
                 break;
-            case ENUM_PLAYER_STATE.Expression:
-                activeCharacter.Expression(param);
-                break;
             case ENUM_PLAYER_STATE.Hit:
                 activeCharacter.Hit(param);
                 break;

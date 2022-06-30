@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 애니메이터 KnightBody에 붙어있는 애니메이션 Idle
+/// Character Core : Idle
 /// </summary>
 public class Idle : StateMachineBehaviour
 {
