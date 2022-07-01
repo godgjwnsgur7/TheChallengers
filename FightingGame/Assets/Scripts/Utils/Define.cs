@@ -44,7 +44,7 @@ namespace FGDefine
     public enum ENUM_CHARACTER_TYPE
     {
         Default = 0,
-        Test = 1, // 지워질거임ㅋ
+        Knight = 1,
 
         Max
     }
