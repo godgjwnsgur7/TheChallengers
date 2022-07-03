@@ -11,6 +11,7 @@ public enum ENUM_SCENE_TYPE
     Selection, // 안쓸듯? UI로 쓸 거 같음 일단... ㅋ (임시)
     Battle,
     Loading,
+    Main,
 }
 
 public abstract class BaseScene : MonoBehaviour

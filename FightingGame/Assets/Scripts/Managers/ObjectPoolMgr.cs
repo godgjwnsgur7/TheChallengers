@@ -124,8 +124,11 @@ public class ObjectPoolMgr
 
     public void Clear()
     {
-        foreach(Transform child in root)
-            GameObject.Destroy(child.gameObject);
+        if (root != null)
+        {
+            foreach (Transform child in root)
+                GameObject.Destroy(child.gameObject);
+        }
 
         pools.Clear();
     }
