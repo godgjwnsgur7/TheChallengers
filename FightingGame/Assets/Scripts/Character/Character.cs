@@ -13,28 +13,38 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    public float moveDir = 0f;
-    public float moveSpeed;
-    public float jumpPower;
+    private float moveDir = 0f;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float jumpPower;
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
+    // 테스트 편의성을 위해 public
     public bool reverseState = false;
     public bool jumpState = false;
 
 
-    public InteractableObject GetForwardObjectWithRay()
+    public void GroundCheckWithRay()
     {
-        Vector2 CriteriaPos = rigid2D.position + new Vector2(0, 0.5f);
+        if (rigid2D == null)
+            return;
 
-        Debug.DrawRay(CriteriaPos, new Vector2(moveDir, 0f), Color.green);
-        RaycastHit2D rayHit;
 
-        rayHit = Physics2D.Raycast(CriteriaPos, new Vector2(moveDir, 0f), 1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Interaction.ToString()));
-        if (rayHit.collider != null)
-            return rayHit.collider.gameObject.GetComponent<InteractableObject>();
+        Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
 
-        return null;
+        RaycastHit2D rayHit = Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
+        
+        if(rayHit.collider != null)
+        {
+            Debug.Log(rayHit.distance);
+            
+        }
+        
+    }
+
+    private void Update()
+    {
+        GroundCheckWithRay();
     }
 
     public override void Init()
@@ -100,6 +110,11 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
+    public virtual void Skill()
+    {
+
+    }
+
     public virtual void Hit(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Hit;
@@ -109,5 +124,10 @@ public class Character : MonoBehaviourPhoton
     public virtual void Die(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Die;
+    }
+
+    public void Test()
+    {
+        Debug.DrawRay(rigid2D.position, Vector2.down, Color.green);
     }
 }

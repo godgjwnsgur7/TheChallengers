@@ -13,6 +13,9 @@ public class EnemyPlayer : MonoBehaviour
 
     public float moveDir = 0f;
 
+    public bool inabilityState = false;
+
+
     private void Awake()
     {
         if (activeCharacter == null)
@@ -33,29 +36,24 @@ public class EnemyPlayer : MonoBehaviour
     private void OnKeyboard()
     {
         // 공격
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             PlayerCommand(ENUM_PLAYER_STATE.Attack);
         }
 
-        // 셀프 히트ㅋㅋ
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            // 데미지는 일단 10으로 ㅋㅋ
-            PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterAttackParam(10.0f));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        // 점프
+        if (Input.GetKeyDown(KeyCode.M))
         {
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
         moveDir = 0f;
 
-        if (Input.GetKey(KeyCode.A)) moveDir = -1.0f;
-        if (Input.GetKey(KeyCode.D)) moveDir = 1.0f;
+        // 이동
+        if (Input.GetKey(KeyCode.LeftArrow)) moveDir = -1.0f;
+        if (Input.GetKey(KeyCode.RightArrow)) moveDir = 1.0f;
 
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
             moveDir = 0f;
 
         if (moveDir == 0f)

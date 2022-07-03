@@ -9,8 +9,6 @@ public class PlayerCharacter : MonoBehaviour
     public ActiveCharacter activeCharacter;
     [SerializeField] PlayerCamera playerCamera;
 
-    public InteractableObject interactableObject;
-
     public float moveDir = 0f;
 
     public bool inabilityState = false;
@@ -39,52 +37,24 @@ public class PlayerCharacter : MonoBehaviour
         OnKeyboard(); // 디버깅용
     }
 
-    private void ForwardScan()
-    {
-        var currObj = activeCharacter.GetForwardObjectWithRay();
-
-        if(currObj != null)
-            currObj.SetInteractable();
-        else
-            interactableObject?.UnsetInteractable();
-
-        interactableObject = currObj;
-    }
-
     // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
     {
         // 공격
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             PlayerCommand(ENUM_PLAYER_STATE.Attack);
         }
 
-        // 셀프 히트ㅋㅋ
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            // 데미지는 일단 10으로 ㅋㅋ
-            PlayerCommand(ENUM_PLAYER_STATE.Hit, new CharacterAttackParam(10.0f));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        // 점프
+        if (Input.GetKeyDown(KeyCode.G))
         {
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
-        // 상호작용 (무기) // 필요할까?
-        if(Input.GetKeyDown(KeyCode.G) && interactableObject != null)
-        {
-            interactableObject.Interact();
-
-            if(interactableObject.interactionType == ENUM_INTERACTION_TYPE.Weapon)
-            {
-            
-            }
-        }
-
         moveDir = 0f;
 
+        // 이동
         if (Input.GetKey(KeyCode.A)) moveDir = -1.0f;
         if (Input.GetKey(KeyCode.D)) moveDir = 1.0f;
 
@@ -114,7 +84,6 @@ public class PlayerCharacter : MonoBehaviour
                 break;
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
-                ForwardScan();
                 break;
             case ENUM_PLAYER_STATE.Jump:
                 activeCharacter.Jump();
