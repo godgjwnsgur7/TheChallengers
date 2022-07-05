@@ -15,7 +15,7 @@ public class ResourceMgr
                 name = name.Substring(index + 1);
 
             GameObject go = Managers.Pool.GetOriginal(name);
-            if(go != null)
+            if (go != null)
                 return go as T;
         }
 
@@ -45,6 +45,26 @@ public class ResourceMgr
         return go;
     }
 
+    public GameObject Instantiate(string path, Vector2 position)
+    {
+        GameObject original = Load<GameObject>($"Prefabs/{path}");
+        if (original == null)
+        {
+            Debug.Log($"Failed to load prefab : {path}");
+            return null;
+        }
+
+        // 풀링된 오브젝트일 경우 위탁
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original, position).gameObject;
+
+        GameObject go = Object.Instantiate(original);
+        go.transform.position = position;
+        go.name = original.name;
+        return go;
+    }
+
+
     public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType)
     {
         string path = charType.ToString();
@@ -57,7 +77,7 @@ public class ResourceMgr
     public void GenerateInPool(string path, int count, Transform parent = null)
     {
         GameObject original = Load<GameObject>($"Prefabs/{path}");
-        if(original == null)
+        if (original == null)
         {
             Debug.Log($"Failed to load prefab : {path}");
             return;

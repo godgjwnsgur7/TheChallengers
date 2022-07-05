@@ -13,7 +13,7 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    private float moveDir = 0f;
+    [SerializeField] protected float hp;
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpPower;
     public ENUM_CHARACTER_TYPE characterType;
@@ -22,6 +22,7 @@ public class Character : MonoBehaviourPhoton
     // 테스트 편의성을 위해 public
     public bool reverseState = false;
     public bool jumpState = false;
+    public bool invincibility = false;
 
 
     public void GroundCheckWithRay()
@@ -36,10 +37,10 @@ public class Character : MonoBehaviourPhoton
         
         if(rayHit.collider != null)
         {
-            Debug.Log(rayHit.distance);
-            
+            // rayHit.distance // 히트한 거리
+
         }
-        
+
     }
 
     private void Update()

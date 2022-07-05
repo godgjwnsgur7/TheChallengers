@@ -194,7 +194,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -213,14 +213,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 0}
+  hp: 0
   moveSpeed: 0
   jumpPower: 0
   characterType: 0
   currState: 0
   reverseState: 0
   jumpState: 0
+  invincibility: 0
   anim: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  attackObject: {fileID: 0}
   skills:
   - {fileID: 0}
   - {fileID: 0}
@@ -243,7 +246,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.500855, y: 3.5000002}
-    newSize: {x: 2.7692308, y: 2.3076923}
+    newSize: {x: 3.500855, y: 3.5000002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -291,12 +294,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -2875184811977189179, guid: 521190220b4be8f49a9f20d2df10c6f4, type: 3}
+  m_Sprite: {fileID: -2875184811977189179, guid: fc5b9ad90fb0d6c4daf63d02f79b7e8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.7692308, y: 2.3076923}
+  m_Size: {x: 3.500855, y: 3.5000002}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -315,14 +318,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 0}
-  moveSpeed: 5
-  jumpPower: 5
+  hp: 100
+  moveSpeed: 7
+  jumpPower: 15
   characterType: 1
   currState: 0
   reverseState: 1
   jumpState: 0
+  invincibility: 0
   anim: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  attackObject: {fileID: 0}
   skills:
   - {fileID: 0}
   - {fileID: 0}
@@ -336,14 +342,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 254949264}
+  - component: {fileID: 254949266}
   - component: {fileID: 254949265}
   m_Layer: 6
-  m_Name: BasicAttack
+  m_Name: AttackObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &254949264
 Transform:
   m_ObjectHideFlags: 0
@@ -351,15 +358,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254949263}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 865992058532031766}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &254949265
-PolygonCollider2D:
+--- !u!61 &254949265
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -368,7 +375,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -381,13 +388,22 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2}
+  m_EdgeRadius: 0
+--- !u!114 &254949266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254949263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba6ae364f96851409419fd56b53112b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUsing: 0
 --- !u!1 &323425870
 GameObject:
   m_ObjectHideFlags: 0
@@ -2579,7 +2595,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -2603,7 +2619,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.500855, y: 3.5000002}
-    newSize: {x: 2.7692308, y: 2.3076923}
+    newSize: {x: 3.500855, y: 3.5000002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -2660,14 +2676,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 0}
-  moveSpeed: 5
-  jumpPower: 5
+  hp: 100
+  moveSpeed: 7
+  jumpPower: 15
   characterType: 1
   currState: 0
   reverseState: 0
   jumpState: 0
+  invincibility: 0
   anim: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  attackObject: {fileID: 254949266}
   skills:
   - {fileID: 0}
   - {fileID: 0}
@@ -2731,12 +2750,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 20
-  m_Sprite: {fileID: -2875184811977189179, guid: 521190220b4be8f49a9f20d2df10c6f4, type: 3}
+  m_Sprite: {fileID: -2875184811977189179, guid: fc5b9ad90fb0d6c4daf63d02f79b7e8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.7692308, y: 2.3076923}
+  m_Size: {x: 3.500855, y: 3.5000002}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

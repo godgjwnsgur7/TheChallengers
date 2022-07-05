@@ -43,13 +43,20 @@ public class PlayerCharacter : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Attack);
+            CharacterAttackParam attackParam = new CharacterAttackParam(10f, 0.2f, 0.5f);
+            PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
         }
 
         // 점프
         if (Input.GetKeyDown(KeyCode.G))
         {
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
+        }
+
+        // 히트
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Hit);
         }
 
         moveDir = 0f;

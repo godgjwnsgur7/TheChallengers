@@ -55,6 +55,22 @@ public class ObjectPoolMgr
 
             return poolable;
         }
+
+        public Poolable Pop(Vector2 position)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            poolable.gameObject.SetActive(true);
+            poolable.transform.position = position;
+            poolable.isUsing = true;
+
+            return poolable;
+        }
     }
     #endregion
 
@@ -101,6 +117,14 @@ public class ObjectPoolMgr
             CreatePool(original, poolCount); // poolCount만큼 생성
 
         return pools[original.name].Pop(parent);
+    }
+
+    public Poolable Pop(GameObject original, Vector2 position)
+    {
+        if (pools.ContainsKey(original.name) == false)
+            CreatePool(original, poolCount); // poolCount만큼 생성
+
+        return pools[original.name].Pop(position);
     }
 
     public void GeneratePool(GameObject original, int count, Transform parent = null)

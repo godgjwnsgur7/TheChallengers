@@ -23,12 +23,23 @@ public class CharacterMoveParam : CharacterParam
     }
 }
 
+
 public class CharacterAttackParam : CharacterParam
 {
+    public Vector2 playerPos;
     public float damage;
+    public float judgmentDelay;
+    public float runTime;
 
-    public CharacterAttackParam(float _damage)
+    public CharacterAttackParam(float _damage, float _judgmentDelay, float _runTime)
     {
         damage = _damage;
+        judgmentDelay = _judgmentDelay;
+        runTime = _runTime;
+    }
+
+    public void SetPlayerPos(Vector2 _palyerPos)
+    {
+        playerPos = _palyerPos;
     }
 }

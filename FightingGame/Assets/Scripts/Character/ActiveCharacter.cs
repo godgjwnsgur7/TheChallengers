@@ -9,6 +9,10 @@ public partial class ActiveCharacter : Character
     public Animator anim;
     public SpriteRenderer spriteRenderer;
 
+    [SerializeField] protected Skill[] skills = new Skill[3];
+
+    public AttackObejct attackObject;
+
     public override void Init()
     {
         base.Init();
@@ -67,20 +71,34 @@ public partial class ActiveCharacter : Character
 
         base.Attack(param);
 
-        anim.SetTrigger("AttackTrigger");
+        var attackParam = param as CharacterAttackParam;
+
+        if (attackParam != null)
+        {
+            anim.SetTrigger("AttackTrigger");
+
+            attackObject = Managers.Resource.Instantiate("AttackObejcts/AttackObjectSample").GetComponent<AttackObejct>();
+            // attackObject.ActivatingAttackObject(attackParam);                
+            
+        }
+
+       
     }
 
     public override void Hit(CharacterParam param)
     {
-        base.Hit(param);
 
-        if (param == null) return;
+        if (param == null || invincibility) return;
+
+        base.Hit(param);
 
         var attackParam = param as CharacterAttackParam;
 
         if (attackParam != null)
         {
+            anim.SetTrigger("HitTrigger");
 
+            hp -= attackParam.damage;
         }
     }
 
@@ -108,6 +126,12 @@ public partial class ActiveCharacter : Character
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
     }
+
+    // 요기 밑에를 바꿀거야 알겠찌
+    // 코루틴으로 돌릴거야 돌린 다음...
+    // 코루틴에서 레이를 쏠거야 몰라 그럴거야 알겠어?
+    // 만약 하강상태면 바로 넘어가겠지 알아서 ㅋ 몰라 싀발 꺼져
+    // 코루틴에서 확인할 것 -> 
 
     public void SetJumpState(bool _jumpState)
     {
