@@ -64,26 +64,7 @@ public partial class ActiveCharacter : Character
         anim.SetTrigger("JumpTrigger");
     }
 
-    public override void Attack(CharacterParam param)
-    {
-        if(currState == ENUM_PLAYER_STATE.Attack)
-            return;
-
-        base.Attack(param);
-
-        var attackParam = param as CharacterAttackParam;
-
-        if (attackParam != null)
-        {
-            anim.SetTrigger("AttackTrigger");
-
-            attackObject = Managers.Resource.Instantiate("AttackObejcts/AttackObjectSample").GetComponent<AttackObejct>();
-            // attackObject.ActivatingAttackObject(attackParam);                
-            
-        }
-
-       
-    }
+    public override void Attack(CharacterParam param) { base.Attack(param); }
 
     public override void Hit(CharacterParam param)
     {
@@ -126,12 +107,6 @@ public partial class ActiveCharacter : Character
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
     }
-
-    // 요기 밑에를 바꿀거야 알겠찌
-    // 코루틴으로 돌릴거야 돌린 다음...
-    // 코루틴에서 레이를 쏠거야 몰라 그럴거야 알겠어?
-    // 만약 하강상태면 바로 넘어가겠지 알아서 ㅋ 몰라 싀발 꺼져
-    // 코루틴에서 확인할 것 -> 
 
     public void SetJumpState(bool _jumpState)
     {

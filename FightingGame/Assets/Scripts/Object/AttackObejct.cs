@@ -7,19 +7,15 @@ using FGDefine;
 public class AttackObejct : Poolable
 {
     public bool isSetting = false;
-
-    CharacterAttackParam attackParam = null;
-
+    [SerializeField] Vector2 vecPos;
+    
     public void ActivatingAttackObject(CharacterAttackParam _attackParam)
     {
-        attackParam = _attackParam;
-        
-        gameObject.SetActive(true);
+        StartCoroutine(IAttackRunTimeCheck(_attackParam.runTime));
     }
 
     private void OnEnable()
     {
-        Coroutine attackCoroutine = StartCoroutine(IAttackRunTimeCheck());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,9 +30,11 @@ public class AttackObejct : Poolable
             }
         }
     }
-
-    IEnumerator IAttackRunTimeCheck()
+    
+    IEnumerator IAttackRunTimeCheck(float _runTime)
     {
-        yield return null;
+        yield return new WaitForSeconds(_runTime);
+
+        Managers.Resource.Destroy(this.gameObject);
     }
 }
