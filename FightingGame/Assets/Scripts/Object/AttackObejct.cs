@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-
 public class AttackObejct : Poolable
 {
-    public bool isSetting = false;
     [SerializeField] Vector2 vecPos;
-    
-    public void ActivatingAttackObject(CharacterAttackParam _attackParam)
+
+    public void ActivatingAttackObject(CharacterAttackParam _attackParam, bool _reverseState)
     {
-        StartCoroutine(IAttackRunTimeCheck(_attackParam.runTime));
+        Debug.Log(_attackParam.runTime);
+
+        transform.position = new Vector2(transform.position.x + (_reverseState ? vecPos.x * (-1) : vecPos.x), transform.position.y + vecPos.y);
+        gameObject.SetActive(true);
+
+        CoroutineHelper.StartCoroutine(IAttackRunTimeCheck(_attackParam.runTime));
+
     }
 
     private void OnEnable()
@@ -30,11 +34,11 @@ public class AttackObejct : Poolable
             }
         }
     }
-    
-    IEnumerator IAttackRunTimeCheck(float _runTime)
+
+    private IEnumerator IAttackRunTimeCheck(float _runTime)
     {
         yield return new WaitForSeconds(_runTime);
 
-        Managers.Resource.Destroy(this.gameObject);
+        Managers.Resource.Destroy(gameObject);
     }
 }

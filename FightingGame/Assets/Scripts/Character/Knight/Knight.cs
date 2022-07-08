@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
+/// <summary>
+/// 해당 공격 타입의 AttackObject의 이름과 같아야 함
+/// </summary>
 public enum ENUM_KNIGHT_ATTACK_TYPE
 {
-
+    Attack,
 }
 
 public class Knight : ActiveCharacter
@@ -31,11 +34,14 @@ public class Knight : ActiveCharacter
         {
             anim.SetTrigger("AttackTrigger");
 
-            attackObject = Managers.Resource.Instantiate($"AttackObejcts/{characterType}_Attack", gameObject.transform.position).GetComponent<AttackObejct>();
-            attackObject.ActivatingAttackObject(attackParam);                
+            string path = characterType.ToString() + "/" + ENUM_KNIGHT_ATTACK_TYPE.Attack.ToString();
+            GameObject g = Managers.Resource.GetAttackObject(path);
+            attackObject = g.gameObject.GetComponent<AttackObejct>();
 
+            if(attackObject != null)
+            {
+                StartCoroutine(IAttackDelayTimeCheck(attackParam));
+            }
         }
-
-
     }
 }

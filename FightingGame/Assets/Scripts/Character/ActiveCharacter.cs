@@ -127,4 +127,12 @@ public partial class ActiveCharacter : Character
         if (collision.gameObject.tag == ENUM_TAG_TYPE.Ground.ToString())
             SetJumpState(true);
     }
+
+    protected IEnumerator IAttackDelayTimeCheck(CharacterAttackParam _attackParam)
+    {
+        yield return new WaitForSeconds(_attackParam.delayTime);
+
+        attackObject.transform.position = gameObject.transform.position;
+        attackObject.ActivatingAttackObject(_attackParam, reverseState);
+    }
 }

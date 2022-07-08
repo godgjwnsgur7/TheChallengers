@@ -10,7 +10,7 @@ public class BattleScene : BaseScene
 
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack", 5); // 테스트 코드
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight/Attack", 5); // 테스트 코드
         
     }
 

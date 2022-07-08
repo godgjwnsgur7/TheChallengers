@@ -64,6 +64,23 @@ public class ResourceMgr
         return go;
     }
 
+    public GameObject GetAttackObject(string path)
+    {
+        GameObject original = Load<GameObject>($"Prefabs/AttackObejcts/{path}");
+        if(original == null)
+        {
+            Debug.Log($"Failed to load prefab : {path}");
+            return null;
+        }
+
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original, false).gameObject;
+
+        Debug.Log($"Not Pooling Object : {path}");
+        GameObject go = Object.Instantiate(original);
+        go.name = original.name;
+        return go;
+    }
 
     public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType)
     {

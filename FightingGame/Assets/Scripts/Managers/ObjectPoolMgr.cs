@@ -48,9 +48,26 @@ public class ObjectPoolMgr
                 poolable = poolStack.Pop();
             else
                 poolable = Create();
-
+            
             poolable.gameObject.SetActive(true);
             poolable.transform.parent = parent;
+            poolable.isUsing = true;
+
+            return poolable;
+        }
+
+        public Poolable Pop(bool active)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            if(active)
+                poolable.gameObject.SetActive(true);
+            
             poolable.isUsing = true;
 
             return poolable;
@@ -117,6 +134,14 @@ public class ObjectPoolMgr
             CreatePool(original, poolCount); // poolCount만큼 생성
 
         return pools[original.name].Pop(parent);
+    }
+
+    public Poolable Pop(GameObject original, bool active = true)
+    {
+        if (pools.ContainsKey(original.name) == false)
+            CreatePool(original, poolCount); // poolCount만큼 생성
+
+        return pools[original.name].Pop(active);
     }
 
     public Poolable Pop(GameObject original, Vector2 position)

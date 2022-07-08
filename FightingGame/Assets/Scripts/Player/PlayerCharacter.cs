@@ -43,7 +43,7 @@ public class PlayerCharacter : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(10f, 0.2f, 0.5f);
+            CharacterAttackParam attackParam = new CharacterAttackParam(10f, 0.5f, 0.5f);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
         }
 

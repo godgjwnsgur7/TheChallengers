@@ -28,13 +28,14 @@ public class CharacterAttackParam : CharacterParam
 {
     public Vector2 playerPos;
     public float damage;
-    public float judgmentDelay;
+    public float delayTime;
     public float runTime;
 
-    public CharacterAttackParam(float _damage, float _judgmentDelay, float _runTime)
+    public CharacterAttackParam(float _damage, float _runTime, float _delayTime = 0f)
     {
+        playerPos = Vector2.zero;
         damage = _damage;
-        judgmentDelay = _judgmentDelay;
+        delayTime = _delayTime;
         runTime = _runTime;
     }
 
