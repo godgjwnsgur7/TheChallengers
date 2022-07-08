@@ -12,6 +12,7 @@ public enum ENUM_SCENE_TYPE
     Battle,
     Loading,
     Main,
+    Start,
 }
 
 public abstract class BaseScene : MonoBehaviour
