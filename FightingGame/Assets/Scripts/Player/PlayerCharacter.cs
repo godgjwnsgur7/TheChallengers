@@ -43,7 +43,7 @@ public class PlayerCharacter : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(10f, 0.5f, 0.5f);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
         }
 
@@ -53,9 +53,10 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
-        // 히트
+        // 평타에 히트
         if (Input.GetKeyDown(KeyCode.H))
         {
+            CharacterAttackParam characterAttack = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack);
             PlayerCommand(ENUM_PLAYER_STATE.Hit);
         }
 

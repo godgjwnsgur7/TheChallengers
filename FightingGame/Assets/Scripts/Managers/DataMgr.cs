@@ -2,23 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using FGDefine;
 
 public interface ILoader<Key, Value>
 {
-    Dictionary<Key, Test> MakeDict();
+    Dictionary<Key, Skill> MakeDict(); 
 }
 
 // 예제코드만 존재하는 상태
 public class DataMgr
 {
-    // 게임 내의 모든 정적 데이터를 관리하는 매니저가 될 것.
-    // + 게임 내의 설정값 등을 PlayerPref을 활용하여 저장해놓을 예정 (미구현)
-
-    public Dictionary<int, Test> testDict { get; private set; } = new Dictionary<int, Test>();
-
+    public Dictionary<ENUM_SKILL_TYPE, Skill> SkillDict { get; private set; } = new Dictionary<ENUM_SKILL_TYPE, Skill>();
+    
     public void Init()
     {
-        testDict = LoadJson<TestData, int, Test>("TestData").MakeDict();
+        SkillDict = LoadJson<SkillData, ENUM_SKILL_TYPE, Skill>("SkillData").MakeDict();
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

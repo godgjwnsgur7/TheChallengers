@@ -2,26 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using FGDefine;
 
-#region Test
+#region Skills
+/// <summary>
+/// 모든 캐릭터의 스킬 타입 (Key)
+/// </summary>
 [Serializable]
-public class Test
+public enum ENUM_SKILL_TYPE
 {
-    public int intValue;
-    public string stringValue;
+    Knight_Attack = 0,
+    Knight_JumpAttack = 1,
+
+
 }
 
 [Serializable]
-public class TestData : ILoader<int, Test>
+public class Skill
 {
-    public List<Test> testList = new List<Test>();
+    public ENUM_SKILL_TYPE skillType;
+    public float damage;
+    public float delayTime;
+    public float runTime;
+    public float risingPower;
+}
 
-    public Dictionary<int, Test> MakeDict()
+[Serializable]
+public class SkillData : ILoader<ENUM_SKILL_TYPE, Skill>
+{
+    public List<Skill> SkillList = new List<Skill>();
+
+    public Dictionary<ENUM_SKILL_TYPE, Skill> MakeDict()
     {
-        Dictionary<int, Test> testDict = new Dictionary<int, Test>();
-        foreach (Test test in testList)
-            testDict.Add(test.intValue, test);
-        return testDict;
+        Dictionary<ENUM_SKILL_TYPE, Skill> skillDict = new Dictionary<ENUM_SKILL_TYPE, Skill>();
+        foreach (Skill skill in SkillList)
+            skillDict.Add(skill.skillType, skill);
+        return skillDict;
     }
 }
 #endregion

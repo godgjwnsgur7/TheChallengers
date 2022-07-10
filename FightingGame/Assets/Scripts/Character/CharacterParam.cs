@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 /// <summary>
 /// 캐릭터의 스테이트를 변경하기 위해 사용하는 파라미터 목록
@@ -26,21 +27,10 @@ public class CharacterMoveParam : CharacterParam
 
 public class CharacterAttackParam : CharacterParam
 {
-    public Vector2 playerPos;
-    public float damage;
-    public float delayTime;
-    public float runTime;
+    public ENUM_SKILL_TYPE skillType;
 
-    public CharacterAttackParam(float _damage, float _runTime, float _delayTime = 0f)
+    public CharacterAttackParam(ENUM_SKILL_TYPE _skillType)
     {
-        playerPos = Vector2.zero;
-        damage = _damage;
-        delayTime = _delayTime;
-        runTime = _runTime;
-    }
-
-    public void SetPlayerPos(Vector2 _palyerPos)
-    {
-        playerPos = _palyerPos;
+        skillType = _skillType;
     }
 }

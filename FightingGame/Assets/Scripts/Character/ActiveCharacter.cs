@@ -71,15 +71,16 @@ public partial class ActiveCharacter : Character
 
         if (param == null || invincibility) return;
 
-        base.Hit(param);
-
         var attackParam = param as CharacterAttackParam;
 
         if (attackParam != null)
         {
-            anim.SetTrigger("HitTrigger");
-
-            hp -= attackParam.damage;
+            if(Managers.Data.SkillDict.TryGetValue(attackParam.skillType, out Skill _skillData))
+            {
+                base.Hit(param);
+                anim.SetBool("IsHit", true);
+                hp -= _skillData.damage;
+            }
         }
     }
 
@@ -130,7 +131,13 @@ public partial class ActiveCharacter : Character
 
     protected IEnumerator IAttackDelayTimeCheck(CharacterAttackParam _attackParam)
     {
-        yield return new WaitForSeconds(_attackParam.delayTime);
+        Skill skill = null;
+        if(!Managers.Data.SkillDict.TryGetValue(_attackParam.skillType, out skill))
+        {
+            Debug.Log("찾을 수 없음");
+            yield break;
+        }
+        yield return new WaitForSeconds(skill.delayTime);
 
         attackObject.transform.position = gameObject.transform.position;
         attackObject.ActivatingAttackObject(_attackParam, reverseState);

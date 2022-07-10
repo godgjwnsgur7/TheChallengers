@@ -7,31 +7,39 @@ public class AttackObejct : Poolable
 {
     [SerializeField] Vector2 vecPos;
 
+    public Skill skillValue;
+
+    public void Init()
+    {
+
+    }
+
     public void ActivatingAttackObject(CharacterAttackParam _attackParam, bool _reverseState)
     {
-        Debug.Log(_attackParam.runTime);
+
 
         transform.position = new Vector2(transform.position.x + (_reverseState ? vecPos.x * (-1) : vecPos.x), transform.position.y + vecPos.y);
         gameObject.SetActive(true);
 
-        CoroutineHelper.StartCoroutine(IAttackRunTimeCheck(_attackParam.runTime));
+        CoroutineHelper.StartCoroutine(IAttackRunTimeCheck(skillValue.runTime));
 
-    }
-
-    private void OnEnable()
-    {
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == ENUM_TAG_TYPE.Enemy.ToString())
+        Debug.Log("아니 왜 안돼 ㅋㅋㄹㅃㅃ");
+
+        if (collision.tag == ENUM_TAG_TYPE.Enemy.ToString())
         {
             ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
-            if(enemyCharacter != null)
+            if (enemyCharacter != null && skillValue != null)
             {
-                // enemyCharacter.Hit(attackParam);
+                CharacterAttackParam attackParam = new CharacterAttackParam(skillValue.skillType);
+                enemyCharacter.Hit(attackParam);
             }
+            else
+                Debug.Log($"{gameObject.name} 이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
         }
     }
 
@@ -39,6 +47,7 @@ public class AttackObejct : Poolable
     {
         yield return new WaitForSeconds(_runTime);
 
+        skillValue = null;
         Managers.Resource.Destroy(gameObject);
     }
 }
