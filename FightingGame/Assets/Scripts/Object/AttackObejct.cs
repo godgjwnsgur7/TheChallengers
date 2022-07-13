@@ -15,8 +15,10 @@ public class AttackObejct : Poolable
         ENUM_SKILL_TYPE skill = (ENUM_SKILL_TYPE)Enum.Parse(typeof(ENUM_SKILL_TYPE), gameObject.name.ToString());
         if (!Managers.Data.SkillDict.TryGetValue((int)skill, out skillValue))
         {
-            Debug.Log("AttackObject를 초기화하지 못했습니다.");
+            Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
         }
+
+        
     }
 
     public void ActivatingAttackObject(CharacterAttackParam _attackParam, bool _reverseState)
@@ -41,7 +43,10 @@ public class AttackObejct : Poolable
                 enemyCharacter.Hit(attackParam);
             }
             else
+            {
                 Debug.Log($"{gameObject.name} 이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
+            }
+               
         }
     }
 
@@ -49,7 +54,6 @@ public class AttackObejct : Poolable
     {
         yield return new WaitForSeconds(_runTime);
 
-        skillValue = null;
         Managers.Resource.Destroy(gameObject);
     }
 }

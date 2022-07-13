@@ -124,27 +124,30 @@ public partial class ActiveCharacter : Character
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == ENUM_TAG_TYPE.Ground.ToString())
+        if (collision.gameObject.tag.ToString() == ENUM_TAG_TYPE.Ground.ToString())
             SetJumpState(false);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == ENUM_TAG_TYPE.Ground.ToString())
+        if (collision.gameObject.tag.ToString() == ENUM_TAG_TYPE.Ground.ToString())
             SetJumpState(true);
     }
 
     protected IEnumerator IAttackDelayTimeCheck(CharacterAttackParam _attackParam)
     {
-        Skill skill;
-        if(!Managers.Data.SkillDict.TryGetValue((int)_attackParam.skillType, out skill))
+        float delayTime;
+        if(Managers.Data.SkillDict.TryGetValue((int)_attackParam.skillType, out Skill skill))
+        {
+            delayTime = skill.delayTime;
+        }
+        else
         {
             Debug.Log("찾을 수 없음");
-            
             yield break;
         }
 
-        yield return new WaitForSeconds(skill.delayTime);
+        yield return new WaitForSeconds(delayTime);
 
         attackObject.transform.position = gameObject.transform.position;
         attackObject.ActivatingAttackObject(_attackParam, reverseState);

@@ -5,8 +5,6 @@ using FGDefine;
 
 public class Knight : ActiveCharacter
 {
-    
-
     public override void Init()
     {
         characterType = ENUM_CHARACTER_TYPE.Knight;
@@ -15,12 +13,6 @@ public class Knight : ActiveCharacter
 
         // 테스트 코드
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack", 3);
-
-        // Get_SkillData();
-    }
-
-    private void Get_SkillData()
-    {
 
     }
 
