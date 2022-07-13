@@ -36,6 +36,7 @@ public class ObjectPoolMgr
             poolable.transform.parent = Root;
             poolable.gameObject.SetActive(false);
             poolable.isUsing = false;
+            poolable.Init();
 
             poolStack.Push(poolable);
         }

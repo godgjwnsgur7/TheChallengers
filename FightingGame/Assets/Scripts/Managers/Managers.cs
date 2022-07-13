@@ -30,7 +30,7 @@ public class Managers : MonoBehaviour
     public static DBSession DbSession { get { return Instance.dbSession; } }
     public static AdMobController AdMob { get { return Instance.adMob; } }
     public static CoffeeMachine IAPController { get { return Instance.iapController; } }
-
+    
     private void Start()
     {
         Init();

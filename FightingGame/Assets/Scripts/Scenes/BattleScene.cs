@@ -4,14 +4,17 @@ using FGDefine;
 
 public class BattleScene : BaseScene
 {
+    public Skill skill;
+
     public override void Init()
     {
         base.Init();
 
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack", 5); // 테스트 코드
-        
+        Managers.Data.SkillDict.TryGetValue(0, out skill);
+
+
     }
 
     public override void Clear()

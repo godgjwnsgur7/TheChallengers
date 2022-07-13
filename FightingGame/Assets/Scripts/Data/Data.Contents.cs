@@ -20,22 +20,23 @@ public enum ENUM_SKILL_TYPE
 [Serializable]
 public class Skill
 {
-    public ENUM_SKILL_TYPE skillType;
+    public int skillType; // ENUM_SKILL_TYPE
     public float damage;
     public float delayTime;
     public float runTime;
+    public float stunTime;
     public float risingPower;
 }
 
 [Serializable]
-public class SkillData : ILoader<ENUM_SKILL_TYPE, Skill>
+public class SkillData : ILoader<int, Skill>
 {
-    public List<Skill> SkillList = new List<Skill>();
+    public List<Skill> Skills = new List<Skill>();
 
-    public Dictionary<ENUM_SKILL_TYPE, Skill> MakeDict()
+    public Dictionary<int, Skill> MakeDict()
     {
-        Dictionary<ENUM_SKILL_TYPE, Skill> skillDict = new Dictionary<ENUM_SKILL_TYPE, Skill>();
-        foreach (Skill skill in SkillList)
+        Dictionary<int, Skill> skillDict = new Dictionary<int, Skill>();
+        foreach (Skill skill in Skills)
             skillDict.Add(skill.skillType, skill);
         return skillDict;
     }

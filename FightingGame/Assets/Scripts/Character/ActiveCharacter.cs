@@ -64,7 +64,12 @@ public partial class ActiveCharacter : Character
         anim.SetTrigger("JumpTrigger");
     }
 
-    public override void Attack(CharacterParam param) { base.Attack(param); }
+    public override void Attack(CharacterParam param)
+    {
+        if (attackObject != null)
+            attackObject = null;
+        base.Attack(param);
+    }
 
     public override void Hit(CharacterParam param)
     {
@@ -75,7 +80,7 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            if(Managers.Data.SkillDict.TryGetValue(attackParam.skillType, out Skill _skillData))
+            if(Managers.Data.SkillDict.TryGetValue((int)attackParam.skillType, out Skill _skillData))
             {
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
@@ -131,12 +136,14 @@ public partial class ActiveCharacter : Character
 
     protected IEnumerator IAttackDelayTimeCheck(CharacterAttackParam _attackParam)
     {
-        Skill skill = null;
-        if(!Managers.Data.SkillDict.TryGetValue(_attackParam.skillType, out skill))
+        Skill skill;
+        if(!Managers.Data.SkillDict.TryGetValue((int)_attackParam.skillType, out skill))
         {
             Debug.Log("찾을 수 없음");
+            
             yield break;
         }
+
         yield return new WaitForSeconds(skill.delayTime);
 
         attackObject.transform.position = gameObject.transform.position;

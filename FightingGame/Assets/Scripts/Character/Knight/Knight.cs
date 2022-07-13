@@ -5,20 +5,22 @@ using FGDefine;
 
 public class Knight : ActiveCharacter
 {
-    Dictionary<ENUM_SKILL_TYPE, Skill> skillDict;
     
+
     public override void Init()
     {
         characterType = ENUM_CHARACTER_TYPE.Knight;
 
         base.Init();
 
-        Get_SkillData();
+        // 테스트 코드
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack", 3);
+
+        // Get_SkillData();
     }
 
     private void Get_SkillData()
     {
-        skillDict = new Dictionary<ENUM_SKILL_TYPE, Skill>();
 
     }
 
@@ -36,13 +38,11 @@ public class Knight : ActiveCharacter
             anim.SetTrigger("AttackTrigger");
 
             string path = ENUM_SKILL_TYPE.Knight_Attack.ToString();
-            GameObject g = Managers.Resource.GetAttackObject(path);
-            attackObject = g.gameObject.GetComponent<AttackObejct>();
+            attackObject = Managers.Resource.GetAttackObject(path);
 
-            if(attackObject != null)
+            if (attackObject != null)
             {
                 StartCoroutine(IAttackDelayTimeCheck(attackParam));
-                attackObject = null;
             }
         }
     }
