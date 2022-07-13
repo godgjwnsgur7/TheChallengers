@@ -31,8 +31,6 @@ public class AttackObejct : Poolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("아니 왜 안돼 ㅋㅋㄹㅃㅃ");
-
         if (collision.tag == ENUM_TAG_TYPE.Enemy.ToString())
         {
             ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();

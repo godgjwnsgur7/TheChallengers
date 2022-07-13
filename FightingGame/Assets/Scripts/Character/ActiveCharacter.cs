@@ -73,7 +73,6 @@ public partial class ActiveCharacter : Character
 
     public override void Hit(CharacterParam param)
     {
-
         if (param == null || invincibility) return;
 
         var attackParam = param as CharacterAttackParam;
@@ -85,6 +84,8 @@ public partial class ActiveCharacter : Character
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
                 hp -= _skillData.damage;
+                StopCoroutine("IHitRunTimeCheck"); // 문제가 있다 ㅎ;
+                StartCoroutine(IHitRunTimeCheck(_skillData.runTime));
             }
         }
     }
@@ -151,5 +152,13 @@ public partial class ActiveCharacter : Character
 
         attackObject.transform.position = gameObject.transform.position;
         attackObject.ActivatingAttackObject(_attackParam, reverseState);
+    }
+
+    protected IEnumerator IHitRunTimeCheck(float _hitTime)
+    {
+        yield return new WaitForSeconds(_hitTime);
+
+        if(currState == ENUM_PLAYER_STATE.Hit)
+            anim.SetBool("IsHit", false);
     }
 }
