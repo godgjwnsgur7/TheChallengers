@@ -53,13 +53,6 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
-        // 평타에 히트
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            CharacterAttackParam characterAttack = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack);
-            PlayerCommand(ENUM_PLAYER_STATE.Hit);
-        }
-
         moveDir = 0f;
 
         // 이동

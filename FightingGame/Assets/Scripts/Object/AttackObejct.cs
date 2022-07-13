@@ -21,7 +21,7 @@ public class AttackObejct : Poolable
         
     }
 
-    public void ActivatingAttackObject(CharacterAttackParam _attackParam, bool _reverseState)
+    public void ActivatingAttackObject(bool _reverseState)
     {
         transform.position = new Vector2(transform.position.x + (_reverseState ? vecPos.x * (-1) : vecPos.x), transform.position.y + vecPos.y);
         gameObject.SetActive(true);
@@ -31,7 +31,7 @@ public class AttackObejct : Poolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == ENUM_TAG_TYPE.Enemy.ToString())
+        if (collision.tag.ToString() == ENUM_TAG_TYPE.Enemy.ToString())
         {
             ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
@@ -39,6 +39,9 @@ public class AttackObejct : Poolable
             {
                 CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType);
                 enemyCharacter.Hit(attackParam);
+
+                // 힘을 주는 방식에 대한 테스트중
+                enemyCharacter.rigid2D.AddForce(new Vector2(1, 10), ForceMode2D.Impulse);
             }
             else
             {

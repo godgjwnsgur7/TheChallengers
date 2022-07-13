@@ -151,7 +151,7 @@ public partial class ActiveCharacter : Character
         yield return new WaitForSeconds(delayTime);
 
         attackObject.transform.position = gameObject.transform.position;
-        attackObject.ActivatingAttackObject(_attackParam, reverseState);
+        attackObject.ActivatingAttackObject(reverseState);
     }
 
     protected IEnumerator IHitRunTimeCheck(float _hitTime)

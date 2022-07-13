@@ -126,9 +126,4 @@ public class Character : MonoBehaviourPhoton
     {
         currState = ENUM_PLAYER_STATE.Die;
     }
-
-    public void Test()
-    {
-        Debug.DrawRay(rigid2D.position, Vector2.down, Color.green);
-    }
 }
