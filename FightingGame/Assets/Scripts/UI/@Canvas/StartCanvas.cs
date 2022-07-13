@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class StartCanvas : BaseCanvas
 {
-    bool isLogin = true;
+    bool isLogin = false;
     [SerializeField] InteractableUI interactableUI;
+    [SerializeField] ProduceUI produceUI;
 
     public override void Close<T>()
     {
         if (typeof(T) == typeof(InteractableUI)) interactableUI.Close();
+        else if (typeof(T) == typeof(ProduceUI)) produceUI.Close();
         else Debug.Log("범위 벗어남");
     }
 
     public override void Open<T>(UIParam param = null)
     {
         if (typeof(T) == typeof(InteractableUI)) interactableUI.Open();
+        else if (typeof(T) == typeof(ProduceUI)) produceUI.Open();
         else Debug.Log("범위 벗어남");
     }
 
@@ -36,5 +39,13 @@ public class StartCanvas : BaseCanvas
                 Open<InteractableUI>();
             }
         }
+    }
+
+    public void OnClickProduce() 
+    {
+        if (produceUI.gameObject.activeSelf)
+            Close<ProduceUI>();
+        else
+            Open<ProduceUI>();
     }
 }
