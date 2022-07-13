@@ -64,7 +64,7 @@ public class ResourceMgr
         return go;
     }
 
-    public GameObject GetAttackObject(string path)
+    public AttackObejct GetAttackObject(string path)
     {
         GameObject original = Load<GameObject>($"Prefabs/AttackObejcts/{path}");
         if(original == null)
@@ -74,12 +74,15 @@ public class ResourceMgr
         }
 
         if (original.GetComponent<Poolable>() != null)
-            return Managers.Pool.Pop(original, false).gameObject;
+        {
+            AttackObejct attackObejct = Managers.Pool.Pop(original, false) as AttackObejct;
+
+            if (attackObejct != null)
+                return attackObejct;
+        }
 
         Debug.Log($"Not Pooling Object : {path}");
-        GameObject go = Object.Instantiate(original);
-        go.name = original.name;
-        return go;
+        return null;
     }
 
     public RuntimeAnimatorController GetAnimator(ENUM_CHARACTER_TYPE charType)

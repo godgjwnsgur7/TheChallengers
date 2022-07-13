@@ -9,14 +9,14 @@ public interface ILoader<Key, Value>
     Dictionary<Key, Skill> MakeDict(); 
 }
 
-// 예제코드만 존재하는 상태
 public class DataMgr
 {
-    public Dictionary<ENUM_SKILL_TYPE, Skill> SkillDict { get; private set; } = new Dictionary<ENUM_SKILL_TYPE, Skill>();
-    
+    public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
+
     public void Init()
     {
-        SkillDict = LoadJson<SkillData, ENUM_SKILL_TYPE, Skill>("SkillData").MakeDict();
+        SkillDict = LoadJson<SkillData, int, Skill>("SkillData").MakeDict();
+
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
