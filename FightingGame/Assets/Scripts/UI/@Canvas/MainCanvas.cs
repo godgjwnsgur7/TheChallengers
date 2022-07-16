@@ -1,50 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class MainCanvas : BaseCanvas
 {
-    [SerializeField] MainButtonUI buttonUI;
-    [SerializeField] MainPopupUI popupUI;
-
-    public enum ENUM_BUTTON_TYPE 
-    {
-        Matching = 1,
-        Custom = 2,
-        Ranking = 3,
-        Character = 4,
-        Setting = 5,
-    }
+    [SerializeField] ButtonUI buttonUI;
+    [SerializeField] WindowUI windowUI;
 
     public override void Open<T>(UIParam param = null)
     {
-        if (typeof(T) == typeof(MainButtonUI)) buttonUI.Open();
-        else if (typeof(T) == typeof(MainPopupUI)) popupUI.Open();
+        if (typeof(T) == typeof(ButtonUI)) buttonUI.Open();
+        else if (typeof(T) == typeof(WindowUI)) windowUI.Open();
         else Debug.Log("범위 벗어남");
     }
 
     public override void Close<T>()
     {
-        if (typeof(T) == typeof(MainButtonUI)) buttonUI.Close();
-        else if (typeof(T) == typeof(MainPopupUI)) popupUI.Close();
+        if (typeof(T) == typeof(ButtonUI)) buttonUI.Close();
+        else if (typeof(T) == typeof(WindowUI)) windowUI.Close();
         else Debug.Log("범위 벗어남");
     }
 
-    public void OnClickButton(int btnInt) {
-        ENUM_BUTTON_TYPE btnType = (ENUM_BUTTON_TYPE)btnInt;
-
-        switch (btnType) 
+    public void OnClickButton(string btnText)
+    {
+        switch (btnText)
         {
-            case ENUM_BUTTON_TYPE.Matching:
-                Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+            case "Match":
+                //Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+                SceneManager.LoadScene("Lobby");
                 break;
-            case ENUM_BUTTON_TYPE.Custom:
+            case "Custom":
                 break;
-            case ENUM_BUTTON_TYPE.Ranking:
-            case ENUM_BUTTON_TYPE.Character:
-            case ENUM_BUTTON_TYPE.Setting:
-                Open<MainPopupUI>();
-                popupUI.OpenPane((int)btnType);
+            case "Rank":
+                Open<WindowUI>();
+                windowUI.OpenWindow<RankWindow>();
+                break;
+            case "Character":
+                Open<WindowUI>();
+                windowUI.OpenWindow<CharacterWindow>();
+                break;
+            case "Setting":
+                Open<WindowUI>();
+                windowUI.OpenWindow<SettingWindow>();
                 break;
         }
     }

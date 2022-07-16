@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StartCanvas : BaseCanvas
 {
-    bool isLogin = false;
+    bool isLogin = true;
     [SerializeField] InteractableUI interactableUI;
     [SerializeField] ProduceUI produceUI;
 
