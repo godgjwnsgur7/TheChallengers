@@ -13,6 +13,8 @@ public partial class ActiveCharacter : Character
 
     public AttackObejct attackObject;
 
+   
+
     public override void Init()
     {
         base.Init();
@@ -135,30 +137,17 @@ public partial class ActiveCharacter : Character
             SetJumpState(true);
     }
 
-    protected IEnumerator IAttackDelayTimeCheck(CharacterAttackParam _attackParam)
-    {
-        float delayTime;
-        if(Managers.Data.SkillDict.TryGetValue((int)_attackParam.skillType, out Skill skill))
-        {
-            delayTime = skill.delayTime;
-        }
-        else
-        {
-            Debug.Log("찾을 수 없음");
-            yield break;
-        }
-
-        yield return new WaitForSeconds(delayTime);
-
-        attackObject.transform.position = gameObject.transform.position;
-        attackObject.ActivatingAttackObject(reverseState);
-    }
-
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
         yield return new WaitForSeconds(_hitTime);
 
         if(currState == ENUM_PLAYER_STATE.Hit)
             anim.SetBool("IsHit", false);
+    }
+
+    public void Checking_AttackState()
+    {
+        if (!attackState)
+            anim.SetBool("IsIdle", true);
     }
 }

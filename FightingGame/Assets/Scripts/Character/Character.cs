@@ -23,7 +23,7 @@ public class Character : MonoBehaviourPhoton
     public bool reverseState = false;
     public bool jumpState = false;
     public bool invincibility = false;
-
+    public bool attackState = false;
 
     public void GroundCheckWithRay()
     {
@@ -126,4 +126,5 @@ public class Character : MonoBehaviourPhoton
     {
         currState = ENUM_PLAYER_STATE.Die;
     }
+
 }

@@ -50,6 +50,22 @@ namespace FGDefine
     }
 
     /// <summary>
+    /// "Resources/Prefabs/AttackObjects"
+    /// 경로 안에 같은 이름의 Prefabs가 있어야 함 (AttackObject)
+    /// 모든 캐릭터의 스킬 타입 (Key)
+    /// </summary>
+    [Serializable]
+    public enum ENUM_SKILL_TYPE
+    {
+        Knight_JumpAttack = 0,
+        Knight_Attack1 = 1,
+        Knight_Attack2 = 2,
+        Knight_Attack3 = 3,
+
+
+    }
+
+    /// <summary>
     /// "Resources/Sounds/BGM/"
     /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
     /// </summary>

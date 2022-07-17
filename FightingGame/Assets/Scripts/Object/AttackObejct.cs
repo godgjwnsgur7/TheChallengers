@@ -6,8 +6,6 @@ using System;
 
 public class AttackObejct : Poolable
 {
-    [SerializeField] Vector2 vecPos;
-
     public Skill skillValue;
 
     public override void Init()
@@ -23,7 +21,8 @@ public class AttackObejct : Poolable
 
     public void ActivatingAttackObject(bool _reverseState)
     {
-        transform.position = new Vector2(transform.position.x + (_reverseState ? vecPos.x * (-1) : vecPos.x), transform.position.y + vecPos.y);
+        transform.localEulerAngles = _reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
+
         gameObject.SetActive(true);
 
         CoroutineHelper.StartCoroutine(IAttackRunTimeCheck(skillValue.runTime));

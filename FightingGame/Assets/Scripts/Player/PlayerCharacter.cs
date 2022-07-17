@@ -43,8 +43,14 @@ public class PlayerCharacter : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
+            activeCharacter.attackState = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            activeCharacter.attackState = false;
         }
 
         // 점프

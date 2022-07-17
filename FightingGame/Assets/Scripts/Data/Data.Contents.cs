@@ -5,27 +5,16 @@ using System;
 using FGDefine;
 
 #region Skills
-/// <summary>
-/// 모든 캐릭터의 스킬 타입 (Key)
-/// </summary>
-[Serializable]
-public enum ENUM_SKILL_TYPE
-{
-    Knight_Attack = 0,
-    Knight_JumpAttack = 1,
-
-
-}
 
 [Serializable]
 public class Skill
 {
-    public int skillType; // ENUM_SKILL_TYPE
+    public int skillType; // ENUM_SKILL_TYPE (Key)
     public float damage;
-    public float delayTime;
     public float runTime;
     public float stunTime;
     public float risingPower;
+    public float pushingPower;
 }
 
 [Serializable]
