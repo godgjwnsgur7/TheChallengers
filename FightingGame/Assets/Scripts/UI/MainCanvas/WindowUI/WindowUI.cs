@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WindowUI : UIElement
 {
+    [SerializeField] MatchWindow matchwindow;
     [SerializeField] RankWindow rankWindow;
     [SerializeField] CharacterWindow characterWindow;
     [SerializeField] SettingWindow settingWindow;
@@ -16,23 +17,26 @@ public class WindowUI : UIElement
 
     public override void Close()
     {
-        CloseWindow();
         base.Close();
     }
 
-    public void CloseWindow()
+    public void CloseWindow<T>()
     {
-        if (rankWindow.gameObject.activeSelf)
+        if (typeof(T) == typeof(MatchWindow))
+            matchwindow.Close();
+        else if (typeof(T) == typeof(RankWindow))
             rankWindow.Close();
-        else if (characterWindow.gameObject.activeSelf)
+        else if (typeof(T) == typeof(CharacterWindow))
             characterWindow.Close();
-        else if (settingWindow.gameObject.activeSelf)
+        else if (typeof(T) == typeof(SettingWindow))
             settingWindow.Close();
     }
 
     public void OpenWindow<T>()
     {
-        if (typeof(T) == typeof(RankWindow))
+        if (typeof(T) == typeof(MatchWindow))
+            matchwindow.Open();
+        else if (typeof(T) == typeof(RankWindow))
             rankWindow.Open();
         else if (typeof(T) == typeof(CharacterWindow))
             characterWindow.Open();
