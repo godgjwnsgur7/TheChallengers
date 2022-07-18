@@ -4,29 +4,64 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class MainCanvas : BaseCanvas
 {
-    [SerializeField] ButtonUI buttonUI;
-    [SerializeField] WindowUI windowUI;
+    [SerializeField] MatchWindow matchWindow;
+    [SerializeField] RankWindow rankWindow;
+    [SerializeField] CharacterWindow characterWindow;
+    [SerializeField] SettingWindow settingWindow;
 
     public override void Open<T>(UIParam param = null) // UIMgr.Open<> 세분화
     {
-        if (typeof(T) == typeof(ButtonUI)) buttonUI.Open();
-        else if (typeof(T) == typeof(WindowUI)) windowUI.Open();
-        else if (typeof(T) == typeof(MatchWindow)) windowUI.OpenWindow<MatchWindow>();
-        else if (typeof(T) == typeof(RankWindow)) windowUI.OpenWindow<RankWindow>();
-        else if (typeof(T) == typeof(CharacterWindow)) windowUI.OpenWindow<CharacterWindow>();
-        else if (typeof(T) == typeof(SettingWindow)) windowUI.OpenWindow<SettingWindow>();
+        if (typeof(T) == typeof(MatchWindow)) matchWindow.Open();
+        else if (typeof(T) == typeof(RankWindow)) rankWindow.Open();
+        else if (typeof(T) == typeof(CharacterWindow)) characterWindow.Open();
+        else if (typeof(T) == typeof(SettingWindow)) settingWindow.Open();
         else Debug.Log("범위 벗어남");
     }
 
     public override void Close<T>() // UIMgr.Close<> 세분화
     {
-        Debug.Log(typeof(T));
-        if (typeof(T) == typeof(ButtonUI)) buttonUI.Close();
-        else if (typeof(T) == typeof(WindowUI)) windowUI.Close();
-        else if (typeof(T) == typeof(MatchWindow)) windowUI.CloseWindow<MatchWindow>();
-        else if (typeof(T) == typeof(RankWindow)) windowUI.CloseWindow<RankWindow>();
-        else if (typeof(T) == typeof(CharacterWindow)) windowUI.CloseWindow<CharacterWindow>();
-        else if (typeof(T) == typeof(SettingWindow)) windowUI.CloseWindow<SettingWindow>();
+        if (typeof(T) == typeof(MatchWindow)) matchWindow.Close();
+        else if (typeof(T) == typeof(RankWindow)) rankWindow.Close();
+        else if (typeof(T) == typeof(CharacterWindow)) characterWindow.Close();
+        else if (typeof(T) == typeof(SettingWindow)) settingWindow.Close();
         else Debug.Log("범위 벗어남");
+    }
+
+    public void OnWindowButton(string btnType) // Windows setActive(True) When Button Click 
+    {
+        switch (btnType) 
+        {
+            case "Match":
+                Managers.UI.OpenUI<MatchWindow>();
+                break;
+            case "Rank":
+                Managers.UI.OpenUI<RankWindow>();
+                break;
+            case "Character":
+                Managers.UI.OpenUI<CharacterWindow>();
+                break;
+            case "Setting":
+                Managers.UI.OpenUI<SettingWindow>();
+                break;
+        }
+    }
+
+    public void OffWindowButton(string btnType) // Windows SetActive(false) when CloseBtn Click
+    {
+        switch (btnType)
+        {
+            case "Match":
+                Managers.UI.CloseUI<MatchWindow>();
+                break;
+            case "Rank":
+                Managers.UI.CloseUI<RankWindow>();
+                break;
+            case "Character":
+                Managers.UI.CloseUI<CharacterWindow>();
+                break;
+            case "Setting":
+                Managers.UI.CloseUI<SettingWindow>();
+                break;
+        }
     }
 }
