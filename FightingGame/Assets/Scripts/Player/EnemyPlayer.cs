@@ -38,7 +38,14 @@ public class EnemyPlayer : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.N))
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Attack);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1);
+            PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
+            activeCharacter.attackState = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.N))
+        {
+            activeCharacter.attackState = false;
         }
 
         // 점프
@@ -69,7 +76,7 @@ public class EnemyPlayer : MonoBehaviour
 
     private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
-        if (activeCharacter == null)
+        if (activeCharacter == null || activeCharacter.currState == ENUM_PLAYER_STATE.Hit)
             return;
 
         switch (nextState)

@@ -8,6 +8,8 @@ public class AttackObejct : Poolable
 {
     public Skill skillValue;
 
+    string attackTarget = null;
+
     public override void Init()
     {
         ENUM_SKILL_TYPE skill = (ENUM_SKILL_TYPE)Enum.Parse(typeof(ENUM_SKILL_TYPE), gameObject.name.ToString());
@@ -21,6 +23,17 @@ public class AttackObejct : Poolable
 
     public void ActivatingAttackObject(GameObject _target,bool _reverseState)
     {
+        // 디버깅용 (클라이언트 1개)
+        switch(_target.tag.ToString())
+        {
+            case "Ally":
+                attackTarget = "Enemy";
+                break;
+            case "Enemy":
+                attackTarget = "Ally";
+                break;
+        }
+
         transform.localEulerAngles = _reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
 
         gameObject.SetActive(true);
@@ -30,7 +43,7 @@ public class AttackObejct : Poolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag.ToString() == ENUM_TAG_TYPE.Enemy.ToString())
+        if (collision.tag.ToString() == attackTarget /*ENUM_TAG_TYPE.Enemy.ToString()*/)
         {
             ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
