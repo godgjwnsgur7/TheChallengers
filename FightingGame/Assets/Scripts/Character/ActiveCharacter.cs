@@ -13,8 +13,6 @@ public partial class ActiveCharacter : Character
 
     public AttackObejct attackObject;
 
-   
-
     public override void Init()
     {
         base.Init();
@@ -86,8 +84,7 @@ public partial class ActiveCharacter : Character
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
                 hp -= _skillData.damage;
-                StopCoroutine("IHitRunTimeCheck"); // 문제가 있다 ㅎ;
-                StartCoroutine(IHitRunTimeCheck(_skillData.runTime));
+                StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
             }
         }
     }
@@ -106,7 +103,7 @@ public partial class ActiveCharacter : Character
         anim.SetFloat("DirX", _moveDir);
     }
 
-    private void ReverseSprites(float vecX)
+    public void ReverseSprites(float vecX)
     {
         bool _reverseState = (vecX < 0.9f);
 
@@ -141,8 +138,7 @@ public partial class ActiveCharacter : Character
     {
         yield return new WaitForSeconds(_hitTime);
 
-        if(currState == ENUM_PLAYER_STATE.Hit)
-            anim.SetBool("IsHit", false);
+        anim.SetBool("IsHit", false);
     }
 
     public void Checking_AttackState()

@@ -19,7 +19,7 @@ public class AttackObejct : Poolable
         
     }
 
-    public void ActivatingAttackObject(bool _reverseState)
+    public void ActivatingAttackObject(GameObject _target,bool _reverseState)
     {
         transform.localEulerAngles = _reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
 
@@ -37,10 +37,15 @@ public class AttackObejct : Poolable
             if (enemyCharacter != null && skillValue != null)
             {
                 CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType);
-                enemyCharacter.Hit(attackParam);
 
-                // 힘을 주는 방식에 대한 테스트중
-                enemyCharacter.rigid2D.AddForce(new Vector2(1, 10), ForceMode2D.Impulse);
+                float ConversionDir = 1.0f;
+                if (gameObject.transform.position.x > enemyCharacter.transform.position.x)
+                    ConversionDir = -1.0f;
+
+                enemyCharacter.ReverseSprites(ConversionDir * -1.0f);
+
+                enemyCharacter.Hit(attackParam);
+                enemyCharacter.rigid2D.AddForce(new Vector2(skillValue.pushingPower * ConversionDir, skillValue.risingPower), ForceMode2D.Impulse);
             }
             else
             {

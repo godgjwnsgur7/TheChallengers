@@ -44,7 +44,7 @@ public class Knight : ActiveCharacter
         if(attackObject != null)
         {
             attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(reverseState);
+            attackObject.ActivatingAttackObject(gameObject, reverseState);
         }
         else
         {
