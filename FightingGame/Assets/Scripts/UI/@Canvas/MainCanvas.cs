@@ -1,67 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 public class MainCanvas : BaseCanvas
 {
-    [SerializeField] MatchWindow matchWindow;
-    [SerializeField] RankWindow rankWindow;
-    [SerializeField] CharacterWindow characterWindow;
-    [SerializeField] SettingWindow settingWindow;
+    bool isLogin = true;
+    [SerializeField] InteractableUI interactableUI;
+    [SerializeField] ProduceUI produceUI;
 
-    public override void Open<T>(UIParam param = null) // UIMgr.Open<> 세분화
+    public override void Close<T>()
     {
-        if (typeof(T) == typeof(MatchWindow)) matchWindow.Open();
-        else if (typeof(T) == typeof(RankWindow)) rankWindow.Open();
-        else if (typeof(T) == typeof(CharacterWindow)) characterWindow.Open();
-        else if (typeof(T) == typeof(SettingWindow)) settingWindow.Open();
+        if (typeof(T) == typeof(InteractableUI)) interactableUI.Close();
+        else if (typeof(T) == typeof(ProduceUI)) produceUI.Close();
         else Debug.Log("범위 벗어남");
     }
 
-    public override void Close<T>() // UIMgr.Close<> 세분화
+    public override void Open<T>(UIParam param = null)
     {
-        if (typeof(T) == typeof(MatchWindow)) matchWindow.Close();
-        else if (typeof(T) == typeof(RankWindow)) rankWindow.Close();
-        else if (typeof(T) == typeof(CharacterWindow)) characterWindow.Close();
-        else if (typeof(T) == typeof(SettingWindow)) settingWindow.Close();
+        if (typeof(T) == typeof(InteractableUI)) interactableUI.Open();
+        else if (typeof(T) == typeof(ProduceUI)) produceUI.Open();
         else Debug.Log("범위 벗어남");
     }
 
-    public void OnWindowButton(string btnType) // Windows setActive(True) When Button Click 
+    public void OnClickStart()
     {
-        switch (btnType) 
+        if (isLogin)
         {
-            case "Match":
-                Managers.UI.OpenUI<MatchWindow>();
-                break;
-            case "Rank":
-                Managers.UI.OpenUI<RankWindow>();
-                break;
-            case "Character":
-                Managers.UI.OpenUI<CharacterWindow>();
-                break;
-            case "Setting":
-                Managers.UI.OpenUI<SettingWindow>();
-                break;
+            Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+        }
+        else
+        {
+            if (interactableUI.gameObject.activeSelf)
+            {
+                Close<InteractableUI>();
+            }
+            else
+            {
+                Open<InteractableUI>();
+            }
         }
     }
 
-    public void OffWindowButton(string btnType) // Windows SetActive(false) when CloseBtn Click
+    public void OnClickProduce() 
     {
-        switch (btnType)
-        {
-            case "Match":
-                Managers.UI.CloseUI<MatchWindow>();
-                break;
-            case "Rank":
-                Managers.UI.CloseUI<RankWindow>();
-                break;
-            case "Character":
-                Managers.UI.CloseUI<CharacterWindow>();
-                break;
-            case "Setting":
-                Managers.UI.CloseUI<SettingWindow>();
-                break;
-        }
+        if (produceUI.gameObject.activeSelf)
+            Close<ProduceUI>();
+        else
+            Open<ProduceUI>();
     }
 }
