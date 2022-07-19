@@ -54,9 +54,23 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         // 스킬 1번
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             CharacterSkillParam skillParam = new CharacterSkillParam(0);
+            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+        }
+
+        // 스킬 2번
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            CharacterSkillParam skillParam = new CharacterSkillParam(1);
+            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+        }
+
+        // 스킬 3번
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            CharacterSkillParam skillParam = new CharacterSkillParam(2);
             PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
         }
 
