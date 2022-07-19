@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RankWindow : WindowUI
+public class RankWindow : UIElement
 {
     public override void Open(UIParam param = null)
     {

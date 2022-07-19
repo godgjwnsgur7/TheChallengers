@@ -14,7 +14,6 @@ public class SceneMgr
 
         string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
         LoadingSceneManagement.LoadScene(nextScene);
-
     }
 
     public void Clear()

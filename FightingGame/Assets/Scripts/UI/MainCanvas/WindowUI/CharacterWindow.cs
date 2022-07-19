@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterWindow : WindowUI
+public class CharacterWindow : UIElement
 {
     public override void Open(UIParam param = null)
     {

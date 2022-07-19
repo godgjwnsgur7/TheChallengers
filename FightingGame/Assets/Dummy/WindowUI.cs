@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WindowUI : UIElement
 {
+    // CloseBtn쪽과 Field 동기화 필수!
     [SerializeField] MatchWindow matchwindow;
     [SerializeField] RankWindow rankWindow;
     [SerializeField] CharacterWindow characterWindow;
