@@ -68,7 +68,7 @@ public class EnemyPlayer : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
-        moveDir = 0f;
+        moveDir = 0f; 
 
         // 이동
         if (Input.GetKey(KeyCode.LeftArrow)) moveDir = -1.0f;
