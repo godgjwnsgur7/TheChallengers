@@ -8,7 +8,8 @@ public class AttackObejct : Poolable
 {
     public Skill skillValue;
 
-    string attackTarget = null;
+    // 디버그용
+    public string attackTarget = null;
 
     public override void Init()
     {
@@ -51,14 +52,23 @@ public class AttackObejct : Poolable
             {
                 CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType);
 
-                float ConversionDir = 1.0f;
-                if (gameObject.transform.position.x > enemyCharacter.transform.position.x)
-                    ConversionDir = -1.0f;
+                Vector2 dirPower = new Vector2(skillValue.pushingPower, skillValue.risingPower);
 
-                enemyCharacter.ReverseSprites(ConversionDir * -1.0f);
+                if (gameObject.transform.position.x > enemyCharacter.transform.position.x)
+                    dirPower.x *= -1.0f;
+
+                enemyCharacter.ReverseSprites(dirPower.x * -1f);
 
                 enemyCharacter.Hit(attackParam);
-                enemyCharacter.rigid2D.AddForce(new Vector2(skillValue.pushingPower * ConversionDir, skillValue.risingPower), ForceMode2D.Impulse);
+
+                if(enemyCharacter.jumpState && skillValue.risingPower == 0f)
+                {
+                    dirPower.y = skillValue.pushingPower * 2;
+                    dirPower.x = 1.0f;
+                }
+
+                enemyCharacter.rigid2D.velocity = Vector2.zero; // 받고있는 힘 초기화
+                enemyCharacter.rigid2D.AddForce(dirPower, ForceMode2D.Impulse);
             }
             else
             {

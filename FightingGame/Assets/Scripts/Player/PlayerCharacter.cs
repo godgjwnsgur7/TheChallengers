@@ -53,6 +53,13 @@ public class PlayerCharacter : MonoBehaviour
             activeCharacter.attackState = false;
         }
 
+        // 스킬 1번
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            CharacterSkillParam skillParam = new CharacterSkillParam(0);
+            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+        }
+
         // 점프
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -97,6 +104,9 @@ public class PlayerCharacter : MonoBehaviour
                 break;
             case ENUM_PLAYER_STATE.Attack:
                 activeCharacter.Attack(param);
+                break;
+            case ENUM_PLAYER_STATE.Skill:
+                activeCharacter.Skill(param);
                 break;
             case ENUM_PLAYER_STATE.Hit:
                 activeCharacter.Hit(param);

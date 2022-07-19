@@ -24,13 +24,28 @@ public class CharacterMoveParam : CharacterParam
     }
 }
 
-
+/// <summary>
+/// 기본공격, 점프공격
+/// </summary>
 public class CharacterAttackParam : CharacterParam
 {
-    public ENUM_SKILL_TYPE skillType;
+    public ENUM_SKILL_TYPE attackType;
 
-    public CharacterAttackParam(ENUM_SKILL_TYPE _skillType)
+    public CharacterAttackParam(ENUM_SKILL_TYPE _attackType)
     {
-        skillType = _skillType;
+        attackType = _attackType;
+    }
+}
+
+/// <summary>
+/// 캐릭터의 스킬 번호 ( 0 ~ 2 )
+/// </summary>
+public class CharacterSkillParam : CharacterParam
+{
+    public int skillNum;
+
+    public CharacterSkillParam(int _skillNum)
+    {
+        skillNum = _skillNum;
     }
 }

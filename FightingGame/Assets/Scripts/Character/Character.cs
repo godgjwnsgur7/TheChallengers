@@ -111,15 +111,16 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
-    public virtual void Skill()
+    public virtual void Skill(CharacterParam param)
     {
-
+        currState = ENUM_PLAYER_STATE.Skill;
+        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
     public virtual void Hit(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Hit;
-        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
+        rigid2D.velocity = Vector2.zero;
     }
 
     public virtual void Die(CharacterParam param)

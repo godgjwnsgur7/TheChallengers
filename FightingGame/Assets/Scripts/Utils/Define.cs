@@ -61,7 +61,9 @@ namespace FGDefine
         Knight_Attack1 = 1,
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
-
+        Knight_Skill1 = 4, // 임시
+        Knight_Skill2 = 5, // 임시
+        Knight_Skill3 = 6, // 임시
 
     }
 
@@ -97,6 +99,7 @@ namespace FGDefine
         Move,
         Jump,
         Attack,
+        Skill,
         Hit,
         Die,
 

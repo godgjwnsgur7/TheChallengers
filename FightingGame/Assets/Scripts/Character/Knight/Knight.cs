@@ -12,17 +12,21 @@ public class Knight : ActiveCharacter
 
         base.Init();
 
+        skills[0] = ENUM_SKILL_TYPE.Knight_Skill1;
+        skills[1] = ENUM_SKILL_TYPE.Knight_Skill2;
+        skills[2] = ENUM_SKILL_TYPE.Knight_Skill3;
+
         // 테스트 코드 (나중에 배틀씬으로 이동할 때 해당 캐릭터의 공격 오브젝트들을 풀링)
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 2);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 2);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 2);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 2);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 4);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 4);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 4);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 4);
 
     }
 
     public override void Attack(CharacterParam param)
     {
-        if (currState == ENUM_PLAYER_STATE.Attack)
+        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
             return;
 
         base.Attack(param);
@@ -35,11 +39,27 @@ public class Knight : ActiveCharacter
         }
     }
 
+    public override void Skill(CharacterParam param)
+    {
+        if (currState == ENUM_PLAYER_STATE.Skill || jumpState)
+            return;
+
+        base.Skill(param);
+
+        var skillParam = param as CharacterSkillParam;
+
+        if (skillParam != null)
+        {
+            anim.SetInteger("SkillType", skillParam.skillNum);
+            anim.SetTrigger("SkillTrigger");
+        }
+    }
+
     public void Summon_AttackObject(int _attackTypeNum)
     {
         attackObject = null;
-        ENUM_SKILL_TYPE skillType = (ENUM_SKILL_TYPE)_attackTypeNum;
-        attackObject = Managers.Resource.GetAttackObject(skillType.ToString());
+        ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
+        attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
 
         if(attackObject != null)
         {

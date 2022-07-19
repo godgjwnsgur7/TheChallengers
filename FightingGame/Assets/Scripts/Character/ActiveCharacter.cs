@@ -9,7 +9,7 @@ public partial class ActiveCharacter : Character
     public Animator anim;
     public SpriteRenderer spriteRenderer;
 
-    [SerializeField] protected Skill[] skills = new Skill[3];
+    [SerializeField] protected ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
 
     public AttackObejct attackObject;
 
@@ -59,6 +59,10 @@ public partial class ActiveCharacter : Character
         if (jumpState || currState == ENUM_PLAYER_STATE.Attack)
             return;
 
+        if (currState != ENUM_PLAYER_STATE.Idle &&
+            currState != ENUM_PLAYER_STATE.Move)
+            return;
+
         base.Jump();
 
         anim.SetTrigger("JumpTrigger");
@@ -71,6 +75,14 @@ public partial class ActiveCharacter : Character
         base.Attack(param);
     }
 
+    public override void Skill(CharacterParam param)
+    {
+        if (attackObject != null)
+            attackObject = null;
+
+        base.Skill(param);
+    }
+
     public override void Hit(CharacterParam param)
     {
         if (param == null || invincibility) return;
@@ -79,7 +91,7 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            if(Managers.Data.SkillDict.TryGetValue((int)attackParam.skillType, out Skill _skillData))
+            if(Managers.Data.SkillDict.TryGetValue((int)attackParam.attackType, out Skill _skillData))
             {
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
