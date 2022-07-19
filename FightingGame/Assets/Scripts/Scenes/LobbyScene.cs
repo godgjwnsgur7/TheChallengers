@@ -13,7 +13,6 @@ public class LobbyScene : BaseScene
 
     public override void Clear()
     {
-        
-    }
 
+    }
 }

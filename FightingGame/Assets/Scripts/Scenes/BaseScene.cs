@@ -8,11 +8,9 @@ public enum ENUM_SCENE_TYPE
     Unknown,
     Login,
     Lobby,
-    Selection, // 안쓸듯? UI로 쓸 거 같음 일단... ㅋ (임시)
     Battle,
     Loading,
     Main,
-    Start,
 }
 
 public abstract class BaseScene : MonoBehaviour
