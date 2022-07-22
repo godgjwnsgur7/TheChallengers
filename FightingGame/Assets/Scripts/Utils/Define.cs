@@ -45,7 +45,8 @@ namespace FGDefine
     {
         Default = 0,
         Knight = 1,
-
+        Alien = 2,
+        Spirit = 3,
         Max
     }
 
