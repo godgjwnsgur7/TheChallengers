@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MatchBtn : MonoBehaviour
+public class MatchBtn : UIElement
 {
-    public void UnInterctable() 
+    Button btn;
+
+    private void Start()
     {
-        gameObject.GetComponent<Button>().interactable = false;
+        btn = gameObject.GetComponent<Button>();
     }
 
-    public void Interctable() 
+    public void SwitchInterctable() 
     {
-        gameObject.GetComponent<Button>().interactable = true;
+        btn.interactable = !btn.interactable;
     }
 }

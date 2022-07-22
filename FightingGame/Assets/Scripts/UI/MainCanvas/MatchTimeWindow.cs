@@ -20,7 +20,7 @@ public class MatchTimeWindow : UIElement
 
     private void OnEnable()
     {
-        matchBtn.UnInterctable();
+        matchBtn.SwitchInterctable();
         // 매칭버튼으로 인해 활성화 시 charType에 맞춰 선택창에 캐릭터이미지 출력
 
         // 매칭서버 연결?
@@ -34,6 +34,6 @@ public class MatchTimeWindow : UIElement
         // 매칭창 비활성화
         Managers.UI.CloseUI<MatchTimeWindow>();
 
-        matchBtn.Interctable();
+        matchBtn.SwitchInterctable();
     }
 }
