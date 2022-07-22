@@ -12,7 +12,7 @@ public class Knight : ActiveCharacter
 
         base.Init();
 
-        skills[0] = ENUM_SKILL_TYPE.Knight_Skill1;
+        skills[0] = ENUM_SKILL_TYPE.Knight_ShotSkill;
         skills[1] = ENUM_SKILL_TYPE.Knight_Skill2;
         skills[2] = ENUM_SKILL_TYPE.Knight_Skill3;
 
@@ -21,6 +21,7 @@ public class Knight : ActiveCharacter
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 4);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_ShotSkill", 4);
 
     }
 

@@ -18,11 +18,9 @@ public class AttackObejct : Poolable
         {
             Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
         }
-
-        
     }
 
-    public void ActivatingAttackObject(GameObject _target,bool _reverseState)
+    public virtual void ActivatingAttackObject(GameObject _target,bool _reverseState)
     {
         // 디버깅용 (클라이언트 1개)
         switch(_target.tag.ToString())
@@ -69,6 +67,8 @@ public class AttackObejct : Poolable
 
                 enemyCharacter.rigid2D.velocity = Vector2.zero; // 받고있는 힘 초기화
                 enemyCharacter.rigid2D.AddForce(dirPower, ForceMode2D.Impulse);
+
+                Managers.Resource.Destroy(gameObject);
             }
             else
             {
@@ -81,7 +81,8 @@ public class AttackObejct : Poolable
     private IEnumerator IAttackRunTimeCheck(float _runTime)
     {
         yield return new WaitForSeconds(_runTime);
-
-        Managers.Resource.Destroy(gameObject);
+        
+        if(this.gameObject.activeSelf)
+            Managers.Resource.Destroy(gameObject);
     }
 }
