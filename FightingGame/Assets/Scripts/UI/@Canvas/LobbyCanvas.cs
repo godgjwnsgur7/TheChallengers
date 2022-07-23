@@ -39,6 +39,9 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnWindowButton(string btnType) // Windows setActive(True) When Button Click 
     {
+        if (btnType == null)
+            return;
+
         switch (btnType) 
         {
             case "Match":
@@ -59,11 +62,17 @@ public class LobbyCanvas : BaseCanvas
             case "Setting":
                 Managers.UI.OpenUI<SettingWindow>();
                 break;
+            default:
+                Debug.Log("범위 벗어남");
+                break;
         }
     }
 
     public void OffWindowButton(string btnType) // Windows SetActive(false) when CloseBtn Click
     {
+        if (btnType == null)
+            return;
+
         switch (btnType)
         {
             case "Match":
@@ -83,6 +92,9 @@ public class LobbyCanvas : BaseCanvas
                 break;
             case "Setting":
                 Managers.UI.CloseUI<SettingWindow>();
+                break;
+            default:
+                Debug.Log("범위 벗어남");
                 break;
         }
     }
