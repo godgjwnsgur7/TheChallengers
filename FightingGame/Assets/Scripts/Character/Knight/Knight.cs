@@ -23,9 +23,12 @@ public class Knight : ActiveCharacter
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_ShotSkill", 4);
 
+        SyncAnimator(anim);
+        SyncPhysics(rigid2D);
+        SyncTransformView(transform);
     }
 
-    public override void Attack(CharacterParam param)
+	public override void Attack(CharacterParam param)
     {
         if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
             return;

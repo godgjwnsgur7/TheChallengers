@@ -43,24 +43,27 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     /// 우선 Key를 string으로 지정, 추후 클라 관리를 위해 ENUM으로 수정하도록 함
     /// </summary>
 
-    private Dictionary<string, Animator> syncAnimatorDictionary = new Dictionary<string, Animator>();
-    private Dictionary<string, Rigidbody2D> syncRigidbodyDictionary = new Dictionary<string, Rigidbody2D>();
-    private Dictionary<string, Transform> syncTransformDictionary = new Dictionary<string, Transform>();
+    private Animator syncAnim = null;
+    private Rigidbody2D syncRigid = null;
+    private Transform syncTransform = null;
 
     public virtual void Init()
     {
-        gameObject.AddComponent<PhotonView>();
+        var view = gameObject.AddComponent<PhotonView>();
+        view.ObservedComponents = new List<Component>();
     }
 
-    public void SyncAnimator(string key, Animator anim)
+    public void SyncAnimator(Animator anim)
     {
-        if (key.Equals(string.Empty) || anim == null)
+        if(syncAnim != null)
+		{
+            Debug.LogError("이미 동기화할 애니메이터가 존재합니다.");
             return;
+		}
 
-        if (syncAnimatorDictionary.ContainsKey(key))
-            syncAnimatorDictionary.Add(key, anim);
+        syncAnim = anim;
 
-        GameObject ownerObj = anim.gameObject;
+        GameObject ownerObj = syncAnim.gameObject;
 
         var component = ownerObj.GetComponent<PhotonAnimatorView>();
         if (component == null)
@@ -69,15 +72,16 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         photonView.ObservedComponents.Add(component);
     }
 
-    public void SyncTransformView(string key, Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
+    public void SyncTransformView(Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
     {
-        if (key.Equals(string.Empty) || tr == null)
+        if (syncTransform != null)
+        {
+            Debug.LogError("이미 동기화할 애니메이터가 존재합니다.");
             return;
+        }
 
-        if (syncTransformDictionary.ContainsKey(key))
-            syncTransformDictionary.Add(key, tr);
-
-        GameObject ownerObj = tr.gameObject;
+        syncTransform = tr;
+        GameObject ownerObj = syncTransform.gameObject;
 
         var component = ownerObj.GetComponent<PhotonTransformView>();
         if (component == null)
@@ -90,15 +94,17 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         photonView.ObservedComponents.Add(component);
     }
 
-    public void SyncPhysics(string key, Rigidbody2D rigid, bool isSyncAngleVelocity = true, bool isSyncVelocity = true, bool isEnableTeleport = false, float distanceForTeleport = 10.0f)
+    public void SyncPhysics(Rigidbody2D rigid, bool isSyncAngleVelocity = true, bool isSyncVelocity = true, bool isEnableTeleport = false, float distanceForTeleport = 10.0f)
     {
-        if (key.Equals(string.Empty) || rigid == null)
+        if (syncRigid != null)
+        {
+            Debug.LogError("이미 동기화할 애니메이터가 존재합니다.");
             return;
+        }
 
-        if (syncRigidbodyDictionary.ContainsKey(key))
-            syncRigidbodyDictionary.Add(key, rigid);
+        syncRigid = rigid;
 
-        GameObject ownerObj = rigid.gameObject;
+        GameObject ownerObj = syncRigid.gameObject;
 
         var component = ownerObj.GetComponent<PhotonRigidbody2DView>();
         if (component == null)
