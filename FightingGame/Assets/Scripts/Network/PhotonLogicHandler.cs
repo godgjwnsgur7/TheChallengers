@@ -18,6 +18,9 @@ public class BroadcastMethodAttribute : PunRPC { }
 
 public partial class PhotonLogicHandler
 {
+    /// <summary>
+    /// 현재 자신이 마스터 서버에 연결이 되어 있는가?
+    /// </summary>
     public static bool IsConnected
     {
         get 

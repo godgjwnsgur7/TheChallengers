@@ -41,7 +41,7 @@ public class DBSession : IDisposable, ISession
 
     // 현재 디비 카테고리에 해당하는 + 저장 가능한 데이터 타입을 걸러주긴 하는데... 사용이 불편하다면 스스로 Select, UpdateNickname() 등의 편의 함수를 만들어 사용하는 것을 추천함
     // 리턴하는 값은 대체적인 성공/실패 여부임, 어지간하면 맞겠지만 보장할 수는 없음 > 대응이 필요하다면 연락
-    public static bool Update<T>(DB_CATEGORY category, ENUM_LOGIN_TYPE loginType, string userId, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    public bool Update<T>(DB_CATEGORY category, ENUM_LOGIN_TYPE loginType, string userId, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!CheckCategoryDataType(category, typeof(T)))
             return false;
@@ -52,7 +52,7 @@ public class DBSession : IDisposable, ISession
         return DB.UpdateDB<T>(hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
     }
 
-    public static bool Select<T>(DB_CATEGORY category, ENUM_LOGIN_TYPE loginType, string userId, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    public bool Select<T>(DB_CATEGORY category, ENUM_LOGIN_TYPE loginType, string userId, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!CheckCategoryDataType(category, typeof(T)))
             return false;

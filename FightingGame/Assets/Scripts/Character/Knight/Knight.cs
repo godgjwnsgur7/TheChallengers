@@ -23,10 +23,18 @@ public class Knight : ActiveCharacter
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_ShotSkill", 4);
 
+        // PhotonLogicHandler.Instance.TryBroadcastMethod<Knight>(this, Attack);
+
         SyncAnimator(anim);
         SyncPhysics(rigid2D);
         SyncTransformView(transform);
     }
+
+ //   [BroadcastMethodAttribute]
+ //   private void Attack()
+	//{
+ //       Attack(null);
+ //   }
 
 	public override void Attack(CharacterParam param)
     {

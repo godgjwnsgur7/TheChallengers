@@ -76,7 +76,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     {
         if (syncTransform != null)
         {
-            Debug.LogError("이미 동기화할 애니메이터가 존재합니다.");
+            Debug.LogError("이미 동기화할 트랜스폼이 존재합니다.");
             return;
         }
 
@@ -98,7 +98,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     {
         if (syncRigid != null)
         {
-            Debug.LogError("이미 동기화할 애니메이터가 존재합니다.");
+            Debug.LogError("이미 동기화할 리지드바디가 존재합니다.");
             return;
         }
 
