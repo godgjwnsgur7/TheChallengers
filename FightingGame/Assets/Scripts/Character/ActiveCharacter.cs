@@ -95,8 +95,13 @@ public partial class ActiveCharacter : Character
             {
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
+                anim.SetTrigger("HitTrigger");
                 hp -= _skillData.damage;
-                StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
+                if(!jumpState)
+                {
+                    Debug.Log("실행확인");
+                    StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
+                }
             }
         }
     }

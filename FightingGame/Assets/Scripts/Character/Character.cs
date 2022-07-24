@@ -13,6 +13,7 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
+
     [SerializeField] protected float hp;
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpPower;
