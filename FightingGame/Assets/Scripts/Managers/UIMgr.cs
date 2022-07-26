@@ -13,7 +13,10 @@ public class UIMgr
         gameCanvas = GameObject.FindObjectOfType<BaseCanvas>();
         if(popupCanvas == null)
             popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
-            
+
+        GameObject go = GameObject.Find("PopupCanvas");
+        if (go == null)
+            go = Managers.Resource.Instantiate("UI/PopupCanvas");
     }
 
     public void Clear()

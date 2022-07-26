@@ -16,6 +16,15 @@ public class SceneMgr
         LoadingSceneManagement.LoadScene(nextScene);
     }
 
+    public void FadeLoadScene(ENUM_SCENE_TYPE type) 
+    {
+        Managers.UI.OpenUI<BlackOutPopup>();
+        Managers.Clear();
+
+        string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
+        SceneManager.LoadScene(nextScene);
+    }
+
     public void Clear()
     {
         CurrentScene.Clear();

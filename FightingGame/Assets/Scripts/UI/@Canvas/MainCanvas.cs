@@ -26,17 +26,17 @@ public class MainCanvas : BaseCanvas
     {
         if (isLogin)
         {
-            Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+            Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby);
         }
         else
         {
             if (interactableUI.gameObject.activeSelf)
             {
-                Close<InteractableUI>();
+                Managers.UI.CloseUI<InteractableUI>();
             }
             else
             {
-                Open<InteractableUI>();
+                Managers.UI.OpenUI<InteractableUI>();
             }
         }
     }
@@ -44,8 +44,8 @@ public class MainCanvas : BaseCanvas
     public void OnClickProduce() 
     {
         if (produceUI.gameObject.activeSelf)
-            Close<ProduceUI>();
+            Managers.UI.CloseUI<ProduceUI>();
         else
-            Open<ProduceUI>();
+            Managers.UI.OpenUI<ProduceUI>();
     }
 }
