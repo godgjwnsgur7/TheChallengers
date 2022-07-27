@@ -11,6 +11,7 @@ public enum ENUM_SCENE_TYPE
     Battle,
     Loading,
     Main,
+    CustomRoom,
 }
 
 public abstract class BaseScene : MonoBehaviour
