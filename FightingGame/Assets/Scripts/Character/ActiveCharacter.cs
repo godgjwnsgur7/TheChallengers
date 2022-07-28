@@ -17,6 +17,9 @@ public partial class ActiveCharacter : Character
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        if(teamType == ENUM_TEAM_TYPE.Blue)
+            spriteRenderer.flipX = true;
+
         // Animator
         anim = GetComponent<Animator>();
         if (anim == null) gameObject.AddComponent<Animator>();

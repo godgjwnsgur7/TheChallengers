@@ -12,6 +12,8 @@ public class PlayerCharacter : MonoBehaviour
     public float moveDir = 0f;
 
     public bool inabilityState = false;
+
+    public ENUM_TEAM_TYPE teamType;
     
     private void Awake()
     {
