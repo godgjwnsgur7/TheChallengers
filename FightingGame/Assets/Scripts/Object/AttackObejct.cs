@@ -7,6 +7,7 @@ using System;
 public class AttackObejct : Poolable
 {
     public Skill skillValue;
+    public ENUM_TEAM_TYPE teamType;
 
     // 디버그용
     public string attackTarget = null;

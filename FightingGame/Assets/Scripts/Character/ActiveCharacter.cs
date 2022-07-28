@@ -9,8 +9,6 @@ public partial class ActiveCharacter : Character
     public Animator anim;
     public SpriteRenderer spriteRenderer;
 
-    [SerializeField] protected ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
-
     public AttackObejct attackObject;
 
     public override void Init()
@@ -99,7 +97,6 @@ public partial class ActiveCharacter : Character
                 hp -= _skillData.damage;
                 if(!jumpState)
                 {
-                    Debug.Log("실행확인");
                     StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
                 }
             }
@@ -151,6 +148,19 @@ public partial class ActiveCharacter : Character
             SetJumpState(true);
     }
 
+    public void Checking_AttackState()
+    {
+        if (!attackState)
+            anim.SetBool("IsIdle", true);
+    }
+
+    public void Invincible()
+    {
+        invincibility = true;
+
+        StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여
+    }
+
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
         yield return new WaitForSeconds(_hitTime);
@@ -158,9 +168,10 @@ public partial class ActiveCharacter : Character
         anim.SetBool("IsHit", false);
     }
 
-    public void Checking_AttackState()
+    protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
-        if (!attackState)
-            anim.SetBool("IsIdle", true);
+        yield return new WaitForSeconds(_invincibleTime);
+
+        invincibility = false;
     }
 }

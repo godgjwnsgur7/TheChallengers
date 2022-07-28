@@ -12,16 +12,12 @@ public class Knight : ActiveCharacter
 
         base.Init();
 
-        skills[0] = ENUM_SKILL_TYPE.Knight_ShotSkill;
-        skills[1] = ENUM_SKILL_TYPE.Knight_Skill2;
-        skills[2] = ENUM_SKILL_TYPE.Knight_Skill3;
-
         // 테스트 코드 (나중에 배틀씬으로 이동할 때 해당 캐릭터의 공격 오브젝트들을 풀링)
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 4);
         Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 4);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_ShotSkill", 4);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 4);
 
         // PhotonLogicHandler.Instance.TryBroadcastMethod<Knight>(this, Attack);
 

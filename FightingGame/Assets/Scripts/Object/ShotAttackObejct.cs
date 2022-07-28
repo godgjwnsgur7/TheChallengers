@@ -22,7 +22,7 @@ public class ShotAttackObejct : AttackObejct
         // 2. 따로 데이터를 받음 - 효율이 낮은 데이터 구조? 냄새가 남
         // 3. 프리팹 오브젝트에 SerializeField로 박음 (지양사항) - 수정하면 재업로드 ㅋㅋ
         // 4. 등등 
-        float speed = 200.0f;
+        float speed = 500.0f;
 
         if (_reverseState) speed *= -1f;
 

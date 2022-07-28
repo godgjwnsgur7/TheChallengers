@@ -33,9 +33,17 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_TAG_TYPE
     {
-        Ally = 0,
-        Enemy = 1,
-        Ground = 2,
+        Ground = 0,
+        Enemy = 1, // 사라질 예정?
+        Ally = 2, // 사라질 예정?
+    }
+
+    public enum ENUM_TEAM_TYPE
+    {
+        Blue = 0,
+        Red = 1,
+
+        Max
     }
 
     /// <summary>
@@ -62,7 +70,7 @@ namespace FGDefine
         Knight_Attack1 = 1,
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
-        Knight_ShotSkill = 4, // 투사체 임시
+        Knight_ThrowSkill = 4,
         Knight_Skill2 = 5, // 임시
         Knight_Skill3 = 6, // 임시
 

@@ -19,6 +19,7 @@ public class Character : MonoBehaviourPhoton
     [SerializeField] float jumpPower;
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
+    public ENUM_TEAM_TYPE teamType;
 
     // 테스트 편의성을 위해 public
     public bool reverseState = false;
