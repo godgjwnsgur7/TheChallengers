@@ -21,6 +21,8 @@ public partial class ActiveCharacter : Character
         anim = GetComponent<Animator>();
         if (anim == null) gameObject.AddComponent<Animator>();
         anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
+
+        SyncAnimator(anim);
     }
 
     public override void Idle(CharacterParam param = null)
@@ -173,5 +175,22 @@ public partial class ActiveCharacter : Character
         yield return new WaitForSeconds(_invincibleTime);
 
         invincibility = false;
+    }
+
+    public void Summon_AttackObject(int _attackTypeNum)
+    {
+        attackObject = null;
+        ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
+        attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
+
+        if (attackObject != null)
+        {
+            attackObject.transform.position = transform.position;
+            attackObject.ActivatingAttackObject(teamType, reverseState);
+        }
+        else
+        {
+            Debug.Log("찾을 수 없음");
+        }
     }
 }

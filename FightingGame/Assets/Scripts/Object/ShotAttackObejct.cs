@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public class ShotAttackObejct : AttackObejct
 {
@@ -13,9 +14,9 @@ public class ShotAttackObejct : AttackObejct
         rigid2D = GetComponent<Rigidbody2D>();
     }
 
-    public override void ActivatingAttackObject(GameObject _target, bool _reverseState)
+    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        base.ActivatingAttackObject(_target, _reverseState);
+        base.ActivatingAttackObject(_teamType, _reverseState);
 
         // 날아가는 힘을 받아야 하는데, 고민중
         // 1. 그냥 데이터에 박고 필요없는 애들은 0으로 만듬 - 쓸데없는 데이터 창출

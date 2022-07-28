@@ -21,9 +21,14 @@ public class Knight : ActiveCharacter
 
         // PhotonLogicHandler.Instance.TryBroadcastMethod<Knight>(this, Attack);
 
-        SyncAnimator(anim);
-        SyncPhysics(rigid2D);
-        SyncTransformView(transform);
+        if (PhotonLogicHandler.IsMine(this))
+        {
+            Debug.Log("컨트롤이 가능한 객체");
+        }
+        else
+        {
+            Debug.Log("컨트롤이 불가능한 객체");
+        }
     }
 
  //   [BroadcastMethodAttribute]
@@ -60,23 +65,6 @@ public class Knight : ActiveCharacter
         {
             anim.SetInteger("SkillType", skillParam.skillNum);
             anim.SetTrigger("SkillTrigger");
-        }
-    }
-
-    public void Summon_AttackObject(int _attackTypeNum)
-    {
-        attackObject = null;
-        ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
-        attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
-
-        if(attackObject != null)
-        {
-            attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(gameObject, reverseState);
-        }
-        else
-        {
-            Debug.Log("찾을 수 없음");
         }
     }
 }

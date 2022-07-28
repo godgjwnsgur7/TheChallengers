@@ -56,14 +56,9 @@ public class Character : MonoBehaviourPhoton
 
         rigid2D = GetComponent<Rigidbody2D>();
 
-        if (PhotonLogicHandler.IsMine(this))
-        {
-            Debug.Log("컨트롤이 가능한 객체");
-        }
-        else
-        {
-            Debug.Log("컨트롤이 불가능한 객체");
-        }
+        SyncPhysics(rigid2D);
+        SyncTransformView(transform);
+
     }
 
     protected override void OnMasterSerializeView(PhotonWriteStream stream)
