@@ -37,7 +37,12 @@ public class CustomWindow : UIElement
         createRoomPanel.Close();
     }
 
-    public void LoadCustomScene() 
+    public void EnterCustomScene() 
+    {
+        Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
+    }
+
+    public void CreateCustomScene()
     {
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
     }
