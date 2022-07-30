@@ -27,29 +27,6 @@ public class Character : MonoBehaviourPhoton
     public bool invincibility = false;
     public bool attackState = false;
 
-    public void GroundCheckWithRay()
-    {
-        if (rigid2D == null)
-            return;
-
-
-        Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
-
-        RaycastHit2D rayHit = Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
-        
-        if(rayHit.collider != null)
-        {
-            // rayHit.distance // 히트한 거리
-
-        }
-
-    }
-
-    private void Update()
-    {
-        GroundCheckWithRay();
-    }
-
     public override void Init()
     {
         base.Init();
@@ -123,6 +100,7 @@ public class Character : MonoBehaviourPhoton
     public virtual void Die(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Die;
+        invincibility = true;
     }
 
 }

@@ -109,6 +109,7 @@ namespace FGDefine
         Jump,
         Attack,
         Skill,
+        Down,
         Hit,
         Die,
 

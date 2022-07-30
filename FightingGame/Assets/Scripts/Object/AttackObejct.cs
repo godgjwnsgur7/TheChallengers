@@ -33,7 +33,7 @@ public class AttackObejct : Poolable
     {
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
-        if (enemyCharacter.teamType == teamType)
+        if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
             return;
 
         if (enemyCharacter != null && skillValue != null)

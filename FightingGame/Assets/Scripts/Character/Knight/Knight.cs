@@ -13,11 +13,11 @@ public class Knight : ActiveCharacter
         base.Init();
 
         // 테스트 코드 (나중에 배틀씬으로 이동할 때 해당 캐릭터의 공격 오브젝트들을 풀링)
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 4);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 4);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 4);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 4);
-        Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 4);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 10);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 10);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 10);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 10);
+        Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 10);
 
         // PhotonLogicHandler.Instance.TryBroadcastMethod<Knight>(this, Attack);
 

@@ -54,6 +54,11 @@ public partial class ActiveCharacter : Character
                 anim.SetBool("IsMove", true);
 
             SetAnimParamVector(moveParam.moveDir);
+
+            if(!GroundCheckWithRay())
+            {
+                anim.SetTrigger("DropTrigger");
+            }
         }
     }
 
@@ -103,6 +108,12 @@ public partial class ActiveCharacter : Character
                 if(!jumpState)
                 {
                     StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
+                    Debug.Log("확인1");
+                }
+                else
+                {
+                    StartCoroutine(IRisingStateCheck());
+                    Debug.Log("확인2");
                 }
             }
         }
@@ -143,14 +154,24 @@ public partial class ActiveCharacter : Character
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.ToString() == ENUM_TAG_TYPE.Ground.ToString())
+        if (collision.gameObject.tag.ToString() == ENUM_TAG_TYPE.Ground.ToString()
+            && GroundCheckWithRay())
+        {
             SetJumpState(false);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag.ToString() == ENUM_TAG_TYPE.Ground.ToString())
             SetJumpState(true);
+    }
+
+    public bool GroundCheckWithRay()
+    {
+        Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
+
+        return Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
     }
 
     public void Checking_AttackState()
@@ -163,7 +184,7 @@ public partial class ActiveCharacter : Character
     {
         invincibility = true;
 
-        StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여
+        StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
@@ -173,6 +194,18 @@ public partial class ActiveCharacter : Character
         anim.SetBool("IsHit", false);
     }
 
+    protected IEnumerator IRisingStateCheck()
+    {
+        while(jumpState)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // 다운 상태로 바닥에 닿은 상태가 될 것
+        Invincible();
+        StartCoroutine(IHitRunTimeCheck(1.0f)); // 일단 다운상태에서 일어나는 시간은 고정값으로 부여 (임시)
+    }
+        
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
         yield return new WaitForSeconds(_invincibleTime);
