@@ -14,16 +14,12 @@ public class BlackOutPopup : PopupUI
     public override void Open()
     {
         gameObject.SetActive(true);
+        StartCoroutine(FadeScene());
     }
 
     private void Awake()
     {
         img = gameObject.GetComponent<Image>();
-    }
-
-    private void OnEnable()
-    {
-        StartCoroutine(FadeScene());
     }
 
     IEnumerator FadeScene()
