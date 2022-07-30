@@ -6,6 +6,7 @@ using Photon.Realtime;
 using System;
 using UnityEngine.SceneManagement;
 using System.Reflection;
+using System.Linq;
 
 public enum ENUM_RPC_TARGET
 {
@@ -208,6 +209,37 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         return PhotonNetwork.JoinRandomRoom();
     }
+    public bool IsConnectedAndReady() => PhotonNetwork.IsConnectedAndReady;
+    public bool IsMasterServer() => PhotonNetwork.Server == ServerConnection.MasterServer;
+    public bool IsInLobby() => PhotonNetwork.InLobby;
+    public bool IsInRoom() => PhotonNetwork.InRoom;
+
+    /// <summary>
+    /// 모든 클라이언트가 준비가 되었음을 체크합니다.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsAllReady() 
+    {
+        var players = PhotonNetwork.PlayerList;
+        return players.All(p => p.CustomProperties.ContainsKey("Ready") && (bool)p.CustomProperties["Ready"]);
+    }
+
+    /// <summary>
+    /// 방장에게 준비가 되었음을 알립니다.
+    /// </summary>
+    public void Ready() 
+    {
+        var hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        hash["Ready"] = true;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+    public void UnReady()
+    {
+        var hash = PhotonNetwork.LocalPlayer.CustomProperties;
+        hash["Ready"] = false;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+
 
     /// <summary>
     /// 방장이 해당 함수를 호출하게 되면, 방의 멤버가 모두 씬이 동기화된 채로 이동하게 됨
@@ -216,11 +248,13 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public void TrySceneLoadWithRoomMember(string sceneName)
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.LoadLevel(sceneName);
     }
 
     public void TrySceneLoad(string sceneName)
     {
+        PhotonNetwork.AutomaticallySyncScene = false;
         SceneManager.LoadScene(sceneName);
     }
 
@@ -284,6 +318,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"룸에 성공적으로 접속하였습니다.");
+        Info();
         _OnJoinRoom?.Invoke();
     }
 
@@ -297,6 +332,44 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         Debug.LogError($"룸 접속에 실패하였습니다. 코드 : {returnCode}, 사유 : {message}");
         _OnJoinRoomFailed?.Invoke(returnCode, message);
+    }
+    
+    /// <summary>
+    /// 2P 방 입장
+    /// </summary>
+    /// <param name="newPlayer"></param>
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+
+    }
+
+    /// <summary>
+    /// 2P 방 나감
+    /// </summary>
+    /// <param name="otherPlayer"></param>
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+
+    }
+
+    [ContextMenu("정보")]
+    public void Info()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            print("현재 방 이름 : " + PhotonNetwork.CurrentRoom.Name);
+            print("현재 방 인원 수 : " + PhotonNetwork.CurrentRoom.PlayerCount);
+            print("현재 방 최대 인원 수 : " + PhotonNetwork.CurrentRoom.MaxPlayers);
+        }
+        else
+        {
+            print("접속한 인원 수 : " + PhotonNetwork.CountOfPlayers);
+            print("방 개수 : " + PhotonNetwork.CountOfRooms);
+            print("모든 방에 있는 인원 수 : " + PhotonNetwork.CountOfPlayersInRooms);
+            print("로비에 있는가? : " + PhotonNetwork.InLobby);
+            print("연결이 됐는가? : " + PhotonNetwork.IsConnected);
+        }
     }
 
     #endregion
