@@ -14,22 +14,17 @@ public class MatchTimeWindow : UIElement
     public override void Open(UIParam param = null)
     {
         base.Open(param);
-    }
-
-    public override void Close()
-    {
-        base.Close();
-    }
-
-    private void OnEnable()
-    {
         matchBtn.SwitchInterctable();
 
         StartCoroutine(CountTime());
         // 매칭버튼으로 인해 활성화 시 charType에 맞춰 선택창에 캐릭터이미지 출력
 
         // 매칭서버 연결?
-        
+    }
+
+    public override void Close()
+    {
+        base.Close();
     }
 
     public void StopMatch() 
@@ -65,7 +60,7 @@ public class MatchTimeWindow : UIElement
 
             timer.text = times[0] + ":" + times[1];
 
-            if (time >= 90f) // 임시 정지 테스트
+            if (time >= 61f) // 임시 정지 테스트
                 break;
 
             yield return null;

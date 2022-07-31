@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CustomWindow : UIElement
 {
-    [SerializeField] CustomPanel customPanel;
+    [SerializeField] CustomListPanel customPanel;
     [SerializeField] CreateRoomPanel createRoomPanel;
 
     private void OnEnable() // CustomWindow 활성화 시에 CustomPanel 활성화
@@ -35,15 +35,5 @@ public class CustomWindow : UIElement
     {
         customPanel.Open();
         createRoomPanel.Close();
-    }
-
-    public void EnterCustomScene() 
-    {
-        Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
-    }
-
-    public void CreateCustomScene()
-    {
-        Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
     }
 }
