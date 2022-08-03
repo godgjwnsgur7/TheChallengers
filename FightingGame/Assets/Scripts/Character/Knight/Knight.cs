@@ -10,6 +10,10 @@ public class Knight : ActiveCharacter
     {
         characterType = ENUM_CHARACTER_TYPE.Knight;
 
+        skills[0] = ENUM_SKILL_TYPE.Knight_ThrowSkill;
+        skills[1] = ENUM_SKILL_TYPE.Knight_ThrowSkill; // 임시
+        skills[2] = ENUM_SKILL_TYPE.Knight_ThrowSkill; // 임시
+
         base.Init();
 
         // 테스트 코드 (나중에 배틀씬으로 이동할 때 해당 캐릭터의 공격 오브젝트들을 풀링)
@@ -30,12 +34,6 @@ public class Knight : ActiveCharacter
             Debug.Log("컨트롤이 불가능한 객체");
         }
     }
-
- //   [BroadcastMethodAttribute]
- //   private void Attack()
-	//{
- //       Attack(null);
- //   }
 
 	public override void Attack(CharacterParam param)
     {

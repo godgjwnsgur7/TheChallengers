@@ -6,7 +6,7 @@ using FGDefine;
 
 public interface ILoader<Key, Value>
 {
-    Dictionary<Key, Skill> MakeDict(); 
+    Dictionary<Key, Value> MakeDict(); 
 }
 
 public class DataMgr

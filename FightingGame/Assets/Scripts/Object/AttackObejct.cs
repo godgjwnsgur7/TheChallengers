@@ -33,6 +33,13 @@ public class AttackObejct : Poolable
     {
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
+        // 일단 콜라이더를 가진 객체가 액티브캐릭터가 아니라면 파괴.
+        if (enemyCharacter == null)
+        {
+            Managers.Resource.Destroy(gameObject);
+            return;
+        }
+
         if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
             return;
 

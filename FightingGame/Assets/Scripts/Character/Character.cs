@@ -26,6 +26,7 @@ public class Character : MonoBehaviourPhoton
     public bool jumpState = false;
     public bool invincibility = false;
     public bool attackState = false;
+    public bool hitCoroutine = false;
 
     public override void Init()
     {

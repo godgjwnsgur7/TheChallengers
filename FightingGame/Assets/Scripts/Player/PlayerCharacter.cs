@@ -20,10 +20,10 @@ public class PlayerCharacter : MonoBehaviour
         if(activeCharacter == null)
         {
             activeCharacter = Managers.Resource.Instantiate("Character", this.transform).GetComponent<ActiveCharacter>();
-            activeCharacter.tag = ENUM_TAG_TYPE.Ally.ToString();
         }
         
         activeCharacter.Init();
+        activeCharacter.teamType = this.teamType;
         playerCamera.Init(activeCharacter.transform);
     }
 

@@ -8,6 +8,7 @@ public partial class ActiveCharacter : Character
 {
     public Animator anim;
     public SpriteRenderer spriteRenderer;
+    public ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
 
     public AttackObejct attackObject;
 
@@ -112,7 +113,7 @@ public partial class ActiveCharacter : Character
                 }
                 else
                 {
-                    StartCoroutine(IRisingStateCheck());
+                    // StartCoroutine(IRisingStateCheck());
                     Debug.Log("확인2");
                 }
             }
@@ -187,23 +188,35 @@ public partial class ActiveCharacter : Character
         StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
+    /// <summary>
+    /// 경직 시간을 부여하기 위한 함수
+    /// </summary>
+    /// <param name="_hitTime"></param>
+    /// <returns>경직시간</returns>
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
         yield return new WaitForSeconds(_hitTime);
 
-        anim.SetBool("IsHit", false);
+        if (!jumpState)
+            anim.SetBool("IsHit", false);
     }
 
+    /// <summary>
+    /// 공중 히트 상태에서 바닥에 착지하는 것을 감지하는 함수
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator IRisingStateCheck()
     {
-        while(jumpState)
+        hitCoroutine = true;
+
+        while(!jumpState)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
 
-        // 다운 상태로 바닥에 닿은 상태가 될 것
+        // 다운 상태로 바닥에 닿은 상태에 호출
         Invincible();
-        StartCoroutine(IHitRunTimeCheck(1.0f)); // 일단 다운상태에서 일어나는 시간은 고정값으로 부여 (임시)
+        anim.SetBool("IsHit", false);
     }
         
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
