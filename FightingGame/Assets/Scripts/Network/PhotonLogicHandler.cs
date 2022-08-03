@@ -7,6 +7,7 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Reflection;
 using System.Linq;
+using System.Text;
 
 public enum ENUM_RPC_TARGET
 {
@@ -39,7 +40,7 @@ public partial class PhotonLogicHandler
     }
 }
 
-public delegate void DisconnectCallBack(DisconnectCause cause);
+public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message); 
 
 public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
@@ -64,11 +65,17 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private readonly string GameVersion = "1";
     private static List<MonoBehaviourPhoton> photonObjectList = new List<MonoBehaviourPhoton>();
 
+    private Action _OnCreateRoom = null;
+    private FailedCallBack _OnCreateRoomFailed = null;
+
     private Action _OnConnectedToMaster = null;
     private DisconnectCallBack _OnDisconnectedFromMaster = null;
 
     private Action _OnJoinRoom = null;
     private FailedCallBack _OnJoinRoomFailed = null;
+
+    private Action _OnJoinLobby = null;
+    private FailedCallBack _OnJoinLobbyFailed = null;
 
     public static bool IsMine(MonoBehaviourPhoton pun)
     {
@@ -88,6 +95,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnDisconnectedFromMaster = null;
         _OnJoinRoom = null;
         _OnJoinRoomFailed = null;
+        _OnJoinLobby = null;
+        _OnJoinLobbyFailed = null;
     }
 
     /// <summary>
@@ -200,15 +209,27 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="_OnJoinRoomFailed">룸 접속에 실패했을 때 불리는 콜백 </param>
     /// <returns> 성공 여부 </returns>
 
-    public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed)
+    public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string nickname)
     {
         Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
+        PhotonNetwork.LocalPlayer.NickName = nickname;
+
         return PhotonNetwork.JoinRandomRoom();
     }
+
+    public bool TryJoinLobby(Action onSuccess = null, FailedCallBack onfailed = null)
+    {
+        this._OnJoinLobby = onSuccess;
+        this._OnJoinLobbyFailed = onfailed;
+
+        return PhotonNetwork.JoinLobby();
+    }
+
+
     public bool IsConnectedAndReady() => PhotonNetwork.IsConnectedAndReady;
     public bool IsMasterServer() => PhotonNetwork.Server == ServerConnection.MasterServer;
     public bool IsInLobby() => PhotonNetwork.InLobby;
@@ -246,11 +267,23 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="sceneName"></param>
 
-    public void TrySceneLoadWithRoomMember(string sceneName)
+    public bool TrySceneLoadWithRoomMember(string sceneName)
     {
+        if(!PhotonNetwork.IsMasterClient)
+		{
+            Debug.LogError("마스터 클라이언트가 아닌 경우 부를 수 없는 함수입니다.");
+            return false;
+		}
+
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.LoadLevel(sceneName);
+        return true;
     }
+
+    /// <summary>
+    /// 호출자 혼자 이동
+    /// </summary>
+    /// <param name="sceneName"></param>
 
     public void TrySceneLoad(string sceneName)
     {
@@ -265,8 +298,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="maxPlayerCount"> 방 인원 최대 수 </param>
     /// <returns> 성공 여부 </returns>
 
-    public bool TryCreateRoom(string roomName = "이름 없음", int maxPlayerCount = 2)
+    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", string playerNickname = "", int maxPlayerCount = 2)
     {
+        this._OnCreateRoom = OnCreateRoom;
+        this._OnCreateRoomFailed = OnCreateRoomFailed;
+
+        PhotonNetwork.LocalPlayer.NickName = playerNickname;
         return PhotonNetwork.CreateRoom(roomName, new RoomOptions() 
         { 
             MaxPlayers = (byte)maxPlayerCount
@@ -280,9 +317,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="pos"></param>
     /// <param name="quaternion"></param>
 
-    public void TryInstantiate(string prefabPath, Vector3 pos = default, Quaternion quaternion = default)
+    public GameObject TryInstantiate(string prefabPath, Vector3 pos = default, Quaternion quaternion = default)
     {
-        PhotonNetwork.Instantiate(prefabPath, pos, quaternion);
+        return PhotonNetwork.Instantiate(prefabPath, pos, quaternion);
     }
 
     #endregion
@@ -307,18 +344,62 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarning($"마스터 서버로부터 접속이 끊어졌습니다. 사유 : {cause}");
-        _OnDisconnectedFromMaster?.Invoke(cause); 
+        _OnDisconnectedFromMaster?.Invoke(cause.ToString()); 
     }
 
     /// <summary>
-    /// Room에 참가했을 때 불리는 콜백
+    /// 방 만들기 성공 시 콜백
     /// </summary>
-    /// 
 
-    public override void OnJoinedRoom()
+	public override void OnCreatedRoom()
+	{
+        _OnCreateRoom?.Invoke();
+    }
+
+    /// <summary>
+    /// 방 만들기 실패 시 콜백
+    /// </summary>
+    /// <param name="returnCode"></param>
+    /// <param name="message"></param>
+
+	public override void OnCreateRoomFailed(short returnCode, string message)
+	{
+        _OnCreateRoomFailed?.Invoke(returnCode, message);
+	}
+
+	/// <summary>
+	/// 로비에 접속되었을 때 불리는 콜백
+	/// </summary>
+
+	public override void OnJoinedLobby()
+	{
+        Debug.Log("로비 접속 성공");
+        _OnJoinLobby?.Invoke();
+    }
+
+    /// <summary>
+    /// 로비에 접속이 실패했을 때 불리는 콜백
+    /// </summary>
+    /// <param name="returnCode"></param>
+    /// <param name="message"></param>
+
+	public override void OnJoinRandomFailed(short returnCode, string message)
+	{
+        Debug.LogError($"{returnCode} - {message} ");
+        _OnJoinLobbyFailed?.Invoke(returnCode, message);
+    }
+
+	/// <summary>
+	/// Room에 참가했을 때 불리는 콜백
+	/// </summary>
+	/// 
+
+	public override void OnJoinedRoom()
     {
         Debug.Log($"룸에 성공적으로 접속하였습니다.");
+#if UNITY_EDITOR
         Info();
+#endif
         _OnJoinRoom?.Invoke();
     }
 
@@ -353,23 +434,28 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     }
 
-    [ContextMenu("정보")]
-    public void Info()
+    public string Info()
     {
+        StringBuilder str = new StringBuilder();
+
         if (PhotonNetwork.InRoom)
         {
-            print("현재 방 이름 : " + PhotonNetwork.CurrentRoom.Name);
-            print("현재 방 인원 수 : " + PhotonNetwork.CurrentRoom.PlayerCount);
-            print("현재 방 최대 인원 수 : " + PhotonNetwork.CurrentRoom.MaxPlayers);
+            str.Append($"현재 방 이름 : {PhotonNetwork.CurrentRoom.Name} \n");
+            str.Append($"현재 방 인원 수 : {PhotonNetwork.CurrentRoom.PlayerCount} \n");
+            str.Append($"현재 방 최대 인원 수 : {PhotonNetwork.CurrentRoom.MaxPlayers} \n");
+            str.Append($"{PhotonNetwork.CurrentRoom.MasterClientId}, {PhotonNetwork.LocalPlayer.ActorNumber} 두 개가 같으면 나는 마스터");
         }
         else
         {
-            print("접속한 인원 수 : " + PhotonNetwork.CountOfPlayers);
-            print("방 개수 : " + PhotonNetwork.CountOfRooms);
-            print("모든 방에 있는 인원 수 : " + PhotonNetwork.CountOfPlayersInRooms);
-            print("로비에 있는가? : " + PhotonNetwork.InLobby);
-            print("연결이 됐는가? : " + PhotonNetwork.IsConnected);
+            str.Append($"접속한 인원 수 : {PhotonNetwork.CountOfPlayers} \n");
+            str.Append($"방 개수 : {PhotonNetwork.CountOfRooms} \n");
+            str.Append($"모든 방에 있는 인원 수 : {PhotonNetwork.CountOfPlayersInRooms} \n");
+            str.Append($"로비에 있는가? : { PhotonNetwork.InLobby} \n");
+            str.Append($"연결이 됐는가? : { PhotonNetwork.IsConnected} \n");
         }
+
+        print(str);
+        return str.ToString();
     }
 
     #endregion
