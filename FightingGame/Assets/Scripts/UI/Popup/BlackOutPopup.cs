@@ -25,11 +25,11 @@ public class BlackOutPopup : PopupUI
     IEnumerator FadeScene()
     {
         Color color = img.color;
-        while (img.color.a != 255f) 
+        while (img.color.a <= 2f) 
         {
-            color.a += 15f;
+            color.a += 1f;
             img.color = color;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(1f);
         }
 
         color.a = 0f;

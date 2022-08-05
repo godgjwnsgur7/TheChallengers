@@ -100,7 +100,7 @@ public class LobbyCanvas : BaseCanvas
         }
     }
 
-    public void SelectCharacter(int charType) 
+    public void SelectCharacter(int charType) // 캐릭터 선택 후 매칭중 창 활성 
     {
         matchTimeWindow.charType = (ENUM_CHARACTER_TYPE)charType;
         Managers.UI.OpenUI<MatchTimeWindow>();

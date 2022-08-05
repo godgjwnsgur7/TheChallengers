@@ -7,13 +7,23 @@ public class MatchTimeWindow : UIElement
 {
     [SerializeField] MatchBtn matchBtn;
     [SerializeField] Text timer;
+    [SerializeField] Image charImage;
+
+    Sprite[] characterSprite;
     private float time = 0f;
     private string[] times = new string[2];
     public ENUM_CHARACTER_TYPE charType;
 
+    private void Awake()
+    {
+        characterSprite = Managers.Resource.LoadAll<Sprite>("Image/Knight-Idle");
+    }
+
     public override void Open(UIParam param = null)
     {
         base.Open(param);
+
+        charImage.sprite = characterSprite[(int)charType-1];
         matchBtn.SwitchInterctable();
 
         StartCoroutine(CountTime());
