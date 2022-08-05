@@ -117,7 +117,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="targetMethod"></param>
     /// <param name="targetType"></param>
     // [BroadcastMethodAttribute] 다음과 같이 함수 위에 추가
-    public void TryBroadcastMethod<T>(T owner, Action<object[]> targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All, object[] parameters = null) where T : MonoBehaviourPun
+    public void TryBroadcastMethod<T>(T owner, Action<string> targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All, string param = null) where T : MonoBehaviourPun
     {
         MethodInfo methodInfo = targetMethod.Method;
         string methodName = methodInfo.Name;
@@ -159,7 +159,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
                 break;
         }
 
-        owner.photonView.RPC(methodName, RPCTargetType, parameters, new PhotonMessageInfo());
+        owner.photonView.RPC(methodName, RPCTargetType, param);
     }
 
 
@@ -295,14 +295,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LoadLevel(scenename);
 
-        TryBroadcastMethod(this, LoadScene, ENUM_RPC_TARGET.All, new object[] { scenename });
+        TryBroadcastMethod(this, LoadScene, ENUM_RPC_TARGET.All, scenename);
         return true;
     }
 
     [BroadcastMethod]
-    private void LoadScene(object[] parameters)
+    private void LoadScene(string scenename)
 	{
-        SceneManager.LoadScene((string)parameters[0]);
+        PhotonNetwork.LoadLevel(scenename);
     }
 
     /// <summary>

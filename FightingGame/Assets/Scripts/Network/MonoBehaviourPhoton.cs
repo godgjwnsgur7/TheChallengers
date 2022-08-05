@@ -51,6 +51,8 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     {
         var view = gameObject.AddComponent<PhotonView>();
         view.ObservedComponents = new List<Component>();
+
+        PhotonLogicHandler.Register(this);
     }
 
     public void SyncAnimator(Animator anim)
@@ -118,12 +120,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         photonView.ObservedComponents.Add(component);
     }
 
-    protected virtual void OnEnable()
-    {
-        PhotonLogicHandler.Register(this);
-    }
-
-    protected virtual void OnDisable()
+    protected virtual void OnDestroy()
     {
         PhotonLogicHandler.Unregister(this);
     }
