@@ -39,17 +39,17 @@ public class Character : MonoBehaviourPhoton
 
     }
 
-    protected override void OnMasterSerializeView(PhotonWriteStream stream)
+    protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
-        base.OnMasterSerializeView(stream);
+        base.OnMineSerializeView(stream);
 
         stream.Write(characterType);
         Debug.Log($"{characterType} Write 성공");
     }
 
-    protected override void OnSlaveSerializeView(PhotonReadStream stream)
+    protected override void OnOtherSerializeView(PhotonReadStream stream)
     {
-        base.OnSlaveSerializeView(stream);
+        base.OnOtherSerializeView(stream);
 
         characterType = (ENUM_CHARACTER_TYPE)stream.Read();
         Debug.Log($"{characterType} Read 성공");

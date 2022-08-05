@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_EDITOR
 public class DebugWindow : BaseCanvas
 {
 	[SerializeField] private InputField nicknameInput = null;
@@ -51,9 +51,9 @@ public class DebugWindow : BaseCanvas
 		playerNickname: nicknameInput.text);
 	}
 
-	public void OnClickMoveScene(string scenename)
+	public void OnClickMoveScene()
 	{
-		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(scenename);
+		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
 	}
 
 	public void SetError(string cause)
@@ -72,4 +72,3 @@ public class DebugWindow : BaseCanvas
 		detailStatusPanel.text = PhotonLogicHandler.Instance.Info();
 	}
 }
-#endif

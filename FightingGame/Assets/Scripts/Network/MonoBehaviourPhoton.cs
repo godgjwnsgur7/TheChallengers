@@ -129,21 +129,21 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     }
 
     /// <summary>
-    /// 마스터 클라이언트가 모든 슬레이브들을 동기화시킬 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
+    /// 송신 클라가 다른 수신 클라들을 동기화시킬 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
     /// </summary>
     /// <param name="info"></param>
 
-    protected virtual void OnMasterSerializeView(PhotonWriteStream writeStream)
+    protected virtual void OnMineSerializeView(PhotonWriteStream writeStream)
     {
         
     }
 
     /// <summary>
-    /// 슬레이브 클라이언트가 마스터로부터 받은 변수로 동기화를 받을 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
+    /// 수신 클라들이 송신 클라로부터 받은 변수로 동기화를 받을 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
     /// </summary>
     /// <param name="info"></param>
 
-    protected virtual void OnSlaveSerializeView(PhotonReadStream readStream)
+    protected virtual void OnOtherSerializeView(PhotonReadStream readStream)
     {
         
     }
@@ -153,12 +153,12 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         if(stream.IsWriting)
         {
             writeStream.SetStream(stream);
-            OnMasterSerializeView(writeStream);
+            OnMineSerializeView(writeStream);
         }
         else if(stream.IsReading)
         {
             readStream.SetStream(stream);
-            OnSlaveSerializeView(readStream);
+            OnOtherSerializeView(readStream);
         }
 
         Debug.Log("--- OnPhotonSerializeView ---");

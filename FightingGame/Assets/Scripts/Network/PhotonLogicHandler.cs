@@ -45,6 +45,8 @@ public delegate void FailedCallBack(short returnCode, string message);
 
 public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 {
+    private static int CurrentViewID = 1;
+
     private static PhotonLogicHandler instance;
     public static PhotonLogicHandler Instance
     {
@@ -54,6 +56,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             {
                 GameObject g = new GameObject("PhotonLogicHandler");
                 instance = g.AddComponent<PhotonLogicHandler>();
+                instance.Initialize();
                 
                 DontDestroyOnLoad(g);
             }
@@ -99,6 +102,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnJoinLobbyFailed = null;
     }
 
+    PhotonView view = null;
+
+    private void Initialize()
+	{
+        view = gameObject.AddComponent<PhotonView>();
+        view.ViewID = CurrentViewID++;
+	}
+
     /// <summary>
     /// 1. 넘기는 Action Method에 람다식은 허용되지 않습니다.
     /// 2. Method의 속성에 [BroadcastMethodAttribute]가 추가되어야 합니다.
@@ -106,17 +117,18 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="targetMethod"></param>
     /// <param name="targetType"></param>
     // [BroadcastMethodAttribute] 다음과 같이 함수 위에 추가
-    public void TryBroadcastMethod<T>(T owner, Action targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All) where T : MonoBehaviourPhoton
+    public void TryBroadcastMethod<T>(T owner, Action<object[]> targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All, object[] parameters = null) where T : MonoBehaviourPun
     {
         MethodInfo methodInfo = targetMethod.Method;
         string methodName = methodInfo.Name;
+        var ownerType = typeof(T);
 
         if (owner == null || owner.photonView == null)
         {
             Debug.LogError("동기화될 객체가 없거나 네트워킹 가능 상태가 아닙니다. 객체의 상태를 확인해주세요.");
             return;
         }
-        else if(typeof(T).GetMethod(methodName) == null)
+        else if (ownerType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static) == null)
         {
             Debug.LogError("넘기는 Action Method에 람다식은 허용되지 않습니다. 객체 내부에 Method를 구현 후 인자로 넘겨주세요.");
             return;
@@ -147,13 +159,15 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
                 break;
         }
 
-        owner.photonView.RPC(methodName, RPCTargetType);
+        owner.photonView.RPC(methodName, RPCTargetType, parameters, new PhotonMessageInfo());
     }
 
 
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static void Register(MonoBehaviourPhoton pun)
     {
+        pun.photonView.ViewID = CurrentViewID++;
+
         if (!photonObjectList.Exists(p => p.Equals(pun)))
         {
             photonObjectList.Add(pun);
@@ -166,6 +180,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public static void Unregister(MonoBehaviourPhoton pun)
     {
+        pun.photonView.ViewID = 0;
+
         if (photonObjectList.Exists(p => p.Equals(pun)))
         {
             photonObjectList.Remove(pun);
@@ -267,28 +283,26 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="sceneName"></param>
 
-    public bool TrySceneLoadWithRoomMember(string sceneName)
+    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType)
     {
-        if(!PhotonNetwork.IsMasterClient)
-		{
+        if (!PhotonNetwork.IsMasterClient)
+        {
             Debug.LogError("마스터 클라이언트가 아닌 경우 부를 수 없는 함수입니다.");
             return false;
-		}
+        }
 
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.LoadLevel(sceneName);
+        string scenename = sceneType.ToString();
+
+        PhotonNetwork.LoadLevel(scenename);
+
+        TryBroadcastMethod(this, LoadScene, ENUM_RPC_TARGET.All, new object[] { scenename });
         return true;
     }
 
-    /// <summary>
-    /// 호출자 혼자 이동
-    /// </summary>
-    /// <param name="sceneName"></param>
-
-    public void TrySceneLoad(string sceneName)
-    {
-        PhotonNetwork.AutomaticallySyncScene = false;
-        SceneManager.LoadScene(sceneName);
+    [BroadcastMethod]
+    private void LoadScene(object[] parameters)
+	{
+        SceneManager.LoadScene((string)parameters[0]);
     }
 
     /// <summary>
