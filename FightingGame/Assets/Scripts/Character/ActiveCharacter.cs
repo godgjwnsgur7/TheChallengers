@@ -195,9 +195,13 @@ public partial class ActiveCharacter : Character
     /// <returns>경직시간</returns>
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
+        // 내가 지금 경직에 걸렸지만, 뜨면 바로 감지해서 해당 함수를 호출하지 않아야 하고
+        // 뜨면 IRisingStateCheck 코루틴을 실행시켜야 하는데, 이미 실행중이라면 실행하지 않아야 함
+        // + 경직 상태가 끝나면 isHit를 풀 것.
+
         yield return new WaitForSeconds(_hitTime);
 
-        if (!jumpState)
+        if (jumpState == false)
             anim.SetBool("IsHit", false);
     }
 
@@ -207,6 +211,9 @@ public partial class ActiveCharacter : Character
     /// <returns></returns>
     protected IEnumerator IRisingStateCheck()
     {
+        // 타격에 의해 공중에 뜬 상태가 됐을 때 호출되는 코루틴으로
+        // 이 상태에서 바닥에 닿았는지를 판단해 무적 상태를 부여할 것.
+
         hitCoroutine = true;
 
         while(!jumpState)

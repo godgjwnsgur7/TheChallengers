@@ -14,18 +14,6 @@ public class PlayerCharacter : MonoBehaviour
     public bool inabilityState = false;
 
     public ENUM_TEAM_TYPE teamType;
-    
-    private void Awake()
-    {
-        if(activeCharacter == null)
-        {
-            activeCharacter = Managers.Resource.Instantiate("Character", this.transform).GetComponent<ActiveCharacter>();
-        }
-        
-        activeCharacter.Init();
-        activeCharacter.teamType = this.teamType;
-        playerCamera.Init(activeCharacter.transform);
-    }
 
     private void Start()
     {
@@ -37,6 +25,14 @@ public class PlayerCharacter : MonoBehaviour
     private void Update()
     {
         OnKeyboard(); // 디버깅용
+    }
+
+    public void Set_Character(ActiveCharacter _activeCharacter)
+    {
+        activeCharacter = _activeCharacter;
+        activeCharacter.Init();
+        activeCharacter.teamType = teamType;
+        playerCamera.Init(activeCharacter.transform);
     }
 
     // 디버깅용이니 쿨하게 다 때려박기

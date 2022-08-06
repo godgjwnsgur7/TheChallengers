@@ -47,7 +47,7 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// 해당 캐릭터 타입
+    /// 캐릭터 타입
     /// </summary>
     public enum ENUM_CHARACTER_TYPE
     {
@@ -59,8 +59,15 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// "Resources/Prefabs/AttackObjects"
-    /// 경로 안에 같은 이름의 Prefabs가 있어야 함 (AttackObject)
+    /// "Resources/Prefabs/Maps/" 경로 안에 같은 이름의 프리팹이 필요
+    /// </summary>
+    public enum ENUM_MAP_TYPE
+    {
+        BasicMap = 0,
+    }
+
+    /// <summary>
+    /// "Resources/Prefabs/AttackObjects/" 경로 안에 같은 이름의 프리팹 필요
     /// 모든 캐릭터의 스킬 타입 (Key)
     /// </summary>
     [Serializable]

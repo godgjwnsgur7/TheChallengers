@@ -15,16 +15,31 @@ public class EnemyPlayer : MonoBehaviour
 
     public bool inabilityState = false;
 
+    public ENUM_TEAM_TYPE teamType;
 
-    private void Awake()
+    public void Set_Character(ActiveCharacter _activeCharacter)
     {
-        if (activeCharacter == null)
-        {
-            activeCharacter = Managers.Resource.Instantiate("Character", this.transform).GetComponent<ActiveCharacter>();
-            activeCharacter.tag = ENUM_TAG_TYPE.Enemy.ToString();
-        }
-
+        activeCharacter = _activeCharacter;
         activeCharacter.Init();
+        activeCharacter.teamType = teamType;
+    }
+
+    private void Skills_Pooling(ENUM_CHARACTER_TYPE charType)
+    {
+        switch (charType)
+        {
+            case ENUM_CHARACTER_TYPE.Knight:
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 3);
+                break;
+
+            default:
+                Debug.Log($"Failed to SkillObject : {charType}");
+                break;
+        }
     }
 
     private void Update()

@@ -22,6 +22,18 @@ public class ObjectPoolMgr
                 Push(Create());
         }
 
+        public void Add(GameObject original, int poolCount)
+        {
+            if (Original != original)
+            {
+                Debug.Log($"Failed to Add : {original}");
+                return;
+            }
+
+            for (int i = 0; i < poolCount; i++)
+                Push(Create());
+        }
+
         Poolable Create()
         {
             GameObject go = Object.Instantiate<GameObject>(Original);
@@ -115,6 +127,12 @@ public class ObjectPoolMgr
 
         pools.Add(original.name, pool);
     }
+    
+    public void AddPool(GameObject original, int count)
+    {
+        GameObject g = GetOriginal(original.name);
+
+    }
 
     public void Push(Poolable poolable)
     {
@@ -157,7 +175,8 @@ public class ObjectPoolMgr
     {
         if (pools.ContainsKey(original.name) == true)
         {
-            Debug.Log($"Already Existing Pool : {original}");
+            pools.TryGetValue(original.name, out var _pool);
+            _pool.Add(original, count);
             return;        
         }
 
