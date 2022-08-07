@@ -21,10 +21,20 @@ public class BattleScene : BaseScene
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
 
-        // 디버그용으로 일단 다 박아.
-        playerCharacter.Set_Character(Init_Character(ENUM_TEAM_TYPE.Blue, map.blueTeamSpawnPoint.position));
-        enemyPlayer.Set_Character(Init_Character(ENUM_TEAM_TYPE.Red, map.redTeamSpawnPoint.position));
+        PhotonLogicHandler.Instance.TryBroadcastMethod(this, InitCharacter);
+    }
 
+    [BroadcastMethod]
+    private void InitCharacter()
+    {
+        if (PhotonLogicHandler.IsMasterClient)
+        {
+            playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position));
+        }
+        else
+        {
+            playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
+        }
     }
 
     public override void Clear()
@@ -32,11 +42,10 @@ public class BattleScene : BaseScene
 
     }
 
-    public ActiveCharacter Init_Character(ENUM_TEAM_TYPE _teamType, Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
+    public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
-        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
+        ActiveCharacter activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
-        activeCharacter.teamType = _teamType;
         
         Skills_Pooling(_charType);
 

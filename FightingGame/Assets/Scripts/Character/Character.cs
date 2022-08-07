@@ -37,22 +37,24 @@ public class Character : MonoBehaviourPhoton
         SyncPhysics(rigid2D);
         SyncTransformView(transform);
 
+        if(PhotonLogicHandler.IsMasterClient)
+        {
+            teamType = ENUM_TEAM_TYPE.Blue;
+        }
+        else
+        {
+            teamType = ENUM_TEAM_TYPE.Red;
+        }
     }
 
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
         base.OnMineSerializeView(stream);
-
-        stream.Write(characterType);
-        Debug.Log($"{characterType} Write 성공");
     }
 
     protected override void OnOtherSerializeView(PhotonReadStream stream)
     {
         base.OnOtherSerializeView(stream);
-
-        characterType = (ENUM_CHARACTER_TYPE)stream.Read();
-        Debug.Log($"{characterType} Read 성공");
     }
 
     public virtual void Idle(CharacterParam param = null)

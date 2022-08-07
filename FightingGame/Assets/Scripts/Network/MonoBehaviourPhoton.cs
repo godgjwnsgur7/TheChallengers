@@ -34,6 +34,8 @@ public class PhotonReadStream : PhotonCustomStreamBase
     }
 }
 
+[RequireComponent(typeof(PhotonView))]
+
 public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 {
     private PhotonWriteStream writeStream = new PhotonWriteStream();
@@ -51,9 +53,10 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     public virtual void Init()
     {
-        var view = gameObject.AddComponent<PhotonView>();
-        view.ObservedComponents = new List<Component>();
+        if (photonView == null)
+            gameObject.AddComponent<PhotonView>();
 
+        photonView.ObservedComponents = new List<Component>();
         viewID = PhotonLogicHandler.Register(photonView);
     }
 
