@@ -18,7 +18,7 @@ public class Knight : ActiveCharacter
 
         // PhotonLogicHandler.Instance.TryBroadcastMethod<Knight>(this, Attack);
 
-        if (PhotonLogicHandler.IsMine(this))
+        if (PhotonLogicHandler.IsMine(viewID))
         {
             Debug.Log("컨트롤이 가능한 객체");
         }

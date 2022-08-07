@@ -66,7 +66,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     }
 
     private readonly string GameVersion = "1";
-    private static List<MonoBehaviourPhoton> photonObjectList = new List<MonoBehaviourPhoton>();
+    private static Dictionary<int, PhotonView> photonViewDictionary = new Dictionary<int, PhotonView>();
 
     private Action _OnCreateRoom = null;
     private FailedCallBack _OnCreateRoomFailed = null;
@@ -80,14 +80,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private Action _OnJoinLobby = null;
     private FailedCallBack _OnJoinLobbyFailed = null;
 
-    public static bool IsMine(MonoBehaviourPhoton pun)
+    public static bool IsMine(int viewID)
     {
-        var obj = photonObjectList.Find(p => p.Equals(pun));
+        PhotonView view = null;
 
-        if (obj != null && obj.photonView != null)
-        {
-            return obj.photonView.IsMine;
-        }
+        if (photonViewDictionary.TryGetValue(viewID, out view))
+            return view.IsMine;
 
         return false;
     }
@@ -165,31 +163,35 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
 
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
-    public static void Register(MonoBehaviourPhoton pun)
+    public static int Register(PhotonView view)
     {
-        pun.photonView.ViewID = CurrentViewID++;
+        view.ViewID = view.gameObject.GetInstanceID();
 
-        if (!photonObjectList.Exists(p => p.Equals(pun)))
+        if (!photonViewDictionary.ContainsKey(view.ViewID))
         {
-            photonObjectList.Add(pun);
+            photonViewDictionary.Add(view.ViewID, view);
         }
         else
         {
-            Debug.LogWarning($"같은 MonoBehaviourPhoton 오브젝트를 추가하려 들었음. {pun}");
+            Debug.LogWarning($"같은 MonoBehaviourPhoton 오브젝트를 추가하려 들었음. {view.ViewID}");
+            return 0;
         }
+
+        return view.ViewID;
     }
 
-    public static void Unregister(MonoBehaviourPhoton pun)
+    public static void Unregister(int viewID)
     {
-        pun.photonView.ViewID = 0;
+        PhotonView view = null;
 
-        if (photonObjectList.Exists(p => p.Equals(pun)))
+        if (photonViewDictionary.TryGetValue(viewID, out view))
         {
-            photonObjectList.Remove(pun);
+            view.ViewID = 0;
+            photonViewDictionary.Remove(viewID);
         }
         else
         {
-            Debug.LogWarning($"등록되지 않은 MonoBehaviourPhoton 오브젝트를 제거하려 들었음. {pun}");
+            Debug.LogWarning($"등록되지 않은 MonoBehaviourPhoton 오브젝트를 제거하려 들었음. {viewID}");
         }
     }
 

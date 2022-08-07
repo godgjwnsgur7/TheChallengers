@@ -39,6 +39,8 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
 
+    protected int viewID = 0;
+
     /// <summary>
     /// 우선 Key를 string으로 지정, 추후 클라 관리를 위해 ENUM으로 수정하도록 함
     /// </summary>
@@ -52,7 +54,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         var view = gameObject.AddComponent<PhotonView>();
         view.ObservedComponents = new List<Component>();
 
-        PhotonLogicHandler.Register(this);
+        viewID = PhotonLogicHandler.Register(photonView);
     }
 
     public void SyncAnimator(Animator anim)
@@ -122,7 +124,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     protected virtual void OnDestroy()
     {
-        PhotonLogicHandler.Unregister(this);
+        PhotonLogicHandler.Unregister(viewID);
     }
 
     /// <summary>
