@@ -16,6 +16,8 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
+        Debug.Log("액티브캐릭터 확인");
+
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         if(teamType == ENUM_TEAM_TYPE.Blue)

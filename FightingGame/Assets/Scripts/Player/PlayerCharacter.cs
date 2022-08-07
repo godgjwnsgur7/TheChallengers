@@ -30,8 +30,6 @@ public class PlayerCharacter : MonoBehaviour
     public void Set_Character(ActiveCharacter _activeCharacter)
     {
         activeCharacter = _activeCharacter;
-        activeCharacter.Init();
-        activeCharacter.teamType = teamType;
         playerCamera.Init(activeCharacter.transform);
     }
 

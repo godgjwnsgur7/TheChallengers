@@ -20,8 +20,6 @@ public class EnemyPlayer : MonoBehaviour
     public void Set_Character(ActiveCharacter _activeCharacter)
     {
         activeCharacter = _activeCharacter;
-        activeCharacter.Init();
-        activeCharacter.teamType = teamType;
     }
 
     private void Skills_Pooling(ENUM_CHARACTER_TYPE charType)
