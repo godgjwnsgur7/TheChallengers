@@ -41,6 +41,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
 
+    public int ViewID => viewID;
     protected int viewID = 0;
 
     /// <summary>

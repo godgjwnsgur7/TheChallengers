@@ -21,19 +21,26 @@ public class BattleScene : BaseScene
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
 
-        PhotonLogicHandler.Instance.TryBroadcastMethod(this, InitCharacter);
-    }
-
-    [BroadcastMethod]
-    private void InitCharacter()
-    {
-        if (PhotonLogicHandler.IsMasterClient)
+        if(PhotonLogicHandler.IsMasterClient)
         {
-            playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position));
+            InitCharacter(map.blueTeamSpawnPoint.position);
         }
         else
         {
-            playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
+            InitCharacter(map.redTeamSpawnPoint.position);
+        }
+    }
+
+    private void InitCharacter(Vector3 spawnPos)
+    {
+        var character = Init_Character(spawnPos);
+        if (PhotonLogicHandler.IsMine(character.ViewID))
+        {
+            playerCharacter.Set_Character(character); // 내 캐릭터 생성...
+        }
+        else
+        {
+            // 다른 캐릭터 생성... 제어할 수 없도록 생성해야 함...
         }
     }
 

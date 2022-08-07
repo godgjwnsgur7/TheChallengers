@@ -14,7 +14,7 @@ public enum ENUM_SCENE_TYPE
     CustomRoom,
 }
 
-public abstract class BaseScene : MonoBehaviourPhoton
+public abstract class BaseScene : MonoBehaviour
 {
     private ENUM_SCENE_TYPE sceneType;
     public ENUM_SCENE_TYPE SceneType { get; protected set; } = ENUM_SCENE_TYPE.Unknown;
@@ -24,9 +24,8 @@ public abstract class BaseScene : MonoBehaviourPhoton
         Init();    
     }
 
-    public override void Init()
+    public virtual void Init()
     {
-        base.Init();
         Managers.UI.Init(); // 임시
     }
 
