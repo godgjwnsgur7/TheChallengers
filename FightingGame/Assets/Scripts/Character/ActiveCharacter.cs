@@ -12,11 +12,11 @@ public partial class ActiveCharacter : Character
 
     public AttackObejct attackObject;
 
+    Coroutine coroutine;
+
     public override void Init()
     {
         base.Init();
-
-        Debug.Log("액티브캐릭터 확인");
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -108,15 +108,13 @@ public partial class ActiveCharacter : Character
                 anim.SetBool("IsHit", true);
                 anim.SetTrigger("HitTrigger");
                 hp -= _skillData.damage;
-                if(!jumpState)
+                if(hitCoroutine)
                 {
-                    StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
-                    Debug.Log("확인1");
+                    StopCoroutine(coroutine);
                 }
                 else
                 {
-                    // StartCoroutine(IRisingStateCheck());
-                    Debug.Log("확인2");
+                    coroutine = StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
                 }
             }
         }
@@ -167,7 +165,9 @@ public partial class ActiveCharacter : Character
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag.ToString() == ENUM_TAG_TYPE.Ground.ToString())
+        {
             SetJumpState(true);
+        }
     }
 
     public bool GroundCheckWithRay()
@@ -175,12 +175,6 @@ public partial class ActiveCharacter : Character
         Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
 
         return Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
-    }
-
-    public void Checking_AttackState()
-    {
-        if (!attackState)
-            anim.SetBool("IsIdle", true);
     }
 
     public void Invincible()
@@ -197,13 +191,11 @@ public partial class ActiveCharacter : Character
     /// <returns>경직시간</returns>
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
-        // 내가 지금 경직에 걸렸지만, 뜨면 바로 감지해서 해당 함수를 호출하지 않아야 하고
-        // 뜨면 IRisingStateCheck 코루틴을 실행시켜야 하는데, 이미 실행중이라면 실행하지 않아야 함
-        // + 경직 상태가 끝나면 isHit를 풀 것.
+
 
         yield return new WaitForSeconds(_hitTime);
 
-        if (jumpState == false)
+        if (!hitCoroutine)
             anim.SetBool("IsHit", false);
     }
 
@@ -213,9 +205,6 @@ public partial class ActiveCharacter : Character
     /// <returns></returns>
     protected IEnumerator IRisingStateCheck()
     {
-        // 타격에 의해 공중에 뜬 상태가 됐을 때 호출되는 코루틴으로
-        // 이 상태에서 바닥에 닿았는지를 판단해 무적 상태를 부여할 것.
-
         hitCoroutine = true;
 
         while(!jumpState)
@@ -224,10 +213,13 @@ public partial class ActiveCharacter : Character
         }
 
         // 다운 상태로 바닥에 닿은 상태에 호출
+        Set_Rigid2D(Vector2.zero);
         Invincible();
         anim.SetBool("IsHit", false);
+        jumpState = false;
+        hitCoroutine = false;
     }
-        
+
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
         yield return new WaitForSeconds(_invincibleTime);
@@ -251,4 +243,11 @@ public partial class ActiveCharacter : Character
             Debug.Log("찾을 수 없음");
         }
     }
+
+    public void Checking_AttackState()
+    {
+        if (!attackState)
+            anim.SetBool("IsIdle", true);
+    }
+
 }

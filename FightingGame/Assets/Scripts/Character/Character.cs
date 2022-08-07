@@ -59,8 +59,6 @@ public class Character : MonoBehaviourPhoton
     {
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
         currState = ENUM_PLAYER_STATE.Idle;
-
-
     }
 
     public virtual void Move(CharacterParam param)
@@ -104,4 +102,8 @@ public class Character : MonoBehaviourPhoton
         invincibility = true;
     }
 
+    protected void Set_Rigid2D(Vector2 vec)
+    {
+        rigid2D.velocity = vec;
+    }
 }
