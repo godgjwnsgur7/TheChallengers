@@ -7,8 +7,12 @@ using FGDefine;
 public class CustomRoomCanvas : BaseCanvas
 {
     [SerializeField] SelectWindow selectWindow;
+    [SerializeField] Text roomNameText;
+    [SerializeField] Text userName1;
+    [SerializeField] Text userName2;
     [SerializeField] Text readyText1;
     [SerializeField] Text readyText2;
+    [SerializeField] Text notion;
     [SerializeField] Image btnImage1;
     [SerializeField] Image btnImage2;
     [SerializeField] Image mapImage;
@@ -21,12 +25,25 @@ public class CustomRoomCanvas : BaseCanvas
     public int player;
     private ENUM_CHARACTER_TYPE selectCharacter1;
     private ENUM_CHARACTER_TYPE selectCharacter2;
+    private bool userReady1;
+    private bool userReady2;
 
     private void Start()
     {
         characterSprite = Managers.Resource.LoadAll<Sprite>("Image/Knight-Idle");
         mapSprite = Managers.Resource.LoadAll<Sprite>("Image/test_standing");
-        // mapSpriteP = ;
+
+        userName1.text = PlayerPrefs.GetString("CreateUser");
+        roomNameText.text = PlayerPrefs.GetString("RoomName");
+
+        if (PlayerPrefs.HasKey("EnterUser"))
+            userName2.text = PlayerPrefs.GetString("EnterUser");
+
+        mapSpriteP = PlayerPrefs.GetInt("MapSpriteP");
+        mapImage.sprite = mapSprite[mapSpriteP];
+
+        userReady1 = false;
+        userReady2 = false;
     }
 
     public override void Open<T>(UIParam param = null)
@@ -50,6 +67,9 @@ public class CustomRoomCanvas : BaseCanvas
     // 캐릭터 선택
     public void SelectCharacter(int charType)
     {
+        if (notion.gameObject.activeSelf)
+            notion.gameObject.SetActive(false);
+
         switch (this.player)
         {
             case 1:
@@ -63,7 +83,6 @@ public class CustomRoomCanvas : BaseCanvas
                 btnImage2.sprite = characterSprite[charType-1];
                 break;
         }
-
 
         CloseSelectWindow();
     }
@@ -85,6 +104,16 @@ public class CustomRoomCanvas : BaseCanvas
     // 로비씬 이동
     public void LoadLobby()
     {
+        PlayerPrefs.DeleteAll();
+        /*PlayerPrefs.DeleteKey("RoomName");
+        PlayerPrefs.DeleteKey("CreateUser");
+        PlayerPrefs.DeleteKey("MyName");
+        PlayerPrefs.DeleteKey("MyTeam");
+        PlayerPrefs.DeleteKey("MapSpriteP");
+
+        if (PlayerPrefs.HasKey("EnterUser"))
+            PlayerPrefs.DeleteKey("EnterUser");*/
+
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby);
     }
 
@@ -111,13 +140,35 @@ public class CustomRoomCanvas : BaseCanvas
     public void UserReady()
     {
         // if 문 같은걸로 버튼 누른 유저확인 후 해당 유저의 버튼을 비활성화 시키면 될 거같은데...
-        user1.interactable = !user1.interactable;
-        user2.interactable = !user2.interactable;
+        if (PlayerPrefs.GetString("MyName") == userName1.text)
+        {
+            if (selectCharacter1 == ENUM_CHARACTER_TYPE.Default)
+            {
+                notion.gameObject.SetActive(true);
+                return;
+            }
 
-        readyText1.gameObject.SetActive(!readyText1.IsActive());
-        readyText2.gameObject.SetActive(!readyText2.IsActive());
+            user1.interactable = !user1.interactable;
+            readyText1.gameObject.SetActive(!readyText1.IsActive());
+            userReady1 = !userReady1;
+        }
+        else if(PlayerPrefs.GetString("MyName") == userName2.text)
+        {
+            if (selectCharacter2 == ENUM_CHARACTER_TYPE.Default)
+            {
+                notion.gameObject.SetActive(true);
+                return;
+            }
+
+            user2.interactable = !user2.interactable;
+            readyText2.gameObject.SetActive(!readyText2.IsActive());
+            userReady2 = !userReady2;
+        }
 
         // 이 뒤에 전부 레디했는지 확인하면 되지 않을까 싶다...
-
+        if(userReady1 && userReady2)
+        {
+            Managers.UI.OpenUI<CountDownPopup>();
+        }
     }
 }

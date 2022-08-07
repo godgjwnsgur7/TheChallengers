@@ -21,6 +21,12 @@ public class CustomListPanel : UIElement
 
     public void EnterCustomScene()
     {
+        // PlayerPrefs.SetString("RoomName", 선택한 방의 방제목);
+        // PlayerPrefs.SetString("CreateUser", 선택한 방의 방장이름);
+        // PlayerPrefs.SetString("MapSpriteP", 선택한 방의 맵);
+        PlayerPrefs.SetString("EnterUser", "hjh");
+        PlayerPrefs.SetString("MyName", "hjh");
+        PlayerPrefs.SetString("MyTeam", "Red");
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
     }
 }

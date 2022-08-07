@@ -59,6 +59,12 @@ public class CreateRoomPanel : UIElement
         if (inputContentChk())
             return;
 
+        PlayerPrefs.SetString("CreateUser", "kuj");
+        PlayerPrefs.SetString("MyName", "kuj");
+        PlayerPrefs.SetString("MyTeam", "Blue");
+        PlayerPrefs.SetString("RoomName", inputField.text);
+        PlayerPrefs.SetInt("MapSpriteP", mapSpriteP);
+
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
     }
 
