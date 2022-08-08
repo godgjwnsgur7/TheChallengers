@@ -66,8 +66,7 @@ public class ResourceMgr
 
     public GameObject InstantiateEveryone(string path, Vector2 position)
     {
-        GameObject go = PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);
-        return go;
+        return PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);
     }
 
     public AttackObejct GetAttackObject(string path)

@@ -23,25 +23,17 @@ public class BattleScene : BaseScene
 
         if(PhotonLogicHandler.IsMasterClient)
         {
-            InitCharacter(map.blueTeamSpawnPoint.position);
+            SetCharacterWithPos(map.blueTeamSpawnPoint.position);
         }
         else
         {
-            InitCharacter(map.redTeamSpawnPoint.position);
+            SetCharacterWithPos(map.redTeamSpawnPoint.position);
         }
     }
 
-    private void InitCharacter(Vector3 spawnPos)
+    private void SetCharacterWithPos(Vector3 spawnPos)
     {
-        var character = Init_Character(spawnPos);
-        if (PhotonLogicHandler.IsMine(character.ViewID))
-        {
-            playerCharacter.Set_Character(character); // 내 캐릭터 생성...
-        }
-        else
-        {
-            // 다른 캐릭터 생성... 제어할 수 없도록 생성해야 함...
-        }
+        playerCharacter.Set_Character(Init_Character(spawnPos));
     }
 
     public override void Clear()
