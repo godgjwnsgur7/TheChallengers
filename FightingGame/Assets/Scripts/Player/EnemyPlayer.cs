@@ -20,24 +20,7 @@ public class EnemyPlayer : MonoBehaviour
     public void Set_Character(ActiveCharacter _activeCharacter)
     {
         activeCharacter = _activeCharacter;
-    }
-
-    private void Skills_Pooling(ENUM_CHARACTER_TYPE charType)
-    {
-        switch (charType)
-        {
-            case ENUM_CHARACTER_TYPE.Knight:
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 3);
-                break;
-
-            default:
-                Debug.Log($"Failed to SkillObject : {charType}");
-                break;
-        }
+        activeCharacter.teamType = teamType;
     }
 
     private void Update()

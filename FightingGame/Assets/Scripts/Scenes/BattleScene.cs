@@ -10,8 +10,6 @@ public class BattleScene : BaseScene
 
     [SerializeField] EnemyPlayer enemyPlayer; // 디버그용
 
-    ENUM_TEAM_TYPE teamType;
-
     public override void Init()
     {
         base.Init();
@@ -21,13 +19,25 @@ public class BattleScene : BaseScene
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
 
-        if(PhotonLogicHandler.IsMasterClient)
+        if(PhotonLogicHandler.IsConnected)
         {
-            SetCharacterWithPos(map.blueTeamSpawnPoint.position);
+            if (PhotonLogicHandler.IsMasterClient)
+            {
+                SetCharacterWithPos(map.blueTeamSpawnPoint.position);
+            }
+            else
+            {
+                SetCharacterWithPos(map.redTeamSpawnPoint.position);
+            }
         }
-        else
+        else // 디버그용
         {
-            SetCharacterWithPos(map.redTeamSpawnPoint.position);
+            playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
+            playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position));
+
+            enemyPlayer.gameObject.SetActive(true);
+            enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
+            enemyPlayer.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
         }
     }
 
@@ -43,7 +53,13 @@ public class BattleScene : BaseScene
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
-        ActiveCharacter activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
+        ActiveCharacter activeCharacter;
+
+        if (!PhotonLogicHandler.IsConnected) // 디버그용
+            activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
+        else
+            activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
+        
         activeCharacter.Init();
         
         Skills_Pooling(_charType);

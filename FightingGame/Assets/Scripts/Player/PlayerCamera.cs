@@ -11,6 +11,9 @@ public class PlayerCamera : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (target == null)
+            return;
+
         FollowingCamera();
     }
 

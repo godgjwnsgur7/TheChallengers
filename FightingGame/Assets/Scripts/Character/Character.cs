@@ -37,13 +37,16 @@ public class Character : MonoBehaviourPhoton
         SyncPhysics(rigid2D);
         SyncTransformView(transform);
 
-        if(PhotonLogicHandler.IsMasterClient)
+        if(PhotonLogicHandler.IsConnected)
         {
-            teamType = ENUM_TEAM_TYPE.Blue;
-        }
-        else
-        {
-            teamType = ENUM_TEAM_TYPE.Red;
+            if (PhotonLogicHandler.IsMasterClient)
+            {
+                teamType = ENUM_TEAM_TYPE.Blue;
+            }
+            else
+            {
+                teamType = ENUM_TEAM_TYPE.Red;
+            }
         }
     }
 

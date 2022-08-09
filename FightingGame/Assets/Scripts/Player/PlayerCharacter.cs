@@ -24,8 +24,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
-            return;
+         if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
+           return;
 
         OnKeyboard(); // 디버깅용
     }
@@ -33,6 +33,7 @@ public class PlayerCharacter : MonoBehaviour
     public void Set_Character(ActiveCharacter _activeCharacter)
     {
         activeCharacter = _activeCharacter;
+        activeCharacter.teamType = teamType;
         playerCamera.Init(activeCharacter.transform);
     }
 

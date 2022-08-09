@@ -191,8 +191,6 @@ public partial class ActiveCharacter : Character
     /// <returns>경직시간</returns>
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
-
-
         yield return new WaitForSeconds(_hitTime);
 
         if (!hitCoroutine)
