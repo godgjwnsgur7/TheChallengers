@@ -147,8 +147,10 @@ public partial class ActiveCharacter : Character
 
     public void SetJumpState(bool _jumpState)
     {
-        if (jumpState == _jumpState) return;
-
+        if (jumpState == _jumpState)
+        {
+            return;
+        }
         jumpState = _jumpState;
         anim.SetBool("IsJump", jumpState);
     }
@@ -191,7 +193,25 @@ public partial class ActiveCharacter : Character
     /// <returns>경직시간</returns>
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
-        yield return new WaitForSeconds(_hitTime);
+        if (hitCoroutine)
+            Debug.Log("hitCoroutine이 true인데 코루틴이 시작되었습니다.");
+
+        float realTime = 0f;
+
+        while (_hitTime >= realTime)
+        {
+            realTime += Time.deltaTime;
+
+            if (jumpState && !hitCoroutine)
+            {
+                realTime += _hitTime;
+                StartCoroutine(IRisingStateCheck());
+            }
+
+            Debug.Log("IHitRunTimeCheck 도는중");
+
+            yield return null;
+        }
 
         if (!hitCoroutine)
             anim.SetBool("IsHit", false);
@@ -205,16 +225,20 @@ public partial class ActiveCharacter : Character
     {
         hitCoroutine = true;
 
-        while(!jumpState)
+        Debug.Log("IRisingStateCheck 호출");
+
+        while (jumpState)
         {
+            Debug.Log("IRisingStateCheck 도는중");
             yield return null;
         }
 
         // 다운 상태로 바닥에 닿은 상태에 호출
+        Debug.Log("IRisingStateCheck 끝");
         Set_Rigid2D(Vector2.zero);
+        SetJumpState(false);
         Invincible();
         anim.SetBool("IsHit", false);
-        jumpState = false;
         hitCoroutine = false;
     }
 
