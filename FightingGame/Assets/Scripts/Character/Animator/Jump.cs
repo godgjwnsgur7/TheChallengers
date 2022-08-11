@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Jump : StateMachineBehaviour
 {
-    private ActiveCharacter activeCharacter;
+    ActiveCharacter activeCharacter;
     Coroutine coroutine;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

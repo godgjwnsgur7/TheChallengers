@@ -171,7 +171,7 @@ public partial class ActiveCharacter : Character
             if(jumpState != _jumpState)
             {   
                 jumpState = _jumpState;
-                if(!anim.GetBool("IsJump"))
+                if(!anim.GetBool("IsJump") && currState != ENUM_PLAYER_STATE.Hit)
                     anim.SetTrigger("DropTrigger");
                 anim.SetBool("IsJump", jumpState);
             }
