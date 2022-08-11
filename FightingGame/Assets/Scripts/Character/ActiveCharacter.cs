@@ -14,6 +14,12 @@ public partial class ActiveCharacter : Character
 
     Coroutine coroutine;
 
+    private void OnEnable()
+    {
+        StartCoroutine(IJumpStateCheck());
+
+    }
+
     public override void Init()
     {
         base.Init();
@@ -22,8 +28,6 @@ public partial class ActiveCharacter : Character
 
         if(teamType == ENUM_TEAM_TYPE.Blue)
             spriteRenderer.flipX = true;
-
-        StartCoroutine(IJumpStateCheck());
 
         // Animator
         anim = GetComponent<Animator>();
@@ -150,6 +154,10 @@ public partial class ActiveCharacter : Character
         StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
+    /// <summary>
+    /// 점프상태임을 감지하는 코루틴 (업데이트문이나 다름없는 상태임 일단)
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator IJumpStateCheck()
     {
         bool _jumpState = false;
@@ -164,14 +172,8 @@ public partial class ActiveCharacter : Character
             if(jumpState != _jumpState)
             {   
                 jumpState = _jumpState;
-                if(anim.GetBool("IsJump")) // 점프키
-                {
-
-                }
-                else // 낙하상태
-                {
+                if(!anim.GetBool("IsJump"))
                     anim.SetTrigger("DropTrigger");
-                }
                 anim.SetBool("IsJump", jumpState);
             }
         }
