@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseMap : MonoBehaviour
 {
-    [SerializeField] public BoxCollider2D bound;
+    [SerializeField] public SpriteRenderer backgroundMapSprite;
     [SerializeField] public Transform redTeamSpawnPoint;
     [SerializeField] public Transform blueTeamSpawnPoint;
 
@@ -13,7 +13,7 @@ public class BaseMap : MonoBehaviour
     
     private void Awake()
     {
-        minBound = new Vector2(bound.bounds.min.x, bound.bounds.min.y);
-        maxBound = new Vector2(bound.bounds.max.x, bound.bounds.max.y);
+        minBound = new Vector2(backgroundMapSprite.bounds.min.x, backgroundMapSprite.bounds.min.y);
+        maxBound = new Vector2(backgroundMapSprite.bounds.max.x, backgroundMapSprite.bounds.max.y);
     }
 }
