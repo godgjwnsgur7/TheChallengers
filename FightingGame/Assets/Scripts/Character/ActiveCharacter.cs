@@ -194,7 +194,7 @@ public partial class ActiveCharacter : Character
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
         if (hitCoroutine)
-            Debug.Log("hitCoroutine이 true인데 코루틴이 시작되었습니다.");
+            Debug.Log("hitCoroutine이 true인데 코루틴이 시작됨");
 
         float realTime = 0f;
 
@@ -208,12 +208,10 @@ public partial class ActiveCharacter : Character
                 StartCoroutine(IRisingStateCheck());
             }
 
-            Debug.Log("IHitRunTimeCheck 도는중");
-
             yield return null;
         }
 
-        if (!hitCoroutine)
+        if (!hitCoroutine) // 경직만 당한 상태
             anim.SetBool("IsHit", false);
     }
 
@@ -225,16 +223,12 @@ public partial class ActiveCharacter : Character
     {
         hitCoroutine = true;
 
-        Debug.Log("IRisingStateCheck 호출");
-
-        while (jumpState)
+        while (jumpState || !GroundCheckWithRay())
         {
-            Debug.Log("IRisingStateCheck 도는중");
             yield return null;
         }
 
         // 다운 상태로 바닥에 닿은 상태에 호출
-        Debug.Log("IRisingStateCheck 끝");
         Set_Rigid2D(Vector2.zero);
         SetJumpState(false);
         Invincible();
@@ -262,7 +256,7 @@ public partial class ActiveCharacter : Character
         }
         else
         {
-            Debug.Log("찾을 수 없음");
+            Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
     }
 

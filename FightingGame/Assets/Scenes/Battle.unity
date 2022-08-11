@@ -268,6 +268,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   target: {fileID: 0}
+  halfHeight: 0
+  halfWidth: 0
+  clampedX: 0
+  clampedY: 0
+  minBound: {x: 0, y: 0}
+  maxBound: {x: 0, y: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,6 +761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 1822689653}
+  playerCamera: {fileID: 373246399}
   enemyPlayer: {fileID: 341150607}
 --- !u!114 &1223414769
 MonoBehaviour:

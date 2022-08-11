@@ -7,7 +7,14 @@ public class PlayerCamera : MonoBehaviour
     public Camera cam;
     public Transform target;
 
-    private Vector3 cameraSubPos;
+    public float halfHeight;
+    public float halfWidth;
+
+    public float clampedX;
+    public float clampedY;
+
+    public Vector2 minBound;
+    public Vector2 maxBound;
 
     private void LateUpdate()
     {
@@ -20,13 +27,23 @@ public class PlayerCamera : MonoBehaviour
     public void Init(Transform target)
     {
         cam = Camera.main;
-        cameraSubPos = new Vector3(0, 0, -10);
+        halfHeight = cam.orthographicSize;
+        halfWidth = halfHeight * Screen.width / Screen.height;
 
         this.target = target;
     }
 
+    public void Set_CameraBounds(Vector2 _maxBound, Vector2 _minBound)
+    {
+        minBound = _minBound;
+        maxBound = _maxBound;
+    }
+
     private void FollowingCamera()
     {
-        transform.position = target.position + cameraSubPos;
+        clampedX = Mathf.Clamp(target.transform.position.x, minBound.x + halfWidth, maxBound.x - halfWidth);
+        clampedY = Mathf.Clamp(target.transform.position.y, minBound.y + halfHeight, maxBound.y - halfHeight);
+
+        transform.position = new Vector3(clampedX, clampedY, -10);
     }
 }

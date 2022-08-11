@@ -7,6 +7,7 @@ public class BattleScene : BaseScene
     BaseMap map;
 
     [SerializeField] PlayerCharacter playerCharacter;
+    [SerializeField] PlayerCamera playerCamera;
 
     [SerializeField] EnemyPlayer enemyPlayer; // 디버그용
 
@@ -18,6 +19,8 @@ public class BattleScene : BaseScene
 
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
+
+        playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
 
         if(PhotonLogicHandler.IsConnected)
         {
