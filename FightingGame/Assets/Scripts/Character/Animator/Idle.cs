@@ -7,9 +7,14 @@ using UnityEngine;
 /// </summary>
 public class Idle : StateMachineBehaviour
 {
+    ActiveCharacter activeCharacter;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.transform.gameObject.GetComponent<ActiveCharacter>().Idle();
+        if (activeCharacter == null)
+            activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
+
+        activeCharacter.Idle();
         animator.SetBool("IsIdle", false);
     }
 }

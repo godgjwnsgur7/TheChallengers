@@ -17,7 +17,6 @@ public partial class ActiveCharacter : Character
     private void OnEnable()
     {
         StartCoroutine(IJumpStateCheck());
-
     }
 
     public override void Init()
