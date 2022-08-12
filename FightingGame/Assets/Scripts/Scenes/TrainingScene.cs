@@ -38,7 +38,7 @@ public class TrainingScene : BaseScene
     {
         enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
 
-        enemyPlayer.Set_Character(Init_Enemy(map.enemySpawnPoint.position));
+        enemyPlayer.Set_Character(Init_Enemy(map.blueTeamSpawnPoint.position));
     }
 
     public override void Clear()
@@ -48,7 +48,7 @@ public class TrainingScene : BaseScene
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
-        ActiveCharacter activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position, playerCharacter.transform).GetComponent<ActiveCharacter>();
+        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, playerCharacter.transform).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
 
         Skills_Pooling(_charType);
@@ -58,7 +58,7 @@ public class TrainingScene : BaseScene
 
     public ActiveCharacter Init_Enemy(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
-        ActiveCharacter activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position, enemyPlayer.transform).GetComponent<ActiveCharacter>();
+        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, enemyPlayer.transform).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
 
         Skills_Pooling(_charType);
