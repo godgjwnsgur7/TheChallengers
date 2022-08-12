@@ -59,6 +59,7 @@ public class CreateRoomPanel : UIElement
         if (inputContentChk())
             return;
 
+        // 임시
         PlayerPrefs.SetString("CreateUser", "kuj");
         PlayerPrefs.SetString("MyName", "kuj");
         PlayerPrefs.SetString("MyTeam", "Blue");

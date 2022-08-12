@@ -57,8 +57,8 @@ public class LobbyCanvas : BaseCanvas
                 Managers.UI.OpenUI<CharacterWindow>();
                 break;
             case "Training":
-                // Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Main); // 테스트용
-                Managers.UI.OpenUI<CountDownPopup>(); // 임시 카운트다운 팝업 테스트용
+                Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Training); // 테스트용
+                // Managers.UI.OpenUI<CountDownPopup>(); // 임시 카운트다운 팝업 테스트용
                 // Managers.UI.OpenUI<TrainingWindow>();
                 break;
             case "Setting":

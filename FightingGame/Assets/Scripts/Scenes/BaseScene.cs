@@ -12,6 +12,7 @@ public enum ENUM_SCENE_TYPE
     Loading,
     Main,
     CustomRoom,
+    Training,
 }
 
 public abstract class BaseScene : MonoBehaviour
