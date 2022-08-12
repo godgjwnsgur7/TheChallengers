@@ -7,11 +7,11 @@ public class TrainingScene : BaseScene
 {
     BaseMap map;
 
-    [SerializeField] PlayerCharacter playerCharacter;
-    [SerializeField] GameObject player;
-    [SerializeField] PlayerCamera playerCamera;
-    EnemyPlayer enemyPlayer; // 디버그용
     [SerializeField] TrainingCanvas trainingCanvas;
+    [SerializeField] PlayerCharacter playerCharacter;
+    [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] GameObject player;
+    EnemyPlayer enemyPlayer;
 
     ENUM_TEAM_TYPE teamType;
 
@@ -25,7 +25,7 @@ public class TrainingScene : BaseScene
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
         playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
         
-        SetCharacterWithPos(map.redTeamSpawnPoint.position);
+        //SetCharacterWithPos(map.redTeamSpawnPoint.position);
 
         trainingCanvas.init();
     }
@@ -33,6 +33,19 @@ public class TrainingScene : BaseScene
     private void SetCharacterWithPos(Vector3 spawnPos)
     {
         playerCharacter.Set_Character(Init_Character(spawnPos));
+    }
+
+    public void CallPlayer()
+    {
+        if (player != null)
+        {
+            Destroy(player.gameObject);
+            player = null;
+        }
+
+
+        trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
+        playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
     }
 
     public void CallEnemy()
@@ -43,13 +56,22 @@ public class TrainingScene : BaseScene
             enemyPlayer = null;
         }
 
-        trainingCanvas.SetNotionText("플레이어 위치에 적을 소환하였습니다.");
+        if(player == null)
+        {
+            trainingCanvas.SetNotionText("적을 소환하였습니다.");
 
-        Vector2 vec = player.transform.position;
+            enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
+            enemyPlayer.Set_Character(Init_Enemy(map.blueTeamSpawnPoint.position));
+        }
+        else
+        {
+            trainingCanvas.SetNotionText("플레이어 위치에 적을 소환하였습니다.");
 
-        enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
+            Vector2 vec = player.transform.position;
 
-        enemyPlayer.Set_Character(Init_Enemy(vec));
+            enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
+            enemyPlayer.Set_Character(Init_Enemy(vec));
+        }
     }
 
     public void DeleteEnemy()
@@ -61,6 +83,17 @@ public class TrainingScene : BaseScene
 
         Destroy(enemyPlayer.gameObject);
         enemyPlayer = null;
+    }
+
+    public void DeletePlayer()
+    {
+        if (player == null)
+            return;
+
+        trainingCanvas.SetNotionText("플레이어를 역소환하였습니다.");
+
+        Destroy(player.gameObject);
+        player = null;
     }
 
     public override void Clear()

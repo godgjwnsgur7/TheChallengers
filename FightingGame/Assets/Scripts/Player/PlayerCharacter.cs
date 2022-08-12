@@ -24,8 +24,11 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-         if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
-           return;
+        if (activeCharacter == null) // 임시, 더좋은 방법을 찾아보자..
+            return;
+
+        if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
+            return;
 
         OnKeyboard(); // 디버깅용
     }

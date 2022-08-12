@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 238574597}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2051362153}
+        m_TargetAssemblyTypeName: TrainingScene, Assembly-CSharp
+        m_MethodName: DeletePlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &238574597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -446,7 +458,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\uD50C\uB808\uC774\uC5B4 \uC81C\uAC70"
 --- !u!222 &300207619
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -745,7 +757,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\uD50C\uB808\uC774\uC5B4 \uC18C\uD658"
 --- !u!222 &393321306
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3176,7 +3188,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3249,10 +3261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509a81fb41204ff45af1d7a16e929a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacter: {fileID: 308789864}
-  player: {fileID: 308789863}
-  playerCamera: {fileID: 415476157}
   trainingCanvas: {fileID: 1010260636}
+  playerCharacter: {fileID: 308789864}
+  playerCamera: {fileID: 415476157}
+  player: {fileID: 0}
 --- !u!1 &2136588285
 GameObject:
   m_ObjectHideFlags: 0
@@ -3335,7 +3347,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2136588288}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2051362153}
+        m_TargetAssemblyTypeName: TrainingScene, Assembly-CSharp
+        m_MethodName: CallPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2136588288
 MonoBehaviour:
   m_ObjectHideFlags: 0
