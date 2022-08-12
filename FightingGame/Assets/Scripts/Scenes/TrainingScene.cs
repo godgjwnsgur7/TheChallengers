@@ -8,6 +8,7 @@ public class TrainingScene : BaseScene
     BaseMap map;
 
     [SerializeField] PlayerCharacter playerCharacter;
+    [SerializeField] GameObject player;
     [SerializeField] PlayerCamera playerCamera;
     EnemyPlayer enemyPlayer; // 디버그용
     [SerializeField] TrainingCanvas trainingCanvas;
@@ -36,9 +37,30 @@ public class TrainingScene : BaseScene
 
     public void CallEnemy()
     {
+        if(enemyPlayer != null)
+        {
+            Destroy(enemyPlayer.gameObject);
+            enemyPlayer = null;
+        }
+
+        trainingCanvas.SetNotionText("플레이어 위치에 적을 소환하였습니다.");
+
+        Vector2 vec = player.transform.position;
+
         enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
 
-        enemyPlayer.Set_Character(Init_Enemy(map.blueTeamSpawnPoint.position));
+        enemyPlayer.Set_Character(Init_Enemy(vec));
+    }
+
+    public void DeleteEnemy()
+    {
+        if (enemyPlayer == null)
+            return;
+
+        trainingCanvas.SetNotionText("적을 역소환하였습니다.");
+
+        Destroy(enemyPlayer.gameObject);
+        enemyPlayer = null;
     }
 
     public override void Clear()
@@ -52,6 +74,8 @@ public class TrainingScene : BaseScene
         activeCharacter.Init();
 
         Skills_Pooling(_charType);
+
+        player = activeCharacter.gameObject;
 
         return activeCharacter;
     }
