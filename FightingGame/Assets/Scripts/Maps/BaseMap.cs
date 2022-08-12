@@ -7,7 +7,6 @@ public class BaseMap : MonoBehaviour
     [SerializeField] public SpriteRenderer backgroundMapSprite;
     [SerializeField] public Transform redTeamSpawnPoint;
     [SerializeField] public Transform blueTeamSpawnPoint;
-    [SerializeField] public Transform enemySpawnPoint;
 
     public Vector2 minBound;
     public Vector2 maxBound;

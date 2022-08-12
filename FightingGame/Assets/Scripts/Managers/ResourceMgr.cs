@@ -45,26 +45,7 @@ public class ResourceMgr
         return go;
     }
 
-    public GameObject Instantiate(string path, Vector2 position)
-    {
-        GameObject original = Load<GameObject>($"Prefabs/{path}");
-        if (original == null)
-        {
-            Debug.Log($"Failed to load prefab : {path}");
-            return null;
-        }
-
-        // 풀링된 오브젝트일 경우 위탁
-        if (original.GetComponent<Poolable>() != null)
-            return Managers.Pool.Pop(original, position).gameObject;
-
-        GameObject go = Object.Instantiate(original);
-        go.transform.position = position;
-        go.name = original.name;
-        return go;
-    }
-
-    public GameObject Instantiate(string path, Vector2 position, Transform parent)
+    public GameObject Instantiate(string path, Vector2 position, Transform parent = null)
     {
         GameObject original = Load<GameObject>($"Prefabs/{path}");
         if (original == null)
@@ -86,11 +67,6 @@ public class ResourceMgr
     public GameObject InstantiateEveryone(string path, Vector2 position)
     {
         return PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);
-    }
-
-    public GameObject InstantiateEveryone(string path, Vector2 position, Transform parent = null)
-    {
-        return Instantiate($"{path}", position, parent);
     }
 
     public AttackObejct GetAttackObject(string path)
