@@ -24,9 +24,6 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        if (activeCharacter == null) // 임시, 더좋은 방법을 찾아보자..
-            return;
-
         if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
             return;
 
@@ -44,6 +41,9 @@ public class PlayerCharacter : MonoBehaviour
     // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
     {
+        if (activeCharacter == null)
+            return;
+
         // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {

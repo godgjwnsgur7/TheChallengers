@@ -61,8 +61,12 @@ public class BattleScene : BaseScene
         if (!PhotonLogicHandler.IsConnected) // 디버그용
             activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
         else
+        {
             activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
-        
+
+            Debug.Log("실행확인");
+        }
+
         activeCharacter.Init();
         
         Skills_Pooling(_charType);

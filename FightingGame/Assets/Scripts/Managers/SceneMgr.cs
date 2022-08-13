@@ -13,7 +13,13 @@ public class SceneMgr
         Managers.Clear();
 
         string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), type);
-        LoadingSceneManagement.LoadScene(nextScene);
+        
+        if(nextScene == ENUM_SCENE_TYPE.Battle.ToString())
+            LoadingSceneManagement.LoadScene(nextScene);
+        else
+        {
+            SceneManager.LoadScene(nextScene);
+        }
     }
 
     public void FadeLoadScene(ENUM_SCENE_TYPE type) 

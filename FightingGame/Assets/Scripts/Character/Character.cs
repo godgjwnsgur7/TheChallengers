@@ -31,8 +31,9 @@ public class Character : MonoBehaviourPhoton
     public override void Init()
     {
         base.Init();
-
-        rigid2D = GetComponent<Rigidbody2D>();
+        
+        if(rigid2D == null)
+            rigid2D = GetComponent<Rigidbody2D>();
 
         SyncPhysics(rigid2D);
         SyncTransformView(transform);

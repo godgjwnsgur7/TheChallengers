@@ -23,15 +23,21 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        if(spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
         if(teamType == ENUM_TEAM_TYPE.Blue)
             spriteRenderer.flipX = true;
 
         // Animator
-        anim = GetComponent<Animator>();
-        if (anim == null) gameObject.AddComponent<Animator>();
-        anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
+        if (anim == null)
+            anim = GetComponent<Animator>();
+        
+        if (anim == null)
+        {
+            gameObject.AddComponent<Animator>();
+            anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
+        }
 
         SyncAnimator(anim);
     }
@@ -159,7 +165,7 @@ public partial class ActiveCharacter : Character
     /// <returns></returns>
     protected IEnumerator IJumpStateCheck()
     {
-        bool _jumpState = false;
+        bool _jumpState;
         
         while(true)
         {
