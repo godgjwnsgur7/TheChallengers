@@ -10,10 +10,10 @@ public class TrainingScene : BaseScene
     [SerializeField] TrainingCanvas trainingCanvas;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] PlayerCamera playerCamera;
-    [SerializeField] GameObject player;
     EnemyPlayer enemyPlayer;
 
-    ENUM_TEAM_TYPE teamType;
+    ENUM_CHARACTER_TYPE playerType;
+    ENUM_CHARACTER_TYPE enemyType;
 
     public override void Init()
     {
@@ -24,8 +24,9 @@ public class TrainingScene : BaseScene
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
         playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
-        
-        //SetCharacterWithPos(map.redTeamSpawnPoint.position);
+
+        playerType = ENUM_CHARACTER_TYPE.Knight;
+        enemyType = ENUM_CHARACTER_TYPE.Knight;
 
         trainingCanvas.init();
     }
@@ -37,39 +38,45 @@ public class TrainingScene : BaseScene
 
     public void CallPlayer()
     {
-        if (player != null)
+        if (playerCharacter.activeCharacter != null)
         {
-            Destroy(player.gameObject);
-            player = null;
+            Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+            playerCharacter.activeCharacter = null;
         }
 
 
         trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
-        playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
+        playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, playerType));
     }
 
     public void CallEnemy()
     {
         if(enemyPlayer != null)
         {
-            Destroy(enemyPlayer.gameObject);
+            Managers.Resource.Destroy(enemyPlayer.gameObject);
             enemyPlayer = null;
         }
 
-        if(player == null)
+        if(playerCharacter.activeCharacter == null)
         {
             trainingCanvas.SetNotionText("적을 소환하였습니다.");
 
-            enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
-            enemyPlayer.Set_Character(Init_Enemy(map.blueTeamSpawnPoint.position));
+            enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").GetComponent<EnemyPlayer>();
+
+            if(enemyPlayer == null)
+                enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").AddComponent<EnemyPlayer>();
+            enemyPlayer.Set_Character(Init_Enemy(map.blueTeamSpawnPoint.position, enemyType));
         }
         else
         {
             trainingCanvas.SetNotionText("플레이어 위치에 적을 소환하였습니다.");
 
-            Vector2 vec = player.transform.position;
+            Vector2 vec = playerCharacter.activeCharacter.transform.position;
 
-            enemyPlayer = Managers.Resource.Instantiate("TestEnemyPlayer").AddComponent<EnemyPlayer>();
+            enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").GetComponent<EnemyPlayer>();
+
+            if (enemyPlayer == null)
+                enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").AddComponent<EnemyPlayer>();
             enemyPlayer.Set_Character(Init_Enemy(vec));
         }
     }
@@ -81,19 +88,20 @@ public class TrainingScene : BaseScene
 
         trainingCanvas.SetNotionText("적을 역소환하였습니다.");
 
-        Destroy(enemyPlayer.gameObject);
+        Managers.Resource.Destroy(enemyPlayer.gameObject);
         enemyPlayer = null;
     }
 
     public void DeletePlayer()
     {
-        if (player == null)
+        if (playerCharacter.activeCharacter == null)
             return;
 
         trainingCanvas.SetNotionText("플레이어를 역소환하였습니다.");
 
-        Destroy(player.gameObject);
-        player = null;
+
+        Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+        playerCharacter.activeCharacter = null;
     }
 
     public override void Clear()
@@ -107,8 +115,6 @@ public class TrainingScene : BaseScene
         activeCharacter.Init();
 
         Skills_Pooling(_charType);
-
-        player = activeCharacter.gameObject;
 
         return activeCharacter;
     }
@@ -139,5 +145,24 @@ public class TrainingScene : BaseScene
                 Debug.Log($"Failed to SkillObject : {charType}");
                 break;
         }
+    }
+
+    // 캐릭터 선택
+    public void SelectCharacter(int charType)
+    {
+        switch (trainingCanvas.ChangeCharacter)
+        {
+            case "Player":
+                playerType = (ENUM_CHARACTER_TYPE)charType;
+                CallPlayer();
+                break;
+
+            case "Enemy":
+                enemyType = (ENUM_CHARACTER_TYPE)charType;
+                CallEnemy();
+                break;
+        }
+
+        trainingCanvas.CloseSelectWindow();
     }
 }
