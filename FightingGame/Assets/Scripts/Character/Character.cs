@@ -108,8 +108,9 @@ public class Character : MonoBehaviourPhoton
         invincibility = true;
     }
 
-    protected void Set_Rigid2D(Vector2 vec)
+    public void Push_Rigid2D(Vector2 vec)
     {
-        rigid2D.velocity = vec;
+        rigid2D.velocity = Vector2.zero; // 받고있는 힘 초기화
+        rigid2D.AddForce(vec, ForceMode2D.Impulse);
     }
 }

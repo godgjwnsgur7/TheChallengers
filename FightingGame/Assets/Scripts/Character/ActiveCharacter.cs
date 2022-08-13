@@ -226,7 +226,7 @@ public partial class ActiveCharacter : Character
             yield return null;
         }
 
-        Set_Rigid2D(Vector2.zero);
+        Push_Rigid2D(Vector2.zero);
         Invincible();
         anim.SetBool("IsHit", false);
         hitCoroutine = false;
@@ -248,7 +248,7 @@ public partial class ActiveCharacter : Character
         if (attackObject != null)
         {
             attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(teamType, reverseState);
+            attackObject.ActivatingAttackObject(this.transform, teamType, reverseState);
         }
         else
         {

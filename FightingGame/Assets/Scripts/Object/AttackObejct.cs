@@ -8,6 +8,7 @@ public class AttackObejct : Poolable
 {
     public Skill skillValue;
     public ENUM_TEAM_TYPE teamType;
+    public Transform playerTr;
 
     public override void Init()
     {
@@ -18,8 +19,9 @@ public class AttackObejct : Poolable
         }
     }
 
-    public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType,bool _reverseState)
+    public virtual void ActivatingAttackObject(Transform _playerTr , ENUM_TEAM_TYPE _teamType,bool _reverseState)
     {
+        playerTr = _playerTr;
         teamType = _teamType;
 
         transform.localEulerAngles = _reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
@@ -49,7 +51,7 @@ public class AttackObejct : Poolable
 
             Vector2 dirPower = new Vector2(skillValue.pushingPower, skillValue.risingPower);
 
-            if (gameObject.transform.position.x > enemyCharacter.transform.position.x)
+            if (playerTr.position.x >= enemyCharacter.transform.position.x)
                 dirPower.x *= -1.0f;
 
             enemyCharacter.ReverseSprites(dirPower.x * -1f);
@@ -62,8 +64,7 @@ public class AttackObejct : Poolable
                 dirPower.x = 1.0f;
             }
 
-            enemyCharacter.rigid2D.velocity = Vector2.zero; // 받고있는 힘 초기화
-            enemyCharacter.rigid2D.AddForce(dirPower, ForceMode2D.Impulse);
+            enemyCharacter.Push_Rigid2D(dirPower);
 
             Managers.Resource.Destroy(gameObject);
         }
