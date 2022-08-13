@@ -110,7 +110,7 @@ public class Character : MonoBehaviourPhoton
 
     public void Push_Rigid2D(Vector2 vec)
     {
-        rigid2D.velocity = Vector2.zero; // 받고있는 힘 초기화
+        rigid2D.velocity = new Vector2(0, rigid2D.velocity.y); // 받고있는 힘 초기화
         rigid2D.AddForce(vec, ForceMode2D.Impulse);
     }
 }

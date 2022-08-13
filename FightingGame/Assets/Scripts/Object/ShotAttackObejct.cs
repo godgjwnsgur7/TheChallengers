@@ -14,9 +14,9 @@ public class ShotAttackObejct : AttackObejct
         rigid2D = GetComponent<Rigidbody2D>();
     }
 
-    public override void ActivatingAttackObject(Transform _playerTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        base.ActivatingAttackObject(_playerTr, _teamType, _reverseState);
+        base.ActivatingAttackObject(_teamType, _reverseState);
 
         // 날아가는 힘을 받아야 하는데, 고민중
         // 1. 그냥 데이터에 박고 필요없는 애들은 0으로 만듬 - 필요 없는 애들도 0으로 가지게 됨

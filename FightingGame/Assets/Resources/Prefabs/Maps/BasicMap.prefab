@@ -934,7 +934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5191761580379095004}
   - component: {fileID: 5191761580379094994}
-  - component: {fileID: 5191761580379095005}
+  - component: {fileID: 5821039816561427280}
   m_Layer: 9
   m_Name: Floating4
   m_TagString: Ground
@@ -1007,8 +1007,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &5191761580379095005
-PolygonCollider2D:
+--- !u!61 &5821039816561427280
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1020,7 +1020,7 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.1, y: 0.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1030,19 +1030,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -3.5624344, y: 0.2520495}
-      - {x: -1.5853026, y: 0.1528306}
-      - {x: -1.2388582, y: -0.53232014}
-      - {x: -0.3608069, y: -0.44617468}
-      - {x: 0.16251564, y: -0.778587}
-      - {x: 0.8009168, y: -2.1310816}
-      - {x: 1.130801, y: -0.016073763}
-      - {x: 1.4631895, y: 0.1612823}
-      - {x: 3.129599, y: 0.18071108}
-      - {x: 3.4595923, y: 0.47090167}
-      - {x: -3.7150695, y: 0.42531216}
+  serializedVersion: 2
+  m_Size: {x: 7, y: 0.3}
+  m_EdgeRadius: 0
 --- !u!1 &5191761580532063392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,7 +1203,6 @@ MonoBehaviour:
   backgroundMapSprite: {fileID: 5191761578693290298}
   redTeamSpawnPoint: {fileID: 5191761579289797259}
   blueTeamSpawnPoint: {fileID: 5191761580542263253}
-  enemySpawnPoint: {fileID: 9190120318537451088}
   minBound: {x: 0, y: 0}
   maxBound: {x: 0, y: 0}
 --- !u!1 &5191761580542263252

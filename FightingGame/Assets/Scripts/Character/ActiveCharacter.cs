@@ -239,7 +239,7 @@ public partial class ActiveCharacter : Character
         invincibility = false;
     }
 
-    public void Summon_AttackObject(int _attackTypeNum)
+    protected void Summon_AttackObject(int _attackTypeNum)
     {
         attackObject = null;
         ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
@@ -248,7 +248,7 @@ public partial class ActiveCharacter : Character
         if (attackObject != null)
         {
             attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(this.transform, teamType, reverseState);
+            attackObject.ActivatingAttackObject(teamType, reverseState);
         }
         else
         {
@@ -256,10 +256,17 @@ public partial class ActiveCharacter : Character
         }
     }
 
-    public void Checking_AttackState()
+    protected void Checking_AttackState()
     {
         if (!attackState)
             anim.SetBool("IsIdle", true);
     }
 
+    protected void Move_Attack(float vecX)
+    {
+        if (reverseState)
+            vecX *= -1f;
+
+        Push_Rigid2D(new Vector2(vecX, 0));
+    }
 }

@@ -8,7 +8,8 @@ public class AttackObejct : Poolable
 {
     public Skill skillValue;
     public ENUM_TEAM_TYPE teamType;
-    public Transform playerTr;
+
+    public bool reverseState;
 
     public override void Init()
     {
@@ -19,12 +20,12 @@ public class AttackObejct : Poolable
         }
     }
 
-    public virtual void ActivatingAttackObject(Transform _playerTr , ENUM_TEAM_TYPE _teamType,bool _reverseState)
+    public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType,bool _reverseState)
     {
-        playerTr = _playerTr;
+        reverseState = _reverseState;
         teamType = _teamType;
 
-        transform.localEulerAngles = _reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
+        transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
 
         gameObject.SetActive(true);
 
@@ -51,7 +52,7 @@ public class AttackObejct : Poolable
 
             Vector2 dirPower = new Vector2(skillValue.pushingPower, skillValue.risingPower);
 
-            if (playerTr.position.x >= enemyCharacter.transform.position.x)
+            if (reverseState)
                 dirPower.x *= -1.0f;
 
             enemyCharacter.ReverseSprites(dirPower.x * -1f);
