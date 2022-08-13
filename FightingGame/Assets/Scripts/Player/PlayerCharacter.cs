@@ -24,8 +24,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        //if (activeCharacter == null)
-        //    return;
+        if (activeCharacter == null)
+            return;
          
         if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
             return;
