@@ -16,6 +16,40 @@ public enum ENUM_RPC_TARGET
     OTHER
 }
 
+public static class MonoBehaviourPhotonExtension
+{
+    public static void TrySingleOrMultiAction<T>(this T mono, Action singleAction, Action multiAction) 
+        where T : MonoBehaviourPhoton
+	{
+        if(!PhotonLogicHandler.IsConnected)
+		{
+            singleAction?.Invoke();
+		}
+        else
+		{
+            PhotonLogicHandler.Instance.TryBroadcastMethod<T>(mono, multiAction, ENUM_RPC_TARGET.All);
+		}
+	}
+
+    public static void TryMultiAction<T>(this T mono, Action multiAction)
+        where T : MonoBehaviourPhoton
+    {
+        if (PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
+        }
+    }
+
+    public static void TryMultiAction<T, TParam>(this T mono, Action<TParam> multiAction, TParam param)
+        where T : MonoBehaviourPhoton
+    {
+        if (PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, param, ENUM_RPC_TARGET.All);
+        }
+    }
+}
+
 public class BroadcastMethodAttribute : PunRPC { }
 
 public partial class PhotonLogicHandler
@@ -162,7 +196,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     }
 
     public void TryBroadcastMethod<T>(T owner, Action targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-    where T : MonoBehaviourPun
+        where T : MonoBehaviourPun
     {
         MethodInfo methodInfo = targetMethod.Method;
         string methodName = methodInfo.Name;
