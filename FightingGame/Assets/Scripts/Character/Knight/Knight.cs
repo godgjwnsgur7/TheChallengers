@@ -28,21 +28,6 @@ public class Knight : ActiveCharacter
         }
     }
 
-	public override void Attack(CharacterParam param)
-    {
-        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
-            return;
-
-        base.Attack(param);
-
-        var attackParam = param as CharacterAttackParam;
-
-        if (attackParam != null)
-        {
-            anim.SetTrigger("AttackTrigger");
-        }
-    }
-
     public override void Skill(CharacterParam param)
     {
         if (currState == ENUM_PLAYER_STATE.Skill || jumpState)

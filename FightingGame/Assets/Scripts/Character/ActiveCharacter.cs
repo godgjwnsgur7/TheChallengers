@@ -88,9 +88,19 @@ public partial class ActiveCharacter : Character
 
     public override void Attack(CharacterParam param)
     {
-        if (attackObject != null)
-            attackObject = null;
+        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
+            return;
+
+        if (attackObject != null) attackObject = null;
+        
         base.Attack(param);
+
+        var attackParam = param as CharacterAttackParam;
+
+        if (attackParam != null)
+        {
+            anim.SetTrigger("AttackTrigger");
+        }
     }
 
     public override void Skill(CharacterParam param)
