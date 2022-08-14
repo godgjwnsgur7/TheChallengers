@@ -48,7 +48,7 @@ public struct AnimatorSyncParam
 
 [RequireComponent(typeof(PhotonView))]
 
-public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
+public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstantiateMagicCallback
 {
     public enum AnimParameterType
     {
@@ -64,9 +64,11 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
     public int ViewID => viewID;
     protected int viewID = 0;
 
-    /// <summary>
-    /// 우선 Key를 string으로 지정, 추후 클라 관리를 위해 ENUM으로 수정하도록 함
-    /// </summary>
+    public bool IsInitialized 
+    {
+        get;
+        private set;
+    } = false;
 
     private Animator syncAnim = null;
     private Rigidbody2D syncRigid = null;
@@ -74,18 +76,26 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     public virtual void Init()
     {
+        if (IsInitialized)
+            return;
+
         if (photonView == null)
             gameObject.AddComponent<PhotonView>();
 
         photonView.ObservedComponents = new List<Component>();
         viewID = PhotonLogicHandler.Register(photonView);
+
+        IsInitialized = true;
     }
 
     public void SyncAnimator(Animator anim, AnimatorSyncParam[] syncParameters = null)
     {
-        if(syncAnim != null)
+        if (IsInitialized)
+            return;
+
+        if (syncAnim != null)
 		{
-            Debug.LogError("이미 동기화할 애니메이터가 존재합니다.");
+            Debug.LogError("이미 동기화할 애니메이터가 존재합니다. : " + viewID);
             return;
 		}
 
@@ -113,9 +123,12 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     public void SyncTransformView(Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
     {
+        if (IsInitialized)
+            return;
+
         if (syncTransform != null)
         {
-            Debug.LogError("이미 동기화할 트랜스폼이 존재합니다.");
+            Debug.LogError("이미 동기화할 트랜스폼이 존재합니다. : " + viewID);
             return;
         }
 
@@ -135,9 +148,12 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 
     public void SyncPhysics(Rigidbody2D rigid, bool isSyncAngleVelocity = true, bool isSyncVelocity = true, bool isEnableTeleport = false, float distanceForTeleport = 10.0f)
     {
+        if (IsInitialized)
+            return;
+
         if (syncRigid != null)
         {
-            Debug.LogError("이미 동기화할 리지드바디가 존재합니다.");
+            Debug.LogError("이미 동기화할 리지드바디가 존재합니다. : " + viewID);
             return;
         }
 
@@ -201,4 +217,12 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         Debug.Log($"보낸 시간 스탬프 : {info.SentServerTimestamp}");
         Debug.Log("--- --------------------- ---");
     }
+
+	public void OnPhotonInstantiate(PhotonMessageInfo info)
+	{
+        if(!IsInitialized)
+		{
+            Init();
+        }  
+	}
 }
