@@ -90,12 +90,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public void SyncAnimator(Animator anim, AnimatorSyncParam[] syncParameters = null)
     {
-        if (IsInitialized)
-            return;
-
         if (syncAnim != null)
 		{
-            Debug.LogError("이미 동기화할 애니메이터가 존재합니다. : " + viewID);
+            // Debug.LogError("이미 동기화할 애니메이터가 존재합니다. : " + viewID);
             return;
 		}
 
@@ -123,12 +120,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public void SyncTransformView(Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
     {
-        if (IsInitialized)
-            return;
-
         if (syncTransform != null)
         {
-            Debug.LogError("이미 동기화할 트랜스폼이 존재합니다. : " + viewID);
+            // Debug.LogError("이미 동기화할 트랜스폼이 존재합니다. : " + viewID);
             return;
         }
 
@@ -148,12 +142,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public void SyncPhysics(Rigidbody2D rigid, bool isSyncAngleVelocity = true, bool isSyncVelocity = true, bool isEnableTeleport = false, float distanceForTeleport = 10.0f)
     {
-        if (IsInitialized)
-            return;
-
         if (syncRigid != null)
         {
-            Debug.LogError("이미 동기화할 리지드바디가 존재합니다. : " + viewID);
+            // Debug.LogError("이미 동기화할 리지드바디가 존재합니다. : " + viewID);
             return;
         }
 
