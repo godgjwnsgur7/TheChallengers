@@ -131,6 +131,16 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return false;
     }
 
+    public override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
     private void OnDestroy()
     {
         _OnConnectedToMaster = null;
@@ -147,7 +157,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         view = gameObject.AddComponent<PhotonView>();
         view.ViewID = CurrentViewID++;
-	}
+    }
 
     /// <summary>
     /// 1. 넘기는 Action Method에 람다식은 허용되지 않습니다.
@@ -257,8 +267,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static int Register(PhotonView view)
     {
-        if(view.ViewID == 0)
-            view.ViewID = view.gameObject.GetInstanceID();
+        if (view.ViewID == 0)
+            PhotonNetwork.AllocateViewID(view);
 
         if (!photonViewDictionary.ContainsKey(view.ViewID))
         {
@@ -387,14 +397,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             return false;
         }
 
-        TryBroadcastMethod(this, LoadScene, sceneType);
+        PhotonNetwork.LoadLevel(sceneType.ToString());
         return true;
-    }
-
-    [BroadcastMethod]
-    private void LoadScene(ENUM_SCENE_TYPE sceneType)
-	{
-        SceneManager.LoadScene(sceneType.ToString());
     }
 
     /// <summary>
@@ -506,6 +510,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 #if UNITY_EDITOR
         Info();
 #endif
+        PhotonNetwork.AutomaticallySyncScene = true;
         _OnJoinRoom?.Invoke();
     }
 
@@ -520,12 +525,32 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         Debug.LogError($"룸 접속에 실패하였습니다. 코드 : {returnCode}, 사유 : {message}");
         _OnJoinRoomFailed?.Invoke(returnCode, message);
     }
-    
-    /// <summary>
-    /// 2P 방 입장
-    /// </summary>
-    /// <param name="newPlayer"></param>
-    public override void OnPlayerEnteredRoom(Player newPlayer)
+
+	public override void OnConnected()
+	{
+		base.OnConnected();
+	}
+
+	public override void OnLeftRoom()
+	{
+        PhotonNetwork.AutomaticallySyncScene = false;
+    }
+
+	public override void OnLeftLobby()
+	{
+		
+	}
+
+	public override void OnMasterClientSwitched(Player newMasterClient)
+	{
+		
+	}
+
+	/// <summary>
+	/// 2P 방 입장
+	/// </summary>
+	/// <param name="newPlayer"></param>
+	public override void OnPlayerEnteredRoom(Player newPlayer)
     {
 
     }
