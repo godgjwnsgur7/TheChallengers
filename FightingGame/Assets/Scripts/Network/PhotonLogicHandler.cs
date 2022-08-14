@@ -18,6 +18,13 @@ public enum ENUM_RPC_TARGET
 
 public static class MonoBehaviourPhotonExtension
 {
+    /// <summary>
+    /// multiAction은 BroadCast 가능한 메소드여야 합니다. 람다식 절대 금지~~~
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="mono"></param>
+    /// <param name="singleAction"></param>
+    /// <param name="multiAction"></param>
     public static void TrySingleOrMultiAction<T>(this T mono, Action singleAction, Action multiAction) 
         where T : MonoBehaviourPhoton
 	{
@@ -27,7 +34,7 @@ public static class MonoBehaviourPhotonExtension
 		}
         else
 		{
-            PhotonLogicHandler.Instance.TryBroadcastMethod<T>(mono, multiAction, ENUM_RPC_TARGET.All);
+            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
 		}
 	}
 
@@ -152,6 +159,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public void TryBroadcastMethod<T, TParam>(T owner, Action<TParam> targetMethod, TParam param, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All) 
         where T : MonoBehaviourPun
     {
+        if (!IsConnected)
+            return;
+
         MethodInfo methodInfo = targetMethod.Method;
         string methodName = methodInfo.Name;
         var ownerType = typeof(T);
@@ -198,6 +208,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public void TryBroadcastMethod<T>(T owner, Action targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
+        if (!IsConnected)
+            return;
+
         MethodInfo methodInfo = targetMethod.Method;
         string methodName = methodInfo.Name;
         var ownerType = typeof(T);
