@@ -29,6 +29,7 @@ public class CustomWindow : UIElement
     {
         customPanel.Close();
         createRoomPanel.Open();
+        createRoomPanel.init();
     }
 
     public void CloseCreateRoomPanel() // 방 목록 패널 활성화

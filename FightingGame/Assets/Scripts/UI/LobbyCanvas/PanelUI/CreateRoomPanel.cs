@@ -12,8 +12,9 @@ public class CreateRoomPanel : UIElement
 
     Sprite[] mapSprite;
     private int mapSpriteP;
+    Coroutine notionCoroutine;
 
-    private void Awake() // 맵 리소스 생성
+    public void init()
     {
         mapSprite = Managers.Resource.LoadAll<Sprite>("Image/test_standing");
     }
@@ -42,6 +43,8 @@ public class CreateRoomPanel : UIElement
             mapSpriteP = mapSprite.Length - 1;
 
         mapImage.sprite = mapSprite[mapSpriteP];
+
+        // 서버에 맵정보 변경해야할 거 같은데..
     }
 
     public void RMoveMap()
@@ -74,18 +77,37 @@ public class CreateRoomPanel : UIElement
     {
         if(string.IsNullOrWhiteSpace(inputField.text))
         {
-            notice.text = "방 제목을 입력해주세요.";
+            setNotionText("방 제목을 입력해주세요.");
             return true;
         }
         else if(!string.IsNullOrWhiteSpace(inputField.text))
         {
-            notice.text = "";
             return false;
         }
         else
         {
-            notice.text = "알 수 없는 오류";
-            return false;
+            setNotionText("알 수 없는 오류");
+            return true;
         }
+    }
+
+    public void setNotionText(string text)
+    {
+        if(notionCoroutine != null)
+        {
+            StopCoroutine(notionCoroutine);
+        }
+
+        notionCoroutine = StartCoroutine(ShowNotion(text));
+    }
+
+    IEnumerator ShowNotion(string text)
+    {
+        notice.text = text;
+        notice.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+
+        notice.gameObject.SetActive(false);
+        notionCoroutine = null;
     }
 }
