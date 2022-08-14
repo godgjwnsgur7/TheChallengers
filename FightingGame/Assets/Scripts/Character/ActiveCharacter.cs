@@ -23,23 +23,43 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
-        if(spriteRenderer == null)
+        if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if(teamType == ENUM_TEAM_TYPE.Blue)
+        if (teamType == ENUM_TEAM_TYPE.Blue)
             spriteRenderer.flipX = true;
 
         // Animator
         if (anim == null)
             anim = GetComponent<Animator>();
-        
+
         if (anim == null)
         {
             gameObject.AddComponent<Animator>();
             anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
         }
 
-        SyncAnimator(anim);
+        var param = MakeSyncAnimParam();
+        SyncAnimator(anim, param);
+    }
+
+    /// <summary>
+    /// 동기화할 파라미터 배열 만들기
+    /// </summary>
+    /// <returns></returns>
+
+    private AnimatorSyncParam[] MakeSyncAnimParam()
+	{
+        AnimatorSyncParam[] syncParams = new AnimatorSyncParam[]
+        {
+            new AnimatorSyncParam("IsMove", AnimParameterType.Bool),
+            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("IsHit", AnimParameterType.Bool),
+            new AnimatorSyncParam("HitTrigger", AnimParameterType.Trigger),
+        };
+
+        return syncParams;
     }
 
     public override void Idle(CharacterParam param = null)

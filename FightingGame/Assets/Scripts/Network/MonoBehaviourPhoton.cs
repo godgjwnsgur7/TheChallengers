@@ -34,10 +34,30 @@ public class PhotonReadStream : PhotonCustomStreamBase
     }
 }
 
+public struct AnimatorSyncParam
+{
+    public string parameterName;
+    public MonoBehaviourPhoton.AnimParameterType parameterType;
+
+    public AnimatorSyncParam(string parameterName, MonoBehaviourPhoton.AnimParameterType parameterType)
+	{
+        this.parameterName = parameterName;
+        this.parameterType = parameterType;
+    }
+}
+
 [RequireComponent(typeof(PhotonView))]
 
 public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
 {
+    public enum AnimParameterType
+    {
+        Float = 1,
+        Int = 3,
+        Bool = 4,
+        Trigger = 9,
+    }
+
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
 
@@ -61,7 +81,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
         viewID = PhotonLogicHandler.Register(photonView);
     }
 
-    public void SyncAnimator(Animator anim)
+    public void SyncAnimator(Animator anim, AnimatorSyncParam[] syncParameters = null)
     {
         if(syncAnim != null)
 		{
@@ -78,6 +98,17 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable
             component = ownerObj.AddComponent<PhotonAnimatorView>();
 
         photonView.ObservedComponents.Add(component);
+
+        if (syncParameters == null)
+            return;
+
+        foreach(var param in syncParameters)
+		{
+            PhotonAnimatorView.ParameterType type = (PhotonAnimatorView.ParameterType)param.parameterType;
+            component.SetParameterSynchronized(param.parameterName, type, PhotonAnimatorView.SynchronizeType.Continuous);
+		}
+
+        component.SetLayerSynchronized(0, PhotonAnimatorView.SynchronizeType.Continuous);
     }
 
     public void SyncTransformView(Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
