@@ -5,17 +5,22 @@ using FGDefine;
 
 public class UIParam { }
 
-public class UIPopupParam : UIParam
+public class PopupUIParam : UIParam
 {
     public Vector2 pos;
 
-    public UIPopupParam(Vector2 _pos)
+    public PopupUIParam(Vector2 _pos)
     {
         pos = _pos;
     }
 }
 
-public class InteractionUIParam : UIParam
+public class BattleCanvasUIParam : UIParam
 {
 
+
+    public BattleCanvasUIParam()
+    {
+
+    }
 }

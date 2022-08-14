@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public abstract class BaseCanvas : MonoBehaviour
 {
     CanvasScaler scaler = null;
-
+    
     private void Start()
     {
-        Init();
+        Init(); // 해당하는 씬에서 정보를 받아온다. (임시)
     }
 
     public void Init()
