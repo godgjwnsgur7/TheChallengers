@@ -59,8 +59,11 @@ public class CreateRoomPanel : UIElement
     // 커스텀씬 이동
     public void CreateCustomScene()
     {
-        if (inputContentChk())
+        if (string.IsNullOrWhiteSpace(inputField.text))
+        {
+            setNotionText("방 제목을 입력해주세요.");
             return;
+        }
 
         // 임시
         PlayerPrefs.SetString("CreateUser", "kuj");
@@ -70,25 +73,6 @@ public class CreateRoomPanel : UIElement
         PlayerPrefs.SetInt("MapSpriteP", mapSpriteP);
 
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
-    }
-
-    // 방 제목 입력 여부 확인
-    public bool inputContentChk()
-    {
-        if(string.IsNullOrWhiteSpace(inputField.text))
-        {
-            setNotionText("방 제목을 입력해주세요.");
-            return true;
-        }
-        else if(!string.IsNullOrWhiteSpace(inputField.text))
-        {
-            return false;
-        }
-        else
-        {
-            setNotionText("알 수 없는 오류");
-            return true;
-        }
     }
 
     public void setNotionText(string text)

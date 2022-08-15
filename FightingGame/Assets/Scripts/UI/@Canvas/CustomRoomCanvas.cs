@@ -23,12 +23,14 @@ public class CustomRoomCanvas : BaseCanvas
     Sprite[] mapSprite;
     private int mapSpriteP = 0;
     public int player;
+    // 유저가 선택한 캐릭터 타입
     private ENUM_CHARACTER_TYPE selectCharacter1;
     private ENUM_CHARACTER_TYPE selectCharacter2;
+    // 유저 레디 여부
     private bool userReady1;
     private bool userReady2;
 
-    private void Start()
+    public void init()
     {
         characterSprite = Managers.Resource.LoadAll<Sprite>("Image/Knight-Idle");
         mapSprite = Managers.Resource.LoadAll<Sprite>("Image/test_standing");

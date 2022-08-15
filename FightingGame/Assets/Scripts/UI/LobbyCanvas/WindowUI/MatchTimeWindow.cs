@@ -10,13 +10,14 @@ public class MatchTimeWindow : UIElement
     [SerializeField] Image charImage;
 
     Sprite[] characterSprite;
-    private float time = 0f;
-    private string[] times = new string[2];
+
+    int minute, second;
     public ENUM_CHARACTER_TYPE charType;
 
     private void Awake()
     {
         characterSprite = Managers.Resource.LoadAll<Sprite>("Image/Knight-Idle");
+        minute = second = 0;
     }
 
     public override void Open(UIParam param = null)
@@ -45,35 +46,34 @@ public class MatchTimeWindow : UIElement
         Managers.UI.CloseUI<MatchTimeWindow>();
         matchBtn.SwitchInterctable();
 
-        time = 0f;
+        minute = second = 0;
     }
 
     IEnumerator CountTime()
     {
         while (true)
         {
-            time += 1 * Time.deltaTime;
-            times[0] = ((int)(time / 60)).ToString();
-            times[1] = ((int)(time % 60)).ToString();
+            second++;
 
-            // 분
-            if ((int)(time / 60) < 10)
-                times[0] = "0" + ((int)(time / 60)).ToString();
+            if(second > 59)
+            {
+                minute++;
+                second = 0;
+            }
+
+            if (minute < 10 && second < 10)
+                timer.text = "0" + minute + " : 0" + second;
+            else if (second < 10)
+                timer.text = minute + " : 0" + second;
+            else if (minute < 10)
+                timer.text = "0" + minute + " : " + second;
             else
-                times[0] = ((int)(time / 60)).ToString();
+                timer.text = minute + " : " + second;
 
-            // 초
-            if (((int)(time % 60)) < 10)
-                times[1] = "0" + ((int)(time % 60)).ToString();
-            else
-                times[1] = ((int)(time % 60)).ToString();
-
-            timer.text = times[0] + ":" + times[1];
-
-            if (time >= 61f) // 임시 정지 테스트
+            if (minute * 60 + second >= 61f) // 임시 정지 테스트
                 break;
 
-            yield return null;
+            yield return new WaitForSeconds(1f);
         }
 
         StopMatch();
