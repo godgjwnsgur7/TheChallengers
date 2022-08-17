@@ -9,7 +9,7 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] StatusWindowUI statusWindowUI;
     [SerializeField] TimerUI timerUI;
     
-    public override void Open<T>(UIParam param = null)
+    public override void Open<T>(UIParam param = null)  
     {
         if (typeof(T) == typeof(StatusWindowUI)) statusWindowUI.Open(param);
         else if (typeof(T) == typeof(TimerUI)) timerUI.Open(param);

@@ -39,8 +39,11 @@ public partial class ActiveCharacter : Character
             anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
         }
 
-        var param = MakeSyncAnimParam();
-        SyncAnimator(anim, param);
+        if(PhotonLogicHandler.IsConnected)
+        {
+            var param = MakeSyncAnimParam();
+            SyncAnimator(anim, param);
+        }
     }
 
     /// <summary>
@@ -52,11 +55,19 @@ public partial class ActiveCharacter : Character
 	{
         AnimatorSyncParam[] syncParams = new AnimatorSyncParam[]
         {
+            new AnimatorSyncParam("IsIdle", AnimParameterType.Bool),
+            new AnimatorSyncParam("DirX", AnimParameterType.Float),
             new AnimatorSyncParam("IsMove", AnimParameterType.Bool),
-            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("IsJump", AnimParameterType.Bool),
+            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("SkillType", AnimParameterType.Int),
+            new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsHit", AnimParameterType.Bool),
             new AnimatorSyncParam("HitTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("HitState", AnimParameterType.Bool),
+            new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
         };
 
         return syncParams;
