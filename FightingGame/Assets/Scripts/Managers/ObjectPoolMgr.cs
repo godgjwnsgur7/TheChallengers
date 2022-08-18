@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPoolMgr 
+public class ObjectPoolMgr
 {
     #region Pool
     class Pool
@@ -101,6 +101,23 @@ public class ObjectPoolMgr
 
             return poolable;
         }
+
+        public Poolable Pop(Vector2 position, Quaternion rotation)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            poolable.gameObject.SetActive(true);
+            poolable.transform.position = position;
+            poolable.transform.rotation = rotation;
+            poolable.isUsing = true;
+
+            return poolable;
+        }
     }
     #endregion
 
@@ -117,6 +134,8 @@ public class ObjectPoolMgr
             root = new GameObject { name = "@Pool_Root" }.transform;
             // Object.DontDestroyOnLoad(root);
         }
+
+        PhotonPrefabPool.Init();
     }
 
     public void CreatePool(GameObject original, int count)
@@ -169,6 +188,14 @@ public class ObjectPoolMgr
             CreatePool(original, poolCount); // poolCount만큼 생성
 
         return pools[original.name].Pop(position);
+    }
+
+    public Poolable Pop(GameObject original, Vector2 position, Quaternion rotation)
+    {
+        if (pools.ContainsKey(original.name) == false)
+            CreatePool(original, poolCount); // poolCount만큼 생성
+
+        return pools[original.name].Pop(position, rotation);
     }
 
     public void GeneratePool(GameObject original, int count, Transform parent = null)

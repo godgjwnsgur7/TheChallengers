@@ -46,6 +46,48 @@ public struct AnimatorSyncParam
     }
 }
 
+public static class MonoBehaviourPhotonExtension
+{
+    /// <summary>
+    /// multiAction은 BroadCast 가능한 메소드여야 합니다. 람다식 절대 금지~~~
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="mono"></param>
+    /// <param name="singleAction"></param>
+    /// <param name="multiAction"></param>
+    public static void TrySingleOrMultiAction<T>(this T mono, Action singleAction, Action multiAction)
+        where T : MonoBehaviourPhoton
+    {
+        if (!PhotonLogicHandler.IsConnected)
+        {
+            singleAction?.Invoke();
+        }
+        else
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
+        }
+    }
+
+    public static void TryMultiAction<T>(this T mono, Action multiAction)
+        where T : MonoBehaviourPhoton
+    {
+        if (PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
+        }
+    }
+
+    public static void TryMultiAction<T, TParam>(this T mono, Action<TParam> multiAction, TParam param)
+        where T : MonoBehaviourPhoton
+    {
+        if (PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, param, ENUM_RPC_TARGET.All);
+        }
+    }
+}
+
+
 [RequireComponent(typeof(PhotonView))]
 
 public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstantiateMagicCallback
@@ -66,9 +108,13 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public bool IsInitialized 
     {
-        get;
-        private set;
-    } = false;
+        get
+		{
+            return isInitialized && viewID != 0;
+
+        }
+    }
+    private bool isInitialized = false;
 
     private Animator syncAnim = null;
     private Rigidbody2D syncRigid = null;
@@ -76,16 +122,25 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public virtual void Init()
     {
-        if (IsInitialized)
+        if (isInitialized)
             return;
 
         if (photonView == null)
             gameObject.AddComponent<PhotonView>();
 
         photonView.ObservedComponents = new List<Component>();
-        viewID = PhotonLogicHandler.Register(photonView);
 
-        IsInitialized = true;
+        isInitialized = true;
+    }
+
+    public virtual void OnEnable()
+	{
+        viewID = PhotonLogicHandler.Register(photonView);
+    }
+
+    public virtual void OnDisable()
+	{
+        PhotonLogicHandler.Unregister(viewID);
     }
 
     public void SyncAnimator(Animator anim, AnimatorSyncParam[] syncParameters = null)
@@ -164,11 +219,6 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         photonView.ObservedComponents.Add(component);
     }
 
-    protected virtual void OnDestroy()
-    {
-        PhotonLogicHandler.Unregister(viewID);
-    }
-
     /// <summary>
     /// 송신 클라가 다른 수신 클라들을 동기화시킬 때 사용하는 함수, OnPhotonSerializeView에 의해 자동 적용되므로 호출할 필요는 없음, 정의만
     /// </summary>
@@ -211,7 +261,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
 	public void OnPhotonInstantiate(PhotonMessageInfo info)
 	{
-        if(!IsInitialized)
+        if(!isInitialized)
 		{
             Init();
         }  

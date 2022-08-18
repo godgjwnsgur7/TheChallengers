@@ -27,6 +27,24 @@ public class ResourceMgr
         return Resources.LoadAll<T>(path);
     }
 
+    public GameObject Instantiate(string fullPath, Vector3 position, Quaternion rotation)
+    {
+        GameObject original = Load<GameObject>(fullPath);
+        if (original == null)
+        {
+            Debug.Log($"Failed to load prefab : {fullPath}");
+            return null;
+        }
+
+        // 풀링된 오브젝트일 경우 위탁
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original, position, rotation).gameObject;
+
+        GameObject go = Object.Instantiate(original);
+        go.name = original.name;
+        return go;
+    }
+
     public GameObject Instantiate(string path, Transform parent = null)
     {
         GameObject original = Load<GameObject>($"Prefabs/{path}");

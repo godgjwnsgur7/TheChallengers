@@ -13,6 +13,7 @@ public class AttackObejct : Poolable
 
     public override void Init()
     {
+        base.Init();
         ENUM_SKILL_TYPE skill = (ENUM_SKILL_TYPE)Enum.Parse(typeof(ENUM_SKILL_TYPE), gameObject.name.ToString());
         if (!Managers.Data.SkillDict.TryGetValue((int)skill, out skillValue))
         {

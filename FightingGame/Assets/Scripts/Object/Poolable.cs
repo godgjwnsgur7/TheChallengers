@@ -5,5 +5,8 @@ using UnityEngine;
 public class Poolable : MonoBehaviourPhoton
 {
     public bool isUsing;
-    public override void Init() { }
+    public override void Init() 
+    { 
+        base.Init();
+    }
 }

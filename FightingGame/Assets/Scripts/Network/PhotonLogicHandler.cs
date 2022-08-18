@@ -16,47 +16,6 @@ public enum ENUM_RPC_TARGET
     OTHER
 }
 
-public static class MonoBehaviourPhotonExtension
-{
-    /// <summary>
-    /// multiAction은 BroadCast 가능한 메소드여야 합니다. 람다식 절대 금지~~~
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="mono"></param>
-    /// <param name="singleAction"></param>
-    /// <param name="multiAction"></param>
-    public static void TrySingleOrMultiAction<T>(this T mono, Action singleAction, Action multiAction) 
-        where T : MonoBehaviourPhoton
-	{
-        if(!PhotonLogicHandler.IsConnected)
-		{
-            singleAction?.Invoke();
-		}
-        else
-		{
-            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
-		}
-	}
-
-    public static void TryMultiAction<T>(this T mono, Action multiAction)
-        where T : MonoBehaviourPhoton
-    {
-        if (PhotonLogicHandler.IsConnected)
-        {
-            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
-        }
-    }
-
-    public static void TryMultiAction<T, TParam>(this T mono, Action<TParam> multiAction, TParam param)
-        where T : MonoBehaviourPhoton
-    {
-        if (PhotonLogicHandler.IsConnected)
-        {
-            PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, param, ENUM_RPC_TARGET.All);
-        }
-    }
-}
-
 public class BroadcastMethodAttribute : PunRPC { }
 
 public partial class PhotonLogicHandler
