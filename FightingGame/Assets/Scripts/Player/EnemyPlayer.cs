@@ -12,7 +12,7 @@ public class EnemyPlayer : MonoBehaviour
     public ActiveCharacter activeCharacter;
 
     public float moveDir = 0f;
-
+     
     public bool inabilityState = false;
 
     public ENUM_TEAM_TYPE teamType;
@@ -22,6 +22,7 @@ public class EnemyPlayer : MonoBehaviour
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
         activeCharacter.teamType = teamType;
+        activeCharacter.Init();
     }
 
     private void Update()
