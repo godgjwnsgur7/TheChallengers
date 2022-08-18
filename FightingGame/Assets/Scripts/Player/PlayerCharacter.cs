@@ -38,6 +38,7 @@ public class PlayerCharacter : MonoBehaviour
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
         activeCharacter.teamType = teamType;
+        activeCharacter.Init();
         playerCamera.Init(activeCharacter.transform);
     }
 
@@ -102,7 +103,7 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir, Input.GetKey(KeyCode.LeftShift)));
         }
     }
-
+    
     private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
         if (activeCharacter == null || activeCharacter.currState == ENUM_PLAYER_STATE.Hit)

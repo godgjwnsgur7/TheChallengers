@@ -14,20 +14,12 @@ public partial class ActiveCharacter : Character
 
     Coroutine coroutine;
 
-    private void OnEnable()
-    {
-        StartCoroutine(IJumpStateCheck());
-    }
-
     public override void Init()
     {
         base.Init();
 
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (teamType == ENUM_TEAM_TYPE.Blue)
-            spriteRenderer.flipX = true;
 
         // Animator
         if (anim == null)
@@ -39,7 +31,12 @@ public partial class ActiveCharacter : Character
             anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
         }
 
-        if(PhotonLogicHandler.IsConnected)
+        if (teamType == ENUM_TEAM_TYPE.Blue)
+            ReverseSprites(1.0f);
+
+        StartCoroutine(IJumpStateCheck());
+
+        if (PhotonLogicHandler.IsConnected)
         {
             var param = MakeSyncAnimParam();
             SyncAnimator(anim, param);
@@ -189,6 +186,15 @@ public partial class ActiveCharacter : Character
         if (reverseState == _reverseState)
             return;
 
+        if (PhotonLogicHandler.IsConnected)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, bool>(this, Test, _reverseState);
+        else
+            Test(_reverseState);
+    }
+
+    [BroadcastMethodAttribute]
+    public void Test(bool _reverseState)
+    {
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
     }
@@ -232,9 +238,6 @@ public partial class ActiveCharacter : Character
     /// <returns>경직시간</returns>
     protected IEnumerator IHitRunTimeCheck(float _hitTime)
     {
-        if (hitCoroutine)
-            Debug.Log("hitCoroutine이 true인데 코루틴이 시작됨");
-
         float realTime = 0f;
 
         while (_hitTime >= realTime)

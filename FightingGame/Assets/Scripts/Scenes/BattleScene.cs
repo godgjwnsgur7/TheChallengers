@@ -27,13 +27,15 @@ public class BattleScene : BaseScene
             if (PhotonLogicHandler.IsMasterClient)
             {
                 SetCharacterWithPos(map.blueTeamSpawnPoint.position);
+                playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
             }
             else
             {
                 SetCharacterWithPos(map.redTeamSpawnPoint.position);
+                playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
             }
         }
-        else // 디버그용
+        else // 클라 하나
         {
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
             playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position));
@@ -58,17 +60,15 @@ public class BattleScene : BaseScene
     {
         ActiveCharacter activeCharacter;
 
-        if (!PhotonLogicHandler.IsConnected) // 디버그용
+        if (!PhotonLogicHandler.IsConnected)
+        {
             activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
+        }
         else
         {
             activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
-
-            Debug.Log("실행확인");
         }
 
-        activeCharacter.Init();
-        
         Skills_Pooling(_charType);
 
         return activeCharacter;

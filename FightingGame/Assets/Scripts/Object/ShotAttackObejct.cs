@@ -10,8 +10,14 @@ public class ShotAttackObejct : AttackObejct
     public override void Init()
     {
         base.Init();
-    
+
         rigid2D = GetComponent<Rigidbody2D>();
+
+        if (PhotonLogicHandler.IsConnected)
+        {
+            SyncPhysics(rigid2D);
+            SyncTransformView(transform);
+        }
     }
 
     public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
