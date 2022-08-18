@@ -65,6 +65,11 @@ namespace Photon.Pun
             }
         }
 
+        public virtual void Start()
+		{
+
+		}
+
         //#if UNITY_EDITOR
         //protected virtual void Reset()
         //{

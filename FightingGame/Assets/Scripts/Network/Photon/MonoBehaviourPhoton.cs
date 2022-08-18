@@ -143,6 +143,11 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         PhotonLogicHandler.Unregister(viewID);
     }
 
+    public override sealed void Start()
+	{
+        // Start문은 사용하지 마시오.
+	}
+
     public void SyncAnimator(Animator anim, AnimatorSyncParam[] syncParameters = null)
     {
         if (syncAnim != null)
