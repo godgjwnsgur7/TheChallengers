@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonPanel : UIElement
+public class TopPanel : UIElement
 {
-    [SerializeField] Button slideBtn;
+    [SerializeField] Button closeBtn;
+    [SerializeField] Button saveBtn;
+    [SerializeField] Button resetBtn;
 
     public override void Open(UIParam param = null)
     {
@@ -15,10 +17,5 @@ public class ButtonPanel : UIElement
     public override void Close()
     {
         base.Close();
-    }
-
-    public void InteractableBtn()
-    {
-        slideBtn.interactable = !slideBtn.interactable;
     }
 }

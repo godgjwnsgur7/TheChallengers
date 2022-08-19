@@ -8,12 +8,15 @@ public class TrainingCanvas : BaseCanvas
     [Header("Set In Editor")]
     [SerializeField] SelectWindow selectWindow;
     [SerializeField] ButtonPanel buttonPanel;
+    [SerializeField] SettingPanel settingPanel;
+    [SerializeField] KeyPanelArea keyPanelArea;
     [SerializeField] Text notion;
 
     Coroutine runCorutine;
     Transform BTransform;
     bool isPanelShow;
     public string ChangeCharacter;
+    public bool isCallPlayer = false;
 
     public void init()
     {
@@ -24,13 +27,36 @@ public class TrainingCanvas : BaseCanvas
     public override void Open<T>(UIParam param = null)
     {
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Open();
+        else if (typeof(T) == typeof(SettingPanel)) settingPanel.Open();
+        else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Open();
         else Debug.Log("범위 벗어남");
     }
 
     public override void Close<T>()
     {
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Close();
+        else if (typeof(T) == typeof(SettingPanel)) settingPanel.Close();
+        else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Close();
         else Debug.Log("범위 벗어남");
+    }
+
+    public void OnOffSettingPanel()
+    {
+        if(keyPanelArea.isOpen == false)
+            Managers.UI.OpenUI<KeyPanelArea>();
+
+        if (settingPanel.isOpen)
+        {
+            Managers.UI.CloseUI<SettingPanel>();
+
+            if (!isCallPlayer)
+                Managers.UI.CloseUI<KeyPanelArea>();
+        }
+        else
+            Managers.UI.OpenUI<SettingPanel>();
+
+        SlidePanel();
+        buttonPanel.InteractableBtn();
     }
 
     public void SlidePanel()

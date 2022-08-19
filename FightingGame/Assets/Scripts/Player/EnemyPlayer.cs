@@ -86,11 +86,6 @@ public class EnemyPlayer : MonoBehaviour
         }
     }
 
-    public void moveCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
-    {
-        PlayerCommand(nextState, param);
-    }
-
     private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
         if (activeCharacter == null || activeCharacter.currState == ENUM_PLAYER_STATE.Hit)

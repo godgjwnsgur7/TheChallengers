@@ -60,6 +60,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
                 touchPos.y * imageBackgroud.rectTransform.sizeDelta.y * 0.5f);
 
             SendTouchPosition();
+
+            Debug.Log(touchPos);
         }
     }
 

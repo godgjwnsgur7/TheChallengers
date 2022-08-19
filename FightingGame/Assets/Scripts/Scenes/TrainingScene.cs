@@ -10,6 +10,8 @@ public class TrainingScene : BaseScene
     [SerializeField] TrainingCanvas trainingCanvas;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] KeyPanelArea keyPanelArea;
+    
     EnemyPlayer enemyPlayer;
 
     ENUM_CHARACTER_TYPE playerType;
@@ -29,6 +31,7 @@ public class TrainingScene : BaseScene
         enemyType = ENUM_CHARACTER_TYPE.Knight;
 
         trainingCanvas.init();
+        keyPanelArea.init();
     }
 
     private void SetCharacterWithPos(Vector3 spawnPos)
@@ -46,7 +49,11 @@ public class TrainingScene : BaseScene
 
 
         trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
+        trainingCanvas.isCallPlayer = true;
         playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, playerType));
+
+        if(keyPanelArea.isOpen == false)
+            Managers.UI.OpenUI<KeyPanelArea>();
     }
 
     public void CallEnemy()
@@ -98,10 +105,13 @@ public class TrainingScene : BaseScene
             return;
 
         trainingCanvas.SetNotionText("플레이어를 역소환하였습니다.");
-
+        trainingCanvas.isCallPlayer = false;
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         playerCharacter.activeCharacter = null;
+
+        if (keyPanelArea.isOpen)
+            Managers.UI.CloseUI<KeyPanelArea>();
     }
 
     public override void Clear()
