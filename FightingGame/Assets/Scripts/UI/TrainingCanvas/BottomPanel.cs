@@ -10,6 +10,8 @@ public class BottomPanel : UIElement
     [SerializeField] Slider sizeSlider;
     [SerializeField] Slider opacitySlider;
 
+    private float size;
+    private Color color;
 
     public override void Open(UIParam param = null)
     {
@@ -25,20 +27,28 @@ public class BottomPanel : UIElement
     {
         setBtn = go;
         setBtnImage = setBtn.GetComponent<Image>();
-        sizeSlider.value = PlayerPrefs.GetInt($"{setBtn.name} + Size");
-        opacitySlider.value = PlayerPrefs.GetInt($"{setBtn.name} + Opacity");
+        sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Size");
+        opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Opacity");
     }
 
 
     public void SettingSizeSlider()
     {
-        setBtn.transform.localScale = new Vector3(0.5f + (sizeSlider.value/100), 0.5f + (sizeSlider.value / 100), 0.5f + (sizeSlider.value / 100)); 
+        size = (sizeSlider.value / sizeSlider.maxValue);
+        setBtn.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size); 
     }
 
     public void SettingOpacitySlider()
     {
-        Color color = setBtnImage.color;
-        color.a = 2.55f * opacitySlider.value;
+        color = setBtnImage.color;
+        color.a = opacitySlider.value / opacitySlider.maxValue;
         setBtnImage.color = color;
+    }
+
+    public void SaveSliderValue()
+    {
+        PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
+        PlayerPrefs.Save();
     }
 }

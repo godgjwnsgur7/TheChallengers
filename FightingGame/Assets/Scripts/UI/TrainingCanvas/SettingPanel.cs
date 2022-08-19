@@ -21,8 +21,8 @@ public class SettingPanel : UIElement
     public void PushKey(GameObject go)
     {
         if (isOpen)
-        { 
-            bottomPanel.gameObject.SetActive(true);
+        {
+            Managers.UI.OpenUI<BottomPanel>();
             bottomPanel.setSlider(go);
         }
         else

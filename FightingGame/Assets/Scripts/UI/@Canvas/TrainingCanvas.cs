@@ -10,6 +10,8 @@ public class TrainingCanvas : BaseCanvas
     [SerializeField] ButtonPanel buttonPanel;
     [SerializeField] SettingPanel settingPanel;
     [SerializeField] KeyPanelArea keyPanelArea;
+    [SerializeField] TopPanel topPanel;
+    [SerializeField] BottomPanel bottomPanel;
     [SerializeField] Text notion;
 
     Coroutine runCorutine;
@@ -29,6 +31,8 @@ public class TrainingCanvas : BaseCanvas
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Open();
         else if (typeof(T) == typeof(SettingPanel)) settingPanel.Open();
         else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Open();
+        else if (typeof(T) == typeof(TopPanel)) topPanel.Open();
+        else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Open();
         else Debug.Log("범위 벗어남");
     }
 
@@ -37,6 +41,8 @@ public class TrainingCanvas : BaseCanvas
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Close();
         else if (typeof(T) == typeof(SettingPanel)) settingPanel.Close();
         else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Close();
+        else if (typeof(T) == typeof(TopPanel)) topPanel.Close();
+        else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Close();
         else Debug.Log("범위 벗어남");
     }
 
@@ -48,6 +54,8 @@ public class TrainingCanvas : BaseCanvas
         if (settingPanel.isOpen)
         {
             Managers.UI.CloseUI<SettingPanel>();
+            Managers.UI.CloseUI<BottomPanel>();
+            keyPanelArea.SliderReset();
 
             if (!isCallPlayer)
                 Managers.UI.CloseUI<KeyPanelArea>();

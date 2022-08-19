@@ -589,7 +589,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 126478923}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 784350455}
+        m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+        m_MethodName: SaveSliderValue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &126478923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4464,9 +4476,11 @@ MonoBehaviour:
   buttonPanel: {fileID: 1082898212}
   settingPanel: {fileID: 2081019826}
   keyPanelArea: {fileID: 43441482}
+  topPanel: {fileID: 1086819804}
+  bottomPanel: {fileID: 784350455}
   notion: {fileID: 324688445}
-  player: {fileID: 308789864}
   ChangeCharacter: 
+  isCallPlayer: 0
 --- !u!224 &1010260637
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5814,7 +5828,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1497140584}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 43441482}
+        m_TargetAssemblyTypeName: KeyPanelArea, Assembly-CSharp
+        m_MethodName: SliderReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1497140584
 MonoBehaviour:
   m_ObjectHideFlags: 0
