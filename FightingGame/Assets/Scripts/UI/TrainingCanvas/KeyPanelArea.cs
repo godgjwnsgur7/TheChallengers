@@ -10,12 +10,7 @@ public class KeyPanelArea : UIElement
     [SerializeField] GameObject rightButtons;
 
     // Panel 안의 버튼들
-    [SerializeField] Button joyStick;
-    [SerializeField] Button AttackBtn;
-    [SerializeField] Button JumpBtn;
-    [SerializeField] Button SkillBtn1;
-    [SerializeField] Button SkillBtn2;
-    [SerializeField] Button SkillBtn3;
+    [SerializeField] Button[] buttons;
 
     RectTransform rectTransform;
     DragAndDrop dragAndDrop;
@@ -23,6 +18,7 @@ public class KeyPanelArea : UIElement
     Color color;
     float size;
     float opacity;
+    Vector2 vec;
 
     float x;
     float y;
@@ -40,31 +36,19 @@ public class KeyPanelArea : UIElement
     public void init()
     {
         // Base Slider Value Call
-        SetInit(joyStick);
-        SetInit(AttackBtn);
-        SetInit(JumpBtn);
-        SetInit(SkillBtn1);
-        SetInit(SkillBtn2);
-        SetInit(SkillBtn3);
+        for (int i = 0; i < buttons.Length; i++)
+            SetInit(buttons[i]);
     }
 
     // Reset Not Saved Slider Value
     public void SliderReset()
     {
-
-        SetSize(joyStick);
-        SetSize(AttackBtn);
-        SetSize(JumpBtn);
-        SetSize(SkillBtn1);
-        SetSize(SkillBtn2);
-        SetSize(SkillBtn3);
-
-        SetOpactiy(joyStick);
-        SetOpactiy(AttackBtn);
-        SetOpactiy(JumpBtn);
-        SetOpactiy(SkillBtn1);
-        SetOpactiy(SkillBtn2);
-        SetOpactiy(SkillBtn3);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            SetSize(buttons[i]);
+            SetOpactiy(buttons[i]);
+            SetTransform(buttons[i]);
+        }
 
         Managers.UI.CloseUI<BottomPanel>();
     }
@@ -105,6 +89,13 @@ public class KeyPanelArea : UIElement
         color = image.color;
         color.a = opacity;
         image.color = color;
+    }
+
+    private void SetTransform(Button button)
+    {
+        rectTransform = button.GetComponent<RectTransform>();
+        vec = new Vector2(PlayerPrefs.GetFloat($"{button.name}transX"), PlayerPrefs.GetFloat($"{button.name}transY"));
+        rectTransform.anchoredPosition = vec;
     }
 
     private void SetIsUpdate(GameObject go)
