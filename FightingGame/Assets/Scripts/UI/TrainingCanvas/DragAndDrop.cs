@@ -11,34 +11,44 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     CanvasGroup canvasGroup;
     Image image1;
     [SerializeField] Canvas canvas;
-    Bounds bounds;
+
+    public bool isUpdate = false;
     public float AlphaThreshold = 0.1f;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+
+        // Buttom Click 가능 범위 설정
         image1 = GetComponent<Image>();
         image1.alphaHitTestMinimumThreshold = AlphaThreshold;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!isUpdate)
+            return;
+
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!isUpdate)
+            return;
+
         // 이전 이동과 비교해서 얼마나 이동했는지를 보여줌
         // 캔버스의 스케일과 맞춰야 하기 때문에
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-
-        bounds = new Bounds(eventData.position, rectTransform.sizeDelta);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isUpdate)
+            return;
+
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
@@ -51,10 +61,5 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     public void OnDrop(PointerEventData eventData)
     {
 
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("충돌");
     }
 }

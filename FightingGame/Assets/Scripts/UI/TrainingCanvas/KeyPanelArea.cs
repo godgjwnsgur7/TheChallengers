@@ -5,7 +5,12 @@ using UnityEngine.UI;
 
 public class KeyPanelArea : UIElement
 {
-    [SerializeField] GameObject joyStick;
+    // 버튼들 모여있는 영역 Panel
+    [SerializeField] GameObject leftButtons;
+    [SerializeField] GameObject rightButtons;
+
+    // Panel 안의 버튼들
+    [SerializeField] Button joyStick;
     [SerializeField] Button AttackBtn;
     [SerializeField] Button JumpBtn;
     [SerializeField] Button SkillBtn1;
@@ -14,6 +19,9 @@ public class KeyPanelArea : UIElement
 
     float size;
     float opacity;
+    Image image;
+    Color color;
+    DragAndDrop dragAndDrop;
 
     public override void Open(UIParam param = null)
     {
@@ -27,59 +35,89 @@ public class KeyPanelArea : UIElement
 
     public void init()
     {
-        // LeftBtnArea
-        if (!PlayerPrefs.HasKey($"{joyStick.name}Size"))
-            PlayerPrefs.SetFloat($"{joyStick.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{joyStick.name}Opacity"))
-            PlayerPrefs.SetFloat($"{joyStick.name}Opacity", 100);
-
-        // RightBtnArea
-        if (!PlayerPrefs.HasKey($"{AttackBtn.name}Size"))
-            PlayerPrefs.SetFloat($"{AttackBtn.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{AttackBtn.name}Opacity"))
-            PlayerPrefs.SetFloat($"{AttackBtn.name}Opacity", 100);
-
-        if (!PlayerPrefs.HasKey($"{JumpBtn.name}Size"))
-            PlayerPrefs.SetFloat($"{JumpBtn.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{JumpBtn.name}Opacity"))
-            PlayerPrefs.SetFloat($"{JumpBtn.name}Opacity", 100);
-
-        if (!PlayerPrefs.HasKey($"{SkillBtn1.name}Size"))
-            PlayerPrefs.SetFloat($"{SkillBtn1.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{SkillBtn1.name}Opacity"))
-            PlayerPrefs.SetFloat($"{SkillBtn1.name}Opacity", 100);
-
-        if (!PlayerPrefs.HasKey($"{SkillBtn2.name}Size"))
-            PlayerPrefs.SetFloat($"{SkillBtn2.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{SkillBtn2.name}Opacity"))
-            PlayerPrefs.SetFloat($"{SkillBtn2.name}Opacity", 100);
-
-        if (!PlayerPrefs.HasKey($"{SkillBtn3.name}Size"))
-            PlayerPrefs.SetFloat($"{SkillBtn3.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{SkillBtn3.name}Opacity"))
-            PlayerPrefs.SetFloat($"{SkillBtn3.name}Opacity", 100);
+        // Base Slider Value Call
+        SetInit(joyStick);
+        SetInit(AttackBtn);
+        SetInit(JumpBtn);
+        SetInit(SkillBtn1);
+        SetInit(SkillBtn2);
+        SetInit(SkillBtn3);
     }
 
+    // Reset Not Saved Slider Value
     public void SliderReset()
     {
-        size = (PlayerPrefs.GetFloat($"{joyStick.name}Size") / 100);
-        joyStick.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
 
-        size = (PlayerPrefs.GetFloat($"{AttackBtn.name}Size") / 100);
-        AttackBtn.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
+        SetSize(joyStick);
+        SetSize(AttackBtn);
+        SetSize(JumpBtn);
+        SetSize(SkillBtn1);
+        SetSize(SkillBtn2);
+        SetSize(SkillBtn3);
 
-        size = (PlayerPrefs.GetFloat($"{JumpBtn.name}Size") / 100);
-        JumpBtn.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
-
-        size = (PlayerPrefs.GetFloat($"{SkillBtn1.name}Size") / 100);
-        SkillBtn1.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
-
-        size = (PlayerPrefs.GetFloat($"{SkillBtn2.name}Size") / 100);
-        SkillBtn2.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
-
-        size = (PlayerPrefs.GetFloat($"{SkillBtn3.name}Size") / 100);
-        SkillBtn3.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
+        SetOpactiy(joyStick);
+        SetOpactiy(AttackBtn);
+        SetOpactiy(JumpBtn);
+        SetOpactiy(SkillBtn1);
+        SetOpactiy(SkillBtn2);
+        SetOpactiy(SkillBtn3);
 
         Managers.UI.CloseUI<BottomPanel>();
+    }
+
+    private void SetInit(Button buttom)
+    {
+        if (!PlayerPrefs.HasKey($"{buttom.name}Size"))
+            PlayerPrefs.SetFloat($"{buttom.name}Size", 50);
+        if (!PlayerPrefs.HasKey($"{buttom.name}Opacity"))
+            PlayerPrefs.SetFloat($"{buttom.name}Opacity", 100);
+    }
+
+    private void SetSize(Button button)
+    {
+        size = (PlayerPrefs.GetFloat($"{button.name}Size") / 100);
+        button.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
+    }
+
+    private void SetOpactiy(Button button)
+    {
+        opacity = (PlayerPrefs.GetFloat($"{button.name}Opacity") / 100);
+        image = button.GetComponent<Image>();
+        color = image.color;
+        color.a = opacity;
+        image.color = color;
+    }
+    
+    private void SetIsUpdate(Button button)
+    {
+        dragAndDrop = button.GetComponent<DragAndDrop>();
+
+        if (dragAndDrop == null)
+            return;
+
+        dragAndDrop.isUpdate = !dragAndDrop.isUpdate;
+    }
+
+    private void SetIsUpdate(GameObject go)
+    {
+        dragAndDrop = go.GetComponent<DragAndDrop>();
+
+        if (dragAndDrop == null)
+            return;
+
+        dragAndDrop.isUpdate = !dragAndDrop.isUpdate;
+    }
+
+    // Draggable Change
+    public void OnOffDrag()
+    {
+        SetIsUpdate(leftButtons);
+        SetIsUpdate(rightButtons);
+        SetIsUpdate(joyStick);
+        SetIsUpdate(AttackBtn);
+        SetIsUpdate(JumpBtn);
+        SetIsUpdate(SkillBtn1);
+        SetIsUpdate(SkillBtn2);
+        SetIsUpdate(SkillBtn3);
     }
 }

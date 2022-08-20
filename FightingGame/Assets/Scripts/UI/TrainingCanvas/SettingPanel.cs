@@ -29,6 +29,5 @@ public class SettingPanel : UIElement
         {
             Debug.Log("ㅎㅎ");
         }
-
     }
 }

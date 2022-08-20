@@ -46,6 +46,7 @@ public class TrainingCanvas : BaseCanvas
         else Debug.Log("범위 벗어남");
     }
 
+    // 캐릭터 UI 세팅 패널 open,close
     public void OnOffSettingPanel()
     {
         if(keyPanelArea.isOpen == false)
@@ -61,12 +62,16 @@ public class TrainingCanvas : BaseCanvas
                 Managers.UI.CloseUI<KeyPanelArea>();
         }
         else
+        {
             Managers.UI.OpenUI<SettingPanel>();
+        }
 
+        keyPanelArea.OnOffDrag();
         SlidePanel();
         buttonPanel.InteractableBtn();
     }
 
+    // 훈련장 버튼패널 슬라이드
     public void SlidePanel()
     {
         if(isPanelShow)
@@ -96,17 +101,20 @@ public class TrainingCanvas : BaseCanvas
 
         CloseSelectWindow();
     }
-    public void CloseSelectWindow()
-    {
-        Managers.UI.CloseUI<SelectWindow>();
-    }
 
+    // 캐릭터 변경창 open, close
     public void OpenSelectWindow(string characterType)
     {
         ChangeCharacter = characterType;
         Managers.UI.OpenUI<SelectWindow>();
     }
 
+    public void CloseSelectWindow()
+    {
+        Managers.UI.CloseUI<SelectWindow>();
+    }
+
+    // 알림 설정
     public void SetNotionText(string text)
     {
         if (runCorutine != null)
@@ -126,6 +134,7 @@ public class TrainingCanvas : BaseCanvas
         runCorutine = null;
     }
 
+    // 로비로 귀환
     public void LoadLobby() 
     {
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby);

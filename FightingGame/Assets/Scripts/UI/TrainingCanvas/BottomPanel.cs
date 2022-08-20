@@ -23,6 +23,7 @@ public class BottomPanel : UIElement
         base.Close();
     }
 
+    // Call ClickedButton Slider Setting Value
     public void setSlider(GameObject go)
     {
         setBtn = go;
@@ -32,12 +33,14 @@ public class BottomPanel : UIElement
     }
 
 
+    // When Size Slider Value Change
     public void SettingSizeSlider()
     {
         size = (sizeSlider.value / sizeSlider.maxValue);
         setBtn.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size); 
     }
 
+    // When Opacity Slider Value Change
     public void SettingOpacitySlider()
     {
         color = setBtnImage.color;
@@ -45,6 +48,7 @@ public class BottomPanel : UIElement
         setBtnImage.color = color;
     }
 
+    // Current Setting size, Opacity Save
     public void SaveSliderValue()
     {
         PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);

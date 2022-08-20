@@ -17,6 +17,7 @@ public class ButtonPanel : UIElement
         base.Close();
     }
 
+    // ButtonPanel SliderBtn Interactable On/Off
     public void InteractableBtn()
     {
         slideBtn.interactable = !slideBtn.interactable;
