@@ -13,4 +13,10 @@ public class LoginCanvas : BaseCanvas
     {
 
     }
+
+    public override T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
 }

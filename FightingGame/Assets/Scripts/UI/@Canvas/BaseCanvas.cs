@@ -28,5 +28,6 @@ public abstract class BaseCanvas : MonoBehaviour
     public abstract void Open<T>(UIParam param = null);
     public abstract void Close<T>();
 
+    public abstract T GetUIComponent<T>();
 }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using FGDefine;
 
@@ -11,6 +12,7 @@ public partial class ActiveCharacter : Character
     public ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
 
     public AttackObejct attackObject;
+    public StatusWindowUI statusWindowUI;
 
     Coroutine coroutine;
 
@@ -65,6 +67,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("HitState", AnimParameterType.Bool),
             new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
+            new AnimatorSyncParam("IsDie", AnimParameterType.Bool),
         };
 
         return syncParams;
@@ -151,14 +154,14 @@ public partial class ActiveCharacter : Character
             {
                 if (superArmour)
                 {
-                    hp -= _skillData.damage;
+                    curHP -= _skillData.damage;
                     return;
                 }
 
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
                 anim.SetTrigger("HitTrigger");
-                hp -= _skillData.damage;
+                curHP -= _skillData.damage;
                 if(hitCoroutine)
                 {
                     StopCoroutine(coroutine);
@@ -175,7 +178,7 @@ public partial class ActiveCharacter : Character
     {
         base.Die(param);
 
-
+        anim.SetBool("IsDie", true);
     }
 
     public void SetAnimParamVector(float _moveDir)

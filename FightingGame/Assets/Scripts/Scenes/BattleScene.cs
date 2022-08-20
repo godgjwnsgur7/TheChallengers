@@ -6,6 +6,8 @@ public class BattleScene : BaseScene
 {
     BaseMap map;
 
+    [SerializeField] BattleCanvas battleCanvas;
+
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] PlayerCamera playerCamera;
 
@@ -19,7 +21,8 @@ public class BattleScene : BaseScene
 
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
-
+        
+        // 카메라 가두기
         playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
 
         if(PhotonLogicHandler.IsConnected)
@@ -39,10 +42,12 @@ public class BattleScene : BaseScene
         {
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
             playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position));
-
+            playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
+            
             enemyPlayer.gameObject.SetActive(true);
             enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
             enemyPlayer.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
+            enemyPlayer.Connect_Status(battleCanvas.Get_StatusWindowUI(enemyPlayer.teamType));
         }
     }
 

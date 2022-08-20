@@ -46,6 +46,12 @@ public class PlayerCharacter : MonoBehaviour
         playerCamera.Init(activeCharacter.transform);
     }
 
+    public void Connect_Status(StatusWindowUI _statusWindowUI)
+    {
+        _statusWindowUI.Set_MaxHP(activeCharacter.curHP);
+        activeCharacter.statusWindowUI = _statusWindowUI;
+    }
+
     // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
     {// 공격
@@ -110,8 +116,11 @@ public class PlayerCharacter : MonoBehaviour
     
     private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
-        if (activeCharacter == null || activeCharacter.currState == ENUM_PLAYER_STATE.Hit)
+        if (activeCharacter == null)
             return;
+
+        if(activeCharacter.currState == ENUM_PLAYER_STATE.Hit ||
+           activeCharacter.currState == ENUM_PLAYER_STATE.Die)
 
         switch (nextState)
         {

@@ -66,6 +66,12 @@ public class CustomRoomCanvas : BaseCanvas
         }
     }
 
+    public override T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
+
     // 캐릭터 선택
     public void SelectCharacter(int charType)
     {

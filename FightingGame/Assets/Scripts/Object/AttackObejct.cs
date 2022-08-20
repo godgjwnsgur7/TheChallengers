@@ -46,7 +46,7 @@ public class AttackObejct : Poolable
     {
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
-        // 충돌한 객체가 액티브캐릭터가 아니라면 파괴.
+        // 충돌한 객체가 액티브캐릭터가 아니라면 파괴 (ShotAttackObject)
         if (enemyCharacter == null && attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot)
         {
             Managers.Resource.Destroy(gameObject);

@@ -45,6 +45,11 @@ public class TrainingCanvas : BaseCanvas
         else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Close();
         else Debug.Log("범위 벗어남");
     }
+    public override T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
 
     // 캐릭터 UI 세팅 패널 open,close
     public void OnOffSettingPanel()
@@ -66,7 +71,6 @@ public class TrainingCanvas : BaseCanvas
             Managers.UI.OpenUI<SettingPanel>();
         }
 
-        keyPanelArea.OnOffDrag();
         SlidePanel();
         buttonPanel.InteractableBtn();
     }

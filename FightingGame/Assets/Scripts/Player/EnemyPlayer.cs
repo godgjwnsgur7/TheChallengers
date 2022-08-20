@@ -24,6 +24,10 @@ public class EnemyPlayer : MonoBehaviour
         activeCharacter.teamType = teamType;
         activeCharacter.Init();
     }
+    public void Connect_Status(StatusWindowUI _statusWindowUI)
+    {
+        activeCharacter.statusWindowUI = _statusWindowUI;
+    }
 
     private void Update()
     {

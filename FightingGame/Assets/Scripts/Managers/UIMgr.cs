@@ -43,4 +43,10 @@ public class UIMgr
         else if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Close<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
+
+    public T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
 }

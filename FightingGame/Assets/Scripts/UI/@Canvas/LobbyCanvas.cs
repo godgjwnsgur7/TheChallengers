@@ -37,6 +37,12 @@ public class LobbyCanvas : BaseCanvas
         else Debug.Log("범위 벗어남");
     }
 
+    public override T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
+
     public void OnWindowButton(string btnType) // Windows setActive(True) When Button Click 
     {
         if (btnType == null)
