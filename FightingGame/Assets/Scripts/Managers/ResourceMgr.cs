@@ -27,7 +27,7 @@ public class ResourceMgr
         return Resources.LoadAll<T>(path);
     }
 
-    public GameObject Instantiate(string fullPath, Vector3 position, Quaternion rotation)
+    public GameObject Instantiate(string fullPath, Vector3 position, Quaternion rotation, bool isActive = false)
     {
         GameObject original = Load<GameObject>(fullPath);
         if (original == null)
@@ -38,10 +38,15 @@ public class ResourceMgr
 
         // 풀링된 오브젝트일 경우 위탁
         if (original.GetComponent<Poolable>() != null)
-            return Managers.Pool.Pop(original, position, rotation).gameObject;
+            return Managers.Pool.Pop(original, position, rotation, isActive).gameObject;
 
         GameObject go = Object.Instantiate(original);
         go.name = original.name;
+
+        go.SetActive(isActive);
+        go.transform.position = position;
+        go.transform.rotation = rotation;
+
         return go;
     }
 

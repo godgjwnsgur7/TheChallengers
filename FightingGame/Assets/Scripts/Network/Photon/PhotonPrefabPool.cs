@@ -12,7 +12,11 @@ public class PhotonPrefabPool : IPunPrefabPool
 
 	public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
 	{
-		var obj = Managers.Resource.Instantiate(prefabId, position, rotation);
+		var obj = Managers.Resource.Instantiate(prefabId, position, rotation, false);
+		
+		if (obj.activeSelf) // 혹시 활성화되지 않는 경우
+			obj.SetActive(false);
+
 		return obj;
 	}
 

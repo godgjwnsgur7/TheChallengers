@@ -102,7 +102,7 @@ public class ObjectPoolMgr
             return poolable;
         }
 
-        public Poolable Pop(Vector2 position, Quaternion rotation)
+        public Poolable Pop(Vector2 position, Quaternion rotation, bool active = false)
         {
             Poolable poolable;
 
@@ -111,7 +111,7 @@ public class ObjectPoolMgr
             else
                 poolable = Create();
 
-            poolable.gameObject.SetActive(true);
+            poolable.gameObject.SetActive(active);
             poolable.transform.position = position;
             poolable.transform.rotation = rotation;
             poolable.isUsing = true;
@@ -190,12 +190,12 @@ public class ObjectPoolMgr
         return pools[original.name].Pop(position);
     }
 
-    public Poolable Pop(GameObject original, Vector2 position, Quaternion rotation)
+    public Poolable Pop(GameObject original, Vector2 position, Quaternion rotation, bool active = false)
     {
         if (pools.ContainsKey(original.name) == false)
             CreatePool(original, poolCount); // poolCount만큼 생성
 
-        return pools[original.name].Pop(position, rotation);
+        return pools[original.name].Pop(position, rotation, active);
     }
 
     public void GeneratePool(GameObject original, int count, Transform parent = null)
