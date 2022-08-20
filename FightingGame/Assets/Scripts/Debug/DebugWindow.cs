@@ -20,6 +20,11 @@ public class DebugWindow : BaseCanvas
 	{
 
 	}
+	public override T GetUIComponent<T>()
+	{
+
+		return default(T);
+	}
 
 	public void OnClickMasterServer()
 	{

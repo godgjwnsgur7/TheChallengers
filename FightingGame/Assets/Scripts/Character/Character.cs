@@ -14,7 +14,7 @@ public class Character : MonoBehaviourPhoton
     }
 
 
-    [SerializeField] protected float hp;
+    public float curHP;
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpPower;
     public ENUM_CHARACTER_TYPE characterType;
@@ -32,8 +32,11 @@ public class Character : MonoBehaviourPhoton
     public override void Init()
     {
         base.Init();
-        
-        if(rigid2D == null)
+
+        // 임시
+        curHP = 100.0f;
+
+        if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
 
         SyncPhysics(rigid2D);

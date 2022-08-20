@@ -22,7 +22,7 @@ public abstract class BaseScene : MonoBehaviour
 
     private void Start()
     {
-        Init();    
+        Init();
     }
 
     public virtual void Init()

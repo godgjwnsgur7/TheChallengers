@@ -28,4 +28,9 @@ public class TempCanvas : BaseCanvas
     {
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Battle);
     }
+    public override T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
 }

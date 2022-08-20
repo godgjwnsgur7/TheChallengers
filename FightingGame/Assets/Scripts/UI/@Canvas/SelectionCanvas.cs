@@ -16,4 +16,10 @@ public class SelectionCanvas : BaseCanvas
     {
         
     }
+
+    public override T GetUIComponent<T>()
+    {
+
+        return default(T);
+    }
 }
