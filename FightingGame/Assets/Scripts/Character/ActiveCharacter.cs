@@ -332,4 +332,19 @@ public partial class ActiveCharacter : Character
 
         Push_Rigid2D(new Vector2(vecX, 0));
     }
+
+
+	protected override void OnMineSerializeView(PhotonWriteStream stream)
+	{
+        stream.Write(currState);
+
+        base.OnMineSerializeView(stream);
+	}
+
+	protected override void OnOtherSerializeView(PhotonReadStream stream)
+	{
+        currState = (ENUM_PLAYER_STATE)stream.Read();
+
+		base.OnOtherSerializeView(stream);
+	}
 }

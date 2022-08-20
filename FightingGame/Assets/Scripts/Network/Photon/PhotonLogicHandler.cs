@@ -45,8 +45,6 @@ public delegate void FailedCallBack(short returnCode, string message);
 
 public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 {
-    private static int CurrentViewID = 1;
-
     private static PhotonLogicHandler instance;
     public static PhotonLogicHandler Instance
     {
@@ -84,6 +82,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         PhotonView view = null;
 
+        if (viewID == 0)
+            return false;
+
         if (photonViewDictionary.TryGetValue(viewID, out view))
             return view.IsMine;
 
@@ -92,11 +93,15 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public override void OnEnable()
     {
+        if(view.ViewID == 0)
+            PhotonNetwork.AllocateViewID(view); 
+
         base.OnEnable();
     }
 
     public override void OnDisable()
     {
+        view.ViewID = 0;
         base.OnDisable();
     }
 
@@ -115,7 +120,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private void Initialize()
 	{
         view = gameObject.AddComponent<PhotonView>();
-        view.ViewID = CurrentViewID++;
+
+        if (view.ViewID == 0)
+            PhotonNetwork.AllocateViewID(view);
     }
 
     /// <summary>
@@ -229,6 +236,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (view.ViewID == 0)
             PhotonNetwork.AllocateViewID(view);
 
+        if (view.ViewID == 0)
+		{
+            Debug.LogError("유효한 포톤 뷰 객체가 아님 ㅅㅂ 암튼 아님 문의줘보셈");
+            return 0;
+        }
+            
         if (!photonViewDictionary.ContainsKey(view.ViewID))
         {
             photonViewDictionary.Add(view.ViewID, view);

@@ -14,7 +14,7 @@ public class PhotonPrefabPool : IPunPrefabPool
 	{
 		var obj = Managers.Resource.Instantiate(prefabId, position, rotation, false);
 		
-		if (obj.activeSelf) // 혹시 활성화되지 않는 경우
+		if (obj.activeSelf) // 혹시 활성화되버리는 경우
 			obj.SetActive(false);
 
 		return obj;
