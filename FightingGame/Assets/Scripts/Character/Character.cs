@@ -26,6 +26,7 @@ public class Character : MonoBehaviourPhoton
     public bool jumpState = false;
     public bool invincibility = false;
     public bool attackState = false;
+    public bool superArmour = false;
     public bool hitCoroutine = false;
 
     public override void Init()
@@ -37,18 +38,6 @@ public class Character : MonoBehaviourPhoton
 
         SyncPhysics(rigid2D);
         SyncTransformView(transform);
-
-        if(PhotonLogicHandler.IsConnected)
-        {
-            if (PhotonLogicHandler.IsMasterClient)
-            {
-                teamType = ENUM_TEAM_TYPE.Blue;
-            }
-            else
-            {
-                teamType = ENUM_TEAM_TYPE.Red;
-            }
-        }
     }
 
     protected override void OnMineSerializeView(PhotonWriteStream stream)
@@ -112,5 +101,11 @@ public class Character : MonoBehaviourPhoton
     {
         rigid2D.velocity = new Vector2(0, rigid2D.velocity.y); // 받고있는 힘 초기화
         rigid2D.AddForce(vec, ForceMode2D.Impulse);
+    }
+
+    [BroadcastMethod]
+    public void Set_TeamType(ENUM_TEAM_TYPE _teamType)
+    {
+        teamType = _teamType;
     }
 }

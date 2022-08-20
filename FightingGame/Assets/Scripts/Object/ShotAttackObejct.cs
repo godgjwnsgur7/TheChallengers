@@ -11,6 +11,8 @@ public class ShotAttackObejct : AttackObejct
     {
         base.Init();
 
+        attackObjectType = ENUM_ATTACKOBJECT_TYPE.Shot;
+
         rigid2D = GetComponent<Rigidbody2D>();
 
         if (PhotonLogicHandler.IsConnected)

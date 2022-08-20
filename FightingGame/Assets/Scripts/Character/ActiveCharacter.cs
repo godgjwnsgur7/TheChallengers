@@ -149,6 +149,12 @@ public partial class ActiveCharacter : Character
         {
             if(Managers.Data.SkillDict.TryGetValue((int)attackParam.attackType, out Skill _skillData))
             {
+                if (superArmour)
+                {
+                    hp -= _skillData.damage;
+                    return;
+                }
+
                 base.Hit(param);
                 anim.SetBool("IsHit", true);
                 anim.SetTrigger("HitTrigger");
@@ -298,6 +304,16 @@ public partial class ActiveCharacter : Character
         {
             Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
+    }
+
+    protected void SuperArmourState_On()
+    {
+        superArmour = true;
+    }
+
+    protected void SuperArmourState_Off()
+    {
+        superArmour = false;
     }
 
     protected void Checking_AttackState()

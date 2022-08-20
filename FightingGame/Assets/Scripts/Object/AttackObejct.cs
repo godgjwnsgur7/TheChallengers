@@ -4,16 +4,25 @@ using UnityEngine;
 using FGDefine;
 using System;
 
+public enum ENUM_ATTACKOBJECT_TYPE
+{
+    Default = 0,
+    Shot = 1,
+    Multi = 2,
+}
+
 public class AttackObejct : Poolable
 {
     public Skill skillValue;
     public ENUM_TEAM_TYPE teamType;
-
+    public ENUM_ATTACKOBJECT_TYPE attackObjectType;
+    
     public bool reverseState;
 
     public override void Init()
     {
         base.Init();
+        attackObjectType = ENUM_ATTACKOBJECT_TYPE.Default;
         ENUM_SKILL_TYPE skill = (ENUM_SKILL_TYPE)Enum.Parse(typeof(ENUM_SKILL_TYPE), gameObject.name.ToString());
         if (!Managers.Data.SkillDict.TryGetValue((int)skill, out skillValue))
         {
@@ -38,7 +47,7 @@ public class AttackObejct : Poolable
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
         // 충돌한 객체가 액티브캐릭터가 아니라면 파괴.
-        if (enemyCharacter == null)
+        if (enemyCharacter == null && attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot)
         {
             Managers.Resource.Destroy(gameObject);
             return;
@@ -66,13 +75,14 @@ public class AttackObejct : Poolable
                 dirPower.x = 1.0f;
             }
 
-            enemyCharacter.Push_Rigid2D(dirPower);
+            if(!enemyCharacter.superArmour)
+                enemyCharacter.Push_Rigid2D(dirPower);
 
             Managers.Resource.Destroy(gameObject);
         }
         else
         {
-            Debug.Log($"{gameObject.name} 이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
+            Debug.Log($"{gameObject.name}이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
         }
     }
 

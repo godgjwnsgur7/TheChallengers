@@ -26,13 +26,13 @@ public class BattleScene : BaseScene
         {
             if (PhotonLogicHandler.IsMasterClient)
             {
-                SetCharacterWithPos(map.blueTeamSpawnPoint.position);
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
+                SetCharacterWithPos(map.blueTeamSpawnPoint.position);
             }
             else
             {
-                SetCharacterWithPos(map.redTeamSpawnPoint.position);
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
+                SetCharacterWithPos(map.redTeamSpawnPoint.position);
             }
         }
         else // 클라 하나
@@ -48,6 +48,7 @@ public class BattleScene : BaseScene
 
     private void SetCharacterWithPos(Vector3 spawnPos)
     {
+        Debug.Log(spawnPos);
         playerCharacter.Set_Character(Init_Character(spawnPos));
     }
 
@@ -56,7 +57,7 @@ public class BattleScene : BaseScene
 
     }
 
-    public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
+    public ActiveCharacter Init_Character(Vector3 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
         ActiveCharacter activeCharacter;
 
@@ -84,6 +85,11 @@ public class BattleScene : BaseScene
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 3);
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 3);
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill_1", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill_2", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill_3", 3);
+
                 break;
 
             default:

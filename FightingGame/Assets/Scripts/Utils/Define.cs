@@ -78,8 +78,11 @@ namespace FGDefine
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
         Knight_ThrowSkill = 4,
-        Knight_Skill2 = 5, // 임시
+        Knight_SuperArmourSkill = 5, // SkillData 없음
         Knight_Skill3 = 6, // 임시
+        Knight_SuperArmourSkill_1 = 7,
+        Knight_SuperArmourSkill_2 = 8,
+        Knight_SuperArmourSkill_3 = 9,
 
     }
 

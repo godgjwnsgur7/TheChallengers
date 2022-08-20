@@ -37,7 +37,11 @@ public class PlayerCharacter : MonoBehaviour
     {
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
-        activeCharacter.teamType = teamType;
+
+        if (PhotonLogicHandler.IsConnected)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
+        else
+            activeCharacter.teamType = teamType;
         activeCharacter.Init();
         playerCamera.Init(activeCharacter.transform);
     }
