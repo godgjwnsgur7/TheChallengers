@@ -31,11 +31,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         canvasGroup = GetComponent<CanvasGroup>();
         parentRectTransform = parent.GetComponent<RectTransform>();
 
-        parentHalfWidth = parentRectTransform.sizeDelta.x / 2;
-        parentHalfHeight = parentRectTransform.sizeDelta.y / 2;
-        halfWidth = rectTransform.sizeDelta.x / 2;
-        halfHeight = rectTransform.sizeDelta.y / 2;
-
         beforeVec = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y);
 
         // Buttom Click 가능 범위 설정
@@ -47,6 +42,11 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         if (!isUpdate)
             return;
+
+        parentHalfWidth = parentRectTransform.sizeDelta.x / 2;
+        parentHalfHeight = parentRectTransform.sizeDelta.y / 2;
+        halfWidth = rectTransform.sizeDelta.x / 2;
+        halfHeight = rectTransform.sizeDelta.y / 2;
 
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;

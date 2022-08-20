@@ -66,7 +66,6 @@ public class TrainingCanvas : BaseCanvas
             Managers.UI.OpenUI<SettingPanel>();
         }
 
-        keyPanelArea.OnOffDrag();
         SlidePanel();
         buttonPanel.InteractableBtn();
     }

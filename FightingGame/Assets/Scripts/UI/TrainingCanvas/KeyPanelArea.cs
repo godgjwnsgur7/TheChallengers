@@ -17,11 +17,15 @@ public class KeyPanelArea : UIElement
     [SerializeField] Button SkillBtn2;
     [SerializeField] Button SkillBtn3;
 
-    float size;
-    float opacity;
+    RectTransform rectTransform;
+    DragAndDrop dragAndDrop;
     Image image;
     Color color;
-    DragAndDrop dragAndDrop;
+    float size;
+    float opacity;
+
+    float x;
+    float y;
 
     public override void Open(UIParam param = null)
     {
@@ -65,12 +69,27 @@ public class KeyPanelArea : UIElement
         Managers.UI.CloseUI<BottomPanel>();
     }
 
-    private void SetInit(Button buttom)
+    private void SetInit(Button button)
     {
-        if (!PlayerPrefs.HasKey($"{buttom.name}Size"))
-            PlayerPrefs.SetFloat($"{buttom.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{buttom.name}Opacity"))
-            PlayerPrefs.SetFloat($"{buttom.name}Opacity", 100);
+        rectTransform = button.GetComponent<RectTransform>();
+
+        if (!PlayerPrefs.HasKey($"{button.name}Size"))
+            PlayerPrefs.SetFloat($"{button.name}Size", 50);
+        if (!PlayerPrefs.HasKey($"{button.name}Opacity"))
+            PlayerPrefs.SetFloat($"{button.name}Opacity", 100);
+
+        if(!PlayerPrefs.HasKey($"{button.name}transX"))
+            PlayerPrefs.SetFloat($"{button.name}transX", rectTransform.anchoredPosition.x);
+        else 
+            x = PlayerPrefs.GetFloat($"{button.name}transX");
+
+        if (!PlayerPrefs.HasKey($"{button.name}transY"))
+            PlayerPrefs.SetFloat($"{button.name}transY", rectTransform.anchoredPosition.y);
+        else
+            y = PlayerPrefs.GetFloat($"{button.name}transY");
+
+        if (x != 0 && y != 0)
+            rectTransform.anchoredPosition = new Vector2(x, y);
     }
 
     private void SetSize(Button button)
@@ -87,16 +106,6 @@ public class KeyPanelArea : UIElement
         color.a = opacity;
         image.color = color;
     }
-    
-    private void SetIsUpdate(Button button)
-    {
-        dragAndDrop = button.GetComponent<DragAndDrop>();
-
-        if (dragAndDrop == null)
-            return;
-
-        dragAndDrop.isUpdate = !dragAndDrop.isUpdate;
-    }
 
     private void SetIsUpdate(GameObject go)
     {
@@ -109,15 +118,8 @@ public class KeyPanelArea : UIElement
     }
 
     // Draggable Change
-    public void OnOffDrag()
+    public void OnOffDrag(GameObject go)
     {
-        SetIsUpdate(leftButtons);
-        SetIsUpdate(rightButtons);
-        SetIsUpdate(joyStick);
-        SetIsUpdate(AttackBtn);
-        SetIsUpdate(JumpBtn);
-        SetIsUpdate(SkillBtn1);
-        SetIsUpdate(SkillBtn2);
-        SetIsUpdate(SkillBtn3);
+        SetIsUpdate(go);
     }
 }
