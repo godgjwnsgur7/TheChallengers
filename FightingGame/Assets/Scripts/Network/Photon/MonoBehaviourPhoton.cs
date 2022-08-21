@@ -248,11 +248,17 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
     {
         if(stream.IsWriting)
         {
+            if (!PhotonLogicHandler.IsMine(viewID))
+                return;
+
             writeStream.SetStream(stream);
             OnMineSerializeView(writeStream);
         }
         else if(stream.IsReading)
         {
+            if (PhotonLogicHandler.IsMine(viewID))
+                return;
+
             readStream.SetStream(stream);
             OnOtherSerializeView(readStream);
         }
