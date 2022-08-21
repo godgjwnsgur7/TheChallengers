@@ -91,20 +91,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return false;
     }
 
-    public override void OnEnable()
-    {
-        if(view.ViewID == 0)
-            PhotonNetwork.AllocateViewID(view); 
-
-        base.OnEnable();
-    }
-
-    public override void OnDisable()
-    {
-        view.ViewID = 0;
-        base.OnDisable();
-    }
-
     private void OnDestroy()
     {
         _OnConnectedToMaster = null;
