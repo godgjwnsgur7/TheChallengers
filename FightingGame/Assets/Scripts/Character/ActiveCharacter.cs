@@ -73,9 +73,9 @@ public partial class ActiveCharacter : Character
         return syncParams;
     }
 
-    public override void Idle(CharacterParam param = null)
+    public override void Idle()
     {
-        base.Idle(param);
+        base.Idle();
 
         if (anim.GetBool("IsMove"))
             anim.SetBool("IsMove", false);
@@ -174,9 +174,9 @@ public partial class ActiveCharacter : Character
         }
     }
 
-    public override void Die(CharacterParam param = null)
+    public override void Die()
     {
-        base.Die(param);
+        base.Die();
 
         anim.SetBool("IsDie", true);
     }
@@ -196,16 +196,10 @@ public partial class ActiveCharacter : Character
             return;
 
         if (PhotonLogicHandler.IsConnected)
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, bool>(this, Test, _reverseState);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, bool>
+                (this, Sync_ReverseState, _reverseState);
         else
-            Test(_reverseState);
-    }
-
-    [BroadcastMethodAttribute]
-    public void Test(bool _reverseState)
-    {
-        spriteRenderer.flipX = _reverseState;
-        reverseState = _reverseState;
+            Sync_ReverseState(_reverseState);
     }
 
     public void Invincible()
@@ -332,19 +326,4 @@ public partial class ActiveCharacter : Character
 
         Push_Rigid2D(new Vector2(vecX, 0));
     }
-
-
-	protected override void OnMineSerializeView(PhotonWriteStream stream)
-	{
-        stream.Write(currState);
-
-        base.OnMineSerializeView(stream);
-	}
-
-	protected override void OnOtherSerializeView(PhotonReadStream stream)
-	{
-        currState = (ENUM_PLAYER_STATE)stream.Read();
-
-		base.OnOtherSerializeView(stream);
-	}
 }

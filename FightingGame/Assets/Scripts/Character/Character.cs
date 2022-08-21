@@ -53,7 +53,7 @@ public class Character : MonoBehaviourPhoton
         base.OnOtherSerializeView(stream);
     }
 
-    public virtual void Idle(CharacterParam param = null)
+    public virtual void Idle()
     {
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
         currState = ENUM_PLAYER_STATE.Idle;
@@ -94,7 +94,7 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = Vector2.zero;
     }
 
-    public virtual void Die(CharacterParam param)
+    public virtual void Die()
     {
         currState = ENUM_PLAYER_STATE.Die;
         invincibility = true;

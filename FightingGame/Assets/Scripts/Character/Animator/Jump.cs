@@ -44,7 +44,6 @@ public class Jump : StateMachineBehaviour
 
             yield return null;
         }
-
     }
 
 }
