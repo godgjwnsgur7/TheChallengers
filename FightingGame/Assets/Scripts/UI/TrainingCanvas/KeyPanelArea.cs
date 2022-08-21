@@ -57,6 +57,9 @@ public class KeyPanelArea : UIElement
     {
         rectTransform = button.GetComponent<RectTransform>();
 
+        if (rectTransform == null)
+            return;
+
         if (!PlayerPrefs.HasKey($"{button.name}Size"))
             PlayerPrefs.SetFloat($"{button.name}Size", 50);
         if (!PlayerPrefs.HasKey($"{button.name}Opacity"))
@@ -78,8 +81,18 @@ public class KeyPanelArea : UIElement
 
     private void SetSize(Button button)
     {
-        size = (PlayerPrefs.GetFloat($"{button.name}Size") / 100);
-        button.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
+        rectTransform = button.GetComponent<RectTransform>();
+
+        if(PlayerPrefs.HasKey($"{button.name}BeforeSizeX") && PlayerPrefs.HasKey($"{button.name}BeforeSizeY"))
+        {
+            size = (PlayerPrefs.GetFloat($"{button.name}Size") / 100);
+            rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}BeforeSizeX"), PlayerPrefs.GetFloat($"{button.name}BeforeSizeY"));
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     private void SetOpactiy(Button button)
@@ -94,6 +107,10 @@ public class KeyPanelArea : UIElement
     private void SetTransform(Button button)
     {
         rectTransform = button.GetComponent<RectTransform>();
+
+        if (rectTransform == null)
+            return;
+
         vec = new Vector2(PlayerPrefs.GetFloat($"{button.name}transX"), PlayerPrefs.GetFloat($"{button.name}transY"));
         rectTransform.anchoredPosition = vec;
     }
@@ -101,6 +118,13 @@ public class KeyPanelArea : UIElement
     private void SetIsUpdate(GameObject go)
     {
         dragAndDrop = go.GetComponent<DragAndDrop>();
+        image = go.GetComponent<Image>();
+
+        if (image.color == Color.white)
+            image.color = Color.red;
+        else
+            image.color = Color.white;
+
 
         if (dragAndDrop == null)
             return;

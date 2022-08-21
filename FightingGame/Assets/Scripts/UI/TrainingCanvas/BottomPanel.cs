@@ -34,27 +34,43 @@ public class BottomPanel : UIElement
 
     public override void Close()
     {
+        if (setBtn != null)
+        {
+            keyPanelArea.OnOffDrag(setBtn);
+            setBtn = null;
+        }
+
         base.Close();
     }
 
     // Call ClickedButton Slider Setting Value
     public void setSlider(GameObject go)
     {
+        // 이전 선택했던 UI 드래그 중지
+        if(setBtn != null)
+            keyPanelArea.OnOffDrag(setBtn);
+
+        // 선택한 UI 세팅
         setBtn = go;
         parent = setBtn.transform.parent.gameObject;
         setBtnImage = setBtn.GetComponent<Image>();
         setBtnRect = setBtn.GetComponent<RectTransform>();
         parentRect = parent.GetComponent<RectTransform>();
         beforeSize = setBtnRect.sizeDelta;
+        PlayerPrefs.SetFloat($"{setBtn.name}BeforeSizeX", beforeSize.x);
+        PlayerPrefs.SetFloat($"{setBtn.name}BeforeSizeY", beforeSize.y);
 
+        // 부모, 자신의 절반길이
         halfWidth = setBtnRect.sizeDelta.x / 2;
         halfHeight = setBtnRect.sizeDelta.y / 2;
         pHalfWidth = parentRect.sizeDelta.x / 2;
         pHalfHeight = parentRect.sizeDelta.y / 2;
 
+        // UI 실린더 값 호출
         sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Size");
         opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Opacity");
 
+        // UI 드래그 기능
         keyPanelArea.OnOffDrag(setBtn);
     }
 
