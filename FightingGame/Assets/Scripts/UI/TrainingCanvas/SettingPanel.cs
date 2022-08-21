@@ -7,9 +7,11 @@ public class SettingPanel : UIElement
     [SerializeField] GameObject setBtn;
     [SerializeField] TopPanel topPanel;
     [SerializeField] BottomPanel bottomPanel;
+    [SerializeField] KeyPanelArea keyPanelArea;
 
     public override void Open(UIParam param = null)
     {
+        keyPanelArea.SliderReset();
         base.Open(param);
     }
 
@@ -22,8 +24,8 @@ public class SettingPanel : UIElement
     {
         if (isOpen)
         {
-            Managers.UI.OpenUI<BottomPanel>();
             bottomPanel.setSlider(go);
+            Managers.UI.OpenUI<BottomPanel>();
         }
         else
         {

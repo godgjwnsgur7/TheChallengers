@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class BottomPanel : UIElement
 {
-    [SerializeField] Slider sizeSlider;
-    [SerializeField] Slider opacitySlider;
+    public Slider sizeSlider;
+    public Slider opacitySlider;
     [SerializeField] KeyPanelArea keyPanelArea;
 
     private GameObject setBtn;
@@ -24,6 +24,7 @@ public class BottomPanel : UIElement
     private float y;
     private Vector2 TempRect;
     private Vector2 beforeSize;
+    private Vector2 baseSize;
     private float size;
     private Color color;
 
@@ -47,7 +48,7 @@ public class BottomPanel : UIElement
     public void setSlider(GameObject go)
     {
         // 이전 선택했던 UI 드래그 중지
-        if(setBtn != null)
+        if (setBtn != null)
             keyPanelArea.OnOffDrag(setBtn);
 
         // 선택한 UI 세팅
@@ -57,8 +58,6 @@ public class BottomPanel : UIElement
         setBtnRect = setBtn.GetComponent<RectTransform>();
         parentRect = parent.GetComponent<RectTransform>();
         beforeSize = setBtnRect.sizeDelta;
-        PlayerPrefs.SetFloat($"{setBtn.name}BeforeSizeX", beforeSize.x);
-        PlayerPrefs.SetFloat($"{setBtn.name}BeforeSizeY", beforeSize.y);
 
         // 부모, 자신의 절반길이
         halfWidth = setBtnRect.sizeDelta.x / 2;
@@ -78,8 +77,11 @@ public class BottomPanel : UIElement
     // When Size Slider Value Change
     public void SettingSizeSlider()
     {
+        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}BaseSizeX"), PlayerPrefs.GetFloat($"{setBtn.name}BaseSizeY"));
         size = (sizeSlider.value + 50) / sizeSlider.maxValue;
-        setBtnRect.sizeDelta = beforeSize * size;
+        setBtnRect.sizeDelta = baseSize * size;
+
+        PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
     }
 
     // When Opacity Slider Value Change
@@ -88,16 +90,25 @@ public class BottomPanel : UIElement
         color = setBtnImage.color;
         color.a = opacitySlider.value / opacitySlider.maxValue;
         setBtnImage.color = color;
+
+        PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
     }
 
     // Current Setting size, Opacity Save
     public void SaveSliderValue()
     {
+        if (setBtn == null)
+            return;
+
+        PlayerPrefs.SetFloat($"{setBtn.name}ResetSize", PlayerPrefs.GetFloat($"{setBtn.name}Size"));
+        PlayerPrefs.SetFloat($"{setBtn.name}ResetOpacity", PlayerPrefs.GetFloat($"{setBtn.name}Opacity"));
         PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
         PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
         PlayerPrefs.SetFloat($"{setBtn.name}transX", setBtnRect.anchoredPosition.x);
         PlayerPrefs.SetFloat($"{setBtn.name}transY", setBtnRect.anchoredPosition.y);
         PlayerPrefs.Save();
+
+        Close();
     }
 
     // setBtn TransForm move
@@ -119,7 +130,7 @@ public class BottomPanel : UIElement
                 break;
             default:
                 Debug.Log("범위 벗어남");
-                break;
+                return;
         }
 
         x = Mathf.Clamp(TempRect.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
