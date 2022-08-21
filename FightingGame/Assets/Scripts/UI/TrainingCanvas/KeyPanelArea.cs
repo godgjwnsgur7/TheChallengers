@@ -10,12 +10,7 @@ public class KeyPanelArea : UIElement
     [SerializeField] GameObject rightButtons;
 
     // Panel 안의 버튼들
-    [SerializeField] Button joyStick;
-    [SerializeField] Button AttackBtn;
-    [SerializeField] Button JumpBtn;
-    [SerializeField] Button SkillBtn1;
-    [SerializeField] Button SkillBtn2;
-    [SerializeField] Button SkillBtn3;
+    [SerializeField] Button[] buttons;
 
     RectTransform rectTransform;
     DragAndDrop dragAndDrop;
@@ -23,6 +18,7 @@ public class KeyPanelArea : UIElement
     Color color;
     float size;
     float opacity;
+    Vector2 vec;
 
     float x;
     float y;
@@ -40,31 +36,19 @@ public class KeyPanelArea : UIElement
     public void init()
     {
         // Base Slider Value Call
-        SetInit(joyStick);
-        SetInit(AttackBtn);
-        SetInit(JumpBtn);
-        SetInit(SkillBtn1);
-        SetInit(SkillBtn2);
-        SetInit(SkillBtn3);
+        for (int i = 0; i < buttons.Length; i++)
+            SetInit(buttons[i]);
     }
 
     // Reset Not Saved Slider Value
     public void SliderReset()
     {
-
-        SetSize(joyStick);
-        SetSize(AttackBtn);
-        SetSize(JumpBtn);
-        SetSize(SkillBtn1);
-        SetSize(SkillBtn2);
-        SetSize(SkillBtn3);
-
-        SetOpactiy(joyStick);
-        SetOpactiy(AttackBtn);
-        SetOpactiy(JumpBtn);
-        SetOpactiy(SkillBtn1);
-        SetOpactiy(SkillBtn2);
-        SetOpactiy(SkillBtn3);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            SetSize(buttons[i]);
+            SetOpactiy(buttons[i]);
+            SetTransform(buttons[i]);
+        }
 
         Managers.UI.CloseUI<BottomPanel>();
     }
@@ -72,6 +56,9 @@ public class KeyPanelArea : UIElement
     private void SetInit(Button button)
     {
         rectTransform = button.GetComponent<RectTransform>();
+
+        if (rectTransform == null)
+            return;
 
         if (!PlayerPrefs.HasKey($"{button.name}Size"))
             PlayerPrefs.SetFloat($"{button.name}Size", 50);
@@ -94,8 +81,18 @@ public class KeyPanelArea : UIElement
 
     private void SetSize(Button button)
     {
-        size = (PlayerPrefs.GetFloat($"{button.name}Size") / 100);
-        button.transform.localScale = new Vector3(0.5f + size, 0.5f + size, 0.5f + size);
+        rectTransform = button.GetComponent<RectTransform>();
+
+        if(PlayerPrefs.HasKey($"{button.name}BeforeSizeX") && PlayerPrefs.HasKey($"{button.name}BeforeSizeY"))
+        {
+            size = (PlayerPrefs.GetFloat($"{button.name}Size") / 100);
+            rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}BeforeSizeX"), PlayerPrefs.GetFloat($"{button.name}BeforeSizeY"));
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     private void SetOpactiy(Button button)
@@ -107,9 +104,27 @@ public class KeyPanelArea : UIElement
         image.color = color;
     }
 
+    private void SetTransform(Button button)
+    {
+        rectTransform = button.GetComponent<RectTransform>();
+
+        if (rectTransform == null)
+            return;
+
+        vec = new Vector2(PlayerPrefs.GetFloat($"{button.name}transX"), PlayerPrefs.GetFloat($"{button.name}transY"));
+        rectTransform.anchoredPosition = vec;
+    }
+
     private void SetIsUpdate(GameObject go)
     {
         dragAndDrop = go.GetComponent<DragAndDrop>();
+        image = go.GetComponent<Image>();
+
+        if (image.color == Color.white)
+            image.color = Color.red;
+        else
+            image.color = Color.white;
+
 
         if (dragAndDrop == null)
             return;

@@ -22,7 +22,7 @@ public class BottomPanel : UIElement
 
     private float x;
     private float y;
-    private Vector2 rT;
+    private Vector2 TempRect;
     private Vector2 beforeSize;
     private float size;
     private Color color;
@@ -34,22 +34,43 @@ public class BottomPanel : UIElement
 
     public override void Close()
     {
+        if (setBtn != null)
+        {
+            keyPanelArea.OnOffDrag(setBtn);
+            setBtn = null;
+        }
+
         base.Close();
     }
 
     // Call ClickedButton Slider Setting Value
     public void setSlider(GameObject go)
     {
+        // 이전 선택했던 UI 드래그 중지
+        if(setBtn != null)
+            keyPanelArea.OnOffDrag(setBtn);
+
+        // 선택한 UI 세팅
         setBtn = go;
         parent = setBtn.transform.parent.gameObject;
         setBtnImage = setBtn.GetComponent<Image>();
         setBtnRect = setBtn.GetComponent<RectTransform>();
         parentRect = parent.GetComponent<RectTransform>();
         beforeSize = setBtnRect.sizeDelta;
+        PlayerPrefs.SetFloat($"{setBtn.name}BeforeSizeX", beforeSize.x);
+        PlayerPrefs.SetFloat($"{setBtn.name}BeforeSizeY", beforeSize.y);
 
+        // 부모, 자신의 절반길이
+        halfWidth = setBtnRect.sizeDelta.x / 2;
+        halfHeight = setBtnRect.sizeDelta.y / 2;
+        pHalfWidth = parentRect.sizeDelta.x / 2;
+        pHalfHeight = parentRect.sizeDelta.y / 2;
+
+        // UI 실린더 값 호출
         sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Size");
         opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Opacity");
 
+        // UI 드래그 기능
         keyPanelArea.OnOffDrag(setBtn);
     }
 
@@ -74,41 +95,36 @@ public class BottomPanel : UIElement
     {
         PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
         PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
-        PlayerPrefs.SetFloat($"{setBtn.name}transX", setBtn.GetComponent<RectTransform>().anchoredPosition.x);
-        PlayerPrefs.SetFloat($"{setBtn.name}transY", setBtn.GetComponent<RectTransform>().anchoredPosition.y);
+        PlayerPrefs.SetFloat($"{setBtn.name}transX", setBtnRect.anchoredPosition.x);
+        PlayerPrefs.SetFloat($"{setBtn.name}transY", setBtnRect.anchoredPosition.y);
         PlayerPrefs.Save();
     }
 
     // setBtn TransForm move
     public void moveUI(string direction)
     {
-        halfWidth = setBtnRect.sizeDelta.x / 2;
-        halfHeight = setBtnRect.sizeDelta.y / 2;
-        pHalfWidth = parentRect.sizeDelta.x / 2;
-        pHalfHeight = parentRect.sizeDelta.y / 2;
-
         switch (direction)
         {
             case "Right":
-                rT = new Vector2(setBtnRect.anchoredPosition.x+1, setBtnRect.anchoredPosition.y);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x+1, setBtnRect.anchoredPosition.y);
                 break;
             case "Left":
-                rT = new Vector2(setBtnRect.anchoredPosition.x - 1, setBtnRect.anchoredPosition.y);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x - 1, setBtnRect.anchoredPosition.y);
                 break;
             case "Down":
-                rT = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y - 1);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y - 1);
                 break;
             case "Up":
-                rT = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y + 1);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y + 1);
                 break;
             default:
                 Debug.Log("범위 벗어남");
                 break;
         }
 
-        x = Mathf.Clamp(rT.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
-        y = Mathf.Clamp(rT.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
-        rT = new Vector2(x, y);
-        setBtnRect.anchoredPosition = rT;
+        x = Mathf.Clamp(TempRect.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
+        y = Mathf.Clamp(TempRect.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
+        TempRect = new Vector2(x, y);
+        setBtnRect.anchoredPosition = TempRect;
     }
 }
