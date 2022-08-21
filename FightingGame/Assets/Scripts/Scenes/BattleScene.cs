@@ -53,7 +53,6 @@ public class BattleScene : BaseScene
 
     private void SetCharacterWithPos(Vector3 spawnPos)
     {
-        Debug.Log(spawnPos);
         playerCharacter.Set_Character(Init_Character(spawnPos));
     }
 

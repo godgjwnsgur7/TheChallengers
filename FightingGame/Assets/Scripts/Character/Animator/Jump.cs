@@ -12,14 +12,21 @@ public class Jump : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(activeCharacter == null)
+        if (activeCharacter == null)
             activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
+
+        if (!activeCharacter.isControl) return;
 
         coroutine = CoroutineHelper.StartCoroutine(ICheckCharFall());
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (activeCharacter == null)
+            activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
+
+        if (!activeCharacter.isControl) return;
+
         animator.SetBool("IsDrop", false);
         CoroutineHelper.StopCoroutine(coroutine);
     }

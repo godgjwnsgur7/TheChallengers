@@ -14,6 +14,8 @@ public class Idle : StateMachineBehaviour
         if (activeCharacter == null)
             activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
 
+        if (!activeCharacter.isControl) return;
+
         activeCharacter.Idle();
         animator.SetBool("IsIdle", false);
     }

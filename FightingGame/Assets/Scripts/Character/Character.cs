@@ -28,6 +28,7 @@ public class Character : MonoBehaviourPhoton
     public bool attackState = false;
     public bool superArmour = false;
     public bool hitCoroutine = false;
+    public bool isControl = false;
 
     public override void Init()
     {
@@ -56,6 +57,7 @@ public class Character : MonoBehaviourPhoton
     public virtual void Idle()
     {
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
+
         currState = ENUM_PLAYER_STATE.Idle;
     }
 
@@ -65,6 +67,7 @@ public class Character : MonoBehaviourPhoton
             return;
 
         currState = ENUM_PLAYER_STATE.Move;
+
         var moveParam = param as CharacterMoveParam;
 
         rigid2D.velocity = new Vector2(moveParam.moveDir * moveSpeed, rigid2D.velocity.y);
@@ -79,24 +82,28 @@ public class Character : MonoBehaviourPhoton
     public virtual void Attack(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Attack;
+
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
     public virtual void Skill(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Skill;
+
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
     public virtual void Hit(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Hit;
+
         rigid2D.velocity = Vector2.zero;
     }
 
     public virtual void Die()
     {
         currState = ENUM_PLAYER_STATE.Die;
+
         invincibility = true;
     }
 

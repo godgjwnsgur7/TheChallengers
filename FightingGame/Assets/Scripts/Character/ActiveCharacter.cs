@@ -20,6 +20,20 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
+        if (PhotonLogicHandler.IsConnected)
+        {
+            if ((PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Blue)
+                || (!PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Red))
+                isControl = true;
+            else
+                isControl = false;
+        }
+        else
+        {
+            Debug.Log("확인");
+            isControl = true;
+        }
+
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -36,7 +50,8 @@ public partial class ActiveCharacter : Character
         if (teamType == ENUM_TEAM_TYPE.Blue)
             ReverseSprites(1.0f);
 
-        StartCoroutine(IJumpStateCheck());
+        if(isControl)
+            StartCoroutine(IJumpStateCheck());
 
         if (PhotonLogicHandler.IsConnected)
         {
@@ -123,7 +138,7 @@ public partial class ActiveCharacter : Character
             return;
 
         if (attackObject != null) attackObject = null;
-        
+
         base.Attack(param);
 
         var attackParam = param as CharacterAttackParam;
@@ -288,6 +303,8 @@ public partial class ActiveCharacter : Character
 
     protected void Summon_AttackObject(int _attackTypeNum)
     {
+        if (!isControl) return;
+
         attackObject = null;
         ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
         attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
@@ -305,22 +322,30 @@ public partial class ActiveCharacter : Character
 
     protected void SuperArmourState_On()
     {
+        if (!isControl) return;
+
         superArmour = true;
     }
 
     protected void SuperArmourState_Off()
     {
+        if (!isControl) return;
+
         superArmour = false;
     }
 
     protected void Checking_AttackState()
     {
+        if (!isControl) return;
+
         if (!attackState)
             anim.SetBool("IsIdle", true);
     }
 
     protected void Move_Attack(float vecX)
     {
+        if (!isControl) return;
+
         if (reverseState)
             vecX *= -1f;
 
