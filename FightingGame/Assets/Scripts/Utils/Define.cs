@@ -139,5 +139,18 @@ namespace FGDefine
         
         Max
     }
+
+    public enum ENUM_PLAYERPREFS_TYPE
+    {
+        Defalut = 0,
+        Size = 1,
+        Opacity = 2,
+        TransX = 3,
+        TransY = 4,
+        BaseSizeX = 5,
+        BaseSizeY = 6,
+        ResetSize = 7,
+        ResetOpacity = 8,
+    }
 }
 

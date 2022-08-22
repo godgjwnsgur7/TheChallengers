@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FGDefine;
 
 public class BottomPanel : UIElement
 {
@@ -22,13 +23,13 @@ public class BottomPanel : UIElement
     private float pHalfWidth;
     private float pHalfHeight;
 
-    private float x;
-    private float y;
+    private float tempX;
+    private float tempY;
     private Vector2 TempRect;
     private Vector2 beforeSize;
     private Vector2 baseSize;
-    private float size;
-    private Color color;
+    private float sliderRatio;
+    private Color tempColor;
 
     public override void Open(UIParam param = null)
     {
@@ -68,34 +69,56 @@ public class BottomPanel : UIElement
         pHalfHeight = parentRect.sizeDelta.y / 2;
 
         // UI 실린더 값 호출
-        sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Size");
-        opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}Opacity");
+        sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size);
+        opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity);
+        SetSliderText("All");
 
         // UI 드래그 기능
         keyPanelArea.OnOffDrag(setBtn);
     }
 
 
+    public void SetSliderText(string sliderType)
+    {
+        switch (sliderType)
+        {
+            case "All":
+                SizeShowText.text = (int)sizeSlider.value + "%";
+                OpacityShowText.text = (int)opacitySlider.value + "%";
+                break;
+            case "Size":
+                SizeShowText.text = (int)sizeSlider.value + "%";
+                break;
+            case "Opacity":
+                OpacityShowText.text = (int)opacitySlider.value + "%";
+                break;
+            default:
+                break;
+        }
+    }
+
     // When Size Slider Value Change
     public void SettingSizeSlider()
     {
-        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}BaseSizeX"), PlayerPrefs.GetFloat($"{setBtn.name}BaseSizeY"));
-        size = (sizeSlider.value + 50) / sizeSlider.maxValue;
-        setBtnRect.sizeDelta = baseSize * size;
-        SizeShowText.text = (int)sizeSlider.value + "%";
+        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
 
-        PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
+        sliderRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
+        setBtnRect.sizeDelta = baseSize * sliderRatio;
+        SetSliderText("Size");
+
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
     }
 
     // When Opacity Slider Value Change
     public void SettingOpacitySlider()
     {
-        color = setBtnImage.color;
-        color.a = 0.5f + (opacitySlider.value / (opacitySlider.maxValue * 2));
-        setBtnImage.color = color;
-        OpacityShowText.text = (int)opacitySlider.value + "%";
+        tempColor = setBtnImage.color;
+        tempColor.a = 0.5f + (opacitySlider.value / (opacitySlider.maxValue * 2));
+        setBtnImage.color = tempColor;
+        SetSliderText("Opacity");
 
-        PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
     }
 
     // Current Setting size, Opacity Save
@@ -104,12 +127,13 @@ public class BottomPanel : UIElement
         if (setBtn == null)
             return;
 
-        PlayerPrefs.SetFloat($"{setBtn.name}ResetSize", PlayerPrefs.GetFloat($"{setBtn.name}Size"));
-        PlayerPrefs.SetFloat($"{setBtn.name}ResetOpacity", PlayerPrefs.GetFloat($"{setBtn.name}Opacity"));
-        PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
-        PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
-        PlayerPrefs.SetFloat($"{setBtn.name}transX", setBtnRect.anchoredPosition.x);
-        PlayerPrefs.SetFloat($"{setBtn.name}transY", setBtnRect.anchoredPosition.y);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size));
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity, PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtnRect.anchoredPosition.x);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtnRect.anchoredPosition.y);
         PlayerPrefs.Save();
 
         Close();
@@ -137,9 +161,9 @@ public class BottomPanel : UIElement
                 return;
         }
 
-        x = Mathf.Clamp(TempRect.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
-        y = Mathf.Clamp(TempRect.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
-        TempRect = new Vector2(x, y);
+        tempX = Mathf.Clamp(TempRect.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
+        tempY = Mathf.Clamp(TempRect.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
+        TempRect = new Vector2(tempX, tempY);
         setBtnRect.anchoredPosition = TempRect;
     }
 }

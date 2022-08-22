@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FGDefine;
 
 public class KeyPanelArea : UIElement
 {
@@ -49,36 +50,36 @@ public class KeyPanelArea : UIElement
             return;
 
         // Size, Opacity
-        if (!PlayerPrefs.HasKey($"{button.name}Size"))
-            PlayerPrefs.SetFloat($"{button.name}Size", 50);
-        if (!PlayerPrefs.HasKey($"{button.name}Opacity"))
-            PlayerPrefs.SetFloat($"{button.name}Opacity", 100);
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size, 50);
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
 
         // BeforeSize
-        if (!PlayerPrefs.HasKey($"{button.name}BaseSizeX"))
-            PlayerPrefs.SetFloat($"{button.name}BaseSizeX", rectTransform.sizeDelta.x);
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, rectTransform.sizeDelta.x);
 
-        if (!PlayerPrefs.HasKey($"{button.name}BaseSizeY"))
-            PlayerPrefs.SetFloat($"{button.name}BaseSizeY", rectTransform.sizeDelta.x);
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, rectTransform.sizeDelta.x);
 
         // RectTransform
-        if (!PlayerPrefs.HasKey($"{button.name}transX"))
-            PlayerPrefs.SetFloat($"{button.name}transX", rectTransform.anchoredPosition.x);
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX, rectTransform.anchoredPosition.x);
         else 
-            x = PlayerPrefs.GetFloat($"{button.name}transX");
+            x = PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX);
 
-        if (!PlayerPrefs.HasKey($"{button.name}transY"))
-            PlayerPrefs.SetFloat($"{button.name}transY", rectTransform.anchoredPosition.y);
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY, rectTransform.anchoredPosition.y);
         else
-            y = PlayerPrefs.GetFloat($"{button.name}transY");
+            y = PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY);
 
         if (x != 0 && y != 0)
             rectTransform.anchoredPosition = new Vector2(x, y);
 
-        if (!PlayerPrefs.HasKey($"{button.name}ResetSize"))
-            PlayerPrefs.SetFloat($"{button.name}ResetSize", PlayerPrefs.GetFloat($"{button.name}Size"));
-        if (!PlayerPrefs.HasKey($"{button.name}ResetOpacity"))
-            PlayerPrefs.SetFloat($"{button.name}ResetOpacity", PlayerPrefs.GetFloat($"{button.name}Opacity"));
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size));
+        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
 
         InitSize(button);
         InitOpactiy(button);
@@ -90,14 +91,15 @@ public class KeyPanelArea : UIElement
     {
         rectTransform = button.GetComponent<RectTransform>();
 
-        size = (PlayerPrefs.GetFloat($"{button.name}Size") / 100);
-        rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}BaseSizeX"), PlayerPrefs.GetFloat($"{button.name}BaseSizeY"));
+        size = (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size) / 100);
+        rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
 
     }
 
     private void InitOpactiy(Button button)
     {
-        opacity = (PlayerPrefs.GetFloat($"{button.name}Opacity") / 100);
+        opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
         image = button.GetComponent<Image>();
         color = image.color;
         color.a = opacity;
@@ -121,26 +123,27 @@ public class KeyPanelArea : UIElement
     {
         rectTransform = button.GetComponent<RectTransform>();
 
-        if (PlayerPrefs.HasKey($"{button.name}ResetSize"))
+        if (PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
         {
-            size = (PlayerPrefs.GetFloat($"{button.name}ResetSize") + 50) / 100;
-            rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}BaseSizeX") * size, PlayerPrefs.GetFloat($"{button.name}BaseSizeY") * size);
+            size = (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize) + 50) / 100;
+            rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX) * size,
+                PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY) * size);
 
-            PlayerPrefs.SetFloat($"{button.name}Size", PlayerPrefs.GetFloat($"{button.name}ResetSize"));
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize));
             //bottomPanel.sizeSlider.value = PlayerPrefs.GetFloat($"{button.name}Size");
         }
     }
 
     private void SetOpactiy(Button button)
     {
-        if (PlayerPrefs.HasKey($"{button.name}ResetOpacity"))
+        if (PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
         {
-            opacity = (PlayerPrefs.GetFloat($"{button.name}ResetOpacity") / 200);
+            opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity) / 200);
             image = button.GetComponent<Image>();
             color = image.color;
             color.a = opacity;
             image.color = color;
-            PlayerPrefs.SetFloat($"{button.name}Opacity", PlayerPrefs.GetFloat($"{button.name}ResetOpacity"));
+            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity));
             //bottomPanel.opacitySlider.value = PlayerPrefs.GetFloat($"{button.name}Opacity");
         }
         
@@ -153,7 +156,8 @@ public class KeyPanelArea : UIElement
         if (rectTransform == null)
             return;
 
-        vec = new Vector2(PlayerPrefs.GetFloat($"{button.name}transX"), PlayerPrefs.GetFloat($"{button.name}transY"));
+        vec = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX),
+            PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
         rectTransform.anchoredPosition = vec;
     }
 
