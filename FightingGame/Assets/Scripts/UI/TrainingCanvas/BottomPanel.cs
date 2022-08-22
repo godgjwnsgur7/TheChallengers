@@ -7,6 +7,8 @@ public class BottomPanel : UIElement
 {
     public Slider sizeSlider;
     public Slider opacitySlider;
+    [SerializeField] Text SizeShowText;
+    [SerializeField] Text OpacityShowText;
     [SerializeField] KeyPanelArea keyPanelArea;
 
     private GameObject setBtn;
@@ -80,6 +82,7 @@ public class BottomPanel : UIElement
         baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}BaseSizeX"), PlayerPrefs.GetFloat($"{setBtn.name}BaseSizeY"));
         size = (sizeSlider.value + 50) / sizeSlider.maxValue;
         setBtnRect.sizeDelta = baseSize * size;
+        SizeShowText.text = (int)sizeSlider.value + "%";
 
         PlayerPrefs.SetFloat($"{setBtn.name}Size", sizeSlider.value);
     }
@@ -88,8 +91,9 @@ public class BottomPanel : UIElement
     public void SettingOpacitySlider()
     {
         color = setBtnImage.color;
-        color.a = opacitySlider.value / opacitySlider.maxValue;
+        color.a = 0.5f + (opacitySlider.value / (opacitySlider.maxValue * 2));
         setBtnImage.color = color;
+        OpacityShowText.text = (int)opacitySlider.value + "%";
 
         PlayerPrefs.SetFloat($"{setBtn.name}Opacity", opacitySlider.value);
     }

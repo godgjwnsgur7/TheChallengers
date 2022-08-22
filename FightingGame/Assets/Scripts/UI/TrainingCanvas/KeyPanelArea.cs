@@ -135,7 +135,7 @@ public class KeyPanelArea : UIElement
     {
         if (PlayerPrefs.HasKey($"{button.name}ResetOpacity"))
         {
-            opacity = (PlayerPrefs.GetFloat($"{button.name}ResetOpacity") / 100);
+            opacity = (PlayerPrefs.GetFloat($"{button.name}ResetOpacity") / 200);
             image = button.GetComponent<Image>();
             color = image.color;
             color.a = opacity;

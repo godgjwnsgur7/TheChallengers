@@ -10,19 +10,22 @@ public class TrainingCanvas : BaseCanvas
     [SerializeField] ButtonPanel buttonPanel;
     [SerializeField] SettingPanel settingPanel;
     [SerializeField] KeyPanelArea keyPanelArea;
-    [SerializeField] TopPanel topPanel;
     [SerializeField] BottomPanel bottomPanel;
+    [SerializeField] NotionPopup notionPopup;
     [SerializeField] Text notion;
+    [SerializeField] Button sliderBtn;
 
     Coroutine runCorutine;
-    Transform BTransform;
+    RectTransform BTransform;
+    RectTransform SliderBtnRect;
     bool isPanelShow;
     public string ChangeCharacter;
     public bool isCallPlayer = false;
 
     public void init()
     {
-        BTransform = buttonPanel.gameObject.transform;
+        BTransform = buttonPanel.GetComponent<RectTransform>();
+        SliderBtnRect = sliderBtn.GetComponent<RectTransform>();
         isPanelShow = false;
     }
 
@@ -31,7 +34,7 @@ public class TrainingCanvas : BaseCanvas
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Open();
         else if (typeof(T) == typeof(SettingPanel)) settingPanel.Open();
         else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Open();
-        else if (typeof(T) == typeof(TopPanel)) topPanel.Open();
+        else if (typeof(T) == typeof(NotionPopup)) notionPopup.Open();
         else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Open();
         else Debug.Log("범위 벗어남");
     }
@@ -41,7 +44,7 @@ public class TrainingCanvas : BaseCanvas
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Close();
         else if (typeof(T) == typeof(SettingPanel)) settingPanel.Close();
         else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Close();
-        else if (typeof(T) == typeof(TopPanel)) topPanel.Close();
+        else if (typeof(T) == typeof(NotionPopup)) notionPopup.Close();
         else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Close();
         else Debug.Log("범위 벗어남");
     }
@@ -78,10 +81,16 @@ public class TrainingCanvas : BaseCanvas
     // 훈련장 버튼패널 슬라이드
     public void SlidePanel()
     {
-        if(isPanelShow)
-            BTransform.Translate(-400f,0,0);
+        if (isPanelShow)
+        {
+            BTransform.Translate(-400.0f, 0, 0);
+            SliderBtnRect.Rotate(new Vector3(0, 0, -180));
+        }
         else
-            BTransform.Translate(400f, 0, 0);
+        {
+            BTransform.Translate(400.0f, 0, 0);
+            SliderBtnRect.Rotate(new Vector3(0, 0, 180));
+        }
 
         isPanelShow = !isPanelShow;
     }
