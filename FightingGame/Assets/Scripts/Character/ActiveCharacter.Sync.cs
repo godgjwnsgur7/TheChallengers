@@ -5,23 +5,22 @@ using FGDefine;
 
 public partial class ActiveCharacter : Character
 {
-    /* 변수 동기화가 안되서 일단 통으로 주석처리
-    protected override void OnMineSerializeView(PhotonWriteStream stream)
-    {
-        stream.Write(currState);
+	protected override void OnMineSerializeView(PhotonWriteStream stream)
+	{
+		stream.Write(currState);
 
-        base.OnMineSerializeView(stream);
-    }
-    
-    protected override void OnOtherSerializeView(PhotonReadStream stream)
-    {
-        currState = (ENUM_PLAYER_STATE)stream.Read();
+		base.OnMineSerializeView(stream);
+	}
 
-        base.OnOtherSerializeView(stream);
-    }
-    */
+	protected override void OnOtherSerializeView(PhotonReadStream stream)
+	{
+		currState = stream.Read<ENUM_PLAYER_STATE>();
 
-    [BroadcastMethodAttribute]
+		base.OnOtherSerializeView(stream);
+	}
+
+
+	[BroadcastMethodAttribute]
     public void Sync_ReverseState(bool _reverseState)
     {
         spriteRenderer.flipX = _reverseState;

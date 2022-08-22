@@ -28,9 +28,9 @@ public class PhotonWriteStream : PhotonCustomStreamBase
 
 public class PhotonReadStream : PhotonCustomStreamBase
 {
-    public object Read()
+    public T Read<T>()
     {
-        return stream.ReceiveNext();
+        return (T)stream.ReceiveNext();
     }
 }
 
@@ -128,7 +128,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         if (photonView == null)
             gameObject.AddComponent<PhotonView>();
 
-        photonView.ObservedComponents = new List<Component>();
+        photonView.ObservedComponents = new List<Component>() { this };
 
         isInitialized = true;
     }
@@ -263,11 +263,11 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
             OnOtherSerializeView(readStream);
         }
 
-        Debug.Log("--- OnPhotonSerializeView ---");
-        Debug.Log($"정보 보낸 이 : {info.Sender?.NickName}");
-        Debug.Log($"보낸 시간 : {info.SentServerTime}");
-        Debug.Log($"보낸 시간 스탬프 : {info.SentServerTimestamp}");
-        Debug.Log("--- --------------------- ---");
+        // Debug.Log("--- OnPhotonSerializeView ---");
+        // Debug.Log($"정보 보낸 이 : {info.Sender?.NickName}");
+        // Debug.Log($"보낸 시간 : {info.SentServerTime}");
+        // Debug.Log($"보낸 시간 스탬프 : {info.SentServerTimestamp}");
+        // Debug.Log("--- --------------------- ---");
     }
 
 	public void OnPhotonInstantiate(PhotonMessageInfo info)
