@@ -20,6 +20,7 @@ public class TopPanel : UIElement
         base.Close();
     }
 
+    // 팝업창 Text 설정 및 Open
     public void OpenNotionPopup(int BtnType)
     {
         notionPopup.SetNotion(BtnType);

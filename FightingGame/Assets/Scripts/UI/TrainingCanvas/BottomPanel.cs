@@ -17,10 +17,11 @@ public class BottomPanel : UIElement
 
     private UpdatableUI setBtn;
     private RectTransform setBtnRect;
+    private RectTransform setBackGroundBtn;
     private RectTransform setBtnIconRect;
     private RectTransform setBtnAreaRect;
 
-    private Image setBtnImage;
+    private Image setBtnBackGroundImage;
     private Image setBtnIconImage;
     private Image setBtnAreaImage;
 
@@ -46,7 +47,7 @@ public class BottomPanel : UIElement
     {
         if (setBtn != null)
         {
-            keyPanelArea.OnOffDrag(setBtn);
+            keyPanelArea.OnOffHighLight(setBtn);
             setBtn = null;
         }
 
@@ -58,25 +59,28 @@ public class BottomPanel : UIElement
     {
         // 이전 선택했던 UI 드래그 중지
         if (setBtn != null)
-            keyPanelArea.OnOffDrag(setBtn);
+        {
+            keyPanelArea.OnOffHighLight(setBtn);
+        }
 
         // 선택한 UI 세팅
         setBtn = updateUI;
-        setBtnImage = setBtn.backGroundImage;
+        setBtnRect = setBtn.GetComponent<RectTransform>();
+        setBtnBackGroundImage = setBtn.backGroundImage;
         setBtnIconImage = setBtn.iconImage;
         setBtnAreaImage = setBtn.btnAreaImage;
 
-        setBtnRect = setBtn.backGroundRect;
+        setBackGroundBtn = setBtn.backGroundRect;
         setBtnIconRect = setBtn.iconRect;
         setBtnAreaRect = setBtn.btnAreaRect;
-        beforeSize = setBtnRect.sizeDelta;
+        beforeSize = setBackGroundBtn.sizeDelta;
 
         parent = setBtn.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
 
         // 부모, 자신의 절반길이
-        halfWidth = setBtnRect.sizeDelta.x / 2;
-        halfHeight = setBtnRect.sizeDelta.y / 2;
+        halfWidth = setBackGroundBtn.sizeDelta.x / 2;
+        halfHeight = setBackGroundBtn.sizeDelta.y / 2;
         pHalfWidth = parentRect.sizeDelta.x / 2;
         pHalfHeight = parentRect.sizeDelta.y / 2;
 
@@ -86,10 +90,11 @@ public class BottomPanel : UIElement
         SetSliderText("All");
 
         // UI 드래그 기능
-        keyPanelArea.OnOffDrag(setBtn);
+        keyPanelArea.OnOffHighLight(setBtn);
     }
 
 
+    // % 표기 Text 설정
     public void SetSliderText(string sliderType)
     {
         switch (sliderType)
@@ -118,7 +123,7 @@ public class BottomPanel : UIElement
         // Ratio Update
         baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
             PlayerPrefs.GetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
-        setBtnRect.sizeDelta = baseSize * sliderRatio;
+        setBackGroundBtn.sizeDelta = baseSize * sliderRatio;
 
         baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
             PlayerPrefs.GetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
@@ -131,26 +136,14 @@ public class BottomPanel : UIElement
         // % Text Set & Value Save
         SetSliderText("Size");
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
-
-        /*baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
-
-        sliderRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
-        setBtnRect.sizeDelta = baseSize * sliderRatio;
-        setBtnIconRect.sizeDelta = baseSize * sliderRatio;
-        setBtnAreaRect.sizeDelta = baseSize * sliderRatio;
-
-        SetSliderText("Size");
-
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);*/
     }
 
     // When Opacity Slider Value Change
     public void SettingOpacitySlider()
     {
-        tempColor = setBtnImage.color;
+        tempColor = setBtnBackGroundImage.color;
         tempColor.a = 0.5f + (opacitySlider.value / (opacitySlider.maxValue * 2));
-        setBtnImage.color = tempColor;
+        setBtnBackGroundImage.color = tempColor;
 
         tempColor = setBtnAreaImage.color;
         tempColor.a = 0.5f;
@@ -191,7 +184,7 @@ public class BottomPanel : UIElement
         // transform
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtnRect.anchoredPosition.x);
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtnRect.anchoredPosition.y);
-
+        Debug.Log(new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y) + "save");
         PlayerPrefs.Save();
         Close();
     }
@@ -199,19 +192,25 @@ public class BottomPanel : UIElement
     // setBtn TransForm move
     public void moveUI(string direction)
     {
+        moveUISub(setBtnRect, direction);
+    }
+
+    public void moveUISub(RectTransform rectTrans, string direction)
+    {
+
         switch (direction)
         {
             case "Right":
-                TempRect = new Vector2(setBtnRect.anchoredPosition.x+1, setBtnRect.anchoredPosition.y);
+                TempRect = new Vector2(rectTrans.anchoredPosition.x + 1, rectTrans.anchoredPosition.y);
                 break;
             case "Left":
-                TempRect = new Vector2(setBtnRect.anchoredPosition.x - 1, setBtnRect.anchoredPosition.y);
+                TempRect = new Vector2(rectTrans.anchoredPosition.x - 1, rectTrans.anchoredPosition.y);
                 break;
             case "Down":
-                TempRect = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y - 1);
+                TempRect = new Vector2(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y - 1);
                 break;
             case "Up":
-                TempRect = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y + 1);
+                TempRect = new Vector2(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y + 1);
                 break;
             default:
                 Debug.Log("범위 벗어남");
@@ -221,6 +220,6 @@ public class BottomPanel : UIElement
         tempX = Mathf.Clamp(TempRect.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
         tempY = Mathf.Clamp(TempRect.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
         TempRect = new Vector2(tempX, tempY);
-        setBtnRect.anchoredPosition = TempRect;
+        rectTrans.anchoredPosition = TempRect;
     }
 }

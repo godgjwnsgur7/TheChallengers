@@ -9,14 +9,18 @@ public class SettingPanel : UIElement
     [SerializeField] BottomPanel bottomPanel;
     [SerializeField] KeyPanelArea keyPanelArea;
 
+    public bool isUpdate = false;
+
     public override void Open(UIParam param = null)
     {
         keyPanelArea.SliderReset();
+        isUpdate = true;
         base.Open(param);
     }
 
     public override void Close()
     {
+        isUpdate = false;
         base.Close();
     }
 

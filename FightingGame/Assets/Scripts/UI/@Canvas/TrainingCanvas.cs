@@ -65,7 +65,6 @@ public class TrainingCanvas : BaseCanvas
             Managers.UI.CloseUI<SettingPanel>();
             Managers.UI.CloseUI<BottomPanel>();
             keyPanelArea.SliderReset();
-
             if (!isCallPlayer)
                 Managers.UI.CloseUI<KeyPanelArea>();
         }
