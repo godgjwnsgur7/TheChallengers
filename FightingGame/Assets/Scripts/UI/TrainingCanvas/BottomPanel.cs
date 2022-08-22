@@ -32,11 +32,13 @@ public class BottomPanel : UIElement
 
     private float tempX;
     private float tempY;
-    private Vector2 TempRect;
-    private Vector2 beforeSize;
-    private Vector2 baseSize;
     private float sliderRatio;
+    private Vector2 TempRect;
+    private Vector2 baseSize;
     private Color tempColor;
+
+    private bool isPushBtn = false;
+    private string moveDirection;
 
     public override void Open(UIParam param = null)
     {
@@ -73,7 +75,6 @@ public class BottomPanel : UIElement
         setBackGroundBtn = setBtn.backGroundRect;
         setBtnIconRect = setBtn.iconRect;
         setBtnAreaRect = setBtn.btnAreaRect;
-        beforeSize = setBackGroundBtn.sizeDelta;
 
         parent = setBtn.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
@@ -184,7 +185,7 @@ public class BottomPanel : UIElement
         // transform
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtnRect.anchoredPosition.x);
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtnRect.anchoredPosition.y);
-        Debug.Log(new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y) + "save");
+
         PlayerPrefs.Save();
         Close();
     }
@@ -192,12 +193,12 @@ public class BottomPanel : UIElement
     // setBtn TransForm move
     public void moveUI(string direction)
     {
-        moveUISub(setBtnRect, direction);
+        isPushBtn = !isPushBtn;
+        moveDirection = direction;
     }
 
     public void moveUISub(RectTransform rectTrans, string direction)
     {
-
         switch (direction)
         {
             case "Right":
@@ -221,5 +222,13 @@ public class BottomPanel : UIElement
         tempY = Mathf.Clamp(TempRect.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
         TempRect = new Vector2(tempX, tempY);
         rectTrans.anchoredPosition = TempRect;
+    }
+
+    private void Update()
+    {
+        if (isPushBtn)
+        {
+            moveUISub(setBtnRect, moveDirection);
+        }
     }
 }

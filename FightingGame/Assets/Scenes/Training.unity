@@ -183,7 +183,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 943411572}
   settingPanel: {fileID: 0}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!225 &18196843
 CanvasGroup:
@@ -485,7 +484,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &53413616
 MonoBehaviour:
@@ -673,7 +671,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &100992062
 MonoBehaviour:
@@ -2513,6 +2510,7 @@ GameObject:
   - component: {fileID: 342776247}
   - component: {fileID: 342776246}
   - component: {fileID: 342776245}
+  - component: {fileID: 342776248}
   m_Layer: 5
   m_Name: RightBtn
   m_TagString: Untagged
@@ -2582,19 +2580,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 342776246}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 784350455}
-        m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-        m_MethodName: moveUI
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Right
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &342776246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2633,6 +2619,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342776243}
   m_CullTransparentMesh: 1
+--- !u!114 &342776248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342776243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Right
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stop
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &378443388
 GameObject:
   m_ObjectHideFlags: 0
@@ -3172,6 +3203,7 @@ GameObject:
   - component: {fileID: 442613572}
   - component: {fileID: 442613571}
   - component: {fileID: 442613570}
+  - component: {fileID: 442613573}
   m_Layer: 5
   m_Name: UpBtn
   m_TagString: Untagged
@@ -3241,19 +3273,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 442613571}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 784350455}
-        m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-        m_MethodName: moveUI
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Up
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &442613571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3292,6 +3312,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442613568}
   m_CullTransparentMesh: 1
+--- !u!114 &442613573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442613568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Up
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stop
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &448666098
 GameObject:
   m_ObjectHideFlags: 0
@@ -3634,7 +3699,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &509498910
 MonoBehaviour:
@@ -3901,7 +3965,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &523237746
 MonoBehaviour:
@@ -5121,7 +5184,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &794886648
 MonoBehaviour:
@@ -5522,7 +5584,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &806845120
 MonoBehaviour:
@@ -5596,6 +5657,7 @@ GameObject:
   - component: {fileID: 815287064}
   - component: {fileID: 815287063}
   - component: {fileID: 815287062}
+  - component: {fileID: 815287065}
   m_Layer: 5
   m_Name: LeftBtn
   m_TagString: Untagged
@@ -5665,19 +5727,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 815287063}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 784350455}
-        m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-        m_MethodName: moveUI
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Left
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &815287063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5716,6 +5766,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815287060}
   m_CullTransparentMesh: 1
+--- !u!114 &815287065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815287060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Left
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stop
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &825692927
 GameObject:
   m_ObjectHideFlags: 0
@@ -7393,7 +7488,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 18196840}
   settingPanel: {fileID: 2081019826}
-  isUpdate: 0
   AlphaThreshold: 0.1
 --- !u!114 &1219136832
 MonoBehaviour:
@@ -11142,6 +11236,7 @@ GameObject:
   - component: {fileID: 2006963446}
   - component: {fileID: 2006963445}
   - component: {fileID: 2006963444}
+  - component: {fileID: 2006963447}
   m_Layer: 5
   m_Name: DownBtn
   m_TagString: Untagged
@@ -11211,19 +11306,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2006963445}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 784350455}
-        m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-        m_MethodName: moveUI
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Down
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2006963445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11262,6 +11345,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006963442}
   m_CullTransparentMesh: 1
+--- !u!114 &2006963447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006963442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Down
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: moveUI
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stop
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2027292205
 GameObject:
   m_ObjectHideFlags: 0
@@ -11559,6 +11687,7 @@ MonoBehaviour:
   topPanel: {fileID: 1086819804}
   bottomPanel: {fileID: 784350455}
   keyPanelArea: {fileID: 43441482}
+  isUpdate: 0
 --- !u!1 &2124377846
 GameObject:
   m_ObjectHideFlags: 0
