@@ -19,6 +19,7 @@ public class TrainingScene : BaseScene
 
     public override void Init()
     {
+        PlayerPrefs.DeleteAll();
         base.Init();
 
         SceneType = ENUM_SCENE_TYPE.Training;

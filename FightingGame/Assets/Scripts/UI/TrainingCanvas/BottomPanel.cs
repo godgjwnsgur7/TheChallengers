@@ -12,11 +12,17 @@ public class BottomPanel : UIElement
     [SerializeField] Text OpacityShowText;
     [SerializeField] KeyPanelArea keyPanelArea;
 
-    private GameObject setBtn;
     private GameObject parent;
-    private RectTransform setBtnRect;
     private RectTransform parentRect;
+
+    private UpdatableUI setBtn;
+    private RectTransform setBtnRect;
+    private RectTransform setBtnIconRect;
+    private RectTransform setBtnAreaRect;
+
     private Image setBtnImage;
+    private Image setBtnIconImage;
+    private Image setBtnAreaImage;
 
     private float halfWidth;
     private float halfHeight;
@@ -48,19 +54,25 @@ public class BottomPanel : UIElement
     }
 
     // Call ClickedButton Slider Setting Value
-    public void setSlider(GameObject go)
+    public void setSlider(UpdatableUI updateUI)
     {
         // 이전 선택했던 UI 드래그 중지
         if (setBtn != null)
             keyPanelArea.OnOffDrag(setBtn);
 
         // 선택한 UI 세팅
-        setBtn = go;
-        parent = setBtn.transform.parent.gameObject;
-        setBtnImage = setBtn.GetComponent<Image>();
-        setBtnRect = setBtn.GetComponent<RectTransform>();
-        parentRect = parent.GetComponent<RectTransform>();
+        setBtn = updateUI;
+        setBtnImage = setBtn.backGroundImage;
+        setBtnIconImage = setBtn.iconImage;
+        setBtnAreaImage = setBtn.btnAreaImage;
+
+        setBtnRect = setBtn.backGroundRect;
+        setBtnIconRect = setBtn.iconRect;
+        setBtnAreaRect = setBtn.btnAreaRect;
         beforeSize = setBtnRect.sizeDelta;
+
+        parent = setBtn.transform.parent.gameObject;
+        parentRect = parent.GetComponent<RectTransform>();
 
         // 부모, 자신의 절반길이
         halfWidth = setBtnRect.sizeDelta.x / 2;
@@ -70,7 +82,7 @@ public class BottomPanel : UIElement
 
         // UI 실린더 값 호출
         sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size);
-        opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity);
+        opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity);
         SetSliderText("All");
 
         // UI 드래그 기능
@@ -100,14 +112,37 @@ public class BottomPanel : UIElement
     // When Size Slider Value Change
     public void SettingSizeSlider()
     {
-        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+        // min/max Ratio Set
+        sliderRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
+
+        // Ratio Update
+        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+        setBtnRect.sizeDelta = baseSize * sliderRatio;
+
+        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+        setBtnIconRect.sizeDelta = baseSize * sliderRatio;
+
+        baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{setBtn.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+        setBtnAreaRect.sizeDelta = baseSize * sliderRatio;
+
+        // % Text Set & Value Save
+        SetSliderText("Size");
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
+
+        /*baseSize = new Vector2(PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
             PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
 
         sliderRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
         setBtnRect.sizeDelta = baseSize * sliderRatio;
+        setBtnIconRect.sizeDelta = baseSize * sliderRatio;
+        setBtnAreaRect.sizeDelta = baseSize * sliderRatio;
+
         SetSliderText("Size");
 
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);*/
     }
 
     // When Opacity Slider Value Change
@@ -116,8 +151,17 @@ public class BottomPanel : UIElement
         tempColor = setBtnImage.color;
         tempColor.a = 0.5f + (opacitySlider.value / (opacitySlider.maxValue * 2));
         setBtnImage.color = tempColor;
-        SetSliderText("Opacity");
 
+        tempColor = setBtnAreaImage.color;
+        tempColor.a = 0.5f;
+        setBtnAreaImage.color = tempColor;
+
+        tempColor = setBtnIconImage.color;
+        tempColor.a = 0.5f + (opacitySlider.value / (opacitySlider.maxValue * 2));
+        setBtnIconImage.color = tempColor;
+
+        // % Text Set & Value Save
+        SetSliderText("Opacity");
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
     }
 
@@ -127,15 +171,28 @@ public class BottomPanel : UIElement
         if (setBtn == null)
             return;
 
+        // size
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size));
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity, PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
-
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
+
+        // resetOpacity
+        PlayerPrefs.SetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+            PlayerPrefs.GetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+        PlayerPrefs.SetFloat($"{setBtn.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+            PlayerPrefs.GetFloat($"{setBtn.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+        PlayerPrefs.SetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+            PlayerPrefs.GetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+        
+        // Opacity
+        PlayerPrefs.SetFloat($"{setBtn.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
+        PlayerPrefs.SetFloat($"{setBtn.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
+
+        // transform
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtnRect.anchoredPosition.x);
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtnRect.anchoredPosition.y);
-        PlayerPrefs.Save();
 
+        PlayerPrefs.Save();
         Close();
     }
 

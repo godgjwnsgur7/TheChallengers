@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+enum ENUM_Notion_TYPE
+{
+    Default = 0,
+    Close = 1,
+    Reset = 2,
+    Save = 3,
+}
+
 public class NotionPopup : UIElement
 {
     [SerializeField] Text NotionText;
     [SerializeField] TrainingCanvas trainingCanvas;
     [SerializeField] KeyPanelArea keyPanelArea;
     [SerializeField] BottomPanel bottomPanel;
-    enum ENUM_Notion_TYPE
-    {
-        Default = 0,
-        Close = 1,
-        Reset = 2,
-        Save = 3,
-    }
 
     private ENUM_Notion_TYPE CurrentPopupNum;
 

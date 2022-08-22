@@ -20,11 +20,14 @@ public class SettingPanel : UIElement
         base.Close();
     }
 
-    public void PushKey(GameObject go)
+    public void PushKey(UpdatableUI UpdateUI)
     {
         if (isOpen)
         {
-            bottomPanel.setSlider(go);
+            /*bottomPanel.setSlider(go);
+            Managers.UI.OpenUI<BottomPanel>();*/
+
+            bottomPanel.setSlider(UpdateUI);
             Managers.UI.OpenUI<BottomPanel>();
         }
         else

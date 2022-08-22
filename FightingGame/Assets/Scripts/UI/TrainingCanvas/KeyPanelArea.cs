@@ -11,19 +11,19 @@ public class KeyPanelArea : UIElement
     [SerializeField] GameObject rightButtons;
 
     // Panel 안의 버튼들
-    [SerializeField] Button[] buttons;
+    [SerializeField] UpdatableUI[] buttons;
 
     RectTransform rectTransform;
     DragAndDrop dragAndDrop;
     Image image;
     float size;
     float opacity;
-    Vector2 vec;
-    Color color;
+    Vector2 tempVector;
+    Color tempColor;
 
-    bool isRed = false;
-    float x;
-    float y;
+    bool isSelect = false;
+    float tempX;
+    float tempY;
 
     public override void Open(UIParam param = null)
     {
@@ -42,68 +42,113 @@ public class KeyPanelArea : UIElement
             SetInit(buttons[i]);
     }
 
-    private void SetInit(Button button)
+    private void SetInit(UpdatableUI button)
     {
+        button.init();
         rectTransform = button.GetComponent<RectTransform>();
 
         if (rectTransform == null)
             return;
 
-        // Size, Opacity
+        // Size init
         if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size))
             PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size, 50);
-        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
-            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
 
-        // BeforeSize
-        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
-            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, rectTransform.sizeDelta.x);
+        // Opacity init
+        if (!PlayerPrefs.HasKey($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
+            PlayerPrefs.SetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 0);
 
-        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
-            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, rectTransform.sizeDelta.x);
+        if (!PlayerPrefs.HasKey($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
+            PlayerPrefs.SetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
 
-        // RectTransform
+        if (!PlayerPrefs.HasKey($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
+            PlayerPrefs.SetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
+
+        // BeforeSize init
+        if (!PlayerPrefs.HasKey($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
+            PlayerPrefs.SetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, button.btnAreaRect.sizeDelta.x);
+        if (!PlayerPrefs.HasKey($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
+            PlayerPrefs.SetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, button.btnAreaRect.sizeDelta.y);
+
+        if (!PlayerPrefs.HasKey($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
+            PlayerPrefs.SetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, button.iconRect.sizeDelta.x);
+        if (!PlayerPrefs.HasKey($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
+            PlayerPrefs.SetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, button.iconRect.sizeDelta.y);
+
+        if (!PlayerPrefs.HasKey($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
+            PlayerPrefs.SetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, button.backGroundRect.sizeDelta.x);
+        if (!PlayerPrefs.HasKey($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
+            PlayerPrefs.SetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, button.backGroundRect.sizeDelta.y);
+
+        // RectTransform init
         if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX))
             PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX, rectTransform.anchoredPosition.x);
-        else 
-            x = PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX);
+        else
+            tempX = PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX);
 
         if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY))
             PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY, rectTransform.anchoredPosition.y);
         else
-            y = PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY);
+            tempY = PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY);
 
-        if (x != 0 && y != 0)
-            rectTransform.anchoredPosition = new Vector2(x, y);
+        if (tempX != 0 && tempY != 0)
+            rectTransform.anchoredPosition = new Vector2(tempX, tempY);
 
+        // ResetSize init
         if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
             PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size));
-        if (!PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
-            PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
 
+        // ResetOpacity init
+        if (!PlayerPrefs.HasKey($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
+            PlayerPrefs.SetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+                PlayerPrefs.GetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+
+        if (!PlayerPrefs.HasKey($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
+            PlayerPrefs.SetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+                PlayerPrefs.GetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+
+        if (!PlayerPrefs.HasKey($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
+            PlayerPrefs.SetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+                PlayerPrefs.GetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+
+        // UI Init Value Accept
         InitSize(button);
         InitOpactiy(button);
 
         PlayerPrefs.Save();
     }
 
-    private void InitSize(Button button)
+    private void InitSize(UpdatableUI button)
     {
-        rectTransform = button.GetComponent<RectTransform>();
+        button.backGroundRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
 
-        size = (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size) / 100);
-        rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+        button.btnAreaRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
 
+        button.iconRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
     }
 
-    private void InitOpactiy(Button button)
+    private void InitOpactiy(UpdatableUI button)
     {
-        opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-        image = button.GetComponent<Image>();
-        color = image.color;
-        color.a = opacity;
-        image.color = color;
+        opacity = (PlayerPrefs.GetFloat($"{button.btnAreaImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 100);
+        image = button.btnAreaImage;
+        tempColor = image.color;
+        tempColor.a = opacity;
+        image.color = tempColor;
+
+        opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+        image = button.iconImage;
+        tempColor = image.color;
+        tempColor.a = opacity;
+        image.color = tempColor;
+
+        opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+        image = button.backGroundImage;
+        tempColor = image.color;
+        tempColor.a = opacity;
+        image.color = tempColor;
     }
 
     // Reset Not Saved Slider Value
@@ -119,62 +164,75 @@ public class KeyPanelArea : UIElement
         Managers.UI.CloseUI<BottomPanel>();
     }
 
-    private void SetSize(Button button)
+    private void SetSize(UpdatableUI button)
     {
-        rectTransform = button.GetComponent<RectTransform>();
-
         if (PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
         {
-            size = (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize) + 50) / 100;
-            rectTransform.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX) * size,
-                PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY) * size);
+            button.backGroundRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+            PlayerPrefs.GetFloat($"{button.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+
+            button.btnAreaRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+                PlayerPrefs.GetFloat($"{button.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+
+            button.iconRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
+                PlayerPrefs.GetFloat($"{button.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
 
             PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Size, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize));
-            //bottomPanel.sizeSlider.value = PlayerPrefs.GetFloat($"{button.name}Size");
         }
     }
 
-    private void SetOpactiy(Button button)
+    private void SetOpactiy(UpdatableUI button)
     {
         if (PlayerPrefs.HasKey($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
         {
-            opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity) / 200);
-            image = button.GetComponent<Image>();
-            color = image.color;
-            color.a = opacity;
-            image.color = color;
+            opacity = 0.5f;
+            image = button.btnAreaImage;
+            tempColor = image.color;
+            tempColor.a = opacity;
+            image.color = tempColor;
+
+            opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+            image = button.iconImage;
+            tempColor = image.color;
+            tempColor.a = opacity;
+            image.color = tempColor;
+
+            opacity = 0.5f + (PlayerPrefs.GetFloat($"{button.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+            image = button.backGroundImage;
+            tempColor = image.color;
+            tempColor.a = opacity;
+            image.color = tempColor;
+
             PlayerPrefs.SetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity));
-            //bottomPanel.opacitySlider.value = PlayerPrefs.GetFloat($"{button.name}Opacity");
         }
-        
     }
 
-    private void SetTransform(Button button)
+    private void SetTransform(UpdatableUI button)
     {
         rectTransform = button.GetComponent<RectTransform>();
 
         if (rectTransform == null)
             return;
 
-        vec = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX),
+        tempVector = new Vector2(PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransX),
             PlayerPrefs.GetFloat($"{button.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
-        rectTransform.anchoredPosition = vec;
+        rectTransform.anchoredPosition = tempVector;
     }
 
-    private void SetIsUpdate(GameObject go)
+    private void SetIsUpdate(UpdatableUI go)
     {
         dragAndDrop = go.GetComponent<DragAndDrop>();
-        image = go.GetComponent<Image>();
-        color = image.color;
+
+        tempColor = go.btnAreaImage.color;
 
         // Highlight
-        if (isRed)
-            color = new Color(255, 255, 255, color.a);
+        if (isSelect)
+            tempColor = new Color(255, 255, 255, 0);
         else
-            color = new Color(255, 0, 0, color.a);
+            tempColor = new Color(0, 255, 0, 0.5f);
 
-        image.color = color;
-        isRed = !isRed;
+        go.btnAreaImage.color = tempColor;
+        isSelect = !isSelect;
 
         if (dragAndDrop == null)
             return;
@@ -184,7 +242,7 @@ public class KeyPanelArea : UIElement
     }
 
     // Draggable Change
-    public void OnOffDrag(GameObject go)
+    public void OnOffDrag(UpdatableUI go)
     {
         SetIsUpdate(go);
     }
