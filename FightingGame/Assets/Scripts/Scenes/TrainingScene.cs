@@ -115,11 +115,6 @@ public class TrainingScene : BaseScene
             Managers.UI.CloseUI<KeyPanelArea>();
     }
 
-    public override void Clear()
-    {
-
-    }
-
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
         ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, playerCharacter.transform).GetComponent<ActiveCharacter>();
@@ -175,5 +170,10 @@ public class TrainingScene : BaseScene
         }
 
         trainingCanvas.CloseSelectWindow();
+    }
+
+    public override void Clear()
+    {
+
     }
 }

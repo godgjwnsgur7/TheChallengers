@@ -40,15 +40,20 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         if (!settingPanel.isUpdate)
             return;
 
+        DragInit();
+
+        canvasGroup.alpha = .6f;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    public void DragInit()
+    {
         settingPanel.PushKey(this.gameObject.GetComponent<UpdatableUI>());
 
         parentHalfWidth = parentRectTransform.sizeDelta.x / 2;
         parentHalfHeight = parentRectTransform.sizeDelta.y / 2;
         halfWidth = rectTransform.sizeDelta.x / 2;
         halfHeight = rectTransform.sizeDelta.y / 2;
-
-        canvasGroup.alpha = .6f;
-        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -64,13 +69,18 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         if (!settingPanel.isUpdate)
             return;
 
+        EndDragChk();
+
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    public void EndDragChk()
+    {
         xRange = Mathf.Clamp(rectTransform.anchoredPosition.x, -parentHalfWidth + halfWidth, parentHalfWidth - halfWidth);
         yRange = Mathf.Clamp(rectTransform.anchoredPosition.y, -parentHalfHeight + halfHeight, parentHalfHeight - halfHeight);
 
         currentPosition = new Vector2(xRange, yRange);
         rectTransform.anchoredPosition = currentPosition;
-
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
     }
 }
