@@ -219,6 +219,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static int Register(PhotonView view)
     {
+        if (view == null)
+            return 0;
+
         if (view.ViewID == 0)
             PhotonNetwork.AllocateViewID(view);
 

@@ -130,12 +130,16 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
         photonView.ObservedComponents = new List<Component>() { this };
 
+        if (viewID == 0)
+            viewID = PhotonLogicHandler.Register(photonView);
+
         isInitialized = true;
     }
 
     public virtual void OnEnable()
 	{
-        viewID = PhotonLogicHandler.Register(photonView);
+        if(viewID == 0)
+            viewID = PhotonLogicHandler.Register(photonView);
     }
 
     public virtual void OnDisable()
