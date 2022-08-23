@@ -65,13 +65,13 @@ public class BattleScene : BaseScene
     {
         ActiveCharacter activeCharacter;
 
-        if (!PhotonLogicHandler.IsConnected)
+        if (PhotonLogicHandler.IsConnected)
         {
-            activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
+            activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
         }
         else
         {
-            activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
+            activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
         }
 
         Skills_Pooling(_charType);

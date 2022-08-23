@@ -67,7 +67,13 @@ public class AttackObejct : Poolable
 
             enemyCharacter.ReverseSprites(dirPower.x * -1f);
 
-            enemyCharacter.Hit(attackParam);
+            if(PhotonLogicHandler.IsConnected)
+            {
+                PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, CharacterAttackParam>
+                    (enemyCharacter, enemyCharacter.Hit, attackParam);
+            }
+            else
+                enemyCharacter.Hit(attackParam);
 
             if (enemyCharacter.jumpState && skillValue.risingPower == 0f)
             {

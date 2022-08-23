@@ -40,20 +40,31 @@ public class StatusWindowUI : UIElement
     {
         curHP -= _damege;
 
+        if(hpBarCoroutine != null)
+            StopCoroutine(hpBarCoroutine);
+
         if(curHP > 0)
         {
-            hpBarSlider.value = curHP / maxHP; 
+            hpBarCoroutine = StartCoroutine(IFadeHpBar(curHP / maxHP));
             return true;
         }
 
-        hpBarSlider.value = 0f;
+        hpBarCoroutine = StartCoroutine(IFadeHpBar(0f));
         return false;
     }
 
-    protected IEnumerator IFadeHpBar()
+    protected IEnumerator IFadeHpBar(float _goalHPValue)
     {
+        float _curHPValue = curHP / maxHP;
+            
+        while(_goalHPValue < hpBarSlider.value)
+        {
+            hpBarSlider.value -= 0.01f;
+            yield return null;
+        }
 
-        yield return null;
+        hpBarSlider.value = _goalHPValue;
+        hpBarCoroutine = null;
     }
 }
 

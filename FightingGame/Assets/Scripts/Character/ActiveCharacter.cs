@@ -20,20 +20,6 @@ public partial class ActiveCharacter : Character
     {
         base.Init();
 
-        if (PhotonLogicHandler.IsConnected)
-        {
-            if ((PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Blue)
-                || (!PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Red))
-                isControl = true;
-            else
-                isControl = false;
-        }
-        else
-        {
-            Debug.Log("확인");
-            isControl = true;
-        }
-
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -47,8 +33,29 @@ public partial class ActiveCharacter : Character
             anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
         }
 
-        if (teamType == ENUM_TEAM_TYPE.Blue)
-            ReverseSprites(1.0f);
+        Debug.Log("확인합니다."); // 지금 이거 둘다찍힘
+
+        if (PhotonLogicHandler.IsConnected)
+        {
+            if ((PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Blue)
+                || (!PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Red))
+            {
+                isControl = true;
+            }
+            else
+            {
+                Debug.Log("이 로그가 찍힐 일은 없어야 함");
+                isControl = false;
+                return;
+            }
+        }
+        else
+        {
+            isControl = true;
+        }
+
+        if (teamType == ENUM_TEAM_TYPE.Red)
+            ReverseSprites(-1.0f);
 
         if(isControl)
             StartCoroutine(IJumpStateCheck());
@@ -158,6 +165,7 @@ public partial class ActiveCharacter : Character
         base.Skill(param);
     }
 
+    [BroadcastMethod]
     public override void Hit(CharacterParam param)
     {
         if (param == null || invincibility) return;
