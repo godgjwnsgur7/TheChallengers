@@ -26,6 +26,7 @@ public class EnemyPlayer : MonoBehaviour
     }
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
+        _statusWindowUI.Set_MaxHP(activeCharacter.curHP);
         activeCharacter.statusWindowUI = _statusWindowUI;
     }
 

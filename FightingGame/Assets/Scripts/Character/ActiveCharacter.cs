@@ -82,6 +82,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("HitState", AnimParameterType.Bool),
             new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
+            new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDie", AnimParameterType.Bool),
         };
 
@@ -177,6 +178,13 @@ public partial class ActiveCharacter : Character
                 anim.SetBool("IsHit", true);
                 anim.SetTrigger("HitTrigger");
                 curHP -= _skillData.damage;
+                
+                if(!statusWindowUI.Input_Damage(_skillData.damage)) // 캐릭터의 HP가 다 닳음
+                {
+                    Die();
+                    return;
+                }
+
                 if(hitCoroutine)
                 {
                     StopCoroutine(coroutine);
@@ -193,6 +201,9 @@ public partial class ActiveCharacter : Character
     {
         base.Die();
 
+        anim.SetBool("IsHit", false);
+
+        anim.SetTrigger("DieTrigger");
         anim.SetBool("IsDie", true);
     }
 

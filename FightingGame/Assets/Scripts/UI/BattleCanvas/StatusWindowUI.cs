@@ -6,18 +6,20 @@ using FGDefine;
 
 public class StatusWindowUI : UIElement
 {
-    public Slider slider;
+    public Slider hpBarSlider;
     [SerializeField] Image charFrameImage;
 
     public float maxHP;
     public float curHP;
+
+    Coroutine hpBarCoroutine;
 
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE charType)
     {
         switch(charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:
-
+                Debug.Log("이미지 아직 없음 ㅋㅋ");
                 break;
             default:
                 Debug.Log($"{charType} 를 찾을 수 없음");
@@ -40,13 +42,18 @@ public class StatusWindowUI : UIElement
 
         if(curHP > 0)
         {
+            hpBarSlider.value = curHP / maxHP; 
             return true;
         }
 
+        hpBarSlider.value = 0f;
         return false;
     }
 
-    // 체력 서서히 깎이는 코루틴 넣을 예1정
-    // protected IEnumerator I
+    protected IEnumerator IFadeHpBar()
+    {
+
+        yield return null;
+    }
 }
 

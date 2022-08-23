@@ -27,10 +27,4 @@ public partial class ActiveCharacter : Character
         reverseState = _reverseState;
     }
 
-    // 일단 시도중
-    [BroadcastMethodAttribute]
-    public void Sync_PlayerState(ENUM_PLAYER_STATE playerState)
-    {
-        currState = playerState;
-    }
 }
