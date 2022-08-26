@@ -13,10 +13,10 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-
     public float curHP;
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpPower;
+
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
     public ENUM_TEAM_TYPE teamType;
@@ -27,8 +27,8 @@ public class Character : MonoBehaviourPhoton
     public bool invincibility = false;
     public bool attackState = false;
     public bool superArmour = false;
-    public bool hitCoroutine = false;
     public bool isControl = false;
+    public bool isInitialized = false;
 
     public override void Init()
     {
@@ -112,7 +112,7 @@ public class Character : MonoBehaviourPhoton
         invincibility = true;
     }
 
-    public void Push_Rigid2D(Vector2 vec)
+    protected void Push_Rigid2D(Vector2 vec)
     {
         rigid2D.velocity = new Vector2(0, rigid2D.velocity.y); // 받고있는 힘 초기화
         rigid2D.AddForce(vec, ForceMode2D.Impulse);

@@ -37,8 +37,8 @@ public class BottomPanel : UIElement
     private Vector2 baseSize;
     private Color tempColor;
 
-    private bool isPushBtn = false;
-    private string moveDirection;
+    private bool isPushMoveBtn = false;
+    private float moveSpeed;
 
     public override void Open(UIParam param = null)
     {
@@ -68,14 +68,18 @@ public class BottomPanel : UIElement
         // 선택한 UI 세팅
         setBtn = updateUI;
         setBtnRect = setBtn.GetComponent<RectTransform>();
+
+        // Image Init
         setBtnBackGroundImage = setBtn.backGroundImage;
         setBtnIconImage = setBtn.iconImage;
         setBtnAreaImage = setBtn.btnAreaImage;
 
+        // RectTransform Init
         setBackGroundBtn = setBtn.backGroundRect;
         setBtnIconRect = setBtn.iconRect;
         setBtnAreaRect = setBtn.btnAreaRect;
 
+        // 부모UI
         parent = setBtn.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
 
@@ -191,27 +195,46 @@ public class BottomPanel : UIElement
     }
 
     // setBtn TransForm move
-    public void moveUI(string direction)
+    public void MoveBtnDown(string direction)
     {
-        isPushBtn = !isPushBtn;
-        moveDirection = direction;
+        isPushMoveBtn = true;
+        moveSpeed = 1.0f;
+        StartCoroutine(MoveKeyPanelUI(direction));
     }
 
-    public void moveUISub(RectTransform rectTrans, string direction)
+    public void MoveBtnUp(string direction)
+    {
+        isPushMoveBtn = false;
+    }
+
+    IEnumerator MoveKeyPanelUI(string direction)
+    {
+        while (isPushMoveBtn)
+        {
+            MoveKeyPanelUISub(direction);
+
+            if(moveSpeed <= 5.0f)
+                moveSpeed += 0.05f;
+
+            yield return null;
+        }
+    }
+
+    public void MoveKeyPanelUISub(string direction)
     {
         switch (direction)
         {
             case "Right":
-                TempRect = new Vector2(rectTrans.anchoredPosition.x + 1, rectTrans.anchoredPosition.y);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x + moveSpeed, setBtnRect.anchoredPosition.y);
                 break;
             case "Left":
-                TempRect = new Vector2(rectTrans.anchoredPosition.x - 1, rectTrans.anchoredPosition.y);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x - moveSpeed, setBtnRect.anchoredPosition.y);
                 break;
             case "Down":
-                TempRect = new Vector2(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y - 1);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y - moveSpeed);
                 break;
             case "Up":
-                TempRect = new Vector2(rectTrans.anchoredPosition.x, rectTrans.anchoredPosition.y + 1);
+                TempRect = new Vector2(setBtnRect.anchoredPosition.x, setBtnRect.anchoredPosition.y + moveSpeed);
                 break;
             default:
                 Debug.Log("범위 벗어남");
@@ -221,14 +244,6 @@ public class BottomPanel : UIElement
         tempX = Mathf.Clamp(TempRect.x, -pHalfWidth + halfWidth, pHalfWidth - halfWidth);
         tempY = Mathf.Clamp(TempRect.y, -pHalfHeight + halfHeight, pHalfHeight - halfHeight);
         TempRect = new Vector2(tempX, tempY);
-        rectTrans.anchoredPosition = TempRect;
-    }
-
-    private void Update()
-    {
-        if (isPushBtn)
-        {
-            moveUISub(setBtnRect, moveDirection);
-        }
+        setBtnRect.anchoredPosition = TempRect;
     }
 }

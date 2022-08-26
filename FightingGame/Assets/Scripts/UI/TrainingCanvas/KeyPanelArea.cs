@@ -6,18 +6,13 @@ using FGDefine;
 
 public class KeyPanelArea : UIElement
 {
-    // 버튼들 모여있는 영역 Panel
-    [SerializeField] GameObject leftButtons;
-    [SerializeField] GameObject rightButtons;
-
     // Panel 안의 버튼들
     [SerializeField] UpdatableUI[] buttons;
 
     RectTransform rectTransform;
     DragAndDrop dragAndDrop;
-    Image image;
-    float size;
-    float opacity;
+    float tempSize;
+    float tempOpacity;
     Vector2 tempVector;
     Color tempColor;
 
@@ -122,36 +117,41 @@ public class KeyPanelArea : UIElement
     // 초기 UI size 설정
     private void InitSize(UpdatableUI updateUI)
     {
+        if (updateUI == null)
+            return;
+
+        tempSize = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size) + 50) / 100;
+
         updateUI.backGroundRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+            PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
 
         updateUI.btnAreaRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+            PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
 
         updateUI.iconRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+            PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
     }
 
     // 초기 UI Opacity 설정
     private void InitOpactiy(UpdatableUI updateUI)
     {
-        opacity = (PlayerPrefs.GetFloat($"{updateUI.btnAreaImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 100);
-        image = updateUI.btnAreaImage;
-        tempColor = image.color;
-        tempColor.a = opacity;
-        image.color = tempColor;
+        if (updateUI == null)
+            return;
 
-        opacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-        image = updateUI.iconImage;
-        tempColor = image.color;
-        tempColor.a = opacity;
-        image.color = tempColor;
+        tempOpacity = 0.0f;
+        tempColor = updateUI.btnAreaImage.color;
+        tempColor.a = tempOpacity;
+        updateUI.btnAreaImage.color = tempColor;
 
-        opacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-        image = updateUI.backGroundImage;
-        tempColor = image.color;
-        tempColor.a = opacity;
-        image.color = tempColor;
+        tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+        tempColor = updateUI.iconImage.color;
+        tempColor.a = tempOpacity;
+        updateUI.iconImage.color = tempColor;
+
+        tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+        tempColor = updateUI.backGroundImage.color;
+        tempColor.a = tempOpacity;
+        updateUI.backGroundImage.color = tempColor;
     }
 
     // Reset Not Saved Slider Value
@@ -170,16 +170,21 @@ public class KeyPanelArea : UIElement
     // Size 리셋
     private void SetSize(UpdatableUI updateUI)
     {
+        if (updateUI == null)
+            return;
+
+        tempSize = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize) + 50) / 100;
+
         if (PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
         {
             updateUI.backGroundRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+            PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
 
             updateUI.btnAreaRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-                PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+                PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
 
             updateUI.iconRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-                PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
+                PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
 
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize));
         }
@@ -188,25 +193,25 @@ public class KeyPanelArea : UIElement
     // Opacity 리셋
     private void SetOpactiy(UpdatableUI updateUI)
     {
+        if (updateUI == null)
+            return;
+
         if (PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
         {
-            opacity = 0.5f;
-            image = updateUI.btnAreaImage;
-            tempColor = image.color;
-            tempColor.a = opacity;
-            image.color = tempColor;
+            tempOpacity = 0.5f;
+            tempColor = updateUI.btnAreaImage.color;
+            tempColor.a = tempOpacity;
+            updateUI.btnAreaImage.color = tempColor;
 
-            opacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-            image = updateUI.iconImage;
-            tempColor = image.color;
-            tempColor.a = opacity;
-            image.color = tempColor;
+            tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+            tempColor = updateUI.iconImage.color;
+            tempColor.a = tempOpacity;
+            updateUI.iconImage.color = tempColor;
 
-            opacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-            image = updateUI.backGroundImage;
-            tempColor = image.color;
-            tempColor.a = opacity;
-            image.color = tempColor;
+            tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+            tempColor = updateUI.backGroundImage.color;
+            tempColor.a = tempOpacity;
+            updateUI.backGroundImage.color = tempColor;
 
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity));
         }
@@ -215,6 +220,9 @@ public class KeyPanelArea : UIElement
     // Transform 리셋
     private void SetTransform(UpdatableUI updateUI)
     {
+        if (updateUI == null)
+            return;
+
         rectTransform = updateUI.GetComponent<RectTransform>();
 
         if (rectTransform == null)
@@ -228,12 +236,18 @@ public class KeyPanelArea : UIElement
     // HighLight
     public void OnOffHighLight(UpdatableUI updateUI)
     {
+        if (updateUI == null)
+            return;
+
         SetHighLight(updateUI);
     }
 
     //선택 UI 강조
     private void SetHighLight(UpdatableUI updateUI)
     {
+        if (updateUI == null)
+            return;
+
         tempColor = updateUI.btnAreaImage.color;
 
         // Highlight

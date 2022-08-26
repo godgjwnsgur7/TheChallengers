@@ -30,10 +30,12 @@ public class CharacterMoveParam : CharacterParam
 public class CharacterAttackParam : CharacterParam
 {
     public ENUM_SKILL_TYPE attackType;
+    public bool reverseState;
 
-    public CharacterAttackParam(ENUM_SKILL_TYPE _attackType)
+    public CharacterAttackParam(ENUM_SKILL_TYPE _attackType, bool _reverseState)
     {
         attackType = _attackType;
+        reverseState = _reverseState;
     }
 }
 

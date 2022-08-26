@@ -134,8 +134,8 @@ GameObject:
   - component: {fileID: 18196841}
   - component: {fileID: 18196845}
   - component: {fileID: 18196844}
-  - component: {fileID: 18196843}
   - component: {fileID: 18196842}
+  - component: {fileID: 18196846}
   m_Layer: 5
   m_Name: ButtonsUI
   m_TagString: Untagged
@@ -169,33 +169,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 540}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &18196842
-MonoBehaviour:
+--- !u!223 &18196842
+Canvas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 18196840}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 943411572}
-  settingPanel: {fileID: 0}
-  AlphaThreshold: 0.1
---- !u!225 &18196843
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18196840}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!114 &18196844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +228,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 18196840}
   m_CullTransparentMesh: 1
+--- !u!114 &18196846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18196840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &43441477
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +339,7 @@ RectTransform:
   m_Children:
   - {fileID: 943411573}
   m_Father: {fileID: 1010260637}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -348,8 +359,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  leftButtons: {fileID: 0}
-  rightButtons: {fileID: 18196840}
   buttons:
   - {fileID: 509498912}
   - {fileID: 523237746}
@@ -2638,7 +2647,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnDown
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2654,7 +2663,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnUp
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3331,7 +3340,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnDown
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3347,7 +3356,23 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnUp
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stop
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 784350455}
+          m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
+          m_MethodName: MoveBtnUp
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5785,7 +5810,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnDown
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5801,7 +5826,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnUp
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6553,10 +6578,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1865936688}
   - {fileID: 43441481}
   - {fileID: 2081019823}
   - {fileID: 1082898209}
+  - {fileID: 1865936688}
   - {fileID: 324688444}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -6899,7 +6924,7 @@ RectTransform:
   - {fileID: 216298888}
   - {fileID: 595173137}
   m_Father: {fileID: 1010260637}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7050,9 +7075,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  closeBtn: {fileID: 686838319}
-  saveBtn: {fileID: 126478922}
-  resetBtn: {fileID: 1497140583}
   notionPopup: {fileID: 1675324769}
 --- !u!1 &1113359715
 GameObject:
@@ -9710,7 +9732,7 @@ RectTransform:
   - {fileID: 1015712698}
   - {fileID: 801502649}
   m_Father: {fileID: 1010260637}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -11364,7 +11386,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnDown
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -11380,7 +11402,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 784350455}
           m_TargetAssemblyTypeName: BottomPanel, Assembly-CSharp
-          m_MethodName: moveUI
+          m_MethodName: MoveBtnUp
           m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -11625,7 +11647,7 @@ RectTransform:
   - {fileID: 784350452}
   - {fileID: 1675324766}
   m_Father: {fileID: 1010260637}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

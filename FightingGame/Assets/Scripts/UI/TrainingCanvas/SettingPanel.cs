@@ -13,13 +13,13 @@ public class SettingPanel : UIElement
 
     public override void Open(UIParam param = null)
     {
-        keyPanelArea.SliderReset();
         isUpdate = true;
         base.Open(param);
     }
 
     public override void Close()
     {
+        keyPanelArea.SliderReset();
         isUpdate = false;
         base.Close();
     }
