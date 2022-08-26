@@ -103,6 +103,8 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
 
+    // PhotonCustomStreamBase stream = new PhotonCustomStreamBase();
+
     public int ViewID => viewID;
     protected int viewID = 0;
 
@@ -144,7 +146,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public virtual void OnDisable()
 	{
-        PhotonLogicHandler.Unregister(viewID);
+        viewID = PhotonLogicHandler.Unregister(viewID);
     }
 
     public override sealed void Start()
@@ -252,16 +254,16 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
     {
         if(stream.IsWriting)
         {
-            if (!PhotonLogicHandler.IsMine(viewID))
-                return;
+            //if (!PhotonLogicHandler.IsMine(viewID))
+                //return;
 
             writeStream.SetStream(stream);
             OnMineSerializeView(writeStream);
         }
         else if(stream.IsReading)
         {
-            if (PhotonLogicHandler.IsMine(viewID))
-                return;
+            //if (PhotonLogicHandler.IsMine(viewID))
+                //return;
 
             readStream.SetStream(stream);
             OnOtherSerializeView(readStream);

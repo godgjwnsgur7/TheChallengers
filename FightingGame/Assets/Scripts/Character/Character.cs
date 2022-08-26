@@ -46,13 +46,18 @@ public class Character : MonoBehaviourPhoton
 
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
+        stream.Write(currState);
+
         base.OnMineSerializeView(stream);
     }
 
     protected override void OnOtherSerializeView(PhotonReadStream stream)
     {
+        currState = stream.Read<ENUM_PLAYER_STATE>();
+
         base.OnOtherSerializeView(stream);
     }
+
 
     public virtual void Idle()
     {

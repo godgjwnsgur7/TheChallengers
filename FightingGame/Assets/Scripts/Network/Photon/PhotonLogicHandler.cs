@@ -18,28 +18,6 @@ public enum ENUM_RPC_TARGET
 
 public class BroadcastMethodAttribute : PunRPC { }
 
-public partial class PhotonLogicHandler
-{
-    /// <summary>
-    /// 현재 자신이 마스터 서버에 연결이 되어 있는가?
-    /// </summary>
-    public static bool IsConnected
-    {
-        get 
-        {
-            return PhotonNetwork.IsConnected;
-        }
-    }
-
-    public static bool IsMasterClient
-    {
-        get
-        {
-            return PhotonNetwork.IsMasterClient;
-        }
-    }
-}
-
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message); 
 
@@ -78,18 +56,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private Action _OnJoinLobby = null;
     private FailedCallBack _OnJoinLobbyFailed = null;
 
-    public static bool IsMine(int viewID)
-    {
-        PhotonView view = null;
 
-        if (viewID == 0)
-            return false;
-
-        if (photonViewDictionary.TryGetValue(viewID, out view))
-            return view.IsMine;
-
-        return false;
-    }
 
     private void OnDestroy()
     {
@@ -244,7 +211,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return view.ViewID;
     }
 
-    public static void Unregister(int viewID)
+    public static int Unregister(int viewID)
     {
         PhotonView view = null;
 
@@ -257,6 +224,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning($"등록되지 않은 MonoBehaviourPhoton 오브젝트를 제거하려 들었음. {viewID}");
         }
+
+        return 0;
     }
 
     #endregion
@@ -301,7 +270,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LocalPlayer.NickName = nickname;
 
-        return PhotonNetwork.JoinRandomRoom();
+        ExitGames.Client.Photon.Hashtable optionTable = new ExitGames.Client.Photon.Hashtable()
+        {
+           
+        };
+
+        return PhotonNetwork.JoinRandomRoom(optionTable, 0);
     }
 
     public bool TryJoinLobby(Action onSuccess = null, FailedCallBack onfailed = null)
@@ -502,28 +476,60 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		
 	}
 
-	public override void OnMasterClientSwitched(Player newMasterClient)
+    /// <summary>
+    /// 방 리스트 정보 업데이트
+    /// </summary>
+    /// <param name="roomList"></param>
+
+	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
 		
 	}
 
 	/// <summary>
-	/// 2P 방 입장
+	/// 방장 바뀜
+	/// </summary>
+	/// <param name="newMasterClient"></param>
+
+	public override void OnMasterClientSwitched(Player newMasterClient)
+	{
+		
+	}
+
+    /// <summary>
+    /// 방 설정 변경
+    /// </summary>
+    /// <param name="targetPlayer"></param>
+    /// <param name="changedProps"></param>
+
+	public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+	{
+		
+	}
+
+	/// <summary>
+	/// 유저 입장
 	/// </summary>
 	/// <param name="newPlayer"></param>
 	public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+		{
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+		}
     }
 
     /// <summary>
-    /// 2P 방 나감
+    /// 유저 나감
     /// </summary>
     /// <param name="otherPlayer"></param>
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-
+        if (PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+        }
     }
 
     public string Info()
