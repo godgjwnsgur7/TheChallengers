@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class TopPanel : UIElement
 {
-    [SerializeField] Button closeBtn;
-    [SerializeField] Button saveBtn;
-    [SerializeField] Button resetBtn;
     [SerializeField] NotionPopup notionPopup;
 
     public override void Open(UIParam param = null)

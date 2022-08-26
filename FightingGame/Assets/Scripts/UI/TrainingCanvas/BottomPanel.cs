@@ -68,14 +68,18 @@ public class BottomPanel : UIElement
         // 선택한 UI 세팅
         setBtn = updateUI;
         setBtnRect = setBtn.GetComponent<RectTransform>();
+
+        // Image Init
         setBtnBackGroundImage = setBtn.backGroundImage;
         setBtnIconImage = setBtn.iconImage;
         setBtnAreaImage = setBtn.btnAreaImage;
 
+        // RectTransform Init
         setBackGroundBtn = setBtn.backGroundRect;
         setBtnIconRect = setBtn.iconRect;
         setBtnAreaRect = setBtn.btnAreaRect;
 
+        // 부모UI
         parent = setBtn.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
 
