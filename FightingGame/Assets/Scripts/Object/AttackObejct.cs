@@ -58,14 +58,7 @@ public class AttackObejct : Poolable
 
         if (enemyCharacter != null && skillValue != null)
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType);
-
-            Vector2 dirPower = new Vector2(skillValue.pushingPower, skillValue.risingPower);
-
-            if (reverseState)
-                dirPower.x *= -1.0f;
-
-            enemyCharacter.ReverseSprites(dirPower.x * -1f);
+            CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType, reverseState);
 
             if(PhotonLogicHandler.IsConnected)
             {
@@ -74,15 +67,6 @@ public class AttackObejct : Poolable
             }
             else
                 enemyCharacter.Hit(attackParam);
-
-            if (enemyCharacter.jumpState && skillValue.risingPower == 0f)
-            {
-                dirPower.y = skillValue.pushingPower * 2;
-                dirPower.x = 1.0f;
-            }
-
-            if(!enemyCharacter.superArmour)
-                enemyCharacter.Push_Rigid2D(dirPower);
 
             Managers.Resource.Destroy(gameObject);
         }

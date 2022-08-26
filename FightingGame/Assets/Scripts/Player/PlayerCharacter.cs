@@ -39,10 +39,17 @@ public class PlayerCharacter : MonoBehaviour
         activeCharacter.transform.parent = this.transform;
 
         if (PhotonLogicHandler.IsConnected)
+        {
             PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
+            activeCharacter.Set_Character();
+        }
         else
+        {
             activeCharacter.teamType = teamType;
-        activeCharacter.Init();
+            activeCharacter.Init();
+            activeCharacter.Set_Character();
+        }
+
         playerCamera.Init(activeCharacter.transform);
     }
 
@@ -57,7 +64,7 @@ public class PlayerCharacter : MonoBehaviour
     {// 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, activeCharacter.reverseState);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
             activeCharacter.attackState = true;
         }

@@ -23,6 +23,7 @@ public class EnemyPlayer : MonoBehaviour
         activeCharacter.transform.parent = this.transform;
         activeCharacter.teamType = teamType;
         activeCharacter.Init();
+        activeCharacter.Set_Character();
     }
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
@@ -41,7 +42,7 @@ public class EnemyPlayer : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.N))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, activeCharacter.reverseState);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
             activeCharacter.attackState = true;
         }

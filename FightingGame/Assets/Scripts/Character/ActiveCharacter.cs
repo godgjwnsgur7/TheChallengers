@@ -18,6 +18,12 @@ public partial class ActiveCharacter : Character
 
     public override void Init()
     {
+        if (isInitialized)
+        {
+            Debug.Log("중복으로 캐릭터를 초기화 시도하였습니다.");
+            return;
+        }
+
         base.Init();
 
         if (spriteRenderer == null)
@@ -33,20 +39,26 @@ public partial class ActiveCharacter : Character
             anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
         }
 
-        Debug.Log("확인합니다."); // 지금 이거 둘다찍힘
-
         if (PhotonLogicHandler.IsConnected)
         {
-            if ((PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Blue)
-                || (!PhotonLogicHandler.IsMasterClient && teamType == ENUM_TEAM_TYPE.Red))
+            var param = MakeSyncAnimParam();
+            SyncAnimator(anim, param);
+        }
+
+        isInitialized = true;
+    }
+
+    public void Set_Character()
+    {
+        if (PhotonLogicHandler.IsConnected)
+        {
+            if (PhotonLogicHandler.IsMine(viewID))
             {
                 isControl = true;
             }
             else
             {
-                Debug.Log("이 로그가 찍힐 일은 없어야 함");
                 isControl = false;
-                return;
             }
         }
         else
@@ -57,14 +69,8 @@ public partial class ActiveCharacter : Character
         if (teamType == ENUM_TEAM_TYPE.Red)
             ReverseSprites(-1.0f);
 
-        if(isControl)
+        if (isControl)
             StartCoroutine(IJumpStateCheck());
-
-        if (PhotonLogicHandler.IsConnected)
-        {
-            var param = MakeSyncAnimParam();
-            SyncAnimator(anim, param);
-        }
     }
 
     /// <summary>
@@ -182,9 +188,27 @@ public partial class ActiveCharacter : Character
                     return;
                 }
 
-                base.Hit(param);
                 anim.SetBool("IsHit", true);
                 anim.SetTrigger("HitTrigger");
+
+                base.Hit(param);
+                
+                Vector2 getPowerDir = new Vector2(_skillData.pushingPower, _skillData.risingPower);
+
+                if (attackParam.reverseState)
+                    getPowerDir.x *= -1.0f;
+
+                ReverseSprites(getPowerDir.x * -1.0f);
+
+                if (jumpState && _skillData.risingPower == 0.0f)
+                {
+                    // 추후에 수치 조정 방식 변경이 필요할 듯 (임시)
+                    getPowerDir.y = _skillData.pushingPower * 2;
+                    getPowerDir.x = getPowerDir.normalized.x;
+                }
+
+                Push_Rigid2D(getPowerDir);
+
                 curHP -= _skillData.damage;
                 
                 if(!statusWindowUI.Input_Damage(_skillData.damage)) // 캐릭터의 HP가 다 닳음
@@ -201,6 +225,10 @@ public partial class ActiveCharacter : Character
                 {
                     coroutine = StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
                 }
+            }
+            else
+            {
+                Debug.Log($"{attackParam.attackType}을 SkillDict에서 찾을 수 없습니다.");
             }
         }
     }
