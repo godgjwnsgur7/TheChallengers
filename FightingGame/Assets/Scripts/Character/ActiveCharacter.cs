@@ -14,7 +14,11 @@ public partial class ActiveCharacter : Character
     public AttackObejct attackObject;
     public StatusWindowUI statusWindowUI;
 
-    Coroutine coroutine;
+    Coroutine stunTimeCoroutine;
+    Coroutine landCoroutine;
+
+    public float stunTime;
+    public float curStunTime;
 
     public override void Init()
     {
@@ -104,6 +108,8 @@ public partial class ActiveCharacter : Character
 
     public override void Idle()
     {
+        if (jumpState) return;
+
         base.Idle();
 
         if (anim.GetBool("IsMove"))
@@ -217,13 +223,20 @@ public partial class ActiveCharacter : Character
                     return;
                 }
 
-                if(hitCoroutine)
+                if(jumpState && landCoroutine == null)
                 {
-                    StopCoroutine(coroutine);
+                    landCoroutine = StartCoroutine(ILandingCheck());
                 }
-                else
+                else if(stunTimeCoroutine == null && landCoroutine == null)
                 {
-                    coroutine = StartCoroutine(IHitRunTimeCheck(_skillData.stunTime));
+                    curStunTime = 0.0f;
+                    stunTime = _skillData.stunTime;
+                    stunTimeCoroutine = StartCoroutine(IStunTimeCheck());
+                }
+                else if (stunTimeCoroutine != null)
+                {
+                    curStunTime = 0.0f;
+                    stunTime = _skillData.stunTime;
                 }
             }
             else
@@ -281,8 +294,6 @@ public partial class ActiveCharacter : Character
         
         while(true)
         {
-            yield return null;
-
             Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
             _jumpState = !Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
 
@@ -293,6 +304,8 @@ public partial class ActiveCharacter : Character
                     anim.SetTrigger("DropTrigger");
                 anim.SetBool("IsJump", jumpState);
             }
+
+            yield return null;
         }
     }
 
@@ -301,44 +314,41 @@ public partial class ActiveCharacter : Character
     /// </summary>
     /// <param name="_hitTime"></param>
     /// <returns>경직시간</returns>
-    protected IEnumerator IHitRunTimeCheck(float _hitTime)
+    protected IEnumerator IStunTimeCheck()
     {
-        float realTime = 0f;
-
-        while (_hitTime >= realTime)
+        while (stunTime >= curStunTime)
         {
-            realTime += Time.deltaTime;
+            curStunTime += Time.deltaTime;
 
-            if (jumpState && !hitCoroutine)
+            if (jumpState && landCoroutine == null)
             {
-                realTime += _hitTime;
-                StartCoroutine(IRisingStateCheck());
+                landCoroutine = StartCoroutine(ILandingCheck());
+                StopCoroutine(stunTimeCoroutine);
+                stunTimeCoroutine = null;
             }
 
             yield return null;
         }
 
-        if (!hitCoroutine) // 경직만 당한 상태
-            anim.SetBool("IsHit", false);
+        stunTimeCoroutine = null;
+        anim.SetBool("IsHit", false);
     }
 
     /// <summary>
     /// 공중 히트 상태에서 바닥에 착지하는 것을 감지하는 함수
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator IRisingStateCheck()
+    protected IEnumerator ILandingCheck()
     {
-        hitCoroutine = true;
-
         while (jumpState)
         {
             yield return null;
         }
 
-        Push_Rigid2D(Vector2.zero);
         Invincible();
+        landCoroutine = null;
+        Push_Rigid2D(Vector2.zero);
         anim.SetBool("IsHit", false);
-        hitCoroutine = false;
     }
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)

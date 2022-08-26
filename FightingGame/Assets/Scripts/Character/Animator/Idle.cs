@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 /// <summary>
 /// Character Core : Idle
@@ -14,7 +15,8 @@ public class Idle : StateMachineBehaviour
         if (activeCharacter == null)
             activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
 
-        if (!activeCharacter.isControl) return;
+        if (!activeCharacter.isControl)
+            return;
 
         activeCharacter.Idle();
         animator.SetBool("IsIdle", false);
