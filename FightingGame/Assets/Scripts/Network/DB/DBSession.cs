@@ -14,6 +14,8 @@ public enum DB_CATEGORY
 {
     Nickname,
     VictoryPoint,
+    DefeatPoint,
+    RatingPoint,
     PurchaseCoffee
 }
 
