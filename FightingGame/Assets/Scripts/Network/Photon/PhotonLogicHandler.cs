@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using System.Reflection;
 using System.Linq;
 using System.Text;
+using FGDefine;
 
 public enum ENUM_RPC_TARGET
 {
@@ -349,10 +350,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnCreateRoomFailed = OnCreateRoomFailed;
 
         PhotonNetwork.LocalPlayer.NickName = playerNickname;
-        return PhotonNetwork.CreateRoom(roomName, new RoomOptions() 
-        { 
-            MaxPlayers = (byte)maxPlayerCount
-        });
+
+        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
+        roomOptions.CustomRoomProperties.Add(typeof(ENUM_MAP_TYPE).ToString(), "아직 맵 이름 쓰지마~~");
+
+        return PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
     /// <summary>

@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using System.Reflection;
 using System.Linq;
 using System.Text;
+using FGDefine;
 
 public partial class PhotonLogicHandler
 {
@@ -42,6 +43,35 @@ public partial class PhotonLogicHandler
 
         return false;
     }
+
+    public bool IsFullRoom
+	{
+        get
+		{
+            return CurrentRoomMemberCount == CurrentRoomMemberCountMax;
+
+        }
+	}
+
+    public string CurrentMapName
+	{
+        get
+		{
+            if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(typeof(ENUM_MAP_TYPE).ToString()))
+                return string.Empty;
+
+            return (string)PhotonNetwork.CurrentRoom.CustomProperties[typeof(ENUM_MAP_TYPE).ToString()];
+		}
+	}
+
+    public string CurrentMasterClientNickname
+	{
+        get
+		{
+            return PhotonNetwork.MasterClient.NickName;
+
+        }
+	}
 
     public static int CurrentRoomMemberCount
     {
