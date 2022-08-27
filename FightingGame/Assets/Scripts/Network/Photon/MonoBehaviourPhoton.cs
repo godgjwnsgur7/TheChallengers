@@ -85,6 +85,39 @@ public static class MonoBehaviourPhotonExtension
             PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, param, ENUM_RPC_TARGET.All);
         }
     }
+
+    public static void TryMineAction<T>(this T mono, Action mineAction)
+    where T : MonoBehaviourPhoton
+    {
+        if (PhotonLogicHandler.IsMine(mono.ViewID))
+        {
+            mineAction?.Invoke();
+        }
+    }
+
+    public static void TryMineMultiAction<T>(this T mono, Action multiAction)
+    where T : MonoBehaviourPhoton
+    {
+        if (!PhotonLogicHandler.IsConnected)
+            return;
+
+        if (!PhotonLogicHandler.IsMine(mono.ViewID))
+            return;
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, ENUM_RPC_TARGET.All);
+    }
+
+    public static void TryMineMultiAction<T, TParam>(this T mono, Action<TParam> multiAction, TParam param)
+        where T : MonoBehaviourPhoton
+    {
+        if (!PhotonLogicHandler.IsConnected)
+            return;
+
+        if (!PhotonLogicHandler.IsMine(mono.ViewID))
+            return;
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, param, ENUM_RPC_TARGET.All);
+    }
 }
 
 
