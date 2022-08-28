@@ -364,7 +364,12 @@ public partial class ActiveCharacter : Character
 
         attackObject = null;
         ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
+
+        bool isConnected = PhotonLogicHandler.IsConnected;
+        
         attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
+        
+        
 
         if (attackObject != null)
         {

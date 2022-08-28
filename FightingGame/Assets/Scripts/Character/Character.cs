@@ -23,12 +23,13 @@ public class Character : MonoBehaviourPhoton
 
     // 테스트 편의성을 위해 public
     public bool reverseState = false;
+    public bool isControl = false;
+    public bool isInitialized = false;
+
     public bool jumpState = false;
     public bool invincibility = false;
     public bool attackState = false;
     public bool superArmour = false;
-    public bool isControl = false;
-    public bool isInitialized = false;
 
     public override void Init()
     {
@@ -46,18 +47,29 @@ public class Character : MonoBehaviourPhoton
 
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
+        stream.Write(curHP);
         stream.Write(currState);
+        stream.Write(teamType);
+        stream.Write(jumpState);
+        stream.Write(invincibility);
+        stream.Write(attackState);
+        stream.Write(superArmour);
 
         base.OnMineSerializeView(stream);
     }
 
     protected override void OnOtherSerializeView(PhotonReadStream stream)
     {
+        curHP = stream.Read<float>();
         currState = stream.Read<ENUM_PLAYER_STATE>();
+        teamType = stream.Read<ENUM_TEAM_TYPE>();
+        jumpState = stream.Read<bool>();
+        invincibility = stream.Read<bool>();
+        attackState = stream.Read<bool>();
+        superArmour = stream.Read<bool>();
 
         base.OnOtherSerializeView(stream);
     }
-
 
     public virtual void Idle()
     {
@@ -81,7 +93,6 @@ public class Character : MonoBehaviourPhoton
     public virtual void Jump()
     {
         rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-
     }
 
     public virtual void Attack(CharacterParam param)

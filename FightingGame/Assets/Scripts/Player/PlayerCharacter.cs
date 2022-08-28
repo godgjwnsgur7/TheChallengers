@@ -61,7 +61,8 @@ public class PlayerCharacter : MonoBehaviour
 
     // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
-    {// 공격
+    {
+        // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
             CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, activeCharacter.reverseState);
@@ -112,8 +113,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (moveDir == 0f)
         {
-            if(activeCharacter.currState == ENUM_PLAYER_STATE.Move)
-                PlayerCommand(ENUM_PLAYER_STATE.Idle);
+            PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
         else
         {

@@ -30,6 +30,7 @@ public class AttackObejct : Poolable
         }
     }
 
+    [BroadcastMethod]
     public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType,bool _reverseState)
     {
         reverseState = _reverseState;
