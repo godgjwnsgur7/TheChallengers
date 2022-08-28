@@ -379,9 +379,9 @@ GameObject:
   - component: {fileID: 53413618}
   - component: {fileID: 53413617}
   - component: {fileID: 53413616}
-  - component: {fileID: 53413615}
   - component: {fileID: 53413614}
   - component: {fileID: 53413613}
+  - component: {fileID: 53413620}
   m_Layer: 5
   m_Name: SkillBtn (2)
   m_TagString: Untagged
@@ -479,21 +479,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &53413615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53413611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
 --- !u!114 &53413616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,12 +492,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 1135068845}
   backGround: {fileID: 175192060}
   icon: {fileID: 1817226646}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
@@ -554,6 +541,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 53413611}
   m_CullTransparentMesh: 1
+--- !u!50 &53413620
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53413611}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &100992057
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,9 +574,9 @@ GameObject:
   - component: {fileID: 100992064}
   - component: {fileID: 100992063}
   - component: {fileID: 100992062}
-  - component: {fileID: 100992061}
   - component: {fileID: 100992060}
   - component: {fileID: 100992059}
+  - component: {fileID: 100992061}
   m_Layer: 5
   m_Name: LeftMoveBtn
   m_TagString: Untagged
@@ -666,21 +674,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &100992061
-MonoBehaviour:
+--- !u!50 &100992061
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100992057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &100992062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,12 +708,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 1459953995}
   backGround: {fileID: 879576324}
   icon: {fileID: 286454384}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
@@ -3610,9 +3626,9 @@ GameObject:
   - component: {fileID: 509498911}
   - component: {fileID: 509498910}
   - component: {fileID: 509498912}
-  - component: {fileID: 509498909}
   - component: {fileID: 509498907}
   - component: {fileID: 509498908}
+  - component: {fileID: 509498913}
   m_Layer: 5
   m_Name: AttackBtn
   m_TagString: Untagged
@@ -3710,21 +3726,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &509498909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509498905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
 --- !u!114 &509498910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3776,15 +3777,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 531016577}
   backGround: {fileID: 271020051}
   icon: {fileID: 1810359609}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
+--- !u!50 &509498913
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509498905}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &521114032
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,9 +3900,9 @@ GameObject:
   - component: {fileID: 523237748}
   - component: {fileID: 523237747}
   - component: {fileID: 523237746}
-  - component: {fileID: 523237745}
   - component: {fileID: 523237744}
   - component: {fileID: 523237743}
+  - component: {fileID: 523237749}
   m_Layer: 5
   m_Name: JumpBtn
   m_TagString: Untagged
@@ -3976,21 +4000,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &523237745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523237741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
 --- !u!114 &523237746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4004,12 +4013,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 825692927}
   backGround: {fileID: 1320876602}
   icon: {fileID: 115807242}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
@@ -4051,6 +4062,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523237741}
   m_CullTransparentMesh: 1
+--- !u!50 &523237749
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523237741}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &531016577
 GameObject:
   m_ObjectHideFlags: 0
@@ -5095,9 +5127,9 @@ GameObject:
   - component: {fileID: 794886650}
   - component: {fileID: 794886649}
   - component: {fileID: 794886648}
-  - component: {fileID: 794886647}
   - component: {fileID: 794886646}
   - component: {fileID: 794886645}
+  - component: {fileID: 794886647}
   m_Layer: 5
   m_Name: RightMoveBtn
   m_TagString: Untagged
@@ -5195,21 +5227,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &794886647
-MonoBehaviour:
+--- !u!50 &794886647
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 794886643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &794886648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5223,12 +5261,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 301853827}
   backGround: {fileID: 1248072895}
   icon: {fileID: 834058825}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
@@ -5495,9 +5535,9 @@ GameObject:
   - component: {fileID: 806845122}
   - component: {fileID: 806845121}
   - component: {fileID: 806845120}
-  - component: {fileID: 806845119}
   - component: {fileID: 806845118}
   - component: {fileID: 806845117}
+  - component: {fileID: 806845123}
   m_Layer: 5
   m_Name: SkillBtn (3)
   m_TagString: Untagged
@@ -5595,21 +5635,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &806845119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 806845115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
 --- !u!114 &806845120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5623,12 +5648,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 658763454}
   backGround: {fileID: 1177025470}
   icon: {fileID: 652717211}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
@@ -5670,6 +5697,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806845115}
   m_CullTransparentMesh: 1
+--- !u!50 &806845123
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806845115}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &815287060
 GameObject:
   m_ObjectHideFlags: 0
@@ -7396,9 +7444,9 @@ GameObject:
   - component: {fileID: 1219136834}
   - component: {fileID: 1219136833}
   - component: {fileID: 1219136832}
-  - component: {fileID: 1219136831}
   - component: {fileID: 1219136830}
   - component: {fileID: 1219136829}
+  - component: {fileID: 1219136835}
   m_Layer: 5
   m_Name: SkillBtn (1)
   m_TagString: Untagged
@@ -7496,21 +7544,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1219136831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1219136827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43939b7f932fff24ab2ee927f8e20dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 18196840}
-  settingPanel: {fileID: 2081019826}
-  AlphaThreshold: 0.1
 --- !u!114 &1219136832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7524,12 +7557,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  isUpdatable: 1
   btnArea: {fileID: 448666098}
   backGround: {fileID: 1647867753}
   icon: {fileID: 674731899}
   btnAreaImage: {fileID: 0}
   backGroundImage: {fileID: 0}
   iconImage: {fileID: 0}
+  thisRect: {fileID: 0}
   btnAreaRect: {fileID: 0}
   backGroundRect: {fileID: 0}
   iconRect: {fileID: 0}
@@ -7571,6 +7606,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219136827}
   m_CullTransparentMesh: 1
+--- !u!50 &1219136835
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219136827}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1248072895
 GameObject:
   m_ObjectHideFlags: 0

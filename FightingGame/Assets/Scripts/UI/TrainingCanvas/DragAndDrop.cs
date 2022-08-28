@@ -20,6 +20,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     float parentHalfHeight;
     float xRange;
     float yRange;
+    bool isUpdate = false;
 
     public float AlphaThreshold = 0.1f;
 
@@ -40,7 +41,10 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!settingPanel.isUpdate)
+        if (settingPanel != null)
+            isUpdate = settingPanel.isUpdate;
+
+        if (!isUpdate)
             return;
 
         DragInit();
@@ -51,7 +55,8 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void DragInit()
     {
-        settingPanel.PushKey(thisUpdatbleUI);
+        if(settingPanel != null)
+            settingPanel.PushKey(thisUpdatbleUI);
 
         parentHalfWidth = parentRectTransform.sizeDelta.x / 2;
         parentHalfHeight = parentRectTransform.sizeDelta.y / 2;
@@ -59,7 +64,10 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!settingPanel.isUpdate)
+        if (settingPanel != null)
+            isUpdate = settingPanel.isUpdate;
+
+        if (!isUpdate)
             return;
         // 이전 이동과 비교해서 얼마나 이동했는지를 보여줌
         thisUpdatbleUI.SetTransform(thisUpdatbleUI.GetTransform() + eventData.delta);
@@ -67,7 +75,10 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!settingPanel.isUpdate)
+        if (settingPanel != null)
+            isUpdate = settingPanel.isUpdate;
+
+        if (!isUpdate)
             return;
 
         EndDragChk();
