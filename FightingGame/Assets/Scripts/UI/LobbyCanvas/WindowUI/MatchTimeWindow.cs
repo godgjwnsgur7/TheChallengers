@@ -16,7 +16,7 @@ public class MatchTimeWindow : UIElement
 
     private void Awake()
     {
-        characterSprite = Managers.Resource.LoadAll<Sprite>("Image/Knight-Idle");
+        //characterSprite = Managers.Resource.LoadAll<Sprite>("Image/Knight-Idle");
         minute = second = 0;
     }
 
@@ -24,7 +24,7 @@ public class MatchTimeWindow : UIElement
     {
         base.Open(param);
 
-        charImage.sprite = characterSprite[(int)charType-1];
+        //charImage.sprite = characterSprite[(int)charType-1];
         matchBtn.SwitchInterctable();
 
         StartCoroutine(CountTime());

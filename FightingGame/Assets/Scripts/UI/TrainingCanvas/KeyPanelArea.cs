@@ -9,12 +9,11 @@ public class KeyPanelArea : UIElement
     // Panel 안의 버튼들
     [SerializeField] UpdatableUI[] buttons;
 
-    RectTransform rectTransform;
-    DragAndDrop dragAndDrop;
-    float tempSize;
-    float tempOpacity;
+    float sizeRatio;
+    float opacityRatio;
     Vector2 tempVector;
     Color tempColor;
+
 
     bool isSelect = false;
     float tempX;
@@ -41,24 +40,14 @@ public class KeyPanelArea : UIElement
     private void SetInit(UpdatableUI updateUI)
     {
         updateUI.init();
-        rectTransform = updateUI.GetComponent<RectTransform>();
-
-        if (rectTransform == null)
-            return;
 
         // Size init
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size))
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size, 50);
 
         // Opacity init
-        if (!PlayerPrefs.HasKey($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
-            PlayerPrefs.SetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 0);
-
-        if (!PlayerPrefs.HasKey($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
-            PlayerPrefs.SetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
-
-        if (!PlayerPrefs.HasKey($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
-            PlayerPrefs.SetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
+        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
+            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
 
         // BeforeSize init
         if (!PlayerPrefs.HasKey($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
@@ -78,34 +67,26 @@ public class KeyPanelArea : UIElement
 
         // RectTransform init
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX, rectTransform.anchoredPosition.x);
+            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX, updateUI.thisRect.anchoredPosition.x);
         else
             tempX = PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX);
 
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY, rectTransform.anchoredPosition.y);
+            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY, updateUI.thisRect.anchoredPosition.y);
         else
             tempY = PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY);
 
         if (tempX != 0 && tempY != 0)
-            rectTransform.anchoredPosition = new Vector2(tempX, tempY);
+            updateUI.thisRect.anchoredPosition = new Vector2(tempX, tempY);
 
         // ResetSize init
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size));
 
         // ResetOpacity init
-        if (!PlayerPrefs.HasKey($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
-            PlayerPrefs.SetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
-                PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
-
-        if (!PlayerPrefs.HasKey($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
-            PlayerPrefs.SetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
-                PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
-
-        if (!PlayerPrefs.HasKey($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
-            PlayerPrefs.SetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
-                PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
+            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
+                PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
 
         // UI Init Value Accept
         InitSize(updateUI);
@@ -120,16 +101,9 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        tempSize = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size) + 50) / 100;
+        sizeRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size) + 50) / 100;
 
-        updateUI.backGroundRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
-
-        updateUI.btnAreaRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
-
-        updateUI.iconRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
+        updateUI.SetSize(sizeRatio);
     }
 
     // 초기 UI Opacity 설정
@@ -138,20 +112,9 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        tempOpacity = 0.0f;
-        tempColor = updateUI.btnAreaImage.color;
-        tempColor.a = tempOpacity;
-        updateUI.btnAreaImage.color = tempColor;
+        opacityRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
 
-        tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-        tempColor = updateUI.iconImage.color;
-        tempColor.a = tempOpacity;
-        updateUI.iconImage.color = tempColor;
-
-        tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-        tempColor = updateUI.backGroundImage.color;
-        tempColor.a = tempOpacity;
-        updateUI.backGroundImage.color = tempColor;
+        updateUI.SetOpacity(opacityRatio, true);
     }
 
     // Reset Not Saved Slider Value
@@ -173,18 +136,11 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        tempSize = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize) + 50) / 100;
+        sizeRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize) + 50) / 100;
 
         if (PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
         {
-            updateUI.backGroundRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
-
-            updateUI.btnAreaRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-                PlayerPrefs.GetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
-
-            updateUI.iconRect.sizeDelta = new Vector2(PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-                PlayerPrefs.GetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY)) * tempSize;
+            updateUI.SetSize(sizeRatio);
 
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize));
         }
@@ -198,20 +154,9 @@ public class KeyPanelArea : UIElement
 
         if (PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
         {
-            tempOpacity = 0.5f;
-            tempColor = updateUI.btnAreaImage.color;
-            tempColor.a = tempOpacity;
-            updateUI.btnAreaImage.color = tempColor;
+            opacityRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity) / 200);
 
-            tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.iconImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-            tempColor = updateUI.iconImage.color;
-            tempColor.a = tempOpacity;
-            updateUI.iconImage.color = tempColor;
-
-            tempOpacity = 0.5f + (PlayerPrefs.GetFloat($"{updateUI.backGroundImage.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
-            tempColor = updateUI.backGroundImage.color;
-            tempColor.a = tempOpacity;
-            updateUI.backGroundImage.color = tempColor;
+            updateUI.SetOpacity(opacityRatio, true);
 
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity));
         }
@@ -223,14 +168,10 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        rectTransform = updateUI.GetComponent<RectTransform>();
+        tempVector = new Vector2(PlayerPrefs.GetFloat($"{updateUI.thisRect.name}" + ENUM_PLAYERPREFS_TYPE.TransX),
+            PlayerPrefs.GetFloat($"{updateUI.thisRect.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
 
-        if (rectTransform == null)
-            return;
-
-        tempVector = new Vector2(PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX),
-            PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
-        rectTransform.anchoredPosition = tempVector;
+        updateUI.SetTransform(tempVector);
     }
 
     // HighLight
@@ -258,8 +199,5 @@ public class KeyPanelArea : UIElement
 
         updateUI.btnAreaImage.color = tempColor;
         isSelect = !isSelect;
-
-        if (dragAndDrop == null)
-            return;
     }
 }
