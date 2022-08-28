@@ -29,6 +29,7 @@ public class BottomPanel : UIElement
     private float opacityRatio;
 
     private bool isPushMoveBtn = false;
+    public bool isUpdatable;
     private float moveSpeed;
 
     public override void Open(UIParam param = null)
@@ -40,7 +41,7 @@ public class BottomPanel : UIElement
     {
         if (setBtn != null)
         {
-            keyPanelArea.OnOffHighLight(setBtn);
+            setBtn.OnOffUIArea();
             setBtn = null;
         }
 
@@ -52,7 +53,7 @@ public class BottomPanel : UIElement
     {
         // 이전 선택했던 UI 드래그 중지
         if (setBtn != null)
-            keyPanelArea.OnOffHighLight(setBtn);
+            setBtn.OnOffUIArea();
 
         // 선택한 UI 세팅
         setBtn = updateUI;
@@ -71,7 +72,7 @@ public class BottomPanel : UIElement
         SetSliderText("All");
 
         // UI 드래그 기능
-        keyPanelArea.OnOffHighLight(setBtn);
+        setBtn.OnOffUIArea();
     }
 
 
@@ -126,7 +127,7 @@ public class BottomPanel : UIElement
         if (setBtn == null)
             return;
 
-        if (!setBtn.isUpdatable)
+        if (!isUpdatable)
             return;
 
         // size
@@ -141,11 +142,16 @@ public class BottomPanel : UIElement
         PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
 
         // transform
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtn.thisRect.anchoredPosition.x);
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtn.thisRect.anchoredPosition.y);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtn.GetTransform().x);
+        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtn.GetTransform().y);
 
         PlayerPrefs.Save();
         Close();
+    }
+
+    public void CheckIsUpdatable()
+    {
+        isUpdatable = setBtn.isUpdatable;
     }
 
     // setBtn TransForm move
@@ -179,16 +185,16 @@ public class BottomPanel : UIElement
         switch (direction)
         {
             case "Right":
-                tempRect = new Vector2(setBtn.thisRect.anchoredPosition.x + moveSpeed, setBtn.thisRect.anchoredPosition.y);
+                tempRect = new Vector2(setBtn.GetTransform().x + moveSpeed, setBtn.GetTransform().y);
                 break;
             case "Left":
-                tempRect = new Vector2(setBtn.thisRect.anchoredPosition.x - moveSpeed, setBtn.thisRect.anchoredPosition.y);
+                tempRect = new Vector2(setBtn.GetTransform().x - moveSpeed, setBtn.GetTransform().y);
                 break;
             case "Down":
-                tempRect = new Vector2(setBtn.thisRect.anchoredPosition.x, setBtn.thisRect.anchoredPosition.y - moveSpeed);
+                tempRect = new Vector2(setBtn.GetTransform().x, setBtn.GetTransform().y - moveSpeed);
                 break;
             case "Up":
-                tempRect = new Vector2(setBtn.thisRect.anchoredPosition.x, setBtn.thisRect.anchoredPosition.y + moveSpeed);
+                tempRect = new Vector2(setBtn.GetTransform().x, setBtn.GetTransform().y + moveSpeed);
                 break;
             default:
                 Debug.Log("범위 벗어남");

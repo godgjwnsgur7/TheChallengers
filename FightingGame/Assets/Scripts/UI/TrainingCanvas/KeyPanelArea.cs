@@ -12,10 +12,7 @@ public class KeyPanelArea : UIElement
     float sizeRatio;
     float opacityRatio;
     Vector2 tempVector;
-    Color tempColor;
 
-
-    bool isSelect = false;
     float tempX;
     float tempY;
 
@@ -67,17 +64,17 @@ public class KeyPanelArea : UIElement
 
         // RectTransform init
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX, updateUI.thisRect.anchoredPosition.x);
+            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX, updateUI.GetTransform().x);
         else
             tempX = PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX);
 
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY, updateUI.thisRect.anchoredPosition.y);
+            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY, updateUI.GetTransform().y);
         else
             tempY = PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY);
 
         if (tempX != 0 && tempY != 0)
-            updateUI.thisRect.anchoredPosition = new Vector2(tempX, tempY);
+            updateUI.SetTransform(new Vector2(tempX, tempY));
 
         // ResetSize init
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
@@ -172,32 +169,5 @@ public class KeyPanelArea : UIElement
             PlayerPrefs.GetFloat($"{updateUI.thisRect.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
 
         updateUI.SetTransform(tempVector);
-    }
-
-    // HighLight
-    public void OnOffHighLight(UpdatableUI updateUI)
-    {
-        if (updateUI == null)
-            return;
-
-        SetHighLight(updateUI);
-    }
-
-    //선택 UI 강조
-    private void SetHighLight(UpdatableUI updateUI)
-    {
-        if (updateUI == null)
-            return;
-
-        tempColor = updateUI.btnAreaImage.color;
-
-        // Highlight
-        if (isSelect)
-            tempColor = new Color(255, 255, 255, 0);
-        else
-            tempColor = new Color(0, 255, 0, 0.5f);
-
-        updateUI.btnAreaImage.color = tempColor;
-        isSelect = !isSelect;
     }
 }

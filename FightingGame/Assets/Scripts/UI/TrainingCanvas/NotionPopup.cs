@@ -75,7 +75,13 @@ public class NotionPopup : UIElement
                 trainingCanvas.SetNotionText("값을 초기화 했습니다.");
                 break;
             case ENUM_Notion_TYPE.Save:
-                if (bottomPanel.isOpen)
+                bottomPanel.CheckIsUpdatable();
+
+                if (!bottomPanel.isUpdatable)
+                {
+                    trainingCanvas.SetNotionText("선택한 UI와 겹치는 UI가 있어 저장할 수 없습니다.");
+                }
+                else if (bottomPanel.isOpen)
                 {
                     bottomPanel.SaveSliderValue();
                     trainingCanvas.SetNotionText("저장을 완료했습니다.");
