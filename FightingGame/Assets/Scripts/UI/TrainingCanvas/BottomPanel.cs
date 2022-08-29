@@ -158,7 +158,7 @@ public class BottomPanel : UIElement
     public void MoveBtnDown(string direction)
     {
         isPushMoveBtn = true;
-        moveSpeed = 1.0f;
+        moveSpeed = 0.5f;
         StartCoroutine(MoveKeyPanelUI(direction));
     }
 
@@ -174,7 +174,7 @@ public class BottomPanel : UIElement
             MoveKeyPanelUISub(direction);
 
             if(moveSpeed <= 5.0f)
-                moveSpeed += 0.05f;
+                moveSpeed += 0.5f * Time.deltaTime;
 
             yield return null;
         }
@@ -201,8 +201,8 @@ public class BottomPanel : UIElement
                 return;
         }
 
-        tempX = Mathf.Clamp(tempRect.x, -pHalfWidth + setBtn.GetHalfWidth(), pHalfWidth - setBtn.GetHalfWidth());
-        tempY = Mathf.Clamp(tempRect.y, -pHalfHeight + setBtn.GetHalfHeight(), pHalfHeight - setBtn.GetHalfHeight());
+        tempX = Mathf.Clamp(tempRect.x, -pHalfWidth + setBtn.GetHalfWidth() * setBtn.GetSize().x, pHalfWidth - setBtn.GetHalfWidth() * setBtn.GetSize().x);
+        tempY = Mathf.Clamp(tempRect.y, -pHalfHeight + setBtn.GetHalfHeight() * setBtn.GetSize().y, pHalfHeight - setBtn.GetHalfHeight() * setBtn.GetSize().y);
         tempRect = new Vector2(tempX, tempY);
 
         setBtn.SetTransform(tempRect);

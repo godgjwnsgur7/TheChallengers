@@ -6,20 +6,12 @@ using UnityEngine.UI;
 
 public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    GameObject parent;
     SettingPanel settingPanel;
     UpdatableUI thisUpdatbleUI;
 
-    RectTransform parentRectTransform;
     CanvasGroup canvasGroup;
     Image DragUIImage;
 
-    Vector2 currentPosition;
-
-    float parentHalfWidth;
-    float parentHalfHeight;
-    float xRange;
-    float yRange;
     bool isUpdate = false;
 
     public float AlphaThreshold = 0.1f;
@@ -27,12 +19,15 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public void Init()
     {
         thisUpdatbleUI = this.gameObject.GetComponent<UpdatableUI>();
+        if (thisUpdatbleUI == null)
+            thisUpdatbleUI = this.gameObject.AddComponent<UpdatableUI>();
 
-        parent = this.gameObject.transform.parent.gameObject;
+        thisUpdatbleUI.parent = this.gameObject.transform.parent.gameObject;
         settingPanel = this.gameObject.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
 
         canvasGroup = GetComponent<CanvasGroup>();
-        parentRectTransform = parent.GetComponent<RectTransform>();
+        if (canvasGroup == null)
+            canvasGroup = this.gameObject.AddComponent<CanvasGroup>();
 
         // Buttom Click 가능 범위 설정
         DragUIImage = GetComponent<Image>();
@@ -57,9 +52,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         if(settingPanel != null)
             settingPanel.PushKey(thisUpdatbleUI);
-
-        parentHalfWidth = parentRectTransform.sizeDelta.x / 2;
-        parentHalfHeight = parentRectTransform.sizeDelta.y / 2;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -89,10 +81,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void EndDragChk()
     {
-        xRange = Mathf.Clamp(thisUpdatbleUI.GetTransform().x, -parentHalfWidth + thisUpdatbleUI.GetHalfWidth(), parentHalfWidth - thisUpdatbleUI.GetHalfWidth());
-        yRange = Mathf.Clamp(thisUpdatbleUI.GetTransform().y, -parentHalfHeight + thisUpdatbleUI.GetHalfHeight(), parentHalfHeight - thisUpdatbleUI.GetHalfHeight());
-
-        currentPosition = new Vector2(xRange, yRange);
-        thisUpdatbleUI.SetTransform(currentPosition);
+        thisUpdatbleUI.CheckUITransform();
     }
 }

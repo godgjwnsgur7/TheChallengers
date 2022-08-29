@@ -46,22 +46,6 @@ public class KeyPanelArea : UIElement
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
 
-        // BeforeSize init
-        if (!PlayerPrefs.HasKey($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
-            PlayerPrefs.SetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, updateUI.btnAreaRect.sizeDelta.x);
-        if (!PlayerPrefs.HasKey($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
-            PlayerPrefs.SetFloat($"{updateUI.btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, updateUI.btnAreaRect.sizeDelta.y);
-
-        if (!PlayerPrefs.HasKey($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
-            PlayerPrefs.SetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, updateUI.iconRect.sizeDelta.x);
-        if (!PlayerPrefs.HasKey($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
-            PlayerPrefs.SetFloat($"{updateUI.iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, updateUI.iconRect.sizeDelta.y);
-
-        if (!PlayerPrefs.HasKey($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX))
-            PlayerPrefs.SetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX, updateUI.backGroundRect.sizeDelta.x);
-        if (!PlayerPrefs.HasKey($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY))
-            PlayerPrefs.SetFloat($"{updateUI.backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY, updateUI.backGroundRect.sizeDelta.y);
-
         // RectTransform init
         if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX))
             PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX, updateUI.GetTransform().x);
@@ -100,7 +84,7 @@ public class KeyPanelArea : UIElement
 
         sizeRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size) + 50) / 100;
 
-        updateUI.SetSize(sizeRatio);
+        updateUI.SetSize(sizeRatio, true);
     }
 
     // 초기 UI Opacity 설정

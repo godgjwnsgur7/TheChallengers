@@ -11,6 +11,9 @@ public class UpdatableUI : UIElement
     public bool isUpdatable = true;
     public bool isSelect = false;
 
+    public GameObject parent;
+    public RectTransform parentRect;
+
     public GameObject btnArea;
     public GameObject backGround;
     public GameObject icon;
@@ -24,10 +27,13 @@ public class UpdatableUI : UIElement
     public RectTransform backGroundRect;
     public RectTransform iconRect;
 
-    BoxCollider2D thisBoxCollider;
-
-    private Vector2 changeSize;
+    private BoxCollider2D thisBoxCollider;
     private Color changeColor;
+
+    float xRange;
+    float yRange;
+    float scaleSizeX;
+    float scaleSizeY;
 
     public override void Open(UIParam param = null)
     {
@@ -41,6 +47,9 @@ public class UpdatableUI : UIElement
 
     public void init()
     {
+        parent = this.gameObject.transform.parent.gameObject;
+        parentRect = parent.GetComponent<RectTransform>();
+
         dragAndDrop = GetComponent<DragAndDrop>();
         if (dragAndDrop == null)
             dragAndDrop = this.gameObject.AddComponent<DragAndDrop>();
@@ -61,23 +70,17 @@ public class UpdatableUI : UIElement
         SetBoxCollider();
     }
 
-    public void SetSize(float size)
+    // -------------------------------------------------------------------- Set
+    // UI 크기 조절(50~150%)
+    public void SetSize(float size, bool isInit = false)
     {
-        changeSize = new Vector2(PlayerPrefs.GetFloat($"{backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{backGroundRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
-        backGroundRect.sizeDelta = changeSize * size;
+        thisRect.localScale = new Vector3(size, size, size);
 
-        changeSize = new Vector2(PlayerPrefs.GetFloat($"{iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{iconRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
-        iconRect.sizeDelta = changeSize * size;
-
-        changeSize = new Vector2(PlayerPrefs.GetFloat($"{btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeX),
-            PlayerPrefs.GetFloat($"{btnAreaRect.name}" + ENUM_PLAYERPREFS_TYPE.BaseSizeY));
-        btnAreaRect.sizeDelta = changeSize * size;
-
-        SetBoxCollider();
+        if (!isInit)
+            CheckUITransform();
     }
 
+    // UI 투명도 조절(50~100%)
     public void SetOpacity(float Opacity, bool isInit = false)
     {
         changeColor = btnAreaImage.color;
@@ -93,16 +96,15 @@ public class UpdatableUI : UIElement
         iconImage.color = changeColor;
     }
 
+    // UI 위치 설정
     public void SetTransform(Vector2 rectTrans)
     {
         thisRect.anchoredPosition = rectTrans;
-    }
 
-    public Vector2 GetTransform()
-    {
-        return thisRect.anchoredPosition;
+        CheckUITransform();
     }
-
+    
+    // 박스 콜라이더 설정
     public void SetBoxCollider()
     {
         thisBoxCollider.size = thisRect.sizeDelta;
@@ -111,6 +113,20 @@ public class UpdatableUI : UIElement
             thisBoxCollider.isTrigger = true;
     }
 
+    // 스킬 아이콘 변경 (미구현)
+    public void SetSkillImage(ENUM_CHARACTER_TYPE characterType)
+    {
+        // iconImage.sprite = 
+    }
+
+    // -------------------------------------------------------------------- Get
+    // UI 위치 값
+    public Vector2 GetTransform()
+    {
+        return thisRect.anchoredPosition;
+    }
+
+    // UI 가로 세로 길이
     public float GetHalfWidth()
     {
         return backGroundRect.sizeDelta.x / 2;
@@ -120,7 +136,25 @@ public class UpdatableUI : UIElement
     {
         return backGroundRect.sizeDelta.y / 2;
     }
-    
+
+    // 부모 UI 가로 세로 길이
+    public float GetHalfParentWidth()
+    {
+        return parentRect.sizeDelta.x / 2;
+    }
+
+    public float GetHalfParentHeight()
+    {
+        return parentRect.sizeDelta.y / 2;
+    }
+
+    // UI 스케일 값
+    public Vector3 GetSize()
+    {
+        return thisRect.localScale;
+    }
+
+    // -------------------------------------------------------------------- Trigger
     // UI 영역 겹치는 동안 수정 불가능, Area영역 색상 수정
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -145,6 +179,7 @@ public class UpdatableUI : UIElement
         }
     }
 
+    // -------------------------------------------------------------------- Drag Area Change
     // 드래그 관련 행위 후 Area 색 변경
     private void ChangeAreaColor() 
     {
@@ -176,5 +211,18 @@ public class UpdatableUI : UIElement
             changeColor = new Color(255, 255, 255, 0);
 
         btnAreaImage.color = changeColor;
+    }
+
+    // UI 위치 체크
+    public void CheckUITransform()
+    {
+        scaleSizeX = GetHalfWidth() * GetSize().x;
+        scaleSizeY = GetHalfHeight() * GetSize().y;
+
+        xRange = Mathf.Clamp(GetTransform().x, -GetHalfParentWidth() + scaleSizeX, GetHalfParentWidth() - scaleSizeX);
+        yRange = Mathf.Clamp(GetTransform().y, -GetHalfParentHeight() + scaleSizeY, GetHalfParentHeight() - scaleSizeY);
+
+
+        thisRect.anchoredPosition = new Vector3(xRange, yRange, 0);
     }
 }

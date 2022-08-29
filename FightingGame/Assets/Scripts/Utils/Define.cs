@@ -148,10 +148,10 @@ namespace FGDefine
         Opacity = 2,
         TransX = 3,
         TransY = 4,
-        BaseSizeX = 5,
-        BaseSizeY = 6,
-        ResetSize = 7,
-        ResetOpacity = 8,
+        ResetSize = 5,
+        ResetOpacity = 6,
+        /*BaseSizeX = 7,
+        BaseSizeY = 8,*/
     }
 }
 

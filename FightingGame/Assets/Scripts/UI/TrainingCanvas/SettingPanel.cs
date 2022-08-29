@@ -28,9 +28,6 @@ public class SettingPanel : UIElement
     {
         if (isOpen)
         {
-            /*bottomPanel.setSlider(go);
-            Managers.UI.OpenUI<BottomPanel>();*/
-
             bottomPanel.setSlider(UpdateUI);
             Managers.UI.OpenUI<BottomPanel>();
         }
