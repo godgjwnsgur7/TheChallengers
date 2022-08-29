@@ -109,15 +109,14 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) moveDir = 1.0f;
 
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-            moveDir = 0f;
-
-        if (moveDir == 0f)
         {
+            moveDir = 0f;
             PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
-        else
+
+        if (moveDir != 0f)
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir, Input.GetKey(KeyCode.LeftShift)));
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
         }
     }
     

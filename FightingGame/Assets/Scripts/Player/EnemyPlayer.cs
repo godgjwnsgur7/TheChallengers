@@ -88,7 +88,7 @@ public class EnemyPlayer : MonoBehaviour
         }
         else
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir, Input.GetKey(KeyCode.LeftShift)));
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
         }
     }
 

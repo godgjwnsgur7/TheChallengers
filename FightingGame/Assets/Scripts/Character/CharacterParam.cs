@@ -13,13 +13,9 @@ public class CharacterParam { }
 public class CharacterMoveParam : CharacterParam
 {
     public float moveDir;
-    public bool isRun;
-    public float speed = 3.0f;
     
-    public CharacterMoveParam(float _moveDir, bool _isRun = false)
+    public CharacterMoveParam(float _moveDir)
     {
-        isRun = _isRun;
-        speed = _isRun ? (speed * 1.5f) : speed;
         moveDir = _moveDir;
     }
 }

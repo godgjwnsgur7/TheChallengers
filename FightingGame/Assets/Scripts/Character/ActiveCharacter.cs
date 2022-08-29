@@ -55,20 +55,9 @@ public partial class ActiveCharacter : Character
     public void Set_Character()
     {
         if (PhotonLogicHandler.IsConnected)
-        {
-            if (PhotonLogicHandler.IsMine(viewID))
-            {
-                isControl = true;
-            }
-            else
-            {
-                isControl = false;
-            }
-        }
+            isControl = PhotonLogicHandler.IsMine(viewID);
         else
-        {
             isControl = true;
-        }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
             ReverseSprites(-1.0f);
@@ -157,7 +146,8 @@ public partial class ActiveCharacter : Character
         if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
             return;
 
-        if (attackObject != null) attackObject = null;
+        if (attackObject != null)
+            attackObject = null;
 
         base.Attack(param);
 
@@ -298,11 +288,17 @@ public partial class ActiveCharacter : Character
             _jumpState = !Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
 
             if(jumpState != _jumpState)
-            {   
+            {
                 jumpState = _jumpState;
-                if(!anim.GetBool("IsJump") && currState != ENUM_PLAYER_STATE.Hit)
+                
+
+                if (!anim.GetBool("IsJump") &&
+                    (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
+                {
                     anim.SetTrigger("DropTrigger");
+                }
                 anim.SetBool("IsJump", jumpState);
+
             }
 
             yield return null;
