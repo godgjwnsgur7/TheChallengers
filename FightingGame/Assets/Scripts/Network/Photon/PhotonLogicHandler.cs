@@ -352,7 +352,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = playerNickname;
 
         RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
-        roomOptions.CustomRoomProperties.Add(typeof(ENUM_MAP_TYPE).ToString(), "아직 맵 이름 쓰지마~~");
+        // roomOptions.CustomRoomProperties.Add(typeof(ENUM_MAP_TYPE).ToString(), "아직 맵 이름 쓰지마~~");
 
         return PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
