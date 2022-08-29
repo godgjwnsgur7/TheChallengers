@@ -21,4 +21,5 @@ public class Idle : StateMachineBehaviour
         activeCharacter.Idle();
         animator.SetBool("IsIdle", false);
     }
+
 }

@@ -111,7 +111,8 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             moveDir = 0f;
-            PlayerCommand(ENUM_PLAYER_STATE.Idle);
+            if(activeCharacter.currState == ENUM_PLAYER_STATE.Move)
+                PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
 
         if (moveDir != 0f)
@@ -125,8 +126,8 @@ public class PlayerCharacter : MonoBehaviour
         if (activeCharacter == null)
             return;
 
-        if (activeCharacter.currState == ENUM_PLAYER_STATE.Hit ||
-           activeCharacter.currState == ENUM_PLAYER_STATE.Die)
+        if ( activeCharacter.currState == ENUM_PLAYER_STATE.Skill ||
+            (activeCharacter.currState == ENUM_PLAYER_STATE.Hit || activeCharacter.currState == ENUM_PLAYER_STATE.Die))
             return;
 
         /*
