@@ -32,12 +32,12 @@ public class AttackObejct : Poolable
     }
 
     [BroadcastMethod]
-    public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType,bool _reverseState)
+    public virtual void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
     {
         isUsing = true;
 
-        reverseState = _reverseState;
-        teamType = _teamType;
+        reverseState = attackObjectParam.reverseState;
+        teamType = attackObjectParam.teamType;
 
         transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
 

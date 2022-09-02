@@ -19,7 +19,6 @@ public class Idle : StateMachineBehaviour
             return;
 
         activeCharacter.Idle();
-        animator.SetBool("IsIdle", false);
     }
 
 }

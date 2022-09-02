@@ -379,7 +379,15 @@ public partial class ActiveCharacter : Character
         if (attackObject != null)
         {
             attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(teamType, reverseState);
+            
+            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState);
+            if(isConnected)
+            {
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObejct, SyncAttackObjectParam>
+                    (attackObject, attackObject.ActivatingAttackObject, syncAttackObjectParam);
+            }
+            else
+                attackObject.ActivatingAttackObject(syncAttackObjectParam);
         }
         else
         {

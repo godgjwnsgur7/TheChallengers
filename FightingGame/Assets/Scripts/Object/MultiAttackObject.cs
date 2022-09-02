@@ -15,10 +15,10 @@ public class MultiAttackObject : AttackObejct
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Multi;
     }
 
-    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    public override void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
     {
-        reverseState = _reverseState;
-        teamType = _teamType;
+        reverseState = attackObjectParam.reverseState;
+        teamType = attackObjectParam.teamType;
 
         if(reverseState)
         {
@@ -43,7 +43,7 @@ public class MultiAttackObject : AttackObejct
         if (attackObject != null)
         {
             attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(teamType, reverseState);
+            attackObject.ActivatingAttackObject(new SyncAttackObjectParam(teamType, reverseState));
         }
         else
         {

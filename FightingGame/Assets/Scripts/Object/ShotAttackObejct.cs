@@ -22,15 +22,15 @@ public class ShotAttackObejct : AttackObejct
         }
     }
 
-    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    public override void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
     {
-        base.ActivatingAttackObject(_teamType, _reverseState);
+        base.ActivatingAttackObject(attackObjectParam);
 
         // 날아가는 힘을 받아야 하는데, 고민중
 
         float speed = 500.0f;
 
-        if (_reverseState) speed *= -1f;
+        if (attackObjectParam.reverseState) speed *= -1f;
 
         rigid2D.AddForce(new Vector2(speed, 0));
     }
