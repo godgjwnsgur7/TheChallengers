@@ -38,6 +38,7 @@ namespace FGDefine
         Ally = 2, // 사라질 예정?
     }
 
+    [Serializable]
     public enum ENUM_TEAM_TYPE
     {
         Blue = 0,
@@ -49,6 +50,7 @@ namespace FGDefine
     /// <summary>
     /// 캐릭터 타입
     /// </summary>
+    [Serializable]
     public enum ENUM_CHARACTER_TYPE
     {
         Default = 0,
@@ -61,6 +63,7 @@ namespace FGDefine
     /// <summary>
     /// "Resources/Prefabs/Maps/" 경로 안에 같은 이름의 프리팹이 필요
     /// </summary>
+    [Serializable]
     public enum ENUM_MAP_TYPE
     {
         BasicMap = 0,
@@ -90,6 +93,7 @@ namespace FGDefine
     /// "Resources/Sounds/BGM/"
     /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
     /// </summary>
+    [Serializable]
     public enum ENUM_BGM_TYPE
     {
         TestBGM, // 테스트용
@@ -99,11 +103,13 @@ namespace FGDefine
     /// "Resources/Sounds/SFX/"
     /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
     /// </summary>
+    [Serializable]
     public enum ENUM_SFX_TYPE
     {
         win, // 테스트용
     }
 
+    [Serializable]
     public enum ENUM_INPUT_TYPE
     {
         Null = 0,
@@ -112,6 +118,7 @@ namespace FGDefine
         Max
     }
 
+    [Serializable]
     public enum ENUM_PLAYER_STATE
     {
         Idle,
@@ -127,6 +134,7 @@ namespace FGDefine
         Max
     }
 
+    [Serializable]
     public enum ENUM_WEAPON_TYPE
     {
         Null = 0,
@@ -141,6 +149,7 @@ namespace FGDefine
         Max
     }
 
+    [Serializable]
     public enum ENUM_PLAYERPREFS_TYPE
     {
         Defalut = 0,
