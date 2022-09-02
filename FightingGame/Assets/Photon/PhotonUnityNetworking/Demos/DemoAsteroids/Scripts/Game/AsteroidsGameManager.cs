@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AsteroidsGameManager.cs" company="Exit Games GmbH">
 //   Part of: Asteroid demo
 // </copyright>
@@ -41,7 +41,7 @@ namespace Photon.Pun.Demo.Asteroids
             CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
         }
 
-        public void Start()
+        public override void Start()
         {
             Hashtable props = new Hashtable
             {

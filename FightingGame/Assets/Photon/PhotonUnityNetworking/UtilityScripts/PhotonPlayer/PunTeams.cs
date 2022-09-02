@@ -50,7 +50,7 @@ namespace Photon.Pun.UtilityScripts
 
         #region Events by Unity and Photon
 
-        public void Start()
+        public override void Start()
         {
             PlayersPerTeam = new Dictionary<Team, List<Player>>();
             Array enumVals = Enum.GetValues(typeof(Team));

@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PunCockpit.cs" company="Exit Games GmbH">
 //   Part of: Pun Cockpit Demo
 // </copyright>
@@ -119,7 +119,7 @@ namespace Photon.Pun.Demo.Cockpit
 		public RegionListView RegionListView;
 		public Text RegionListLoadingFeedback;
 
-        public void Start()
+        public override void Start()
         {
 
             Instance = this;

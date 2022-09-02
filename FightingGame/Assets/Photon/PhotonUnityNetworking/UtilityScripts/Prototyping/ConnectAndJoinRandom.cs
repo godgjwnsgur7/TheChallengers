@@ -38,7 +38,7 @@ namespace Photon.Pun.UtilityScripts
 
         public int playerTTL = -1;
 
-        public void Start()
+        public override void Start()
         {
             if (this.AutoConnect)
             {

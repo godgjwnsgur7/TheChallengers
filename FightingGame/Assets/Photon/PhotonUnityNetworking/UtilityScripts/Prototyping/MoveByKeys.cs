@@ -48,7 +48,7 @@ namespace Photon.Pun.UtilityScripts
         private Rigidbody body;
         private Rigidbody2D body2d;
 
-        public void Start()
+        public override void Start()
         {
             //enabled = photonView.isMine;
             this.isSprite = (GetComponent<SpriteRenderer>() != null);

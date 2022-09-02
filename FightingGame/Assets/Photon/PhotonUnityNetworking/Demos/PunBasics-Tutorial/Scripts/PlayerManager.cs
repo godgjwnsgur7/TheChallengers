@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlayerManager.cs" company="Exit Games GmbH">
 //   Part of: Photon Unity Networking Demos
 // </copyright>
@@ -77,7 +77,7 @@ namespace Photon.Pun.Demo.PunBasics
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during initialization phase.
         /// </summary>
-        public void Start()
+        public override void Start()
         {
             CameraWork _cameraWork = gameObject.GetComponent<CameraWork>();
 

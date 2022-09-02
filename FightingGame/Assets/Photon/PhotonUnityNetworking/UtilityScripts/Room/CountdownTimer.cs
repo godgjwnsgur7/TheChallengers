@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CountdownTimer.cs" company="Exit Games GmbH">
 //   Part of: Photon Unity Utilities,
 // </copyright>
@@ -58,7 +58,7 @@ namespace Photon.Pun.UtilityScripts
         public static event CountdownTimerHasExpired OnCountdownTimerHasExpired;
 
 
-        public void Start()
+        public override void Start()
         {
             if (this.Text == null) Debug.LogError("Reference to 'Text' is not set. Please set a valid reference.", this);
         }

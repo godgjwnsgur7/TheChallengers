@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PunCockpitEmbed.cs" company="Exit Games GmbH">
 //   Part of: Photon Unity Networking Demos
 // </copyright>
@@ -41,7 +41,7 @@ namespace Photon.Pun.Demo.Cockpit
         }
 
         // Use this for initialization
-        IEnumerator Start()
+        new IEnumerator Start()
         {
 
 

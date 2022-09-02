@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PlayerControl.cs" company="Exit Games GmbH">
 //   Part of: Photon Unity Networking Demos
 // </copyright>
@@ -155,7 +155,7 @@ namespace Photon.Pun.Demo.SlotRacer
         /// Start this instance as a coroutine
         /// Waits for a Playernumber to be assigned and only then setup the car and put it on the right starting position on the lane.
         /// </summary>
-        private IEnumerator Start()
+        private new IEnumerator Start()
         {
             // Wait until a Player Number is assigned
             // PlayerNumbering component must be in the scene.

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -33,7 +33,7 @@ namespace Photon.Pun.Demo.Procedural
         /// <summary>
         /// Sets the unique key of this Cluster used for storing modifications within the Custom Room Properties.
         /// </summary>
-        private void Start()
+        private new void Start()
         {
             propertiesKey = "Cluster " + ClusterId;
         }
