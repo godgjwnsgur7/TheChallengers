@@ -16,7 +16,7 @@ public class CreateRoomPanel : UIElement
 
     public void init()
     {
-        mapSprite = Managers.Resource.LoadAll<Sprite>("Image/test_standing");
+        //mapSprite = Managers.Resource.LoadAll<Sprite>("Image/test_standing");
     }
 
     public override void Open(UIParam param = null)
@@ -26,7 +26,7 @@ public class CreateRoomPanel : UIElement
         // 기본 정보 초기화
         // createUser.text = $"방장 : {}";
         notice.text = "";
-        mapImage.sprite = mapSprite[0];
+        //mapImage.sprite = mapSprite[0];
         mapSpriteP = 0;
     }
 
