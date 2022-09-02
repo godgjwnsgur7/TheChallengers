@@ -75,12 +75,12 @@ public partial class ActiveCharacter : Character
 	{
         AnimatorSyncParam[] syncParams = new AnimatorSyncParam[]
         {
-            new AnimatorSyncParam("IsIdle", AnimParameterType.Bool),
             new AnimatorSyncParam("DirX", AnimParameterType.Float),
             new AnimatorSyncParam("IsMove", AnimParameterType.Bool),
             new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
-            new AnimatorSyncParam("IsJump", AnimParameterType.Bool),
+            new AnimatorSyncParam("AttackState", AnimParameterType.Bool),
             new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("IsJump", AnimParameterType.Bool),
             new AnimatorSyncParam("SkillType", AnimParameterType.Int),
             new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsHit", AnimParameterType.Bool),
@@ -253,6 +253,14 @@ public partial class ActiveCharacter : Character
         anim.SetFloat("DirX", _moveDir);
     }
 
+    public void Change_AttackState(bool _attackState)
+    {
+        if (anim.GetBool("AttackState") == _attackState)
+            return;
+
+        anim.SetBool("AttackState", _attackState);
+    }
+
     public void ReverseSprites(float vecX)
     {
         bool _reverseState = (vecX < 0.9f);
@@ -378,7 +386,8 @@ public partial class ActiveCharacter : Character
             Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
     }
-
+    
+    // 변수 동기화로 무적처리가 잘 될지 모르겠지만, 일단 진행
     protected void SuperArmourState_On()
     {
         if (!isControl) return;
@@ -391,14 +400,6 @@ public partial class ActiveCharacter : Character
         if (!isControl) return;
 
         superArmour = false;
-    }
-
-    protected void Checking_AttackState()
-    {
-        if (!isControl) return;
-
-        if (!attackState)
-            anim.SetBool("IsIdle", true);
     }
 
     protected void Move_Attack(float vecX)

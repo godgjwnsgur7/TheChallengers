@@ -9,6 +9,7 @@ public enum ENUM_ATTACKOBJECT_TYPE
     Default = 0,
     Shot = 1,
     Multi = 2,
+    Follow = 3,
 }
 
 public class AttackObejct : Poolable
@@ -33,6 +34,8 @@ public class AttackObejct : Poolable
     [BroadcastMethod]
     public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType,bool _reverseState)
     {
+        isUsing = true;
+
         reverseState = _reverseState;
         teamType = _teamType;
 
@@ -69,6 +72,7 @@ public class AttackObejct : Poolable
             else
                 enemyCharacter.Hit(attackParam);
 
+            isUsing = false;
             Managers.Resource.Destroy(gameObject);
         }
         else
@@ -82,6 +86,9 @@ public class AttackObejct : Poolable
         yield return new WaitForSeconds(_runTime);
         
         if(this.gameObject.activeSelf)
+        {
+            isUsing = false;
             Managers.Resource.Destroy(gameObject);
+        }
     }
 }

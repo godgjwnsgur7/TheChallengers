@@ -28,7 +28,6 @@ public class Character : MonoBehaviourPhoton
 
     public bool jumpState = false;
     public bool invincibility = false;
-    public bool attackState = false;
     public bool superArmour = false;
 
     public override void Init()
@@ -52,7 +51,6 @@ public class Character : MonoBehaviourPhoton
         stream.Write(teamType);
         stream.Write(jumpState);
         stream.Write(invincibility);
-        stream.Write(attackState);
         stream.Write(superArmour);
 
         base.OnMineSerializeView(stream);
@@ -65,7 +63,6 @@ public class Character : MonoBehaviourPhoton
         teamType = stream.Read<ENUM_TEAM_TYPE>();
         jumpState = stream.Read<bool>();
         invincibility = stream.Read<bool>();
-        attackState = stream.Read<bool>();
         superArmour = stream.Read<bool>();
 
         base.OnOtherSerializeView(stream);

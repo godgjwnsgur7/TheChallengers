@@ -67,12 +67,12 @@ public class PlayerCharacter : MonoBehaviour
         {
             CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, activeCharacter.reverseState);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
-            activeCharacter.attackState = true;
+            activeCharacter.Change_AttackState(true);
         }
 
         if (Input.GetKeyUp(KeyCode.F))
         {
-            activeCharacter.attackState = false;
+            activeCharacter.Change_AttackState(false);
         }
 
         // 스킬 1번

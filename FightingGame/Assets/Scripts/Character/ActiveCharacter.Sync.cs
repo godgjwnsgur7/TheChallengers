@@ -12,4 +12,8 @@ public partial class ActiveCharacter : Character
         reverseState = _reverseState;
     }
 
+    public void Sync_Summon_AttackObjcet(int _attackTypeNum)
+    {
+
+    }
 }
