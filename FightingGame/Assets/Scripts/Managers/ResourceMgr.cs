@@ -92,7 +92,7 @@ public class ResourceMgr
         return PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);
     }
 
-    public AttackObejct GetAttackObject(string path)
+    public AttackObject GetAttackObject(string path)
     {
         GameObject original = Load<GameObject>($"Prefabs/AttackObejcts/{path}");
         if(original == null)
@@ -103,7 +103,7 @@ public class ResourceMgr
 
         if (original.GetComponent<Poolable>() != null)
         {
-            AttackObejct attackObejct = Managers.Pool.Pop(original, false) as AttackObejct;
+            AttackObject attackObejct = Managers.Pool.Pop(original, false) as AttackObject;
 
             if (attackObejct != null)
                 return attackObejct;
