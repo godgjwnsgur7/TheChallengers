@@ -104,9 +104,10 @@ public class AttackObject : Poolable
 
         while(realTime < _runTime)
         {
-            Debug.Log("FollowTarget 코루틴 작동중");
             realTime += Time.deltaTime;
-            this.transform.position = _target.position;
+            
+            if(attackObjectType != ENUM_ATTACKOBJECT_TYPE.Shot)
+                this.transform.position = _target.position;
 
             yield return null;
         }
