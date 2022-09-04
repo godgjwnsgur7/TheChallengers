@@ -50,7 +50,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void DragInit()
     {
-        thisUpdatbleUI.ChangeAreaColor();
+        settingPanel.PushKey(thisUpdatbleUI);
     }
 
     public void OnDrag(PointerEventData eventData)
