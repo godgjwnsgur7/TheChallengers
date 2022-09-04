@@ -181,7 +181,7 @@ public class UpdatableUI : UIElement
 
     // -------------------------------------------------------------------- Drag Area Change
     // 드래그 관련 행위 후 Area 색 변경
-    private void ChangeAreaColor() 
+    public void ChangeAreaColor() 
     {
         changeColor = btnAreaImage.color;
 

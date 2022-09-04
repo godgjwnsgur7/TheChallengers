@@ -57,8 +57,11 @@ public class TrainingCanvas : BaseCanvas
     // 캐릭터 UI 세팅 패널 open,close
     public void OnOffSettingPanel()
     {
-        if(keyPanelArea.isOpen == false)
+        if (keyPanelArea.isOpen == false) 
+        {
+            keyPanelArea.playerType = FGDefine.ENUM_CHARACTER_TYPE.Knight;
             Managers.UI.OpenUI<KeyPanelArea>();
+        }
 
         if (settingPanel.isOpen)
         {
