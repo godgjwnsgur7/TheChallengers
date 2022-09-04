@@ -20,50 +20,6 @@ public enum ENUM_RPC_TARGET
 }
 
 public class BroadcastMethodAttribute : PunRPC { }
-public class PhotonCustomType { }
-
-[Serializable]
-public class PhotonCustomType<T> : PhotonCustomType
-{
-    public static object Deserialize(Hashtable diskData)
-    {
-        Type t = typeof(T);
-        var fieldInfos = t.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-        object[] retObjs = new object[fieldInfos.Length];
-
-        for (int i = 0; i < fieldInfos.Length; i++)
-        {
-            if (!diskData.ContainsKey(fieldInfos[i].Name))
-                continue;
-
-            retObjs[i] = diskData[fieldInfos[i].Name];
-        }
-
-        return retObjs;
-    }
-
-    public static Hashtable Serialize(object memoryData)
-    {
-        Type t = typeof(T);
-        T data = (T)memoryData;
-
-        Hashtable table = new Hashtable();
-        var fieldInfos = t.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-
-        foreach(var fieldInfo in fieldInfos)
-        {
-            if (fieldInfo.IsNotSerialized)
-                continue;
-
-            var val = fieldInfo.GetValue(data);
-            var name = fieldInfo.Name;
-
-            table.Add(name, val);
-        }
-
-        return table;
-    }
-}
 
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message);
@@ -119,39 +75,16 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private void Initialize()
     {
+        PhotonCustomTypeManagement.Register();
+
         view = gameObject.AddComponent<PhotonView>();
 
         if (view.ViewID == 0)
             PhotonNetwork.AllocateViewID(view);
-
-        // SetPhotonPeerParameterType();
     }
 
-    private void SetPhotonPeerParameterType()
-    {
-        var types = Assembly.GetAssembly(typeof(PhotonCustomType)).GetTypes();
-        byte code = 1;
 
-        foreach (var type in types)
-        {
-            if (type.IsSubclassOf(typeof(PhotonCustomType)))
-            {
-                PhotonPeer.RegisterType(type, ++code, SerializeHashtable, DeserializeHashtable);
-            }
-        }
-    }
-
-    private static short SerializeHashtable(StreamBuffer outStream, object customObject)
-    {
-        return 0;
-    }
-
-    private static object DeserializeHashtable(StreamBuffer inStream, short length)
-    {
-        return 0;
-    }
-
-    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4, TParam5>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4, TParam5>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5,ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
         if (!IsConnected)
