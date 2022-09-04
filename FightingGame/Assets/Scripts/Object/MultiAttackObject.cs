@@ -24,6 +24,7 @@ public class MultiAttackObject : AttackObject
         }
     }
 
+	[BroadcastMethod]
     public override void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
     {
         reverseState = attackObjectParam.reverseState;

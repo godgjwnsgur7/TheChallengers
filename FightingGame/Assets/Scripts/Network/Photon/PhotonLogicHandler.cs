@@ -120,6 +120,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T">함수의 주인</typeparam>
+    /// <typeparam name="TParam">byte, bool, short, int, long, float, double, string, byte[], T[], object[]</typeparam>
     public void TryBroadcastMethod<T, TParam>(T owner, Action<TParam> targetMethod, TParam param, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {

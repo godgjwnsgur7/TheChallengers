@@ -24,7 +24,7 @@ public class SyncAttackObjectParam : PhotonCustomType
         targetTr = _targetTr;
     }
     
-    public static object Deserialize(byte[] data)
+    public new static object Deserialize(byte[] data)
 	{
         var param = new SyncAttackObjectParam();
 
@@ -34,7 +34,7 @@ public class SyncAttackObjectParam : PhotonCustomType
         return param;
     }
 
-	public static byte[] Serialize(object customObject)
+	public new static byte[] Serialize(object customObject)
 	{
         var param = (SyncAttackObjectParam)customObject;
 
