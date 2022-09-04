@@ -92,6 +92,11 @@ public class ResourceMgr
         return PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);
     }
 
+    public void DestroyEveryone(MonoBehaviourPhoton obj)
+	{
+        PhotonLogicHandler.Instance.TryDestroy(obj);
+	}
+
     public AttackObject GetAttackObject(string path)
     {
         GameObject original = Load<GameObject>($"Prefabs/AttackObejcts/{path}");

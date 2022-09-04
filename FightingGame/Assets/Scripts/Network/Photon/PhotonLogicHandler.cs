@@ -399,6 +399,19 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.Instantiate(prefabPath, pos, quaternion);
     }
 
+    /// <summary>
+    /// 룸 내 모든 인원에 대하여 파괴, TryInstantiate로 생성된 애들에 한하여 파괴됩니다.
+    /// </summary>
+    /// <param name="obj"></param>
+
+    public void TryDestroy(MonoBehaviourPhoton obj)
+	{
+        if (obj == null)
+            return;
+
+        PhotonNetwork.Destroy(obj.gameObject);        
+	}
+
     #endregion
 
     #region 포톤 자체 콜백 - 가급적 건드리지 마시오.
