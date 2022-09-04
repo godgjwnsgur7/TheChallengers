@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Linq;
 using System.Text;
 using FGDefine;
+using ExitGames.Client.Photon;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public enum ENUM_RPC_TARGET
 {
@@ -18,9 +20,53 @@ public enum ENUM_RPC_TARGET
 }
 
 public class BroadcastMethodAttribute : PunRPC { }
+public class PhotonCustomType { }
+
+[Serializable]
+public class PhotonCustomType<T> : PhotonCustomType
+{
+    public static object Deserialize(Hashtable diskData)
+    {
+        Type t = typeof(T);
+        var fieldInfos = t.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+        object[] retObjs = new object[fieldInfos.Length];
+
+        for (int i = 0; i < fieldInfos.Length; i++)
+        {
+            if (!diskData.ContainsKey(fieldInfos[i].Name))
+                continue;
+
+            retObjs[i] = diskData[fieldInfos[i].Name];
+        }
+
+        return retObjs;
+    }
+
+    public static Hashtable Serialize(object memoryData)
+    {
+        Type t = typeof(T);
+        T data = (T)memoryData;
+
+        Hashtable table = new Hashtable();
+        var fieldInfos = t.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+
+        foreach(var fieldInfo in fieldInfos)
+        {
+            if (fieldInfo.IsNotSerialized)
+                continue;
+
+            var val = fieldInfo.GetValue(data);
+            var name = fieldInfo.Name;
+
+            table.Add(name, val);
+        }
+
+        return table;
+    }
+}
 
 public delegate void DisconnectCallBack(string cause);
-public delegate void FailedCallBack(short returnCode, string message); 
+public delegate void FailedCallBack(short returnCode, string message);
 
 public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 {
@@ -29,12 +75,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 GameObject g = new GameObject("PhotonLogicHandler");
                 instance = g.AddComponent<PhotonLogicHandler>();
                 instance.Initialize();
-                
+
                 DontDestroyOnLoad(g);
             }
 
@@ -72,69 +118,96 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     PhotonView view = null;
 
     private void Initialize()
-	{
+    {
         view = gameObject.AddComponent<PhotonView>();
 
         if (view.ViewID == 0)
             PhotonNetwork.AllocateViewID(view);
+
+        // SetPhotonPeerParameterType();
     }
 
-    /// <summary>
-    /// 1. 넘기는 Action Method에 람다식은 허용되지 않습니다.
-    /// 2. Method의 속성에 [BroadcastMethodAttribute]가 추가되어야 합니다.
-    /// </summary>
-    /// <param name="targetMethod"></param>
-    /// <param name="targetType"></param>
-    // [BroadcastMethodAttribute] 다음과 같이 함수 위에 추가
-    public void TryBroadcastMethod<T, TParam>(T owner, Action<TParam> targetMethod, TParam param, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All) 
+    private void SetPhotonPeerParameterType()
+    {
+        var types = Assembly.GetAssembly(typeof(PhotonCustomType)).GetTypes();
+        byte code = 1;
+
+        foreach (var type in types)
+        {
+            if (type.IsSubclassOf(typeof(PhotonCustomType)))
+            {
+                PhotonPeer.RegisterType(type, ++code, SerializeHashtable, DeserializeHashtable);
+            }
+        }
+    }
+
+    private static short SerializeHashtable(StreamBuffer outStream, object customObject)
+    {
+        return 0;
+    }
+
+    private static object DeserializeHashtable(StreamBuffer inStream, short length)
+    {
+        return 0;
+    }
+
+    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
         if (!IsConnected)
             return;
 
         MethodInfo methodInfo = targetMethod.Method;
-        string methodName = methodInfo.Name;
-        var ownerType = typeof(T);
-
-        if (owner == null || owner.photonView == null)
-        {
-            Debug.LogError("동기화될 객체가 없거나 네트워킹 가능 상태가 아닙니다. 객체의 상태를 확인해주세요.");
+        if (!IsValidBroadcastMethod(owner, methodInfo))
             return;
-        }
-        else if (ownerType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static) == null)
-        {
-            Debug.LogError("넘기는 Action Method에 람다식은 허용되지 않습니다. 객체 내부에 Method를 구현 후 인자로 넘겨주세요.");
-            return;
-        }
-        else if(!methodInfo.IsDefined(typeof(BroadcastMethodAttribute)))
-        {
-            Debug.LogError("Broadcast할 메소드에 [BroadcastMethodAttribute] 속성이 없습니다. 추가해주세요.");
-            return;
-        }
 
-        RpcTarget RPCTargetType = RpcTarget.All;
-
-        switch (targetType)
-        {
-            case ENUM_RPC_TARGET.All:
-                RPCTargetType = RpcTarget.AllBuffered;
-                break;
-
-            case ENUM_RPC_TARGET.MASTER:
-                RPCTargetType = RpcTarget.MasterClient;
-                break;
-
-            case ENUM_RPC_TARGET.OTHER:
-                RPCTargetType = RpcTarget.OthersBuffered;
-                break;
-
-            default:
-                break;
-        }
-
-        owner.photonView.RPC(methodName, RPCTargetType, param);
+        BroadcastMethod(owner, param1, param2, param3, param4, methodInfo, targetType);
     }
 
+    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        if (!IsConnected)
+            return;
+
+        MethodInfo methodInfo = targetMethod.Method;
+        if (!IsValidBroadcastMethod(owner, methodInfo))
+            return;
+
+        BroadcastMethod(owner, param1, param2, param3, methodInfo, targetType);
+    }
+
+    public void TryBroadcastMethod<T, TParam1, TParam2>(T owner, Action<TParam1, TParam2> targetMethod, TParam1 param1, TParam2 param2, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        if (!IsConnected)
+            return;
+
+        MethodInfo methodInfo = targetMethod.Method;
+        if (!IsValidBroadcastMethod(owner, methodInfo))
+            return;
+
+        BroadcastMethod(owner, param1, param2, methodInfo, targetType);
+    }
+
+    public void TryBroadcastMethod<T, TParam>(T owner, Action<TParam> targetMethod, TParam param, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        if (!IsConnected)
+            return;
+
+        MethodInfo methodInfo = targetMethod.Method;
+        if (!IsValidBroadcastMethod(owner, methodInfo))
+            return;
+
+        BroadcastMethod(owner, param, methodInfo, targetType);
+    }
+
+    /// <summary>
+    /// 1. 넘기는 Action Method에 람다식은 허용되지 않습니다.
+    /// 2. Method의 속성에 [BroadcastMethodAttribute]가 추가되어야 합니다.
+    /// </summary>
+    // [BroadcastMethodAttribute] 다음과 같이 함수 위에 추가
     public void TryBroadcastMethod<T>(T owner, Action targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
@@ -142,25 +215,39 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             return;
 
         MethodInfo methodInfo = targetMethod.Method;
+        if (!IsValidBroadcastMethod<T>(owner, methodInfo))
+            return;
+
+        BroadcastMethod(owner, methodInfo, targetType);
+    }
+
+    private bool IsValidBroadcastMethod<T>(T owner, MethodInfo methodInfo)
+        where T : MonoBehaviourPun
+    {
         string methodName = methodInfo.Name;
         var ownerType = typeof(T);
 
         if (owner == null || owner.photonView == null)
         {
             Debug.LogError("동기화될 객체가 없거나 네트워킹 가능 상태가 아닙니다. 객체의 상태를 확인해주세요.");
-            return;
+            return false;
         }
         else if (ownerType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static) == null)
         {
             Debug.LogError("넘기는 Action Method에 람다식은 허용되지 않습니다. 객체 내부에 Method를 구현 후 인자로 넘겨주세요.");
-            return;
+            return false;
         }
         else if (!methodInfo.IsDefined(typeof(BroadcastMethodAttribute)))
         {
             Debug.LogError("Broadcast할 메소드에 [BroadcastMethodAttribute] 속성이 없습니다. 추가해주세요.");
-            return;
+            return false;
         }
 
+        return true;
+    }
+
+    private RpcTarget GetRPCTarget(ENUM_RPC_TARGET targetType)
+    {
         RpcTarget RPCTargetType = RpcTarget.All;
 
         switch (targetType)
@@ -181,8 +268,51 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
                 break;
         }
 
-        owner.photonView.RPC(methodName, RPCTargetType);
+        return RPCTargetType;
     }
+
+    private void BroadcastMethod<T>(T owner, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        var RPCTargetType = GetRPCTarget(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType);
+    }
+
+    private void BroadcastMethod<T, TParam>(T owner, TParam param, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        var RPCTargetType = GetRPCTarget(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param);
+    }
+
+    private void BroadcastMethod<T, T1, T2>(T owner, T1 param1, T2 param2, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        var RPCTargetType = GetRPCTarget(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2);
+    }
+
+    private void BroadcastMethod<T, T1, T2, T3>(T owner, T1 param1, T2 param2, T3 param3, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        var RPCTargetType = GetRPCTarget(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2, param3);
+    }
+
+    private void BroadcastMethod<T, T1, T2, T3, T4>(T owner, T1 param1, T2 param2, T3 param3, T4 param4, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        var RPCTargetType = GetRPCTarget(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2, param3, param4);
+    }
+
+    private void BroadcastMethod<T, T1, T2, T3, T4, T5>(T owner, T1 param1, T2 param2, T3 param3, T4 param4, T5 param5, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        var RPCTargetType = GetRPCTarget(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2, param3, param4, param5);
+    }
+
 
     #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
     public static int Register(PhotonView view)

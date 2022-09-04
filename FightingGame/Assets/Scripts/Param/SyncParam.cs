@@ -4,10 +4,8 @@ using UnityEngine;
 using FGDefine;
 using System;
 
-public class SyncParam { }
-
 [Serializable]
-public struct SyncAttackObjectParam
+public class SyncAttackObjectParam : PhotonCustomType<SyncAttackObjectParam>
 {
     public ENUM_TEAM_TYPE teamType;
     public bool reverseState;
