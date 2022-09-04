@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SettingPanel : UIElement
 {
-    [SerializeField] GameObject setBtn;
-    [SerializeField] TopPanel topPanel;
     [SerializeField] BottomPanel bottomPanel;
     [SerializeField] KeyPanelArea keyPanelArea;
 
@@ -24,16 +22,16 @@ public class SettingPanel : UIElement
         base.Close();
     }
 
-    public void PushKey(UpdatableUI UpdateUI)
+    public void PushKey(UpdatableUI updateUI)
     {
         if (isOpen)
         {
-            bottomPanel.setSlider(UpdateUI);
+            bottomPanel.setSlider(updateUI);
             Managers.UI.OpenUI<BottomPanel>();
         }
         else
         {
-            Debug.Log("ㅎㅎ");
+            keyPanelArea.PushKey(updateUI);
         }
     }
 }

@@ -6,18 +6,28 @@ using FGDefine;
 
 public class KeyPanelArea : UIElement
 {
+    public PlayerCharacter player;
+
     // Panel 안의 버튼들
+    // 0 LeftMoveBtn, 1 RightMoveBtn, 2 AttackBtn, 3 JumpBtn, 4 5 6 SkillBtn
     [SerializeField] UpdatableUI[] buttons;
 
-    float sizeRatio;
-    float opacityRatio;
-    Vector2 tempVector;
+    private float sizeRatio;
+    private float opacityRatio;
+    private Vector2 tempVector;
 
-    float tempX;
-    float tempY;
+    private float tempX;
+    private float tempY;
+
+    public ENUM_CHARACTER_TYPE playerType;
+    public Sprite[] skillImage;
+
+    bool isMove = false;
+    bool isAttack = false;
 
     public override void Open(UIParam param = null)
     {
+        SetSkillImage();
         base.Open(param);
     }
 
@@ -28,6 +38,8 @@ public class KeyPanelArea : UIElement
 
     public void init()
     {
+        playerType = ENUM_CHARACTER_TYPE.Knight;
+
         // Base Slider Value Call
         for (int i = 0; i < buttons.Length; i++)
             SetInit(buttons[i]);
@@ -153,5 +165,89 @@ public class KeyPanelArea : UIElement
             PlayerPrefs.GetFloat($"{updateUI.thisRect.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
 
         updateUI.SetTransform(tempVector);
+    }
+
+    public void SetSkillImage()
+    {
+        Debug.Log(playerType);
+        //skillImage = Managers.Resource.LoadAll<Sprite>("");
+        //buttons[4].GetComponent<Image>().sprite = ;
+        //buttons[5].GetComponent<Image>().sprite = ;
+        //buttons[6].GetComponent<Image>().sprite = ;
+    }
+
+    public void PushKey(UpdatableUI updateUI)
+    {
+        Debug.Log(updateUI);
+
+        switch (updateUI.name) 
+        {
+            case "LeftMoveBtn":
+                isMove = true;
+                StartCoroutine(MoveState(-1.0f));
+                break;
+            case "RightMoveBtn":
+                isMove = true;
+                StartCoroutine(MoveState(1.0f));
+                break;
+            case "AttackBtn":
+                isAttack = true;
+                StartCoroutine(AttackState());
+                break;
+            case "JumpBtn":
+                player.PlayerCommand(ENUM_PLAYER_STATE.Jump);
+                break;
+            case "SkillBtn1":
+                CharacterSkillParam skillParam1 = new CharacterSkillParam(0);
+                player.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam1);
+                break;
+            case "SkillBtn2":
+                CharacterSkillParam skillParam2 = new CharacterSkillParam(1);
+                player.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam2);
+                break;
+            case "SkillBtn3":
+                CharacterSkillParam skillParam3 = new CharacterSkillParam(2);
+                player.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam3);
+                break;
+        }
+    }
+
+    public void BackIdle()
+    {
+        if(isMove)
+            isMove = false;
+
+        if (isAttack)
+        {
+            player.activeCharacter.Change_AttackState(false);
+            isAttack = false;
+        }
+
+        if (player.moveDir != 0)
+            player.moveDir = 0f;
+
+        player.PlayerCommand(ENUM_PLAYER_STATE.Idle);
+    }
+
+    IEnumerator MoveState(float direction)
+    {
+        while (isMove) 
+        {
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, player.activeCharacter.reverseState);
+            player.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
+            player.activeCharacter.Change_AttackState(true);
+            yield return null;
+        }
+    }
+
+    IEnumerator AttackState()
+    {
+        while (isAttack)
+        {
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, player.activeCharacter.reverseState);
+            player.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
+            player.activeCharacter.Change_AttackState(true);
+            yield return null;
+        }
     }
 }

@@ -51,9 +51,15 @@ public class TrainingScene : BaseScene
         trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
         trainingCanvas.isCallPlayer = true;
         playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, playerType));
+        keyPanelArea.player = playerCharacter;
 
-        if(keyPanelArea.isOpen == false)
+        if (keyPanelArea.isOpen == false)
             Managers.UI.OpenUI<KeyPanelArea>();
+        else
+        {
+            keyPanelArea.playerType = playerType;
+            keyPanelArea.SetSkillImage();
+        }
     }
 
     public void CallEnemy()

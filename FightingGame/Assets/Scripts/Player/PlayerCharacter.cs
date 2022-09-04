@@ -121,7 +121,7 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
     
-    private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
+    public void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
         if (activeCharacter == null)
             return;
