@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class ShotAttackObejct : AttackObejct
+public class ShotAttackObejct : AttackObject
 {
     public Rigidbody2D rigid2D;
     
@@ -18,12 +18,13 @@ public class ShotAttackObejct : AttackObejct
         if (PhotonLogicHandler.IsConnected)
         {
             SyncPhysics(rigid2D);
-            SyncTransformView(transform);
         }
     }
 
     public override void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
     {
+        attackObjectParam.targetTr = null;
+
         base.ActivatingAttackObject(attackObjectParam);
 
         // 날아가는 힘을 받아야 하는데, 고민중

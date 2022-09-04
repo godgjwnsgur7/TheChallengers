@@ -12,22 +12,29 @@ public enum ENUM_ATTACKOBJECT_TYPE
     Follow = 3,
 }
 
-public class AttackObejct : Poolable
+public class AttackObject : Poolable
 {
     public Skill skillValue;
     public ENUM_TEAM_TYPE teamType;
-    public ENUM_ATTACKOBJECT_TYPE attackObjectType;
+    public ENUM_ATTACKOBJECT_TYPE attackObjectType = ENUM_ATTACKOBJECT_TYPE.Default;
     
     public bool reverseState;
 
     public override void Init()
     {
         base.Init();
-        attackObjectType = ENUM_ATTACKOBJECT_TYPE.Default;
+        if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Default)
+            attackObjectType = ENUM_ATTACKOBJECT_TYPE.Follow;
+
         ENUM_SKILL_TYPE skill = (ENUM_SKILL_TYPE)Enum.Parse(typeof(ENUM_SKILL_TYPE), gameObject.name.ToString());
         if (!Managers.Data.SkillDict.TryGetValue((int)skill, out skillValue))
         {
             Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
+        }
+
+        if (PhotonLogicHandler.IsConnected)
+        {
+            SyncTransformView(transform);
         }
     }
 
@@ -43,7 +50,13 @@ public class AttackObejct : Poolable
 
         gameObject.SetActive(true);
 
-        CoroutineHelper.StartCoroutine(IAttackRunTimeCheck(skillValue.runTime));
+        if(PhotonLogicHandler.IsConnected)
+        {
+            if (PhotonLogicHandler.IsMine(viewID))
+                CoroutineHelper.StartCoroutine(IFollowTarget(skillValue.runTime, attackObjectParam.targetTr));
+        }
+        else
+            CoroutineHelper.StartCoroutine(IFollowTarget(skillValue.runTime, attackObjectParam.targetTr));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,15 +66,15 @@ public class AttackObejct : Poolable
         // 충돌한 객체가 액티브캐릭터가 아니라면 파괴 (ShotAttackObject)
         if (enemyCharacter == null && attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot)
         {
-            Managers.Resource.Destroy(gameObject);
+            DestroyMine();
             return;
         }
 
-        if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
-            return;
-
         if (enemyCharacter != null && skillValue != null)
         {
+            if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
+                return;
+
             CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType, reverseState);
 
             if(PhotonLogicHandler.IsConnected)
@@ -73,7 +86,7 @@ public class AttackObejct : Poolable
                 enemyCharacter.Hit(attackParam);
 
             isUsing = false;
-            Managers.Resource.Destroy(gameObject);
+            DestroyMine();
         }
         else
         {
@@ -81,14 +94,42 @@ public class AttackObejct : Poolable
         }
     }
 
-    private IEnumerator IAttackRunTimeCheck(float _runTime)
+    /// <summary>
+    /// 런타임동안 타겟의 포지션 값을 위치로 받으며,
+    /// 런타임 시간이 끝나면 다시 풀링 안에 넣음 (Destroy)
+    /// </summary>
+    private IEnumerator IFollowTarget(float _runTime, Transform _target)
     {
-        yield return new WaitForSeconds(_runTime);
-        
+        float realTime = 0.0f;
+
+        while(realTime < _runTime)
+        {
+            realTime += Time.deltaTime;
+            
+            if(attackObjectType != ENUM_ATTACKOBJECT_TYPE.Shot)
+                this.transform.position = _target.position;
+
+            yield return null;
+        }
+
         if(this.gameObject.activeSelf)
         {
             isUsing = false;
-            Managers.Resource.Destroy(gameObject);
+            DestroyMine();
         }
+    }
+
+    public virtual void DestroyMine()
+    {
+        if (PhotonLogicHandler.IsConnected)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
+        else
+            Managers.Resource.Destroy(gameObject);
+    }
+
+    [BroadcastMethod]
+    public virtual void Sync_DestroyMine()
+    {
+        Managers.Resource.Destroy(this.gameObject);
     }
 }

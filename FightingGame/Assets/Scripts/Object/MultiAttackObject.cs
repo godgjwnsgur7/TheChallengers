@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class MultiAttackObject : AttackObejct
+public class MultiAttackObject : AttackObject
 {
-    protected AttackObejct attackObject;
+    protected AttackObject attackObject;
+
+    public bool isConnected;
 
     // 이미지 센터가 맞지 않아 임시로 로직처리
     [SerializeField] Vector3 subPos;
@@ -13,6 +15,13 @@ public class MultiAttackObject : AttackObejct
     public override void Init()
     {
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Multi;
+
+        isConnected = PhotonLogicHandler.IsConnected;
+
+        if (isConnected)
+        {
+            SyncTransformView(transform);
+        }
     }
 
     public override void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
@@ -38,21 +47,28 @@ public class MultiAttackObject : AttackObejct
     {
         attackObject = null;
         ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
-        attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
+
+        if (isConnected)
+            attackObject = Managers.Resource.InstantiateEveryone(attackType.ToString(), Vector2.zero).GetComponent<AttackObject>();
+        else
+            attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
 
         if (attackObject != null)
         {
             attackObject.transform.position = transform.position;
-            attackObject.ActivatingAttackObject(new SyncAttackObjectParam(teamType, reverseState));
+            
+            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState, this.transform);
+            if (isConnected)
+            {
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, SyncAttackObjectParam>
+                    (attackObject, attackObject.ActivatingAttackObject, syncAttackObjectParam);
+            }
+            else
+                attackObject.ActivatingAttackObject(syncAttackObjectParam);
         }
         else
         {
             Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
-    }
-
-    protected void Destroy_AttackObject()
-    {
-        Managers.Resource.Destroy(gameObject);
     }
 }

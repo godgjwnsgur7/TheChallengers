@@ -11,7 +11,7 @@ public partial class ActiveCharacter : Character
     public SpriteRenderer spriteRenderer;
     public ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
 
-    public AttackObejct attackObject;
+    public AttackObject attackObject;
     public StatusWindowUI statusWindowUI;
 
     Coroutine stunTimeCoroutine;
@@ -372,7 +372,7 @@ public partial class ActiveCharacter : Character
         bool isConnected = PhotonLogicHandler.IsConnected;
 
         if (isConnected)
-            attackObject = Managers.Resource.InstantiateEveryone(attackType.ToString(), Vector2.zero).GetComponent<AttackObejct>();
+            attackObject = Managers.Resource.InstantiateEveryone(attackType.ToString(), Vector2.zero).GetComponent<AttackObject>();
         else
             attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
 
@@ -380,10 +380,10 @@ public partial class ActiveCharacter : Character
         {
             attackObject.transform.position = transform.position;
             
-            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState);
+            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState, this.transform);
             if(isConnected)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObejct, SyncAttackObjectParam>
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, SyncAttackObjectParam>
                     (attackObject, attackObject.ActivatingAttackObject, syncAttackObjectParam);
             }
             else

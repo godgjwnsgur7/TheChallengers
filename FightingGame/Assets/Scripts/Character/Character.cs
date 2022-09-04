@@ -122,6 +122,12 @@ public class Character : MonoBehaviourPhoton
 
     protected void Push_Rigid2D(Vector2 vec)
     {
+        if(rigid2D == null)
+        {
+            Debug.Log("rigid2D is Null");
+            return;
+        }
+
         rigid2D.velocity = new Vector2(0, rigid2D.velocity.y); // 받고있는 힘 초기화
         rigid2D.AddForce(vec, ForceMode2D.Impulse);
     }
