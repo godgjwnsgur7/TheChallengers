@@ -151,17 +151,22 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return 0;
     }
 
+    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4, TParam5>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+        where T : MonoBehaviourPun
+    {
+        if (!IsConnected)
+            return;
+
+        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2, param3, param4);
+    }
+
     public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
         if (!IsConnected)
             return;
 
-        MethodInfo methodInfo = targetMethod.Method;
-        if (!IsValidBroadcastMethod(owner, methodInfo))
-            return;
-
-        BroadcastMethod(owner, param1, param2, param3, param4, methodInfo, targetType);
+        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2, param3, param4);
     }
 
     public void TryBroadcastMethod<T, TParam1, TParam2, TParam3>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
@@ -170,11 +175,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsConnected)
             return;
 
-        MethodInfo methodInfo = targetMethod.Method;
-        if (!IsValidBroadcastMethod(owner, methodInfo))
-            return;
-
-        BroadcastMethod(owner, param1, param2, param3, methodInfo, targetType);
+        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2, param3);
     }
 
     public void TryBroadcastMethod<T, TParam1, TParam2>(T owner, Action<TParam1, TParam2> targetMethod, TParam1 param1, TParam2 param2, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
@@ -183,11 +184,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsConnected)
             return;
 
-        MethodInfo methodInfo = targetMethod.Method;
-        if (!IsValidBroadcastMethod(owner, methodInfo))
-            return;
-
-        BroadcastMethod(owner, param1, param2, methodInfo, targetType);
+        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2);
     }
 
     public void TryBroadcastMethod<T, TParam>(T owner, Action<TParam> targetMethod, TParam param, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
@@ -196,11 +193,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsConnected)
             return;
 
-        MethodInfo methodInfo = targetMethod.Method;
-        if (!IsValidBroadcastMethod(owner, methodInfo))
-            return;
-
-        BroadcastMethod(owner, param, methodInfo, targetType);
+        BroadcastMethod(owner, targetMethod.Method, targetType, param);
     }
 
     /// <summary>
@@ -214,11 +207,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsConnected)
             return;
 
-        MethodInfo methodInfo = targetMethod.Method;
-        if (!IsValidBroadcastMethod<T>(owner, methodInfo))
-            return;
-
-        BroadcastMethod(owner, methodInfo, targetType);
+        BroadcastMethod(owner, targetMethod.Method, targetType);
     }
 
     private bool IsValidBroadcastMethod<T>(T owner, MethodInfo methodInfo)
@@ -246,7 +235,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return true;
     }
 
-    private RpcTarget GetRPCTarget(ENUM_RPC_TARGET targetType)
+    private RpcTarget ConvertRPCTargetType(ENUM_RPC_TARGET targetType)
     {
         RpcTarget RPCTargetType = RpcTarget.All;
 
@@ -274,43 +263,21 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private void BroadcastMethod<T>(T owner, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
-        var RPCTargetType = GetRPCTarget(targetType);
+        if (!IsValidBroadcastMethod(owner, methodInfo))
+            return;
+
+        var RPCTargetType = ConvertRPCTargetType(targetType);
         owner.photonView.RPC(methodInfo.Name, RPCTargetType);
     }
 
-    private void BroadcastMethod<T, TParam>(T owner, TParam param, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
+    private void BroadcastMethod<T>(T owner, MethodInfo methodInfo, ENUM_RPC_TARGET targetType, params object[] parameters)
         where T : MonoBehaviourPun
     {
-        var RPCTargetType = GetRPCTarget(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param);
-    }
+        if (!IsValidBroadcastMethod(owner, methodInfo))
+            return;
 
-    private void BroadcastMethod<T, T1, T2>(T owner, T1 param1, T2 param2, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        var RPCTargetType = GetRPCTarget(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2);
-    }
-
-    private void BroadcastMethod<T, T1, T2, T3>(T owner, T1 param1, T2 param2, T3 param3, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        var RPCTargetType = GetRPCTarget(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2, param3);
-    }
-
-    private void BroadcastMethod<T, T1, T2, T3, T4>(T owner, T1 param1, T2 param2, T3 param3, T4 param4, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        var RPCTargetType = GetRPCTarget(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2, param3, param4);
-    }
-
-    private void BroadcastMethod<T, T1, T2, T3, T4, T5>(T owner, T1 param1, T2 param2, T3 param3, T4 param4, T5 param5, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        var RPCTargetType = GetRPCTarget(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType, param1, param2, param3, param4, param5);
+        var RPCTargetType = ConvertRPCTargetType(targetType);
+        owner.photonView.RPC(methodInfo.Name, RPCTargetType, parameters);
     }
 
 
