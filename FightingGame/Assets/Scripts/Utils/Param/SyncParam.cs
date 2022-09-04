@@ -17,15 +17,6 @@ public class SyncAttackObjectParam : PhotonCustomType
 
 	}
 
-    public static byte[] memoryBytes = null;
-    public static short offset = 0;
-
-    static SyncAttackObjectParam()
-    {
-        offset = 2 * sizeof(int);
-        memoryBytes = new byte[offset];
-    }
-
     public SyncAttackObjectParam(ENUM_TEAM_TYPE _teamType, bool _reverseState, Transform _targetTr)
     {
         teamType = _teamType;
@@ -33,44 +24,24 @@ public class SyncAttackObjectParam : PhotonCustomType
         targetTr = _targetTr;
     }
     
-    public static object Deserialize(StreamBuffer inStream, short length)
+    public static object Deserialize(byte[] data)
 	{
         var param = new SyncAttackObjectParam();
-        short offset = 2 * sizeof(int);
 
-        lock (memoryBytes)
-        {
-            inStream.Read(memoryBytes, 0, offset);
-            int index = 0;
-
-            int teamTypeInt = 0;
-            Protocol.Deserialize(out teamTypeInt, memoryBytes, ref index);
-            param.teamType = (ENUM_TEAM_TYPE)teamTypeInt;
-
-            int reverseStateInt = 0;
-            Protocol.Deserialize(out reverseStateInt, memoryBytes, ref index);
-            param.reverseState = reverseStateInt == 1;
-        }
+        param.teamType = (ENUM_TEAM_TYPE)data[0];
+        param.reverseState = data[1] == 1;
 
         return param;
     }
 
-	public static short Serialize(StreamBuffer outStream, object customObject)
+	public static byte[] Serialize(object customObject)
 	{
         var param = (SyncAttackObjectParam)customObject;
-        short offset = 2 * sizeof(int);
 
-        lock (memoryBytes)
+        return new byte[]
         {
-            byte[] bytes = memoryBytes;
-            int index = 0;
-
-            Protocol.Serialize((int)param.teamType, bytes, ref index);
-            Protocol.Serialize((int)(param.reverseState ? 1 : 0), bytes, ref index);
-
-            outStream.Write(bytes, 0, offset);
-        }
-
-        return offset;
+            (byte)param.teamType,
+            (byte)(param.reverseState ? 1 : 0)
+        };
     }
 }

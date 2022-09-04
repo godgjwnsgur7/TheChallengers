@@ -28,8 +28,8 @@ internal class PhotonCustomTypeManagement
             
         byte code = 0;
 
-        Type[] serialParamTypes = new Type[2] { typeof(StreamBuffer), typeof(object) };
-        Type[] deserialParamTypes = new Type[2] { typeof(StreamBuffer), typeof(short) };
+        Type[] serialParamTypes = new Type[] { typeof(object) };
+        Type[] deserialParamTypes = new Type[] { typeof(byte[] )};
 
         foreach (var type in types)
         {
@@ -39,16 +39,22 @@ internal class PhotonCustomTypeManagement
             var serializeMethod = type.GetMethod("Serialize", serialParamTypes);
             var deserializeMethod = type.GetMethod("Deserialize", deserialParamTypes);
 
-            // 객체 참조가 필요하다.
-            var sDel = serializeMethod.CreateDelegate(typeof(SerializeStreamMethod)) as SerializeStreamMethod;
-            var dsDel = deserializeMethod.CreateDelegate(typeof(DeserializeStreamMethod)) as DeserializeStreamMethod;
+            var sDel = serializeMethod.CreateDelegate(typeof(SerializeMethod)) as SerializeMethod;
+            var dsDel = deserializeMethod.CreateDelegate(typeof(DeserializeMethod)) as DeserializeMethod;
 
             PhotonPeer.RegisterType(type, ++code, sDel, dsDel);
         }
     }
 }
 
-public abstract class PhotonCustomType
+/// <summary>
+/// 반드시 
+/// public static object Deserialize(byte[] data);
+/// public static byte[] Serialize(object customObject);
+/// 
+/// 두 함수를 정의해야 동작합니다.
+/// </summary>
+public class PhotonCustomType
 {
-    
+
 }
