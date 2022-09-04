@@ -41,7 +41,8 @@ public class BottomPanel : UIElement
     {
         if (setBtn != null)
         {
-            setBtn.OnOffUIArea();
+            setBtn.isSelect = false;
+            setBtn.ChangeAreaColor();
             setBtn = null;
         }
 
@@ -53,7 +54,10 @@ public class BottomPanel : UIElement
     {
         // 이전 선택했던 UI 드래그 중지
         if (setBtn != null)
-            setBtn.OnOffUIArea();
+        {
+            setBtn.isSelect = false;
+            setBtn.ChangeAreaColor();
+        }
 
         // 선택한 UI 세팅
         setBtn = updateUI;
@@ -72,7 +76,8 @@ public class BottomPanel : UIElement
         SetSliderText("All");
 
         // UI 드래그 기능
-        setBtn.OnOffUIArea();
+        setBtn.isSelect = true;
+        setBtn.ChangeAreaColor();
     }
 
 

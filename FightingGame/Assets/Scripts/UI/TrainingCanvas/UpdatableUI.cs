@@ -61,6 +61,9 @@ public class UpdatableUI : UIElement
         if (thisBoxCollider == null)
             thisBoxCollider = this.gameObject.AddComponent<BoxCollider2D>();
         SetBoxCollider();
+
+        if(GetComponent<DragAndDrop>() != null)
+            GetComponent<DragAndDrop>().Init();
     }
 
     // -------------------------------------------------------------------- Set
@@ -187,21 +190,6 @@ public class UpdatableUI : UIElement
             changeColor = new Color(255, 255, 255, 0);
         else
             changeColor = new Color(255, 0, 0, 0.5f);
-
-        btnAreaImage.color = changeColor;
-    }
-
-    // UI선택시 Area영역 색 변경
-    public void OnOffUIArea()
-    {
-        isSelect = !isSelect;
-        changeColor = btnAreaImage.color;
-
-        // Highlight
-        if (isSelect)
-            changeColor = new Color(0, 255, 0, 0.5f);
-        else
-            changeColor = new Color(255, 255, 255, 0);
 
         btnAreaImage.color = changeColor;
     }

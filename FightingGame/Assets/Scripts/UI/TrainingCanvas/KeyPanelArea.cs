@@ -214,7 +214,7 @@ public class KeyPanelArea : UIElement
 
     public void BackIdle()
     {
-        if (player.activeCharacter.currState == ENUM_PLAYER_STATE.Idle)
+        if (player == null || player.activeCharacter.currState == ENUM_PLAYER_STATE.Idle)
             return;
 
         if(isMove)
