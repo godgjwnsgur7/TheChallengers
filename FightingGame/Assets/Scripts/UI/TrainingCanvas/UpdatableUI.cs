@@ -6,8 +6,6 @@ using FGDefine;
 
 public class UpdatableUI : UIElement
 {
-    private DragAndDrop dragAndDrop;
-
     public bool isUpdatable = true;
     public bool isSelect = false;
 
@@ -49,11 +47,6 @@ public class UpdatableUI : UIElement
     {
         parent = this.gameObject.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
-
-        dragAndDrop = GetComponent<DragAndDrop>();
-        if (dragAndDrop == null)
-            dragAndDrop = this.gameObject.AddComponent<DragAndDrop>();
-        dragAndDrop.Init();
 
         btnAreaImage = btnArea.GetComponent<Image>();
         backGroundImage = backGround.GetComponent<Image>();
