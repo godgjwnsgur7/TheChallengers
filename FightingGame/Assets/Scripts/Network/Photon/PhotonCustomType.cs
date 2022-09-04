@@ -57,7 +57,7 @@ internal class PhotonCustomTypeManagement
 /// 우선 참조의 참조 형식(클래스 타입 변수)은 무조건 안됩니다
 /// 해당 타입을 상속하여 사용할 수 있습니다. 
 /// </summary>
-public class PhotonCustomType
+public abstract class PhotonCustomType
 {
     public static object Deserialize(byte[] data) => new NotImplementedException();
     public static byte[] Serialize(object customObject) { new NotImplementedException(); return null; }
