@@ -214,6 +214,9 @@ public class KeyPanelArea : UIElement
 
     public void BackIdle()
     {
+        if (player.activeCharacter.currState == ENUM_PLAYER_STATE.Idle)
+            return;
+
         if(isMove)
             isMove = false;
 
@@ -233,9 +236,8 @@ public class KeyPanelArea : UIElement
     {
         while (isMove) 
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, player.activeCharacter.reverseState);
-            player.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
-            player.activeCharacter.Change_AttackState(true);
+            player.moveDir = direction;
+            player.PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(player.moveDir));
             yield return null;
         }
     }
