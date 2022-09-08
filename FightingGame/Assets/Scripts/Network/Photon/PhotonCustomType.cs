@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using UnityEngine;
 
 internal class PhotonCustomTypeManagement 
@@ -39,10 +40,13 @@ internal class PhotonCustomTypeManagement
             var serializeMethod = type.GetMethod("Serialize", serialParamTypes);
             var deserializeMethod = type.GetMethod("Deserialize", deserialParamTypes);
 
-            var sDel = serializeMethod.CreateDelegate(typeof(SerializeMethod)) as SerializeMethod;
-            var dsDel = deserializeMethod.CreateDelegate(typeof(DeserializeMethod)) as DeserializeMethod;
+            if (serializeMethod == null || deserializeMethod == null)
+                continue;
 
-            PhotonPeer.RegisterType(type, ++code, sDel, dsDel);
+            var sDel = serializeMethod.CreateDelegate(typeof(SerializeMethod));
+            var dsDel = deserializeMethod.CreateDelegate(typeof(DeserializeMethod));
+
+            PhotonPeer.RegisterType(type, ++code, sDel as SerializeMethod, dsDel as DeserializeMethod);
         }
     }
 }
@@ -59,6 +63,33 @@ internal class PhotonCustomTypeManagement
 /// </summary>
 public abstract class PhotonCustomType
 {
-    public static object Deserialize(byte[] data) => new NotImplementedException();
-    public static byte[] Serialize(object customObject) { new NotImplementedException(); return null; }
+
+}
+
+public class PhotonCustomType<T> : PhotonCustomType where T : new()
+{
+    public static object Deserialize(byte[] data)
+    {
+        if (!typeof(T).IsSerializable)
+		{
+            Debug.LogError($"{typeof(T)} 해당 타입은 직렬화가 불가능합니다.");
+            return null;
+        }
+
+        string jsonData = Encoding.UTF8.GetString(data);
+        return JsonUtility.FromJson<T>(jsonData);
+    }
+
+    public static byte[] Serialize(object customObject)
+    {
+        if (!typeof(T).IsSerializable)
+        {
+            Debug.LogError($"{typeof(T)} 해당 타입은 직렬화가 불가능합니다.");
+            return null;
+        }
+
+        T param = (T)customObject;
+        string jsonData = JsonUtility.ToJson(param);
+        return Encoding.UTF8.GetBytes(jsonData);
+    }
 }
