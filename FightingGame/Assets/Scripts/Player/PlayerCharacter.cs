@@ -55,7 +55,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
-        _statusWindowUI.Set_MaxHP(activeCharacter.curHP);
+        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, activeCharacter.curHP);
         activeCharacter.statusWindowUI = _statusWindowUI;
     }
 

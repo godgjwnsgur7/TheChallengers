@@ -25,12 +25,12 @@ public class MultiAttackObject : AttackObject
     }
 
 	[BroadcastMethod]
-    public override void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
+    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        reverseState = attackObjectParam.reverseState;
-        teamType = attackObjectParam.teamType;
+        reverseState = _reverseState;
+        teamType = _teamType;
 
-        if(reverseState)
+        if (reverseState)
         {
             transform.localEulerAngles = new Vector3(0, 180, 0);
             transform.position += new Vector3(subPos.x * -1.0f, subPos.y, 0);
@@ -56,16 +56,15 @@ public class MultiAttackObject : AttackObject
 
         if (attackObject != null)
         {
-            attackObject.transform.position = transform.position;
-            
-            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState, this.transform);
+            attackObject.FollowingTarget(this.transform);
+
             if (isConnected)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, SyncAttackObjectParam>
-                    (attackObject, attackObject.ActivatingAttackObject, syncAttackObjectParam);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
+                    (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
             }
             else
-                attackObject.ActivatingAttackObject(syncAttackObjectParam);
+                attackObject.ActivatingAttackObject(teamType, reverseState);
         }
         else
         {

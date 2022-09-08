@@ -13,6 +13,10 @@ public class BattleScene : BaseScene
 
     [SerializeField] EnemyPlayer enemyPlayer; // 디버그용
 
+    [SerializeField] ENUM_CHARACTER_TYPE testPlayerCharacterType;
+    [SerializeField] ENUM_CHARACTER_TYPE testEnemyCharacterType;
+
+
     public override void Init()
     {
         base.Init();
@@ -31,22 +35,24 @@ public class BattleScene : BaseScene
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
                 SetCharacterWithPos(map.blueTeamSpawnPoint.position);
+                playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
             }
             else
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
                 SetCharacterWithPos(map.redTeamSpawnPoint.position);
+                playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
             }
         }
         else // 클라 하나
         {
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
-            playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position));
+            playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, testPlayerCharacterType));
             playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
             
             enemyPlayer.gameObject.SetActive(true);
             enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
-            enemyPlayer.Set_Character(Init_Character(map.redTeamSpawnPoint.position));
+            enemyPlayer.Set_Character(Init_Character(map.redTeamSpawnPoint.position, testEnemyCharacterType));
             enemyPlayer.Connect_Status(battleCanvas.Get_StatusWindowUI(enemyPlayer.teamType));
         }
     }

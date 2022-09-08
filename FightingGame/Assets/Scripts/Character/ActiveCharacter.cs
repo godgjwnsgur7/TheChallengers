@@ -9,7 +9,6 @@ public partial class ActiveCharacter : Character
 {
     public Animator anim;
     public SpriteRenderer spriteRenderer;
-    public ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
 
     public AttackObject attackObject;
     public StatusWindowUI statusWindowUI;
@@ -164,7 +163,18 @@ public partial class ActiveCharacter : Character
         if (attackObject != null)
             attackObject = null;
 
+        if (currState == ENUM_PLAYER_STATE.Skill || jumpState)
+            return;
+
         base.Skill(param);
+
+        var skillParam = param as CharacterSkillParam;
+
+        if (skillParam != null)
+        {
+            anim.SetInteger("SkillType", skillParam.skillNum);
+            anim.SetTrigger("SkillTrigger");
+        }
     }
 
     [BroadcastMethod]
@@ -378,16 +388,15 @@ public partial class ActiveCharacter : Character
 
         if (attackObject != null)
         {
-            attackObject.transform.position = transform.position;
-            
-            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState, this.transform);
+            attackObject.FollowingTarget(this.transform);
+
             if(isConnected)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, SyncAttackObjectParam>
-                    (attackObject, attackObject.ActivatingAttackObject, syncAttackObjectParam);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
+                    (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
             }
             else
-                attackObject.ActivatingAttackObject(syncAttackObjectParam);
+                attackObject.ActivatingAttackObject(teamType, reverseState);
         }
         else
         {

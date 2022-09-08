@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 해당하는 씬에서만 존재할 UI 속성들
 /// </summary>
-public class UIElement : MonoBehaviour
+public class UIElement : MonoBehaviourPhoton
 {
     public bool isOpen = false;
 

@@ -14,19 +14,55 @@ public class StatusWindowUI : UIElement
 
     Coroutine hpBarCoroutine;
 
-    public void Set_CharFrameImage(ENUM_CHARACTER_TYPE charType)
+    public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
     {
-        switch(charType)
+        if(PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, ENUM_CHARACTER_TYPE>(this, Set_CharFrameImage, _charType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, float>(this, Set_MaxHP, _maxHP);
+        }
+        else
+        {
+            Set_CharFrameImage(_charType);
+            Set_MaxHP(maxHP);
+        }
+    }
+
+    /*
+    protected override void OnMineSerializeView(PhotonWriteStream stream)
+    {
+        stream.Write(hpBarSlider.value);
+        stream.Write(maxHP);
+        stream.Write(curHP);
+
+        base.OnMineSerializeView(stream);
+    }
+
+    protected override void OnOtherSerializeView(PhotonReadStream stream)
+    {
+        hpBarSlider.value = stream.Read<float>();
+        maxHP = stream.Read<float>();
+        curHP = stream.Read<float>();
+
+        base.OnOtherSerializeView(stream);
+    }
+    */
+
+    [BroadcastMethod]
+    public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
+    {
+        switch(_charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:
                 Debug.Log("이미지 아직 없음 ㅋㅋ");
                 break;
             default:
-                Debug.Log($"{charType} 를 찾을 수 없음");
+                Debug.Log($"{_charType} 를 찾을 수 없음");
                 break;
         }
     }
 
+    [BroadcastMethod]
     public void Set_MaxHP(float _maxHP)
     {
         maxHP = _maxHP;
@@ -36,6 +72,8 @@ public class StatusWindowUI : UIElement
     /// <summary>
     /// false 리턴 시 HP가 전부 닳은 것
     /// </summary>
+
+    [BroadcastMethod]
     public bool Input_Damage(float _damege)
     {
         curHP -= _damege;
