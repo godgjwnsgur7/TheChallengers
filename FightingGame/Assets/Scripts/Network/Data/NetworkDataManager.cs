@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 {
-	public NetworkData data = Resources.Load<NetworkData>("Data/NetworkData");
+	private NetworkData data = Resources.Load<NetworkData>("Data/NetworkData");
+
+	public int GetHP() => data.hpData;
 
 	public override void OnInit()
 	{
