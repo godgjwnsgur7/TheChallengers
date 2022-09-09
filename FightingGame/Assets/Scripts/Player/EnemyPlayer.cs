@@ -27,7 +27,7 @@ public class EnemyPlayer : MonoBehaviour
     }
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
-        _statusWindowUI.Set_MaxHP(activeCharacter.curHP);
+        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, activeCharacter.curHP);
         activeCharacter.statusWindowUI = _statusWindowUI;
     }
 
@@ -72,14 +72,27 @@ public class EnemyPlayer : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
-        moveDir = 0f; 
+        moveDir = 0f;
 
         // 이동
-        if (Input.GetKey(KeyCode.LeftArrow)) moveDir = -1.0f;
-        if (Input.GetKey(KeyCode.RightArrow)) moveDir = 1.0f;
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            activeCharacter.Input_MoveKey(true);
+            moveDir = -1.0f;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            activeCharacter.Input_MoveKey(true);
+            moveDir = 1.0f;
+        }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
             moveDir = 0f;
+            activeCharacter.Input_MoveKey(false);
+            if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
+                PlayerCommand(ENUM_PLAYER_STATE.Idle);
+        }
 
         if (moveDir == 0f)
         {

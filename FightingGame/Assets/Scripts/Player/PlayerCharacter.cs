@@ -55,7 +55,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
-        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, activeCharacter.curHP);
+        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType ,activeCharacter.curHP);
         activeCharacter.statusWindowUI = _statusWindowUI;
     }
 
@@ -105,13 +105,22 @@ public class PlayerCharacter : MonoBehaviour
         moveDir = 0f;
 
         // 이동
-        if (Input.GetKey(KeyCode.A)) moveDir = -1.0f;
-        if (Input.GetKey(KeyCode.D)) moveDir = 1.0f;
+        if (Input.GetKey(KeyCode.A))
+        {
+            activeCharacter.Input_MoveKey(true);
+            moveDir = -1.0f;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            activeCharacter.Input_MoveKey(true);
+            moveDir = 1.0f;
+        }
 
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             moveDir = 0f;
-            if(activeCharacter.currState == ENUM_PLAYER_STATE.Move)
+            activeCharacter.Input_MoveKey(false);
+            if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
                 PlayerCommand(ENUM_PLAYER_STATE.Idle);
         }
 

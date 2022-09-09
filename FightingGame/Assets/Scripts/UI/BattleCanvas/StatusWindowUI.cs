@@ -16,16 +16,19 @@ public class StatusWindowUI : UIElement
 
     public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
     {
-        if(PhotonLogicHandler.IsConnected)
+        Set_CharFrameImage(_charType);
+        Set_MaxHP(maxHP);
+        
+        /*if (PhotonLogicHandler.IsConnected)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, ENUM_CHARACTER_TYPE>(this, Set_CharFrameImage, _charType);
             PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, float>(this, Set_MaxHP, _maxHP);
         }
         else
         {
-            Set_CharFrameImage(_charType);
-            Set_MaxHP(maxHP);
+            
         }
+        */
     }
 
     /*
@@ -54,7 +57,7 @@ public class StatusWindowUI : UIElement
         switch(_charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:
-                Debug.Log("이미지 아직 없음 ㅋㅋ");
+                // 이미지 아직 없음
                 break;
             default:
                 Debug.Log($"{_charType} 를 찾을 수 없음");

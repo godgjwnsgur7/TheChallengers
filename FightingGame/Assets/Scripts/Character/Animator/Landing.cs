@@ -17,6 +17,7 @@ public class Landing : StateMachineBehaviour
         if (!activeCharacter.isControl) return;
 
         activeCharacter.rigid2D.velocity = Vector2.zero;
-        activeCharacter.currState = FGDefine.ENUM_PLAYER_STATE.Inability;
+        activeCharacter.currState = FGDefine.ENUM_PLAYER_STATE.Idle;
     }
+
 }

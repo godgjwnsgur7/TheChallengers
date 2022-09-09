@@ -6,7 +6,7 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 {
 	private NetworkData data = Resources.Load<NetworkData>("Data/NetworkData");
 
-	public int GetHP() => data.hpData;
+	public float GetHP() => data.hpData;
 
 	public override void OnInit()
 	{
@@ -27,7 +27,7 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 
 	protected override void OnOtherSerializeView(PhotonReadStream readStream)
 	{
-		data.hpData = readStream.Read<int>();
+		data.hpData = readStream.Read<float>();
 		base.OnOtherSerializeView(readStream);
 	}
 }

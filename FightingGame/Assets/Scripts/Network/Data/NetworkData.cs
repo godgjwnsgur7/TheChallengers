@@ -10,5 +10,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NetworkData", menuName = "Make NetworkData For Synchronize", order = 1)]
 public class NetworkData : ScriptableObject
 {
-	public int hpData = 0;
+	public float hpData = 0;
 }

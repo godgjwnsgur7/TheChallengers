@@ -76,6 +76,7 @@ public partial class ActiveCharacter : Character
         {
             new AnimatorSyncParam("DirX", AnimParameterType.Float),
             new AnimatorSyncParam("IsMove", AnimParameterType.Bool),
+            new AnimatorSyncParam("MoveState", AnimParameterType.Bool),
             new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("AttackState", AnimParameterType.Bool),
             new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
@@ -245,7 +246,7 @@ public partial class ActiveCharacter : Character
             }
         }
     }
-
+    
     public override void Die()
     {
         base.Die();
@@ -254,6 +255,11 @@ public partial class ActiveCharacter : Character
 
         anim.SetTrigger("DieTrigger");
         anim.SetBool("IsDie", true);
+    }
+
+    public void Input_MoveKey(bool _moveKey)
+    {
+        anim.SetBool("MoveState", _moveKey);
     }
 
     public void SetAnimParamVector(float _moveDir)
