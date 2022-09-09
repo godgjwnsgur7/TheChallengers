@@ -30,8 +30,9 @@ public class SingletonPhoton<T> : SingletonPhoton where T : SingletonPhoton
     }
     private static T instance;
 
-    protected virtual void OnDestroy()
+    protected override void OnDestroy()
 	{
+        base.OnDestroy();
         OnFree();
 	}
 }

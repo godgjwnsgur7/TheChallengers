@@ -138,7 +138,7 @@ public partial class ActiveCharacter : Character
 
         base.Jump();
 
-        anim.SetTrigger("JumpTrigger");
+        SetTrigger("JumpTrigger");
         anim.SetBool("IsJump", true);
     }
 
@@ -156,8 +156,14 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            anim.SetTrigger("AttackTrigger");
+            SetTrigger("AttackTrigger");
         }
+    }
+
+    private void SetTrigger(string paramName)
+    {
+        anim.SetTrigger(paramName);
+        OnTriggerParameter?.Invoke(paramName);
     }
 
     public override void Skill(CharacterParam param)
@@ -175,7 +181,7 @@ public partial class ActiveCharacter : Character
         if (skillParam != null)
         {
             anim.SetInteger("SkillType", skillParam.skillNum);
-            anim.SetTrigger("SkillTrigger");
+            SetTrigger("SkillTrigger");
         }
     }
 
@@ -197,7 +203,7 @@ public partial class ActiveCharacter : Character
                 }
 
                 anim.SetBool("IsHit", true);
-                anim.SetTrigger("HitTrigger");
+                SetTrigger("HitTrigger");
 
                 base.Hit(param);
                 
@@ -254,7 +260,7 @@ public partial class ActiveCharacter : Character
 
         anim.SetBool("IsHit", false);
 
-        anim.SetTrigger("DieTrigger");
+        SetTrigger("DieTrigger");
         anim.SetBool("IsDie", true);
     }
 
@@ -320,7 +326,7 @@ public partial class ActiveCharacter : Character
                 if (!anim.GetBool("IsJump") &&
                     (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
                 {
-                    anim.SetTrigger("DropTrigger");
+                    SetTrigger("DropTrigger");
                 }
                 anim.SetBool("IsJump", jumpState);
 

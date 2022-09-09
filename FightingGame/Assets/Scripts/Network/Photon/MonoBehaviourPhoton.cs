@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -136,7 +137,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
 
-    // PhotonCustomStreamBase stream = new PhotonCustomStreamBase();
+    protected Action<string> OnTriggerParameter = null;
 
     public int ViewID => viewID;
     protected int viewID = 0;
@@ -169,6 +170,25 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
             viewID = PhotonLogicHandler.Register(photonView);
 
         isInitialized = true;
+
+        OnTriggerParameter = (sender) =>
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod(this, SetTrigger, sender, ENUM_RPC_TARGET.OTHER);
+        };
+    }
+
+    [BroadcastMethod]
+    protected void SetTrigger(string key)
+    {
+        if (PhotonLogicHandler.IsMine(viewID))
+            return;
+
+        syncAnim.SetTrigger(key);
+    }
+
+    protected virtual void OnDestroy()
+    {
+        OnTriggerParameter = null;
     }
 
     public virtual void OnEnable()
@@ -211,6 +231,9 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         foreach(var param in syncParameters)
 		{
             PhotonAnimatorView.ParameterType type = (PhotonAnimatorView.ParameterType)param.parameterType;
+            if (type == PhotonAnimatorView.ParameterType.Trigger)
+                continue;
+
             component.SetParameterSynchronized(param.parameterName, type, PhotonAnimatorView.SynchronizeType.Continuous);
 		}
 
@@ -270,7 +293,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     protected virtual void OnMineSerializeView(PhotonWriteStream writeStream)
     {
-        
+
     }
 
     /// <summary>
@@ -280,7 +303,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     protected virtual void OnOtherSerializeView(PhotonReadStream readStream)
     {
-        
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
