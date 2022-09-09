@@ -6,7 +6,7 @@ using System;
 using ExitGames.Client.Photon;
 
 [Serializable]
-public class SyncAttackObjectParam : PhotonCustomType<SyncAttackObjectParam>
+public class SyncAttackObjectParam : CharacterParam<SyncAttackObjectParam>
 {
     public ENUM_TEAM_TYPE teamType;
     public bool reverseState;

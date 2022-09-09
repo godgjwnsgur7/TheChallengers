@@ -8,9 +8,7 @@ using FGDefine;
 /// </summary>
 /// 
 
-public class CharacterParam { }
-
-public class CharacterMoveParam : CharacterParam
+public class CharacterMoveParam : CharacterParam<CharacterMoveParam>
 {
     public float moveDir;
     
@@ -23,7 +21,7 @@ public class CharacterMoveParam : CharacterParam
 /// <summary>
 /// 기본공격, 점프공격
 /// </summary>
-public class CharacterAttackParam : CharacterParam
+public class CharacterAttackParam : CharacterParam<CharacterAttackParam>
 {
     public ENUM_SKILL_TYPE attackType;
     public bool reverseState;
@@ -38,7 +36,7 @@ public class CharacterAttackParam : CharacterParam
 /// <summary>
 /// 캐릭터의 스킬 번호 ( 0 ~ 2 )
 /// </summary>
-public class CharacterSkillParam : CharacterParam
+public class CharacterSkillParam : CharacterParam<CharacterSkillParam>
 {
     public int skillNum;
 

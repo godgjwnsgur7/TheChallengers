@@ -77,19 +77,20 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("DirX", AnimParameterType.Float),
             new AnimatorSyncParam("IsMove", AnimParameterType.Bool),
             new AnimatorSyncParam("MoveState", AnimParameterType.Bool),
-            new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("AttackState", AnimParameterType.Bool),
-            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsJump", AnimParameterType.Bool),
             new AnimatorSyncParam("SkillType", AnimParameterType.Int),
-            new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsHit", AnimParameterType.Bool),
-            new AnimatorSyncParam("HitTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("HitState", AnimParameterType.Bool),
-            new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
-            new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDie", AnimParameterType.Bool),
+
+            new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("HitTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
         };
 
         return syncParams;
