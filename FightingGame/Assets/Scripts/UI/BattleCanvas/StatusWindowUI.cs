@@ -4,54 +4,54 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
+[System.Serializable]
+public class StatusData
+{
+    public float currHP;
+    public float maxHP;
+
+    public StatusData() { }
+
+    public StatusData(float _maxHP)
+    {
+        this.currHP = _maxHP;
+        this.maxHP = _maxHP;
+    }
+
+ }
+
 public class StatusWindowUI : UIElement
 {
     public Slider hpBarSlider;
     [SerializeField] Image charFrameImage;
 
-    public float maxHP;
-    public float curHP;
+    // 다시 꺼줘야함 처리안함 (임시)
+    public static System.Func<float, bool> OnChangeHP = null;
+
+    private float currHP
+    {
+        get
+        {
+            return NetworkDataHandler.Instance.CurrHP;
+        }
+        set
+        {
+            NetworkDataHandler.Instance.CurrHP = value;
+        }
+    }
+
+    private float maxHP;
 
     Coroutine hpBarCoroutine;
 
-    public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
+    public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, StatusData statusData)
     {
         Set_CharFrameImage(_charType);
-        Set_MaxHP(maxHP);
-        
-        /*if (PhotonLogicHandler.IsConnected)
-        {
-            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, ENUM_CHARACTER_TYPE>(this, Set_CharFrameImage, _charType);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, float>(this, Set_MaxHP, _maxHP);
-        }
-        else
-        {
-            
-        }
-        */
+        Set_MaxHP(statusData);
+
+        OnChangeHP = Input_Damage;
     }
 
-    /*
-    protected override void OnMineSerializeView(PhotonWriteStream stream)
-    {
-        stream.Write(hpBarSlider.value);
-        stream.Write(maxHP);
-        stream.Write(curHP);
-
-        base.OnMineSerializeView(stream);
-    }
-
-    protected override void OnOtherSerializeView(PhotonReadStream stream)
-    {
-        hpBarSlider.value = stream.Read<float>();
-        maxHP = stream.Read<float>();
-        curHP = stream.Read<float>();
-
-        base.OnOtherSerializeView(stream);
-    }
-    */
-
-    [BroadcastMethod]
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
     {
         switch(_charType)
@@ -65,11 +65,10 @@ public class StatusWindowUI : UIElement
         }
     }
 
-    [BroadcastMethod]
-    public void Set_MaxHP(float _maxHP)
+    public void Set_MaxHP(StatusData data)
     {
-        maxHP = _maxHP;
-        curHP = _maxHP;
+        NetworkDataHandler.Instance.CurrHP = data.currHP;
+        maxHP = data.maxHP;
     }
 
     /// <summary>
@@ -79,14 +78,14 @@ public class StatusWindowUI : UIElement
     [BroadcastMethod]
     public bool Input_Damage(float _damege)
     {
-        curHP -= _damege;
+        currHP -= _damege;
 
         if(hpBarCoroutine != null)
             StopCoroutine(hpBarCoroutine);
 
-        if(curHP > 0)
+        if(currHP > 0)
         {
-            hpBarCoroutine = StartCoroutine(IFadeHpBar(curHP / maxHP));
+            hpBarCoroutine = StartCoroutine(IFadeHpBar(currHP / maxHP));
             return true;
         }
 
@@ -96,7 +95,7 @@ public class StatusWindowUI : UIElement
 
     protected IEnumerator IFadeHpBar(float _goalHPValue)
     {
-        float _curHPValue = curHP / maxHP;
+        float _curHPValue = currHP / maxHP;
             
         while(_goalHPValue < hpBarSlider.value)
         {
@@ -107,5 +106,7 @@ public class StatusWindowUI : UIElement
         hpBarSlider.value = _goalHPValue;
         hpBarCoroutine = null;
     }
+
+    
 }
 

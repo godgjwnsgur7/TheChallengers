@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 {
-	private NetworkData data = Resources.Load<NetworkData>("Data/NetworkData");
+	public StatusData statusData = null;
 
-	public float GetHP() => data.hpData;
+	public float CurrHP
+    {
+		get => statusData.currHP;
+		set => statusData.currHP = value;
+    }
+
 
 	public override void OnInit()
 	{
-		// 초기값 세팅...
+		statusData = new StatusData();
 	}
 
 	/// <summary>
@@ -21,13 +26,13 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 
 	protected override void OnMineSerializeView(PhotonWriteStream writeStream)
 	{
-		writeStream.Write(data.hpData);
+		writeStream.Write(CurrHP);
 		base.OnMineSerializeView(writeStream);
 	}
 
 	protected override void OnOtherSerializeView(PhotonReadStream readStream)
 	{
-		data.hpData = readStream.Read<float>();
+		CurrHP = readStream.Read<float>();
 		base.OnOtherSerializeView(readStream);
 	}
 }

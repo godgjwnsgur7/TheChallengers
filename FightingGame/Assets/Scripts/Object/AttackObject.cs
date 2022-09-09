@@ -71,7 +71,7 @@ public class AttackObject : Poolable
     { 
         if (!PhotonLogicHandler.IsMine(viewID))
             return;
-        
+
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
             // 충돌한 객체가 액티브캐릭터가 아니라면 파괴 (ShotAttackObject)
@@ -88,13 +88,13 @@ public class AttackObject : Poolable
 
             CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType, reverseState);
             
-            /*
+            
             if(PhotonLogicHandler.IsConnected)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, CharacterAttackParam>
-                    (enemyCharacter, enemyCharacter.Hit, attackParam);
+                    (enemyCharacter, enemyCharacter.Hit, attackParam, ENUM_RPC_TARGET.OTHER);
             }
-            else*/
+            else
                 enemyCharacter.Hit(attackParam);
 
             DestroyMine();

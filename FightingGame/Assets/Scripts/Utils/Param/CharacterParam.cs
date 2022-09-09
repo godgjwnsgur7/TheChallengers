@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
+using System;
 
 /// <summary>
 /// 캐릭터의 스테이트를 변경하기 위해 사용하는 파라미터 목록
 /// </summary>
 /// 
 
+[Serializable]
 public class CharacterMoveParam : CharacterParam<CharacterMoveParam>
 {
     public float moveDir;
@@ -21,6 +23,7 @@ public class CharacterMoveParam : CharacterParam<CharacterMoveParam>
 /// <summary>
 /// 기본공격, 점프공격
 /// </summary>
+[Serializable]
 public class CharacterAttackParam : CharacterParam<CharacterAttackParam>
 {
     public ENUM_SKILL_TYPE attackType;
@@ -36,6 +39,7 @@ public class CharacterAttackParam : CharacterParam<CharacterAttackParam>
 /// <summary>
 /// 캐릭터의 스킬 번호 ( 0 ~ 2 )
 /// </summary>
+[Serializable]
 public class CharacterSkillParam : CharacterParam<CharacterSkillParam>
 {
     public int skillNum;

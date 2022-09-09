@@ -51,10 +51,13 @@ internal class PhotonCustomTypeManagement
     }
 }
 
+[Serializable]
 public abstract class PhotonCustomType { }
 
+[Serializable]
 public class CharacterParam : PhotonCustomType { }
 
+[Serializable]
 public class CharacterParam<T> : CharacterParam where T : class
 {
     public static object Deserialize(byte[] data)

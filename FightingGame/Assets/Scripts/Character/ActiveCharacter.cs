@@ -219,7 +219,7 @@ public partial class ActiveCharacter : Character
 
                 curHP -= _skillData.damage;
                 
-                if(!statusWindowUI.Input_Damage(_skillData.damage)) // 캐릭터의 HP가 다 닳음
+                if(!StatusWindowUI.OnChangeHP(_skillData.damage)) // 캐릭터의 HP가 다 닳음
                 {
                     Die();
                     return;
