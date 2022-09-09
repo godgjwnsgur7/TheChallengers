@@ -16,9 +16,9 @@ internal class PhotonCustomTypeManagement
 
     private static void SetPhotonPeerParameterType()
     {
-        var types = Assembly.GetAssembly(typeof(CharacterParam))
+        var types = Assembly.GetAssembly(typeof(PhotonCustomType))
             .GetTypes()
-            .Where(type => type.IsSubclassOf(typeof(CharacterParam)))
+            .Where(type => type.IsSubclassOf(typeof(PhotonCustomType)))
             ?.ToArray();
 
         if (types == null || types.Length > 255)
