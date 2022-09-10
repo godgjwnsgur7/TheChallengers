@@ -216,20 +216,45 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
     
     public void SetAnimBool(string paramName, bool value)
     {
+        if(!PhotonLogicHandler.IsConnected)
+        {
+            syncAnim.SetBool(paramName, value);
+            return;
+        }
+
         OnBoolParameter?.Invoke(paramName, value);
     }
+
     public void SetAnimTrigger(string paramName)
     {
+        if (!PhotonLogicHandler.IsConnected)
+        {
+            syncAnim.SetTrigger(paramName);
+            return;
+        }
+
         OnTriggerParameter?.Invoke(paramName);
     }
 
     public void SetAnimInt(string paramName, int value)
     {
+        if (!PhotonLogicHandler.IsConnected)
+        {
+            syncAnim.SetInteger(paramName, value);
+            return;
+        }
+
         OnIntParameter?.Invoke(paramName, value);
     }
 
     public void SetAnimFloat(string paramName, float value)
     {
+        if (!PhotonLogicHandler.IsConnected)
+        {
+            syncAnim.SetFloat(paramName, value);
+            return;
+        }
+
         OnFloatParameter?.Invoke(paramName, value);
     }
 
