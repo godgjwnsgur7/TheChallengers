@@ -27,7 +27,7 @@ public class Jump : StateMachineBehaviour
 
         if (!activeCharacter.isControl) return;
 
-        animator.SetBool("IsDrop", false);
+        activeCharacter.SetAnimBool("IsDrop", false);
         CoroutineHelper.StopCoroutine(coroutine);
     }
 

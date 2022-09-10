@@ -331,21 +331,6 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
             }
         }
 
-        List<string> changedKeys = new List<string>();
-        foreach (var triggerSet in animTriggerDictionary)
-        {
-            if (triggerSet.Value == true)
-            {
-                syncAnim.SetTrigger(triggerSet.Key);
-                changedKeys.Add(triggerSet.Key);
-            }
-        }
-
-        foreach (var key in changedKeys)
-        {
-            animTriggerDictionary[key] = false;
-        }
-
         foreach (var intSet in animIntDictionary)
         {
             if (syncAnim.GetInteger(intSet.Key) != intSet.Value)
@@ -359,6 +344,20 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
             {
                 syncAnim.SetFloat(floatSet.Key, floatSet.Value);
             }
+        }
+        List<string> changedKeys = new List<string>();
+        foreach (var triggerSet in animTriggerDictionary)
+        {
+            if (triggerSet.Value == true)
+            {
+                syncAnim.SetTrigger(triggerSet.Key);
+                changedKeys.Add(triggerSet.Key);
+            }
+        }
+
+        foreach (var key in changedKeys)
+        {
+            animTriggerDictionary[key] = false;
         }
     }
 

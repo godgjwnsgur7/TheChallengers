@@ -15,7 +15,7 @@ public class Hit : StateMachineBehaviour
 
         if (!activeCharacter.isControl) return;
 
-        animator.SetBool("HitState", true);
+        activeCharacter.SetAnimBool("HitState", true);
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -25,6 +25,6 @@ public class Hit : StateMachineBehaviour
 
         if (!activeCharacter.isControl) return;
 
-        animator.SetBool("HitState", false);
+        activeCharacter.SetAnimBool("HitState", false);
     }
 }

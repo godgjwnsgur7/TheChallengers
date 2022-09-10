@@ -42,11 +42,9 @@ public partial class ActiveCharacter : Character
             anim.runtimeAnimatorController = Managers.Resource.GetAnimator(characterType);
         }
 
-        if (PhotonLogicHandler.IsConnected)
-        {
-            var param = MakeSyncAnimParam();
-            SyncAnimator(anim, param);
-        }
+        var param = MakeSyncAnimParam();
+        SyncAnimator(anim, param);
+      
 
         isInitialized = true;
     }
@@ -138,8 +136,8 @@ public partial class ActiveCharacter : Character
 
         base.Jump();
 
-        SetAnimTrigger("JumpTrigger");
         SetAnimBool("IsJump", true);
+        SetAnimTrigger("JumpTrigger");
     }
 
     public override void Attack(CharacterParam param)
