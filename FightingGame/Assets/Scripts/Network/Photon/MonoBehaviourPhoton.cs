@@ -214,7 +214,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
     
     public void SetAnimBool(string paramName, bool value)
     {
-        if(!PhotonLogicHandler.IsConnected)
+        if(!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
         {
             syncAnim.SetBool(paramName, value);
             return;
@@ -225,7 +225,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public void SetAnimTrigger(string paramName)
     {
-        if (!PhotonLogicHandler.IsConnected)
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
         {
             syncAnim.SetTrigger(paramName);
             return;
@@ -236,7 +236,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public void SetAnimInt(string paramName, int value)
     {
-        if (!PhotonLogicHandler.IsConnected)
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
         {
             syncAnim.SetInteger(paramName, value);
             return;
@@ -247,7 +247,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public void SetAnimFloat(string paramName, float value)
     {
-        if (!PhotonLogicHandler.IsConnected)
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
         {
             syncAnim.SetFloat(paramName, value);
             return;
