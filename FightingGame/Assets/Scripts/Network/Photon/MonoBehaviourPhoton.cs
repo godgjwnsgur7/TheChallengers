@@ -135,8 +135,6 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         Trigger = 9,
     }
 
-    Coroutine animationCoroutine = null;
-
     Dictionary<string, bool> animTriggerDictionary = new Dictionary<string, bool>();
     Dictionary<string, bool> animBoolDictionary = new Dictionary<string, bool>();
     Dictionary<string, int> animIntDictionary = new Dictionary<string, int>();

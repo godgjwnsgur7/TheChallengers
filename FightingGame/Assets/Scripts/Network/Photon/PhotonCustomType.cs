@@ -52,36 +52,17 @@ internal class PhotonCustomTypeManagement
 }
 
 [Serializable]
-public abstract class PhotonCustomType { }
-
-[Serializable]
-public class CharacterParam : PhotonCustomType { }
-
-[Serializable]
-public class CharacterParam<T> : CharacterParam where T : class
+public abstract class PhotonCustomType 
 {
     public static object Deserialize(byte[] data)
     {
-        if (!typeof(T).IsSerializable)
-		{
-            Debug.LogError($"{typeof(T)} 해당 타입은 직렬화가 불가능합니다.");
-            return null;
-        }
-
-        string jsonData = Encoding.UTF8.GetString(data);
-        return JsonUtility.FromJson<T>(jsonData);
+        new NotImplementedException();
+        return null;
     }
 
     public static byte[] Serialize(object customObject)
     {
-        if (!typeof(T).IsSerializable)
-        {
-            Debug.LogError($"{typeof(T)} 해당 타입은 직렬화가 불가능합니다.");
-            return null;
-        }
-
-        T param = (T)customObject;
-        string jsonData = JsonUtility.ToJson(param);
-        return Encoding.UTF8.GetBytes(jsonData);
+        new NotImplementedException();
+        return null;
     }
 }

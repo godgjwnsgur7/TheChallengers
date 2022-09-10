@@ -4,9 +4,10 @@ using UnityEngine;
 using FGDefine;
 using System;
 using ExitGames.Client.Photon;
+using System.Text;
 
 [Serializable]
-public class SyncAttackObjectParam : CharacterParam<SyncAttackObjectParam>
+public class SyncAttackObjectParam : CharacterParam
 {
     public ENUM_TEAM_TYPE teamType;
     public bool reverseState;
@@ -22,5 +23,18 @@ public class SyncAttackObjectParam : CharacterParam<SyncAttackObjectParam>
         teamType = _teamType;
         reverseState = _reverseState;
         targetTr = _targetTr;
+    }
+
+    public new static object Deserialize(byte[] data)
+    {
+        string jsonData = Encoding.UTF8.GetString(data);
+        return JsonUtility.FromJson<SyncAttackObjectParam>(jsonData);
+    }
+
+    public new static byte[] Serialize(object customObject)
+    {
+        var param = (SyncAttackObjectParam)customObject;
+        string jsonData = JsonUtility.ToJson(param);
+        return Encoding.UTF8.GetBytes(jsonData);
     }
 }
