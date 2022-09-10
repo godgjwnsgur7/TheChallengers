@@ -103,7 +103,7 @@ public partial class ActiveCharacter : Character
         base.Idle();
 
         if (anim.GetBool("IsMove"))
-            anim.SetBool("IsMove", false);
+            SetAnimBool("IsMove", false);
     }
 
     public override void Move(CharacterParam param)
@@ -121,7 +121,7 @@ public partial class ActiveCharacter : Character
         if (moveParam != null)
         {
             if(!anim.GetBool("IsMove"))
-                anim.SetBool("IsMove", true);
+                SetAnimBool("IsMove", true);
 
             SetAnimParamVector(moveParam.moveDir);
         }
@@ -138,8 +138,8 @@ public partial class ActiveCharacter : Character
 
         base.Jump();
 
-        SetTrigger("JumpTrigger");
-        anim.SetBool("IsJump", true);
+        SetAnimTrigger("JumpTrigger");
+        SetAnimBool("IsJump", true);
     }
 
     public override void Attack(CharacterParam param)
@@ -156,14 +156,8 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            SetTrigger("AttackTrigger");
+            SetAnimTrigger("AttackTrigger");
         }
-    }
-
-    private void SetTrigger(string paramName)
-    {
-        anim.SetTrigger(paramName);
-        OnTriggerParameter?.Invoke(paramName);
     }
 
     public override void Skill(CharacterParam param)
@@ -180,8 +174,8 @@ public partial class ActiveCharacter : Character
 
         if (skillParam != null)
         {
-            anim.SetInteger("SkillType", skillParam.skillNum);
-            SetTrigger("SkillTrigger");
+            SetAnimInt("SkillType", skillParam.skillNum);
+            SetAnimTrigger("SkillTrigger");
         }
     }
 
@@ -202,8 +196,8 @@ public partial class ActiveCharacter : Character
                     return;
                 }
 
-                anim.SetBool("IsHit", true);
-                SetTrigger("HitTrigger");
+                SetAnimBool("IsHit", true);
+                SetAnimTrigger("HitTrigger");
 
                 base.Hit(param);
                 
@@ -258,22 +252,22 @@ public partial class ActiveCharacter : Character
     {
         base.Die();
 
-        anim.SetBool("IsHit", false);
+        SetAnimBool("IsHit", false);
 
-        SetTrigger("DieTrigger");
-        anim.SetBool("IsDie", true);
+        SetAnimTrigger("DieTrigger");
+        SetAnimBool("IsDie", true);
     }
 
     public void Input_MoveKey(bool _moveKey)
     {
-        anim.SetBool("MoveState", _moveKey);
+        SetAnimBool("MoveState", _moveKey);
     }
 
     public void SetAnimParamVector(float _moveDir)
     {
         ReverseSprites(_moveDir);
 
-        anim.SetFloat("DirX", _moveDir);
+        SetAnimFloat("DirX", _moveDir);
     }
 
     public void Change_AttackState(bool _attackState)
@@ -281,7 +275,7 @@ public partial class ActiveCharacter : Character
         if (anim.GetBool("AttackState") == _attackState)
             return;
 
-        anim.SetBool("AttackState", _attackState);
+        SetAnimBool("AttackState", _attackState);
     }
 
     public void ReverseSprites(float vecX)
@@ -326,9 +320,9 @@ public partial class ActiveCharacter : Character
                 if (!anim.GetBool("IsJump") &&
                     (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
                 {
-                    SetTrigger("DropTrigger");
+                    SetAnimTrigger("DropTrigger");
                 }
-                anim.SetBool("IsJump", jumpState);
+                SetAnimBool("IsJump", jumpState);
 
             }
 
@@ -358,7 +352,7 @@ public partial class ActiveCharacter : Character
         }
 
         stunTimeCoroutine = null;
-        anim.SetBool("IsHit", false);
+        SetAnimBool("IsHit", false);
     }
 
     /// <summary>
@@ -375,7 +369,7 @@ public partial class ActiveCharacter : Character
         Invincible();
         landCoroutine = null;
         Push_Rigid2D(Vector2.zero);
-        anim.SetBool("IsHit", false);
+        SetAnimBool("IsHit", false);
     }
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
