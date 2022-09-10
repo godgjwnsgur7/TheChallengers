@@ -19,7 +19,7 @@ public class SingletonPhoton<T> : SingletonPhoton where T : SingletonPhoton
 		{
             if(instance == null)
 			{
-                GameObject go = new GameObject();
+                GameObject go = new GameObject($"{typeof(T)}");
                 instance = go.AddComponent<T>();
                 instance.Init();
                 instance.OnInit();
