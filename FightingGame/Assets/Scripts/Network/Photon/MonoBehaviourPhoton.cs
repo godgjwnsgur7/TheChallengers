@@ -1,6 +1,8 @@
 using Photon.Pun;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -133,10 +135,18 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         Trigger = 9,
     }
 
+    Dictionary<string, bool> animTriggerDictionary = new Dictionary<string, bool>();
+    Dictionary<string, bool> animBoolDictionary = new Dictionary<string, bool>();
+    Dictionary<string, int> animIntDictionary = new Dictionary<string, int>();
+    Dictionary<string, float> animFloatDictionary = new Dictionary<string, float>();
+
+    protected Action<string, bool> OnBoolParameter = null;
+    protected Action<string> OnTriggerParameter = null;
+    protected Action<string, int> OnIntParameter = null;
+    protected Action<string, float> OnFloatParameter = null;
+
     private PhotonWriteStream writeStream = new PhotonWriteStream();
     private PhotonReadStream readStream = new PhotonReadStream();
-
-    // PhotonCustomStreamBase stream = new PhotonCustomStreamBase();
 
     public int ViewID => viewID;
     protected int viewID = 0;
@@ -171,6 +181,86 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         isInitialized = true;
     }
 
+    private void SetAnimParameter()
+    {
+        OnTriggerParameter = (sender) =>
+        {
+            animTriggerDictionary[sender] = true;
+        };
+
+        OnBoolParameter = (sender, arg) =>
+        {
+            animBoolDictionary[sender] = arg;
+        };
+
+        OnIntParameter = (sender, arg) =>
+        {
+            animIntDictionary[sender] = arg;
+        };
+
+        OnFloatParameter = (sender, arg) =>
+        {
+            animFloatDictionary[sender] = arg;
+        };
+    }
+
+    private void UnsetAnimParameter()
+    {
+        OnTriggerParameter = null;
+        OnBoolParameter = null;
+        OnIntParameter = null;
+        OnFloatParameter = null;
+    }
+    
+    public void SetAnimBool(string paramName, bool value)
+    {
+        if(!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
+        {
+            syncAnim.SetBool(paramName, value);
+            return;
+        }
+
+        OnBoolParameter?.Invoke(paramName, value);
+    }
+
+    public void SetAnimTrigger(string paramName)
+    {
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
+        {
+            syncAnim.SetTrigger(paramName);
+            return;
+        }
+
+        OnTriggerParameter?.Invoke(paramName);
+    }
+
+    public void SetAnimInt(string paramName, int value)
+    {
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
+        {
+            syncAnim.SetInteger(paramName, value);
+            return;
+        }
+
+        OnIntParameter?.Invoke(paramName, value);
+    }
+
+    public void SetAnimFloat(string paramName, float value)
+    {
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
+        {
+            syncAnim.SetFloat(paramName, value);
+            return;
+        }
+
+        OnFloatParameter?.Invoke(paramName, value);
+    }
+
+    protected virtual void OnDestroy()
+    {
+        UnsetAnimParameter();
+    }
+
     public virtual void OnEnable()
 	{
         if(viewID == 0)
@@ -197,24 +287,79 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
         syncAnim = anim;
 
-        GameObject ownerObj = syncAnim.gameObject;
-
-        var component = ownerObj.GetComponent<PhotonAnimatorView>();
-        if (component == null)
-            component = ownerObj.AddComponent<PhotonAnimatorView>();
-
-        photonView.ObservedComponents.Add(component);
-
         if (syncParameters == null)
             return;
 
-        foreach(var param in syncParameters)
+        SetAnimParameter();
+
+        foreach (var param in syncParameters)
 		{
             PhotonAnimatorView.ParameterType type = (PhotonAnimatorView.ParameterType)param.parameterType;
-            component.SetParameterSynchronized(param.parameterName, type, PhotonAnimatorView.SynchronizeType.Continuous);
-		}
 
-        component.SetLayerSynchronized(0, PhotonAnimatorView.SynchronizeType.Continuous);
+            switch(type)
+            {
+                case PhotonAnimatorView.ParameterType.Bool:
+                    animBoolDictionary.Add(param.parameterName, false);
+                    break;
+
+                case PhotonAnimatorView.ParameterType.Trigger:
+                    animTriggerDictionary.Add(param.parameterName, false);
+                    break;
+
+                case PhotonAnimatorView.ParameterType.Int:
+                    animIntDictionary.Add(param.parameterName, 0);
+                    break;
+
+                case PhotonAnimatorView.ParameterType.Float:
+                    animFloatDictionary.Add(param.parameterName, 0.0f);
+                    break;
+            }
+           
+		}
+    }
+
+    private void SyncAnimationState()
+    {
+        if (!IsInitialized)
+            return;
+
+        foreach (var boolSet in animBoolDictionary)
+        {
+            if (syncAnim.GetBool(boolSet.Key) != boolSet.Value)
+            {
+                syncAnim.SetBool(boolSet.Key, boolSet.Value);
+            }
+        }
+
+        List<string> changedKeys = new List<string>();
+        foreach (var triggerSet in animTriggerDictionary)
+        {
+            if (triggerSet.Value == true)
+            {
+                syncAnim.SetTrigger(triggerSet.Key);
+                changedKeys.Add(triggerSet.Key);
+            }
+        }
+
+        foreach (var key in changedKeys)
+        {
+            animTriggerDictionary[key] = false;
+        }
+
+        foreach (var intSet in animIntDictionary)
+        {
+            if (syncAnim.GetInteger(intSet.Key) != intSet.Value)
+            {
+                syncAnim.SetInteger(intSet.Key, intSet.Value);
+            }
+        }
+        foreach (var floatSet in animFloatDictionary)
+        {
+            if (syncAnim.GetFloat(floatSet.Key) != floatSet.Value)
+            {
+                syncAnim.SetFloat(floatSet.Key, floatSet.Value);
+            }
+        }
     }
 
     public void SyncTransformView(Transform tr, bool isSyncPosition = true, bool isSyncRotation = true, bool isSyncScale = true)
@@ -270,7 +415,31 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     protected virtual void OnMineSerializeView(PhotonWriteStream writeStream)
     {
-        
+        if (syncAnim == null)
+            return;
+
+        foreach(var set in animBoolDictionary)
+        {
+            writeStream.Write(set.Key);
+            writeStream.Write(set.Value);
+        }
+        foreach (var set in animTriggerDictionary)
+        {
+            writeStream.Write(set.Key);
+            writeStream.Write(set.Value);
+        }
+        foreach (var set in animIntDictionary)
+        {
+            writeStream.Write(set.Key);
+            writeStream.Write(set.Value);
+        }
+        foreach (var set in animFloatDictionary)
+        {
+            writeStream.Write(set.Key);
+            writeStream.Write(set.Value);
+        }
+
+        SyncAnimationState();
     }
 
     /// <summary>
@@ -280,7 +449,31 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     protected virtual void OnOtherSerializeView(PhotonReadStream readStream)
     {
-        
+        if (syncAnim == null)
+            return;
+
+        for (int i = 0; i < animBoolDictionary.Count; i++)
+        {
+            var key = readStream.Read<string>();
+            animBoolDictionary[key] = readStream.Read<bool>();
+        }
+        for (int i = 0; i < animTriggerDictionary.Count; i++)
+        {
+            var key = readStream.Read<string>();
+            animTriggerDictionary[key] = readStream.Read<bool>();
+        }
+        for (int i = 0; i < animIntDictionary.Count; i++)
+        {
+            var key = readStream.Read<string>();
+            animIntDictionary[key] = readStream.Read<int>();
+        }
+        for (int i = 0; i < animFloatDictionary.Count; i++)
+        {
+            var key = readStream.Read<string>();
+            animFloatDictionary[key] = readStream.Read<float>();
+        }
+
+        SyncAnimationState();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

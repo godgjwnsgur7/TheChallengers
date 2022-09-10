@@ -125,7 +125,6 @@ namespace FGDefine
         Jump,
         Attack,
         Skill,
-        Inability,
         Down,
         Hit,
         Die,

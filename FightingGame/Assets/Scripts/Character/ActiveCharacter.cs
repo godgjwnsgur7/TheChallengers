@@ -9,7 +9,6 @@ public partial class ActiveCharacter : Character
 {
     public Animator anim;
     public SpriteRenderer spriteRenderer;
-    public ENUM_SKILL_TYPE[] skills = new ENUM_SKILL_TYPE[3];
 
     public AttackObject attackObject;
     public StatusWindowUI statusWindowUI;
@@ -77,19 +76,21 @@ public partial class ActiveCharacter : Character
         {
             new AnimatorSyncParam("DirX", AnimParameterType.Float),
             new AnimatorSyncParam("IsMove", AnimParameterType.Bool),
-            new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("MoveState", AnimParameterType.Bool),
             new AnimatorSyncParam("AttackState", AnimParameterType.Bool),
-            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsJump", AnimParameterType.Bool),
             new AnimatorSyncParam("SkillType", AnimParameterType.Int),
-            new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsHit", AnimParameterType.Bool),
-            new AnimatorSyncParam("HitTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("HitState", AnimParameterType.Bool),
-            new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
-            new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("IsDie", AnimParameterType.Bool),
+
+            new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("HitTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
         };
 
         return syncParams;
@@ -102,7 +103,7 @@ public partial class ActiveCharacter : Character
         base.Idle();
 
         if (anim.GetBool("IsMove"))
-            anim.SetBool("IsMove", false);
+            SetAnimBool("IsMove", false);
     }
 
     public override void Move(CharacterParam param)
@@ -120,7 +121,7 @@ public partial class ActiveCharacter : Character
         if (moveParam != null)
         {
             if(!anim.GetBool("IsMove"))
-                anim.SetBool("IsMove", true);
+                SetAnimBool("IsMove", true);
 
             SetAnimParamVector(moveParam.moveDir);
         }
@@ -137,8 +138,8 @@ public partial class ActiveCharacter : Character
 
         base.Jump();
 
-        anim.SetTrigger("JumpTrigger");
-        anim.SetBool("IsJump", true);
+        SetAnimTrigger("JumpTrigger");
+        SetAnimBool("IsJump", true);
     }
 
     public override void Attack(CharacterParam param)
@@ -155,7 +156,7 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            anim.SetTrigger("AttackTrigger");
+            SetAnimTrigger("AttackTrigger");
         }
     }
 
@@ -164,7 +165,18 @@ public partial class ActiveCharacter : Character
         if (attackObject != null)
             attackObject = null;
 
+        if (currState == ENUM_PLAYER_STATE.Skill || jumpState)
+            return;
+
         base.Skill(param);
+
+        var skillParam = param as CharacterSkillParam;
+
+        if (skillParam != null)
+        {
+            SetAnimInt("SkillType", skillParam.skillNum);
+            SetAnimTrigger("SkillTrigger");
+        }
     }
 
     [BroadcastMethod]
@@ -184,8 +196,8 @@ public partial class ActiveCharacter : Character
                     return;
                 }
 
-                anim.SetBool("IsHit", true);
-                anim.SetTrigger("HitTrigger");
+                SetAnimBool("IsHit", true);
+                SetAnimTrigger("HitTrigger");
 
                 base.Hit(param);
                 
@@ -207,7 +219,7 @@ public partial class ActiveCharacter : Character
 
                 curHP -= _skillData.damage;
                 
-                if(!statusWindowUI.Input_Damage(_skillData.damage)) // 캐릭터의 HP가 다 닳음
+                if(!StatusWindowUI.OnChangeHP(_skillData.damage)) // 캐릭터의 HP가 다 닳음
                 {
                     Die();
                     return;
@@ -235,22 +247,27 @@ public partial class ActiveCharacter : Character
             }
         }
     }
-
+    
     public override void Die()
     {
         base.Die();
 
-        anim.SetBool("IsHit", false);
+        SetAnimBool("IsHit", false);
 
-        anim.SetTrigger("DieTrigger");
-        anim.SetBool("IsDie", true);
+        SetAnimTrigger("DieTrigger");
+        SetAnimBool("IsDie", true);
+    }
+
+    public void Input_MoveKey(bool _moveKey)
+    {
+        SetAnimBool("MoveState", _moveKey);
     }
 
     public void SetAnimParamVector(float _moveDir)
     {
         ReverseSprites(_moveDir);
 
-        anim.SetFloat("DirX", _moveDir);
+        SetAnimFloat("DirX", _moveDir);
     }
 
     public void Change_AttackState(bool _attackState)
@@ -258,7 +275,7 @@ public partial class ActiveCharacter : Character
         if (anim.GetBool("AttackState") == _attackState)
             return;
 
-        anim.SetBool("AttackState", _attackState);
+        SetAnimBool("AttackState", _attackState);
     }
 
     public void ReverseSprites(float vecX)
@@ -303,9 +320,9 @@ public partial class ActiveCharacter : Character
                 if (!anim.GetBool("IsJump") &&
                     (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
                 {
-                    anim.SetTrigger("DropTrigger");
+                    SetAnimTrigger("DropTrigger");
                 }
-                anim.SetBool("IsJump", jumpState);
+                SetAnimBool("IsJump", jumpState);
 
             }
 
@@ -335,7 +352,7 @@ public partial class ActiveCharacter : Character
         }
 
         stunTimeCoroutine = null;
-        anim.SetBool("IsHit", false);
+        SetAnimBool("IsHit", false);
     }
 
     /// <summary>
@@ -352,7 +369,7 @@ public partial class ActiveCharacter : Character
         Invincible();
         landCoroutine = null;
         Push_Rigid2D(Vector2.zero);
-        anim.SetBool("IsHit", false);
+        SetAnimBool("IsHit", false);
     }
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
@@ -378,16 +395,15 @@ public partial class ActiveCharacter : Character
 
         if (attackObject != null)
         {
-            attackObject.transform.position = transform.position;
-            
-            SyncAttackObjectParam syncAttackObjectParam = new SyncAttackObjectParam(teamType, reverseState, this.transform);
+            attackObject.FollowingTarget(this.transform);
+
             if(isConnected)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, SyncAttackObjectParam>
-                    (attackObject, attackObject.ActivatingAttackObject, syncAttackObjectParam);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
+                    (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
             }
             else
-                attackObject.ActivatingAttackObject(syncAttackObjectParam);
+                attackObject.ActivatingAttackObject(teamType, reverseState);
         }
         else
         {

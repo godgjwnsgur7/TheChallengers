@@ -46,7 +46,7 @@ public class Jump : StateMachineBehaviour
 
             if (dropState)
             {
-                activeCharacter.anim.SetBool("IsDrop", true);
+                activeCharacter.SetAnimBool("IsDrop", true);
             }
 
             yield return null;

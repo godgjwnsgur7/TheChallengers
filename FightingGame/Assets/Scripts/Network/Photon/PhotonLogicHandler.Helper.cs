@@ -44,7 +44,7 @@ public partial class PhotonLogicHandler
         return false;
     }
 
-    public bool IsFullRoom
+    public static bool IsFullRoom
 	{
         get
 		{

@@ -17,7 +17,8 @@ public class AttackObject : Poolable
     public Skill skillValue;
     public ENUM_TEAM_TYPE teamType;
     public ENUM_ATTACKOBJECT_TYPE attackObjectType = ENUM_ATTACKOBJECT_TYPE.Default;
-    
+
+    public Transform targetTr = null;
     public bool reverseState;
 
     public override void Init()
@@ -39,12 +40,12 @@ public class AttackObject : Poolable
     }
 
     [BroadcastMethod]
-    public virtual void ActivatingAttackObject(SyncAttackObjectParam attackObjectParam)
+    public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
         isUsing = true;
 
-        reverseState = attackObjectParam.reverseState;
-        teamType = attackObjectParam.teamType;
+        reverseState = _reverseState;
+        teamType = _teamType;
 
         transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
 
@@ -53,17 +54,27 @@ public class AttackObject : Poolable
         if(PhotonLogicHandler.IsConnected)
         {
             if (PhotonLogicHandler.IsMine(viewID))
-                CoroutineHelper.StartCoroutine(IFollowTarget(skillValue.runTime, attackObjectParam.targetTr));
+                CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
         }
         else
-            CoroutineHelper.StartCoroutine(IFollowTarget(skillValue.runTime, attackObjectParam.targetTr));
+            CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
+    }
+
+
+    public void FollowingTarget(Transform _targetTr)
+    {
+        targetTr = _targetTr;
+        this.transform.position = targetTr.position;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
+    { 
+        if (!PhotonLogicHandler.IsMine(viewID))
+            return;
+
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
-        // 충돌한 객체가 액티브캐릭터가 아니라면 파괴 (ShotAttackObject)
+            // 충돌한 객체가 액티브캐릭터가 아니라면 파괴 (ShotAttackObject)
         if (enemyCharacter == null && attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot)
         {
             DestroyMine();
@@ -76,16 +87,16 @@ public class AttackObject : Poolable
                 return;
 
             CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType, reverseState);
-
+            
+            
             if(PhotonLogicHandler.IsConnected)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, CharacterAttackParam>
-                    (enemyCharacter, enemyCharacter.Hit, attackParam);
+                    (enemyCharacter, enemyCharacter.Hit, attackParam, ENUM_RPC_TARGET.OTHER);
             }
             else
                 enemyCharacter.Hit(attackParam);
 
-            isUsing = false;
             DestroyMine();
         }
         else
@@ -94,33 +105,31 @@ public class AttackObject : Poolable
         }
     }
 
-    /// <summary>
-    /// 런타임동안 타겟의 포지션 값을 위치로 받으며,
-    /// 런타임 시간이 끝나면 다시 풀링 안에 넣음 (Destroy)
-    /// </summary>
-    private IEnumerator IFollowTarget(float _runTime, Transform _target)
+    private IEnumerator IRunTimeCheck(float _runTime)
     {
         float realTime = 0.0f;
 
-        while(realTime < _runTime)
+        while(realTime < _runTime && this.gameObject.activeSelf)
         {
             realTime += Time.deltaTime;
             
-            if(attackObjectType != ENUM_ATTACKOBJECT_TYPE.Shot)
-                this.transform.position = _target.position;
+            if(attackObjectType != ENUM_ATTACKOBJECT_TYPE.Shot || targetTr != null)
+                this.transform.position = targetTr.position;
 
             yield return null;
         }
 
         if(this.gameObject.activeSelf)
         {
-            isUsing = false;
             DestroyMine();
         }
     }
-
+    
     public virtual void DestroyMine()
     {
+        isUsing = false;
+        targetTr = null;
+
         if (PhotonLogicHandler.IsConnected)
             PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
         else
