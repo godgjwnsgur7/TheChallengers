@@ -24,7 +24,7 @@ public class CreateRoomPanel : UIElement
         base.Open(param);
 
         // 기본 정보 초기화
-        // createUser.text = $"방장 : {}";
+        createUser.text = PlayerPrefs.GetString("LoginUser");
         notice.text = "";
         //mapImage.sprite = mapSprite[0];
         mapSpriteP = 0;
@@ -65,14 +65,44 @@ public class CreateRoomPanel : UIElement
             return;
         }
 
-        // 임시
-        PlayerPrefs.SetString("CreateUser", "kuj");
-        PlayerPrefs.SetString("MyName", "kuj");
-        PlayerPrefs.SetString("MyTeam", "Blue");
-        PlayerPrefs.SetString("RoomName", inputField.text);
-        PlayerPrefs.SetInt("MapSpriteP", mapSpriteP);
+        // 여기서 방을 생성하면 좋을 거 같음...
+        if (PhotonLogicHandler.IsConnected)
+            OnClickJoinLobby();
+        else
+            OnClickMasterServer();
+    }
 
-        Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom);
+    public void OnClickMasterServer()
+    {
+        bool a = PhotonLogicHandler.Instance.TryConnectToMaster(
+            () => { OnClickJoinLobby(); },
+            SetError);
+    }
+
+    public void OnClickJoinLobby()
+    {
+        PhotonLogicHandler.Instance.TryJoinLobby(
+               () => { OnClickCreateRoom();},
+              SetError);
+
+    }
+
+    public void OnClickCreateRoom()
+    {
+        PhotonLogicHandler.Instance.TryCreateRoom(
+        OnCreateRoom: () => { Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom); },
+        OnCreateRoomFailed: null,
+        playerNickname: createUser.text);
+    }
+
+    public void SetError(string cause)
+    {
+        setNotionText($"{cause} - 해당 사유로 접속 실패, 혹은 끊어짐");
+    }
+
+    public void SetError(short returnCode, string message)
+    {
+        setNotionText($"{returnCode} - {message}");
     }
 
     public void setNotionText(string text)

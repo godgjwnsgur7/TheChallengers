@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainCanvas : BaseCanvas
 {
-    bool isLogin = true;
-    [SerializeField] InteractableUI interactableUI;
+    [SerializeField] LoginWindow interactableUI;
     [SerializeField] ProduceUI produceUI;
-
+    [SerializeField] Text notion;
+    
     public override void Close<T>()
     {
-        if (typeof(T) == typeof(InteractableUI)) interactableUI.Close();
+        if (typeof(T) == typeof(TestLoginWindow)) interactableUI.Close();
         else if (typeof(T) == typeof(ProduceUI)) produceUI.Close();
         else Debug.Log("범위 벗어남");
     }
 
     public override void Open<T>(UIParam param = null)
     {
-        if (typeof(T) == typeof(InteractableUI)) interactableUI.Open();
+        if (typeof(T) == typeof(TestLoginWindow)) interactableUI.Open();
         else if (typeof(T) == typeof(ProduceUI)) produceUI.Open();
         else Debug.Log("범위 벗어남");
     }
@@ -30,19 +31,21 @@ public class MainCanvas : BaseCanvas
 
     public void OnClickStart()
     {
-        if (isLogin)
+        if (PlayerPrefs.HasKey("LoginUser")) // 로그인 중 일 때로 변경해야함
         {
-            Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby);
+            bool a = PhotonLogicHandler.Instance.TryConnectToMaster(
+            () => { Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby); },
+            SetStatus);
         }
         else
         {
             if (interactableUI.gameObject.activeSelf)
             {
-                Managers.UI.CloseUI<InteractableUI>();
+                Managers.UI.CloseUI<TestLoginWindow>();
             }
             else
             {
-                Managers.UI.OpenUI<InteractableUI>();
+                Managers.UI.OpenUI<TestLoginWindow>();
             }
         }
     }
@@ -53,5 +56,10 @@ public class MainCanvas : BaseCanvas
             Managers.UI.CloseUI<ProduceUI>();
         else
             Managers.UI.OpenUI<ProduceUI>();
+    }
+
+    public void SetStatus(string txt)
+    {
+        notion.text = txt;
     }
 }

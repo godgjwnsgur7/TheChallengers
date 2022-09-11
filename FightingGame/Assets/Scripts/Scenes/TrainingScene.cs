@@ -34,11 +34,6 @@ public class TrainingScene : BaseScene
         keyPanelArea.init();
     }
 
-    private void SetCharacterWithPos(Vector3 spawnPos)
-    {
-        playerCharacter.Set_Character(Init_Character(spawnPos));
-    }
-
     public void CallPlayer()
     {
         if (playerCharacter.activeCharacter != null)
@@ -54,12 +49,11 @@ public class TrainingScene : BaseScene
         keyPanelArea.player = playerCharacter;
 
         if (keyPanelArea.isOpen == false)
-            Managers.UI.OpenUI<KeyPanelArea>();
-        else
         {
-            keyPanelArea.playerType = playerType;
-            keyPanelArea.SetSkillImage();
+            Managers.UI.OpenUI<KeyPanelArea>();
         }
+        keyPanelArea.playerType = playerType;
+        keyPanelArea.SetSkillImage();
     }
 
     public void CallEnemy()
@@ -152,6 +146,14 @@ public class TrainingScene : BaseScene
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 3);
                 break;
 
+            case ENUM_CHARACTER_TYPE.Wizard:
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 3);
+                break;
+
             default:
                 Debug.Log($"Failed to SkillObject : {charType}");
                 break;
@@ -165,6 +167,7 @@ public class TrainingScene : BaseScene
         {
             case "Player":
                 playerType = (ENUM_CHARACTER_TYPE)charType;
+                Debug.Log(playerType);
                 CallPlayer();
                 break;
 
