@@ -10,7 +10,17 @@ using System.Linq;
 using System.Text;
 using FGDefine;
 
-public partial class PhotonLogicHandler
+public class CustomRoomInfo
+{
+    public string roomName;
+    public int roomId;
+    public string masterClientNickname;
+    public ENUM_MAP_TYPE currentMapType;
+    public int currentPlayerCount;
+    public int maxPlayerCount;
+}
+
+public partial class PhotonLogicHandler : ILobbyCallbacks
 {
     /// <summary>
     /// 현재 자신이 마스터 서버에 연결이 되어 있는가?
@@ -53,7 +63,7 @@ public partial class PhotonLogicHandler
         }
 	}
 
-    public string CurrentMapName
+    public static string CurrentMapName
 	{
         get
 		{
@@ -64,7 +74,7 @@ public partial class PhotonLogicHandler
 		}
 	}
 
-    public string CurrentMasterClientNickname
+    public static string CurrentMasterClientNickname
 	{
         get
 		{
@@ -89,6 +99,14 @@ public partial class PhotonLogicHandler
         }
     }
 
+    public static string CurrentRoomName
+	{
+        get
+		{
+            return PhotonNetwork.CurrentRoom.Name;
+		}
+	}
+
     public static bool IsJoinedRoom
     {
         get
@@ -112,4 +130,12 @@ public partial class PhotonLogicHandler
             return PhotonNetwork.GetPing();
         }
     }
+
+    public static List<CustomRoomInfo> AllRoomInfos
+	{
+        get
+		{
+            return Instance.customRoomList;
+		}
+	}        
 }

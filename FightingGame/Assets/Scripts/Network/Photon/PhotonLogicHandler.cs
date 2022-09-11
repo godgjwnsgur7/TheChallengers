@@ -19,6 +19,12 @@ public enum ENUM_RPC_TARGET
     OTHER
 }
 
+public enum ENUM_CUSTOM_PROPERTIES
+{
+    MAP_TYPE = 0,
+    MASTER_CLIENT_NICKNAME = 1,
+}
+
 public class BroadcastMethodAttribute : PunRPC { }
 
 public delegate void DisconnectCallBack(string cause);
@@ -46,6 +52,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private readonly string GameVersion = "1";
     private static Dictionary<int, PhotonView> photonViewDictionary = new Dictionary<int, PhotonView>();
+    private List<CustomRoomInfo> customRoomList = new List<CustomRoomInfo>();
 
     private Action _OnCreateRoom = null;
     private FailedCallBack _OnCreateRoomFailed = null;
@@ -59,7 +66,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private Action _OnJoinLobby = null;
     private FailedCallBack _OnJoinLobbyFailed = null;
 
-
+    public event Func<ENUM_MAP_TYPE, bool> onChangedMap = null;
 
     private void OnDestroy()
     {
@@ -76,6 +83,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private void Initialize()
     {
         PhotonCustomTypeManagement.Register();
+
+        this.onChangedMap = OnChangedMap;
 
         view = gameObject.AddComponent<PhotonView>();
 
@@ -379,17 +388,29 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="maxPlayerCount"> 방 인원 최대 수 </param>
     /// <returns> 성공 여부 </returns>
 
-    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", string playerNickname = "", int maxPlayerCount = 2)
+    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", string masterClientNickname = "", int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.BasicMap)
     {
         this._OnCreateRoom = OnCreateRoom;
         this._OnCreateRoomFailed = OnCreateRoomFailed;
 
-        PhotonNetwork.LocalPlayer.NickName = playerNickname;
+        PhotonNetwork.LocalPlayer.NickName = masterClientNickname;
 
         RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
-        // roomOptions.CustomRoomProperties.Add(typeof(ENUM_MAP_TYPE).ToString(), "아직 맵 이름 쓰지마~~");
+
+        roomOptions.CustomRoomProperties = new Hashtable();
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString(), defaultMapType);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), masterClientNickname);
 
         return PhotonNetwork.CreateRoom(roomName, roomOptions);
+    }
+
+    public bool OnChangedMap(ENUM_MAP_TYPE mapType)
+    {
+        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString()))
+            return false;
+
+        PhotonNetwork.CurrentRoom.CustomProperties[ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString()] = mapType;
+        return true;
     }
 
     /// <summary>
@@ -533,8 +554,22 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
 	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
-		
-	}
+        customRoomList.Clear();
+        foreach (var room in roomList)
+		{
+            CustomRoomInfo info = new CustomRoomInfo()
+            {
+                roomName = room.Name,
+                roomId = room.masterClientId,
+                masterClientNickname = (string)room.CustomProperties[ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString()],
+                currentMapType = (ENUM_MAP_TYPE)room.CustomProperties[ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString()],
+                currentPlayerCount = room.PlayerCount,
+                maxPlayerCount = room.MaxPlayers
+            };
+
+            customRoomList.Add(info);
+        }
+    }
 
 	/// <summary>
 	/// 방장 바뀜

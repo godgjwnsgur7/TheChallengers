@@ -53,7 +53,15 @@ public class DebugWindow : BaseCanvas
 		PhotonLogicHandler.Instance.TryCreateRoom(
 		OnCreateRoom: () => { SetStatus("방 만들기 성공"); }, 
 		OnCreateRoomFailed: SetError, 
-		playerNickname: nicknameInput.text);
+		masterClientNickname: nicknameInput.text);
+	}
+
+	public void OnClickFindCustomRoom()
+	{
+		foreach(var roomInfo in PhotonLogicHandler.AllRoomInfos)
+		{
+			Debug.Log(roomInfo);
+		}
 	}
 
 	public void OnClickMoveScene()

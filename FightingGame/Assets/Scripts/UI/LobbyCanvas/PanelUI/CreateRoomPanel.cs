@@ -92,7 +92,7 @@ public class CreateRoomPanel : UIElement
         PhotonLogicHandler.Instance.TryCreateRoom(
         OnCreateRoom: () => { Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.CustomRoom); },
         OnCreateRoomFailed: null,
-        playerNickname: createUser.text);
+        masterClientNickname: createUser.text);
     }
 
     public void SetError(string cause)
