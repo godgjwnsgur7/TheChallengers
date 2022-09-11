@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using FGDefine;
 
 public class KeyPanelArea : UIElement
@@ -200,14 +198,17 @@ public class KeyPanelArea : UIElement
             case "SkillBtn1":
                 CharacterSkillParam skillParam1 = new CharacterSkillParam(0);
                 player.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam1);
+                updateUI.OnCoolTime();
                 break;
             case "SkillBtn2":
                 CharacterSkillParam skillParam2 = new CharacterSkillParam(1);
                 player.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam2);
+                updateUI.OnCoolTime();
                 break;
             case "SkillBtn3":
                 CharacterSkillParam skillParam3 = new CharacterSkillParam(2);
                 player.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam3);
+                updateUI.OnCoolTime();
                 break;
         }
     }

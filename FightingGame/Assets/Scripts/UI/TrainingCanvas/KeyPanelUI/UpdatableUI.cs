@@ -8,6 +8,7 @@ public class UpdatableUI : UIElement
 {
     public bool isUpdatable = true;
     public bool isSelect = false;
+    public bool isEnded = true;
 
     public GameObject parent;
     public RectTransform parentRect;
@@ -25,13 +26,13 @@ public class UpdatableUI : UIElement
     public RectTransform backGroundRect;
     public RectTransform iconRect;
 
-    private BoxCollider2D thisBoxCollider;
-    private Color changeColor;
+    protected BoxCollider2D thisBoxCollider;
+    protected Color changeColor;
 
-    float xRange;
-    float yRange;
-    float scaleSizeX;
-    float scaleSizeY;
+    protected float xRange;
+    protected float yRange;
+    protected float scaleSizeX;
+    protected float scaleSizeY;
 
     public override void Open(UIParam param = null)
     {
@@ -43,7 +44,7 @@ public class UpdatableUI : UIElement
         base.Close();
     }
 
-    public void init()
+    public virtual void init()
     {
         parent = this.gameObject.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
@@ -61,14 +62,11 @@ public class UpdatableUI : UIElement
         if (thisBoxCollider == null)
             thisBoxCollider = this.gameObject.AddComponent<BoxCollider2D>();
         SetBoxCollider();
-
-        if(GetComponent<DragAndDrop>() != null)
-            GetComponent<DragAndDrop>().Init();
     }
 
     // -------------------------------------------------------------------- Set
     // UI 크기 조절(50~150%)
-    public void SetSize(float size, bool isInit = false)
+    public virtual void SetSize(float size, bool isInit = false)
     {
         thisRect.localScale = new Vector3(size, size, size);
 
@@ -77,7 +75,7 @@ public class UpdatableUI : UIElement
     }
 
     // UI 투명도 조절(50~100%)
-    public void SetOpacity(float Opacity, bool isInit = false)
+    public virtual void SetOpacity(float Opacity, bool isInit = false)
     {
         changeColor = btnAreaImage.color;
         changeColor.a = (isInit == true)? 0.0f : 0.5f;
@@ -206,4 +204,6 @@ public class UpdatableUI : UIElement
 
         thisRect.anchoredPosition = new Vector3(xRange, yRange, 0);
     }
+
+    public virtual void OnCoolTime() { }
 }

@@ -4,26 +4,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragableUI : UpdatableUI, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    SettingPanel settingPanel;
-    UpdatableUI thisUpdatbleUI;
-
+    public SettingPanel settingPanel;
     CanvasGroup canvasGroup;
     Image DragUIImage;
 
-    bool isUpdate = false;
+    bool isDragable = false;
 
     public float AlphaThreshold = 0.1f;
 
-    public void Init()
+    public override void init()
     {
-        thisUpdatbleUI = this.gameObject.GetComponent<UpdatableUI>();
-        if (thisUpdatbleUI == null)
-            thisUpdatbleUI = this.gameObject.AddComponent<UpdatableUI>();
+        base.init();
 
-        thisUpdatbleUI.parent = this.gameObject.transform.parent.gameObject;
-        settingPanel = this.gameObject.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
+        if(this.gameObject.transform.root.Find("SettingPanel") != null)
+            settingPanel = this.gameObject.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
 
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
@@ -37,9 +33,9 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (settingPanel != null)
-            isUpdate = settingPanel.isUpdate;
+            isDragable = settingPanel.isUpdate;
 
-        if (!isUpdate)
+        if (!isDragable)
             return;
 
         DragInit();
@@ -50,26 +46,27 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void DragInit()
     {
-        settingPanel.PushKey(thisUpdatbleUI);
+        settingPanel.PushKey(this);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (settingPanel != null)
-            isUpdate = settingPanel.isUpdate;
+            isDragable = settingPanel.isUpdate;
 
-        if (!isUpdate)
+        if (!isDragable)
             return;
+
         // 이전 이동과 비교해서 얼마나 이동했는지를 보여줌
-        thisUpdatbleUI.SetTransform(thisUpdatbleUI.GetTransform() + eventData.delta);
+        this.SetTransform(this.GetTransform() + eventData.delta);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         if (settingPanel != null)
-            isUpdate = settingPanel.isUpdate;
+            isDragable = settingPanel.isUpdate;
 
-        if (!isUpdate)
+        if (!isDragable)
             return;
 
         EndDragChk();
@@ -80,6 +77,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void EndDragChk()
     {
-        thisUpdatbleUI.CheckUITransform();
+        this.CheckUITransform();
     }
 }
