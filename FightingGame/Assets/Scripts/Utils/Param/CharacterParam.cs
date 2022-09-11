@@ -45,6 +45,7 @@ public class CharacterAttackParam : CharacterParam
         return JsonUtility.FromJson<CharacterAttackParam>(jsonData);
     }
 
+
     public new static byte[] Serialize(object customObject)
     {
         var param = (CharacterAttackParam)customObject;
@@ -64,5 +65,17 @@ public class CharacterSkillParam : CharacterParam
     public CharacterSkillParam(int _skillNum)
     {
         skillNum = _skillNum;
+    }
+
+    public new static object Deserialize(byte[] data)
+    {
+        string jsonData = Encoding.UTF8.GetString(data);
+        return JsonUtility.FromJson<CharacterSkillParam>(jsonData);
+    }
+    public new static byte[] Serialize(object customObject)
+    {
+        var param = (CharacterSkillParam)customObject;
+        string jsonData = JsonUtility.ToJson(param);
+        return Encoding.UTF8.GetBytes(jsonData);
     }
 }
