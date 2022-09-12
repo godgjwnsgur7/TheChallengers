@@ -87,7 +87,7 @@ public class ResourceMgr
         return go;
     }
 
-    public GameObject InstantiateEveryone(string path, Vector2 position)
+    public GameObject InstantiateEveryone(string path, Vector2 position = default)
     {
         return PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);
     }
