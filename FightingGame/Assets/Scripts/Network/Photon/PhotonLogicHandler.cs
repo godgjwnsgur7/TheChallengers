@@ -67,6 +67,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private FailedCallBack _OnJoinLobbyFailed = null;
 
     public event Func<ENUM_MAP_TYPE, bool> onChangedMap = null;
+    public event Func<string, bool> onChangeMasterClientNickname = null;
 
     private void OnDestroy()
     {
@@ -85,6 +86,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         PhotonCustomTypeManagement.Register();
 
         this.onChangedMap = OnChangedMap;
+        this.onChangeMasterClientNickname = OnChangedMasterClient;
 
         view = gameObject.AddComponent<PhotonView>();
 
@@ -404,12 +406,21 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
-    public bool OnChangedMap(ENUM_MAP_TYPE mapType)
+    private bool OnChangedMap(ENUM_MAP_TYPE mapType)
     {
         if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString()))
             return false;
 
         PhotonNetwork.CurrentRoom.CustomProperties[ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString()] = mapType;
+        return true;
+    }
+
+    public bool OnChangedMasterClient(string nickname)
+	{
+        if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString()))
+            return false;
+
+        PhotonNetwork.CurrentRoom.CustomProperties[ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString()] = nickname;
         return true;
     }
 
@@ -540,12 +551,13 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	public override void OnLeftRoom()
 	{
         PhotonNetwork.AutomaticallySyncScene = false;
+        Debug.LogWarning($"유저가 방을 떠났습니다.");
     }
 
 	public override void OnLeftLobby()
 	{
-		
-	}
+        Debug.LogWarning($"유저가 로비를 떠났습니다.");
+    }
 
     /// <summary>
     /// 방 리스트 정보 업데이트
@@ -578,7 +590,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
-		
+        Debug.LogWarning($"{newMasterClient.NickName} 으로 방장이 바뀌었습니다.");
 	}
 
     /// <summary>
@@ -589,8 +601,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
 	public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
 	{
-		
-	}
+        Debug.LogWarning($"방 설정이 바뀌었습니다.");
+    }
 
 	/// <summary>
 	/// 유저 입장
@@ -602,6 +614,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		{
             PhotonNetwork.CurrentRoom.IsOpen = false;
 		}
+
+        Debug.LogWarning($"{newPlayer.NickName} 님이 입장하였습니다.");
     }
 
     /// <summary>
@@ -615,6 +629,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
+
+        Debug.LogWarning($"{otherPlayer.NickName} 님이 퇴장하였습니다.");
     }
 
     public string Info()
