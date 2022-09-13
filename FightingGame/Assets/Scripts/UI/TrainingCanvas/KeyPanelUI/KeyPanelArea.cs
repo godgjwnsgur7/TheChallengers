@@ -5,6 +5,7 @@ using FGDefine;
 public class KeyPanelArea : UIElement
 {
     public PlayerCharacter player;
+    public UISettingHelper settingHelper;
 
     // Panel 안의 버튼들
     // 0 LeftMoveBtn, 1 RightMoveBtn, 2 AttackBtn, 3 JumpBtn, 4 5 6 SkillBtn
@@ -16,6 +17,7 @@ public class KeyPanelArea : UIElement
 
     private float tempX;
     private float tempY;
+    private object[] initPrefsValue;
 
     public ENUM_CHARACTER_TYPE playerType;
     public Sprite[] skillImage;
@@ -46,44 +48,24 @@ public class KeyPanelArea : UIElement
     // 초기 PlayerPrefs 값 설정 및 UI 초기배치
     private void SetInit(UpdatableUI updateUI)
     {
-        updateUI.init();
+        settingHelper.SetBtnInit(updateUI);
 
-        // Size init
-        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size, 50);
+        // PlayerPrefs 초기 값 세팅
+        initPrefsValue = new object[(int)ENUM_PLAYERPREFS_TYPE.Max] 
+        {
+            0f, 50f, 100f, 50f, 100f, settingHelper.GetTransform().x, settingHelper.GetTransform().y
+        };
 
-        // Opacity init
-        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, 100);
-
-        // RectTransform init
-        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX, updateUI.GetTransform().x);
-        else
-            tempX = PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransX);
-
-        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY, updateUI.GetTransform().y);
-        else
-            tempY = PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.TransY);
-
-        if (tempX != 0 && tempY != 0)
-            updateUI.SetTransform(new Vector2(tempX, tempY));
-
-        // ResetSize init
-        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size));
-
-        // ResetOpacity init
-        if (!PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
-                PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+        Managers.Prefs.SetInitValue(initPrefsValue);
+        Managers.Prefs.SetPrefsAll(updateUI.name);
 
         // UI Init Value Accept
         InitSize(updateUI);
         InitOpactiy(updateUI);
+        InitTransform(updateUI);
 
         PlayerPrefs.Save();
+        settingHelper.Clear();
     }
 
     // 초기 UI size 설정
@@ -92,9 +74,9 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        sizeRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size) + 50) / 100;
+        sizeRatio = (Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.Size, updateUI.name) + 50) / 100;
 
-        updateUI.SetSize(sizeRatio, true);
+        settingHelper.SetSize(sizeRatio, true);
     }
 
     // 초기 UI Opacity 설정
@@ -103,21 +85,41 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        opacityRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity) / 200);
+        opacityRatio = (Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.Opacity, updateUI.name) / 200);
 
-        updateUI.SetOpacity(opacityRatio, true);
+        settingHelper.SetOpacity(opacityRatio, true);
     }
 
-    // Reset Not Saved Slider Value
-    public void SliderReset()
+    private void InitTransform(UpdatableUI updateUI)
+    {
+        if (updateUI == null)
+            return;
+
+        tempX = Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.TransX, updateUI.name);
+        tempY = Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.TransY, updateUI.name);
+
+        settingHelper.SetTransform(new Vector2(tempX, tempY));
+    }
+
+    public void Reset(UpdatableUI updateUI)
+    {
+        if (updateUI == null)
+            return;
+
+        SetSize(updateUI);
+        SetOpactiy(updateUI);
+        SetTransform(updateUI);
+    } 
+
+    // Reseting Not Saved Slider Value of All Btn
+    public void SliderResetAll()
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            SetSize(buttons[i]);
-            SetOpactiy(buttons[i]);
-            SetTransform(buttons[i]);
+            Reset(buttons[i]);
         }
 
+        settingHelper.Clear();
         Managers.UI.CloseUI<BottomPanel>();
     }
 
@@ -127,13 +129,15 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        sizeRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize) + 50) / 100;
-
-        if (PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize))
+        if (Managers.Prefs.HasKey(ENUM_PLAYERPREFS_TYPE.ResetSize, updateUI.name))
         {
-            updateUI.SetSize(sizeRatio);
+            sizeRatio = (Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.ResetSize, updateUI.name) + 50) / 100;
 
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Size, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize));
+            settingHelper.SetBtnInit(updateUI);
+            settingHelper.SetSize(sizeRatio);
+
+            Managers.Prefs.SetPlayerPrefs<float>(Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.ResetSize, updateUI.name)
+                ,ENUM_PLAYERPREFS_TYPE.Size, updateUI.name);
         }
     }
 
@@ -143,13 +147,15 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        if (PlayerPrefs.HasKey($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity))
+        if (Managers.Prefs.HasKey(ENUM_PLAYERPREFS_TYPE.ResetOpacity, updateUI.name))
         {
-            opacityRatio = (PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity) / 200);
+            opacityRatio = (Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.ResetOpacity, updateUI.name) / 200);
 
-            updateUI.SetOpacity(opacityRatio, true);
+            settingHelper.SetBtnInit(updateUI);
+            settingHelper.SetOpacity(opacityRatio, true);
 
-            PlayerPrefs.SetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, PlayerPrefs.GetFloat($"{updateUI.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity));
+            Managers.Prefs.SetPlayerPrefs<float>(Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.ResetOpacity, updateUI.name)
+                ,ENUM_PLAYERPREFS_TYPE.Opacity, updateUI.name);
         }
     }
 
@@ -159,10 +165,11 @@ public class KeyPanelArea : UIElement
         if (updateUI == null)
             return;
 
-        tempVector = new Vector2(PlayerPrefs.GetFloat($"{updateUI.thisRect.name}" + ENUM_PLAYERPREFS_TYPE.TransX),
-            PlayerPrefs.GetFloat($"{updateUI.thisRect.name}" + ENUM_PLAYERPREFS_TYPE.TransY));
+        tempVector = new Vector2(Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.TransX, updateUI.name),
+            Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.TransY, updateUI.name));
 
-        updateUI.SetTransform(tempVector);
+        settingHelper.SetBtnInit(updateUI);
+        settingHelper.SetTransform(tempVector);
     }
 
     public void SetSkillImage()

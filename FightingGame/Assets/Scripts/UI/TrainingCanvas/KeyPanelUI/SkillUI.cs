@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 현재로써는 모든 행동중에 누르면 쿨타임이 돌아감... 쿨타임 돌리는 시점 생각해봐야할 듯
-public class SkillUI : DragableUI
+public class SkillUI : UpdatableUI
 {
     public GameObject coolTime;
     public Image coolTimeImage;
@@ -24,6 +24,7 @@ public class SkillUI : DragableUI
     public override void init()
     {
         base.init();
+
         coolTimeImage = coolTime.GetComponent<Image>();
 
         Init_UI();
@@ -42,12 +43,10 @@ public class SkillUI : DragableUI
     {
         if (!isEnded)
         {
-            Debug.LogError("Hold On");
             return;
         }
 
         Reset_CoolTime();
-        Debug.LogError("Trigger_Skill!");
     }
 
     private void Check_CoolTime()
@@ -68,7 +67,6 @@ public class SkillUI : DragableUI
         Set_FillAmount(0);
         isEnded = true;
         coolTime.gameObject.SetActive(false);
-        Debug.Log("Skills Available!");
         this.GetComponent<Button>().interactable = true;
     }
 
@@ -89,9 +87,7 @@ public class SkillUI : DragableUI
     }
 
     public override void OnCoolTime()
-    {
-        base.OnCoolTime();
-
+    { 
         time_start = Time.time;
         isEnded = false;
         coolTime.gameObject.SetActive(true);

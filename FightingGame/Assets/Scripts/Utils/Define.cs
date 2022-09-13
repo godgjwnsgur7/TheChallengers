@@ -153,12 +153,12 @@ namespace FGDefine
         Defalut = 0,
         Size = 1,
         Opacity = 2,
-        TransX = 3,
-        TransY = 4,
-        ResetSize = 5,
-        ResetOpacity = 6,
-        /*BaseSizeX = 7,
-        BaseSizeY = 8,*/
+        ResetSize = 3,
+        ResetOpacity = 4,
+        TransX = 5,
+        TransY = 6,
+
+        Max
     }
 }
 
