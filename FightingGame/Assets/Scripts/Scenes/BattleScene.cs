@@ -16,6 +16,13 @@ public class BattleScene : BaseScene
     [SerializeField] ENUM_CHARACTER_TYPE testPlayerCharacterType;
     [SerializeField] ENUM_CHARACTER_TYPE testEnemyCharacterType;
 
+    protected new IEnumerator Start()
+	{
+        while (!NetworkDataHandler.IsAliveInstance)
+            yield return null;
+
+        Init();
+	}
 
     public override void Init()
     {

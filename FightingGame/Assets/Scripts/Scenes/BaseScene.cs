@@ -20,8 +20,9 @@ public abstract class BaseScene : MonoBehaviour
     private ENUM_SCENE_TYPE sceneType;
     public ENUM_SCENE_TYPE SceneType { get; protected set; } = ENUM_SCENE_TYPE.Unknown;
 
-    private void Start()
+    protected IEnumerator Start()
     {
+        yield return null;
         Init();
     }
 

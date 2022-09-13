@@ -12,10 +12,30 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 		set => statusData.currHP = value;
     }
 
-
 	public override void OnInit()
 	{
 		statusData = new StatusData();
+	}
+
+	public void StartSync()
+	{
+		if(!PhotonLogicHandler.IsMasterClient)
+		{
+			Debug.LogWarning("마스터 클라이언트가 아닌 유저가 데이터 싱크를 시도합니다.");
+			EndSync();
+			return;
+		}
+	}
+
+	public void EndSync()
+	{
+		if (!PhotonLogicHandler.IsMasterClient)
+		{
+			Debug.LogWarning("마스터 클라이언트가 아닌 유저가 데이터 싱크 해제를 시도합니다.");
+			return;
+		}
+
+		PhotonLogicHandler.Instance.TryDestroy(this);
 	}
 
 	/// <summary>

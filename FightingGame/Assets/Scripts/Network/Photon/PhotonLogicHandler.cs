@@ -380,7 +380,24 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
 
         PhotonNetwork.LoadLevel(sceneType.ToString());
+        TrySyncData(sceneType == ENUM_SCENE_TYPE.Battle);
+
         return true;
+    }
+
+    private void TrySyncData(bool isBattleScene)
+	{
+        if (isBattleScene)
+        {
+            NetworkDataHandler.Instance.StartSync();
+        }
+        else
+        {
+            if (NetworkDataHandler.IsAliveInstance)
+            {
+                NetworkDataHandler.Instance.EndSync();
+            }
+        }
     }
 
     /// <summary>

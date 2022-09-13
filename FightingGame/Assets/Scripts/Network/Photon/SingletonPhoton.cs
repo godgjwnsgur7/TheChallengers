@@ -36,6 +36,8 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
 
                 instance.Init();
                 instance.OnInit();
+
+                isOnInitialized = true;
             }
 
             return instance;
@@ -45,12 +47,21 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
 
     private static bool isOnInitialized = false;
 
+    public static bool IsAliveInstance
+	{
+        get
+		{
+            return instance != null && isOnInitialized;
+		}
+	}
+
     public new void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        Init();
+        instance = gameObject.GetComponent<T>();
+        instance.Init();
 
         if(!isOnInitialized)
-            OnInit();
+            instance.OnInit();
 
         isOnInitialized = true;
     }
