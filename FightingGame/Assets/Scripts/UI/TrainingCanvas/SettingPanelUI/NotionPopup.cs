@@ -71,7 +71,7 @@ public class NotionPopup : UIElement
                 trainingCanvas.SetNotionText("버튼 설정 종료");
                 break;
             case ENUM_Notion_TYPE.Reset:
-                keyPanelArea.SliderReset();
+                keyPanelArea.SliderResetAll();
                 trainingCanvas.SetNotionText("값을 초기화 했습니다.");
                 break;
             case ENUM_Notion_TYPE.Save:

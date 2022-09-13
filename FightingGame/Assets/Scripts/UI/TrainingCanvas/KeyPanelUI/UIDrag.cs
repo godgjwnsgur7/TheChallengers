@@ -1,12 +1,13 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class DragableUI : UpdatableUI, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class UIDrag : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public SettingPanel settingPanel;
+    [SerializeField] UISettingHelper settingHelper;
     CanvasGroup canvasGroup;
     Image DragUIImage;
 
@@ -14,12 +15,13 @@ public class DragableUI : UpdatableUI, IBeginDragHandler, IEndDragHandler, IDrag
 
     public float AlphaThreshold = 0.1f;
 
-    public override void init()
+    public void init()
     {
-        base.init();
-
-        if(this.gameObject.transform.root.Find("SettingPanel") != null)
+        if (this.gameObject.transform.root.Find("SettingPanel") != null)
             settingPanel = this.gameObject.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
+
+        if (this.gameObject.transform.root.Find("UpdateUIHelper") != null)
+            settingHelper = this.gameObject.transform.root.Find("UpdateUIHelper").GetComponent<UISettingHelper>();
 
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
@@ -46,7 +48,8 @@ public class DragableUI : UpdatableUI, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void DragInit()
     {
-        settingPanel.PushKey(this);
+        if(this.GetComponent<UpdatableUI>() != null)
+            settingPanel.PushKey(this.GetComponent<UpdatableUI>());
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -58,7 +61,7 @@ public class DragableUI : UpdatableUI, IBeginDragHandler, IEndDragHandler, IDrag
             return;
 
         // 이전 이동과 비교해서 얼마나 이동했는지를 보여줌
-        this.SetTransform(this.GetTransform() + eventData.delta);
+        settingHelper.SetTransform(settingHelper.GetTransform() + eventData.delta);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -77,6 +80,6 @@ public class DragableUI : UpdatableUI, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void EndDragChk()
     {
-        this.CheckUITransform();
+        settingHelper.CheckUITransform();
     }
-}*/
+}

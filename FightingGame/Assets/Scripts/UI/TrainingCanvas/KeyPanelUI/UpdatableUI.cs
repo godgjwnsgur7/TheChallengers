@@ -9,30 +9,12 @@ public class UpdatableUI : UIElement
     public bool isUpdatable = true;
     public bool isSelect = false;
     public bool isEnded = true;
-
-    public GameObject parent;
-    public RectTransform parentRect;
+    private bool isInit = false;
 
     public GameObject btnArea;
-    public GameObject backGround;
-    public GameObject icon;
-
     public Image btnAreaImage;
-    public Image backGroundImage;
-    public Image iconImage;
 
-    public RectTransform thisRect;
-    public RectTransform btnAreaRect;
-    public RectTransform backGroundRect;
-    public RectTransform iconRect;
-
-    protected BoxCollider2D thisBoxCollider;
     protected Color changeColor;
-
-    protected float xRange;
-    protected float yRange;
-    protected float scaleSizeX;
-    protected float scaleSizeY;
 
     public override void Open(UIParam param = null)
     {
@@ -46,106 +28,12 @@ public class UpdatableUI : UIElement
 
     public virtual void init()
     {
-        parent = this.gameObject.transform.parent.gameObject;
-        parentRect = parent.GetComponent<RectTransform>();
+        if (isInit)
+            return;
 
+        btnArea = this.transform.Find("BtnArea").gameObject;
         btnAreaImage = btnArea.GetComponent<Image>();
-        backGroundImage = backGround.GetComponent<Image>();
-        iconImage = icon.GetComponent<Image>();
-
-        thisRect = this.GetComponent<RectTransform>();
-        btnAreaRect = btnArea.GetComponent<RectTransform>();
-        backGroundRect = backGround.GetComponent<RectTransform>();
-        iconRect = icon.GetComponent<RectTransform>();
-
-        thisBoxCollider = GetComponent<BoxCollider2D>();
-        if (thisBoxCollider == null)
-            thisBoxCollider = this.gameObject.AddComponent<BoxCollider2D>();
-        SetBoxCollider();
-    }
-
-    // -------------------------------------------------------------------- Set
-    // UI 크기 조절(50~150%)
-    public virtual void SetSize(float size, bool isInit = false)
-    {
-        thisRect.localScale = new Vector3(size, size, size);
-
-        if (!isInit)
-            CheckUITransform();
-    }
-
-    // UI 투명도 조절(50~100%)
-    public virtual void SetOpacity(float Opacity, bool isInit = false)
-    {
-        changeColor = btnAreaImage.color;
-        changeColor.a = (isInit == true)? 0.0f : 0.5f;
-        btnAreaImage.color = changeColor;
-
-        changeColor = backGroundImage.color;
-        changeColor.a = 0.5f + Opacity;
-        backGroundImage.color = changeColor;
-
-        changeColor = iconImage.color;
-        changeColor.a = 0.5f + Opacity;
-        iconImage.color = changeColor;
-    }
-
-    // UI 위치 설정
-    public void SetTransform(Vector2 rectTrans)
-    {
-        thisRect.anchoredPosition = rectTrans;
-
-        CheckUITransform();
-    }
-    
-    // 박스 콜라이더 설정
-    public void SetBoxCollider()
-    {
-        thisBoxCollider.size = thisRect.sizeDelta;
-
-        if (!thisBoxCollider.isTrigger)
-            thisBoxCollider.isTrigger = true;
-    }
-
-    // 스킬 아이콘 변경 (미구현)
-    public void SetSkillImage(ENUM_CHARACTER_TYPE characterType)
-    {
-        // iconImage.sprite = 
-    }
-
-    // -------------------------------------------------------------------- Get
-    // UI 위치 값
-    public Vector2 GetTransform()
-    {
-        return thisRect.anchoredPosition;
-    }
-
-    // UI 가로 세로 길이
-    public float GetHalfWidth()
-    {
-        return backGroundRect.sizeDelta.x / 2;
-    }
-
-    public float GetHalfHeight()
-    {
-        return backGroundRect.sizeDelta.y / 2;
-    }
-
-    // 부모 UI 가로 세로 길이
-    public float GetHalfParentWidth()
-    {
-        return parentRect.sizeDelta.x / 2;
-    }
-
-    public float GetHalfParentHeight()
-    {
-        return parentRect.sizeDelta.y / 2;
-    }
-
-    // UI 스케일 값
-    public Vector3 GetSize()
-    {
-        return thisRect.localScale;
+        isInit = true;
     }
 
     // -------------------------------------------------------------------- Trigger
@@ -190,19 +78,6 @@ public class UpdatableUI : UIElement
             changeColor = new Color(255, 0, 0, 0.5f);
 
         btnAreaImage.color = changeColor;
-    }
-
-    // UI 위치 체크
-    public void CheckUITransform()
-    {
-        scaleSizeX = GetHalfWidth() * GetSize().x;
-        scaleSizeY = GetHalfHeight() * GetSize().y;
-
-        xRange = Mathf.Clamp(GetTransform().x, -GetHalfParentWidth() + scaleSizeX, GetHalfParentWidth() - scaleSizeX);
-        yRange = Mathf.Clamp(GetTransform().y, -GetHalfParentHeight() + scaleSizeY, GetHalfParentHeight() - scaleSizeY);
-
-
-        thisRect.anchoredPosition = new Vector3(xRange, yRange, 0);
     }
 
     public virtual void OnCoolTime() { }

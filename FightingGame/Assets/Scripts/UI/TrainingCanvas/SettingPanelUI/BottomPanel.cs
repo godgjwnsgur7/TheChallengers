@@ -8,21 +8,15 @@ public class BottomPanel : UIElement
 {
     public Slider sizeSlider;
     public Slider opacitySlider;
+    public UISettingHelper settingHelper;
 
     [SerializeField] Text SizeShowText;
     [SerializeField] Text OpacityShowText;
     [SerializeField] KeyPanelArea keyPanelArea;
 
-    private GameObject parent;
-    private RectTransform parentRect;
     private UpdatableUI setBtn;
 
-    private float pHalfWidth;
-    private float pHalfHeight;
-
     // UI 이동버튼용 변수
-    private float tempX;
-    private float tempY;
     private Vector2 tempRect;
 
     private float sizeRatio;
@@ -53,26 +47,20 @@ public class BottomPanel : UIElement
     public void setSlider(UpdatableUI updateUI)
     {
         // 이전 선택했던 UI 드래그 중지
-        if (setBtn != null)
+        if (setBtn != null && updateUI != setBtn)
         {
+            keyPanelArea.Reset(setBtn);
             setBtn.isSelect = false;
             setBtn.ChangeAreaColor();
         }
 
         // 선택한 UI 세팅
         setBtn = updateUI;
-
-        // 부모UI
-        parent = setBtn.transform.parent.gameObject;
-        parentRect = parent.GetComponent<RectTransform>();
-
-        // 부모 절반길이
-        pHalfWidth = parentRect.sizeDelta.x / 2;
-        pHalfHeight = parentRect.sizeDelta.y / 2;
+        settingHelper.SetBtnInit(setBtn);
 
         // UI 실린더 값 호출
-        sizeSlider.value = PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size);
-        opacitySlider.value = PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity);
+        sizeSlider.value = Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.Size, setBtn.name);
+        opacitySlider.value = Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.Opacity, setBtn.name);
         SetSliderText("All");
 
         // UI 드래그 기능
@@ -107,7 +95,7 @@ public class BottomPanel : UIElement
         // min/max Ratio Set
         sizeRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
 
-        setBtn.SetSize(sizeRatio);
+        settingHelper.SetSize(sizeRatio);
 
         // % Text Set & Value Save
         SetSliderText("Size");
@@ -118,7 +106,7 @@ public class BottomPanel : UIElement
     {
         opacityRatio = (opacitySlider.value / (opacitySlider.maxValue * 2));
 
-        setBtn.SetOpacity(opacityRatio);
+        settingHelper.SetOpacity(opacityRatio);
 
         // % Text Set & Value Save
         SetSliderText("Opacity");
@@ -134,17 +122,16 @@ public class BottomPanel : UIElement
             return;
 
         // size
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size, sizeSlider.value);
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.ResetSize, PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Size));
+        Managers.Prefs.SetPlayerPrefs<float>(sizeSlider.value, ENUM_PLAYERPREFS_TYPE.Size, setBtn.name);
+        Managers.Prefs.SetPlayerPrefs<float>(sizeSlider.value, ENUM_PLAYERPREFS_TYPE.ResetSize, setBtn.name);
 
         // Opacity
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity, opacitySlider.value);
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.ResetOpacity,
-            PlayerPrefs.GetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.Opacity));
+        Managers.Prefs.SetPlayerPrefs<float>(opacitySlider.value, ENUM_PLAYERPREFS_TYPE.Opacity, setBtn.name);
+        Managers.Prefs.SetPlayerPrefs<float>(opacitySlider.value, ENUM_PLAYERPREFS_TYPE.ResetOpacity, setBtn.name);
 
         // transform
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransX, setBtn.GetTransform().x);
-        PlayerPrefs.SetFloat($"{setBtn.name}" + ENUM_PLAYERPREFS_TYPE.TransY, setBtn.GetTransform().y);
+        Managers.Prefs.SetPlayerPrefs<float>(settingHelper.GetTransform().x, ENUM_PLAYERPREFS_TYPE.TransX, setBtn.name);
+        Managers.Prefs.SetPlayerPrefs<float>(settingHelper.GetTransform().y, ENUM_PLAYERPREFS_TYPE.TransY, setBtn.name);
 
         PlayerPrefs.Save();
         Close();
@@ -186,26 +173,22 @@ public class BottomPanel : UIElement
         switch (direction)
         {
             case "Right":
-                tempRect = new Vector2(setBtn.GetTransform().x + moveSpeed, setBtn.GetTransform().y);
+                tempRect = new Vector2(settingHelper.GetTransform().x + moveSpeed, settingHelper.GetTransform().y);
                 break;
             case "Left":
-                tempRect = new Vector2(setBtn.GetTransform().x - moveSpeed, setBtn.GetTransform().y);
+                tempRect = new Vector2(settingHelper.GetTransform().x - moveSpeed, settingHelper.GetTransform().y);
                 break;
             case "Down":
-                tempRect = new Vector2(setBtn.GetTransform().x, setBtn.GetTransform().y - moveSpeed);
+                tempRect = new Vector2(settingHelper.GetTransform().x, settingHelper.GetTransform().y - moveSpeed);
                 break;
             case "Up":
-                tempRect = new Vector2(setBtn.GetTransform().x, setBtn.GetTransform().y + moveSpeed);
+                tempRect = new Vector2(settingHelper.GetTransform().x, settingHelper.GetTransform().y + moveSpeed);
                 break;
             default:
                 Debug.Log("범위 벗어남");
                 return;
         }
 
-        tempX = Mathf.Clamp(tempRect.x, -pHalfWidth + setBtn.GetHalfWidth() * setBtn.GetSize().x, pHalfWidth - setBtn.GetHalfWidth() * setBtn.GetSize().x);
-        tempY = Mathf.Clamp(tempRect.y, -pHalfHeight + setBtn.GetHalfHeight() * setBtn.GetSize().y, pHalfHeight - setBtn.GetHalfHeight() * setBtn.GetSize().y);
-        tempRect = new Vector2(tempX, tempY);
-
-        setBtn.SetTransform(tempRect);
+        settingHelper.SetTransform(tempRect);
     }
 }

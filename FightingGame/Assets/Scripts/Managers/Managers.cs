@@ -14,6 +14,7 @@ public class Managers : MonoBehaviour
     private SceneMgr scene = new SceneMgr();
     private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
+    private PlayerPrefsMgr prefs = new PlayerPrefsMgr();
     private LoginSession loginSession = new LoginSession();
     private DBSession dbSession = new DBSession();
     private AdMobController adMob = new AdMobController();
@@ -26,6 +27,7 @@ public class Managers : MonoBehaviour
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
+    public static PlayerPrefsMgr Prefs { get { return Instance.prefs; } }
     public static LoginSession LoginSession { get { return Instance.loginSession; } }
     public static DBSession DbSession { get { return Instance.dbSession; } }
     public static AdMobController AdMob { get { return Instance.adMob; } }

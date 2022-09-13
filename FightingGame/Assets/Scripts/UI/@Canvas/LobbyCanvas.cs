@@ -7,8 +7,6 @@ public class LobbyCanvas : BaseCanvas
 {
     [SerializeField] MatchWindow matchWindow;
     [SerializeField] CustomWindow customWindow;
-    [SerializeField] RankWindow rankWindow;
-    [SerializeField] CharacterWindow characterWindow;
     [SerializeField] TrainingWindow trainingWindow;
     [SerializeField] SettingWindow settingWindow;
     [SerializeField] MatchTimeWindow matchTimeWindow;
@@ -17,8 +15,6 @@ public class LobbyCanvas : BaseCanvas
     {
         if (typeof(T) == typeof(MatchWindow)) matchWindow.Open();
         else if (typeof(T) == typeof(CustomWindow)) customWindow.Open();
-        else if (typeof(T) == typeof(RankWindow)) rankWindow.Open();
-        else if (typeof(T) == typeof(CharacterWindow)) characterWindow.Open();
         else if (typeof(T) == typeof(TrainingWindow)) trainingWindow.Open();
         else if (typeof(T) == typeof(SettingWindow)) settingWindow.Open();
         else if (typeof(T) == typeof(MatchTimeWindow)) matchTimeWindow.Open();
@@ -29,8 +25,6 @@ public class LobbyCanvas : BaseCanvas
     {
         if (typeof(T) == typeof(MatchWindow)) matchWindow.Close();
         else if (typeof(T) == typeof(CustomWindow)) customWindow.Close();
-        else if (typeof(T) == typeof(RankWindow)) rankWindow.Close();
-        else if (typeof(T) == typeof(CharacterWindow)) characterWindow.Close();
         else if (typeof(T) == typeof(TrainingWindow)) trainingWindow.Close();
         else if (typeof(T) == typeof(SettingWindow)) settingWindow.Close();
         else if (typeof(T) == typeof(MatchTimeWindow)) matchTimeWindow.Close();
@@ -55,12 +49,6 @@ public class LobbyCanvas : BaseCanvas
                 break;
             case "Custom":
                 Managers.UI.OpenUI<CustomWindow>();
-                break;
-            case "Rank":
-                Managers.UI.OpenUI<RankWindow>();
-                break;
-            case "Character":
-                Managers.UI.OpenUI<CharacterWindow>();
                 break;
             case "Training":
                 Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Training); // 테스트용
@@ -88,12 +76,6 @@ public class LobbyCanvas : BaseCanvas
                 break;
             case "Custom":
                 Managers.UI.CloseUI<CustomWindow>();
-                break;
-            case "Rank":
-                Managers.UI.CloseUI<RankWindow>();
-                break;
-            case "Character":
-                Managers.UI.CloseUI<CharacterWindow>();
                 break;
             case "Training":
                 Managers.UI.CloseUI<TrainingWindow>();

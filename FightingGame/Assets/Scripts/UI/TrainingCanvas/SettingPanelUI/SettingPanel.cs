@@ -17,7 +17,7 @@ public class SettingPanel : UIElement
 
     public override void Close()
     {
-        keyPanelArea.SliderReset();
+        keyPanelArea.SliderResetAll();
         isUpdate = false;
         base.Close();
     }
