@@ -19,11 +19,6 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
     {
 		get
 		{
-            if(!PhotonLogicHandler.IsMasterClient)
-			{
-                Debug.LogWarning("현재 포톤용 싱글톤을 생성하는 주체가 마스터 클라이언트가 아닙니다. 제어가 어려울 수 있습니다.");
-			}
-
             if(instance == null)
 			{
                 if (PhotonLogicHandler.IsConnected)
