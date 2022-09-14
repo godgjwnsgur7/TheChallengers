@@ -920,7 +920,7 @@ GameObject:
   - component: {fileID: 674831885}
   - component: {fileID: 674831886}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: TimerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1295,7 +1295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid2D: {fileID: 0}
-  curHP: 0
+  currHP: 0
   moveSpeed: 0
   jumpPower: 0
   characterType: 0
@@ -1309,8 +1309,8 @@ MonoBehaviour:
   superArmour: 0
   anim: {fileID: 0}
   spriteRenderer: {fileID: 0}
-  attackObject: {fileID: 0}
   statusWindowUI: {fileID: 0}
+  attackObject: {fileID: 0}
   stunTime: 0
   curStunTime: 0
 --- !u!114 &795250974
@@ -1420,8 +1420,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1031008978}
-  - component: {fileID: 1031008979}
   - component: {fileID: 1031008980}
+  - component: {fileID: 1031008979}
   m_Layer: 5
   m_Name: RedTeamStatus
   m_TagString: Untagged
@@ -1442,13 +1442,13 @@ RectTransform:
   m_Children:
   - {fileID: 300823533}
   - {fileID: 1326637337}
-  m_Father: {fileID: 1164449970}
-  m_RootOrder: 4
+  m_Father: {fileID: 1601689243}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 1865, y: 440}
-  m_SizeDelta: {x: -1120, y: 40}
+  m_AnchoredPosition: {x: 955, y: 440}
+  m_SizeDelta: {x: 700, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1031008979
 MonoBehaviour:
@@ -1463,8 +1463,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  teamType: 2
   hpBarSlider: {fileID: 300823535}
-  charFrameImage: {fileID: 1414540775}
+  charFrameImage: {fileID: 1326637338}
+  currHP: 0
+  maxHP: 0
 --- !u!114 &1031008980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1729,8 +1732,7 @@ RectTransform:
   - {fileID: 671271086}
   - {fileID: 1748403046}
   - {fileID: 674831882}
-  - {fileID: 1982183690}
-  - {fileID: 1031008978}
+  - {fileID: 1601689243}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2302,6 +2304,43 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1601689242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1601689243}
+  m_Layer: 5
+  m_Name: StatusUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1601689243
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601689242}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1982183690}
+  - {fileID: 1031008978}
+  m_Father: {fileID: 1164449970}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1630016379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2612,8 +2651,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1982183690}
-  - component: {fileID: 1982183691}
   - component: {fileID: 1982183692}
+  - component: {fileID: 1982183691}
   m_Layer: 5
   m_Name: BlueTeamStatus
   m_TagString: Untagged
@@ -2634,13 +2673,13 @@ RectTransform:
   m_Children:
   - {fileID: 2115963283}
   - {fileID: 1835017363}
-  m_Father: {fileID: 1164449970}
-  m_RootOrder: 3
+  m_Father: {fileID: 1601689243}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: 420}
-  m_SizeDelta: {x: -1120, y: 40}
+  m_AnchoredPosition: {x: -860, y: 420}
+  m_SizeDelta: {x: 700, y: 40}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1982183691
 MonoBehaviour:
@@ -2655,8 +2694,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  teamType: 1
   hpBarSlider: {fileID: 2115963284}
-  charFrameImage: {fileID: 1010604152}
+  charFrameImage: {fileID: 1835017364}
+  currHP: 0
+  maxHP: 0
 --- !u!114 &1982183692
 MonoBehaviour:
   m_ObjectHideFlags: 0

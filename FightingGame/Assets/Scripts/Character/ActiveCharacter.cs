@@ -10,8 +10,8 @@ public partial class ActiveCharacter : Character
     public Animator anim;
     public SpriteRenderer spriteRenderer;
 
-    public AttackObject attackObject;
     public StatusWindowUI statusWindowUI;
+    public AttackObject attackObject;
 
     Coroutine stunTimeCoroutine;
     Coroutine landCoroutine;
@@ -190,7 +190,7 @@ public partial class ActiveCharacter : Character
             {
                 if (superArmour)
                 {
-                    curHP -= _skillData.damage;
+                    currHP -= _skillData.damage;
                     return;
                 }
 
@@ -215,9 +215,11 @@ public partial class ActiveCharacter : Character
 
                 Push_Rigid2D(getPowerDir);
 
-                curHP -= _skillData.damage;
-                
-                if(!StatusWindowUI.OnChangeHP(_skillData.damage)) // 캐릭터의 HP가 다 닳음
+                currHP -= _skillData.damage;
+
+                statusWindowUI.NetworkCurrHP = currHP;
+
+                if(currHP <= 0.0f)
                 {
                     Die();
                     return;

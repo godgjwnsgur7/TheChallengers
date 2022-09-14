@@ -41,8 +41,9 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_TEAM_TYPE
     {
-        Blue = 0,
-        Red = 1,
+        Defalut = 0,
+        Blue = 1,
+        Red = 2,
 
         Max
     }

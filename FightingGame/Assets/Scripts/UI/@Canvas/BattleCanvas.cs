@@ -29,15 +29,15 @@ public class BattleCanvas : BaseCanvas
         return default(T);
     }
 
-    public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE teamType)
+    public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
-        if(teamType == ENUM_TEAM_TYPE.Blue)
+        if(_teamType == ENUM_TEAM_TYPE.Blue)
             return buleTeamStatusWindowUI;
-        else if(teamType == ENUM_TEAM_TYPE.Red)
+        else if(_teamType == ENUM_TEAM_TYPE.Red)
             return redTeamStatusWindowUI;
         else
         {
-            Debug.Log("알 수 없는 팀");
+            Debug.Log($"_teamType 오류 : {_teamType}");
             return null;
         }
     }

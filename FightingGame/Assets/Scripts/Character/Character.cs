@@ -13,7 +13,8 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    public float curHP;
+    public float currHP;
+
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpPower;
 
@@ -35,7 +36,7 @@ public class Character : MonoBehaviourPhoton
         base.Init();
 
         // 임시
-        curHP = 100.0f;
+        currHP = 100.0f;
 
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
@@ -46,7 +47,7 @@ public class Character : MonoBehaviourPhoton
 
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
-        stream.Write(curHP);
+        stream.Write(currHP);
         stream.Write(currState);
         stream.Write(teamType);
         stream.Write(jumpState);
@@ -58,7 +59,7 @@ public class Character : MonoBehaviourPhoton
 
     protected override void OnOtherSerializeView(PhotonReadStream stream)
     {
-        curHP = stream.Read<float>();
+        currHP = stream.Read<float>();
         currState = stream.Read<ENUM_PLAYER_STATE>();
         teamType = stream.Read<ENUM_TEAM_TYPE>();
         jumpState = stream.Read<bool>();

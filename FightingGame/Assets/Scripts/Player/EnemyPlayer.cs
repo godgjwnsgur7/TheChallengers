@@ -27,7 +27,7 @@ public class EnemyPlayer : MonoBehaviour
     }
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
-        StatusData statusData = new StatusData(activeCharacter.curHP);
+        StatusData statusData = new StatusData(activeCharacter.currHP);
         _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, statusData);
         activeCharacter.statusWindowUI = _statusWindowUI;
     }

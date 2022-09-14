@@ -1,20 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 {
-	public StatusData statusData = null;
+	StatusData redTeamStatusData = null;
+	StatusData blueTeamStatusData = null;
 
-	public float CurrHP
-    {
-		get => statusData.currHP;
-		set => statusData.currHP = value;
+	public float RedTeamCurrHP
+	{
+		get => redTeamStatusData.currHP;
+		set => redTeamStatusData.currHP = value;
     }
+	
+	public float BlueTeamCurrHP
+    {
+		get => blueTeamStatusData.currHP;
+		set => blueTeamStatusData.currHP = value;
+	}
 
 	public override void OnInit()
 	{
-		statusData = new StatusData();
+		redTeamStatusData = new StatusData();
+		blueTeamStatusData = new StatusData();
+	}
+
+	public void Set_StatusCurrHP(ENUM_TEAM_TYPE _teamType, float _currHP)
+	{
+		if (_teamType == ENUM_TEAM_TYPE.Red)
+			redTeamStatusData.currHP = _currHP;
+		else if (_teamType == ENUM_TEAM_TYPE.Blue)
+			blueTeamStatusData.currHP = _currHP;
+		else
+			Debug.Log($"_teamType 오류 : {_teamType}");
+	}
+
+	public float Get_StatusCurrHP(ENUM_TEAM_TYPE _teamType)
+	{
+		if (_teamType == ENUM_TEAM_TYPE.Red)
+			return redTeamStatusData.currHP;
+		else if (_teamType == ENUM_TEAM_TYPE.Blue)
+			return blueTeamStatusData.currHP;
+		else
+        {
+			Debug.Log($"_teamType 오류 : {_teamType}");
+			return 0;
+        }
 	}
 
 	public void StartSync()
@@ -38,21 +70,20 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 		PhotonLogicHandler.Instance.TryDestroy(this);
 	}
 
-	/// <summary>
-	/// 이 쪽에서 동기화...
-	/// </summary>
-	/// <param name="writeStream"></param>
-
 
 	protected override void OnMineSerializeView(PhotonWriteStream writeStream)
 	{
-		writeStream.Write(CurrHP);
+		writeStream.Write(RedTeamCurrHP);
+		writeStream.Write(BlueTeamCurrHP);
+
 		base.OnMineSerializeView(writeStream);
 	}
 
 	protected override void OnOtherSerializeView(PhotonReadStream readStream)
 	{
-		CurrHP = readStream.Read<float>();
+		RedTeamCurrHP = readStream.Read<float>();
+		BlueTeamCurrHP = readStream.Read<float>();
+
 		base.OnOtherSerializeView(readStream);
 	}
 }

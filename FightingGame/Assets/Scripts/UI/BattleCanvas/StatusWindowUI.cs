@@ -22,39 +22,38 @@ public class StatusData
 
 public class StatusWindowUI : UIElement
 {
-    public Slider hpBarSlider;
+    [SerializeField] ENUM_TEAM_TYPE teamType;
+    [SerializeField] Slider hpBarSlider;
     [SerializeField] Image charFrameImage;
 
-    // 다시 꺼줘야함 처리안함 (임시)
-    public static System.Func<float, bool> OnChangeHP = null;
-
-    private float currHP
+    public float NetworkCurrHP
     {
         get
         {
-            return NetworkDataHandler.Instance.CurrHP;
+            return NetworkDataHandler.Instance.Get_StatusCurrHP(teamType);
         }
         set
         {
-            NetworkDataHandler.Instance.CurrHP = value;
+            NetworkDataHandler.Instance.Set_StatusCurrHP(teamType, value);
+            Sync_CurrHP();
         }
     }
 
-    private float maxHP;
+    public float currHP;
+    public float maxHP;
 
     Coroutine hpBarCoroutine;
+
 
     public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, StatusData statusData)
     {
         Set_CharFrameImage(_charType);
         Set_MaxHP(statusData);
-
-        OnChangeHP = Input_Damage;
     }
 
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
     {
-        switch(_charType)
+        switch (_charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:
                 // 이미지 아직 없음
@@ -67,37 +66,31 @@ public class StatusWindowUI : UIElement
 
     public void Set_MaxHP(StatusData data)
     {
-        NetworkDataHandler.Instance.CurrHP = data.currHP;
+        NetworkCurrHP = data.currHP;
+        currHP = data.currHP;
         maxHP = data.maxHP;
     }
 
-    /// <summary>
-    /// false 리턴 시 HP가 전부 닳은 것
-    /// </summary>
 
-    [BroadcastMethod]
-    public bool Input_Damage(float _damege)
+    public void Sync_CurrHP()
     {
-        currHP -= _damege;
+        currHP = NetworkCurrHP;
 
-        if(hpBarCoroutine != null)
+        if (hpBarCoroutine != null)
             StopCoroutine(hpBarCoroutine);
 
-        if(currHP > 0)
+        if (currHP > 0)
         {
             hpBarCoroutine = StartCoroutine(IFadeHpBar(currHP / maxHP));
-            return true;
+            return;
         }
 
         hpBarCoroutine = StartCoroutine(IFadeHpBar(0f));
-        return false;
     }
 
     protected IEnumerator IFadeHpBar(float _goalHPValue)
     {
-        float _curHPValue = currHP / maxHP;
-            
-        while(_goalHPValue < hpBarSlider.value)
+        while (_goalHPValue < hpBarSlider.value)
         {
             hpBarSlider.value -= 0.01f;
             yield return null;
@@ -106,7 +99,4 @@ public class StatusWindowUI : UIElement
         hpBarSlider.value = _goalHPValue;
         hpBarCoroutine = null;
     }
-
-    
 }
-

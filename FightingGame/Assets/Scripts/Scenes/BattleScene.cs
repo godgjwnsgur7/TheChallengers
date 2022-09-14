@@ -18,7 +18,7 @@ public class BattleScene : BaseScene
 
     protected new IEnumerator Start()
 	{
-        while (!NetworkDataHandler.IsAliveInstance)
+        // while (!NetworkDataHandler.IsAliveInstance)
             yield return null;
 
         Init();
