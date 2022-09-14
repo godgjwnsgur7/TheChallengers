@@ -35,7 +35,7 @@ public class StatusWindowUI : UIElement
         set
         {
             NetworkDataHandler.Instance.Set_StatusCurrHP(teamType, value);
-            Sync_CurrHP();
+            Sync_CurrHP(); // 아 이게 호출하는 클라이언트에서만 실행되겠네ㅋ
         }
     }
 
