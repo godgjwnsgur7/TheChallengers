@@ -49,11 +49,8 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 
 	public override void OnFree()
 	{
-		data.Clear();
-		
-		// 본인이 정리되는 상황이라면, 관리되는 모든 이들을 정리해야한다.
-		PhotonLogicHandler.Instance.TryDestroy(masterInstance);
-		PhotonLogicHandler.Instance.TryDestroy(slaveInstance);
+		data?.Clear();
+		base.OnFree();
 	}
 
 	#region 마스터만 이 두 함수의 제어권을 갖는다.

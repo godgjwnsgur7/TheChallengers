@@ -136,4 +136,11 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
         base.OnDestroy();
         OnFree();
 	}
+
+	public override void OnFree()
+	{
+        // 본인이 정리되는 상황이라면, 관리되는 모든 이들을 정리해야한다.
+        PhotonLogicHandler.Instance.TryDestroy(masterInstance);
+        PhotonLogicHandler.Instance.TryDestroy(slaveInstance);
+    }
 }
