@@ -42,7 +42,7 @@ public class EnemyPlayer : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.N))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, activeCharacter.reverseState);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, activeCharacter.reverseState);
             PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
             activeCharacter.Change_AttackState(true);
         }

@@ -27,8 +27,8 @@ public class AttackObject : Poolable
         if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Default)
             attackObjectType = ENUM_ATTACKOBJECT_TYPE.Follow;
 
-        ENUM_SKILL_TYPE skill = (ENUM_SKILL_TYPE)Enum.Parse(typeof(ENUM_SKILL_TYPE), gameObject.name.ToString());
-        if (!Managers.Data.SkillDict.TryGetValue((int)skill, out skillValue))
+        ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)Enum.Parse(typeof(ENUM_ATTACKOBJECT_NAME), gameObject.name.ToString());
+        if (!Managers.Data.SkillDict.TryGetValue((int)attackObjectName, out skillValue))
         {
             Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
         }
@@ -86,7 +86,7 @@ public class AttackObject : Poolable
             if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
                 return;
 
-            CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_SKILL_TYPE)skillValue.skillType, reverseState);
+            CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState);
             
             
             if(PhotonLogicHandler.IsConnected)

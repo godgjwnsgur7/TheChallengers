@@ -44,16 +44,15 @@ public class MultiAttackObject : AttackObject
         gameObject.SetActive(true);
     }
 
-    protected void Summon_AttackObject(int _attackTypeNum)
+    protected void Summon_AttackObject(int _attackObjectNum)
     {
         attackObject = null;
-        ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
+        ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackObjectNum;
 
         if (isConnected)
-            attackObject = Managers.Resource.InstantiateEveryone(attackType.ToString(), Vector2.zero).GetComponent<AttackObject>();
+            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
         else
-            attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
-
+            attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
         if (attackObject != null)
         {
             attackObject.FollowingTarget(this.transform);
@@ -68,7 +67,7 @@ public class MultiAttackObject : AttackObject
         }
         else
         {
-            Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
+            Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {attackObjectName}");
         }
     }
 }

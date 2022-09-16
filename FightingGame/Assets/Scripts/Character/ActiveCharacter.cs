@@ -186,11 +186,11 @@ public partial class ActiveCharacter : Character
 
         if (attackParam != null)
         {
-            if(Managers.Data.SkillDict.TryGetValue((int)attackParam.attackType, out Skill _skillData))
+            if(Managers.Data.SkillDict.TryGetValue((int)attackParam.attackTypeName, out Skill _skillData))
             {
                 if (superArmour)
                 {
-                    currHP -= _skillData.damage;
+                    Update_CurrHP(_skillData.damage);
                     return;
                 }
 
@@ -215,8 +215,7 @@ public partial class ActiveCharacter : Character
 
                 Push_Rigid2D(getPowerDir);
 
-                currHP -= _skillData.damage;
-                statusWindowUI.CurrHP = currHP;
+                Update_CurrHP(_skillData.damage);
 
                 if (currHP <= 0.0f)
                 {
@@ -242,9 +241,15 @@ public partial class ActiveCharacter : Character
             }
             else
             {
-                Debug.Log($"{attackParam.attackType}을 SkillDict에서 찾을 수 없습니다.");
+                Debug.Log($"{attackParam.attackTypeName}을 SkillDict에서 찾을 수 없습니다.");
             }
         }
+    }
+
+    private void Update_CurrHP(float _damage)
+    {
+        currHP -= _damage;
+        statusWindowUI.CurrHP = currHP;
     }
     
     public override void Die()
@@ -383,14 +388,14 @@ public partial class ActiveCharacter : Character
         if (!isControl) return;
 
         attackObject = null;
-        ENUM_SKILL_TYPE attackType = (ENUM_SKILL_TYPE)_attackTypeNum;
+        ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
 
         bool isConnected = PhotonLogicHandler.IsConnected;
 
         if (isConnected)
-            attackObject = Managers.Resource.InstantiateEveryone(attackType.ToString(), Vector2.zero).GetComponent<AttackObject>();
+            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
         else
-            attackObject = Managers.Resource.GetAttackObject(attackType.ToString());
+            attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
 
         if (attackObject != null)
         {

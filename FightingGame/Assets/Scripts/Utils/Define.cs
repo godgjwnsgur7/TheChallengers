@@ -71,10 +71,10 @@ namespace FGDefine
 
     /// <summary>
     /// "Resources/Prefabs/AttackObjects/" 경로 안에 같은 이름의 프리팹 필요
-    /// 히트가 가능한 AttackObject Type 하나하나의 타입 (Key)
+    /// 히트가 가능한 AttackObject들의 이름!! (Key)
     /// </summary>
     [Serializable]
-    public enum ENUM_SKILL_TYPE
+    public enum ENUM_ATTACKOBJECT_NAME
     {
         Knight_JumpAttack = 0,
         Knight_Attack1 = 1,
