@@ -15,32 +15,34 @@ public class SingletonPhoton : MonoBehaviourPhoton
 
 public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback where T : SingletonPhoton
 {
-    public static T MasterInstance
+    public static T GetMasterInstance()
     {
-		get
-		{
-            if(masterInstance == null)
-			{
-                InstantiateMaster();
+        if (masterInstance == null)
+        {
+            GameObject g = null;
+
+            if (PhotonLogicHandler.IsConnected)
+            {
+                g = Managers.Resource.InstantiateEveryone($"{typeof(T)}");
+                g.name = $"{typeof(T)} - Master";
+            }
+            else
+            {
+                g = new GameObject($"{typeof(T)}");
             }
 
-            return masterInstance;
-		}
+            DontDestroyOnLoad(g);
+
+            masterInstance = g.GetComponent<T>();
+            masterInstance.Init();
+            masterInstance.OnInit();
+
+            isMasterOnInitialized = true;
+        }
+
+        return masterInstance;
     }
     protected static T masterInstance;
-
-    public static T SlaveInstance
-    {
-        get
-        {
-            if (slaveInstance == null)
-            {
-                InstantiateSlave();
-            }
-
-            return slaveInstance;
-        }
-    }
     protected static T slaveInstance;
 
     public static bool IsAliveInstance
@@ -51,9 +53,6 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
 
         }
 	}
-
-    private static bool isMasterOnInitialized = false;
-    private static bool isSlaveOnInitialized = false;
 
     public static bool IsAliveMasterInstance
 	{
@@ -70,6 +69,10 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
             return slaveInstance != null && isSlaveOnInitialized;
         }
 	}
+
+    private static bool isMasterOnInitialized = false;
+    private static bool isSlaveOnInitialized = false;
+
 
     public new void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -91,7 +94,7 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
             // 마스터 생성이 완료되면, 슬레이브를 이어 생성한다.
             if(!PhotonLogicHandler.IsMasterClient)
 			{
-                InstantiateSlave();
+                HookingInstantiateSlave();
             }
         }
         else if(slaveInstance == null)
@@ -111,35 +114,12 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
         }
     }
 
-    private static void InstantiateMaster()
-	{
-        GameObject g = null;
-
-        if (PhotonLogicHandler.IsConnected)
-        {
-            g = Managers.Resource.InstantiateEveryone("PhotonViewObject");
-            g.name = $"{typeof(T)} - Master";
-        }
-        else
-        {
-            g = new GameObject($"{typeof(T)}");
-        }
-
-        DontDestroyOnLoad(g);
-
-        masterInstance = g.GetComponent<T>();
-        masterInstance.Init();
-        masterInstance.OnInit();
-
-        isMasterOnInitialized = true;
-    }
-
-    private static void InstantiateSlave()
+    private static void HookingInstantiateSlave()
     {
         if (!PhotonLogicHandler.IsConnected)
             return;
 
-        GameObject g = Managers.Resource.InstantiateEveryone("PhotonViewObject");
+        GameObject g = Managers.Resource.InstantiateEveryone($"{typeof(T)}");
         g.name = $"{typeof(T)} - Slave";
 
         DontDestroyOnLoad(g);
