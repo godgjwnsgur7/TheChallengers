@@ -371,7 +371,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="sceneName"></param>
 
-    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType)
+    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, bool isDataSyncScene = false)
     {
         if (!PhotonNetwork.IsMasterClient)
         {
@@ -380,14 +380,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
 
         PhotonNetwork.LoadLevel(sceneType.ToString());
-        TrySyncData(sceneType == ENUM_SCENE_TYPE.Battle);
+        TrySyncData(isDataSyncScene);
 
         return true;
     }
 
-    private void TrySyncData(bool isBattleScene)
+    private void TrySyncData(bool isDataSyncScene)
 	{
-        if (isBattleScene)
+        if (isDataSyncScene)
         {
             NetworkDataHandler.Instance.StartSync();
         }

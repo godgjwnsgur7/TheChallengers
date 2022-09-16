@@ -21,19 +21,21 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
 		{
             if(instance == null)
 			{
+                GameObject g = null;
+
                 if (PhotonLogicHandler.IsConnected)
                 {
-                    var go = Managers.Resource.InstantiateEveryone($"SingletonPhoton/{typeof(T)}");
-                    instance = go.GetOrAddComponent<T>();
+                    g = Managers.Resource.InstantiateEveryone("PhotonViewObject");
+                    g.name = $"{typeof(T)}";
                 }
                 else
                 {
-                    var go = new GameObject($"{typeof(T)}");
-                    instance = go.AddComponent<T>();
+                    g = new GameObject($"{typeof(T)}");
                 }
 
-                DontDestroyOnLoad(instance.gameObject);
+                DontDestroyOnLoad(g);
 
+                instance = g.AddComponent<T>();
                 instance.Init();
                 instance.OnInit();
 
@@ -46,6 +48,7 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
     private static T instance;
 
     private static bool isOnInitialized = false;
+    protected static bool isSynchronized = false;
 
     public static bool IsAliveInstance
 	{
@@ -57,10 +60,12 @@ public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback 
 
     public new void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        instance = gameObject.GetComponent<T>();
-        instance.Init();
+        instance = gameObject.AddComponent<T>();
+        
+        if(!IsInitialized)
+            instance.Init();
 
-        if(!isOnInitialized)
+        if (!isOnInitialized)
             instance.OnInit();
 
         isOnInitialized = true;
