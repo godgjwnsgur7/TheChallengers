@@ -29,9 +29,9 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 	public void Set_StatusCurrHP(ENUM_TEAM_TYPE _teamType, float _currHP)
 	{
 		if (_teamType == ENUM_TEAM_TYPE.Red)
-			redTeamStatusData.currHP = _currHP;
+			RedTeamCurrHP = _currHP;
 		else if (_teamType == ENUM_TEAM_TYPE.Blue)
-			blueTeamStatusData.currHP = _currHP;
+			BlueTeamCurrHP = _currHP;
 		else
 			Debug.Log($"_teamType 오류 : {_teamType}");
 	}
@@ -39,9 +39,9 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 	public float Get_StatusCurrHP(ENUM_TEAM_TYPE _teamType)
 	{
 		if (_teamType == ENUM_TEAM_TYPE.Red)
-			return redTeamStatusData.currHP;
+			return RedTeamCurrHP;
 		else if (_teamType == ENUM_TEAM_TYPE.Blue)
-			return blueTeamStatusData.currHP;
+			return BlueTeamCurrHP;
 		else
         {
 			Debug.Log($"_teamType 오류 : {_teamType}");

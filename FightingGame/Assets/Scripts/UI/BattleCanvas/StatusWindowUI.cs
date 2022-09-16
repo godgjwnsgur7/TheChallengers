@@ -17,10 +17,9 @@ public class StatusData
         this.currHP = _maxHP;
         this.maxHP = _maxHP;
     }
-
  }
 
-public class StatusWindowUI : UIElement
+public class StatusWindowUI : MonoBehaviourPhoton
 {
     [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] Slider hpBarSlider;
@@ -35,7 +34,10 @@ public class StatusWindowUI : UIElement
         set
         {
             NetworkDataHandler.Instance.Set_StatusCurrHP(teamType, value);
-            Sync_CurrHP(); // 아 이게 호출하는 클라이언트에서만 실행되겠네ㅋ
+            if(PhotonLogicHandler.IsConnected)
+                PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI>(this, Sync_CurrHP);
+            else
+                Sync_CurrHP();
         }
     }
 
@@ -72,6 +74,7 @@ public class StatusWindowUI : UIElement
     }
 
 
+    [BroadcastMethod]
     public void Sync_CurrHP()
     {
         currHP = NetworkCurrHP;

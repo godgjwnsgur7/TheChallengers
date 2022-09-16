@@ -8,6 +8,7 @@ public class Managers : MonoBehaviour
     static Managers Instance { get { Init(); return s_Instance; } }
 
     private DataMgr data = new DataMgr();
+    private GameMgr game = new GameMgr();
     private InputMgr input = new InputMgr();
     private ObjectPoolMgr pool = new ObjectPoolMgr();
     private ResourceMgr resouce = new ResourceMgr();
@@ -21,6 +22,7 @@ public class Managers : MonoBehaviour
     private CoffeeMachine iapController = new IAPController();
 
     public static DataMgr Data { get { return Instance.data; } }
+    public static GameMgr Game { get { return Instance.game; } }
     public static InputMgr Input { get { return Instance.input; } }
     public static ObjectPoolMgr Pool { get { return Instance.pool; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
@@ -61,6 +63,7 @@ public class Managers : MonoBehaviour
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();
+            s_Instance.game.Init();
         }
     }
 
@@ -70,5 +73,6 @@ public class Managers : MonoBehaviour
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
+        Game.Clear();
     }
 }

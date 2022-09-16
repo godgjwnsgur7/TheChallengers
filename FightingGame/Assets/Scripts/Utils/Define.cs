@@ -71,7 +71,7 @@ namespace FGDefine
 
     /// <summary>
     /// "Resources/Prefabs/AttackObjects/" 경로 안에 같은 이름의 프리팹 필요
-    /// 모든 캐릭터의 스킬 타입 (Key)
+    /// 히트가 가능한 AttackObject Type 하나하나의 타입 (Key)
     /// </summary>
     [Serializable]
     public enum ENUM_SKILL_TYPE
@@ -81,8 +81,8 @@ namespace FGDefine
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
         Knight_ThrowSkill = 4,
-        Knight_SuperArmourSkill = 5, // SkillData 없음
-        Knight_Skill3 = 6, // 임시
+        Knight_SuperArmourSkill = 5,
+        Knight_Skill3 = 6,
         Knight_SuperArmourSkill_1 = 7,
         Knight_SuperArmourSkill_2 = 8,
         Knight_SuperArmourSkill_3 = 9,
