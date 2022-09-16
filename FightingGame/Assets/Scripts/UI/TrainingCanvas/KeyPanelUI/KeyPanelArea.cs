@@ -254,7 +254,7 @@ public class KeyPanelArea : UIElement
     {
         while (isAttack)
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_SKILL_TYPE.Knight_Attack1, player.activeCharacter.reverseState);
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, player.activeCharacter.reverseState);
             player.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
             player.activeCharacter.Change_AttackState(true);
             yield return null;
