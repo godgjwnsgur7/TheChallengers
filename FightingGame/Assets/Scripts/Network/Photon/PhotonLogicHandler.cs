@@ -389,14 +389,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         if (isDataSyncScene)
         {
-            NetworkDataHandler.GetMasterInstance().StartSync();
+            NetworkDataHandler.GetOrInstantiateMasterSingleton().StartSync();
         }
         else
         {
             // 생성 중일 수도 있다... 그렇지 않도록 조심해서 써야 한다.
             if (NetworkDataHandler.IsAliveMasterInstance)
             {
-                NetworkDataHandler.GetMasterInstance().EndSync();
+                NetworkDataHandler.GetOrInstantiateMasterSingleton().EndSync();
             }
         }
     }

@@ -15,7 +15,7 @@ public class SingletonPhoton : MonoBehaviourPhoton
 
 public class SingletonPhoton<T> : SingletonPhoton, IPunInstantiateMagicCallback where T : SingletonPhoton
 {
-    public static T GetMasterInstance()
+    public static T GetOrInstantiateMasterSingleton()
     {
         if (masterInstance == null)
         {

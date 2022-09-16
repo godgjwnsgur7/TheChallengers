@@ -18,7 +18,7 @@ public class BattleScene : BaseScene
 
     protected new IEnumerator Start()
 	{
-        if(PhotonLogicHandler.IsConnected)
+        if(PhotonLogicHandler.IsConnected && PhotonLogicHandler.IsFullRoom)
 		{
             while (!NetworkDataHandler.IsAliveInstance)
                 yield return null;

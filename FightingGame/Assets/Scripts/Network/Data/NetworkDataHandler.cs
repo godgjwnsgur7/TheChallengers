@@ -28,7 +28,6 @@ public class NetworkData
 public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 {
 	private bool isSynchronized = false;
-	private bool isMasterHandler = false;
 	
 	/// <summary>
 	/// 마스터 클라이언트가 송신하는 데이터
@@ -45,56 +44,57 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 
 	public override void OnInit()
 	{
-		isMasterHandler = PhotonLogicHandler.IsMasterClient;
 		data.Clear();
 	}
 
 	public override void OnFree()
 	{
 		data.Clear();
+		
+		// 본인이 정리되는 상황이라면, 관리되는 모든 이들을 정리해야한다.
+		PhotonLogicHandler.Instance.TryDestroy(masterInstance);
+		PhotonLogicHandler.Instance.TryDestroy(slaveInstance);
 	}
 
 	#region 마스터만 이 두 함수의 제어권을 갖는다.
 	public void StartSync()
 	{
-		if (!isMasterHandler)
+		if (!PhotonLogicHandler.IsMasterClient)
 			return;
 
 		isSynchronized = true;
-
-		slaveInstance?.StartSync();
 	}
 
 	public void EndSync()
 	{
-		if (!isMasterHandler)
+		if (!PhotonLogicHandler.IsMasterClient)
 			return;
 
 		isSynchronized = false;
-
-		slaveInstance?.EndSync();
 	}
 	#endregion
 
 	protected override void OnMineSerializeView(PhotonWriteStream writeStream)
 	{
-		if (!isSynchronized)
+		base.OnMineSerializeView(writeStream);
+
+		writeStream.Write(masterInstance.isSynchronized);
+		if (!masterInstance.isSynchronized)
 			return;
 
 		writeStream.Write(data.hp);
 		// 이 곳에 데이터 목록 추가
-
-		base.OnMineSerializeView(writeStream);
 	}
 
 	protected override void OnOtherSerializeView(PhotonReadStream readStream)
 	{
+		base.OnOtherSerializeView(readStream);
+
+		isSynchronized = readStream.Read<bool>();
 		if (!isSynchronized)
 			return;
 
 		data.hp = readStream.Read<int>();
 		// 이 곳에 데이터 목록 추가
-
-		base.OnOtherSerializeView(readStream);
 	}
 }
