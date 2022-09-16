@@ -4,55 +4,47 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-[System.Serializable]
-public class StatusData
-{
-    public float currHP;
-    public float maxHP;
-
-    public StatusData() { }
-
-    public StatusData(float _maxHP)
-    {
-        this.currHP = _maxHP;
-        this.maxHP = _maxHP;
-    }
- }
-
 public class StatusWindowUI : MonoBehaviourPhoton
 {
     [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] Slider hpBarSlider;
     [SerializeField] Image charFrameImage;
 
-    public float NetworkCurrHP
+    private float currHP;
+    public float CurrHP
     {
-        get
-        {
-            return NetworkDataHandler.Instance.Get_StatusCurrHP(teamType);
-        }
+        get { return currHP; }
         set
         {
-            NetworkDataHandler.Instance.Set_StatusCurrHP(teamType, value);
-            if(PhotonLogicHandler.IsConnected)
+            currHP = value;
+            if (PhotonLogicHandler.IsConnected)
                 PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI>(this, Sync_CurrHP);
             else
                 Sync_CurrHP();
         }
     }
-
-    public float currHP;
     public float maxHP;
 
     Coroutine hpBarCoroutine;
 
 
-    public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, StatusData statusData)
+    public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
     {
-        Set_CharFrameImage(_charType);
-        Set_MaxHP(statusData);
+        if(PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, ENUM_CHARACTER_TYPE>
+                (this, Set_CharFrameImage, _charType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, float>
+                (this, Set_MaxHP, _maxHP);
+        }
+        else
+        {
+            Set_CharFrameImage(_charType);
+            Set_MaxHP(_maxHP);
+        }
     }
 
+    [BroadcastMethod]
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
     {
         switch (_charType)
@@ -66,25 +58,23 @@ public class StatusWindowUI : MonoBehaviourPhoton
         }
     }
 
-    public void Set_MaxHP(StatusData data)
+    [BroadcastMethod]
+    public void Set_MaxHP(float _maxHP)
     {
-        NetworkCurrHP = data.currHP;
-        currHP = data.currHP;
-        maxHP = data.maxHP;
+        CurrHP = _maxHP;
+        maxHP = _maxHP;
     }
 
 
     [BroadcastMethod]
     public void Sync_CurrHP()
     {
-        currHP = NetworkCurrHP;
-
         if (hpBarCoroutine != null)
             StopCoroutine(hpBarCoroutine);
 
-        if (currHP > 0)
+        if (CurrHP > 0)
         {
-            hpBarCoroutine = StartCoroutine(IFadeHpBar(currHP / maxHP));
+            hpBarCoroutine = StartCoroutine(IFadeHpBar(CurrHP / maxHP));
             return;
         }
 
@@ -101,5 +91,19 @@ public class StatusWindowUI : MonoBehaviourPhoton
 
         hpBarSlider.value = _goalHPValue;
         hpBarCoroutine = null;
+    }
+
+    protected override void OnMineSerializeView(PhotonWriteStream writeStream)
+    {
+        writeStream.Write(CurrHP);
+
+        base.OnMineSerializeView(writeStream);
+    }
+
+    protected override void OnOtherSerializeView(PhotonReadStream readStream)
+    {
+        CurrHP = readStream.Read<float>();
+
+        base.OnOtherSerializeView(readStream);
     }
 }

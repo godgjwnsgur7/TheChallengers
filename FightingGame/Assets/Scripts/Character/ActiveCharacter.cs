@@ -216,10 +216,9 @@ public partial class ActiveCharacter : Character
                 Push_Rigid2D(getPowerDir);
 
                 currHP -= _skillData.damage;
+                statusWindowUI.CurrHP = currHP;
 
-                statusWindowUI.NetworkCurrHP = currHP;
-
-                if(currHP <= 0.0f)
+                if (currHP <= 0.0f)
                 {
                     Die();
                     return;

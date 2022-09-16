@@ -3,52 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
+// 일단 안쓰는 걸로 가.
 public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 {
-	StatusData redTeamStatusData = null;
-	StatusData blueTeamStatusData = null;
-
-	public float RedTeamCurrHP
-	{
-		get => redTeamStatusData.currHP;
-		set => redTeamStatusData.currHP = value;
-    }
-	
-	public float BlueTeamCurrHP
-    {
-		get => blueTeamStatusData.currHP;
-		set => blueTeamStatusData.currHP = value;
-	}
-
 	public override void OnInit()
 	{
-		redTeamStatusData = new StatusData();
-		blueTeamStatusData = new StatusData();
-	}
 
-	public void Set_StatusCurrHP(ENUM_TEAM_TYPE _teamType, float _currHP)
-	{
-		if (_teamType == ENUM_TEAM_TYPE.Red)
-			RedTeamCurrHP = _currHP;
-		else if (_teamType == ENUM_TEAM_TYPE.Blue)
-			BlueTeamCurrHP = _currHP;
-		else
-			Debug.Log($"_teamType 오류 : {_teamType}");
 	}
-
-	public float Get_StatusCurrHP(ENUM_TEAM_TYPE _teamType)
-	{
-		if (_teamType == ENUM_TEAM_TYPE.Red)
-			return RedTeamCurrHP;
-		else if (_teamType == ENUM_TEAM_TYPE.Blue)
-			return BlueTeamCurrHP;
-		else
-        {
-			Debug.Log($"_teamType 오류 : {_teamType}");
-			return 0;
-        }
-	}
-
+	
 	public void StartSync()
 	{
 		if(!PhotonLogicHandler.IsMasterClient)
@@ -73,16 +35,12 @@ public class NetworkDataHandler : SingletonPhoton<NetworkDataHandler>
 
 	protected override void OnMineSerializeView(PhotonWriteStream writeStream)
 	{
-		writeStream.Write(RedTeamCurrHP);
-		writeStream.Write(BlueTeamCurrHP);
 
 		base.OnMineSerializeView(writeStream);
 	}
 
 	protected override void OnOtherSerializeView(PhotonReadStream readStream)
 	{
-		RedTeamCurrHP = readStream.Read<float>();
-		BlueTeamCurrHP = readStream.Read<float>();
 
 		base.OnOtherSerializeView(readStream);
 	}

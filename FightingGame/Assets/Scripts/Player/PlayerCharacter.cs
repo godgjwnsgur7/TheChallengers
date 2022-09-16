@@ -55,8 +55,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void Connect_Status(StatusWindowUI _statusWindowUI)
     {
-        StatusData statusData = new StatusData(activeCharacter.currHP);
-        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, statusData);
+        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, activeCharacter.currHP);
         activeCharacter.statusWindowUI = _statusWindowUI;
     }
 
