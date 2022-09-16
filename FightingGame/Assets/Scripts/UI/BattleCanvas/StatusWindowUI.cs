@@ -52,6 +52,9 @@ public class StatusWindowUI : MonoBehaviourPhoton
             case ENUM_CHARACTER_TYPE.Knight:
                 // 이미지 아직 없음
                 break;
+            case ENUM_CHARACTER_TYPE.Wizard:
+                // 이미지 아직 없음
+                break;
             default:
                 Debug.Log($"{_charType} 를 찾을 수 없음");
                 break;
