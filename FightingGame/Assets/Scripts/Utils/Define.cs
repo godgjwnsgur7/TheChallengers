@@ -70,8 +70,7 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// "Resources/Prefabs/AttackObjects/" 경로 안에 같은 이름의 프리팹 필요
-    /// 히트가 가능한 AttackObject들의 이름!! (Key)
+    /// "Resources/Prefabs/AttackObjects/" 경로 안의 프리팹 이름 리스트
     /// </summary>
     [Serializable]
     public enum ENUM_ATTACKOBJECT_NAME
