@@ -18,7 +18,12 @@ public class BattleScene : BaseScene
 
     protected new IEnumerator Start()
 	{
-        yield return null;
+        if(PhotonLogicHandler.IsConnected)
+		{
+            while (!NetworkDataHandler.IsAliveInstance)
+                yield return null;
+        }
+
         Init();
 	}
 
