@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using FGDefine;
 
 public class SettingPanel : UIElement
 {
@@ -19,6 +21,7 @@ public class SettingPanel : UIElement
     {
         keyPanelArea.SliderResetAll();
         isUpdate = false;
+        keyPanelArea.RemoveUpdateComponentAll();
         base.Close();
     }
 
@@ -28,10 +31,6 @@ public class SettingPanel : UIElement
         {
             bottomPanel.setSlider(updateUI);
             Managers.UI.OpenUI<BottomPanel>();
-        }
-        else
-        {
-            keyPanelArea.PushKey(updateUI);
         }
     }
 }

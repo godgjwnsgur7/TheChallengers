@@ -148,9 +148,23 @@ namespace FGDefine
     }
 
     [Serializable]
-    public enum ENUM_PLAYERPREFS_TYPE
+    public enum ENUM_BTNPREFS_TYPE
     {
-        Defalut = 0,
+        LeftMoveBtn = 0,
+        RightMoveBtn = 1,
+        AttackBtn = 2,
+        JumpBtn = 3,
+        SkillBtn1 = 4,
+        SkillBtn2 = 5,
+        SkillBtn3 = 6,
+
+        Max
+    }
+
+    [Serializable]
+    public enum ENUM_BTNSUBPREFS_TYPE
+    {
+        Exist = 0,
         Size = 1,
         Opacity = 2,
         ResetSize = 3,

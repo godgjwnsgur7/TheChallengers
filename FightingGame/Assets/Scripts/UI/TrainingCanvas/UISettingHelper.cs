@@ -6,8 +6,7 @@ using FGDefine;
 
 public class UISettingHelper : MonoBehaviour
 {
-    public UpdatableUI updateUI;
-    UIDrag uiDrag;
+    public Button updateUI;
 
     public GameObject parent;
     public RectTransform parentRect;
@@ -21,9 +20,6 @@ public class UISettingHelper : MonoBehaviour
     public Image iconImage;
 
     public RectTransform thisRect;
-    public RectTransform btnAreaRect;
-    public RectTransform backGroundRect;
-    public RectTransform iconRect;
 
     protected BoxCollider2D thisBoxCollider;
     protected Color changeColor;
@@ -33,13 +29,12 @@ public class UISettingHelper : MonoBehaviour
     protected float scaleSizeX;
     protected float scaleSizeY;
 
-    public void SetBtnInit(UpdatableUI updateUI)
+    public void SetBtnInit(Button updateUI)
     {
         if (updateUI == null)
             return;
 
         this.updateUI = updateUI;
-        this.updateUI.init();
 
         parent = updateUI.gameObject.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
@@ -53,20 +48,11 @@ public class UISettingHelper : MonoBehaviour
         iconImage = icon.GetComponent<Image>();
 
         thisRect = this.updateUI.GetComponent<RectTransform>();
-        btnAreaRect = btnArea.GetComponent<RectTransform>();
-        backGroundRect = backGround.GetComponent<RectTransform>();
-        iconRect = icon.GetComponent<RectTransform>();
 
         thisBoxCollider = this.updateUI.GetComponent<BoxCollider2D>();
         if (thisBoxCollider == null)
             thisBoxCollider = this.updateUI.gameObject.AddComponent<BoxCollider2D>();
         SetBoxCollider();
-
-        if (this.updateUI.GetComponent<UIDrag>() == null)
-            uiDrag = this.updateUI.gameObject.AddComponent<UIDrag>();
-        else
-            uiDrag = this.updateUI.GetComponent<UIDrag>();
-        uiDrag.init();
     }
 
     public void Clear()
@@ -84,9 +70,6 @@ public class UISettingHelper : MonoBehaviour
         iconImage = null;
 
         thisRect = null;
-        btnAreaRect = null;
-        backGroundRect = null;
-        iconRect = null;
 
         thisBoxCollider = null;
     }
@@ -163,12 +146,12 @@ public class UISettingHelper : MonoBehaviour
     // UI 가로 세로 길이
     public float GetHalfWidth()
     {
-        return backGroundRect.sizeDelta.x / 2;
+        return thisRect.sizeDelta.x / 2;
     }
 
     public float GetHalfHeight()
     {
-        return backGroundRect.sizeDelta.y / 2;
+        return thisRect.sizeDelta.y / 2;
     }
 
     // 부모 UI 가로 세로 길이
