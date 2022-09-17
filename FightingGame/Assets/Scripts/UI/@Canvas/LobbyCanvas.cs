@@ -5,94 +5,21 @@ using UnityEngine.SceneManagement;
 using FGDefine;
 public class LobbyCanvas : BaseCanvas
 {
-    [SerializeField] MatchWindow matchWindow;
-    [SerializeField] CustomWindow customWindow;
-    [SerializeField] TrainingWindow trainingWindow;
-    [SerializeField] SettingWindow settingWindow;
-    [SerializeField] MatchTimeWindow matchTimeWindow;
-
-    public override void Open<T>(UIParam param = null) // UIMgr.Open<> 세분화
+    public override void Open<T>(UIParam param = null)
     {
-        if (typeof(T) == typeof(MatchWindow)) matchWindow.Open();
-        else if (typeof(T) == typeof(CustomWindow)) customWindow.Open();
-        else if (typeof(T) == typeof(TrainingWindow)) trainingWindow.Open();
-        else if (typeof(T) == typeof(SettingWindow)) settingWindow.Open();
-        else if (typeof(T) == typeof(MatchTimeWindow)) matchTimeWindow.Open();
-        else Debug.Log("범위 벗어남");
+        // if (typeof(T) == typeof(MatchWindow)) matchWindow.Open();
+        // else Debug.Log("범위 벗어남");
     }
 
-    public override void Close<T>() // UIMgr.Close<> 세분화
+    public override void Close<T>()
     {
-        if (typeof(T) == typeof(MatchWindow)) matchWindow.Close();
-        else if (typeof(T) == typeof(CustomWindow)) customWindow.Close();
-        else if (typeof(T) == typeof(TrainingWindow)) trainingWindow.Close();
-        else if (typeof(T) == typeof(SettingWindow)) settingWindow.Close();
-        else if (typeof(T) == typeof(MatchTimeWindow)) matchTimeWindow.Close();
-        else Debug.Log("범위 벗어남");
+        // if (typeof(T) == typeof(MatchWindow)) matchWindow.Close();
+        // else Debug.Log("범위 벗어남");
     }
 
     public override T GetUIComponent<T>()
     {
 
         return default(T);
-    }
-
-    public void OnWindowButton(string btnType) // Windows setActive(True) When Button Click 
-    {
-        if (btnType == null)
-            return;
-
-        switch (btnType) 
-        {
-            case "Match":
-                Managers.UI.OpenUI<MatchWindow>();
-                break;
-            case "Custom":
-                Managers.UI.OpenUI<CustomWindow>();
-                break;
-            case "Training":
-                Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Training); // 테스트용
-                // Managers.UI.OpenUI<CountDownPopup>(); // 임시 카운트다운 팝업 테스트용
-                // Managers.UI.OpenUI<TrainingWindow>();
-                break;
-            case "Setting":
-                Managers.UI.OpenUI<SettingWindow>();
-                break;
-            default:
-                Debug.Log("범위 벗어남");
-                break;
-        }
-    }
-
-    public void OffWindowButton(string btnType) // Windows SetActive(false) when CloseBtn Click
-    {
-        if (btnType == null)
-            return;
-
-        switch (btnType)
-        {
-            case "Match":
-                Managers.UI.CloseUI<MatchWindow>();
-                break;
-            case "Custom":
-                Managers.UI.CloseUI<CustomWindow>();
-                break;
-            case "Training":
-                Managers.UI.CloseUI<TrainingWindow>();
-                break;
-            case "Setting":
-                Managers.UI.CloseUI<SettingWindow>();
-                break;
-            default:
-                Debug.Log("범위 벗어남");
-                break;
-        }
-    }
-
-    public void SelectCharacter(int charType) // 캐릭터 선택 후 매칭중 창 활성 
-    {
-        matchTimeWindow.charType = (ENUM_CHARACTER_TYPE)charType;
-        Managers.UI.OpenUI<MatchTimeWindow>();
-        Managers.UI.CloseUI<MatchWindow>();
     }
 }
