@@ -10,6 +10,4 @@ public class CustomWindow : MonoBehaviour
     {
 
     }
-
-    public void OnClick_Exit() => this.gameObject.SetActive(false);
 }
