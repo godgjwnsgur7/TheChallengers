@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestLoginWindow : InteractableUI
+public class TestLoginWindow : UIElement
 {
     [SerializeField] private InputField emailInputField = null;
     [SerializeField] private InputField passwordInputField = null;
