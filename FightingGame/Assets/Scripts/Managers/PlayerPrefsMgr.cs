@@ -5,82 +5,65 @@ using FGDefine;
 
 public class PlayerPrefsMgr
 {
-    // Default, Size, Opacity, resetSize, resetOpacity, transX, transY
-    public object[] initValue;
+    ENUM_BTNPREFS_TYPE prefsType;
+    float[][] prefsList = new float[(int)ENUM_BTNPREFS_TYPE.Max][];
 
-    public void SetInitValue(object[] value)
+    public void init()
     {
-        if (value.Length > (int)ENUM_PLAYERPREFS_TYPE.Max)
-            return;
-
-        initValue = new object[(int)ENUM_PLAYERPREFS_TYPE.Max];
-
-        for (int i = 0; i < value.Length; i++)
-            initValue[i] = value[i];
-    }
-
-    public void SetPrefsAll(string name = "")
-    {
-        if (initValue == null)
-            return;
-
-        for(int i = 1; i < (int)ENUM_PLAYERPREFS_TYPE.Max; i++)
+        for (int i = 0; i < (int)ENUM_BTNPREFS_TYPE.Max; i++)
         {
-            if (!Managers.Prefs.HasKey((ENUM_PLAYERPREFS_TYPE)i, name))
-                Managers.Prefs.SetPlayerPrefs<object>(initValue[i], (ENUM_PLAYERPREFS_TYPE)i, name);
+            prefsType = (ENUM_BTNPREFS_TYPE)i;
+
+            if (!HasKey(prefsType, ENUM_BTNSUBPREFS_TYPE.Exist))
+            {
+                prefsList[i] = new float[(int)ENUM_BTNSUBPREFS_TYPE.Max] { i, 50, 100, 50, 100, 0, 0 };
+
+                SetButtonPrefs(prefsType, prefsList[i]);
+            }
+            else
+            {
+                prefsList[i] = new float[(int)ENUM_BTNSUBPREFS_TYPE.Max];
+
+                for (int j = 0; j < (int)ENUM_BTNSUBPREFS_TYPE.Max; j++)
+                    prefsList[i][j] = GetButtonPrefs(i, j);
+            }
         }
     }
 
-    public void SetPlayerPrefs<T>(T value, ENUM_PLAYERPREFS_TYPE ept, string name = "")
+    public bool HasKey(ENUM_BTNPREFS_TYPE ept, ENUM_BTNSUBPREFS_TYPE subPrefsType)
     {
-        if (value.GetType() == typeof(string))
-            PlayerPrefs.SetString($"{ept + name}", value.ToString());
-        else if (value.GetType() == typeof(int))
-            PlayerPrefs.SetInt($"{ept + name}", int.Parse(value.ToString()));
-        else if (value.GetType() == typeof(float))
-        {
-            Debug.Log($"{ept + name}");
-            PlayerPrefs.SetFloat($"{ept + name}", float.Parse(value.ToString()));
-        }
-        else
-            Debug.Log("값 범위 벗어남");
-    }
-
-    public float GetPrefsFloat(ENUM_PLAYERPREFS_TYPE ept, string name = "")
-    {
-        if (!PlayerPrefs.HasKey($"{ept + name}"))
-        {
-            Debug.Log($"{ept + name} : Prefs가 없음");
-        }
-
-        return PlayerPrefs.GetFloat($"{ept + name}");
-    }
-
-    public string GetPrefsString(ENUM_PLAYERPREFS_TYPE ept, string name = "")
-    {
-        if (!PlayerPrefs.HasKey($"{ept + name}"))
-        {
-            Debug.Log($"{ept + name} : Prefs가 없음");
-        }
-
-        return PlayerPrefs.GetString($"{ept + name}");
-    }
-
-    public int GetPrefsInt(ENUM_PLAYERPREFS_TYPE ept, string name = "")
-    {
-        if (!PlayerPrefs.HasKey($"{ept + name}"))
-        {
-            Debug.Log($"{ept + name} : Prefs가 없음");
-        }
-
-        return PlayerPrefs.GetInt($"{ept + name}");
-    }
-
-    public bool HasKey(ENUM_PLAYERPREFS_TYPE ept, string name = "")
-    {
-        if (PlayerPrefs.HasKey($"{ept + name}"))
+        if (PlayerPrefs.HasKey(ept + "." + subPrefsType))
             return true;
         else
             return false;
+    }
+
+    public void SetButtonPrefs(ENUM_BTNPREFS_TYPE prefsType, ENUM_BTNSUBPREFS_TYPE subPrefsType, float value)
+    {
+        prefsList[(int)prefsType][(int)subPrefsType] = value;
+    }
+
+    public void SetButtonPrefs(ENUM_BTNPREFS_TYPE prefsType, float[] prefsList)
+    {
+        this.prefsList[(int)prefsType] = prefsList;
+    }
+
+    public void SaveButtonPrefs()
+    {
+        for(int i = 0; i < (int)ENUM_BTNPREFS_TYPE.Max; i++)
+            for(int j = 0; j < (int)ENUM_BTNSUBPREFS_TYPE.Max; j++)
+                PlayerPrefs.SetFloat((ENUM_BTNPREFS_TYPE)i + "." + (ENUM_BTNSUBPREFS_TYPE)j, prefsList[i][j]);
+
+        PlayerPrefs.Save();
+    }
+
+    public float[] GetButtonPrefs(ENUM_BTNPREFS_TYPE prefsType)
+    {
+        return prefsList[(int)prefsType];
+    }
+
+    public float GetButtonPrefs(int prefsType, int subPrefsType)
+    {
+        return PlayerPrefs.GetFloat((ENUM_BTNPREFS_TYPE)prefsType + "." + (ENUM_BTNSUBPREFS_TYPE)subPrefsType);
     }
 }
