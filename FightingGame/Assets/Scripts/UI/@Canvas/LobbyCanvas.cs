@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using FGDefine;
 public class LobbyCanvas : BaseCanvas
 {
-
+    [SerializeField] CustomWindow customWindow;
 
     public void OnClick_Activate(GameObject g) => g.SetActive(true);
 
