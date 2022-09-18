@@ -22,6 +22,7 @@ public class KeyPanelArea : UIElement
     bool isMove = false;
     bool isAttack = false;
 
+    // 0 Exist, 1 Size, 2 Opacity, 3 ResetSize, 4 ResetOpacity, 5 TransX, 6 TransY, 7 ResetTransX, 8 ResetTransY, 9 Isinit
     private float[] prefsList;
     public override void Open(UIParam param = null)
     {
@@ -46,12 +47,20 @@ public class KeyPanelArea : UIElement
             // settingHelper에 버튼 등록
             settingHelper.SetBtnInit(buttons[i]);
 
-            // 등록한 버튼의 위치 값을 Prefs에 갱신
-            Managers.Prefs.SetButtonPrefs(bpType, ENUM_BTNSUBPREFS_TYPE.TransX, settingHelper.GetTransform().x);
-            Managers.Prefs.SetButtonPrefs(bpType, ENUM_BTNSUBPREFS_TYPE.TransY, settingHelper.GetTransform().y);
-
             // 해당 버튼의 Prefs 정보 불러오기
-            prefsList = Managers.Prefs.GetButtonPrefs(bpType);
+            prefsList = Managers.Prefs.GetPrefsList(bpType);
+
+            // 등록한 버튼의 위치 값을 Prefs에 갱신
+            if (prefsList[9] == 0)
+            {
+                prefsList[5] = settingHelper.GetTransform().x;
+                prefsList[6] = settingHelper.GetTransform().y;
+                prefsList[7] = settingHelper.GetTransform().x;
+                prefsList[8] = settingHelper.GetTransform().y;
+                prefsList[9] = 1;
+
+                Managers.Prefs.SetPrefsList(bpType, prefsList);
+            }
 
             SetInit(buttons[i]);
         }
@@ -95,22 +104,25 @@ public class KeyPanelArea : UIElement
         Managers.UI.CloseUI<BottomPanel>();
     }
 
+    // 리셋
     public void Reset(ENUM_BTNPREFS_TYPE bpType)
     {
-        prefsList = Managers.Prefs.GetButtonPrefs(bpType);
+        prefsList = Managers.Prefs.GetPrefsList(bpType);
 
-        sizeRatio = (prefsList[3] + 50) / 100;
+        sizeRatio = (prefsList[3] + 50) / 100; // Size Scale 0.5 ~ 1.5배
         settingHelper.SetBtnInit(buttons[(int)bpType]);
         settingHelper.SetSize(sizeRatio);
-        Managers.Prefs.SetButtonPrefs(bpType, ENUM_BTNSUBPREFS_TYPE.Size, prefsList[3]);
+        prefsList[1] = prefsList[3];
 
-        opacityRatio = (prefsList[4] / 200);
+        opacityRatio = (prefsList[4] / 200); // 투명도 최소 값은 0.5, 추가 비율은 0 ~ 0.5f
         settingHelper.SetOpacity(opacityRatio, true);
-        Managers.Prefs.SetButtonPrefs(bpType, ENUM_BTNSUBPREFS_TYPE.Opacity, prefsList[4]);
+        prefsList[2] = prefsList[4];
 
-        settingHelper.SetTransform(new Vector2(prefsList[5], prefsList[6]));
-        Managers.Prefs.SetButtonPrefs(bpType, ENUM_BTNSUBPREFS_TYPE.TransX, prefsList[5]);
-        Managers.Prefs.SetButtonPrefs(bpType, ENUM_BTNSUBPREFS_TYPE.TransY, prefsList[6]);
+        settingHelper.SetTransform(new Vector2(prefsList[7], prefsList[8]));
+        prefsList[5] = prefsList[7];
+        prefsList[6] = prefsList[8];
+
+        Managers.Prefs.SetPrefsList((ENUM_BTNPREFS_TYPE)prefsList[0], prefsList);
     }
 
     public void SetSkillImage()
@@ -163,6 +175,7 @@ public class KeyPanelArea : UIElement
         }
     }
 
+    // UpdatableUI 컴포넌트 보유 체크
     public void UpdateComponentChk(Button button)
     {
         if (settingPanel.isOpen && button.GetComponent<UpdatableUI>() == null)
