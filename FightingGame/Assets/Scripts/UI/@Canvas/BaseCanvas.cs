@@ -12,7 +12,7 @@ public abstract class BaseCanvas : MonoBehaviour
         Init(); // 해당하는 씬에서 정보를 받아온다. (임시)
     }
 
-    public void Init()
+    public virtual void Init()
     {
         scaler = GetComponent<CanvasScaler>();
         SetCanvasScaler();

@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class CustomWindow : MonoBehaviour
 {
-    [SerializeField] LobbyList lobbyList;
+    public CustomRoomList customRoomList;
+
+    private void OnEnable()
+    {
+        OnClick_UpdateList();
+    }
 
     public void OnClick_UpdateList()
     {
-
+        customRoomList.UpdateLobbyList();
     }
 }
