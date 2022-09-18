@@ -127,6 +127,8 @@ public class AttackObject : Poolable
     
     public virtual void DestroyMine()
     {
+        if (!this.gameObject.activeSelf) return;
+
         isUsing = false;
         targetTr = null;
 
@@ -134,6 +136,7 @@ public class AttackObject : Poolable
             PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
         else
             Managers.Resource.Destroy(gameObject);
+
     }
 
     [BroadcastMethod]

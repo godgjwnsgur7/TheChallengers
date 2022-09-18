@@ -26,6 +26,8 @@ public class BottomPanel : UIElement
     public bool isUpdatable;
     private float moveSpeed;
 
+    float[] prefsList;
+
     public override void Open(UIParam param = null)
     {
         base.Open(param);
@@ -49,25 +51,75 @@ public class BottomPanel : UIElement
         // 이전 선택했던 UI 드래그 중지
         if (setBtn != null && updateUI != setBtn)
         {
-            keyPanelArea.Reset(setBtn);
+            switch (setBtn.name)
+            {
+                case "LeftMoveBtn":
+                    keyPanelArea.Reset(0);
+                    break;
+                case "RightMoveBtn":
+                    keyPanelArea.Reset((ENUM_BTNPREFS_TYPE)1);
+                    break;
+                case "AttackBtn":
+                    keyPanelArea.Reset((ENUM_BTNPREFS_TYPE)2);
+                    break;
+                case "JumpBtn":
+                    keyPanelArea.Reset((ENUM_BTNPREFS_TYPE)3);
+                    break;
+                case "SkillBtn1":
+                    keyPanelArea.Reset((ENUM_BTNPREFS_TYPE)4);
+                    break;
+                case "SkillBtn2":
+                    keyPanelArea.Reset((ENUM_BTNPREFS_TYPE)5);
+                    break;
+                case "SkillBtn3":
+                    keyPanelArea.Reset((ENUM_BTNPREFS_TYPE)6);
+                    break;
+            }
             setBtn.isSelect = false;
             setBtn.ChangeAreaColor();
+            keyPanelArea.RemoveUpdateComponent(setBtn);
         }
 
-        // 선택한 UI 세팅
-        setBtn = updateUI;
-        settingHelper.SetBtnInit(setBtn);
+        if (updateUI != setBtn)
+        {
+            // 선택한 UI 세팅
+            setBtn = updateUI;
+            settingHelper.SetBtnInit(setBtn.GetComponent<Button>());
+            switch (setBtn.name)
+            {
+                case "LeftMoveBtn":
+                    prefsList = Managers.Prefs.GetButtonPrefs(0);
+                    break;
+                case "RightMoveBtn":
+                    prefsList = Managers.Prefs.GetButtonPrefs((ENUM_BTNPREFS_TYPE)1);
+                    break;
+                case "AttackBtn":
+                    prefsList = Managers.Prefs.GetButtonPrefs((ENUM_BTNPREFS_TYPE)2);
+                    break;
+                case "JumpBtn":
+                    prefsList = Managers.Prefs.GetButtonPrefs((ENUM_BTNPREFS_TYPE)3);
+                    break;
+                case "SkillBtn1":
+                    prefsList = Managers.Prefs.GetButtonPrefs((ENUM_BTNPREFS_TYPE)4);
+                    break;
+                case "SkillBtn2":
+                    prefsList = Managers.Prefs.GetButtonPrefs((ENUM_BTNPREFS_TYPE)5);
+                    break;
+                case "SkillBtn3":
+                    prefsList = Managers.Prefs.GetButtonPrefs((ENUM_BTNPREFS_TYPE)6);
+                    break;
+            }
 
-        // UI 실린더 값 호출
-        sizeSlider.value = Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.Size, setBtn.name);
-        opacitySlider.value = Managers.Prefs.GetPrefsFloat(ENUM_PLAYERPREFS_TYPE.Opacity, setBtn.name);
-        SetSliderText("All");
+            // UI 실린더 값 호출
+            sizeSlider.value = prefsList[1];
+            opacitySlider.value = prefsList[2];
+            SetSliderText("All");
 
-        // UI 드래그 기능
-        setBtn.isSelect = true;
-        setBtn.ChangeAreaColor();
+            // UI 드래그 기능
+            setBtn.isSelect = true;
+            setBtn.ChangeAreaColor();
+        }
     }
-
 
     // % 표기 Text 설정
     public void SetSliderText(string sliderType)
@@ -96,6 +148,7 @@ public class BottomPanel : UIElement
         sizeRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
 
         settingHelper.SetSize(sizeRatio);
+        Managers.Prefs.SetButtonPrefs((ENUM_BTNPREFS_TYPE)prefsList[0], ENUM_BTNSUBPREFS_TYPE.Size, sizeSlider.value);
 
         // % Text Set & Value Save
         SetSliderText("Size");
@@ -107,6 +160,7 @@ public class BottomPanel : UIElement
         opacityRatio = (opacitySlider.value / (opacitySlider.maxValue * 2));
 
         settingHelper.SetOpacity(opacityRatio);
+        Managers.Prefs.SetButtonPrefs((ENUM_BTNPREFS_TYPE)prefsList[0], ENUM_BTNSUBPREFS_TYPE.Opacity, opacitySlider.value);
 
         // % Text Set & Value Save
         SetSliderText("Opacity");
@@ -121,19 +175,10 @@ public class BottomPanel : UIElement
         if (!isUpdatable)
             return;
 
-        // size
-        Managers.Prefs.SetPlayerPrefs<float>(sizeSlider.value, ENUM_PLAYERPREFS_TYPE.Size, setBtn.name);
-        Managers.Prefs.SetPlayerPrefs<float>(sizeSlider.value, ENUM_PLAYERPREFS_TYPE.ResetSize, setBtn.name);
 
-        // Opacity
-        Managers.Prefs.SetPlayerPrefs<float>(opacitySlider.value, ENUM_PLAYERPREFS_TYPE.Opacity, setBtn.name);
-        Managers.Prefs.SetPlayerPrefs<float>(opacitySlider.value, ENUM_PLAYERPREFS_TYPE.ResetOpacity, setBtn.name);
-
-        // transform
-        Managers.Prefs.SetPlayerPrefs<float>(settingHelper.GetTransform().x, ENUM_PLAYERPREFS_TYPE.TransX, setBtn.name);
-        Managers.Prefs.SetPlayerPrefs<float>(settingHelper.GetTransform().y, ENUM_PLAYERPREFS_TYPE.TransY, setBtn.name);
-
-        PlayerPrefs.Save();
+        Managers.Prefs.SetButtonPrefs((ENUM_BTNPREFS_TYPE)prefsList[0], ENUM_BTNSUBPREFS_TYPE.ResetSize, prefsList[1]);
+        Managers.Prefs.SetButtonPrefs((ENUM_BTNPREFS_TYPE)prefsList[0], ENUM_BTNSUBPREFS_TYPE.ResetOpacity, prefsList[2]);
+        Managers.Prefs.SaveButtonPrefs();
         Close();
     }
 
@@ -146,7 +191,7 @@ public class BottomPanel : UIElement
     public void MoveBtnDown(string direction)
     {
         isPushMoveBtn = true;
-        moveSpeed = 0.5f;
+        moveSpeed = 0.0f;
         StartCoroutine(MoveKeyPanelUI(direction));
     }
 
@@ -162,8 +207,8 @@ public class BottomPanel : UIElement
             MoveKeyPanelUISub(direction);
 
             if(moveSpeed <= 5.0f)
-                moveSpeed += 0.5f * Time.deltaTime;
-
+                moveSpeed += 0.1f * (Time.deltaTime * 5);
+            Debug.Log(moveSpeed);
             yield return null;
         }
     }

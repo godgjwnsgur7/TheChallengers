@@ -139,46 +139,6 @@ public class PlayerCharacter : MonoBehaviour
             (activeCharacter.currState == ENUM_PLAYER_STATE.Hit || activeCharacter.currState == ENUM_PLAYER_STATE.Die))
             return;
 
-        /*
-        if(PhotonLogicHandler.IsConnected)
-        {
-            switch(nextState)
-            {
-                case ENUM_PLAYER_STATE.Idle:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character>
-                        (activeCharacter, activeCharacter.Idle);
-                    activeCharacter.Idle();
-                    break;
-                case ENUM_PLAYER_STATE.Move:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character, CharacterParam>
-                        (activeCharacter, activeCharacter.Move, param);
-                    break;
-                case ENUM_PLAYER_STATE.Jump:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character>
-                        (activeCharacter,activeCharacter.Jump);
-                    break;
-                case ENUM_PLAYER_STATE.Attack:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character, CharacterParam>
-                        (activeCharacter, activeCharacter.Attack, param);
-                    break;
-                case ENUM_PLAYER_STATE.Skill:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character, CharacterParam>
-                        (activeCharacter, activeCharacter.Skill, param);
-                    break;
-                case ENUM_PLAYER_STATE.Hit:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character, CharacterParam>
-                        (activeCharacter, activeCharacter.Hit, param);
-                    break;
-                case ENUM_PLAYER_STATE.Die:
-                    PhotonLogicHandler.Instance.TryBroadcastMethod<Character>
-                        (activeCharacter, activeCharacter.Die);
-                    break;
-            }
-
-            return;
-        }
-        */
-
         switch (nextState)
         {
             case ENUM_PLAYER_STATE.Idle:
@@ -197,7 +157,7 @@ public class PlayerCharacter : MonoBehaviour
                 activeCharacter.Skill(param);
                 break;
             case ENUM_PLAYER_STATE.Hit:
-                activeCharacter.Hit(param);
+                Debug.Log("PlayerCharacter에 Hit 명령이 들어옴");
                 break;
             case ENUM_PLAYER_STATE.Die:
                 activeCharacter.Die();

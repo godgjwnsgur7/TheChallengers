@@ -296,6 +296,13 @@ public partial class ActiveCharacter : Character
             Sync_ReverseState(_reverseState);
     }
 
+    [BroadcastMethodAttribute]
+    public void Sync_ReverseState(bool _reverseState)
+    {
+        spriteRenderer.flipX = _reverseState;
+        reverseState = _reverseState;
+    }
+
     public void Invincible()
     {
         invincibility = true;
