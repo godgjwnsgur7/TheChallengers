@@ -73,12 +73,18 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickDBSelect()
 	{
-		Managers.DbSession.Select(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", (int data) => { Debug.Log(data); });
+		Managers.DbSession.Select<long>(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", DebugDBData);
 	}
 
 	public void OnClickDBUpdate()
 	{
-		Managers.DbSession.Update(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", 100, () => { Debug.Log(100); });
+		long inputData = 10L;
+		Managers.DbSession.Update(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", inputData, DebugDBData);
+	}
+
+	private void DebugDBData(long data)
+	{
+		Debug.Log(data);
 	}
 
 	public void OnClickMoveScene()

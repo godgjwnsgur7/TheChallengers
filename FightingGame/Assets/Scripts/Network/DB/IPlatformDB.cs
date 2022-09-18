@@ -14,8 +14,9 @@ using System;
 
 public interface IPlatformDB
 {
-    bool UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
-    bool SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+    bool InsertDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+    bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+    bool SelectDB<T>(string[] hierachyPath, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
 }
 
@@ -36,8 +37,8 @@ public class PlatformDB : IPlatformDB
 
     public void InitDataBase()
     {
-        // app = FirebaseApp.DefaultInstance;
-        // app.Options.DatabaseUrl = new Uri(URL);
+        app = FirebaseApp.DefaultInstance;
+        app.Options.DatabaseUrl = new Uri(URL);
 
         database = FirebaseDatabase.DefaultInstance;
         dbRootReference = database.RootReference;
@@ -45,7 +46,7 @@ public class PlatformDB : IPlatformDB
         DBSession.RegisterDB(this);
     }
      
-    public bool UpdateDB<T>(string[] hierachyPath, T data, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    public bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!typeof(T).IsSerializable)
         {
@@ -60,9 +61,7 @@ public class PlatformDB : IPlatformDB
             reference = reference.Child(path);
         }
 
-        string jsonData = JsonUtility.ToJson(data);
-
-        reference.SetRawJsonValueAsync(jsonData).ContinueWithOnMainThread(task =>
+        reference.SetValueAsync(data).ContinueWithOnMainThread(task =>
         { 
             if(task.IsFaulted)
             {
@@ -74,14 +73,14 @@ public class PlatformDB : IPlatformDB
             }
             else if(task.IsCompleted)
             {
-                OnSuccess?.Invoke();
+                OnSuccess?.Invoke(data);
             }
         });
 
         return true;
     }
 
-    public bool SelectDB<T>(string[] hierachyPath, Action<T> pushData = null, Action OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+    public bool SelectDB<T>(string[] hierachyPath, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
     {
         if (!typeof(T).IsSerializable)
         {
@@ -96,15 +95,30 @@ public class PlatformDB : IPlatformDB
             reference = reference.Child(path);
         }
 
-        reference.GetValueAsync().ContinueWith(task =>
+        reference.GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            if (task.IsCompleted)
+            if (task.IsFaulted)
+            {
+                OnFailed?.Invoke();
+            }
+            else if (task.IsCanceled)
+            {
+                OnCanceled?.Invoke();
+            }
+            else if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
-                pushData?.Invoke((T)snapshot.Value);
+                T data = (T)(snapshot.Value);
+
+                OnSuccess?.Invoke(data);
             }
         });
 
+        return true;
+    }
+
+	public bool InsertDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+	{
         return true;
     }
 }
