@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 여기서 CustomRoom 디비랑 소통해야?
+
 public class CustomRoomList : MonoBehaviour
 {
     RoomListElement[] roomListElements;
