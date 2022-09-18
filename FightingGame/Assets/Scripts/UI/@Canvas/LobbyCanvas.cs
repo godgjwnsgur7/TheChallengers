@@ -20,7 +20,6 @@ public class LobbyCanvas : BaseCanvas
 
     public override T GetUIComponent<T>()
     {
-
         return default(T);
     }
 }

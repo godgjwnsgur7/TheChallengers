@@ -18,11 +18,12 @@ public class CustomRoomData
     }
 }
 
-public class RoomListElement : UIElement
+public class RoomListElement : MonoBehaviour
 {
+    public bool isInit = false;
     private float uniqueKey;
 
-    [Header ("Set ")]
+    [Header ("Set In Editor")]
     [SerializeField] Image MapImage;
     [SerializeField] Text roomNameText;
     [SerializeField] Text masterNicknameText;
@@ -30,12 +31,12 @@ public class RoomListElement : UIElement
     [SerializeField] Image personnelImage;
     [SerializeField] Text personnelText;
 
-    [Header("")]
-    [SerializeField] Image personnel_ExistImage;
+    [Header("Setting Resources With Editor")]
+    [SerializeField] Sprite personnel_ExistSprite;
 
-    public bool isInit = false;
+    // DB 활용해서 해야할듯 일단 전체 올 스톱
+    // -> CustomRoomData 자체가 DB에 있고, Key만 저장?
 
-    // DB 활용해서 해야할듯 일단 전체 올 스톱 -> CustomRoomData 자체가 DB에 있고, Key만 저장?
     public void Init(CustomRoomData roomData)
     {
         isInit = true;
@@ -53,7 +54,7 @@ public class RoomListElement : UIElement
 
         }
         else if (_personnelIndex == 2)
-            personnelImage = personnel_ExistImage;
+            personnelImage.sprite = personnel_ExistSprite;
         else
             Debug.LogError($"personnelIndex 값 오류 : {_personnelIndex}");
     }
@@ -61,5 +62,16 @@ public class RoomListElement : UIElement
     public void Set_MapImage(ENUM_MAP_TYPE _mapType)
     {
 
+    }
+
+    public void OnClick_JoinRoom()
+    {
+        if(!isInit)
+        {
+            Debug.LogError("초기화되지 않음");
+            return;
+        }
+
+        Debug.Log("uniqueKey를 활용. 해당 방에 접속시도");
     }
 }
