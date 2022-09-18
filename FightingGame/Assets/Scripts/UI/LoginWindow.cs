@@ -19,8 +19,8 @@ public class LoginWindow : UIElement
         string currEmail = emailInputField.text;
         string currPassword = passwordInputField.text;
 
-        var loginPopup = Managers.Scene.CurrentScene as MainScene; // 이렇게 로그인 씬을 가져오는 방식은 클라가 마음껏 수정하면 될 듯, 그냥 예시임다
-        loginPopup.SignIn(ENUM_LOGIN_TYPE.Guest, currEmail, currPassword);
+        // var loginPopup = Managers.Scene.CurrentScene as MainScene; // 이렇게 로그인 씬을 가져오는 방식은 클라가 마음껏 수정하면 될 듯, 그냥 예시임다
+        // loginPopup.SignIn(ENUM_LOGIN_TYPE.Guest, currEmail, currPassword);
 
         // 로그인 성공했을 때 저장할 필요가 있는데...
         PlayerPrefs.SetString("LoginUser", currEmail);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGPlatform;
 
 public class Managers : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Managers : MonoBehaviour
     private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
     private PlayerPrefsMgr prefs = new PlayerPrefsMgr();
-    private FGPlatform platform = new FGPlatform();
+    private PlatformMgr platform = new PlatformMgr();
 
 
     public static DataMgr Data { get { return Instance.data; } }
@@ -28,7 +29,7 @@ public class Managers : MonoBehaviour
     public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
     public static PlayerPrefsMgr Prefs { get { return Instance.prefs; } }
-    public static FGPlatform Platform { get { return Instance.platform; } }
+    public static FGPlatform.PlatformMgr Platform { get { return Instance.platform; } }
     
     private void Start()
     {

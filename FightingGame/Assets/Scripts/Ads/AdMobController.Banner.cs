@@ -15,121 +15,125 @@ public enum BannerPosition
     Center = 6
 }
 
-public interface IAdMobController
+namespace FGPlatform.Advertisement
 {
-    public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
-    public void UnloadBanner();
-    public void ShowBanner(Action<EventArgs> OnShow = null);
-    public void HideBanner(Action<EventArgs> OnHide = null);
-
-}
-
-/// <summary>
-/// 배너
-/// </summary>
-
-public partial class AdMobController : IAdMobController
-{
-    private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
-    private readonly string TestKeyword = "ProjectFG";
-
-    private BannerView bannerView = null;
-
-    private event Action<EventArgs> OnAdLoaded = null;
-    private event Action<AdFailedToLoadEventArgs> OnAdFailedToLoad = null;
-    private event Action<EventArgs> OnAdOpening = null;
-    private event Action<EventArgs> OnAdClosed = null;
-    private event Action<AdValueEventArgs> OnPaidEvent = null;
-
-    public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
+    public interface IAdMobController
     {
-        LoadBanner(bannerPos, OnLoaded, (AdFailedToLoadEventArgs args) => 
+        public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
+        public void UnloadBanner();
+        public void ShowBanner(Action<EventArgs> OnShow = null);
+        public void HideBanner(Action<EventArgs> OnHide = null);
+
+    }
+
+    /// <summary>
+    /// 배너
+    /// </summary>
+
+    public partial class AdMobController : IAdMobController
+    {
+        private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
+        private readonly string TestKeyword = "ProjectFG";
+
+        private BannerView bannerView = null;
+
+        private event Action<EventArgs> OnAdLoaded = null;
+        private event Action<AdFailedToLoadEventArgs> OnAdFailedToLoad = null;
+        private event Action<EventArgs> OnAdOpening = null;
+        private event Action<EventArgs> OnAdClosed = null;
+        private event Action<AdValueEventArgs> OnPaidEvent = null;
+
+        public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
         {
-            OnLoadFailed(args.LoadAdError?.GetResponseInfo()?.GetResponseId());
-        });
+            LoadBanner(bannerPos, OnLoaded, (AdFailedToLoadEventArgs args) =>
+            {
+                OnLoadFailed(args.LoadAdError?.GetResponseInfo()?.GetResponseId());
+            });
+        }
+
+        private void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
+        {
+            var adPos = (AdPosition)Enum.Parse(typeof(AdPosition), bannerPos.ToString());
+            bannerView = new BannerView(TestBannerID_AOS, AdSize.SmartBanner, adPos);
+
+            RegisterEvent();
+
+            OnAdLoaded += OnLoaded;
+            OnAdFailedToLoad += OnLoadFailed;
+
+            AdRequest req = new AdRequest.Builder()
+                .AddKeyword(TestKeyword)
+                .Build();
+
+            bannerView.LoadAd(req);
+        }
+
+        public void UnloadBanner()
+        {
+            UnregisterEvent();
+            bannerView.Destroy();
+        }
+
+        public void ShowBanner(Action<EventArgs> OnShow = null)
+        {
+            OnAdOpening += OnShow;
+            bannerView?.Show();
+        }
+
+        public void HideBanner(Action<EventArgs> OnHide = null)
+        {
+            OnAdClosed += OnHide;
+            bannerView?.Hide();
+        }
+
+        private void RegisterEvent()
+        {
+            bannerView.OnAdLoaded += BannerView_OnAdLoaded;
+            bannerView.OnAdFailedToLoad += BannerView_OnAdFailedToLoad;
+            bannerView.OnAdClosed += BannerView_OnAdClosed;
+            bannerView.OnAdOpening += BannerView_OnAdOpening;
+            bannerView.OnPaidEvent += BannerView_OnPaidEvent;
+        }
+
+        private void UnregisterEvent()
+        {
+            bannerView.OnAdLoaded -= BannerView_OnAdLoaded;
+            bannerView.OnAdFailedToLoad -= BannerView_OnAdFailedToLoad;
+            bannerView.OnAdClosed -= BannerView_OnAdClosed;
+            bannerView.OnAdOpening -= BannerView_OnAdOpening;
+            bannerView.OnPaidEvent -= BannerView_OnPaidEvent;
+
+            OnAdLoaded = null;
+            OnAdFailedToLoad = null;
+            OnAdOpening = null;
+            OnAdClosed = null;
+            OnPaidEvent = null;
+        }
+
+        private void BannerView_OnPaidEvent(object sender, AdValueEventArgs e)
+        {
+            OnPaidEvent?.Invoke(e);
+        }
+
+        private void BannerView_OnAdOpening(object sender, EventArgs e)
+        {
+            OnAdOpening?.Invoke(e);
+        }
+
+        private void BannerView_OnAdClosed(object sender, EventArgs e)
+        {
+            OnAdClosed?.Invoke(e);
+        }
+
+        private void BannerView_OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
+        {
+            OnAdFailedToLoad?.Invoke(e);
+        }
+
+        private void BannerView_OnAdLoaded(object sender, EventArgs e)
+        {
+            OnAdLoaded?.Invoke(e);
+        }
     }
 
-    private void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
-    {
-        var adPos = (AdPosition)Enum.Parse(typeof(AdPosition), bannerPos.ToString());
-        bannerView = new BannerView(TestBannerID_AOS, AdSize.SmartBanner, adPos);
-
-        RegisterEvent();
-
-        OnAdLoaded += OnLoaded;
-        OnAdFailedToLoad += OnLoadFailed;
-
-        AdRequest req = new AdRequest.Builder()
-            .AddKeyword(TestKeyword)
-            .Build();
-
-        bannerView.LoadAd(req); 
-    }
-
-    public void UnloadBanner()
-    {
-        UnregisterEvent();
-        bannerView.Destroy();
-    }
-
-    public void ShowBanner(Action<EventArgs> OnShow = null)
-    {
-        OnAdOpening += OnShow;
-        bannerView?.Show();
-    }
-
-    public void HideBanner(Action<EventArgs> OnHide = null)
-    {
-        OnAdClosed += OnHide;
-        bannerView?.Hide();
-    }
-
-    private void RegisterEvent()
-    {
-        bannerView.OnAdLoaded += BannerView_OnAdLoaded;
-        bannerView.OnAdFailedToLoad += BannerView_OnAdFailedToLoad;
-        bannerView.OnAdClosed += BannerView_OnAdClosed;
-        bannerView.OnAdOpening += BannerView_OnAdOpening;
-        bannerView.OnPaidEvent += BannerView_OnPaidEvent;
-    }
-
-    private void UnregisterEvent()
-    {
-        bannerView.OnAdLoaded -= BannerView_OnAdLoaded;
-        bannerView.OnAdFailedToLoad -= BannerView_OnAdFailedToLoad;
-        bannerView.OnAdClosed -= BannerView_OnAdClosed;
-        bannerView.OnAdOpening -= BannerView_OnAdOpening;
-        bannerView.OnPaidEvent -= BannerView_OnPaidEvent;
-
-        OnAdLoaded = null;
-        OnAdFailedToLoad = null;
-        OnAdOpening = null;
-        OnAdClosed = null;
-        OnPaidEvent = null;
-    }
-
-    private void BannerView_OnPaidEvent(object sender, AdValueEventArgs e)
-    {
-        OnPaidEvent?.Invoke(e);
-    }
-
-    private void BannerView_OnAdOpening(object sender, EventArgs e)
-    {
-        OnAdOpening?.Invoke(e);
-    }
-
-    private void BannerView_OnAdClosed(object sender, EventArgs e)
-    {
-        OnAdClosed?.Invoke(e);
-    }
-
-    private void BannerView_OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
-    {
-        OnAdFailedToLoad?.Invoke(e);
-    }
-
-    private void BannerView_OnAdLoaded(object sender, EventArgs e)
-    {
-        OnAdLoaded?.Invoke(e);
-    }
 }
