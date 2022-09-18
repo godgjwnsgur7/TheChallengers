@@ -14,10 +14,25 @@ using System;
 
 public interface IPlatformDB
 {
+    public void InitDataBase();
     bool InsertDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
     bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
     bool SelectDB<T>(string[] hierachyPath, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
+}
+
+/// <summary>
+/// (ID 토큰, 플랫폼) - 닉네임 - 승점 - 커피 구매 갯수
+/// 너무 적어서 디비를 나눌 필요도 없음
+/// </summary>
+
+public enum DB_CATEGORY
+{
+    Nickname,
+    VictoryPoint,
+    DefeatPoint,
+    RatingPoint,
+    PurchaseCoffee
 }
 
 public delegate void DataSnapAction(DataSnapshot shot);
@@ -42,8 +57,6 @@ public class PlatformDB : IPlatformDB
 
         database = FirebaseDatabase.DefaultInstance;
         dbRootReference = database.RootReference;
-
-        DBSession.RegisterDB(this);
     }
      
     public bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)

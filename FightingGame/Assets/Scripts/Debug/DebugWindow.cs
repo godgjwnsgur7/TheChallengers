@@ -11,26 +11,14 @@ public class DebugWindow : BaseCanvas
 	[SerializeField] private Text statusPanel = null;
 	[SerializeField] private Text detailStatusPanel = null;
 
-	public override void Open<T>(UIParam param = null)
-	{
-
-	}
-
-	public override void Close<T>()
-	{
-
-	}
-
 	public override T GetUIComponent<T>()
 	{
-
 		return default(T);
 	}
 
 	private void Start()
 	{
-		PlatformDB db = new PlatformDB();
-		db.InitDataBase();
+		Managers.Platform.Initialize();
 	}
 
 	public void OnClickMasterServer()
@@ -73,18 +61,23 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickDBSelect()
 	{
-		Managers.DbSession.Select<long>(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", DebugDBData);
+		Managers.Platform.DBSelect<long>(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", DebugDBData);
 	}
 
 	public void OnClickDBUpdate()
 	{
 		long inputData = 10L;
-		Managers.DbSession.Update(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", inputData, DebugDBData);
+		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", inputData, DebugDBData);
 	}
 
 	private void DebugDBData(long data)
 	{
 		Debug.Log(data);
+	}
+
+	public void OnClickGuestLogin()
+	{
+		
 	}
 
 	public void OnClickMoveScene()

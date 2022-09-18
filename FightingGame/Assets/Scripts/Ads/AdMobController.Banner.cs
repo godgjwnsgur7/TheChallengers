@@ -15,11 +15,20 @@ public enum BannerPosition
     Center = 6
 }
 
+public interface IAdMobController
+{
+    public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
+    public void UnloadBanner();
+    public void ShowBanner(Action<EventArgs> OnShow = null);
+    public void HideBanner(Action<EventArgs> OnHide = null);
+
+}
+
 /// <summary>
 /// 배너
 /// </summary>
 
-public partial class AdMobController
+public partial class AdMobController : IAdMobController
 {
     private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
     private readonly string TestKeyword = "ProjectFG";
@@ -32,7 +41,15 @@ public partial class AdMobController
     private event Action<EventArgs> OnAdClosed = null;
     private event Action<AdValueEventArgs> OnPaidEvent = null;
 
-    public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
+    public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
+    {
+        LoadBanner(bannerPos, OnLoaded, (AdFailedToLoadEventArgs args) => 
+        {
+            OnLoadFailed(args.LoadAdError?.GetResponseInfo()?.GetResponseId());
+        });
+    }
+
+    private void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
     {
         var adPos = (AdPosition)Enum.Parse(typeof(AdPosition), bannerPos.ToString());
         bannerView = new BannerView(TestBannerID_AOS, AdSize.SmartBanner, adPos);
@@ -115,6 +132,4 @@ public partial class AdMobController
     {
         OnAdLoaded?.Invoke(e);
     }
-
-
 }

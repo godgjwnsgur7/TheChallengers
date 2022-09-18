@@ -30,6 +30,10 @@ public interface IPlatformAuth
     {
         get;
     }
+
+    public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null);
+    public void SignIn(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null);
+    public void SignOut();
 }
 
 /// <summary>
@@ -78,7 +82,7 @@ public class PlatformAuth : IPlatformAuth
 
                 if (result == DependencyStatus.Available)
                 {
-                    InitFirebase();
+                    InitAuth();
                     OnConnectAuthSuccess?.Invoke();
                     Debug.Log("파이어베이스 인증 성공");
                 }
@@ -93,7 +97,7 @@ public class PlatformAuth : IPlatformAuth
         return true;
     }
 
-    private void InitFirebase()
+    private void InitAuth()
     {
         app = FirebaseApp.DefaultInstance;
         auth = FirebaseAuth.DefaultInstance;
@@ -106,8 +110,6 @@ public class PlatformAuth : IPlatformAuth
 
         user = currentUser;
         UserId = currentUser.UserId;
-
-        LoginSession.RegisterAuth(this);
     }
 
     public void SignIn(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)

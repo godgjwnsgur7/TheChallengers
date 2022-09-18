@@ -16,10 +16,8 @@ public class Managers : MonoBehaviour
     private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
     private PlayerPrefsMgr prefs = new PlayerPrefsMgr();
-    private LoginSession loginSession = new LoginSession();
-    private DBSession dbSession = new DBSession();
-    private AdMobController adMob = new AdMobController();
-    private CoffeeMachine iapController = new IAPController();
+    private FGPlatform platform = new FGPlatform();
+
 
     public static DataMgr Data { get { return Instance.data; } }
     public static GameMgr Game { get { return Instance.game; } }
@@ -30,10 +28,7 @@ public class Managers : MonoBehaviour
     public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
     public static PlayerPrefsMgr Prefs { get { return Instance.prefs; } }
-    public static LoginSession LoginSession { get { return Instance.loginSession; } }
-    public static DBSession DbSession { get { return Instance.dbSession; } }
-    public static AdMobController AdMob { get { return Instance.adMob; } }
-    public static CoffeeMachine IAPController { get { return Instance.iapController; } }
+    public static FGPlatform Platform { get { return Instance.platform; } }
     
     private void Start()
     {
