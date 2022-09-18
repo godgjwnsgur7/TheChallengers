@@ -34,7 +34,7 @@ public class RoomListElement : MonoBehaviour
     [Header("Setting Resources With Editor")]
     [SerializeField] Sprite personnel_ExistSprite;
 
-    // DB 활용해서 해야할듯 일단 전체 올 스톱
+    // DB 활용해서 해야할듯 일단 전체 올 스탑!!!
     // -> CustomRoomData 자체가 DB에 있고, Key만 저장?
 
     public void Init(CustomRoomData roomData)
