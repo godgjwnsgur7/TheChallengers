@@ -49,7 +49,7 @@ public class DBSession : IDisposable, ISession
             return false;
 
         string token = GetHashToken(loginType, userId);
-        string[] hierachyPath = new string[] { token, category.ToString() };
+        string[] hierachyPath = new string[] { userId, category.ToString() };
 
         return DB.UpdateDB<T>(hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
     }
@@ -60,7 +60,7 @@ public class DBSession : IDisposable, ISession
             return false;
 
         string token = GetHashToken(loginType, userId);
-        string[] hierachyPath = new string[] { token, category.ToString() };
+        string[] hierachyPath = new string[] { userId, category.ToString() };
 
         return DB.SelectDB<T>(hierachyPath, pushData, OnSuccess, OnFailed, OnCanceled);
     }
@@ -90,17 +90,14 @@ public class DBSession : IDisposable, ISession
     {
         if(category == DB_CATEGORY.Nickname)
         {
-            Debug.LogError($"데이터 타입 에러, {category}에는 string 타입이 매핑되어야 합니다.");
             return type == typeof(string);
         }
         else if(category == DB_CATEGORY.PurchaseCoffee)
         {
-            Debug.LogError($"데이터 타입 에러, {category}에는 long 타입이 매핑되어야 합니다.");
             return type == typeof(long);
         }
         else if(category == DB_CATEGORY.VictoryPoint)
         {
-            Debug.LogError($"데이터 타입 에러, {category}에는 int 타입이 매핑되어야 합니다.");
             return type == typeof(int);
         }
 

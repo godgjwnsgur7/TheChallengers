@@ -20,10 +20,17 @@ public class DebugWindow : BaseCanvas
 	{
 
 	}
+
 	public override T GetUIComponent<T>()
 	{
 
 		return default(T);
+	}
+
+	private void Start()
+	{
+		PlatformDB db = new PlatformDB();
+		db.InitDataBase();
 	}
 
 	public void OnClickMasterServer()
@@ -62,6 +69,16 @@ public class DebugWindow : BaseCanvas
 		{
 			Debug.Log(roomInfo);
 		}
+	}
+
+	public void OnClickDBSelect()
+	{
+		Managers.DbSession.Select(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", (int data) => { Debug.Log(data); });
+	}
+
+	public void OnClickDBUpdate()
+	{
+		Managers.DbSession.Update(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", 100, () => { Debug.Log(100); });
 	}
 
 	public void OnClickMoveScene()

@@ -27,7 +27,7 @@ public delegate void DataSnapAction(DataSnapshot shot);
 
 public class PlatformDB : IPlatformDB
 {
-    private readonly string URL = "https://projectfg-c8bc3-default-rtdb.firebaseio.com/";
+    private readonly string URL = "https://projectfg-c8bc3-default-rtdb.firebaseio.com";
 
     private FirebaseApp app;
     private FirebaseDatabase database;
@@ -36,11 +36,11 @@ public class PlatformDB : IPlatformDB
 
     public void InitDataBase()
     {
-        app = FirebaseApp.DefaultInstance;
-        app.Options.DatabaseUrl = new Uri(URL);
+        // app = FirebaseApp.DefaultInstance;
+        // app.Options.DatabaseUrl = new Uri(URL);
 
         database = FirebaseDatabase.DefaultInstance;
-        dbRootReference = database.GetReferenceFromUrl(URL);
+        dbRootReference = database.RootReference;
 
         DBSession.RegisterDB(this);
     }
