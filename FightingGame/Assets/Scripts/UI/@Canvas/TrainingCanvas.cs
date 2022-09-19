@@ -22,7 +22,7 @@ public class TrainingCanvas : BaseCanvas
     public string ChangeCharacter;
     public bool isCallPlayer = false;
 
-    public void init()
+    public void Init()
     {
         BTransform = buttonPanel.GetComponent<RectTransform>();
         SliderBtnRect = sliderBtn.GetComponent<RectTransform>();

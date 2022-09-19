@@ -9,8 +9,8 @@ public class UpdatableUI : UIElement, IBeginDragHandler, IEndDragHandler, IDragH
 {
     public bool isUpdatable = true;
     public bool isSelect = false;
-    public bool isEnded = true;
     private bool isInit = false;
+    private bool isDragable = false;
 
     public GameObject btnArea;
     public Image btnAreaImage;
@@ -22,12 +22,9 @@ public class UpdatableUI : UIElement, IBeginDragHandler, IEndDragHandler, IDragH
     CanvasGroup canvasGroup;
     Image DragUIImage;
 
-    bool isDragable = false;
-
     public float AlphaThreshold = 0.1f;
 
-    ArrayList gos = new ArrayList();
-    int index = 0;
+    int collisionCount = 0;
 
     public override void Open(UIParam param = null)
     {
@@ -65,24 +62,18 @@ public class UpdatableUI : UIElement, IBeginDragHandler, IEndDragHandler, IDragH
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        gos.Add(collision.gameObject);
-    }
-
-    // -------------------------------------------------------------------- Trigger
-    // UI 영역 겹치는 동안 수정 불가능, Area영역 색상 수정
-    private void OnTriggerStay2D(Collider2D collision)
-    {
         if (collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
         {
-            isUpdatable = false;
+            // 충돌중인 UI카운트 + 1 
+            collisionCount++;
+
+            if (collisionCount == 1)
+                settingPanel.unEditCount++;
+
+            if (collisionCount > 0)
+                isUpdatable = false;
 
             ChangeAreaColor();
-
-            if (gos.Contains(collision.gameObject))
-            {
-                GameObject go = (GameObject)gos[gos.IndexOf(collision.gameObject)];
-                go.transform.Find("BtnArea").gameObject.GetComponent<Image>().color =  new Color(255, 0, 0, 0.5f);
-            }
         }
     }
 
@@ -91,19 +82,15 @@ public class UpdatableUI : UIElement, IBeginDragHandler, IEndDragHandler, IDragH
     {
         if (collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
         {
-            isUpdatable = true;
+            collisionCount--;
+
+            if (collisionCount < 1)
+            {
+                isUpdatable = true;
+                settingPanel.unEditCount--;
+            }
             
             ChangeAreaColor();
-
-
-            if (gos.Contains(collision.gameObject))
-            {
-                GameObject go = (GameObject)gos[gos.IndexOf(collision.gameObject)];
-
-                go.transform.Find("BtnArea").gameObject.GetComponent<Image>().color = new Color(255, 255, 255, 0.0f);
-
-                gos.Remove(collision.gameObject);
-            }
         }
     }
 
@@ -134,26 +121,15 @@ public class UpdatableUI : UIElement, IBeginDragHandler, IEndDragHandler, IDragH
         if (!isDragable)
             return;
 
-        DragInit();
-
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
+
+        DragInit();
     }
 
     public void DragInit()
     {
-        Debug.Log(gos.Count);
-        if (gos != null)
-        {
-            for (int i = gos.Count; i > 0; i++)
-            {
-                GameObject go = (GameObject)gos[i-1];
-
-                go.transform.Find("BtnArea").gameObject.GetComponent<Image>().color = new Color(255, 255, 255, 0.0f);
-                gos.RemoveAt(i);
-            }
-        }
-
+        // 드래그와 동시에 선택되도록 설정
         if (this.GetComponent<UpdatableUI>() != null)
             settingPanel.PushKey(this.GetComponent<UpdatableUI>());
     }
@@ -178,16 +154,10 @@ public class UpdatableUI : UIElement, IBeginDragHandler, IEndDragHandler, IDragH
         if (!isDragable)
             return;
 
-        EndDragChk();
+        // 위치이동 가능 범위 체크
+        settingHelper.CheckUITransform();
 
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
-
-    public void EndDragChk()
-    {
-        settingHelper.CheckUITransform();
-    }
-
-    public virtual void OnCoolTime() { }
 }
