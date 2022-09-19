@@ -12,7 +12,7 @@ public class BottomPanel : UIElement
 
     [SerializeField] Text SizeShowText;
     [SerializeField] Text OpacityShowText;
-    [SerializeField] KeyPanelArea keyPanelArea;
+    [SerializeField] KeyPanelAreaEdit keyPanelArea;
 
     private UpdatableUI setBtn;
 
@@ -26,8 +26,8 @@ public class BottomPanel : UIElement
     public bool isUpdatable;
     private float moveSpeed;
 
-    float[] currPrefsList;
-    float[][] prefsLists = new float[(int)ENUM_BTNPREFS_TYPE.Max][];
+    SubPrefsType currPrefsList;
+    SubPrefsType[] prefsLists = new SubPrefsType[(int)ENUM_BTNPREFS_TYPE.Max];
     public override void Open(UIParam param = null)
     {
         base.Open(param);
@@ -43,7 +43,7 @@ public class BottomPanel : UIElement
         }
 
         currPrefsList = null;
-        for (int i = 0; i < prefsLists.Length; i++)
+        for(int i = 0; i < prefsLists.Length; i++)
             prefsLists[i] = null;
 
         base.Close();
@@ -55,14 +55,14 @@ public class BottomPanel : UIElement
         // 이전 선택했던 UI 드래그 중지
         if (setBtn != null && updateUI != setBtn)
         {
-            if(currPrefsList != null)
+            if (currPrefsList != null)
             {
                 // 현재 위치 값 대입
-                currPrefsList[5] = settingHelper.GetTransform().x;
-                currPrefsList[6] = settingHelper.GetTransform().y;
+                currPrefsList.SetTransX(settingHelper.GetTransform().x);
+                currPrefsList.SetTransY(settingHelper.GetTransform().y);
                 // 현재 수정 값 임시 저장
-                prefsLists[(int)currPrefsList[0]] = new float[(int)ENUM_BTNSUBPREFS_TYPE.Max];
-                prefsLists[(int)currPrefsList[0]] = currPrefsList; 
+                prefsLists[currPrefsList.GetExist()] = new SubPrefsType();
+                prefsLists[currPrefsList.GetExist()] = currPrefsList;
             }
 
             setBtn.isSelect = false;
@@ -77,31 +77,31 @@ public class BottomPanel : UIElement
             switch (setBtn.name) // 임시
             {
                 case "LeftMoveBtn":
-                    currPrefsList = Managers.Prefs.GetPrefsList(0);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(0);
                     break;
                 case "RightMoveBtn":
-                    currPrefsList = Managers.Prefs.GetPrefsList((ENUM_BTNPREFS_TYPE)1);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(1);
                     break;
                 case "AttackBtn":
-                    currPrefsList = Managers.Prefs.GetPrefsList((ENUM_BTNPREFS_TYPE)2);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(2);
                     break;
                 case "JumpBtn":
-                    currPrefsList = Managers.Prefs.GetPrefsList((ENUM_BTNPREFS_TYPE)3);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(3);
                     break;
                 case "SkillBtn1":
-                    currPrefsList = Managers.Prefs.GetPrefsList((ENUM_BTNPREFS_TYPE)4);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(4);
                     break;
                 case "SkillBtn2":
-                    currPrefsList = Managers.Prefs.GetPrefsList((ENUM_BTNPREFS_TYPE)5);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(5);
                     break;
                 case "SkillBtn3":
-                    currPrefsList = Managers.Prefs.GetPrefsList((ENUM_BTNPREFS_TYPE)6);
+                    currPrefsList = Managers.Prefs.GetSubPrefsList(6);
                     break;
             }
 
             // UI 실린더 값 호출
-            sizeSlider.value = currPrefsList[1];
-            opacitySlider.value = currPrefsList[2];
+            sizeSlider.value = currPrefsList.GetSize();
+            opacitySlider.value = currPrefsList.GetOpacity();
             SetSliderText("All");
 
             // UI 드래그 기능
@@ -137,7 +137,7 @@ public class BottomPanel : UIElement
         sizeRatio = (sizeSlider.value + 50) / sizeSlider.maxValue;
 
         settingHelper.SetSize(sizeRatio);
-        currPrefsList[1] = sizeSlider.value;
+        currPrefsList.SetSize(sizeSlider.value);
         //Managers.Prefs.SetButtonPrefs((ENUM_BTNPREFS_TYPE)prefsList[0], ENUM_BTNSUBPREFS_TYPE.Size, sizeSlider.value);
 
         // % Text Set & Value Save
@@ -150,7 +150,7 @@ public class BottomPanel : UIElement
         opacityRatio = (opacitySlider.value / (opacitySlider.maxValue * 2));
 
         settingHelper.SetOpacity(opacityRatio);
-        currPrefsList[2] = opacitySlider.value;
+        currPrefsList.SetOpacity(opacitySlider.value);
         //Managers.Prefs.SetButtonPrefs((ENUM_BTNPREFS_TYPE)prefsList[0], ENUM_BTNSUBPREFS_TYPE.Opacity, opacitySlider.value);
 
         // % Text Set & Value Save
@@ -167,24 +167,24 @@ public class BottomPanel : UIElement
             return;
 
         // 마지막의 수정 UI 리셋 기준 값 변경 후 Prefs 저장
-        currPrefsList[5] = settingHelper.GetTransform().x;
-        currPrefsList[6] = settingHelper.GetTransform().y;
-        prefsLists[(int)currPrefsList[0]] = new float[(int)ENUM_BTNSUBPREFS_TYPE.Max];
-        prefsLists[(int)currPrefsList[0]] = currPrefsList;
+        currPrefsList.SetTransX(settingHelper.GetTransform().x);
+        currPrefsList.SetTransY(settingHelper.GetTransform().y);
+        prefsLists[currPrefsList.GetExist()] = new SubPrefsType();
+        prefsLists[currPrefsList.GetExist()] = currPrefsList;
 
         // 현재 변경되있는 값들이 다음의 리셋 값이 됨
-        for(int i = 0; i < prefsLists.Length; i++)
+        for (int i = 0; i < prefsLists.Length; i++)
         {
             if (prefsLists[i] == null)
                 continue;
 
-            prefsLists[i][3] = prefsLists[i][1];
-            prefsLists[i][4] = prefsLists[i][2];
-            prefsLists[i][7] = prefsLists[i][5];
-            prefsLists[i][8] = prefsLists[i][6];
+            prefsLists[i].SetResetSize(prefsLists[i].GetSize());
+            prefsLists[i].SetResetOpacity(prefsLists[i].GetOpacity());
+            prefsLists[i].SetResetTransX(prefsLists[i].GetTransX());
+            prefsLists[i].SetResetTransY(prefsLists[i].GetTransY());
 
             // 변경 사항 발송
-            Managers.Prefs.SetPrefsList((ENUM_BTNPREFS_TYPE)prefsLists[i][0], prefsLists[i]);
+            Managers.Prefs.SetSubPrefsList(prefsLists[i]);
         }
 
         Managers.Prefs.SaveButtonPrefs();
@@ -210,7 +210,7 @@ public class BottomPanel : UIElement
         {
             MoveKeyPanelUISub(direction);
 
-            if(moveSpeed <= 5.0f)
+            if (moveSpeed <= 5.0f)
                 moveSpeed += 0.1f * (Time.deltaTime * 5);
             Debug.Log(moveSpeed);
             yield return null;

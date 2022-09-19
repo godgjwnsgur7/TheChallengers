@@ -59,7 +59,7 @@ public class Managers : MonoBehaviour
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();
-            s_Instance.prefs.init();
+            s_Instance.prefs.Init();
             s_Instance.game.Init();
         }
     }

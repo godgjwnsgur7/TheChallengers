@@ -9,6 +9,7 @@ public class TrainingCanvas : BaseCanvas
     [SerializeField] SelectWindow selectWindow;
     [SerializeField] ButtonPanel buttonPanel;
     [SerializeField] SettingPanel settingPanel;
+    [SerializeField] KeyPanelAreaEdit keyPanelAreaEdit;
     [SerializeField] KeyPanelArea keyPanelArea;
     [SerializeField] BottomPanel bottomPanel;
     [SerializeField] NotionPopup notionPopup;
@@ -22,8 +23,10 @@ public class TrainingCanvas : BaseCanvas
     public string ChangeCharacter;
     public bool isCallPlayer = false;
 
-    public void Init()
+    public override void Init()
     {
+        base.Init();
+
         BTransform = buttonPanel.GetComponent<RectTransform>();
         SliderBtnRect = sliderBtn.GetComponent<RectTransform>();
         isPanelShow = false;
@@ -34,6 +37,7 @@ public class TrainingCanvas : BaseCanvas
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Open();
         else if (typeof(T) == typeof(SettingPanel)) settingPanel.Open();
         else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Open();
+        else if (typeof(T) == typeof(KeyPanelAreaEdit)) keyPanelAreaEdit.Open();
         else if (typeof(T) == typeof(NotionPopup)) notionPopup.Open();
         else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Open();
         else Debug.Log("범위 벗어남");
@@ -44,6 +48,7 @@ public class TrainingCanvas : BaseCanvas
         if (typeof(T) == typeof(SelectWindow)) selectWindow.Close();
         else if (typeof(T) == typeof(SettingPanel)) settingPanel.Close();
         else if (typeof(T) == typeof(KeyPanelArea)) keyPanelArea.Close();
+        else if (typeof(T) == typeof(KeyPanelAreaEdit)) keyPanelAreaEdit.Close();
         else if (typeof(T) == typeof(NotionPopup)) notionPopup.Close();
         else if (typeof(T) == typeof(BottomPanel)) bottomPanel.Close();
         else Debug.Log("범위 벗어남");
@@ -57,10 +62,10 @@ public class TrainingCanvas : BaseCanvas
     // 캐릭터 UI 세팅 패널 open,close
     public void OnOffSettingPanel()
     {
-        if (keyPanelArea.isOpen == false) 
+        if (keyPanelAreaEdit.isOpen == false) 
         {
-            keyPanelArea.playerType = FGDefine.ENUM_CHARACTER_TYPE.Knight;
-            Managers.UI.OpenUI<KeyPanelArea>();
+            //keyPanelAreaEdit.playerType = FGDefine.ENUM_CHARACTER_TYPE.Knight;
+            Managers.UI.OpenUI<KeyPanelAreaEdit>();
         }
 
         if (settingPanel.isOpen)
@@ -68,7 +73,7 @@ public class TrainingCanvas : BaseCanvas
             Managers.UI.CloseUI<SettingPanel>();
             Managers.UI.CloseUI<BottomPanel>();
             if (!isCallPlayer)
-                Managers.UI.CloseUI<KeyPanelArea>();
+                Managers.UI.CloseUI<KeyPanelAreaEdit>();
         }
         else
         {

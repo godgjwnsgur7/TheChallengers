@@ -17,8 +17,7 @@ public class NotifyPopup : MonoBehaviour
         isUsing = true;
         popupText.text = _message;
 
-
-        if(_callBack != null) callBack += _callBack;
+        callBack = _callBack;
 
         this.gameObject.SetActive(true);
     }
