@@ -30,7 +30,7 @@ namespace FGPlatform
 			Auth.TryConnectAuth();
 			DB.InitDataBase();
 			IAPController.Init();
-			AdMob.LoadBanner(BannerPosition.Top);
+			AdMob.Init(BannerPosition.Top);
 		}
 
 		public string GetUserID()

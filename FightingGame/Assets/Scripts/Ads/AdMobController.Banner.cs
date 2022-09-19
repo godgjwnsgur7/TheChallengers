@@ -19,10 +19,11 @@ namespace FGPlatform.Advertisement
 {
     public interface IAdMobController
     {
+        public void Init(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
         public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
         public void UnloadBanner();
-        public void ShowBanner(Action<EventArgs> OnShow = null);
-        public void HideBanner(Action<EventArgs> OnHide = null);
+        public void ShowBanner(Action<EventArgs> OnOpening = null, Action<EventArgs> OnClosed = null);
+        public void HideBanner();
 
     }
 
@@ -35,6 +36,8 @@ namespace FGPlatform.Advertisement
         private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
 		private readonly string TestKeyword = "ProjectFG";
 
+        private readonly string AppID = "ca-app-pub-3940256099942544~3347511713";
+
         private bool isLoaded = false;
         private bool isShow = false;
 
@@ -46,7 +49,15 @@ namespace FGPlatform.Advertisement
         private event Action<EventArgs> OnAdClosed = null;
         private event Action<AdValueEventArgs> OnPaidEvent = null;
 
-        public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
+        public void Init(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
+		{
+            MobileAds.Initialize(initStatus => 
+            {
+                LoadBanner(bannerPos, OnLoaded, OnLoadFailed);
+            });
+        }
+
+        public void LoadBanner(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
         {
             LoadBanner(bannerPos, OnLoaded, (AdFailedToLoadEventArgs args) =>
             {
@@ -54,7 +65,7 @@ namespace FGPlatform.Advertisement
             });
         }
 
-        private void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
+        private void LoadBanner(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
         {
             if (isLoaded)
 			{
@@ -84,7 +95,7 @@ namespace FGPlatform.Advertisement
             bannerView.Destroy();
         }
 
-        public void ShowBanner(Action<EventArgs> OnShow = null)
+        public void ShowBanner(Action<EventArgs> OnOpening = null, Action<EventArgs> OnClosed = null)
         {
             if (isShow)
 			{
@@ -92,13 +103,15 @@ namespace FGPlatform.Advertisement
                 return;
             }
 
-            OnAdOpening += OnShow;
+            OnAdOpening += OnOpening;
+            OnAdClosed += OnClosed;
+
             bannerView?.Show();
 
             isShow = true;
         }
 
-        public void HideBanner(Action<EventArgs> OnHide = null)
+        public void HideBanner()
         {
             if (!isShow)
             {
@@ -106,7 +119,6 @@ namespace FGPlatform.Advertisement
                 return;
             }
 
-            OnAdClosed += OnHide;
             bannerView?.Hide();
 
             isShow = false;
