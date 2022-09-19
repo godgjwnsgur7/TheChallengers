@@ -6,23 +6,12 @@ using UnityEngine.UI;
 
 public class SelectPopup : MonoBehaviour
 {
-    public bool isUsing
-    {
-        get { return isUsing; }
-        private set { isUsing = value; }
-    }
+    public bool isUsing = false;
 
     [SerializeField] Text popupText;
 
-    private Action succeededCallBack;
-    private Action failedCallBack;
-
-    private void Awake()
-    {
-        isUsing = false;
-        succeededCallBack = null;
-        failedCallBack = null;
-    }
+    private Action succeededCallBack = null;
+    private Action failedCallBack = null;
 
     public void Open(Action _succeededCallBack, Action _failedCallBack, string _message)
     {
