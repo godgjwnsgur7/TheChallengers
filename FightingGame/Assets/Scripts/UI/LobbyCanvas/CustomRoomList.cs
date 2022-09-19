@@ -28,4 +28,5 @@ public class CustomRoomList : MonoBehaviour
         roomListElements[0] = Managers.Resource.Instantiate("UI/RoomListElement", this.transform).gameObject.GetComponent<RoomListElement>();
         // roomListElements[0].Init()
     }
+
 }

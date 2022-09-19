@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using UnityEngine.UI;
+
+public class NotifyPopup : MonoBehaviour
+{
+    public bool isUsing = false;
+
+    [SerializeField] Text popupText;
+
+    private Action callBack = null;
+
+    public void Open(string _message, Action _callBack = null)
+    {
+        isUsing = true;
+        popupText.text = _message;
+
+
+        if(_callBack != null) callBack += _callBack;
+
+        this.gameObject.SetActive(true);
+    }
+
+    public void OnClick_Close()
+    {
+        if(callBack != null) callBack();
+
+        this.gameObject.SetActive(false);
+        callBack = null;
+        popupText.text = null;
+        isUsing = false;
+    }
+}

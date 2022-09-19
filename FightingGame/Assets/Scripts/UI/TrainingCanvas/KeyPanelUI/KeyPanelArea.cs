@@ -35,7 +35,7 @@ public class KeyPanelArea : UIElement
         base.Close();
     }
 
-    public void init()
+    public void Init()
     {
         playerType = ENUM_CHARACTER_TYPE.Knight;
 
@@ -71,8 +71,8 @@ public class KeyPanelArea : UIElement
     {
         InitButton(prefsList);
 
-        if (button.GetType() == typeof(SkillUI))
-            SetSkillImage();
+/*        if (button.GetType() == typeof(SkillUI))
+            SetSkillImage();*/
 
         settingHelper.Clear();
     }

@@ -10,10 +10,12 @@ public class SettingPanel : UIElement
     [SerializeField] KeyPanelArea keyPanelArea;
 
     public bool isUpdate = false;
+    public int unEditCount = 0;
 
     public override void Open(UIParam param = null)
     {
         isUpdate = true;
+        keyPanelArea.SetUpdateComponentAll();
         base.Open(param);
     }
 
@@ -32,5 +34,13 @@ public class SettingPanel : UIElement
             bottomPanel.setSlider(updateUI);
             Managers.UI.OpenUI<BottomPanel>();
         }
+    }
+
+    private void Update()
+    {
+        if (unEditCount > 0)
+            bottomPanel.isUpdatable = false;
+        else
+            bottomPanel.isUpdatable = true;
     }
 }
