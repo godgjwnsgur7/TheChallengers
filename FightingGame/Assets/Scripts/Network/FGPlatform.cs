@@ -32,12 +32,23 @@ namespace FGPlatform
 			IAPController.Init();
 		}
 
+		public string GetUserID()
+		{
+			if(!Auth.IsAuthValid)
+			{
+				Debug.LogError("아직 로그인이 되지 않은 상태입니다.");
+				return string.Empty;
+			}
+
+			return Auth.UserId;
+		}
+
 		public void Login(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
 		{
 			Auth.SignIn(loginType, email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
 		}
 
-		public void SignOut()
+		public void Logout()
 		{
 			Auth.SignOut();
 		}

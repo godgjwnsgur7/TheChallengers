@@ -27,6 +27,10 @@ namespace FGPlatform.Auth
         {
             get;
         }
+        public bool IsLogin
+		{
+            get;
+		}
 
         public string UserId
         {
@@ -46,6 +50,8 @@ namespace FGPlatform.Auth
     {
         private FirebaseApp app = null;
         private FirebaseAuth auth = null;
+
+        
         public bool IsAuthValid
         {
             get
@@ -62,7 +68,16 @@ namespace FGPlatform.Auth
             }
         }
 
-        private FirebaseUser user;
+        public bool IsLogin
+        {
+            get
+			{
+                return IsAuthValid && user != null && UserId != string.Empty;
+            }
+            
+        }
+
+        private FirebaseUser user = null;
         public string UserId
         {
             get;
@@ -105,7 +120,7 @@ namespace FGPlatform.Auth
             auth = FirebaseAuth.DefaultInstance;
         }
 
-        private void InitFirebaseCurrentUser(FirebaseUser currentUser)
+        private void SetFirebaseCurrentUser(FirebaseUser currentUser)
         {
             if (currentUser == null)
                 return;
@@ -114,8 +129,20 @@ namespace FGPlatform.Auth
             UserId = currentUser.UserId;
         }
 
+        private void UnsetFirebaseCurrentUser()
+		{
+            user = null;
+            UserId = null;
+        }
+
         public void SignIn(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
         {
+            if (IsLogin) // 이미 로그인을 완료한 경우
+			{
+                Debug.LogError($"이미 로그인 상태입니다. {UserId}");
+                return;
+            }
+                
             switch (loginType)
             {
                 case ENUM_LOGIN_TYPE.Guest:
@@ -132,10 +159,17 @@ namespace FGPlatform.Auth
 
         public void SignOut()
         {
-            if (googleModule != null)
-                googleModule.SignOut();
+            if (!IsLogin)
+			{
+                Debug.LogError("이미 로그아웃 상태입니다.");
+                return;
+            }
 
+            googleModule?.SignOut();
             auth?.SignOut();
+
+            Debug.LogError($"{UserId} 유저가 로그아웃하였습니다.");
+            UnsetFirebaseCurrentUser();
         }
 
         private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
@@ -156,9 +190,10 @@ namespace FGPlatform.Auth
                     }
                     else
                     {
-                        OnSignInSuccess?.Invoke();
                         Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
-                        InitFirebaseCurrentUser(task.Result);
+                        SetFirebaseCurrentUser(task.Result);
+
+                        OnSignInSuccess?.Invoke();
                     }
                 });
         }
@@ -221,7 +256,7 @@ namespace FGPlatform.Auth
                     OnSignInSuccess?.Invoke();
                     FirebaseUser newUser = task.Result;
                     Debug.LogFormat("이메일 로그인 성공 : {0} ({1})", newUser.DisplayName, newUser.UserId);
-                    InitFirebaseCurrentUser(newUser);
+                    SetFirebaseCurrentUser(newUser);
                 }
             });
         }

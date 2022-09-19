@@ -64,10 +64,9 @@ public class DebugWindow : BaseCanvas
 		Managers.Platform.DBSelect<long>(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", DebugDBData);
 	}
 
-	public void OnClickDBUpdate()
+	public void OnClickDBUpdate(int inputData)
 	{
-		long inputData = 10L;
-		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", inputData, DebugDBData);
+		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", (long)inputData, DebugDBData);
 	}
 
 	private void DebugDBData(long data)
@@ -77,7 +76,16 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickGuestLogin()
 	{
-		
+		Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, "godgjwnsgur7@gmail.com", "123456", () => 
+		{
+			string id = Managers.Platform.GetUserID();
+			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+		});
+	}
+
+	public void OnClickGuestLogout()
+	{
+		Managers.Platform.Logout();
 	}
 
 	public void OnClickMoveScene()
