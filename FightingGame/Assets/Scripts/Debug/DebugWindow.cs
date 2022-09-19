@@ -97,6 +97,12 @@ public class DebugWindow : BaseCanvas
 		});
 	}
 
+	public void OnClickMoveScene(string scenename)
+	{
+		var sceneType = (ENUM_SCENE_TYPE)Enum.Parse(typeof(ENUM_SCENE_TYPE), scenename);
+		Managers.Scene.LoadScene(sceneType);
+	}
+
 	public void OnClickMoveScene()
 	{
 		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle, true);
