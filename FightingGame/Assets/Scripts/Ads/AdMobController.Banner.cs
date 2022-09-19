@@ -33,9 +33,12 @@ namespace FGPlatform.Advertisement
     public partial class AdMobController : IAdMobController
     {
         private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
-        private readonly string TestKeyword = "ProjectFG";
+		private readonly string TestKeyword = "ProjectFG";
 
-        private BannerView bannerView = null;
+        private bool isLoaded = false;
+        private bool isShow = false;
+
+		private BannerView bannerView = null;
 
         private event Action<EventArgs> OnAdLoaded = null;
         private event Action<AdFailedToLoadEventArgs> OnAdFailedToLoad = null;
@@ -53,12 +56,19 @@ namespace FGPlatform.Advertisement
 
         private void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
         {
+            if (isLoaded)
+			{
+                Debug.LogError("이미 배너가 로드되어있습니다.");
+                return;
+            }
+
             var adPos = (AdPosition)Enum.Parse(typeof(AdPosition), bannerPos.ToString());
             bannerView = new BannerView(TestBannerID_AOS, AdSize.SmartBanner, adPos);
 
             RegisterEvent();
 
             OnAdLoaded += OnLoaded;
+
             OnAdFailedToLoad += OnLoadFailed;
 
             AdRequest req = new AdRequest.Builder()
@@ -76,14 +86,30 @@ namespace FGPlatform.Advertisement
 
         public void ShowBanner(Action<EventArgs> OnShow = null)
         {
+            if (isShow)
+			{
+                Debug.LogError("이미 광고 배너가 떠 있습니다.");
+                return;
+            }
+
             OnAdOpening += OnShow;
             bannerView?.Show();
+
+            isShow = true;
         }
 
         public void HideBanner(Action<EventArgs> OnHide = null)
         {
+            if (!isShow)
+            {
+                Debug.LogError("이미 광고 배너가 떠 있지 않습니다.");
+                return;
+            }
+
             OnAdClosed += OnHide;
             bannerView?.Hide();
+
+            isShow = false;
         }
 
         private void RegisterEvent()
@@ -128,11 +154,17 @@ namespace FGPlatform.Advertisement
         private void BannerView_OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
         {
             OnAdFailedToLoad?.Invoke(e);
+            
+            isLoaded = false;
+            isShow = false;
         }
 
         private void BannerView_OnAdLoaded(object sender, EventArgs e)
         {
             OnAdLoaded?.Invoke(e);
+
+            isLoaded = true;
+            isShow = true;
         }
     }
 

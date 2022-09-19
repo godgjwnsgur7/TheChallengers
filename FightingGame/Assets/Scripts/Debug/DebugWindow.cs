@@ -97,6 +97,16 @@ public class DebugWindow : BaseCanvas
 		});
 	}
 
+	public void OnClickShowBanner()
+	{
+		Managers.Platform.ShowBanner();
+	}
+
+	public void OnClickHideBanner()
+	{
+		Managers.Platform.HideBanner();
+	}
+
 	public void OnClickMoveScene(string scenename)
 	{
 		var sceneType = (ENUM_SCENE_TYPE)Enum.Parse(typeof(ENUM_SCENE_TYPE), scenename);

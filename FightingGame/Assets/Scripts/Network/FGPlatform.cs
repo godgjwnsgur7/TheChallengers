@@ -30,6 +30,7 @@ namespace FGPlatform
 			Auth.TryConnectAuth();
 			DB.InitDataBase();
 			IAPController.Init();
+			AdMob.LoadBanner(BannerPosition.Top);
 		}
 
 		public string GetUserID()
@@ -73,6 +74,16 @@ namespace FGPlatform
 			string[] hierachyPath = new string[] { token };
 
 			return DB.SelectDB<T>(hierachyPath, OnSuccess, OnFailed, OnCanceled);
+		}
+
+		public void ShowBanner()
+		{
+			AdMob.ShowBanner();
+		}
+
+		public void HideBanner()
+		{
+			AdMob.HideBanner();
 		}
 
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)
