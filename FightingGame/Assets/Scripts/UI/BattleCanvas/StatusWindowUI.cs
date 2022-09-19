@@ -27,11 +27,12 @@ public class StatusWindowUI : MonoBehaviourPhoton
 
     Coroutine hpBarCoroutine;
 
-
     public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
     {
         if(PhotonLogicHandler.IsConnected)
         {
+            Init();
+
             PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, ENUM_CHARACTER_TYPE>
                 (this, Set_CharFrameImage, _charType);
             PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, float>

@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PopupCanvas : MonoBehaviour
 {
     [SerializeField] BlackOutPopup blackOut;
     [SerializeField] CountDownPopup countDownPopup;
+
+    private Action succeededCallBack = null;
+    private Action failedCallBack = null;
 
     private void Start()
     {
