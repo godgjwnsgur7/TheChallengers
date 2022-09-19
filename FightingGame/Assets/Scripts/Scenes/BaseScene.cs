@@ -28,7 +28,7 @@ public abstract class BaseScene : MonoBehaviour
 
     public virtual void Init()
     {
-        Managers.UI.Init(); // 임시
+        
     }
 
     public abstract void Clear();
