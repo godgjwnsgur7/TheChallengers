@@ -7,7 +7,7 @@ using FGDefine;
 public class SettingPanel : UIElement
 {
     [SerializeField] BottomPanel bottomPanel;
-    [SerializeField] KeyPanelArea keyPanelArea;
+    [SerializeField] KeyPanelAreaEdit keyPanelArea;
 
     public bool isUpdate = false;
     public int unEditCount = 0;

@@ -10,8 +10,9 @@ public class TrainingScene : BaseScene
     [SerializeField] TrainingCanvas trainingCanvas;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] KeyPanelAreaEdit keyPanelAreaEdit;
     [SerializeField] KeyPanelArea keyPanelArea;
-    
+
     EnemyPlayer enemyPlayer;
 
     ENUM_CHARACTER_TYPE playerType;
@@ -20,7 +21,6 @@ public class TrainingScene : BaseScene
     public override void Init()
     {
         base.Init();
-
         SceneType = ENUM_SCENE_TYPE.Training;
 
         // 일단 무조건 베이직맵 가져와 (임시)
@@ -31,7 +31,16 @@ public class TrainingScene : BaseScene
         enemyType = ENUM_CHARACTER_TYPE.Knight;
 
         trainingCanvas.Init();
+        keyPanelAreaEdit.Init();
         keyPanelArea.Init();
+    }
+
+    private void Update()
+    {
+        if (keyPanelAreaEdit.isOpen && trainingCanvas.isCallPlayer)
+        {
+            DeletePlayer();
+        }
     }
 
     public void CallPlayer()
@@ -53,7 +62,7 @@ public class TrainingScene : BaseScene
             Managers.UI.OpenUI<KeyPanelArea>();
         }
         keyPanelArea.playerType = playerType;
-        keyPanelArea.SetSkillImage();
+        //keyPanelArea.SetSkillImage();
     }
 
     public void CallEnemy()
