@@ -53,6 +53,16 @@ namespace FGPlatform.Advertisement
 		{
             MobileAds.Initialize(initStatus => 
             {
+                var map = initStatus.getAdapterStatusMap();
+
+                foreach(var pair in map)
+				{
+                    string className = pair.Key;
+                    var status = pair.Value;
+
+                    MonoBehaviour.print($"Adapter : {className} is {status.Description}");
+                }
+
                 LoadBanner(bannerPos, OnLoaded, OnLoadFailed);
             });
         }
