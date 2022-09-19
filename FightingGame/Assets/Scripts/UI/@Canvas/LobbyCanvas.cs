@@ -18,13 +18,10 @@ public class LobbyCanvas : BaseCanvas
     public void OnClick_Activate(GameObject g) => g.SetActive(true);
     public void OnClick_Deactivate(GameObject g) => g.SetActive(false);
 
-    public void OnClick_Training()
-    {
-        Managers.UI.popupCanvas.Open_SelectPopup(GoTo_TrainingScene, null
-            , "훈련장에 입장하시겠습니까?");
-    }
+    public void OnClick_Training() => Managers.UI.popupCanvas.Open_SelectPopup
+        (GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
      
-    public void GoTo_TrainingScene()
+    private void GoTo_TrainingScene()
     {
         Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Training);
     }
