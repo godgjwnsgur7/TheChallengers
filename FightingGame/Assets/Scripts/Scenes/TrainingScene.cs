@@ -30,8 +30,8 @@ public class TrainingScene : BaseScene
         playerType = ENUM_CHARACTER_TYPE.Knight;
         enemyType = ENUM_CHARACTER_TYPE.Knight;
 
-        trainingCanvas.init();
-        keyPanelArea.init();
+        trainingCanvas.Init();
+        keyPanelArea.Init();
     }
 
     public void CallPlayer()

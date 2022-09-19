@@ -67,7 +67,6 @@ public class BottomPanel : UIElement
 
             setBtn.isSelect = false;
             setBtn.ChangeAreaColor();
-            keyPanelArea.RemoveUpdateComponent(setBtn);
         }
 
         if (updateUI != setBtn)
@@ -190,11 +189,6 @@ public class BottomPanel : UIElement
 
         Managers.Prefs.SaveButtonPrefs();
         Close();
-    }
-
-    public void CheckIsUpdatable()
-    {
-        isUpdatable = setBtn.isUpdatable;
     }
 
     // setBtn TransForm move
