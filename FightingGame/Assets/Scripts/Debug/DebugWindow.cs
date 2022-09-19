@@ -76,16 +76,25 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickGuestLogin()
 	{
-		Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, "godgjwnsgur7@gmail.com", "123456", () => 
+		Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () => 
 		{
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-		});
+		}, null, null, "godgjwnsgur7@gmail.com", "123456");
 	}
 
 	public void OnClickGuestLogout()
 	{
 		Managers.Platform.Logout();
+	}
+
+	public void OnClickGoogleLogin()
+	{
+		Managers.Platform.Login(ENUM_LOGIN_TYPE.Google, () =>
+		{
+			string id = Managers.Platform.GetUserID();
+			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+		});
 	}
 
 	public void OnClickMoveScene()

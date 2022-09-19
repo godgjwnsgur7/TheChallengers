@@ -38,7 +38,7 @@ namespace FGPlatform.Auth
         }
 
         public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null);
-        public void SignIn(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null);
+        public void SignIn(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "");
         public void SignOut();
     }
 
@@ -135,7 +135,7 @@ namespace FGPlatform.Auth
             UserId = null;
         }
 
-        public void SignIn(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+        public void SignIn(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "")
         {
             if (IsLogin) // 이미 로그인을 완료한 경우
 			{

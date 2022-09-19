@@ -43,9 +43,9 @@ namespace FGPlatform
 			return Auth.UserId;
 		}
 
-		public void Login(ENUM_LOGIN_TYPE loginType, string email = "", string password = "", Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+		public void Login(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "")
 		{
-			Auth.SignIn(loginType, email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
+			Auth.SignIn(loginType, OnSignInSuccess, OnSignInFailed, OnSignCanceled, email, password);
 		}
 
 		public void Logout()
