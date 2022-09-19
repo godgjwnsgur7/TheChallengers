@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomRoomList : MonoBehaviour
 {
     public RoomListElement[] roomListElements = new RoomListElement[1];
+    [SerializeField] GameObject noneRoomTextObject;
 
-    public void UpdateLobbyList() // 새로고침 연타 막아야함
+    public int roomCount = 0;
+
+    public void Get_LobbyList() // 새로고침 연타 막아야함
     {
         Debug.Log("로비리스트 받아와서 생성");
         // Destroy_RoomList();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomWindow : MonoBehaviour
 {
@@ -8,11 +9,11 @@ public class CustomWindow : MonoBehaviour
 
     private void OnEnable()
     {
-        OnClick_UpdateList();
+        OnClick_GetLobbyList();
     }
 
-    public void OnClick_UpdateList()
+    public void OnClick_GetLobbyList()
     {
-        customRoomList.UpdateLobbyList();
+        customRoomList.Get_LobbyList();
     }
 }
