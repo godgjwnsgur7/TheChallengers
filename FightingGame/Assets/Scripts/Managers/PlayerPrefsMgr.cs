@@ -143,6 +143,7 @@ public class PlayerPrefsMgr
         for (int i = 0; i < (int)ENUM_BTNPREFS_TYPE.Max; i++)
         {
             prefsType = (ENUM_BTNPREFS_TYPE)i;
+            subPrefsList[i] = new SubPrefsType();
 
             // 해당 prefs가 없을 경우 초기 값으로 저장
             if (!HasKey(prefsType, 0))
@@ -151,8 +152,6 @@ public class PlayerPrefsMgr
             }
             else // 있으면 기존의 것을 불러옴
             {
-                subPrefsList[i] = new SubPrefsType();
-
                 subPrefsList[i].SetExist((int)GetButtonPrefs(prefsType, 0));
                 subPrefsList[i].SetSize((float)GetButtonPrefs(prefsType, 1));
                 subPrefsList[i].SetOpacity((float)GetButtonPrefs(prefsType, 2));
@@ -166,28 +165,33 @@ public class PlayerPrefsMgr
             }
         }
 
-        SaveButtonPrefs();
+        SaveButtonPrefsAll();
     }
 
     // 현재 저장되어 있는 prefsList들을 저장
-    public void SaveButtonPrefs()
+    public void SaveButtonPrefsAll()
     {
         for (int i = 0; i < (int)ENUM_BTNPREFS_TYPE.Max; i++)
         {
-            prefsType = (ENUM_BTNPREFS_TYPE)i;
-
-            PlayerPrefs.SetInt(prefsType + ".Exist", subPrefsList[i].GetExist());
-            PlayerPrefs.SetFloat(prefsType + ".Size", subPrefsList[i].GetSize());
-            PlayerPrefs.SetFloat(prefsType + ".Opacity", subPrefsList[i].GetOpacity());
-            PlayerPrefs.SetFloat(prefsType + ".ResetSize", subPrefsList[i].GetResetSize());
-            PlayerPrefs.SetFloat(prefsType + ".ResetOpacity", subPrefsList[i].GetResetOpacity());
-            PlayerPrefs.SetFloat(prefsType + ".TransX", subPrefsList[i].GetTransX());
-            PlayerPrefs.SetFloat(prefsType + ".TransY", subPrefsList[i].GetTransY());
-            PlayerPrefs.SetFloat(prefsType + ".ResetTransX", subPrefsList[i].GetResetTransX());
-            PlayerPrefs.SetFloat(prefsType + ".ResetTransY", subPrefsList[i].GetResetTransY());
+            SaveButtonPrefs(i);
         }
 
         PlayerPrefs.Save();
+    }
+
+    public void SaveButtonPrefs(int prefsType)
+    {
+        this.prefsType = (ENUM_BTNPREFS_TYPE)prefsType;
+
+        PlayerPrefs.SetInt(prefsType + ".Exist", subPrefsList[prefsType].GetExist());
+        PlayerPrefs.SetFloat(prefsType + ".Size", subPrefsList[prefsType].GetSize());
+        PlayerPrefs.SetFloat(prefsType + ".Opacity", subPrefsList[prefsType].GetOpacity());
+        PlayerPrefs.SetFloat(prefsType + ".ResetSize", subPrefsList[prefsType].GetResetSize());
+        PlayerPrefs.SetFloat(prefsType + ".ResetOpacity", subPrefsList[prefsType].GetResetOpacity());
+        PlayerPrefs.SetFloat(prefsType + ".TransX", subPrefsList[prefsType].GetTransX());
+        PlayerPrefs.SetFloat(prefsType + ".TransY", subPrefsList[prefsType].GetTransY());
+        PlayerPrefs.SetFloat(prefsType + ".ResetTransX", subPrefsList[prefsType].GetResetTransX());
+        PlayerPrefs.SetFloat(prefsType + ".ResetTransY", subPrefsList[prefsType].GetResetTransY());
     }
 
     public object GetButtonPrefs(ENUM_BTNPREFS_TYPE prefsType, int subPrefsType)

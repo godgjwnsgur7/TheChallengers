@@ -187,7 +187,7 @@ public class BottomPanel : UIElement
             Managers.Prefs.SetSubPrefsList(prefsLists[i]);
         }
 
-        Managers.Prefs.SaveButtonPrefs();
+        Managers.Prefs.SaveButtonPrefsAll();
         Close();
     }
 
