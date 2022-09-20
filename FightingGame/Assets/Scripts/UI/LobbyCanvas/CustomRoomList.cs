@@ -5,32 +5,53 @@ using UnityEngine.UI;
 
 public class CustomRoomList : MonoBehaviour
 {
-    public RoomListElement[] roomListElements = new RoomListElement[1];
+    List<RoomListElement> roomList = new List<RoomListElement>();
+    List<CustomRoomInfo> roomInfoList = new List<CustomRoomInfo>();
+
     [SerializeField] GameObject noneRoomTextObject;
 
-    public int roomCount = 0;
+    bool isUpdating = false;
 
-    public void Get_LobbyList() // 새로고침 연타 막아야함
+    public void Get_CustomRoomList()
     {
-        Debug.Log("로비리스트 받아와서 생성");
-        // Destroy_RoomList();
-        Create_RoomListElements();
+        if (isUpdating) return;
+
+        isUpdating = true;
+
+        roomInfoList = PhotonLogicHandler.AllRoomInfos;
+
+        gameObject.SetActive(false);
+        // Open Loading UI (추가사항)
+
+        Update_RoomList();
+
+        // Close Loading UI (추가사항)
+        gameObject.SetActive(true);
+
+        isUpdating = false;
     }
 
-    public void Destroy_RoomList()
+    public void Update_RoomList()
     {
-        for(int i = 0; i < roomListElements.Length; i++)
+        // 룸 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
+        if (roomInfoList.Count > roomList.Count)
+            for(int i = 0; i < roomInfoList.Count - roomList.Count; i++)
+                roomList.Add(Managers.Resource.Instantiate("UI/RoomListElement", this.transform).GetComponent<RoomListElement>());
+
+        // 모든 방을 Close.
+        for (int i = 0; i < roomList.Count; i++)
+            roomList[i].Close();
+
+        if (roomInfoList.Count <= 0) 
         {
-            Destroy(roomListElements[i].gameObject);
+            noneRoomTextObject.SetActive(true);
+            return;
         }
+
+        // 현재 생성되어 있는 방의 갯수만큼 Open.
+        for (int i = 0; i < roomInfoList.Count; i++)
+            roomList[i].Open(roomInfoList[i]);
+
+        noneRoomTextObject.SetActive(false);
     }
-
-    public void Create_RoomListElements()
-    {
-        // 요런 느낌?
-
-        roomListElements[0] = Managers.Resource.Instantiate("UI/RoomListElement", this.transform).gameObject.GetComponent<RoomListElement>();
-        // roomListElements[0].Init()
-    }
-
 }

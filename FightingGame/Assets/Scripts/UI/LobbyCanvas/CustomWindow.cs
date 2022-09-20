@@ -14,6 +14,6 @@ public class CustomWindow : MonoBehaviour
 
     public void OnClick_GetLobbyList()
     {
-        customRoomList.Get_LobbyList();
+        customRoomList.Get_CustomRoomList();
     }
 }

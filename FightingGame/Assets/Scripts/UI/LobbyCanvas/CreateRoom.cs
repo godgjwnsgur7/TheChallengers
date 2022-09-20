@@ -14,12 +14,10 @@ public class CreateRoom : MonoBehaviour
     private void OnEnable()
     {
         masterIDText.text = "닉네임 받아와야함";
-        masterIDText.text = "닉네임ㅋㅋ";
     }
 
     private void OnDisable()
     {
-        masterIDText.text = "";
         masterIDText.text = "유저 닉네임";
     }
 
@@ -27,7 +25,7 @@ public class CreateRoom : MonoBehaviour
     {
         inputFieldText.text = inputFieldText.text.Trim();
 
-        if(inputFieldText.text == null)
+        if(inputFieldText.text == "")
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
             return;

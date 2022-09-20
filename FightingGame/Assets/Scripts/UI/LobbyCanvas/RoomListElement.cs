@@ -4,24 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class CustomRoomData
-{
-    public float uniqueKey;
-    public int personnelIndex;
-    public ENUM_MAP_TYPE mapType;
-
-    public CustomRoomData(float _uniqueKey, int _personnelIndex, ENUM_MAP_TYPE _mapType)
-    {
-        uniqueKey = _uniqueKey;
-        personnelIndex = _personnelIndex;
-        mapType = _mapType;
-    }
-}
-
 public class RoomListElement : MonoBehaviour
 {
-    public bool isInit = false;
-    private float uniqueKey;
+    public bool isUsing = false;
 
     [Header ("Set In Editor")]
     [SerializeField] Image MapImage;
@@ -32,31 +17,47 @@ public class RoomListElement : MonoBehaviour
     [SerializeField] Text personnelText;
 
     [Header("Setting Resources With Editor")]
+    [SerializeField] Sprite personnel_NoneSprite;
     [SerializeField] Sprite personnel_ExistSprite;
 
-    // DB 활용해서 해야할듯 일단 전체 올 스탑!!!
-    // -> CustomRoomData 자체가 DB에 있고, Key만 저장?
-
-    public void Init(CustomRoomData roomData)
+    public void Open(CustomRoomInfo _roomInfo)
     {
-        isInit = true;
+        if (_roomInfo == null || isUsing)
+        {
+            Debug.LogError("roomInfo is Null or isUsing True");
+            return;
+        }
 
-        Set_Personnel(roomData.personnelIndex);
-        Set_MapImage(roomData.mapType);
+        isUsing = true;
+
+        Set_CustomRoomInfo(_roomInfo);
+
+        this.gameObject.SetActive(true);
     }
 
-    public void Set_Personnel(int _personnelIndex)
+    public void Close()
     {
-        personnelText.text = $"{_personnelIndex} / 2";
+        this.gameObject.SetActive(false);
 
-        if (_personnelIndex == 1)
-        {
+        isUsing = false;
+    }
 
-        }
-        else if (_personnelIndex == 2)
+    public void Set_CustomRoomInfo(CustomRoomInfo _roomInfo)
+    {
+        // Set Texts
+        personnelText.text = $"{_roomInfo.currentPlayerCount} / 2";
+        roomNameText.text = _roomInfo.roomName;
+        masterNicknameText.text = _roomInfo.masterClientNickname;
+
+        // Set Image
+        Set_MapImage(_roomInfo.currentMapType);
+
+        if (_roomInfo.currentPlayerCount == 1)
+            personnelImage.sprite = personnel_NoneSprite;
+        else if (_roomInfo.currentPlayerCount == 2)
             personnelImage.sprite = personnel_ExistSprite;
         else
-            Debug.LogError($"personnelIndex 값 오류 : {_personnelIndex}");
+            Debug.LogError($"currentPlayerCount 값 오류 : {_roomInfo.currentPlayerCount}");
     }
 
     public void Set_MapImage(ENUM_MAP_TYPE _mapType)
@@ -66,12 +67,12 @@ public class RoomListElement : MonoBehaviour
 
     public void OnClick_JoinRoom()
     {
-        if(!isInit)
+        if(!isUsing)
         {
-            Debug.LogError("초기화되지 않음");
+            Debug.LogError("해당 로그가 떴다면, 깊히 반성해야 함");
             return;
         }
 
-        Debug.Log("uniqueKey를 활용. 해당 방에 접속시도");
+
     }
 }
