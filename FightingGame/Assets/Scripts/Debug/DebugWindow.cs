@@ -121,6 +121,11 @@ public class DebugWindow : BaseCanvas
 		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle, true);
 	}
 
+	public void OnClick_GoToLobbyScene()
+    {
+		Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+    }
+
 	public void SetError(string cause)
 	{
 		SetStatus($"{cause} - 해당 사유로 접속 실패, 혹은 끊어짐");

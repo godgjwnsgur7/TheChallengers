@@ -20,6 +20,8 @@ public class CustomRoomList : MonoBehaviour
 
         roomInfoList = PhotonLogicHandler.AllRoomInfos;
 
+        Debug.Log($"roomInfoListCount : {roomInfoList.Count} ");
+
         gameObject.SetActive(false);
         // Open Loading UI (추가사항)
 
