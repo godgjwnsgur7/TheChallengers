@@ -420,7 +420,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString(), defaultMapType);
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), masterClientNickname);
-
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
+        
         return PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
@@ -587,12 +588,24 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         customRoomList.Clear();
         foreach (var room in roomList)
 		{
+            string masterClientNickname = string.Empty;
+            ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.BasicMap;
+
+            if (room.CustomProperties.TryGetValue(ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), out var value))
+			{
+                masterClientNickname = (string)value;
+            }
+            if (room.CustomProperties.TryGetValue(ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString(), out value))
+            {
+                currentMapType = (ENUM_MAP_TYPE)value;
+            }
+
             CustomRoomInfo info = new CustomRoomInfo()
             {
                 roomName = room.Name,
                 roomId = room.masterClientId,
-                masterClientNickname = (string)room.CustomProperties[ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString()],
-                currentMapType = (ENUM_MAP_TYPE)room.CustomProperties[ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString()],
+                masterClientNickname = masterClientNickname,
+                currentMapType = currentMapType,
                 currentPlayerCount = room.PlayerCount,
                 maxPlayerCount = room.MaxPlayers
             };

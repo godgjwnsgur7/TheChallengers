@@ -55,7 +55,10 @@ public class DebugWindow : BaseCanvas
 	{
 		foreach(var roomInfo in PhotonLogicHandler.AllRoomInfos)
 		{
-			Debug.Log(roomInfo);
+			Debug.Log($"룸 아이디 : {roomInfo.roomId}, " +
+				$"룸 이름 : {roomInfo.roomName}, " +
+				$"방장 이름 : {roomInfo.masterClientNickname} " +
+				$"현재 맵 : {roomInfo.currentMapType}");
 		}
 	}
 
