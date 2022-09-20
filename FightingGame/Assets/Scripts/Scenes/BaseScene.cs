@@ -13,6 +13,7 @@ public enum ENUM_SCENE_TYPE
     Main,
     CustomRoom,
     Training,
+    Debug, // 테스트씬
 }
 
 public abstract class BaseScene : MonoBehaviour
