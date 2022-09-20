@@ -23,6 +23,10 @@ public class PopupCanvas : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    /// <summary>
+    /// 예, 아니오 선택창 Popup Window 
+    /// 해당 버튼의 Action이 없을 경우 null
+    /// </summary>
     public void Open_SelectPopup(Action _succeededCallBack, Action _failedCallBack, string _message)
     {
         if(notifyPopup.isUsing)
@@ -34,6 +38,10 @@ public class PopupCanvas : MonoBehaviour
         selectPopup.Open(_succeededCallBack, _failedCallBack, _message);
     }
 
+    /// <summary>
+    /// 알림창 Popup Window 
+    /// 해당 버튼의 Action이 없을 경우 null
+    /// </summary>
     public void Open_NotifyPopup(string _message, Action _succeededCallBack = null)
     {
         if (selectPopup.isUsing)

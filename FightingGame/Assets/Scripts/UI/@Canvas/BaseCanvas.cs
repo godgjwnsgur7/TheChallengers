@@ -9,7 +9,8 @@ public abstract class BaseCanvas : MonoBehaviour
     
     private void Start()
     {
-        Init(); // 해당하는 씬에서 정보를 받아온다. (임시)
+        Managers.UI.Init(); // 임시
+        Init();
     }
 
     public virtual void Init()
@@ -24,6 +25,9 @@ public abstract class BaseCanvas : MonoBehaviour
         scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
     }
+
+    public void OnClick_Activate(GameObject g) => g.SetActive(true);
+    public void OnClick_Deactivate(GameObject g) => g.SetActive(false);
 
     public virtual void Open<T>(UIParam param = null) { }
     public virtual void Close<T>() { }

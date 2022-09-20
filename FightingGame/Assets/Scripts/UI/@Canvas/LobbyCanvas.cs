@@ -13,7 +13,7 @@ public class LobbyCanvas : BaseCanvas
 
         // 디버그용
         PhotonLogicHandler.Instance.TryConnectToMaster(
-            () => { Debug.Log("마스터 서버 접속 완료"); Join_Lobby(); });
+           () => { Debug.Log("마스터 서버 접속 완료"); Join_Lobby(); });
 
         // 마스터 서버에 접속은 로그인씬에서 체크하고,
         // 로비로 성공적으로 넘어왔다면, 여기서 로비에 접속?
@@ -26,9 +26,6 @@ public class LobbyCanvas : BaseCanvas
         PhotonLogicHandler.Instance.TryJoinLobby(
                () => { Debug.Log("로비 진입 완료"); });
     }
-
-    public void OnClick_Activate(GameObject g) => g.SetActive(true);
-    public void OnClick_Deactivate(GameObject g) => g.SetActive(false);
 
     public void OnClick_CustomMathing()
     {

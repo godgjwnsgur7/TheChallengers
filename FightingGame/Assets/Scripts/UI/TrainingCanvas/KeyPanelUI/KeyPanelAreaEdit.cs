@@ -52,6 +52,7 @@ public class KeyPanelAreaEdit : UIElement
                 subPrefsList.SetIsInit(true);
 
                 Managers.Prefs.SetSubPrefsList(subPrefsList);
+                Managers.Prefs.SaveButtonPrefs(subPrefsList.GetExist());
             }
 
             SetInit(buttons[i]);

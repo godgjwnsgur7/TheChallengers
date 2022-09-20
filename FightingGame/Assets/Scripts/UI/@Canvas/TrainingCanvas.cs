@@ -17,19 +17,14 @@ public class TrainingCanvas : BaseCanvas
     [SerializeField] Button sliderBtn;
 
     Coroutine runCorutine;
-    RectTransform BTransform;
-    RectTransform SliderBtnRect;
-    bool isPanelShow;
+
     public string ChangeCharacter;
     public bool isCallPlayer = false;
 
     public override void Init()
     {
         base.Init();
-
-        BTransform = buttonPanel.GetComponent<RectTransform>();
-        SliderBtnRect = sliderBtn.GetComponent<RectTransform>();
-        isPanelShow = false;
+        buttonPanel.Init();
     }
 
     public override void Open<T>(UIParam param = null)
@@ -80,25 +75,8 @@ public class TrainingCanvas : BaseCanvas
             Managers.UI.OpenUI<SettingPanel>();
         }
 
-        SlidePanel();
+        buttonPanel.SlidePanel();
         buttonPanel.InteractableBtn();
-    }
-
-    // 훈련장 버튼패널 슬라이드
-    public void SlidePanel()
-    {
-        if (isPanelShow)
-        {
-            BTransform.Translate(-400.0f, 0, 0);
-            SliderBtnRect.Rotate(new Vector3(0, 0, -180));
-        }
-        else
-        {
-            BTransform.Translate(400.0f, 0, 0);
-            SliderBtnRect.Rotate(new Vector3(0, 0, 180));
-        }
-
-        isPanelShow = !isPanelShow;
     }
 
     // 캐릭터 선택
