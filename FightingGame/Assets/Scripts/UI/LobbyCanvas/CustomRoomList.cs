@@ -39,13 +39,13 @@ public class CustomRoomList : MonoBehaviour, ILobbyPostProcess
 	private void Awake()
 	{
         // 등록해야 콜백을 받을 수 있다.
-        PhotonLogicHandler.Instance.RegisterILobbyPostProcess(this);
+        this.RegisterLobbyCallback();
 	}
 
 	private void OnDestroy()
 	{
         // 반드시 해제할 것
-        PhotonLogicHandler.Instance.UnregisterILobbyPostProcess(this);
+        this.UnregisterLobbyCallback();
     }
 
     /// <summary>

@@ -120,6 +120,16 @@ public static class MonoBehaviourPhotonExtension
 
         PhotonLogicHandler.Instance.TryBroadcastMethod(mono, multiAction, param, ENUM_RPC_TARGET.All);
     }
+
+    public static void RegisterLobbyCallback(this ILobbyPostProcess mono)
+	{
+        PhotonLogicHandler.Instance.RegisterILobbyPostProcess(mono);
+	}
+
+    public static void UnregisterLobbyCallback(this ILobbyPostProcess mono)
+    {
+        PhotonLogicHandler.Instance.UnregisterILobbyPostProcess(mono);
+    }
 }
 
 
