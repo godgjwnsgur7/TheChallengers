@@ -25,6 +25,11 @@ public enum ENUM_CUSTOM_PROPERTIES
     MASTER_CLIENT_NICKNAME = 1,
 }
 
+public interface ILobbyPostProcess
+{
+    void OnUpdateLobby(List<CustomRoomInfo> roomList);
+}
+
 public class BroadcastMethodAttribute : PunRPC { }
 
 public delegate void DisconnectCallBack(string cause);
@@ -66,6 +71,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private Action _OnJoinLobby = null;
     private FailedCallBack _OnJoinLobbyFailed = null;
 
+    public List<ILobbyPostProcess> lobbyPostProcesses = new List<ILobbyPostProcess>();
+
     public event Func<ENUM_MAP_TYPE, bool> onChangedMap = null;
     public event Func<string, bool> onChangeMasterClientNickname = null;
 
@@ -92,6 +99,22 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         if (view.ViewID == 0)
             PhotonNetwork.AllocateViewID(view);
+    }
+
+    public void RegisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
+	{
+        if(!lobbyPostProcesses.Contains(lobbyPostProcess))
+		{
+            lobbyPostProcesses.Add(lobbyPostProcess);
+		}
+	}
+
+    public void UnregisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
+	{
+        if (lobbyPostProcesses.Contains(lobbyPostProcess))
+        {
+            lobbyPostProcesses.Remove(lobbyPostProcess);
+        }
     }
 
 
@@ -612,6 +635,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
             customRoomList.Add(info);
         }
+
+        foreach(var process in lobbyPostProcesses)
+		{
+            process?.OnUpdateLobby(customRoomList);
+		}
     }
 
 	/// <summary>
