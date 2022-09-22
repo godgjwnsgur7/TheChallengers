@@ -103,6 +103,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public void RegisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
 	{
+
         if(!lobbyPostProcesses.Contains(lobbyPostProcess))
 		{
             lobbyPostProcesses.Add(lobbyPostProcess);

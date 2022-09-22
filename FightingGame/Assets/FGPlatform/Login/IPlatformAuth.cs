@@ -7,8 +7,8 @@ using UnityEngine;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
-using Google;
 
+using Google;
 public enum ENUM_LOGIN_TYPE
 {
     Guest,// 게스트 계정 (디버깅 모드 포함)
