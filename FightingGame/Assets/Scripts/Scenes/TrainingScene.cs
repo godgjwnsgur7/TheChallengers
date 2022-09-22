@@ -193,4 +193,14 @@ public class TrainingScene : BaseScene
     {
 
     }
+
+    public void OnEnemyAI()
+    {
+        if (enemyPlayer == null)
+        {
+            trainingCanvas.SetNotionText("소환된 적이 없습니다.");
+            return;
+        }
+        enemyPlayer.gameObject.AddComponent<EnemyAI>().Init();
+    }
 }
