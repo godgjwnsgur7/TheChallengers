@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CustomMatchingUI : MonoBehaviour
 {
     public CustomRoomListUI customRoomList;
+    public CustomRoomWindowUI customRoomWindow;
 
     private void OnEnable()
     {

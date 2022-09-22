@@ -34,13 +34,14 @@ public class CreateRoomUI : MonoBehaviour
         
         // 금지어 체크해야 함
 
-        PhotonLogicHandler.Instance.TryCreateRoom(OnCreateRoom, null, inputFieldText.text, "닉네임받아야함");
+        PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, inputFieldText.text, "닉네임받아야함");
 
     }
 
-    private void OnCreateRoom()
+    private void Open_CustomRoom()
     {
         Debug.Log("방 생성 성공");
 
+        
     }
 }
