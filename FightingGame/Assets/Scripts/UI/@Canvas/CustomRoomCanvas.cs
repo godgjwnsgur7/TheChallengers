@@ -6,6 +6,9 @@ using FGDefine;
 
 public class CustomRoomCanvas : BaseCanvas
 {
+    [SerializeField] CharProfileUI masterProfile;
+    [SerializeField] CharProfileUI slaveProfile;
+
     public override void Init()
     {
         base.Init();

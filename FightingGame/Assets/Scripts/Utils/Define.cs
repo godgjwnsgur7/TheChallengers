@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace FGDefine
 {
-
     [Serializable]
     public enum ENUM_LAYER_TYPE
     {
@@ -133,18 +132,17 @@ namespace FGDefine
     }
 
     [Serializable]
-    public enum ENUM_WEAPON_TYPE
+    public enum ENUM_SCENE_TYPE
     {
-        Null = 0,
-        
-        Hammer = 1, 
-        Sword = 2, 
-        Sycthe = 3,
-        Bow = 4,
-        Gun = 5,
-        Rifle = 6,
-        
-        Max
+        Unknown,
+        Login,
+        Lobby,
+        Battle,
+        Loading,
+        Main,
+        CustomRoom,
+        Training,
+        Debug, // 테스트씬
     }
 
     [Serializable]

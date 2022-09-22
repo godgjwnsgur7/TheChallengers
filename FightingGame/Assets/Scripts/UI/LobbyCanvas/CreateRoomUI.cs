@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FGDefine;
 
 public class CreateRoomUI : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class CreateRoomUI : MonoBehaviour
 
     private void OnDisable()
     {
-        masterIDText.text = "유저 닉네임";
+        masterIDText.text = "유저 닉네임"; 
     }
 
     public void OnClick_CreatRoom()
@@ -31,7 +32,7 @@ public class CreateRoomUI : MonoBehaviour
             return;
         }
         
-        // 금지어 체크해야 함.
+        // 금지어 체크해야 함
 
         PhotonLogicHandler.Instance.TryCreateRoom(OnCreateRoom, null, inputFieldText.text, "닉네임받아야함");
 
@@ -40,7 +41,7 @@ public class CreateRoomUI : MonoBehaviour
     private void OnCreateRoom()
     {
         Debug.Log("방 생성 성공");
-        // 씬 넘어가는 로직 ㅋㅋ
-        // 일단... 커스텀룸 씬부터 만들어야할듯 함...
+
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.CustomRoom);
     }
 }

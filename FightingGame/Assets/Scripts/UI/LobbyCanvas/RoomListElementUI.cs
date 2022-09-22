@@ -73,6 +73,15 @@ public class RoomListElementUI : MonoBehaviour
             return;
         }
 
+        // 이 때, 방 정보를 임시로 받아와서 저장해야 함
 
+        // 취소 시에 임시로 받은 방 정보를 없애줄 필요가 있지 않을까?
+        Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, null, "방에 입장하시겠습니까?");
+        
+    }
+
+    public void JoinRoom()
+    {
+        // 방에 입장해야 함
     }
 }

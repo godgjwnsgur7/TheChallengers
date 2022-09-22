@@ -2,19 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
-public enum ENUM_SCENE_TYPE
-{
-    Unknown,
-    Login,
-    Lobby,
-    Battle,
-    Loading,
-    Main,
-    CustomRoom,
-    Training,
-    Debug, // 테스트씬
-}
+using FGDefine;
 
 public abstract class BaseScene : MonoBehaviour
 {
