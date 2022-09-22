@@ -60,7 +60,7 @@ public class TrainingCanvas : BaseCanvas
     {
         if (keyPanelAreaEdit.isOpen == false) 
         {
-            //keyPanelAreaEdit.playerType = FGDefine.ENUM_CHARACTER_TYPE.Knight;
+            //keyPanelAreaEdit.playerType = ENUM_CHARACTER_TYPE.Knight;
             Managers.UI.OpenUI<KeyPanelAreaEdit>();
         }
 

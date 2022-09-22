@@ -140,7 +140,6 @@ namespace FGDefine
         Battle,
         Loading,
         Main,
-        CustomRoom,
         Training,
         Debug, // 테스트씬
     }

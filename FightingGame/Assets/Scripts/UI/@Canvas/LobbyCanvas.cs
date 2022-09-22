@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using FGDefine;
 public class LobbyCanvas : BaseCanvas
 {
-    [SerializeField] CustomWindowUI customWindow;
+    [SerializeField] CustomMatchingUI customMatching;
 
     public override void Init()
     {
@@ -31,7 +31,7 @@ public class LobbyCanvas : BaseCanvas
     {
         if(PhotonLogicHandler.IsConnected)
         {
-            customWindow.gameObject.SetActive(true);
+            customMatching.gameObject.SetActive(true);
         }
         else
         {

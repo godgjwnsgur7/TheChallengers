@@ -42,6 +42,5 @@ public class CreateRoomUI : MonoBehaviour
     {
         Debug.Log("방 생성 성공");
 
-        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.CustomRoom);
     }
 }

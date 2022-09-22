@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CustomWindowUI : MonoBehaviour
+public class CustomMatchingUI : MonoBehaviour
 {
     public CustomRoomListUI customRoomList;
 
