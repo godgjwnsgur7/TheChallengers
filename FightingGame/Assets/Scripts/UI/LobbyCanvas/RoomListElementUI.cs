@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class RoomListElement : MonoBehaviour
+public class RoomListElementUI : MonoBehaviour
 {
     public bool isUsing = false;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreateRoom : MonoBehaviour
+public class CreateRoomUI : MonoBehaviour
 {
     // 일단 맵은 베이직맵으로 무조건 실행되게 해놓음 (임시) - 전용 이미지도 아직 없음
 
@@ -30,6 +30,8 @@ public class CreateRoom : MonoBehaviour
             Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
             return;
         }
+        
+        // 금지어 체크해야 함.
 
         PhotonLogicHandler.Instance.TryCreateRoom(OnCreateRoom, null, inputFieldText.text, "닉네임받아야함");
 

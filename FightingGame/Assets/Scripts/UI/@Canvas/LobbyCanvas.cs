@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using FGDefine;
 public class LobbyCanvas : BaseCanvas
 {
-    [SerializeField] CustomWindow customWindow;
+    [SerializeField] CustomWindowUI customWindow;
 
     public override void Init()
     {
