@@ -4,10 +4,8 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class NotifyPopup : MonoBehaviour
+public class NotifyPopup : PopupUI
 {
-    public bool isUsing = false;
-
     [SerializeField] Text popupText;
 
     private Action callBack = null;

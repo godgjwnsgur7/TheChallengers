@@ -135,6 +135,6 @@ public class TrainingCanvas : BaseCanvas
     // 로비로 귀환
     public void LoadLobby() 
     {
-        Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby);
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
 }

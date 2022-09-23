@@ -4,6 +4,5 @@ using UnityEngine;
 
 public abstract class PopupUI : MonoBehaviour
 {
-    public abstract void Open();
-    public abstract void Close();
+    public bool isUsing = false;
 }

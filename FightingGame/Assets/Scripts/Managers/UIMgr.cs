@@ -27,20 +27,13 @@ public class UIMgr
     public void OpenUI<T>()
     {
         if (typeof(T).IsSubclassOf(typeof(UIElement))) currCanvas.Open<T>();
-        else if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Open<T>();
+        // else if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Open<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
     
-    public void OpenPopupUI<T>()
-    {
-        if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Open<T>();
-        else Debug.Log($"범위 벗어남 : {typeof(T)}");
-    }
-
     public void CloseUI<T>()
     {
         if (typeof(T).IsSubclassOf(typeof(UIElement))) currCanvas.Close<T>();
-        else if (typeof(T).IsSubclassOf(typeof(PopupUI))) popupCanvas.Close<T>();
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 

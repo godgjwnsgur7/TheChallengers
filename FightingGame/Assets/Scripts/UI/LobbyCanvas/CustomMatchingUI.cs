@@ -8,9 +8,18 @@ public class CustomMatchingUI : MonoBehaviour
     public CustomRoomListUI customRoomList;
     public CustomRoomWindowUI customRoomWindow;
 
+    bool isRegiserSuccess;
+
     private void OnEnable()
     {
-        customRoomList.RegisterLobbyCallback();
+        isRegiserSuccess = customRoomList.Register_LobbyCallback();
+
+        if (!isRegiserSuccess)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         OnClick_GetLobbyList();
     }
 

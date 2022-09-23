@@ -6,12 +6,10 @@ using System;
 
 public class PopupCanvas : MonoBehaviour
 {
-    [SerializeField] BlackOutPopup blackOut;
-    [SerializeField] CountDownPopup countDownPopup;
-
     // 중복으로 요청 시에 리턴
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
+    [SerializeField] LoadingPopup loadingPopup;
 
     private void Start()
     {
@@ -53,26 +51,29 @@ public class PopupCanvas : MonoBehaviour
         notifyPopup.Open(_message, _succeededCallBack);
     }
 
-    public void Open<T>()
+    /// <summary>
+    /// 로딩 팝업창 Popup Window
+    /// 반드시 Close를 따로 호출해주어야 함
+    /// </summary>
+    public void Open_LoadingPopup()
     {
-        if (typeof(T) == typeof(BlackOutPopup)) blackOut.Open();
-        else if (typeof(T) == typeof(CountDownPopup)) countDownPopup.Open();
-        else
+        if(loadingPopup.isUsing)
         {
-            Debug.Log("범위 벗어남");
+            Debug.Log("이미 선택팝업창이 사용중입니다.");
             return;
         }
+
+        loadingPopup.Open();
     }
 
-    public void Close<T>()
+    public void Close_LoadingPopup()
     {
-        if (typeof(T) == typeof(BlackOutPopup)) blackOut.Close();
-        else if (typeof(T) == typeof(CountDownPopup)) countDownPopup.Close();
-        else
+        if (!loadingPopup.isUsing)
         {
-            Debug.Log("범위 벗어남");
+            Debug.Log("팝업창이 사용중이지 않습니다.");
             return;
         }
-    }
 
+        loadingPopup.Close();
+    }
 }

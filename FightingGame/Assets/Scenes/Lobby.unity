@@ -1472,6 +1472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1fddfc584656542a1bac37446650f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customRoomWindow: {fileID: 1216234724}
   masterIDText: {fileID: 437712558}
   personnelText: {fileID: 906600026}
   inputFieldText: {fileID: 1858133545}
@@ -7344,9 +7345,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomList, Assembly-CSharp
-        m_MethodName: OnClick_UpdateList
+      - m_Target: {fileID: 1793376485}
+        m_TargetAssemblyTypeName: CustomMatchingUI, Assembly-CSharp
+        m_MethodName: OnClick_GetLobbyList
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7610,7 +7611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customRoomList: {fileID: 2056595589}
-  customRoomWindow: {fileID: 0}
+  customRoomWindow: {fileID: 1216234724}
 --- !u!222 &1793376486
 CanvasRenderer:
   m_ObjectHideFlags: 0

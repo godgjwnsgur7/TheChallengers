@@ -13,45 +13,43 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 
     [SerializeField] GameObject noneRoomTextObject;
 
-    bool isUpdating = false;
+    bool isUpdateLock = false;
     bool isRegisting = false;
 
     public void Get_CustomRoomList()
     {
-        if (isUpdating) return;
+        if (isUpdateLock) return;
 
-        isUpdating = true;
+        isUpdateLock = true;
 
         roomInfoList = PhotonLogicHandler.AllRoomInfos;
 
         Debug.Log($"roomInfoListCount : {roomInfoList.Count} ");
 
-        gameObject.SetActive(false);
-        // Open Loading UI (추가사항)
-
         Update_RoomList();
 
-        // Close Loading UI (추가사항)
-        gameObject.SetActive(true);
-
-        isUpdating = false;
+        StartCoroutine(IUpdateLockTime(1.0f));        
     }
 
-    public void Register_LobbyCallback()
+    public bool Register_LobbyCallback()
     {
         if (isRegisting)
+        {
             Debug.Log("이미 등록된 상태");
+            return false;
+        }
 
         isRegisting = true;
         this.RegisterLobbyCallback();
+        return true;
     }
     public void UnRegister_LobbyCallback()
     {
         if (!isRegisting)
-            Debug.LogError("등록되지 않은 상태에서 해제를 시도함");
+            return;
 
         isRegisting = false;
-        this.UnRegister_LobbyCallback();
+        this.UnregisterLobbyCallback();
     }
 
     /// <summary>
@@ -66,6 +64,8 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 
 	public void Update_RoomList()
     {
+        gameObject.SetActive(false);
+
         // 룸 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
         if (roomInfoList.Count > roomList.Count)
             for(int i = 0; i < roomInfoList.Count - roomList.Count; i++)
@@ -86,5 +86,13 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
             roomList[i].Open(roomInfoList[i]);
 
         noneRoomTextObject.SetActive(false);
+        gameObject.SetActive(true);
+    }
+
+    private IEnumerator IUpdateLockTime(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        isUpdateLock = false;
     }
 }

@@ -35,7 +35,7 @@ public class MainCanvas : BaseCanvas
         if (PlayerPrefs.HasKey("LoginUser")) // 로그인 중 일 때로 변경해야함
         {
             bool a = PhotonLogicHandler.Instance.TryConnectToMaster(
-            () => { Managers.Scene.FadeLoadScene(ENUM_SCENE_TYPE.Lobby); },
+            () => { Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby); },
             SetStatus);
         }
         else

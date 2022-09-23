@@ -8,6 +8,8 @@ public class CreateRoomUI : MonoBehaviour
 {
     // 일단 맵은 베이직맵으로 무조건 실행되게 해놓음 (임시) - 전용 이미지도 아직 없음
 
+    [SerializeField] CustomRoomWindowUI customRoomWindow;
+
     [SerializeField] Text masterIDText;
     [SerializeField] Text personnelText;
     public Text inputFieldText;
@@ -15,6 +17,8 @@ public class CreateRoomUI : MonoBehaviour
     private void OnEnable()
     {
         masterIDText.text = "닉네임 받아와야함";
+
+
     }
 
     private void OnDisable()
@@ -24,6 +28,8 @@ public class CreateRoomUI : MonoBehaviour
 
     public void OnClick_CreatRoom()
     {
+        Managers.UI.popupCanvas.Open_LoadingPopup();
+        
         inputFieldText.text = inputFieldText.text.Trim();
 
         if(inputFieldText.text == "")
@@ -36,12 +42,14 @@ public class CreateRoomUI : MonoBehaviour
 
         PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, inputFieldText.text, "닉네임받아야함");
 
+        Managers.UI.popupCanvas.Close_LoadingPopup();
     }
 
     private void Open_CustomRoom()
     {
         Debug.Log("방 생성 성공");
 
-        
+        customRoomWindow.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }
