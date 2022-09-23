@@ -12,27 +12,21 @@ public class CreateRoomUI : MonoBehaviour
 
     [SerializeField] Text masterIDText;
     [SerializeField] Text personnelText;
-    public Text inputFieldText;
+    [SerializeField] InputField userInputField;
 
     private void OnEnable()
     {
         masterIDText.text = "닉네임 받아와야함";
-
-
+        userInputField.text = "";
     }
-
-    private void OnDisable()
-    {
-        masterIDText.text = "유저 닉네임"; 
-    }
-
+    
     public void OnClick_CreatRoom()
     {
         Managers.UI.popupCanvas.Open_LoadingPopup();
-        
-        inputFieldText.text = inputFieldText.text.Trim();
 
-        if(inputFieldText.text == "")
+        userInputField.text = userInputField.text.Trim();
+
+        if(userInputField.text == "")
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
             return;
@@ -40,15 +34,13 @@ public class CreateRoomUI : MonoBehaviour
         
         // 금지어 체크해야 함
 
-        PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, inputFieldText.text, "닉네임받아야함");
+        PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, userInputField.text, "닉네임받아야함");
 
         Managers.UI.popupCanvas.Close_LoadingPopup();
     }
 
     private void Open_CustomRoom()
     {
-        Debug.Log("방 생성 성공");
-
         customRoomWindow.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }

@@ -12,8 +12,6 @@ public class CustomRoomWindowUI : MonoBehaviour
     [SerializeField] CharProfileUI masterProfile;
     [SerializeField] CharProfileUI slaveProfile;
 
-
-
     public void OnClick_ChangeMap()
     {
         // 함수 두개로 나눌지, 하나의 함수에 인자를 줄지 고민중

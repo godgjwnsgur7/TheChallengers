@@ -78,6 +78,7 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
         if (roomInfoList.Count <= 0) 
         {
             noneRoomTextObject.SetActive(true);
+            gameObject.SetActive(true);
             return;
         }
 
