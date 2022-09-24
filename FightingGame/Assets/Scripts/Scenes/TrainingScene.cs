@@ -5,15 +5,16 @@ using FGDefine;
 
 public class TrainingScene : BaseScene
 {
-    BaseMap map;
-
     [SerializeField] TrainingCanvas trainingCanvas;
-    [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] KeyPanelAreaEdit keyPanelAreaEdit;
     [SerializeField] KeyPanelArea keyPanelArea;
+    [SerializeField] PlayerCharacter playerCharacter;
+    [SerializeField] EnemyPlayer enemyPlayer;
 
-    EnemyPlayer enemyPlayer;
+    BaseMap map;
+
+    GameObject enemyCharGo;
 
     ENUM_CHARACTER_TYPE playerType;
     ENUM_CHARACTER_TYPE enemyType;
@@ -30,9 +31,16 @@ public class TrainingScene : BaseScene
         playerType = ENUM_CHARACTER_TYPE.Knight;
         enemyType = ENUM_CHARACTER_TYPE.Knight;
 
-        trainingCanvas.Init();
+        playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
+        enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
+
         keyPanelAreaEdit.Init();
         keyPanelArea.Init();
+    }
+
+    public override void Clear()
+    {
+
     }
 
     private void Update()
@@ -43,60 +51,70 @@ public class TrainingScene : BaseScene
         }
     }
 
+    // 플레이어 소환
     public void CallPlayer()
     {
+        if (keyPanelAreaEdit.isOpen)
+        {
+            trainingCanvas.SetNotionText("버튼 설정 중에는 소환할 수 없습니다.");
+            return;
+        }
+
+        // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (playerCharacter.activeCharacter != null)
         {
+            OffEnemyAI();
             Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
             playerCharacter.activeCharacter = null;
         }
 
-
+        // 플레이어 스폰
         trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
+        playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
+        playerCharacter.Connect_Status(trainingCanvas.Get_StatusWindowUI(playerCharacter.teamType));
+        //playerCharacter.activeCharacter.statusWindowUI.gameObject.SetActive(true);
+
         trainingCanvas.isCallPlayer = true;
-        playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, playerType));
-        keyPanelArea.player = playerCharacter;
+        keyPanelArea.LinkPlayer(playerCharacter, playerType);
 
         if (keyPanelArea.isOpen == false)
         {
             Managers.UI.OpenUI<KeyPanelArea>();
         }
-        keyPanelArea.playerType = playerType;
-        //keyPanelArea.SetSkillImage();
     }
 
+    // 적 소환
     public void CallEnemy()
     {
-        if(enemyPlayer != null)
+        // 이미 소환된 적이 있을 경우
+        if(enemyPlayer.activeCharacter != null)
         {
-            Managers.Resource.Destroy(enemyPlayer.gameObject);
-            enemyPlayer = null;
+            Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
+            enemyPlayer.activeCharacter = null;
         }
 
+        // 소환된 플레이어가 없을 경우 지정된 스폰에서 생성
         if(playerCharacter.activeCharacter == null)
         {
             trainingCanvas.SetNotionText("적을 소환하였습니다.");
+            enemyPlayer.Set_Character(Init_Enemy(map.redTeamSpawnPoint.position, enemyType));
 
-            enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").GetComponent<EnemyPlayer>();
-
-            if(enemyPlayer == null)
-                enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").AddComponent<EnemyPlayer>();
-            enemyPlayer.Set_Character(Init_Enemy(map.blueTeamSpawnPoint.position, enemyType));
         }
-        else
+        else // 소환된 플레이어가 있을 경우 근처에 스폰하고 싶은데...
         {
             trainingCanvas.SetNotionText("플레이어 위치에 적을 소환하였습니다.");
-
-            Vector2 vec = playerCharacter.activeCharacter.transform.position;
-
-            enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").GetComponent<EnemyPlayer>();
-
-            if (enemyPlayer == null)
-                enemyPlayer = Managers.Resource.Instantiate("EnemyPlayer").AddComponent<EnemyPlayer>();
-            enemyPlayer.Set_Character(Init_Enemy(vec));
+            enemyPlayer.Set_Character(Init_Enemy(playerCharacter.activeCharacter.transform.position, enemyType));
         }
+
+        // EnemyPlayer 안의 캐릭터 GameObject
+        enemyCharGo = enemyPlayer.transform.Find($"{enemyType}").gameObject;
+
+        // StatusUI 연결
+        enemyPlayer.Connect_Status(trainingCanvas.Get_StatusWindowUI(enemyPlayer.teamType));
+        //enemyPlayer.activeCharacter.statusWindowUI.gameObject.SetActive(true);
     }
 
+    // 적 제거
     public void DeleteEnemy()
     {
         if (enemyPlayer == null)
@@ -104,18 +122,24 @@ public class TrainingScene : BaseScene
 
         trainingCanvas.SetNotionText("적을 역소환하였습니다.");
 
-        Managers.Resource.Destroy(enemyPlayer.gameObject);
-        enemyPlayer = null;
+        //enemyPlayer.activeCharacter.statusWindowUI.gameObject.SetActive(false);
+        Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
+        enemyPlayer.activeCharacter = null;
+        enemyCharGo = null;
     }
 
+    // 플레이어 제거
     public void DeletePlayer()
     {
         if (playerCharacter.activeCharacter == null)
             return;
 
+        OffEnemyAI();
+
         trainingCanvas.SetNotionText("플레이어를 역소환하였습니다.");
         trainingCanvas.isCallPlayer = false;
 
+        //playerCharacter.activeCharacter.statusWindowUI.gameObject.SetActive(false);
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         playerCharacter.activeCharacter = null;
 
@@ -169,6 +193,13 @@ public class TrainingScene : BaseScene
         }
     }
 
+    // 캐릭터 체력바 연동
+    public void LinkStatusUI(ActiveCharacter activeCharacter, StatusWindowUI statusUI)
+    {
+        activeCharacter.statusWindowUI = statusUI;
+        activeCharacter.statusWindowUI.gameObject.SetActive(true);
+    }
+
     // 캐릭터 선택
     public void SelectCharacter(int charType)
     {
@@ -184,16 +215,15 @@ public class TrainingScene : BaseScene
                 enemyType = (ENUM_CHARACTER_TYPE)charType;
                 CallEnemy();
                 break;
+            default:
+                Debug.Log("선택 범위 벗어남");
+                break;
         }
 
         trainingCanvas.CloseSelectWindow();
     }
 
-    public override void Clear()
-    {
-
-    }
-
+    // 적AI (구상중...)
     public void OnEnemyAI()
     {
         if (enemyPlayer == null)
@@ -201,6 +231,23 @@ public class TrainingScene : BaseScene
             trainingCanvas.SetNotionText("소환된 적이 없습니다.");
             return;
         }
-        enemyPlayer.gameObject.AddComponent<EnemyAI>().Init();
+        if (!trainingCanvas.isCallPlayer)
+        {
+            trainingCanvas.SetNotionText("Player가 없습니다.");
+            return;
+        }
+
+        if (enemyCharGo.GetComponent<EnemyAI>() == null)
+        {
+            enemyCharGo.AddComponent<EnemyAI>().Init(playerType);
+        }
+    }
+
+    public void OffEnemyAI()
+    {
+        if (enemyCharGo.GetComponent<EnemyAI>() == null)
+            return;
+
+        Destroy(enemyCharGo.GetComponent<EnemyAI>());
     }
 }

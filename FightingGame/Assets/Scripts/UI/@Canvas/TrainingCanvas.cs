@@ -15,7 +15,8 @@ public class TrainingCanvas : BaseCanvas
     [SerializeField] BottomPanel bottomPanel;
     [SerializeField] NotionPopup notionPopup;
     [SerializeField] Text notion;
-    [SerializeField] Button sliderBtn;
+    [SerializeField] StatusWindowUI blueTeamStatusWindowUI;
+    [SerializeField] StatusWindowUI redTeamStatusWindowUI;
 
     Coroutine runCorutine;
 
@@ -55,12 +56,24 @@ public class TrainingCanvas : BaseCanvas
         return default(T);
     }
 
+    public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
+    {
+        if (_teamType == ENUM_TEAM_TYPE.Blue)
+            return blueTeamStatusWindowUI;
+        else if (_teamType == ENUM_TEAM_TYPE.Red)
+            return redTeamStatusWindowUI;
+        else
+        {
+            Debug.Log($"_teamType 오류 : {_teamType}");
+            return null;
+        }
+    }
+
     // 캐릭터 UI 세팅 패널 open,close
     public void OnOffSettingPanel()
     {
         if (keyPanelAreaEdit.isOpen == false) 
         {
-            //keyPanelAreaEdit.playerType = ENUM_CHARACTER_TYPE.Knight;
             Managers.UI.OpenUI<KeyPanelAreaEdit>();
         }
 
@@ -78,26 +91,6 @@ public class TrainingCanvas : BaseCanvas
 
         buttonPanel.SlidePanel();
         buttonPanel.InteractableBtn();
-    }
-
-    // 캐릭터 선택
-    public void SelectCharacter(int charType)
-    {
-        if (notion.gameObject.activeSelf)
-            notion.gameObject.SetActive(false);
-
-        switch (ChangeCharacter)
-        {
-            case "Player":
-
-                break;
-
-            case "Enemy":
-
-                break;
-        }
-
-        CloseSelectWindow();
     }
 
     // 캐릭터 변경창 open, close
@@ -123,12 +116,12 @@ public class TrainingCanvas : BaseCanvas
 
     IEnumerator ShowNotion(string text)
     {
-        notion.gameObject.SetActive(true);
+        OnClick_Activate(notion.gameObject);
         notion.text = text;
 
         yield return new WaitForSeconds(1.5f);
 
-        notion.gameObject.SetActive(false);
+        OnClick_Deactivate(notion.gameObject);
         runCorutine = null;
     }
 

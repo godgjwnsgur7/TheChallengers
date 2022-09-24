@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 현재로써는 모든 행동중에 누르면 쿨타임이 돌아감... 쿨타임 돌리는 시점 생각해봐야할 듯
-public class SkillUI : UpdatableUI
+public class SkillUI : UIElement
 {
     public GameObject coolTime;
     public Image coolTimeImage;
@@ -31,6 +31,7 @@ public class SkillUI : UpdatableUI
         Trigger_Skill();
     }
 
+    // 이미지 표기 방법 설정 (원, 위를 기준으로 360도로 채움)
     private void Init_UI()
     {
         coolTimeImage.type = Image.Type.Filled;
@@ -62,6 +63,7 @@ public class SkillUI : UpdatableUI
         }
     }
 
+    // 쿨타임 종료
     private void End_CoolTime()
     {
         Set_FillAmount(0);
@@ -70,6 +72,7 @@ public class SkillUI : UpdatableUI
         this.GetComponent<Button>().interactable = true;
     }
 
+    // 쿨타임 값 리셋
     private void Reset_CoolTime()
     {
         coolTime.gameObject.SetActive(false);
@@ -79,6 +82,7 @@ public class SkillUI : UpdatableUI
         isEnded = true;
     }
 
+    // 쿨타임 시간, 게이지 표기
     private void Set_FillAmount(float _value)
     {
         coolTimeImage.fillAmount = _value / time_cooltime;
@@ -86,12 +90,11 @@ public class SkillUI : UpdatableUI
         text_CoolTime.text = txt;
     }
 
-    public override void OnCoolTime()
+    public void OnCoolTime()
     { 
         time_start = Time.time;
         isEnded = false;
         coolTime.gameObject.SetActive(true);
         this.GetComponent<Button>().interactable = false;
     }
-}
-*/
+}*/
