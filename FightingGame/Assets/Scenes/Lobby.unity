@@ -5280,6 +5280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1147677490}
   - component: {fileID: 1147677491}
+  - component: {fileID: 1147677492}
   m_Layer: 5
   m_Name: MasterProfile
   m_TagString: Untagged
@@ -5330,6 +5331,28 @@ MonoBehaviour:
   userNicknameText: {fileID: 577858653}
   readySprite: {fileID: 21300000, guid: d61af8c8614cdae4991c9b5f5835746a, type: 3}
   unreadySprite: {fileID: 21300000, guid: d423b25264cfa1a42b4d8d0184015f6e, type: 3}
+--- !u!114 &1147677492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147677489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1156640899
 GameObject:
   m_ObjectHideFlags: 0
@@ -6051,11 +6074,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46983c2a39792394da1ae277f5d87252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomNameText: {fileID: 512007615}
   currMapIamge: {fileID: 1622352923}
   nextMapIamge_Left: {fileID: 1896093509}
   nextMapIamge_Right: {fileID: 1548905273}
   masterProfile: {fileID: 1147677491}
   slaveProfile: {fileID: 1955595004}
+  isInit: 0
 --- !u!1 &1244999966
 GameObject:
   m_ObjectHideFlags: 0
@@ -8504,13 +8529,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1216234722}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1216234724}
+        m_TargetAssemblyTypeName: CustomRoomWindowUI, Assembly-CSharp
+        m_MethodName: OnClick_Ready
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8796,6 +8821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1955595003}
   - component: {fileID: 1955595004}
+  - component: {fileID: 1955595005}
   m_Layer: 5
   m_Name: SlaveProfile
   m_TagString: Untagged
@@ -8846,6 +8872,28 @@ MonoBehaviour:
   userNicknameText: {fileID: 538894952}
   readySprite: {fileID: 21300000, guid: d61af8c8614cdae4991c9b5f5835746a, type: 3}
   unreadySprite: {fileID: 21300000, guid: d423b25264cfa1a42b4d8d0184015f6e, type: 3}
+--- !u!114 &1955595005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955595002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1960942396
 GameObject:
   m_ObjectHideFlags: 0

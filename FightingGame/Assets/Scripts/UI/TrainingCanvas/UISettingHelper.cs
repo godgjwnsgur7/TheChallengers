@@ -6,8 +6,6 @@ using FGDefine;
 
 public class UISettingHelper : MonoBehaviour
 {
-    public Button updateUI;
-
     public GameObject parent;
     public RectTransform parentRect;
 
@@ -34,30 +32,27 @@ public class UISettingHelper : MonoBehaviour
         if (updateUI == null)
             return;
 
-        this.updateUI = updateUI;
-
         parent = updateUI.gameObject.transform.parent.gameObject;
         parentRect = parent.GetComponent<RectTransform>();
 
-        btnArea = this.updateUI.transform.Find("BtnArea").gameObject;
-        backGround = this.updateUI.transform.Find("BackGround").gameObject;
-        icon = this.updateUI.transform.Find("Icon").gameObject;
+        btnArea = updateUI.transform.Find("BtnArea").gameObject;
+        backGround = updateUI.transform.Find("BackGround").gameObject;
+        icon = updateUI.transform.Find("Icon").gameObject;
 
         btnAreaImage = btnArea.GetComponent<Image>();
         backGroundImage = backGround.GetComponent<Image>();
         iconImage = icon.GetComponent<Image>();
 
-        thisRect = this.updateUI.GetComponent<RectTransform>();
+        thisRect = updateUI.GetComponent<RectTransform>();
 
-        thisBoxCollider = this.updateUI.GetComponent<BoxCollider2D>();
+        thisBoxCollider = updateUI.GetComponent<BoxCollider2D>();
         if (thisBoxCollider == null)
-            thisBoxCollider = this.updateUI.gameObject.AddComponent<BoxCollider2D>();
+            thisBoxCollider = updateUI.gameObject.AddComponent<BoxCollider2D>();
         SetBoxCollider();
     }
 
     public void Clear()
     {
-        updateUI = null;
         parent = null;
         parentRect = null;
 

@@ -21,7 +21,6 @@ public class KeyPanelAreaEdit : UIElement
     SubPrefsType subPrefsList;
     public override void Open(UIParam param = null)
     {
-        SetSkillImage();
         base.Open(param);
     }
 
@@ -55,17 +54,14 @@ public class KeyPanelAreaEdit : UIElement
                 Managers.Prefs.SaveButtonPrefs(subPrefsList.GetExist());
             }
 
-            SetInit(buttons[i]);
+            SetInit();
         }
     }
 
     // UI 초기배치
-    private void SetInit(Button button)
+    private void SetInit()
     {
         InitButton(subPrefsList);
-
-        //if (button.GetType() == typeof(SkillUI))
-        //    SetSkillImage();
 
         settingHelper.Clear();
     }
@@ -153,20 +149,15 @@ public class KeyPanelAreaEdit : UIElement
     // UpdatableUI 컴포넌트 보유 체크
     public void UpdateComponentChk(Button button)
     {
-        if (settingPanel.isOpen && button.GetComponent<UpdatableUI>() == null)
-        {
-            SetUpdateComponent(button);
-            settingPanel.PushKey(button.GetComponent<UpdatableUI>());
-        }
-        else if(settingPanel.isOpen && button.GetComponent<UpdatableUI>() != null)
-            settingPanel.PushKey(button.GetComponent<UpdatableUI>());
-    }
+        if (!settingPanel.isOpen)
+            return;
 
-    public void SetSkillImage()
-    {
-        //skillImage = Managers.Resource.LoadAll<Sprite>("");
-        //buttons[4].GetComponent<Image>().sprite = ;
-        //buttons[5].GetComponent<Image>().sprite = ;
-        //buttons[6].GetComponent<Image>().sprite = ;
+        if (button.GetComponent<UpdatableUI>() == null)
+        {
+            Debug.Log("수정 불가능 : UpdatableUI Component None");
+            return;
+        }
+            
+        settingPanel.PushKey(button.GetComponent<UpdatableUI>());
     }
 }

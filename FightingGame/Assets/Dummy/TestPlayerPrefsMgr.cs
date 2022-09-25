@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
@@ -84,4 +84,4 @@ public class TestPlayerPrefsMgr
     {
         return PlayerPrefs.GetFloat(prefsType + "." + subPrefsType);
     }
-}
+}*/

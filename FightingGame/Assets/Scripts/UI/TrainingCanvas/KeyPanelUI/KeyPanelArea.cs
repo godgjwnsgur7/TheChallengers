@@ -64,9 +64,6 @@ public class KeyPanelArea : UIElement
     {
         InitButton(subPrefsList);
 
-        //if (button.GetType() == typeof(SkillUI))
-        //    SetSkillImage();
-
         settingHelper.Clear();
     }
 
@@ -86,6 +83,14 @@ public class KeyPanelArea : UIElement
     }
 
     // 아래부터 인게임용 함수--------------------------------------------------------------------
+
+    // 현재 플레이어 캐릭터와 UI 연결
+    public void LinkPlayer(PlayerCharacter player, ENUM_CHARACTER_TYPE playerType)
+    {
+        this.player = player;
+        this.playerType = playerType;
+    }
+
     public void PushKey(Button button)
     {
         switch (button.name)

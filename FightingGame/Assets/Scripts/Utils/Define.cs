@@ -157,22 +157,5 @@ namespace FGDefine
 
         Max
     }
-
-    [Serializable]
-    public enum ENUM_BTNSUBPREFS_TYPE
-    {
-        Exist = 0, // 해당 버튼의 Prefs가 존재하는지 확인함과 동시에, ENUM_BTNPREFS_TYPE 값을 가짐
-        Size = 1,
-        Opacity = 2,
-        ResetSize = 3,
-        ResetOpacity = 4,
-        TransX = 5,
-        TransY = 6,
-        ResetTransX = 7,
-        ResetTransY = 8,
-        IsInit = 9, // 초기값인지 검사 0 or 1, 맘에 안들긴하는데..
-
-        Max
-    }
 }
 

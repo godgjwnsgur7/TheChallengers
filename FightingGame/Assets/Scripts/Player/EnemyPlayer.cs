@@ -33,7 +33,8 @@ public class EnemyPlayer : MonoBehaviour
 
     private void Update()
     {
-        OnKeyboard(); // 디버깅용
+        if(activeCharacter != null)
+            OnKeyboard(); // 디버깅용
     }
 
     // 디버깅용이니 쿨하게 다 때려박기
@@ -105,7 +106,7 @@ public class EnemyPlayer : MonoBehaviour
         }
     }
 
-    private void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
+    public void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
         if (activeCharacter == null || activeCharacter.currState == ENUM_PLAYER_STATE.Hit)
             return;

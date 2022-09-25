@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class CharProfileUI : MonoBehaviour
+public class CharProfileUI : MonoBehaviourPhoton
 {
     public bool isInit = false;
 
@@ -19,35 +19,77 @@ public class CharProfileUI : MonoBehaviour
     [SerializeField] Sprite readySprite;
     [SerializeField] Sprite unreadySprite;
 
+    ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
+    bool isReady = false;
 
-    public void Set()
+    public override void Init()
     {
+        if (isInit) return;
+
+        base.Init();
+
+        isInit = true;
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI>
+            (this, Sync_UpdateProfileInfo);
+    }
+
+    [BroadcastMethod]
+    public void Sync_UpdateProfileInfo()
+    {
+        // 현재 방 정보 가져와서 세팅
 
     }
 
-    // 이런 느낌으로 캐릭터를 선택해서 이미지를 가져오는 아이들이
-    // 생각보다 많아지고 있으므로, 스크립트를 분할해 따로 묶어놓고 
-    // 해당하는 스크립트에서 받아와서 세팅하는 것도 괜찮을지도 모름
-    // 결론 : 고민중
-    public void Select_Char(ENUM_CHARACTER_TYPE _charType)
+    public void Select_Char(ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Default)
     {
-        switch(_charType)
+        if (currCharType == _charType) return;
+
+        currCharType = _charType;
+        switch (currCharType)
         {
             case ENUM_CHARACTER_TYPE.Default:
 
+                charNameText.text = "";
+                break;
+            case ENUM_CHARACTER_TYPE.Knight:
+
+                charNameText.text = "나이트";
                 break;
             case ENUM_CHARACTER_TYPE.Wizard:
 
-                break;
-
-            case ENUM_CHARACTER_TYPE.Knight:
-
+                charNameText.text = "위저드";
                 break;
             default:
-                Debug.LogError("알 수 없는 캐릭터입니다.");
+                charNameText.text = "없는 캐릭터";
                 break;
         }
     }
-    
 
+    public void OnClick_Ready()
+    {
+        if (PhotonLogicHandler.IsMasterClient)
+            return;
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, bool>
+            (this, Sync_ReadyStateImage, isReady);
+
+        isReady = !isReady;
+    }
+
+    [BroadcastMethod]
+    private void Sync_ReadyStateImage(bool _isReady)
+    {
+        if (_isReady)
+            readyStateImage.sprite = unreadySprite;
+        else
+            readyStateImage.sprite = readySprite;
+    }
+
+    public void Clear()
+    {
+        Select_Char(ENUM_CHARACTER_TYPE.Default);
+
+        isInit = false;
+    }
 }
