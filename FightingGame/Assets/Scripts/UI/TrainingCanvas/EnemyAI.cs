@@ -18,9 +18,7 @@ public class EnemyAI : MonoBehaviour
     public void Init(ENUM_CHARACTER_TYPE charType)
     {
         aiEnemy = this.transform.parent.GetComponent<EnemyPlayer>();
-
         thisTrans = GetComponent<Transform>();
-
         target = GameObject.Find("Player").transform.Find($"{charType}").transform;
     }
 
@@ -32,10 +30,15 @@ public class EnemyAI : MonoBehaviour
     private void AILogic()
     {
         isMove = false;
-        isAttack = false;
+        if (isAttack)
+        {
+            isAttack = false;
+            aiEnemy.activeCharacter.Change_AttackState(false);
+        }
 
         intervalY = target.position.y - thisTrans.position.y;
         intervalX = thisTrans.position.x - target.position.x;
+        Debug.Log(intervalY);
 
         if (intervalY >= 2.5f && intervalY < 5.0f)
             JumpState();
@@ -52,14 +55,24 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
+            if (intervalY >= 2.5f || intervalY < -2.5f)
+                return;
+
             isAttack = true;
-            StartCoroutine(AttackState());
+            AttackState();
         }
     }
 
     private void JumpState()
     {
         aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Jump);
+    }
+
+    private void AttackState()
+    {
+        CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, aiEnemy.activeCharacter.reverseState);
+        aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
+        aiEnemy.activeCharacter.Change_AttackState(true);
     }
 
     IEnumerator MoveState(float direction)
@@ -72,14 +85,15 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    IEnumerator AttackState()
+    /*IEnumerator AttackState()
     {
         while (isAttack)
         {
             CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, aiEnemy.activeCharacter.reverseState);
             aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
             aiEnemy.activeCharacter.Change_AttackState(true);
+            isAttack = false;
             yield return null;
         }
-    }
+    }*/
 }
