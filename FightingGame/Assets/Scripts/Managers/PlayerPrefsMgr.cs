@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class SubPrefsType
+public class SubPrefsType // PlayerPrefsData 같은걸로 변경 원합니다.
 {
-    public int exist;
+    public int exist; // 지우시고
     public float size;
     public float opacity;
-    public float resetSize;
-    public float resetOpacity;
+    public float resetSize; // 지우시고
+    public float resetOpacity; // 지우시고
     public float transX;
     public float transY;
-    public float resettransX;
-    public float resettransY;
-    public bool isInit;
+    public float resettransX; // 지우시고
+    public float resettransY; // 지우시고
+    public bool isInit; // 지우세요
 
-    public void Init(int exist)
+    public void Init(int exist) // 지우시고
     {
         this.exist = exist;
         this.size = 50;
@@ -29,6 +29,17 @@ public class SubPrefsType
         this.resettransY = 0;
         this.isInit = false;
     }
+
+    // 생성자도 이름 같이 변경 하세염
+    public SubPrefsType(float _size, float _opacity, Vector2 _transformPosition)
+    {
+        size = _size;
+        opacity = _opacity;
+        transX = _transformPosition.x;
+        transY = _transformPosition.y;
+    }
+
+    // 이 밑에 싹 지우시고
 
     // Set Value
     public void SetExist(int value)
