@@ -138,4 +138,16 @@ public partial class PhotonLogicHandler : ILobbyCallbacks
             return Instance.customRoomList;
 		}
 	}        
+
+    public static CustomRoomInfo GetRoomInfo(string roomName)
+	{
+        var list = Instance.customRoomList;
+        return list?.Find(roomInfo => roomInfo.roomName == roomName);
+    }
+
+    public static CustomRoomInfo GetRoomInfo(int roomId)
+	{
+        var list = Instance.customRoomList;
+        return list?.Find(roomInfo => roomInfo.roomId == roomId);
+    }
 }
