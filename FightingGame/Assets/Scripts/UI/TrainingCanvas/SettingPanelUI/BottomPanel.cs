@@ -49,6 +49,7 @@ public class BottomPanel : UIElement
         base.Close();
     }
 
+    /*
     // Call ClickedButton Slider Setting Value
     public void setSlider(UpdatableUI updateUI)
     {
@@ -240,4 +241,5 @@ public class BottomPanel : UIElement
 
         settingHelper.SetTransform(tempRect);
     }
+    */
 }

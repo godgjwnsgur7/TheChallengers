@@ -21,7 +21,7 @@ public class SettingPanel : UIElement
 
     public override void Close()
     {
-        keyPanelArea.SliderResetAll();
+        // keyPanelArea.SliderResetAll();
         isUpdate = false;
         keyPanelArea.RemoveUpdateComponentAll();
         base.Close();
@@ -31,7 +31,7 @@ public class SettingPanel : UIElement
     {
         if (isOpen)
         {
-            bottomPanel.setSlider(updateUI);
+            // bottomPanel.setSlider(updateUI);
             Managers.UI.OpenUI<BottomPanel>();
         }
     }

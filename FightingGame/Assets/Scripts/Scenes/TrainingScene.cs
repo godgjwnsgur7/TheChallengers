@@ -34,8 +34,8 @@ public class TrainingScene : BaseScene
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
 
-        keyPanelAreaEdit.Init();
-        keyPanelArea.Init();
+        // keyPanelAreaEdit.Init();
+        // keyPanelArea.Init();
     }
 
     public override void Clear()

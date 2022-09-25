@@ -71,7 +71,7 @@ public class NotionPopup : UIElement
                 trainingCanvas.SetNotionText("버튼 설정 종료");
                 break;
             case ENUM_NOTION_TYPE.Reset:
-                keyPanelArea.SliderResetAll();
+                // keyPanelArea.SliderResetAll();
                 trainingCanvas.SetNotionText("값을 초기화 했습니다.");
                 break;
             case ENUM_NOTION_TYPE.Save:
@@ -81,7 +81,7 @@ public class NotionPopup : UIElement
                 }
                 else if (bottomPanel.isOpen)
                 {
-                    bottomPanel.SaveSliderValue();
+                    // bottomPanel.SaveSliderValue();
                     trainingCanvas.SetNotionText("저장을 완료했습니다.");
                 }
                 else

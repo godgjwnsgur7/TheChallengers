@@ -29,6 +29,7 @@ public class KeyPanelAreaEdit : UIElement
         base.Close();
     }
 
+    /*
     // KeyPanelArea 공용함수--------------------------------------------------
     public void Init()
     {
@@ -114,6 +115,7 @@ public class KeyPanelAreaEdit : UIElement
 
         Managers.Prefs.SetSubPrefsList(subPrefsList);
     }
+    */
 
     // 버튼UI UpdatableUI컴포넌트 생성
     public void SetUpdateComponentAll()

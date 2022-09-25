@@ -30,6 +30,7 @@ public class KeyPanelArea : UIElement
         base.Close();
     }
 
+    /*
     // KeyPanelArea 공용
     public void Init()
     {
@@ -81,6 +82,7 @@ public class KeyPanelArea : UIElement
 
         settingHelper.SetTransform(new Vector2(prefsList.GetTransX(), prefsList.GetTransY()));
     }
+    */
 
     // 아래부터 인게임용 함수--------------------------------------------------------------------
 

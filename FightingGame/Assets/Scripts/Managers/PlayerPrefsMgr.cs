@@ -2,35 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
+using System;
+
+
+// 얘는 수정할 예정
+[Serializable]
+public enum ENUM_BTNPREFS_TYPE
+{
+    LeftMoveBtn = 0,
+    RightMoveBtn = 1,
+    AttackBtn = 2,
+    JumpBtn = 3,
+    SkillBtn1 = 4,
+    SkillBtn2 = 5,
+    SkillBtn3 = 6,
+
+    Max
+}
+
+public enum ENUM_PLAYERPREFS_TYPE
+{
+    // 이 데이터를 어떻게 받을지에 따라 틀림
+}
 
 public class SubPrefsType // PlayerPrefsData 같은걸로 변경 원합니다.
 {
-    public int exist; // 지우시고
     public float size;
     public float opacity;
-    public float resetSize; // 지우시고
-    public float resetOpacity; // 지우시고
     public float transX;
     public float transY;
-    public float resettransX; // 지우시고
-    public float resettransY; // 지우시고
-    public bool isInit; // 지우세요
 
-    public void Init(int exist) // 지우시고
-    {
-        this.exist = exist;
-        this.size = 50;
-        this.opacity = 100;
-        this.resetSize = 50;
-        this.resetOpacity = 100;
-        this.transX = 0;
-        this.transY = 0;
-        this.resettransX = 0;
-        this.resettransY = 0;
-        this.isInit = false;
-    }
-
-    // 생성자도 이름 같이 변경 하세염
+    // 얘도 이름 변경
     public SubPrefsType(float _size, float _opacity, Vector2 _transformPosition)
     {
         size = _size;
@@ -39,113 +41,31 @@ public class SubPrefsType // PlayerPrefsData 같은걸로 변경 원합니다.
         transY = _transformPosition.y;
     }
 
-    // 이 밑에 싹 지우시고
-
-    // Set Value
-    public void SetExist(int value)
+    /*
+    public void Init(int exist) // 바꾸시고
     {
-        this.exist = value;
+        this.exist = exist;
+        this.size = 50;
+        this.opacity = 100;
+        this.resetSize = 50;
+        this.resetOpacity = 100;
+        this.isInit = false;
     }
+    */
 
-    public void SetSize(float value)
-    {
-        this.size = value;
-    }
-
-    public void SetOpacity(float value)
-    {
-        this.opacity = value;
-    }
-
-    public void SetResetSize(float value)
-    {
-        this.resetSize = value;
-    }
-
-    public void SetResetOpacity(float value)
-    {
-        this.resetOpacity = value;
-    }
-
-    public void SetTransX(float value)
-    {
-        this.transX = value;
-    }
-
-    public void SetTransY(float value)
-    {
-        this.transY = value;
-    }
-
-    public void SetResetTransX(float value)
-    {
-        this.resettransX = value;
-    }
-
-    public void SetResetTransY(float value)
-    {
-        this.resettransY = value;
-    }
-
-    public void SetIsInit(bool value)
-    {
-        this.isInit = value;
-    }
-
-    // Get Value
-    public int GetExist()
-    {
-        return this.exist;
-    }
-
-    public float GetSize()
-    {
-        return this.size;
-    }
-
-    public float GetOpacity()
-    {
-        return this.opacity;
-    }
-
-    public float GetResetSize()
-    {
-        return this.resetSize;
-    }
-
-    public float GetResetOpacity()
-    {
-        return this.resetOpacity;
-    }
-
-    public float GetTransX()
-    {
-        return this.transX;
-    }
-
-    public float GetTransY()
-    {
-        return this.transY;
-    }
-
-    public float GetResetTransX()
-    {
-        return this.resettransX;
-    }
-
-    public float GetResetTransY()
-    {
-        return this.resettransY;
-    }
-
-    public bool GetIsInit()
-    {
-        return this.isInit;
-    }
 }
+
+// 1번째, 모두다 묶어서 받고 묶어서 리턴시킬지,
+// 2번째, 하나씩 묶어서 받고 ( 최소 단위 : SubPrefsType )
 
 public class PlayerPrefsMgr
 {
+
+    // 타입을 받아서 스트링으로 변환해서 정보를 저장, 받아오기를 할 아이
+
+   
+
+    /*
     ENUM_BTNPREFS_TYPE prefsType;
     SubPrefsType[] subPrefsList = new SubPrefsType[(int)ENUM_BTNPREFS_TYPE.Max];
     // 초기 값
@@ -298,4 +218,5 @@ public class PlayerPrefsMgr
                 return false;
         }
     }
+    */
 }

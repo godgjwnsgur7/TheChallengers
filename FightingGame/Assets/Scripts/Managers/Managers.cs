@@ -16,7 +16,6 @@ public class Managers : MonoBehaviour
     private SceneMgr scene = new SceneMgr();
     private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
-    private PlayerPrefsMgr prefs = new PlayerPrefsMgr();
     private PlatformMgr platform = new PlatformMgr();
 
 
@@ -28,7 +27,6 @@ public class Managers : MonoBehaviour
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
-    public static PlayerPrefsMgr Prefs { get { return Instance.prefs; } }
     public static FGPlatform.PlatformMgr Platform { get { return Instance.platform; } }
     
     private void Start()
@@ -59,7 +57,6 @@ public class Managers : MonoBehaviour
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();
-            s_Instance.prefs.Init();
             s_Instance.game.Init();
         }
     }
@@ -68,7 +65,6 @@ public class Managers : MonoBehaviour
     {
         Sound.Clear();
         Scene.Clear();
-
         UI.Clear();
         Pool.Clear();
         Game.Clear();

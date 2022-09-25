@@ -143,19 +143,5 @@ namespace FGDefine
         Training,
         Debug, // 테스트씬
     }
-
-    [Serializable]
-    public enum ENUM_BTNPREFS_TYPE
-    {
-        LeftMoveBtn = 0,
-        RightMoveBtn = 1,
-        AttackBtn = 2,
-        JumpBtn = 3,
-        SkillBtn1 = 4,
-        SkillBtn2 = 5,
-        SkillBtn3 = 6,
-
-        Max
-    }
 }
 
