@@ -5,73 +5,81 @@ using FGDefine;
 
 public class EnemyAI : MonoBehaviour
 {
-    RaycastHit2D rayHit;
     public Transform target;
     Transform thisTrans;
-    Character thisCharacter;
     EnemyPlayer aiEnemy;
-    float charFront;
-    Vector2 direction;
-    Vector2 rayVec;
+
+    float intervalX;
+    float intervalY;
+
+    bool isMove = false;
+    bool isAttack = false;
 
     public void Init(ENUM_CHARACTER_TYPE charType)
     {
         aiEnemy = this.transform.parent.GetComponent<EnemyPlayer>();
+
         thisTrans = GetComponent<Transform>();
+
         target = GameObject.Find("Player").transform.Find($"{charType}").transform;
-        thisCharacter = this.gameObject.GetComponent<Character>();
     }
 
     private void FixedUpdate()
     {
-        charFront = (thisCharacter.reverseState == true) ? -1f : 1f;
-        direction = (thisCharacter.reverseState == true) ? Vector2.left : Vector2.right;
-
-        rayVec = new Vector2(thisTrans.position.x + charFront, thisTrans.position.y);
-        rayHit = Physics2D.Raycast(rayVec, direction, 5f);
-
-        Debug.DrawRay(rayVec, direction * 5f, Color.red);
-
-        MoveArrow();
+        AILogic();
     }
 
-    private void MoveArrow()
+    private void AILogic()
     {
-        if (aiEnemy.activeCharacter.anim.GetBool("AttackState"))
+        isMove = false;
+        isAttack = false;
+
+        intervalY = target.position.y - thisTrans.position.y;
+        intervalX = thisTrans.position.x - target.position.x;
+
+        if (intervalY >= 2.5f && intervalY < 5.0f)
+            JumpState();
+
+        if (intervalX <= -2.5f)
         {
-            aiEnemy.activeCharacter.Change_AttackState(false);
+            isMove = true;
+            StartCoroutine(MoveState(1.0f));
         }
-
-        if (thisTrans.position.x - target.position.x <= -3)
+        else if (intervalX >= 2.5f)
         {
-            MoveState(1.0f);
-
-            if(thisTrans.position.y < target.position.y)
-                aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Jump);
-        }
-        else if (thisTrans.position.x - target.position.x >= 3)
-        {
-            MoveState(-1.0f);
-
-            if (thisTrans.position.y < target.position.y)
-                aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Jump);
+            isMove = true;
+            StartCoroutine(MoveState(-1.0f));
         }
         else
         {
-            AttackState();
+            isAttack = true;
+            StartCoroutine(AttackState());
         }
     }
 
-    private void MoveState(float direction)
+    private void JumpState()
     {
-        aiEnemy.moveDir = direction;
-        aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(aiEnemy.moveDir));
+        aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Jump);
     }
 
-    private void AttackState() 
+    IEnumerator MoveState(float direction)
     {
-        CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, aiEnemy.activeCharacter.reverseState);
-        aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
-        aiEnemy.activeCharacter.Change_AttackState(true);
+        while (isMove)
+        {
+            aiEnemy.moveDir = direction;
+            aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(aiEnemy.moveDir));
+            yield return null;
+        }
+    }
+
+    IEnumerator AttackState()
+    {
+        while (isAttack)
+        {
+            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, aiEnemy.activeCharacter.reverseState);
+            aiEnemy.PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
+            aiEnemy.activeCharacter.Change_AttackState(true);
+            yield return null;
+        }
     }
 }

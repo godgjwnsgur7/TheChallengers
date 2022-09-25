@@ -8,12 +8,12 @@ public class TrainingCanvas : BaseCanvas
 {
     [Header("Set In Editor")]
     [SerializeField] SelectWindow selectWindow;
-    [SerializeField] ButtonPanel buttonPanel;
     [SerializeField] SettingPanel settingPanel;
-    [SerializeField] KeyPanelAreaEdit keyPanelAreaEdit;
     [SerializeField] KeyPanelArea keyPanelArea;
-    [SerializeField] BottomPanel bottomPanel;
+    [SerializeField] KeyPanelAreaEdit keyPanelAreaEdit;
     [SerializeField] NotionPopup notionPopup;
+    [SerializeField] BottomPanel bottomPanel;
+    [SerializeField] ButtonPanel buttonPanel;
     [SerializeField] Text notion;
     [SerializeField] StatusWindowUI blueTeamStatusWindowUI;
     [SerializeField] StatusWindowUI redTeamStatusWindowUI;
@@ -21,7 +21,6 @@ public class TrainingCanvas : BaseCanvas
     Coroutine runCorutine;
 
     public string ChangeCharacter;
-    public bool isCallPlayer = false;
 
     public override void Init()
     {
@@ -72,21 +71,16 @@ public class TrainingCanvas : BaseCanvas
     // 캐릭터 UI 세팅 패널 open,close
     public void OnOffSettingPanel()
     {
-        if (keyPanelAreaEdit.isOpen == false) 
-        {
-            Managers.UI.OpenUI<KeyPanelAreaEdit>();
-        }
-
         if (settingPanel.isOpen)
         {
             Managers.UI.CloseUI<SettingPanel>();
             Managers.UI.CloseUI<BottomPanel>();
-            if (!isCallPlayer)
-                Managers.UI.CloseUI<KeyPanelAreaEdit>();
+            Managers.UI.CloseUI<KeyPanelAreaEdit>();
         }
         else
         {
             Managers.UI.OpenUI<SettingPanel>();
+            Managers.UI.OpenUI<KeyPanelAreaEdit>();
         }
 
         buttonPanel.SlidePanel();
