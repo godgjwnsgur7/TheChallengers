@@ -15,7 +15,6 @@ public class KeyPanelArea : UIElement
     private float sizeRatio;
     private float opacityRatio;
 
-    SubPrefsType subPrefsList;
 
     bool isMove = false;
     bool isAttack = false;

@@ -18,7 +18,6 @@ public class KeyPanelAreaEdit : UIElement
 
     public Sprite[] skillImage;
 
-    SubPrefsType subPrefsList;
     public override void Open(UIParam param = null)
     {
         base.Open(param);

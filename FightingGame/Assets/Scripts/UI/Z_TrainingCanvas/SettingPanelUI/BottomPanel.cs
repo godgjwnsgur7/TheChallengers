@@ -26,8 +26,6 @@ public class BottomPanel : UIElement
     public bool isUpdatable;
     private float moveSpeed;
 
-    SubPrefsType currPrefsList;
-    SubPrefsType[] prefsLists = new SubPrefsType[(int)ENUM_BTNPREFS_TYPE.Max];
     public override void Open(UIParam param = null)
     {
         base.Open(param);
@@ -41,10 +39,6 @@ public class BottomPanel : UIElement
             setBtn.ChangeAreaColor();
             setBtn = null;
         }
-
-        currPrefsList = null;
-        for(int i = 0; i < prefsLists.Length; i++)
-            prefsLists[i] = null;
 
         base.Close();
     }
