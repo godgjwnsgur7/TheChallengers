@@ -19,10 +19,6 @@ public enum ENUM_KEYSETTING_NAME
     Max
 }
 
-/// <summary>
-/// 키 세팅 데이터
-/// ex) 공격키, 스킬키, 방향키의 위치값, 크기정보, 등
-/// </summary>
 public class KeySettingData
 {
     public float size;

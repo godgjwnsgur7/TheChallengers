@@ -19,6 +19,11 @@ public class CustomRoomWindowUI : MonoBehaviour
 
     public bool isInit = false;
 
+    private void OnEnable()
+    {
+        Init();
+    }
+
     public void Init()
     {
         if (isInit) return;
@@ -62,6 +67,7 @@ public class CustomRoomWindowUI : MonoBehaviour
 
     private void Clear()
     {
-
+        isInit = false;
+        myProfile = null;
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 /// <summary>
 /// 룸 갱신 정보를 받을 클래스에게 ILobbyPostProcess 인터페이스 상속
@@ -84,7 +85,9 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 
         // 현재 생성되어 있는 방의 갯수만큼 Open.
         for (int i = 0; i < roomInfoList.Count; i++)
-            roomList[i].Open(roomInfoList[i]);
+        {
+            roomList[i].Open(roomInfoList[i], Update_RoomList);
+        }
 
         noneRoomTextObject.SetActive(false);
         gameObject.SetActive(true);
