@@ -58,7 +58,7 @@ public class SubPrefsType // PlayerPrefsData 같은걸로 변경 원합니다.
 // 1번째, 모두다 묶어서 받고 묶어서 리턴시킬지,
 // 2번째, 하나씩 묶어서 받고 ( 최소 단위 : SubPrefsType )
 
-public class PlayerPrefsMgr
+public class PlayerPrefsManagement
 {
 
     // 타입을 받아서 스트링으로 변환해서 정보를 저장, 받아오기를 할 아이
