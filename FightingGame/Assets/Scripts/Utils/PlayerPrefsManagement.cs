@@ -39,9 +39,9 @@ public class KeySettingData
     }
 }
 
- public class PlayerPrefsManagement
+ public class PlayerPrefsManagement : MonoBehaviour
 {
-    // PlayerPrefs Set 계열 함수들 keyName_keyType 을 키값으로 저장함
+    // PlayerPrefs Set 계열 함수들. keyName_keyType 을 키값으로 저장함
     private void Set_Float(float value, string keyName, string keyType)
         => PlayerPrefs.SetFloat($"{keyName}_{keyType}", value);
     private void Set_String(string value, string keyName, string keyType)
@@ -49,7 +49,7 @@ public class KeySettingData
     private void Set_Int(int value, string keyName, string keyType)
         => PlayerPrefs.SetInt($"{keyName}_{keyType}", value);
 
-    // PlayerPrefs Get 계열 함수들 keyName_keyType 을 키값으로 불러옴
+    // PlayerPrefs Get 계열 함수들. keyName_keyType 을 키값으로 불러옴
     private float Get_Float(string keyName, string keyType)
     { return PlayerPrefs.GetFloat($"{keyName}_{keyType}"); }
     private string Get_String(string keyName, string keyType)
@@ -61,7 +61,7 @@ public class KeySettingData
     #region KeySettingData
 
     /// <summary>
-    /// KeySettingData가 null이면 false를 리턴
+    /// KeySettingData가 null이면 저장하지 않고, false를 리턴
     /// </summary>
     public bool Set_KeySettingData(KeySettingData keySettingData, ENUM_KEYSETTING_NAME keyName)
     {
@@ -81,7 +81,7 @@ public class KeySettingData
     /// </summary>
     public KeySettingData Get_KeySettingData(ENUM_KEYSETTING_NAME keyName)
     {
-        if(PlayerPrefs.HasKey($"{keyName}_size"))
+        if(PlayerPrefs.HasKey($"{keyName}_{nameof(KeySettingData.size)}"))
             return null;
 
         float _size = Get_Float(keyName.ToString(), nameof(KeySettingData.size));
