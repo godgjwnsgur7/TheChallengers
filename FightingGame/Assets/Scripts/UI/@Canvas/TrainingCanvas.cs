@@ -6,7 +6,9 @@ using FGDefine;
 
 public class TrainingCanvas : BaseCanvas
 {
-    // [Header("Set In Editor")]
-    
-    
+    [Header("Set In Editor")]
+    [SerializeField] StatusWindowUI buleTeamStatusWindowUI;
+    [SerializeField] StatusWindowUI redTeamStatusWindowUI;
+
+
 }
