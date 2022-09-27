@@ -37,7 +37,7 @@ public class RoomListElementUI : MonoBehaviour
         myRoomInfo = _roomInfo;
         OnUpdateRoomList = _OnUpdateRoomList;
 
-        Set_CustomRoomInfo();
+        Show_MyRoomInfo();
 
         this.gameObject.SetActive(true);
     }
@@ -49,7 +49,7 @@ public class RoomListElementUI : MonoBehaviour
         isUsing = false;
     }
 
-    public void Update_MyRoomInfo()
+    public bool Update_MyRoomInfo()
     {
         int roomId = myRoomInfo.roomId;
         myRoomInfo = PhotonLogicHandler.GetRoomInfo(roomId);
@@ -58,13 +58,17 @@ public class RoomListElementUI : MonoBehaviour
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("없는 방입니다.", OnUpdateRoomList);
             Close();
-            return;
+            return false;
         }
 
-        Set_CustomRoomInfo();
+        Show_MyRoomInfo();
+        return true;
     }
 
-    public void Set_CustomRoomInfo()
+    /// <summary>
+    /// 호출 전에 예외처리 필요
+    /// </summary>
+    public void Show_MyRoomInfo()
     {
         // Set Texts
         personnelText.text = $"{myRoomInfo.currentPlayerCount} / 2";
@@ -95,19 +99,20 @@ public class RoomListElementUI : MonoBehaviour
             return;
         }
 
-        Update_MyRoomInfo();
+        if (Update_MyRoomInfo())
+            return;
 
-        // 취소 시에 임시로 받은 방 정보를 없애줄 필요가 있지 않을까?
         Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, null, "방에 입장하시겠습니까?");
     }
 
     public void JoinRoom()
     {
-        Update_MyRoomInfo();
+        if (Update_MyRoomInfo())
+            return;
 
         if (myRoomInfo.currentPlayerCount == 1)
         {
-            // 방에 입장
+            // 방에 입장해야 함
         }
         else
         {

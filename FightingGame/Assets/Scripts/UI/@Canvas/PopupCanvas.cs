@@ -29,7 +29,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if(notifyPopup.isUsing)
         {
-            Debug.Log("이미 알림팝업창이 사용중입니다.");
+            Debug.Log("이미 선택팝업창이 사용중입니다.");
             return;
         }
 
@@ -39,6 +39,7 @@ public class PopupCanvas : MonoBehaviour
     /// <summary>
     /// 알림창 Popup Window 
     /// 해당 버튼의 Action이 없을 경우 null
+    /// 알림 팝업창은 중복해서 호출 시에 새로운 창으로 갱신됨
     /// </summary>
     public void Open_NotifyPopup(string _message, Action _succeededCallBack = null)
     {
