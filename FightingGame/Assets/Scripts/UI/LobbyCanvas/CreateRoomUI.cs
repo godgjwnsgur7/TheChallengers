@@ -6,8 +6,6 @@ using FGDefine;
 
 public class CreateRoomUI : MonoBehaviour
 {
-    // 일단 맵은 베이직맵으로 무조건 실행되게 해놓음 (임시) - 전용 이미지도 아직 없음
-
     [SerializeField] CustomRoomWindowUI customRoomWindow;
 
     [SerializeField] Text masterIDText;
@@ -41,7 +39,7 @@ public class CreateRoomUI : MonoBehaviour
 
     private void Open_CustomRoom()
     {
-        customRoomWindow.gameObject.SetActive(true);
-        gameObject.SetActive(false);
+        customRoomWindow.Open();
+        this.gameObject.SetActive(false);
     }
 }

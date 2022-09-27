@@ -26,9 +26,9 @@ public class CharProfileUI : MonoBehaviourPhoton
     {
         if (isInit) return;
 
-        base.Init();
-
         isInit = true;
+
+        base.Init();
 
         PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI>
             (this, Sync_UpdateProfileInfo);
@@ -86,6 +86,7 @@ public class CharProfileUI : MonoBehaviourPhoton
             readyStateImage.sprite = readySprite;
     }
 
+    [BroadcastMethod]
     public void Clear()
     {
         Select_Char(ENUM_CHARACTER_TYPE.Default);

@@ -49,7 +49,7 @@ public class LobbyCanvas : BaseCanvas
     
     public override T GetUIComponent<T>()
     {
-        // 지워질 위기인 함수
+        // 지워질 위기인 함수 (임시)
         return default(T);
     }
 }

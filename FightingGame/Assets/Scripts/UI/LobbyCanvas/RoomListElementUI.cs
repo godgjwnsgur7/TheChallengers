@@ -70,6 +70,12 @@ public class RoomListElementUI : MonoBehaviour
     /// </summary>
     public void Show_MyRoomInfo()
     {
+        if (myRoomInfo == null)
+        {
+            Debug.Log("myRoomInfo is Null!");
+            return;
+        }
+
         // Set Texts
         personnelText.text = $"{myRoomInfo.currentPlayerCount} / 2";
         roomNameText.text = myRoomInfo.roomName;
@@ -112,7 +118,7 @@ public class RoomListElementUI : MonoBehaviour
 
         if (myRoomInfo.currentPlayerCount == 1)
         {
-            // 방에 입장해야 함
+            // 방에 입장시키고 동기화처리 시작
         }
         else
         {
