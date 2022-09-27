@@ -21,13 +21,18 @@ public class PopupCanvas : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    public void Check_ActivePopup()
+    {
+
+    }
+
     /// <summary>
     /// 예, 아니오 선택창 Popup Window 
     /// 해당 버튼의 Action이 없을 경우 null
     /// </summary>
     public void Open_SelectPopup(Action _succeededCallBack, Action _failedCallBack, string _message)
     {
-        if(notifyPopup.isUsing)
+        if(selectPopup.isUsing)
         {
             Debug.Log("이미 선택팝업창이 사용중입니다.");
             return;
@@ -43,9 +48,9 @@ public class PopupCanvas : MonoBehaviour
     /// </summary>
     public void Open_NotifyPopup(string _message, Action _succeededCallBack = null)
     {
-        if (selectPopup.isUsing)
+        if (notifyPopup.isUsing)
         {
-            Debug.Log("이미 선택팝업창이 사용중입니다.");
+            notifyPopup.Open_Again(_message, _succeededCallBack);
             return;
         }
 

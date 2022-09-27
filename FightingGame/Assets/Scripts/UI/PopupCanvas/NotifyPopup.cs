@@ -27,6 +27,8 @@ public class NotifyPopup : PopupUI
             Open(_message, _callBack);
             return;
         }
+        
+        this.gameObject.SetActive(false);
 
         popupText.text = _message;
 
