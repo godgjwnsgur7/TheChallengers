@@ -12,6 +12,7 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
     List<RoomListElementUI> roomList = new List<RoomListElementUI>();
     List<CustomRoomInfo> roomInfoList = new List<CustomRoomInfo>();
 
+    [SerializeField] CustomRoomWindowUI customRoomWindow;
     [SerializeField] GameObject noneRoomTextObject;
 
     bool isUpdateLock = false;
@@ -86,11 +87,17 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
         // 현재 생성되어 있는 방의 갯수만큼 Open.
         for (int i = 0; i < roomInfoList.Count; i++)
         {
-            roomList[i].Open(roomInfoList[i], Update_RoomList);
+            roomList[i].Open(roomInfoList[i], Update_RoomList, Active_CustomRoomWindow);
         }
 
         noneRoomTextObject.SetActive(false);
         gameObject.SetActive(true);
+    }
+
+    public void Active_CustomRoomWindow()
+    {
+        customRoomWindow.Init();
+        customRoomWindow.gameObject.SetActive(true);
     }
 
     private IEnumerator IUpdateLockTime(float waitTime)

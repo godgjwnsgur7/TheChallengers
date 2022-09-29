@@ -22,9 +22,10 @@ public class RoomListElementUI : MonoBehaviour
     [SerializeField] Sprite personnel_ExistSprite;
 
     Action OnUpdateRoomList = null;
+    Action OnActiveRoomWindow = null;
     public CustomRoomInfo myRoomInfo;
 
-    public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList)
+    public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList, Action _OnActiveRoomWindow)
     {
         if (_roomInfo == null || isUsing)
         {
@@ -36,6 +37,7 @@ public class RoomListElementUI : MonoBehaviour
 
         myRoomInfo = _roomInfo;
         OnUpdateRoomList = _OnUpdateRoomList;
+        OnActiveRoomWindow = _OnActiveRoomWindow;
 
         Show_MyRoomInfo();
 
@@ -46,12 +48,16 @@ public class RoomListElementUI : MonoBehaviour
     {
         this.gameObject.SetActive(false);
 
+        myRoomInfo = null;
+        OnUpdateRoomList = null;
+        OnActiveRoomWindow = null;
         isUsing = false;
     }
 
     public bool Update_MyRoomInfo()
     {
-        myRoomInfo = PhotonLogicHandler.GetRoomInfo(roomNameText.text);
+        string roomName = roomNameText.text;
+        myRoomInfo = PhotonLogicHandler.GetRoomInfo(roomName);
 
         if(myRoomInfo == null) // 방이 사라짐
         {
@@ -60,7 +66,13 @@ public class RoomListElementUI : MonoBehaviour
             return false;
         }
 
-        Show_MyRoomInfo();
+        if(myRoomInfo.currentPlayerCount == 2)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("방에 인원이 가득 찼습니다.", OnUpdateRoomList);
+            Close();
+            return false;
+        }
+
         return true;
     }
 
@@ -104,20 +116,18 @@ public class RoomListElementUI : MonoBehaviour
             return;
         }
 
-        if (Update_MyRoomInfo()) // 이때 마이룸이 어딨어 이 미친놈아!
+        if (!Update_MyRoomInfo())
             return;
 
-        Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, null, "방에 입장하시겠습니까?");
+        Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, Show_MyRoomInfo, "방에 입장하시겠습니까?");
     }
 
     public void JoinRoom()
     {
-        if (Update_MyRoomInfo())
-            return;
-
         if (myRoomInfo.currentPlayerCount == 1)
         {
-            // 방에 입장시키고 동기화처리 시작
+            // myRoomInfo의 정보를 이용해 해당하는 방에 입장해야 함
+            OnActiveRoomWindow();
         }
         else
         {

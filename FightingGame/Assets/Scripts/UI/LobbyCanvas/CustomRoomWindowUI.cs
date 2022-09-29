@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class CustomRoomWindowUI : MonoBehaviourPhoton
 {
@@ -39,6 +40,7 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
         isInit = true;
         myProfile.isMine = true;
+        myProfile.Init();
 
         if (PhotonLogicHandler.IsMasterClient)
             MasterClientSetting();
@@ -58,15 +60,12 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     public void Set_CurrRoomInfo()
     {
-        // 음?
-
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
 
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CustomRoomWindowUI>(this, Set_CurrMapInfo);
+        Set_CurrMapInfo((ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), PhotonLogicHandler.CurrentMapName));
     }
 
-    [BroadcastMethod]
-    public void Set_CurrMapInfo()
+    public void Set_CurrMapInfo(ENUM_MAP_TYPE _mapType)
     {
         // 맵 정보 갱신, 셋팅
     }
@@ -109,7 +108,11 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     public void OnClick_ExitRoom()
     {
-        // 누르자 마자 준비해제?
+        if(!PhotonLogicHandler.IsMasterClient)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, bool>
+            (myProfile, myProfile.Sync_ReadyStateImage, false);
+        }
 
         Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "정말 방에서 나가시겠습니까?");
     }
@@ -133,6 +136,6 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
             return;
         }
 
-        Debug.Log("배틀 씬으로 같이 이동 (미구현)");
+        Debug.Log("시작하는 조건 확인하고, 배틀 씬으로 같이 이동 (미구현)");
     }
 }

@@ -101,8 +101,11 @@ public class CharProfileUI : MonoBehaviourPhoton
     }
 
     [BroadcastMethod]
-    private void Sync_ReadyStateImage(bool _isReady)
+    public void Sync_ReadyStateImage(bool _isReady)
     {
+        if (isReady != _isReady)
+            isReady = _isReady;
+
         if (_isReady)
             readyStateImage.sprite = unreadySprite;
         else
