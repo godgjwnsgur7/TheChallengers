@@ -22,7 +22,7 @@ public class RoomListElementUI : MonoBehaviour
     [SerializeField] Sprite personnel_ExistSprite;
 
     Action OnUpdateRoomList = null;
-    CustomRoomInfo myRoomInfo;
+    public CustomRoomInfo myRoomInfo;
 
     public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList)
     {
@@ -51,8 +51,7 @@ public class RoomListElementUI : MonoBehaviour
 
     public bool Update_MyRoomInfo()
     {
-        int roomId = myRoomInfo.roomId;
-        myRoomInfo = PhotonLogicHandler.GetRoomInfo(roomId);
+        myRoomInfo = PhotonLogicHandler.GetRoomInfo(roomNameText.text);
 
         if(myRoomInfo == null) // 방이 사라짐
         {
@@ -89,7 +88,7 @@ public class RoomListElementUI : MonoBehaviour
         else if (myRoomInfo.currentPlayerCount == 2)
             personnelImage.sprite = personnel_ExistSprite;
         else
-            Debug.LogError($"currentPlayerCount 값 오류 : {myRoomInfo.currentPlayerCount}");
+            Debug.Log($"currentPlayerCount 값 오류 : {myRoomInfo.currentPlayerCount}");
     }
 
     public void Set_MapImage(ENUM_MAP_TYPE _mapType)
@@ -105,7 +104,7 @@ public class RoomListElementUI : MonoBehaviour
             return;
         }
 
-        if (Update_MyRoomInfo())
+        if (Update_MyRoomInfo()) // 이때 마이룸이 어딨어 이 미친놈아!
             return;
 
         Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, null, "방에 입장하시겠습니까?");

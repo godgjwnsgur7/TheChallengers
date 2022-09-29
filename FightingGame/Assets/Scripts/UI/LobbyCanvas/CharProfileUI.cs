@@ -21,8 +21,9 @@ public class CharProfileUI : MonoBehaviourPhoton
 
     // 확인용 public (임시)
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-    public bool isReady = false;
     public int userId = 0;
+    public bool isReady = false;
+    public bool isMine = false;
 
     public override void Init()
     {
@@ -39,13 +40,18 @@ public class CharProfileUI : MonoBehaviourPhoton
     [BroadcastMethod]
     public void Sync_UpdateProfileInfo()
     {
-        // 현재 
+        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, ENUM_CHARACTER_TYPE>
+            (this, Sync_SelectChar, currCharType);
 
+        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, bool>
+            (this, Sync_ReadyStateImage, isReady);
+
+        // 내 아이디도 다시 세팅해야 함
     }
 
     public void Select_Char(ENUM_CHARACTER_TYPE _charType)
     {
-        if (currCharType == _charType) return;
+        if (!isMine || currCharType == _charType) return;
 
         PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, ENUM_CHARACTER_TYPE>
             (this, Sync_SelectChar, _charType);
@@ -78,6 +84,8 @@ public class CharProfileUI : MonoBehaviourPhoton
 
     public void OnClick_SeleteChar()
     {
+        if (!isMine) return;
+
         Managers.UI.popupCanvas.Open_CharSelectPopup(Select_Char);
     }
 

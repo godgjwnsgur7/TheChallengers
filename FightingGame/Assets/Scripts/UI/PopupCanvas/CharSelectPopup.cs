@@ -8,11 +8,17 @@ public class CharSelectPopup : PopupUI
 {
     Action<ENUM_CHARACTER_TYPE> charCallBack = null;
 
-    public void Open(Action<ENUM_CHARACTER_TYPE> _callBack)
+    public void Open(Action<ENUM_CHARACTER_TYPE> _charCallBack)
     {
         isUsing = true;
 
-        charCallBack = _callBack;
+        if(_charCallBack == null)
+        {
+            Debug.LogError("charCallBack is Null!");
+            return;
+        }
+
+        charCallBack = _charCallBack;
         this.gameObject.SetActive(true);
     }
 

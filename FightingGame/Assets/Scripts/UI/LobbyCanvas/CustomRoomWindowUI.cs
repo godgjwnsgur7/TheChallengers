@@ -15,6 +15,9 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     [SerializeField] CharProfileUI masterProfile;
     [SerializeField] CharProfileUI slaveProfile;
 
+    [SerializeField] GameObject readyButtonObejct;
+    [SerializeField] GameObject startButtonObejct;
+
     CharProfileUI myProfile
     {
         get
@@ -32,9 +35,15 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     {
         if (isInit) return;
 
-        isInit = true;
-
         base.Init();
+
+        isInit = true;
+        myProfile.isMine = true;
+
+        if (PhotonLogicHandler.IsMasterClient)
+            MasterClientSetting();
+        else
+            SlaveClientSetting();
     }
 
     public void Open()
@@ -45,6 +54,7 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
         this.gameObject.SetActive(true);
     }
+
 
     public void Set_CurrRoomInfo()
     {
@@ -73,13 +83,25 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
         isInit = false;
 
         // 이때 방에서 나가진 후에 Close 함수에서 자신의 프로필을 초기화를 시키는데
-        // 이게 브로드캐스트가 될리가?
+        // 이게 브로드캐스트가 될리가 없지 않나..?
         PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI>
             (myProfile, myProfile.Clear);
 
+        myProfile.isMine = false;
         this.gameObject.SetActive(false);
     }
 
+    private void MasterClientSetting()
+    {
+        startButtonObejct.SetActive(true);
+        readyButtonObejct.SetActive(false);
+    }
+
+    private void SlaveClientSetting()
+    {
+        readyButtonObejct.SetActive(true);
+        startButtonObejct.SetActive(false);
+    }
     public void OnClick_ChangeMap()
     {
         // 함수 두개로 나눌지, 하나의 함수에 인자를 줄지 고민중
@@ -105,12 +127,12 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     public void OnClick_Start()
     {
-        if (PhotonLogicHandler.IsMasterClient)
+        if (!PhotonLogicHandler.IsMasterClient)
         {
             Debug.Log("마스터클라이언트가 아닌데 시작버튼을 눌렀다?");
             return;
         }
 
-        // 배틀 씬으로 같이 이동.?
+        Debug.Log("배틀 씬으로 같이 이동 (미구현)");
     }
 }
