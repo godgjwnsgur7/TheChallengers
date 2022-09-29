@@ -6,6 +6,7 @@ using FGDefine;
 public class LobbyCanvas : BaseCanvas
 {
     [SerializeField] CustomMatchingUI customMatching;
+    [SerializeField] MatchingWindowUI matchingWindow;
 
     public override void Init()
     {
@@ -39,6 +40,8 @@ public class LobbyCanvas : BaseCanvas
         }
     }
 
+    public void OnClick_Mathing() => matchingWindow.OnClick_Matching();
+
     public void OnClick_Training() => Managers.UI.popupCanvas.Open_SelectPopup
         (GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
 
@@ -52,4 +55,6 @@ public class LobbyCanvas : BaseCanvas
         // 지워질 위기인 함수 (임시)
         return default(T);
     }
+
+    
 }

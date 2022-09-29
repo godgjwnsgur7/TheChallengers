@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using System;
 using FGDefine;
 
+/// <summary>
+/// 최초 한번만 생성되고, 게임 종료까지 파괴되지 않는 캔버스?
+/// </summary>
 public class PopupCanvas : MonoBehaviour
 {
     [SerializeField] CharSelectPopup charSelectPopup;
