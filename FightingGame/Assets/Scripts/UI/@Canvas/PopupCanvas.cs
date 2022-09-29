@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using FGDefine;
 
 public class PopupCanvas : MonoBehaviour
 {
@@ -23,7 +24,18 @@ public class PopupCanvas : MonoBehaviour
 
     public void Check_ActivePopup()
     {
+        // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중
+    }
 
+    public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack)
+    {
+        if(charSelectPopup.isUsing)
+        {
+            Debug.Log("이미 캐릭터선택팝업창이 사용중입니다.");
+            return;
+        }
+
+        charSelectPopup.Open(_charCallBack);
     }
 
     /// <summary>
@@ -46,15 +58,15 @@ public class PopupCanvas : MonoBehaviour
     /// 해당 버튼의 Action이 없을 경우 null
     /// 알림 팝업창은 중복해서 호출 시에 새로운 창으로 갱신됨
     /// </summary>
-    public void Open_NotifyPopup(string _message, Action _succeededCallBack = null)
+    public void Open_NotifyPopup(string _message, Action _checkCallBack = null)
     {
         if (notifyPopup.isUsing)
         {
-            notifyPopup.Open_Again(_message, _succeededCallBack);
+            notifyPopup.Open_Again(_message, _checkCallBack);
             return;
         }
 
-        notifyPopup.Open(_message, _succeededCallBack);
+        notifyPopup.Open(_message, _checkCallBack);
     }
 
     /// <summary>

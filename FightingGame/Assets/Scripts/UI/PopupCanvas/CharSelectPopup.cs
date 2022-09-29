@@ -10,6 +10,8 @@ public class CharSelectPopup : PopupUI
 
     public void Open(Action<ENUM_CHARACTER_TYPE> _callBack)
     {
+        isUsing = true;
+
         charCallBack = _callBack;
         this.gameObject.SetActive(true);
     }
@@ -25,11 +27,14 @@ public class CharSelectPopup : PopupUI
         }
 
         charCallBack(charType);
+        Close();
     }
 
     public void Close()
     {
         this.gameObject.SetActive(false);
+
         charCallBack = null;
+        isUsing = false;
     }
 }

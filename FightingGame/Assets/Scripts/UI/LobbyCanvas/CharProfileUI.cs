@@ -43,16 +43,24 @@ public class CharProfileUI : MonoBehaviourPhoton
 
     }
 
-    public void Select_Char(ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Default)
+    public void Select_Char(ENUM_CHARACTER_TYPE _charType)
     {
         if (currCharType == _charType) return;
 
+        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, ENUM_CHARACTER_TYPE>
+            (this, Sync_SelectChar, _charType);
+    }
+
+    [BroadcastMethod]
+    private void Sync_SelectChar(ENUM_CHARACTER_TYPE _charType)
+    {
         currCharType = _charType;
+
         switch (currCharType)
         {
             case ENUM_CHARACTER_TYPE.Default:
 
-                charNameText.text = "";
+                charNameText.text = "캐릭터 미선택";
                 break;
             case ENUM_CHARACTER_TYPE.Knight:
 
@@ -66,6 +74,11 @@ public class CharProfileUI : MonoBehaviourPhoton
                 charNameText.text = "없는 캐릭터";
                 break;
         }
+    }
+
+    public void OnClick_SeleteChar()
+    {
+        Managers.UI.popupCanvas.Open_CharSelectPopup(Select_Char);
     }
 
     public void OnClick_Ready()
