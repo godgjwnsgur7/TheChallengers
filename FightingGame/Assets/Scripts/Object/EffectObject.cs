@@ -10,7 +10,7 @@ public enum ENUM_EFFECTOBJECT_NAME
 
 }
 
-public class EffectObject : MonoBehaviour
+public class EffectObject : Poolable
 {
     
 }

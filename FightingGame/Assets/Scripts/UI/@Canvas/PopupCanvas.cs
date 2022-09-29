@@ -6,7 +6,7 @@ using System;
 
 public class PopupCanvas : MonoBehaviour
 {
-    // 중복으로 요청 시에 리턴
+    [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;

@@ -19,8 +19,10 @@ public class CharProfileUI : MonoBehaviourPhoton
     [SerializeField] Sprite readySprite;
     [SerializeField] Sprite unreadySprite;
 
-    ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-    bool isReady = false;
+    // 확인용 public (임시)
+    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
+    public bool isReady = false;
+    public int userId = 0;
 
     public override void Init()
     {
@@ -37,7 +39,7 @@ public class CharProfileUI : MonoBehaviourPhoton
     [BroadcastMethod]
     public void Sync_UpdateProfileInfo()
     {
-        // 현재 방 정보 가져와서 세팅
+        // 현재 
 
     }
 
@@ -92,5 +94,6 @@ public class CharProfileUI : MonoBehaviourPhoton
         Select_Char(ENUM_CHARACTER_TYPE.Default);
 
         isInit = false;
+        userId = 0;
     }
 }

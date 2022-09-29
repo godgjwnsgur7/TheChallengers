@@ -41,6 +41,8 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     {
         Init();
 
+        Set_CurrRoomInfo(); // 임시로 일단 여기에 호출
+
         this.gameObject.SetActive(true);
     }
 
@@ -61,8 +63,6 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     public void ExitRoom()
     {
-        // 이때 방에서 나가진 후에 Close 함수에서 자신의 프로필을 초기화를 시키는데
-        // 이게 될리가 없는걸?...ㅋ
         bool isExit = PhotonLogicHandler.Instance.TryLeaveRoom(Close);
         if (!isExit)
             Managers.UI.popupCanvas.Open_NotifyPopup("방에서 나가지 못했습니다.");
@@ -72,6 +72,8 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     {
         isInit = false;
 
+        // 이때 방에서 나가진 후에 Close 함수에서 자신의 프로필을 초기화를 시키는데
+        // 이게 브로드캐스트가 될리가?
         PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI>
             (myProfile, myProfile.Clear);
 
