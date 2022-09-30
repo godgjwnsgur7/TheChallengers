@@ -7,18 +7,17 @@ public abstract class PopupUI : MonoBehaviour
 {
     public bool isUsing = false;
     [SerializeField] GameObject popupWindow;
-    private float time = 0;
+    private float time = 0; // 왜 얘는 나와서 공용으로 사용함?
 
-    Coroutine currCoroutine;
+    Coroutine currCoroutine; // 얘 왜 미사용하는데 사용..?
     private bool isRunning = false;
 
-    // 팝업 UI가 어떤 크기든 맞춰서 Popup Window의 등장 이펙트 사라지는 이펙트 구현
-    // 등장하고 사라지는데에는 0.5초 ~ 1초 사이의 시간 안에 할 것.
-    // 이쁘게 만들어주세엽 (우진)
-    // + 활성화 시키는 시점도 여기서 제어할 예정
+    // 변수명 순서가 조금 불편하네 ㅋ 타입끼리 묶여있으면 좋겠네
 
     private void OnEnable()
     {
+        // 여기에서 활성화될때마다 초기화하는거보다 Close할때 초기화가 낫지않나.?
+
         isRunning = false;
         currCoroutine = null;
         time = 0;
@@ -29,6 +28,7 @@ public abstract class PopupUI : MonoBehaviour
         if (isRunning)
         {
             Debug.Log("실행중인 코루틴이 있습니다.");
+            // 실행중인 코루틴이 있으면 여기서 리턴을 시켜버리는건 옳지 않을듯
             return;
         }
 
@@ -42,11 +42,14 @@ public abstract class PopupUI : MonoBehaviour
         if (isRunning)
         {
             Debug.Log("실행중인 코루틴이 있습니다.");
+            // 실행중인 코루틴이 있으면 여기서 리턴을 시켜버리는건 옳지 않을듯
             return;
         }
 
         currCoroutine = StartCoroutine(Close_Coroutine());
     }
+
+    // 코루틴 안에서의 역할같은건 나중에 변할거니까 일단 안읽음
 
     IEnumerator Open_Coroutine()
     {
