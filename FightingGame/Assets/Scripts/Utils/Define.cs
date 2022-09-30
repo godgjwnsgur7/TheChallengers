@@ -78,12 +78,12 @@ namespace FGDefine
         Knight_Attack1 = 1,
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
-        Knight_ThrowSkill = 4,
-        Knight_SuperArmourSkill = 5,
-        Knight_Skill3 = 6,
-        Knight_SuperArmourSkill_1 = 7,
-        Knight_SuperArmourSkill_2 = 8,
-        Knight_SuperArmourSkill_3 = 9,
+        Knight_ThrowSkillObject = 4,
+        Knight_SmashSkillObject = 5,
+        Knight_DashSkill = 6,
+        Knight_SmashSkillObject_1 = 7,
+        Knight_SmashSkillObject_2 = 8,
+        Knight_SmashSkillObject_3 = 9,
 
     }
 

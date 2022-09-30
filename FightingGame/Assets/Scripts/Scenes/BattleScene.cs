@@ -95,21 +95,21 @@ public class BattleScene : BaseScene
         return activeCharacter;
     }
 
+    // 여기서 하는 것도 지금 문제가 있음 ㅋ
     private void Skills_Pooling(ENUM_CHARACTER_TYPE charType)
     {
         switch (charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 3);
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack1", 3);
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack2", 3);
                 Managers.Resource.GenerateInPool("AttackObejcts/Knight_Attack3", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkill", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill_1", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill_2", 3);
-                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SuperArmourSkill_3", 3);
-
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_JumpAttack", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SmashSkillObject", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SmashSkillObject_1", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SmashSkillObject_2", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_SmashSkillObject_3", 3);
+                Managers.Resource.GenerateInPool("AttackObejcts/Knight_ThrowSkillObject", 3);
                 break;
 
             default:

@@ -52,10 +52,8 @@ public class AttackObject : Poolable
         gameObject.SetActive(true);
 
         if(PhotonLogicHandler.IsConnected)
-        {
             if (PhotonLogicHandler.IsMine(viewID))
                 CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
-        }
         else
             CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
@@ -90,10 +88,8 @@ public class AttackObject : Poolable
             
             
             if(PhotonLogicHandler.IsConnected)
-            {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, CharacterAttackParam>
                     (enemyCharacter, enemyCharacter.Hit, attackParam, ENUM_RPC_TARGET.OTHER);
-            }
             else
                 enemyCharacter.Hit(attackParam);
 
@@ -105,7 +101,7 @@ public class AttackObject : Poolable
         }
     }
 
-    private IEnumerator IRunTimeCheck(float _runTime)
+    protected IEnumerator IRunTimeCheck(float _runTime)
     {
         float realTime = 0.0f;
 

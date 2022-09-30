@@ -9,7 +9,6 @@ public class MultiAttackObject : AttackObject
 
     public bool isConnected;
 
-    // 이미지 센터가 맞지 않아 임시로 로직처리
     [SerializeField] Vector3 subPos;
 
     public override void Init()
