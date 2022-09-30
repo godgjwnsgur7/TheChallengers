@@ -8,6 +8,9 @@ public abstract class PopupUI : MonoBehaviour
     public bool isUsing = false;
     [SerializeField] GameObject popupWindow;
     private float time = 0; // 왜 얘는 나와서 공용으로 사용함?
+    // 이거 추가로 설명 좀 더 붙이면 이렇게 되면 오픈하자마자
+    // 외부에 의해서 닫힐 때, 두 코루틴이 같은 변수 값을 사용해서 돌리게 되기 떄문에
+    // 조옷댈거같다는거임
 
     Coroutine currCoroutine; // 얘 왜 미사용하는데 사용..?
     private bool isRunning = false;
