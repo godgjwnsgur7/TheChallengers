@@ -88,6 +88,18 @@ namespace FGDefine
     }
 
     /// <summary>
+    /// "Resources/Prefabs/EffectObjects/" 경로 안의 프리팹 이름 리스트
+    /// </summary>
+    [Serializable]
+    public enum ENUM_EFFECTOBJECT_NAME
+    {
+        Basic_AttackedEffect1 = 0,
+        Basic_AttackedEffect2 = 1,
+        Basic_AttackedEffect3 = 2,
+
+    }
+
+    /// <summary>
     /// "Resources/Sounds/BGM/"
     /// 경로 안에 같은 이름의 Audio Clip 파일이 있어야 함
     /// </summary>
