@@ -5,73 +5,62 @@ using UnityEngine.UI;
 
 public abstract class PopupUI : MonoBehaviour
 {
+    private bool isPopupActive = false;
     public bool isUsing = false;
+
+    private Coroutine openCoroutine;
+    private Coroutine closeCoroutine;
     [SerializeField] GameObject popupWindow;
-    private float time = 0; // 왜 얘는 나와서 공용으로 사용함?
-    // 이거 추가로 설명 좀 더 붙이면 이렇게 되면 오픈하자마자
-    // 외부에 의해서 닫힐 때, 두 코루틴이 같은 변수 값을 사용해서 돌리게 되기 떄문에
-    // 조옷댈거같다는거임
-
-    Coroutine currCoroutine; // 얘 왜 미사용하는데 사용..?
-    private bool isRunning = false;
-
-    // 변수명 순서가 조금 불편하네 ㅋ 타입끼리 묶여있으면 좋겠네
-
-    private void OnEnable()
-    {
-        // 여기에서 활성화될때마다 초기화하는거보다 Close할때 초기화가 낫지않나.?
-
-        isRunning = false;
-        currCoroutine = null;
-        time = 0;
-    }
 
     public void Open_Effect()
     {
-        if (isRunning)
-        {
-            Debug.Log("실행중인 코루틴이 있습니다.");
-            // 실행중인 코루틴이 있으면 여기서 리턴을 시켜버리는건 옳지 않을듯
+        // 열려있는데 여는건 의미 없다 생각해서 리턴
+        if (isPopupActive)
             return;
-        }
 
-        this.gameObject.SetActive(true);
+        // 닫는 걸 중단하고 열기
+        if (closeCoroutine != null)
+            StopCoroutine(closeCoroutine);
 
-        currCoroutine = StartCoroutine(Open_Coroutine());
+
+        SetActive(true);
+
+        openCoroutine = StartCoroutine(Open_Coroutine());
     }
 
     public void Close_Effect()
     {
-        if (isRunning)
-        {
-            Debug.Log("실행중인 코루틴이 있습니다.");
-            // 실행중인 코루틴이 있으면 여기서 리턴을 시켜버리는건 옳지 않을듯
+        // 닫혀 있는데 닫는건 의미없다 생각해 리턴
+        if (!isPopupActive)
             return;
-        }
 
-        currCoroutine = StartCoroutine(Close_Coroutine());
+        // 여는 걸 중단하고 닫기
+        if (openCoroutine != null)
+            StopCoroutine(openCoroutine);
+
+        closeCoroutine = StartCoroutine(Close_Coroutine());
     }
 
     // 코루틴 안에서의 역할같은건 나중에 변할거니까 일단 안읽음
 
     IEnumerator Open_Coroutine()
     {
-        isRunning = true;
+        float time = 0;
+        Image popupImage = popupWindow.GetComponent<Image>();
 
         while (time < 1f)
-        { 
-            popupWindow.GetComponent<Image>().color = new Color(1, 1, 1, time / 1);
+        {
+            popupImage.color = new Color(1, 1, 1, time / 1);
             time += Time.deltaTime;
             yield return null;
         }
 
-        time = 0;
-        isRunning = false;
+        ResetCoroutine();
     }
 
     IEnumerator Close_Coroutine()
     {
-        isRunning = true;
+        float time = 0;
 
         while (time < 1f)
         {
@@ -80,8 +69,19 @@ public abstract class PopupUI : MonoBehaviour
             yield return null;
         }
 
-        time = 0;
-        isRunning = false;
-        this.gameObject.SetActive(false);
+        ResetCoroutine();
+        SetActive(false);
+    }
+
+    private void ResetCoroutine()
+    {
+        openCoroutine = null;
+        closeCoroutine = null;
+    }
+
+    private void SetActive(bool isActive)
+    {
+        this.gameObject.SetActive(isActive);
+        this.isPopupActive = isActive;
     }
 }
