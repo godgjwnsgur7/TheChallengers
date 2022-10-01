@@ -124,14 +124,10 @@ public class RoomListElementUI : MonoBehaviour
 
     public void JoinRoom()
     {
-        if (myRoomInfo.currentPlayerCount == 1)
-        {
-            // myRoomInfo의 정보를 이용해 해당하는 방에 입장해야 함
+        if (PhotonLogicHandler.Instance.TryJoinRoom(null, null, myRoomInfo.roomName))
+
             OnActiveRoomWindow();
-        }
         else
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("방에 자리가 없습니다.", OnUpdateRoomList);
-        }
+            Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);
     }
 }

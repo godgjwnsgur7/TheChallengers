@@ -96,8 +96,7 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 
     public void Active_CustomRoomWindow()
     {
-        customRoomWindow.Init();
-        customRoomWindow.gameObject.SetActive(true);
+        customRoomWindow.Open();
     }
 
     private IEnumerator IUpdateLockTime(float waitTime)

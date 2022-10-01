@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
-public class CharProfileUI : MonoBehaviourPhoton
+public class CharProfileUI : MonoBehaviour
 {
     public bool isInit = false;
 
@@ -13,7 +14,7 @@ public class CharProfileUI : MonoBehaviourPhoton
     [SerializeField] Image readyStateImage;
 
     [SerializeField] Text charNameText;
-    [SerializeField] Text userNicknameText;
+    [SerializeField] Text userNicknameText; // 닉네임 받아와야 함
 
     [Header("Setting Resources With Editor")]
     [SerializeField] Sprite readySprite;
@@ -25,41 +26,29 @@ public class CharProfileUI : MonoBehaviourPhoton
     public bool isReady = false;
     public bool isMine = false;
 
-    public override void Init()
+    Action <ENUM_CHARACTER_TYPE, string, bool> OnUpdateProfileRequest;
+
+    public void Init()
     {
         if (isInit) return;
 
         isInit = true;
 
-        base.Init();
+        Clear();
 
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI>
-            (this, Sync_UpdateProfileInfo);
     }
 
-    [BroadcastMethod]
-    public void Sync_UpdateProfileInfo()
+    public void Update_Profile(ENUM_CHARACTER_TYPE charType, string userNickname, bool readyState)
     {
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, ENUM_CHARACTER_TYPE>
-            (this, Sync_SelectChar, currCharType);
-
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, bool>
-            (this, Sync_ReadyStateImage, isReady);
-
-        // 내 아이디도 다시 세팅해야 함
+        Select_Char(charType);
+        userNicknameText.text = userNickname;
+        Set_ReadyState(readyState);
     }
 
     public void Select_Char(ENUM_CHARACTER_TYPE _charType)
     {
         if (!isMine || currCharType == _charType) return;
 
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, ENUM_CHARACTER_TYPE>
-            (this, Sync_SelectChar, _charType);
-    }
-
-    [BroadcastMethod]
-    private void Sync_SelectChar(ENUM_CHARACTER_TYPE _charType)
-    {
         currCharType = _charType;
 
         switch (currCharType)
@@ -77,8 +66,24 @@ public class CharProfileUI : MonoBehaviourPhoton
                 charNameText.text = "위저드";
                 break;
             default:
-                charNameText.text = "없는 캐릭터";
+                charNameText.text = "없는 캐릭터?";
                 break;
+        }
+    }
+
+    public void Set_ReadyState(bool readyState)
+    {
+        if (isReady == readyState) return;
+
+        if(readyState)
+        {
+            readyStateImage.sprite = readySprite;
+            isReady = true;
+        }
+        else
+        {
+            readyStateImage.sprite = unreadySprite;
+            isReady = false;
         }
     }
 
@@ -89,35 +94,13 @@ public class CharProfileUI : MonoBehaviourPhoton
         Managers.UI.popupCanvas.Open_CharSelectPopup(Select_Char);
     }
 
-    public void OnClick_Ready()
-    {
-        if (PhotonLogicHandler.IsMasterClient)
-            return;
-
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, bool>
-            (this, Sync_ReadyStateImage, isReady);
-
-        isReady = !isReady;
-    }
-
-    [BroadcastMethod]
-    public void Sync_ReadyStateImage(bool _isReady)
-    {
-        if (isReady != _isReady)
-            isReady = _isReady;
-
-        if (_isReady)
-            readyStateImage.sprite = unreadySprite;
-        else
-            readyStateImage.sprite = readySprite;
-    }
-
-    [BroadcastMethod]
     public void Clear()
     {
         Select_Char(ENUM_CHARACTER_TYPE.Default);
 
         isInit = false;
+        isReady = false;
+        isMine = false;
         userId = 0;
     }
 }

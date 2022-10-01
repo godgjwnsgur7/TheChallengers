@@ -16,9 +16,6 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     [SerializeField] CharProfileUI masterProfile;
     [SerializeField] CharProfileUI slaveProfile;
 
-    [SerializeField] GameObject readyButtonObject;
-    [SerializeField] GameObject startButtonObject;
-
     CharProfileUI myProfile
     {
         get
@@ -42,10 +39,6 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
         myProfile.isMine = true;
         myProfile.Init();
 
-        if (PhotonLogicHandler.IsMasterClient)
-            MasterClientSetting();
-        else
-            SlaveClientSetting();
     }
 
     public void Open()
@@ -57,17 +50,34 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
         this.gameObject.SetActive(true);
     }
 
+    private void Close()
+    {
+        isInit = false;
+
+        myProfile.Clear();
+        this.gameObject.SetActive(false);
+    }
+
 
     public void Set_CurrRoomInfo()
     {
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
 
-        Set_CurrMapInfo((ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), PhotonLogicHandler.CurrentMapName));
+        // PhotonLogicHandler.CurrentMapName 이 Null로 반환되서 일단 주석처리
+        // Set_CurrMapInfo((ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), PhotonLogicHandler.CurrentMapName));
     }
 
     public void Set_CurrMapInfo(ENUM_MAP_TYPE _mapType)
     {
-        // 맵 정보 갱신, 셋팅
+        switch(_mapType)
+        {
+            case ENUM_MAP_TYPE.BasicMap:
+                // 맵 이미지 세팅해와!
+                return;
+            default:
+                Debug.Log("알 수 없는 맵을 선택함 이게 가능함?ㅋㅋ");
+                return;
+        }
     }
 
     public void ExitRoom()
@@ -77,65 +87,38 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
             Managers.UI.popupCanvas.Open_NotifyPopup("방에서 나가지 못했습니다.");
     }
 
-    private void Close()
-    {
-        isInit = false;
+    
 
-        // 이때 방에서 나가진 후에 Close 함수에서 자신의 프로필을 초기화를 시키는데
-        // 이게 브로드캐스트가 될리가 없지 않나..?
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI>
-            (myProfile, myProfile.Clear);
 
-        myProfile.isMine = false;
-        this.gameObject.SetActive(false);
-    }
-
-    private void MasterClientSetting()
-    {
-        startButtonObject.SetActive(true);
-        readyButtonObject.SetActive(false);
-    }
-
-    private void SlaveClientSetting()
-    {
-        readyButtonObject.SetActive(true);
-        startButtonObject.SetActive(false);
-    }
+    #region OnClick 함수들
     public void OnClick_ChangeMap()
     {
-        // 함수 두개로 나눌지, 하나의 함수에 인자를 줄지 고민중
+        Debug.Log("맵 변경시켜. (미구현)");
+        // 맵 변경시켜.
     }
 
     public void OnClick_ExitRoom()
     {
         if(!PhotonLogicHandler.IsMasterClient)
         {
-            PhotonLogicHandler.Instance.TryBroadcastMethod<CharProfileUI, bool>
-            (myProfile, myProfile.Sync_ReadyStateImage, false);
+            // 준비해제시켜.
         }
 
         Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "정말 방에서 나가시겠습니까?");
     }
 
-    public void OnClick_Ready()
+    public void OnClick_ReadyOrStart()
     {
         if (PhotonLogicHandler.IsMasterClient)
         {
-            Debug.Log("마스터클라이언트가 준비버튼을 눌렀다?");
-            return;
+            // 마스터 클라이언트
+
         }
-
-        myProfile.OnClick_Ready();
-    }
-
-    public void OnClick_Start()
-    {
-        if (!PhotonLogicHandler.IsMasterClient)
+        else
         {
-            Debug.Log("마스터클라이언트가 아닌데 시작버튼을 눌렀다?");
-            return;
-        }
+            // 슬레이브 클라이언트
 
-        Debug.Log("시작하는 조건 확인하고, 배틀 씬으로 같이 이동 (미구현)");
+        }
     }
+    #endregion
 }

@@ -33,7 +33,6 @@ public class CreateRoomUI : MonoBehaviour
         // 금지어 체크해야 함
     
         PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, userInputField.text);
-        
         Managers.UI.popupCanvas.Close_LoadingPopup();
     }
 
