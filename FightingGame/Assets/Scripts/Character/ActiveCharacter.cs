@@ -456,7 +456,7 @@ public partial class ActiveCharacter : Character
         }
         else
         {
-            Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
+            Debug.Log($"ENUM_ATTACKOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
     }
 
@@ -469,7 +469,30 @@ public partial class ActiveCharacter : Character
 
         bool isConnected = PhotonLogicHandler.IsConnected;
 
-        // 아직 미구현
+        EffectObject effectObject = null;
+
+        if (isConnected)
+            effectObject = Managers.Resource.InstantiateEveryone(effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
+        else
+            effectObject = Managers.Resource.GetEffectObject(effectObjectName.ToString());
+
+        if (effectObject != null)
+        {
+            // effectObject.FollowingTarget(this.transform);
+
+            if (isConnected)
+            {
+                // PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, bool>
+                //     (effectObject, effectObject.ActivatingEffectObject, reverseState);
+            }
+            else
+                attackObject.ActivatingAttackObject(teamType, reverseState);
+        }
+        else
+        {
+            Debug.Log($"ENUM_EFFECTOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_effectTypeNum}");
+        }
+
     }
     
     protected void SuperArmourState_On()
