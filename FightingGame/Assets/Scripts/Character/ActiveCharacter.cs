@@ -421,6 +421,11 @@ public partial class ActiveCharacter : Character
             Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
     }
+
+    protected void Summon_EffectObject(int _effectTypeNum)
+    {
+        // 아직 미구현
+    }
     
     // 변수 동기화로 무적처리가 잘 될지 모르겠지만, 일단 진행
     protected void SuperArmourState_On()

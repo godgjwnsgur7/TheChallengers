@@ -20,6 +20,23 @@ public class NotifyPopup : PopupUI
         this.gameObject.SetActive(true);
     }
 
+    public void Open_Again(string _message, Action _callBack = null)
+    {
+        if(isUsing)
+        {
+            Open(_message, _callBack);
+            return;
+        }
+        
+        this.gameObject.SetActive(false);
+
+        popupText.text = _message;
+
+        callBack = _callBack;
+
+        this.gameObject.SetActive(true);
+    }
+
     public void OnClick_Close()
     {
         if(callBack != null) callBack();

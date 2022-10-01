@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using FGDefine;
 
+/// <summary>
+/// 최초 한번만 생성되고, 게임 종료까지 파괴되지 않는 캔버스?
+/// </summary>
 public class PopupCanvas : MonoBehaviour
 {
-    // 중복으로 요청 시에 리턴
+    [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;
@@ -21,15 +25,31 @@ public class PopupCanvas : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    public void Check_ActivePopup()
+    {
+        // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중
+    }
+
+    public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack)
+    {
+        if(charSelectPopup.isUsing)
+        {
+            Debug.Log("이미 캐릭터선택팝업창이 사용중입니다.");
+            return;
+        }
+
+        charSelectPopup.Open(_charCallBack);
+    }
+
     /// <summary>
     /// 예, 아니오 선택창 Popup Window 
     /// 해당 버튼의 Action이 없을 경우 null
     /// </summary>
     public void Open_SelectPopup(Action _succeededCallBack, Action _failedCallBack, string _message)
     {
-        if(notifyPopup.isUsing)
+        if(selectPopup.isUsing)
         {
-            Debug.Log("이미 알림팝업창이 사용중입니다.");
+            Debug.Log("이미 선택팝업창이 사용중입니다.");
             return;
         }
 
@@ -39,16 +59,17 @@ public class PopupCanvas : MonoBehaviour
     /// <summary>
     /// 알림창 Popup Window 
     /// 해당 버튼의 Action이 없을 경우 null
+    /// 알림 팝업창은 중복해서 호출 시에 새로운 창으로 갱신됨
     /// </summary>
-    public void Open_NotifyPopup(string _message, Action _succeededCallBack = null)
+    public void Open_NotifyPopup(string _message, Action _checkCallBack = null)
     {
-        if (selectPopup.isUsing)
+        if (notifyPopup.isUsing)
         {
-            Debug.Log("이미 선택팝업창이 사용중입니다.");
+            notifyPopup.Open_Again(_message, _checkCallBack);
             return;
         }
 
-        notifyPopup.Open(_message, _succeededCallBack);
+        notifyPopup.Open(_message, _checkCallBack);
     }
 
     /// <summary>

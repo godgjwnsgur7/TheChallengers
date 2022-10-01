@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8824507207570281986
+--- !u!1 &4631383113477182098
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2531093677047041127}
-  - component: {fileID: 1402070561062875134}
-  - component: {fileID: 2906594729422670707}
+  - component: {fileID: 4631383113477182105}
+  - component: {fileID: 4631383113477182110}
+  - component: {fileID: 4631383113477182111}
+  - component: {fileID: 4631383113477182108}
+  - component: {fileID: 4631383113477182109}
   m_Layer: 0
   m_Name: Knight_Attack2
   m_TagString: Untagged
@@ -18,27 +20,50 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2531093677047041127
+--- !u!4 &4631383113477182105
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8824507207570281986}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 4631383113477182098}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1402070561062875134
+--- !u!114 &4631383113477182110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8824507207570281986}
+  m_GameObject: {fileID: 4631383113477182098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4631383113477182111}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4631383113477182111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4631383113477182098}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ba6ae364f96851409419fd56b53112b, type: 3}
@@ -52,13 +77,39 @@ MonoBehaviour:
     stunTime: 0
     risingPower: 0
     pushingPower: 0
---- !u!60 &2906594729422670707
+    coolTime: 0
+  teamType: 0
+  attackObjectType: 0
+  targetTr: {fileID: 0}
+  reverseState: 0
+--- !u!50 &4631383113477182108
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4631383113477182098}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!60 &4631383113477182109
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8824507207570281986}
+  m_GameObject: {fileID: 4631383113477182098}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -77,10 +128,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.6679727, y: 1.336836}
-      - {x: 0.5654535, y: 1.6509595}
-      - {x: -0.512543, y: 1.4636564}
-      - {x: 0.6525624, y: -0.360637}
-      - {x: 1.8214873, y: -0.25770366}
-      - {x: 2.2107885, y: 0.068143666}
-      - {x: 2.0933619, y: 0.92966545}
+    - - {x: 1.6319106, y: 1.2821524}
+      - {x: 0.878062, y: 1.5657313}
+      - {x: 0.084094405, y: 1.5506094}
+      - {x: -0.62984467, y: 1.2825586}
+      - {x: -1.1096549, y: 0.8550626}
+      - {x: 0.66952765, y: -0.50422156}
+      - {x: 1.9874704, y: -0.36114648}
+      - {x: 2.2496207, y: -0.054708555}
+      - {x: 2.1709144, y: 0.7215294}

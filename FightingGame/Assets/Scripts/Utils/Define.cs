@@ -78,12 +78,24 @@ namespace FGDefine
         Knight_Attack1 = 1,
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
-        Knight_ThrowSkill = 4,
-        Knight_SuperArmourSkill = 5,
-        Knight_Skill3 = 6,
-        Knight_SuperArmourSkill_1 = 7,
-        Knight_SuperArmourSkill_2 = 8,
-        Knight_SuperArmourSkill_3 = 9,
+        Knight_ThrowSkillObject = 4,
+        Knight_SmashSkillObject = 5,
+        Knight_DashSkill = 6,
+        Knight_SmashSkillObject_1 = 7,
+        Knight_SmashSkillObject_2 = 8,
+        Knight_SmashSkillObject_3 = 9,
+
+    }
+
+    /// <summary>
+    /// "Resources/Prefabs/EffectObjects/" 경로 안의 프리팹 이름 리스트
+    /// </summary>
+    [Serializable]
+    public enum ENUM_EFFECTOBJECT_NAME
+    {
+        Basic_AttackedEffect1 = 0,
+        Basic_AttackedEffect2 = 1,
+        Basic_AttackedEffect3 = 2,
 
     }
 
@@ -142,20 +154,6 @@ namespace FGDefine
         Main,
         Training,
         Debug, // 테스트씬
-    }
-
-    [Serializable]
-    public enum ENUM_BTNPREFS_TYPE
-    {
-        LeftMoveBtn = 0,
-        RightMoveBtn = 1,
-        AttackBtn = 2,
-        JumpBtn = 3,
-        SkillBtn1 = 4,
-        SkillBtn2 = 5,
-        SkillBtn3 = 6,
-
-        Max
     }
 }
 
