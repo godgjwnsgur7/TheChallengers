@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public abstract class PopupUI : MonoBehaviour
 {
-    private bool isPopupActive = false;
     public bool isUsing = false;
 
     private Coroutine openCoroutine;
@@ -14,27 +13,23 @@ public abstract class PopupUI : MonoBehaviour
 
     public void Open_Effect()
     {
-        // 열려있는데 여는건 의미 없다 생각해서 리턴
-        if (isPopupActive)
+        if (this.gameObject.activeSelf)
             return;
 
-        // 닫는 걸 중단하고 열기
         if (closeCoroutine != null)
             StopCoroutine(closeCoroutine);
 
 
-        SetActive(true);
+        this.gameObject.SetActive(true);
 
         openCoroutine = StartCoroutine(Open_Coroutine());
     }
 
     public void Close_Effect()
     {
-        // 닫혀 있는데 닫는건 의미없다 생각해 리턴
-        if (!isPopupActive)
+        if (!this.gameObject.activeSelf)
             return;
 
-        // 여는 걸 중단하고 닫기
         if (openCoroutine != null)
             StopCoroutine(openCoroutine);
 
@@ -55,33 +50,22 @@ public abstract class PopupUI : MonoBehaviour
             yield return null;
         }
 
-        ResetCoroutine();
+        openCoroutine = null;
     }
 
     IEnumerator Close_Coroutine()
     {
         float time = 0;
+        Image popupImage = popupWindow.GetComponent<Image>();
 
         while (time < 1f)
         {
-            popupWindow.GetComponent<Image>().color = new Color(1, 1, 1, 1f - time / 1);
+            popupImage.color = new Color(1, 1, 1, time / 1);
             time += Time.deltaTime;
             yield return null;
         }
 
-        ResetCoroutine();
-        SetActive(false);
-    }
-
-    private void ResetCoroutine()
-    {
-        openCoroutine = null;
         closeCoroutine = null;
-    }
-
-    private void SetActive(bool isActive)
-    {
-        this.gameObject.SetActive(isActive);
-        this.isPopupActive = isActive;
+        this.gameObject.SetActive(false);
     }
 }

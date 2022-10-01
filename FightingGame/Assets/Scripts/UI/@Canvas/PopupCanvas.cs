@@ -53,6 +53,7 @@ public class PopupCanvas : MonoBehaviour
             return;
         }
 
+        selectPopup.Open_Effect();
         selectPopup.Open(_succeededCallBack, _failedCallBack, _message);
     }
 

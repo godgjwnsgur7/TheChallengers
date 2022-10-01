@@ -129,6 +129,7 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 5);
+        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 5);
 
     }
 
@@ -478,15 +479,15 @@ public partial class ActiveCharacter : Character
 
         if (effectObject != null)
         {
-            // effectObject.FollowingTarget(this.transform);
+            effectObject.FollowingTarget(this.transform);
 
             if (isConnected)
             {
-                // PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, bool>
-                //     (effectObject, effectObject.ActivatingEffectObject, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool>
+                    (effectObject, effectObject.ActivatingEffectObject, reverseState);
             }
             else
-                attackObject.ActivatingAttackObject(teamType, reverseState);
+                effectObject.ActivatingEffectObject(reverseState);
         }
         else
         {
