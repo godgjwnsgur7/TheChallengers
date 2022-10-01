@@ -129,8 +129,9 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 5);
+        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 5);
+        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 5);
-
     }
 
     public override void Idle()
