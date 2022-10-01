@@ -13,7 +13,7 @@ using FGDefine;
 public class CustomRoomInfo
 {
     public string roomName;
-    public int roomId;
+    public int masterClientId;
     public string masterClientNickname;
     public ENUM_MAP_TYPE currentMapType;
     public int currentPlayerCount;
@@ -145,9 +145,9 @@ public partial class PhotonLogicHandler : ILobbyCallbacks
         return list?.Find(roomInfo => roomInfo.roomName == roomName);
     }
 
-    public static CustomRoomInfo GetRoomInfo(int roomId)
+    public static CustomRoomInfo GetRoomInfo(int masterClientId)
 	{
         var list = Instance.customRoomList;
-        return list?.Find(roomInfo => roomInfo.roomId == roomId);
+        return list?.Find(roomInfo => roomInfo.masterClientId == masterClientId);
     }
 }

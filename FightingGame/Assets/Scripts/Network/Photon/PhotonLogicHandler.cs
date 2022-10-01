@@ -687,7 +687,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             CustomRoomInfo info = new CustomRoomInfo()
             {
                 roomName = room.Name,
-                roomId = room.masterClientId,
+                masterClientId = room.masterClientId,
                 masterClientNickname = masterClientNickname,
                 currentMapType = currentMapType,
                 currentPlayerCount = room.PlayerCount,
