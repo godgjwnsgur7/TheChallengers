@@ -115,7 +115,9 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);
                 
                 break;
-
+            case ENUM_CHARACTER_TYPE.Wizard:
+                // 아직 풀링할 오브젝트가 없음.
+                break;
             default:
                 Debug.Log($"Failed to SkillObject : {charType}");
                 break;
@@ -467,7 +469,7 @@ public partial class ActiveCharacter : Character
 
         bool isConnected = PhotonLogicHandler.IsConnected;
 
-
+        // 아직 미구현
     }
     
     protected void SuperArmourState_On()

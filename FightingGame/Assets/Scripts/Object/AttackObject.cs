@@ -58,7 +58,6 @@ public class AttackObject : Poolable
             CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
-
     public void FollowingTarget(Transform _targetTr)
     {
         targetTr = _targetTr;
@@ -132,7 +131,6 @@ public class AttackObject : Poolable
             PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
         else
             Managers.Resource.Destroy(gameObject);
-
     }
 
     [BroadcastMethod]

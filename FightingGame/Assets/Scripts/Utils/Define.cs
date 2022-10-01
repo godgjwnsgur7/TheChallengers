@@ -96,7 +96,9 @@ namespace FGDefine
         Basic_AttackedEffect1 = 0,
         Basic_AttackedEffect2 = 1,
         Basic_AttackedEffect3 = 2,
-
+        Knight_SmokeEffect_Jump = 3,
+        Knight_SmokeEffect_Landing = 4,
+        Knight_SmokeEffect_Move = 5,
     }
 
     /// <summary>
