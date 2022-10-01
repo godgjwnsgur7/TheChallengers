@@ -7,7 +7,7 @@ using FGDefine;
 
 public class DebugWindow : BaseCanvas
 {
-	[SerializeField] private InputField nicknameInput = null;
+	[SerializeField] private InputField roomNameInput = null;
 
 	[SerializeField] private Text statusPanel = null;
 	[SerializeField] private Text detailStatusPanel = null;
@@ -33,7 +33,14 @@ public class DebugWindow : BaseCanvas
 	{
 		PhotonLogicHandler.Instance.TryJoinRandomRoom(
 			() => { SetStatus("매칭 성공"); },
-			SetError, nicknameInput.text);
+			SetError);
+	}
+
+	public void OnClickJoinRoom()
+	{
+		PhotonLogicHandler.Instance.TryJoinRoom(
+		() => { SetStatus("매칭 성공"); },
+		SetError, roomNameInput.text);
 	}
 
 	public void OnClickJoinLobby()
@@ -49,7 +56,7 @@ public class DebugWindow : BaseCanvas
 		PhotonLogicHandler.Instance.TryCreateRoom(
 		OnCreateRoom: () => { SetStatus("방 만들기 성공"); }, 
 		OnCreateRoomFailed: SetError, 
-		masterClientNickname: nicknameInput.text);
+		roomName: roomNameInput.text);
 	}
 
 	public void OnClickFindCustomRoom()

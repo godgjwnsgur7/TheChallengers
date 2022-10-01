@@ -345,22 +345,31 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="_OnJoinRoomFailed">룸 접속에 실패했을 때 불리는 콜백 </param>
     /// <returns> 성공 여부 </returns>
 
-    public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string nickname)
+    public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed)
     {
         Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        PhotonNetwork.LocalPlayer.NickName = nickname;
+        PhotonNetwork.LocalPlayer.NickName = "";
 
         ExitGames.Client.Photon.Hashtable optionTable = new ExitGames.Client.Photon.Hashtable()
         {
            
         };
 
-        return PhotonNetwork.JoinRandomRoom(optionTable, 0);
+        return PhotonNetwork.JoinRandomOrCreateRoom(optionTable, 0);
     }
+
+    public bool TryJoinRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
+	{
+        this._OnJoinRoom = _OnJoinRoom;
+        this._OnJoinRoomFailed = _OnJoinRoomFailed;
+
+        PhotonNetwork.LocalPlayer.NickName = "";
+        return PhotonNetwork.JoinRoom(roomName);
+	}
 
     public bool TryLeaveRoom(Action _OnLeftRoom = null)
 	{
@@ -460,18 +469,18 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     /// <param name="maxPlayerCount"> 방 인원 최대 수 </param>
     /// <returns> 성공 여부 </returns>
 
-    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", string masterClientNickname = "", int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.BasicMap)
+    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.BasicMap)
     {
         this._OnCreateRoom = OnCreateRoom;
         this._OnCreateRoomFailed = OnCreateRoomFailed;
 
-        PhotonNetwork.LocalPlayer.NickName = masterClientNickname;
+        PhotonNetwork.LocalPlayer.NickName = "허준혁";
 
         RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
 
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString(), defaultMapType);
-        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), masterClientNickname);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), "허준혁");
         roomOptions.CustomRoomPropertiesForLobby = new string[] { ENUM_CUSTOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
         
         return PhotonNetwork.CreateRoom(roomName, roomOptions);
@@ -531,6 +540,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         Debug.Log("마스터 서버에 성공적으로 접속했습니다.");
         _OnConnectedToMaster?.Invoke();
+
+        _OnConnectedToMaster = null;
     }
 
     /// <summary>
@@ -541,7 +552,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarning($"마스터 서버로부터 접속이 끊어졌습니다. 사유 : {cause}");
-        _OnDisconnectedFromMaster?.Invoke(cause.ToString()); 
+        _OnDisconnectedFromMaster?.Invoke(cause.ToString());
+
+        _OnDisconnectedFromMaster = null;
     }
 
     /// <summary>
@@ -551,6 +564,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	public override void OnCreatedRoom()
 	{
         _OnCreateRoom?.Invoke();
+        _OnCreateRoom = null;
     }
 
     /// <summary>
@@ -562,7 +576,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	public override void OnCreateRoomFailed(short returnCode, string message)
 	{
         _OnCreateRoomFailed?.Invoke(returnCode, message);
-	}
+        _OnCreateRoomFailed = null;
+    }
 
 	/// <summary>
 	/// 로비에 접속되었을 때 불리는 콜백
@@ -572,6 +587,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         Debug.Log("로비 접속 성공");
         _OnJoinLobby?.Invoke();
+
+        _OnJoinLobby = null;
+        _OnJoinLobbyFailed = null;
     }
 
     /// <summary>
@@ -584,6 +602,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         Debug.LogError($"{returnCode} - {message} ");
         _OnJoinLobbyFailed?.Invoke(returnCode, message);
+
+        _OnJoinLobby = null;
+        _OnJoinLobbyFailed = null;
     }
 
 	/// <summary>
@@ -599,6 +620,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 #endif
         PhotonNetwork.AutomaticallySyncScene = true;
         _OnJoinRoom?.Invoke();
+        
+        _OnJoinRoom = null;
+        _OnJoinRoomFailed = null;
     }
 
     /// <summary>
@@ -611,6 +635,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         Debug.LogError($"룸 접속에 실패하였습니다. 코드 : {returnCode}, 사유 : {message}");
         _OnJoinRoomFailed?.Invoke(returnCode, message);
+       
+        _OnJoinRoom = null;
+        _OnJoinRoomFailed = null;
     }
 
 	public override void OnConnected()
