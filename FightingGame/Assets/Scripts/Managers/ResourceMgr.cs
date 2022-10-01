@@ -99,7 +99,7 @@ public class ResourceMgr
 
     public AttackObject GetAttackObject(string path)
     {
-        GameObject original = Load<GameObject>($"Prefabs/AttackObejcts/{path}");
+        GameObject original = Load<GameObject>($"Prefabs/AttackObjects/{path}");
         if(original == null)
         {
             Debug.Log($"Failed to load prefab : {path}");
@@ -108,10 +108,31 @@ public class ResourceMgr
 
         if (original.GetComponent<Poolable>() != null)
         {
-            AttackObject attackObejct = Managers.Pool.Pop(original, false) as AttackObject;
+            AttackObject attackObject = Managers.Pool.Pop(original, false) as AttackObject;
 
-            if (attackObejct != null)
-                return attackObejct;
+            if (attackObject != null)
+                return attackObject;
+        }
+
+        Debug.Log($"Not Pooling Object : {path}");
+        return null;
+    }
+
+    public EffectObject GetEffectObject(string path)
+    {
+        GameObject original = Load<GameObject>($"Prefabs/EffectObjects/{path}");
+        if(original == null)
+        {
+            Debug.Log($"Failed to load prefab : {path}");
+            return null;
+        }
+
+        if (original.GetComponent<Poolable>() != null)
+        {
+            EffectObject effectObject = Managers.Pool.Pop(original, false) as EffectObject;
+
+            if(effectObject != null)
+                return effectObject;
         }
 
         Debug.Log($"Not Pooling Object : {path}");

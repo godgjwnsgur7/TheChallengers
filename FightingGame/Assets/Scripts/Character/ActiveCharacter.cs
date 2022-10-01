@@ -29,6 +29,10 @@ public partial class ActiveCharacter : Character
 
         base.Init();
 
+        // Setting Pool
+        Skills_Pooling(characterType);
+        Effects_Pooling();
+
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -92,6 +96,38 @@ public partial class ActiveCharacter : Character
         };
 
         return syncParams;
+    }
+
+    // Polling Helper 를 따로 팔지 고민중
+    private void Skills_Pooling(ENUM_CHARACTER_TYPE charType)
+    {
+        switch (charType)
+        {
+            case ENUM_CHARACTER_TYPE.Knight:
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack3", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_JumpAttack", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);
+                
+                break;
+
+            default:
+                Debug.Log($"Failed to SkillObject : {charType}");
+                break;
+        }
+    }
+
+    private void Effects_Pooling()
+    {
+        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 5);
+        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 5);
+        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 5);
+
     }
 
     public override void Idle()
@@ -424,10 +460,16 @@ public partial class ActiveCharacter : Character
 
     protected void Summon_EffectObject(int _effectTypeNum)
     {
-        // 아직 미구현
+        if (!isControl) return;
+
+        attackObject = null;
+        ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
+
+        bool isConnected = PhotonLogicHandler.IsConnected;
+
+
     }
     
-    // 변수 동기화로 무적처리가 잘 될지 모르겠지만, 일단 진행
     protected void SuperArmourState_On()
     {
         if (!isControl) return;

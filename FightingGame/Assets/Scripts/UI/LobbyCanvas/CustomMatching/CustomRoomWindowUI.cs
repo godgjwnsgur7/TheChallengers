@@ -16,8 +16,8 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     [SerializeField] CharProfileUI masterProfile;
     [SerializeField] CharProfileUI slaveProfile;
 
-    [SerializeField] GameObject readyButtonObejct;
-    [SerializeField] GameObject startButtonObejct;
+    [SerializeField] GameObject readyButtonObject;
+    [SerializeField] GameObject startButtonObject;
 
     CharProfileUI myProfile
     {
@@ -92,14 +92,14 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     private void MasterClientSetting()
     {
-        startButtonObejct.SetActive(true);
-        readyButtonObejct.SetActive(false);
+        startButtonObject.SetActive(true);
+        readyButtonObject.SetActive(false);
     }
 
     private void SlaveClientSetting()
     {
-        readyButtonObejct.SetActive(true);
-        startButtonObejct.SetActive(false);
+        readyButtonObject.SetActive(true);
+        startButtonObject.SetActive(false);
     }
     public void OnClick_ChangeMap()
     {

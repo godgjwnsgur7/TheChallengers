@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class ShotAttackObejct : AttackObject
+public class ShotAttackObject : AttackObject
 {
     Rigidbody2D rigid2D;
     [SerializeField] Vector3 subPos;
