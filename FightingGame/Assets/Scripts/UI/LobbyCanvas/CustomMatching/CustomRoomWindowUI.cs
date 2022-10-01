@@ -31,14 +31,18 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     public override void Init()
     {
-        if (isInit) return;
-
         base.Init();
+
+        if (isInit) return;
 
         isInit = true;
         myProfile.isMine = true;
-        myProfile.Init();
 
+        myProfile.Set_UserNickname("닉네임 받아와야 함");
+        myProfile.Set_Character(ENUM_CHARACTER_TYPE.Default);
+        myProfile.Set_ReadyState(false);
+        
+        myProfile.Init(Update_Profile);
     }
 
     public void Open()
@@ -58,6 +62,22 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
         this.gameObject.SetActive(false);
     }
 
+    public void Update_Profile(ENUM_CHARACTER_TYPE charType, bool readyState, string userNickname)
+    {
+        PhotonLogicHandler.Instance.TryBroadcastMethod<CustomRoomWindowUI, ENUM_CHARACTER_TYPE, bool, string>
+            (this, Sync_UpdateProfile, charType, readyState, userNickname, ENUM_RPC_TARGET.OTHER);
+    }
+
+    /// <summary>
+    /// 상대 클라이언트로부터 받아올 정보로 프로필을 업데이트하는 함수
+    /// </summary>
+    [BroadcastMethod]
+    public void Sync_UpdateProfile(ENUM_CHARACTER_TYPE charType, bool readyState, string userNickname)
+    {
+        myProfile.Set_Character(charType);
+        myProfile.Set_ReadyState(readyState);
+        myProfile.Set_UserNickname(userNickname);
+    }
 
     public void Set_CurrRoomInfo()
     {
@@ -87,10 +107,6 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
             Managers.UI.popupCanvas.Open_NotifyPopup("방에서 나가지 못했습니다.");
     }
 
-    
-
-
-    #region OnClick 함수들
     public void OnClick_ChangeMap()
     {
         Debug.Log("맵 변경시켜. (미구현)");
@@ -101,7 +117,7 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
     {
         if(!PhotonLogicHandler.IsMasterClient)
         {
-            // 준비해제시켜.
+            myProfile.Set_ReadyState(false);
         }
 
         Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "정말 방에서 나가시겠습니까?");
@@ -120,5 +136,4 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
         }
     }
-    #endregion
 }

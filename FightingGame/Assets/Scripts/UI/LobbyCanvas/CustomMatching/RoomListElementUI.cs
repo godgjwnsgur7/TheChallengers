@@ -116,16 +116,12 @@ public class RoomListElementUI : MonoBehaviour
             return;
         }
 
-        if (!Update_MyRoomInfo())
-            return;
-
         Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, Show_MyRoomInfo, "방에 입장하시겠습니까?");
     }
 
     public void JoinRoom()
     {
         if (PhotonLogicHandler.Instance.TryJoinRoom(null, null, myRoomInfo.roomName))
-
             OnActiveRoomWindow();
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);

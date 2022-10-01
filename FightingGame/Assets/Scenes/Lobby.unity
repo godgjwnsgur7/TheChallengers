@@ -3228,7 +3228,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d61af8c8614cdae4991c9b5f5835746a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d423b25264cfa1a42b4d8d0184015f6e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5436,16 +5436,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInit: 0
+  isReady: 0
+  isMine: 0
+  currCharType: 0
   charImage: {fileID: 1579829664}
   readyStateImage: {fileID: 573417685}
   charNameText: {fileID: 1859889667}
   userNicknameText: {fileID: 577858653}
   readySprite: {fileID: 21300000, guid: d61af8c8614cdae4991c9b5f5835746a, type: 3}
   unreadySprite: {fileID: 21300000, guid: d423b25264cfa1a42b4d8d0184015f6e, type: 3}
-  currCharType: 0
-  userId: 0
-  isReady: 0
-  isMine: 0
 --- !u!114 &1147677492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5464,8 +5463,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1147677491}
+  ObservedComponents: []
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -6138,7 +6136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1216234723
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7771,7 +7769,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1793376484
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9247,16 +9245,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInit: 0
+  isReady: 0
+  isMine: 0
+  currCharType: 0
   charImage: {fileID: 1771186999}
   readyStateImage: {fileID: 1750251221}
   charNameText: {fileID: 803673327}
   userNicknameText: {fileID: 538894952}
   readySprite: {fileID: 21300000, guid: d61af8c8614cdae4991c9b5f5835746a, type: 3}
   unreadySprite: {fileID: 21300000, guid: d423b25264cfa1a42b4d8d0184015f6e, type: 3}
-  currCharType: 0
-  userId: 0
-  isReady: 0
-  isMine: 0
 --- !u!114 &1955595005
 MonoBehaviour:
   m_ObjectHideFlags: 0

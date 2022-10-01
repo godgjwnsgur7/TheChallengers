@@ -7,7 +7,11 @@ using System;
 
 public class CharProfileUI : MonoBehaviour
 {
+    // 확인용 public (임시)
     public bool isInit = false;
+    public bool isReady = false;
+    public bool isMine = false;
+    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
 
     [Header ("Set In Editor")]
     [SerializeField] Image charImage;
@@ -20,32 +24,31 @@ public class CharProfileUI : MonoBehaviour
     [SerializeField] Sprite readySprite;
     [SerializeField] Sprite unreadySprite;
 
-    // 확인용 public (임시)
-    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-    public int userId = 0;
-    public bool isReady = false;
-    public bool isMine = false;
+    Action<ENUM_CHARACTER_TYPE, bool, string> OnUpdateProfileRequest = null;
 
-    Action <ENUM_CHARACTER_TYPE, string, bool> OnUpdateProfileRequest;
-
-    public void Init()
+    public void Init(Action<ENUM_CHARACTER_TYPE, bool, string> _OnUpdateProfileRequest)
     {
         if (isInit) return;
 
         isInit = true;
 
-        Clear();
-
+        OnUpdateProfileRequest = _OnUpdateProfileRequest;
     }
 
-    public void Update_Profile(ENUM_CHARACTER_TYPE charType, string userNickname, bool readyState)
+    public void Request_SyncProfile()
     {
-        Select_Char(charType);
-        userNicknameText.text = userNickname;
-        Set_ReadyState(readyState);
+        if(OnUpdateProfileRequest != null)
+            OnUpdateProfileRequest(currCharType, isReady, userNicknameText.text);
     }
 
-    public void Select_Char(ENUM_CHARACTER_TYPE _charType)
+    public void Set_UserNickname(string userNickname)
+    {
+        userNicknameText.text = userNickname;
+
+        Request_SyncProfile();
+    }
+
+    public void Set_Character(ENUM_CHARACTER_TYPE _charType)
     {
         if (!isMine || currCharType == _charType) return;
 
@@ -66,9 +69,12 @@ public class CharProfileUI : MonoBehaviour
                 charNameText.text = "위저드";
                 break;
             default:
+
                 charNameText.text = "없는 캐릭터?";
                 break;
         }
+
+        Request_SyncProfile();
     }
 
     public void Set_ReadyState(bool readyState)
@@ -85,22 +91,26 @@ public class CharProfileUI : MonoBehaviour
             readyStateImage.sprite = unreadySprite;
             isReady = false;
         }
+
+        Request_SyncProfile();
     }
 
     public void OnClick_SeleteChar()
     {
         if (!isMine) return;
 
-        Managers.UI.popupCanvas.Open_CharSelectPopup(Select_Char);
+        Managers.UI.popupCanvas.Open_CharSelectPopup(Set_Character);
     }
 
     public void Clear()
     {
-        Select_Char(ENUM_CHARACTER_TYPE.Default);
+        Set_UserNickname("");
+        Set_Character(ENUM_CHARACTER_TYPE.Default);
+        Set_ReadyState(false);
 
         isInit = false;
-        isReady = false;
         isMine = false;
-        userId = 0;
+
+        Request_SyncProfile();
     }
 }
