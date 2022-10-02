@@ -25,28 +25,18 @@ public class CharProfileUI : MonoBehaviour
     [SerializeField] Sprite readySprite;
     [SerializeField] Sprite unreadySprite;
 
-    Action<ENUM_CHARACTER_TYPE, bool, string> OnUpdateProfileRequest = null;
-
-    public void Init(Action<ENUM_CHARACTER_TYPE, bool, string> _OnUpdateProfileRequest)
+    public void Init()
     {
         if (isInit) return;
 
         isInit = true;
 
-        OnUpdateProfileRequest = _OnUpdateProfileRequest;
-    }
-
-    public void Request_SyncProfile()
-    {
-        if(OnUpdateProfileRequest != null)
-            OnUpdateProfileRequest(currCharType, isReady, userNicknameText.text);
+        // Set_UserNickname(string userNickname) // 내 닉네임 받아와
     }
 
     public void Set_UserNickname(string userNickname)
     {
-        userNicknameText.text = userNickname;
-
-        Request_SyncProfile();
+        userNicknameText.text = userNickname; // 서버 전달
     }
 
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
@@ -54,6 +44,8 @@ public class CharProfileUI : MonoBehaviour
         if (!isMine || currCharType == _charType) return;
 
         currCharType = _charType;
+
+        // 서버 전달
 
         switch (currCharType)
         {
@@ -74,8 +66,6 @@ public class CharProfileUI : MonoBehaviour
                 charNameText.text = "없는 캐릭터?";
                 break;
         }
-
-        Request_SyncProfile();
     }
     
     public void Set_ReadyState(bool readyState)
@@ -86,16 +76,14 @@ public class CharProfileUI : MonoBehaviour
         {
             StartCoroutine(IReadyLock(1f));
             readyStateImage.sprite = readySprite;
-            isReady = true;
+            isReady = true; // 서버 전달
         }
         else
         {
             StartCoroutine(IReadyLock(2f));
             readyStateImage.sprite = unreadySprite;
-            isReady = false;
+            isReady = false; // 서버 전달
         }
-
-        Request_SyncProfile();
     }
 
     public void OnClick_SeleteChar()
@@ -110,11 +98,9 @@ public class CharProfileUI : MonoBehaviour
         Set_UserNickname("");
         Set_Character(ENUM_CHARACTER_TYPE.Default);
 
-        isReady = false;
+        Set_ReadyState(false);
         isInit = false;
         isMine = false;
-
-        Request_SyncProfile();
     }
 
     protected IEnumerator IReadyLock(float waitTime)

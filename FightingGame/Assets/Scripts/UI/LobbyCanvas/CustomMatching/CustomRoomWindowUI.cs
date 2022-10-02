@@ -5,8 +5,10 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class CustomRoomWindowUI : MonoBehaviourPhoton
+public class CustomRoomWindowUI : MonoBehaviour
 {
+    public bool isInit = false;
+
     [SerializeField] Text roomNameText;
 
     [SerializeField] Image currMapIamge;
@@ -27,12 +29,8 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
         }
     }
 
-    public bool isInit = false;
-
-    public override void Init()
+    private void Init()
     {
-        base.Init();
-
         if (isInit) return;
 
         isInit = true;
@@ -42,7 +40,7 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
         myProfile.Set_Character(ENUM_CHARACTER_TYPE.Default);
         myProfile.Set_ReadyState(false);
         
-        myProfile.Init(Update_Profile);
+        myProfile.Init();
     }
 
     public void Open()
@@ -60,23 +58,6 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
         myProfile.Clear();
         this.gameObject.SetActive(false);
-    }
-
-    public void Update_Profile(ENUM_CHARACTER_TYPE charType, bool readyState, string userNickname)
-    {
-        PhotonLogicHandler.Instance.TryBroadcastMethod<CustomRoomWindowUI, ENUM_CHARACTER_TYPE, bool, string>
-            (this, Sync_UpdateProfile, charType, readyState, userNickname, ENUM_RPC_TARGET.OTHER);
-    }
-
-    /// <summary>
-    /// 상대 클라이언트로부터 받아올 정보로 프로필을 업데이트하는 함수
-    /// </summary>
-    [BroadcastMethod]
-    public void Sync_UpdateProfile(ENUM_CHARACTER_TYPE charType, bool readyState, string userNickname)
-    {
-        myProfile.Set_Character(charType);
-        myProfile.Set_ReadyState(readyState);
-        myProfile.Set_UserNickname(userNickname);
     }
 
     public void Set_CurrRoomInfo()
