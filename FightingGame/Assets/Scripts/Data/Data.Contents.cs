@@ -15,7 +15,6 @@ public class Skill
     public float stunTime;
     public float risingPower;
     public float pushingPower;
-    public float coolTime;
 }
 
 [Serializable]

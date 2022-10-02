@@ -115,25 +115,19 @@ public class CustomRoomWindowUI : MonoBehaviourPhoton
 
     public void OnClick_ExitRoom()
     {
-        if(!PhotonLogicHandler.IsMasterClient)
-        {
-            myProfile.Set_ReadyState(false);
-        }
+        myProfile.Set_ReadyState(false);
 
         Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "정말 방에서 나가시겠습니까?");
     }
 
-    public void OnClick_ReadyOrStart()
+    public void OnClick_Ready()
     {
-        if (PhotonLogicHandler.IsMasterClient)
-        {
-            // 마스터 클라이언트
+        myProfile.Set_ReadyState(!myProfile.isReady);
+    }
 
-        }
-        else
-        {
-            // 슬레이브 클라이언트
+    public void GoTo_BattleScene()
+    {
+        // 같이 배틀 씬 입장
 
-        }
     }
 }

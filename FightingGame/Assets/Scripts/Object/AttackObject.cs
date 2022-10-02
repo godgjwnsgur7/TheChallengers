@@ -52,10 +52,14 @@ public class AttackObject : Poolable
         gameObject.SetActive(true);
 
         if(PhotonLogicHandler.IsConnected)
+        {
             if (PhotonLogicHandler.IsMine(viewID))
-                CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            {
+                StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            }
+        }
         else
-            CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
     public void FollowingTarget(Transform _targetTr)
@@ -66,7 +70,7 @@ public class AttackObject : Poolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     { 
-        if (!PhotonLogicHandler.IsMine(viewID))
+        if (!PhotonLogicHandler.IsMine(viewID) || collision.gameObject.GetComponent<AttackObject>() != null)
             return;
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
@@ -114,10 +118,7 @@ public class AttackObject : Poolable
             yield return null;
         }
 
-        if(this.gameObject.activeSelf)
-        {
-            DestroyMine();
-        }
+        DestroyMine();
     }
     
     public virtual void DestroyMine()

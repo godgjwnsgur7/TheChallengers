@@ -7,10 +7,11 @@ using System;
 
 public class CharProfileUI : MonoBehaviour
 {
-    // 확인용 public (임시)
     public bool isInit = false;
     public bool isReady = false;
     public bool isMine = false;
+    public bool isReadyLock = false;
+
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
 
     [Header ("Set In Editor")]
@@ -76,18 +77,20 @@ public class CharProfileUI : MonoBehaviour
 
         Request_SyncProfile();
     }
-
+    
     public void Set_ReadyState(bool readyState)
     {
-        if (isReady == readyState) return;
+        if (isReadyLock || readyState == isReady) return;
 
-        if(readyState)
+        if (readyState)
         {
+            StartCoroutine(IReadyLock(1f));
             readyStateImage.sprite = readySprite;
             isReady = true;
         }
         else
         {
+            StartCoroutine(IReadyLock(2f));
             readyStateImage.sprite = unreadySprite;
             isReady = false;
         }
@@ -106,11 +109,20 @@ public class CharProfileUI : MonoBehaviour
     {
         Set_UserNickname("");
         Set_Character(ENUM_CHARACTER_TYPE.Default);
-        Set_ReadyState(false);
 
+        isReady = false;
         isInit = false;
         isMine = false;
 
         Request_SyncProfile();
+    }
+
+    protected IEnumerator IReadyLock(float waitTime)
+    {
+        isReadyLock = true;
+
+        yield return new WaitForSeconds(waitTime); // 테스트
+
+        isReadyLock = false;
     }
 }
