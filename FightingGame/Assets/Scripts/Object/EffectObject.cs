@@ -21,6 +21,7 @@ public class EffectObject : Poolable
         }
     }
 
+    [BroadcastMethod]
     public virtual void ActivatingEffectObject(bool _reverseState)
     {
         isUsing = true;

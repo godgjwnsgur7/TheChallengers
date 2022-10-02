@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6460768005147727410}
   - component: {fileID: 6460768005147727411}
   - component: {fileID: 2193367962245769707}
-  - component: {fileID: 7663365672665327276}
+  - component: {fileID: 3105105834324502590}
   m_Layer: 0
   m_Name: Basic_AttackedEffect2
   m_TagString: Untagged
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 30
   m_Sprite: {fileID: -2079511454758781187, guid: 94e37db8e4faf834887396d6cf5f5731, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,11 +123,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 7663365672665327276}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &7663365672665327276
+--- !u!114 &3105105834324502590
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,3 +140,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUsing: 0
+  targetTr: {fileID: 0}
+  reverseState: 0
+  subPos: {x: 0.5, y: 0.5, z: 0}
