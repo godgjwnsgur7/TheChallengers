@@ -96,12 +96,48 @@ public class AttackObject : Poolable
             else
                 enemyCharacter.Hit(attackParam);
 
+            // 이펙트 생성 (임시)
+            int effectNum = UnityEngine.Random.Range(0, 3);
+            Summon_EffectObject(effectNum, collision.transform);
+
             DestroyMine();
         }
         else
         {
             Debug.Log($"{gameObject.name}이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
         }
+    }
+
+    protected void Summon_EffectObject(int _effectTypeNum, Transform _targetTransform)
+    {
+        ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
+
+        bool isConnected = PhotonLogicHandler.IsConnected;
+
+        EffectObject effectObject = null;
+
+        if (isConnected)
+            effectObject = Managers.Resource.InstantiateEveryone(effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
+        else
+            effectObject = Managers.Resource.GetEffectObject(effectObjectName.ToString());
+
+        if (effectObject != null)
+        {
+            effectObject.FollowingTarget(_targetTransform);
+
+            if (isConnected)
+            {
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool, int>
+                    (effectObject, effectObject.ActivatingEffectObject, reverseState, _effectTypeNum);
+            }
+            else
+                effectObject.ActivatingEffectObject(reverseState, _effectTypeNum);
+        }
+        else
+        {
+            Debug.Log($"ENUM_EFFECTOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_effectTypeNum}");
+        }
+
     }
 
     protected IEnumerator IRunTimeCheck(float _runTime)

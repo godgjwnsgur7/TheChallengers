@@ -484,11 +484,11 @@ public partial class ActiveCharacter : Character
 
             if (isConnected)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool>
-                    (effectObject, effectObject.ActivatingEffectObject, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool, int>
+                    (effectObject, effectObject.ActivatingEffectObject, reverseState, _effectTypeNum);
             }
             else
-                effectObject.ActivatingEffectObject(reverseState);
+                effectObject.ActivatingEffectObject(reverseState, _effectTypeNum);
         }
         else
         {

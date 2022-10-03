@@ -9,11 +9,16 @@ public class EffectObject : Poolable
     public Transform targetTr = null;
     public bool reverseState;
 
+    public Color[] effectColors;
+    private SpriteRenderer effectRenderer;
+
     [SerializeField] Vector3 subPos;
 
     public override void Init()
     {
         base.Init();
+
+        effectRenderer = this.GetComponent<SpriteRenderer>();
 
         if (PhotonLogicHandler.IsConnected)
         {
@@ -22,7 +27,7 @@ public class EffectObject : Poolable
     }
 
     [BroadcastMethod]
-    public virtual void ActivatingEffectObject(bool _reverseState)
+    public virtual void ActivatingEffectObject(bool _reverseState, int _effectTypeNum)
     {
         isUsing = true;
         reverseState = _reverseState;
@@ -38,7 +43,17 @@ public class EffectObject : Poolable
             transform.position += subPos;
         }
 
+        // HitEffect 색 변경(임시)
+        if (_effectTypeNum < (int)ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Jump)
+            ChangeEffectColor();
+
         gameObject.SetActive(true);
+    }
+
+    public virtual void ChangeEffectColor()
+    {
+        int colorNum = UnityEngine.Random.Range(0, effectColors.Length);
+        effectRenderer.color = effectColors[colorNum];
     }
 
     public virtual void DestroyMine()
