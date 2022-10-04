@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class TimerUI : MonoBehaviourPhoton
+public class TimerUI : MonoBehaviour
 {
     [SerializeField] Text timerText;
 
@@ -15,12 +15,10 @@ public class TimerUI : MonoBehaviourPhoton
 
     // 우려되는 예외상황 : 핸드폰 내의 날짜와 시간으로 측정될탠데, (임시)
     // 만약 핸드폰 내의 시간이 한국 시간으로 되어있지 않는, 등의 예외상황에서는?..
-
-    [BroadcastMethod]
+    // + 현 함수 자체를 브로드캐스트 하는 것은 불가능. 상대에게도 요청해야함.
+    // 가능하면 포톤을 안 달고 하는 것이 바람직.
     public void Start_Timer(Action _timeOutCallBack, float startTime)
     {
-        Init();
-
         timeOutCallBack = _timeOutCallBack;
 
         isTimerLock = false; 
