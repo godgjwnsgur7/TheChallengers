@@ -9,7 +9,7 @@ using System;
 [Serializable]
 public enum ENUM_OPERATINGKEY_NAME
 {
-    LeftArrow = 0,
+    LeftArrow = 0, // 현재 Left는 이미지 회전을 시켜서 인식이 안됨. 이미지 다시 받을것임
     RightArrow = 1,
     Attack = 2,
     Skill1 = 3,
