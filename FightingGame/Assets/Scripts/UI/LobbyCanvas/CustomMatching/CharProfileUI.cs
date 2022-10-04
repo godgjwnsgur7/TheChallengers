@@ -63,7 +63,7 @@ public class CharProfileUI : MonoBehaviour
                 break;
             default:
 
-                charNameText.text = "없는 캐릭터?";
+                charNameText.text = "알 수 없음";
                 break;
         }
     }
@@ -107,7 +107,7 @@ public class CharProfileUI : MonoBehaviour
     {
         isReadyLock = true;
 
-        yield return new WaitForSeconds(waitTime); // 테스트
+        yield return new WaitForSeconds(waitTime);
 
         isReadyLock = false;
     }

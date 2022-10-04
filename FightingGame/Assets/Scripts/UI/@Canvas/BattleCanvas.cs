@@ -7,34 +7,24 @@ using FGDefine;
 public class BattleCanvas : BaseCanvas
 {
     [Header("Set In Editor")]
-    [SerializeField] StatusWindowUI buleTeamStatusWindowUI;
-    [SerializeField] StatusWindowUI redTeamStatusWindowUI;
-    [SerializeField] TimerUI timerUI;
+    [SerializeField] StatusWindowUI buleTeamStatusWindow;
+    [SerializeField] StatusWindowUI redTeamStatusWindow;
+    [SerializeField] ResultWindowUI resultWindow;
+    [SerializeField] TimerUI timer;
     
-    public override void Open<T>(UIParam param = null)  
-    {
-        if (typeof(T) == typeof(TimerUI)) timerUI.Open(param);
-        else Debug.Log("범위 벗어남");
-    }
-
-    public override void Close<T>()
-    {
-        if (typeof(T) == typeof(TimerUI)) timerUI.Close();
-        else Debug.Log("범위 벗어남");
-    }
-
     public override T GetUIComponent<T>()
     {
-
+        // 이거 되나? ㅋㅋㅋ 테스트 안함 아직 (임시)
+        if (typeof(T) == typeof(ResultWindowUI)) return resultWindow.GetComponent<T>();
         return default(T);
     }
 
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
         if(_teamType == ENUM_TEAM_TYPE.Blue)
-            return buleTeamStatusWindowUI;
+            return buleTeamStatusWindow;
         else if(_teamType == ENUM_TEAM_TYPE.Red)
-            return redTeamStatusWindowUI;
+            return redTeamStatusWindow;
         else
         {
             Debug.Log($"_teamType 오류 : {_teamType}");

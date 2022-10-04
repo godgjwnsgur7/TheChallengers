@@ -10,10 +10,13 @@ using FGDefine;
 /// </summary>
 public class PopupCanvas : MonoBehaviour
 {
+    [Header("Set In Editor")]
     [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;
+
+    FailedCallBack OnFailedCallBack;
 
     private void Start()
     {

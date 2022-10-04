@@ -6,8 +6,6 @@ public class BattleScene : BaseScene
 {
     BaseMap map;
 
-    [SerializeField] BattleCanvas battleCanvas;
-
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] PlayerCamera playerCamera;
 
@@ -32,6 +30,11 @@ public class BattleScene : BaseScene
         base.Init();
 
         SceneType = ENUM_SCENE_TYPE.Battle;
+
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+
+        if(battleCanvas == null)
+            Debug.LogError("BattleCanvas is Null");
 
         // 일단 무조건 베이직맵 가져와 (임시)
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();

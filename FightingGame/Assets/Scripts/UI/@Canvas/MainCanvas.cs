@@ -6,6 +6,7 @@ using FGDefine;
 
 public class MainCanvas : BaseCanvas
 {
+    [Header("Set In Editor")]
     [SerializeField] LoginWindow interactableUI;
     [SerializeField] ProduceUI produceUI;
     [SerializeField] Text notion;

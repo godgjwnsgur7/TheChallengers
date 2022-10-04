@@ -76,7 +76,7 @@ public class CustomRoomWindowUI : MonoBehaviour
                 // 맵 이미지 세팅해와!
                 return;
             default:
-                Debug.Log("알 수 없는 맵을 선택함 이게 가능함?ㅋㅋ");
+                Debug.Log("알 수 없는 맵을 선택");
                 return;
         }
     }
