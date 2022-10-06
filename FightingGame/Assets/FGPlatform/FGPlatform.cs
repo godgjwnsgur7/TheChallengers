@@ -7,6 +7,25 @@ using FGPlatform.Datebase;
 using FGPlatform.Advertisement;
 using FGPlatform.Purchase;
 
+[Serializable]
+public class DBUserData
+{
+	public readonly string nickname = string.Empty;
+	public readonly long victoryPoint = 0L;
+	public readonly long defeatPoint = 0L;
+	public readonly long ratingPoint = 0L;
+	public readonly long purchaseCoffeeCount = 0L;
+
+	public DBUserData(string nickname, long victoryPoint, long defeatPoint, long ratingPoint, long purchaseCoffeeCount)
+	{
+		this.nickname = nickname;
+		this.victoryPoint = victoryPoint;
+		this.defeatPoint = defeatPoint;
+		this.ratingPoint = ratingPoint;
+		this.purchaseCoffeeCount = purchaseCoffeeCount;
+	}
+}
+
 namespace FGPlatform
 {
 	public class PlatformMgr
@@ -44,6 +63,14 @@ namespace FGPlatform
 			return Auth.UserId;
 		}
 
+		public ENUM_LOGIN_TYPE CurrentLoginType
+		{
+			get
+			{
+				return Auth.CurrentLoginType;
+			}
+		}
+
 		public void Login(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "")
 		{
 			Auth.SignIn(loginType, OnSignInSuccess, OnSignInFailed, OnSignCanceled, email, password);
@@ -65,15 +92,12 @@ namespace FGPlatform
 			return DB.UpdateDB<T>(hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
 		}
 
-		public bool DBSelect<T>(DB_CATEGORY category, ENUM_LOGIN_TYPE loginType, string userId, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+		public bool DBSelect(ENUM_LOGIN_TYPE loginType, string userId, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
 		{
-			if (!CheckCategoryDataType(category, typeof(T)))
-				return false;
-
 			string token = GetHashToken(loginType, userId);
 			string[] hierachyPath = new string[] { token };
 
-			return DB.SelectDB<T>(hierachyPath, OnSuccess, OnFailed, OnCanceled);
+			return DB.SelectDB(hierachyPath, OnSuccess, OnFailed, OnCanceled);
 		}
 
 		public void ShowBanner()

@@ -11,6 +11,7 @@ using Firebase.Extensions;
 using Google;
 public enum ENUM_LOGIN_TYPE
 {
+    None = -1,
     Guest,// 게스트 계정 (디버깅 모드 포함)
     Google, // 구글 계정
 }
@@ -36,6 +37,11 @@ namespace FGPlatform.Auth
         {
             get;
         }
+
+        public ENUM_LOGIN_TYPE CurrentLoginType
+		{
+            get;
+		}
 
         public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null);
         public void SignIn(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "");
@@ -74,8 +80,16 @@ namespace FGPlatform.Auth
 			{
                 return IsAuthValid && user != null && UserId != string.Empty;
             }
-            
         }
+
+        public ENUM_LOGIN_TYPE CurrentLoginType
+        {
+            get
+			{
+                return currentLoginType;
+            }
+        }
+        private ENUM_LOGIN_TYPE currentLoginType = ENUM_LOGIN_TYPE.None;
 
         private FirebaseUser user = null;
         public string UserId
@@ -168,6 +182,8 @@ namespace FGPlatform.Auth
             googleModule?.SignOut();
             auth?.SignOut();
 
+            currentLoginType = ENUM_LOGIN_TYPE.None;
+
             Debug.LogError($"{UserId} 유저가 로그아웃하였습니다.");
             UnsetFirebaseCurrentUser();
         }
@@ -192,6 +208,7 @@ namespace FGPlatform.Auth
                     {
                         Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
                         SetFirebaseCurrentUser(task.Result);
+                        currentLoginType = ENUM_LOGIN_TYPE.Guest;
 
                         OnSignInSuccess?.Invoke();
                     }
@@ -256,6 +273,8 @@ namespace FGPlatform.Auth
                     OnSignInSuccess?.Invoke();
                     FirebaseUser newUser = task.Result;
                     Debug.LogFormat("이메일 로그인 성공 : {0} ({1})", newUser.DisplayName, newUser.UserId);
+
+                    currentLoginType = ENUM_LOGIN_TYPE.Google;
                     SetFirebaseCurrentUser(newUser);
                 }
             });

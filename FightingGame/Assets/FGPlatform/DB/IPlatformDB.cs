@@ -31,9 +31,10 @@ namespace FGPlatform.Datebase
     public interface IPlatformDB
     {
         public void InitDataBase();
-        bool InsertDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
         bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
-        bool SelectDB<T>(string[] hierachyPath, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+        
+        // 가져올 땐 한 방에
+        bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
     }
 
@@ -96,9 +97,9 @@ namespace FGPlatform.Datebase
             return true;
         }
 
-        public bool SelectDB<T>(string[] hierachyPath, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+        public bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
         {
-            if (!typeof(T).IsSerializable)
+            if (!typeof(DBUserData).IsSerializable)
             {
                 Debug.LogError("넣을 데이터가 Serializable한 형식이 아닙니다.");
                 return false;
@@ -124,17 +125,14 @@ namespace FGPlatform.Datebase
                 else if (task.IsCompleted)
                 {
                     DataSnapshot snapshot = task.Result;
-                    T data = (T)(snapshot.Value);
+
+                    // 여기서 DBUserData를 만들 수 있어야 함
+                    DBUserData data = (DBUserData)(snapshot.Value);
 
                     OnSuccess?.Invoke(data);
                 }
             });
 
-            return true;
-        }
-
-        public bool InsertDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
-        {
             return true;
         }
     }
