@@ -90,10 +90,10 @@ public class RoomListElementUI : MonoBehaviour
         // Set Texts
         personnelText.text = $"{myRoomInfo.currentPlayerCount} / 2";
         roomNameText.text = myRoomInfo.roomName;
-        masterNicknameText.text = myRoomInfo.masterClientNickname;
+        masterNicknameText.text = myRoomInfo.MasterClientNickname;
 
         // Set Image
-        Set_MapImage(myRoomInfo.currentMapType);
+        Set_MapImage(myRoomInfo.CurrentMapType);
 
         if (myRoomInfo.currentPlayerCount == 1)
             personnelImage.sprite = personnel_NoneSprite;

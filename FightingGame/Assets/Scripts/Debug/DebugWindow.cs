@@ -65,24 +65,29 @@ public class DebugWindow : BaseCanvas
 		{
 			Debug.Log($"룸 아이디 : {roomInfo.masterClientId}, " +
 				$"룸 이름 : {roomInfo.roomName}, " +
-				$"방장 이름 : {roomInfo.masterClientNickname} " +
-				$"현재 맵 : {roomInfo.currentMapType}");
+				$"방장 이름 : {roomInfo.MasterClientNickname} " +
+				$"현재 맵 : {roomInfo.CurrentMapType}");
 		}
 	}
 
 	public void OnClickDBSelect()
 	{
-		Managers.Platform.DBSelect<long>(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", DebugDBData);
+		Managers.Platform.DBSelect(ENUM_LOGIN_TYPE.Guest, "solhwi", OnSelectDBData);
 	}
 
 	public void OnClickDBUpdate(int inputData)
 	{
-		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", (long)inputData, DebugDBData);
+		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", (long)inputData, OnUpdateDBData);
 	}
 
-	private void DebugDBData(long data)
+	private void OnSelectDBData(DBUserData data)
 	{
 		Debug.Log(data);
+	}
+
+	private void OnUpdateDBData(long inputData)
+	{
+		Debug.Log(inputData);
 	}
 
 	public void OnClickGuestLogin()
@@ -97,6 +102,15 @@ public class DebugWindow : BaseCanvas
 	public void OnClickGuestLogout()
 	{
 		Managers.Platform.Logout();
+	}
+
+	public void OnClickGuestLogin2()
+	{
+		Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+		{
+			string id = Managers.Platform.GetUserID();
+			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+		}, null, null, "psh50zmfhtm@gmail.com", "123456");
 	}
 
 	public void OnClickGoogleLogin()

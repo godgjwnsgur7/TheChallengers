@@ -27,7 +27,7 @@ public class Managers : MonoBehaviour
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
-    public static FGPlatform.PlatformMgr Platform { get { return Instance.platform; } }
+    public static PlatformMgr Platform { get { return Instance.platform; } }
     
     private void Start()
     {
