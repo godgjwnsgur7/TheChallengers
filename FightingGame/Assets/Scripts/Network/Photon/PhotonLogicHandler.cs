@@ -48,7 +48,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private readonly string GameVersion = "1";
     private static Dictionary<int, PhotonView> photonViewDictionary = new Dictionary<int, PhotonView>();
-    private List<CustomRoomInfo> customRoomList = new List<CustomRoomInfo>();
 
     private Action _OnCreateRoom = null;
     private FailedCallBack _OnCreateRoomFailed = null;
@@ -64,9 +63,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private Action _OnLeftRoom = null;
     private Action _OnLeftLobby = null;
-
-    private List<ILobbyPostProcess> lobbyPostProcesses = new List<ILobbyPostProcess>();
-    private List<IRoomPostProcess> roomPostProcesses = new List<IRoomPostProcess>();
 
     public event PlayerCallBack onChangeMasterClientNickname = null;
     public event PlayerCallBack onLeftRoomPlayer = null;
@@ -94,228 +90,115 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             PhotonNetwork.AllocateViewID(view);
     }
 
-    public void RegisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
-	{
-        if(!lobbyPostProcesses.Contains(lobbyPostProcess))
-		{
-            lobbyPostProcesses.Add(lobbyPostProcess);
-		}
-	}
-
-    public void UnregisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
-	{
-        if (lobbyPostProcesses.Contains(lobbyPostProcess))
+    public bool TryConnectToMaster(Action _OnConnectedToMaster = null, DisconnectCallBack _OnDisconnectedFromMaster = null)
+    {
+        if (PhotonNetwork.IsConnected)
         {
-            lobbyPostProcesses.Remove(lobbyPostProcess);
-        }
-    }
-
-    public void RegisterIRoomPostProcess(IRoomPostProcess roomPostProcess)
-    {
-        if (!roomPostProcesses.Contains(roomPostProcess))
-        {
-            roomPostProcesses.Add(roomPostProcess);
-        }
-    }
-
-    public void UnregisterIRoomPostProcess(IRoomPostProcess roomPostProcess)
-    {
-        if (roomPostProcesses.Contains(roomPostProcess))
-        {
-            roomPostProcesses.Remove(roomPostProcess);
-        }
-    }
-
-
-    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4, TParam5>(T owner, Action<TParam1, TParam2, TParam3, TParam4, TParam5> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5,ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsConnected)
-            return;
-
-        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2, param3, param4);
-    }
-
-    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4>(T owner, Action<TParam1, TParam2, TParam3, TParam4> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsConnected)
-            return;
-
-        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2, param3, param4);
-    }
-
-    public void TryBroadcastMethod<T, TParam1, TParam2, TParam3>(T owner, Action<TParam1, TParam2, TParam3> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsConnected)
-            return;
-
-        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2, param3);
-    }
-
-    public void TryBroadcastMethod<T, TParam1, TParam2>(T owner, Action<TParam1, TParam2> targetMethod, TParam1 param1, TParam2 param2, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsConnected)
-            return;
-
-        BroadcastMethod(owner, targetMethod.Method, targetType, param1, param2);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T">함수의 주인</typeparam>
-    /// <typeparam name="TParam">byte, bool, short, int, long, float, double, string, byte[], T[], object[]</typeparam>
-    public void TryBroadcastMethod<T, TParam>(T owner, Action<TParam> targetMethod, TParam param, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsConnected)
-            return;
-
-        BroadcastMethod(owner, targetMethod.Method, targetType, param);
-    }
-
-    /// <summary>
-    /// 1. 넘기는 Action Method에 람다식은 허용되지 않습니다.
-    /// 2. Method의 속성에 [BroadcastMethodAttribute]가 추가되어야 합니다.
-    /// </summary>
-    // [BroadcastMethodAttribute] 다음과 같이 함수 위에 추가
-    public void TryBroadcastMethod<T>(T owner, Action targetMethod, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsConnected)
-            return;
-
-        BroadcastMethod(owner, targetMethod.Method, targetType);
-    }
-
-    private bool IsValidBroadcastMethod<T>(T owner, MethodInfo methodInfo)
-        where T : MonoBehaviourPun
-    {
-        string methodName = methodInfo.Name;
-        var ownerType = typeof(T);
-
-        if (owner == null || owner.photonView == null)
-        {
-            Debug.LogError("동기화될 객체가 없거나 네트워킹 가능 상태가 아닙니다. 객체의 상태를 확인해주세요.");
-            return false;
-        }
-        else if (ownerType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static) == null)
-        {
-            Debug.LogError("넘기는 Action Method에 람다식은 허용되지 않습니다. 객체 내부에 Method를 구현 후 인자로 넘겨주세요.");
-            return false;
-        }
-        else if (!methodInfo.IsDefined(typeof(BroadcastMethodAttribute)))
-        {
-            Debug.LogError("Broadcast할 메소드에 [BroadcastMethodAttribute] 속성이 없습니다. 추가해주세요.");
+            Debug.LogError("이미 마스터 서버에 연결되어 있는 상태에서 연결을 시도했습니다.");
             return false;
         }
 
+        if (!CheckEnableJoinRoom())
+            return false;
+
+        this._OnConnectedToMaster = _OnConnectedToMaster;
+        this._OnDisconnectedFromMaster = _OnDisconnectedFromMaster;
+
+        PhotonNetwork.GameVersion = GameVersion;
+        return PhotonNetwork.ConnectUsingSettings(); // 마스터 서버 접속 시도
+    }
+
+    public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed)
+    {
+        Debug.Log($"랜덤 룸에 접속을 시도합니다.");
+
+        if (!CheckEnableJoinRoom())
+            return false;
+
+        this._OnJoinRoom = _OnJoinRoom;
+        this._OnJoinRoomFailed = _OnJoinRoomFailed;
+
+        PhotonNetwork.LocalPlayer.NickName = "";
+
+        ExitGames.Client.Photon.Hashtable optionTable = new ExitGames.Client.Photon.Hashtable()
+        {
+
+        };
+
+        return PhotonNetwork.JoinRandomOrCreateRoom(optionTable, 0);
+    }
+
+    public bool TryJoinRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
+    {
+        if (!CheckEnableJoinRoom())
+            return false;
+
+        this._OnJoinRoom = _OnJoinRoom;
+        this._OnJoinRoomFailed = _OnJoinRoomFailed;
+
+        PhotonNetwork.LocalPlayer.NickName = "";
+        return PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public bool TryLeaveRoom(Action _OnLeftRoom = null)
+    {
+        this._OnLeftRoom = _OnLeftRoom;
+        return PhotonNetwork.LeaveRoom();
+    }
+
+    public bool TryLeaveLobby(Action _OnLeftLobby = null)
+    {
+        this._OnLeftLobby = _OnLeftLobby;
+        return PhotonNetwork.LeaveLobby();
+    }
+
+    public bool TryJoinLobby(Action onSuccess = null, FailedCallBack onfailed = null)
+    {
+        if (!CheckEnableJoinRoom())
+            return false;
+
+        this._OnJoinLobby = onSuccess;
+        this._OnJoinLobbyFailed = onfailed;
+
+        return PhotonNetwork.JoinLobby();
+    }
+
+    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType)
+    {
+        if (!CheckEnableJoinRoom())
+            return false;
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            Debug.LogError("마스터 클라이언트가 아닌 경우 부를 수 없는 함수입니다.");
+            return false;
+        }
+
+        PhotonNetwork.LoadLevel(sceneType.ToString());
         return true;
     }
 
-    private RpcTarget ConvertRPCTargetType(ENUM_RPC_TARGET targetType)
+    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.BasicMap)
     {
-        RpcTarget RPCTargetType = RpcTarget.All;
+        if (!CheckEnableJoinRoom())
+            return false;
 
-        switch (targetType)
-        {
-            case ENUM_RPC_TARGET.All:
-                RPCTargetType = RpcTarget.AllBuffered;
-                break;
+        this._OnCreateRoom = OnCreateRoom;
+        this._OnCreateRoomFailed = OnCreateRoomFailed;
 
-            case ENUM_RPC_TARGET.MASTER:
-                RPCTargetType = RpcTarget.MasterClient;
-                break;
+        PhotonNetwork.LocalPlayer.NickName = "허준혁";
 
-            case ENUM_RPC_TARGET.OTHER:
-                RPCTargetType = RpcTarget.OthersBuffered;
-                break;
+        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
 
-            default:
-                break;
-        }
+        roomOptions.CustomRoomProperties = new Hashtable();
 
-        return RPCTargetType;
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), defaultMapType);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), "허준혁");
+
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
+
+        return PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
-
-    private void BroadcastMethod<T>(T owner, MethodInfo methodInfo, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
-        where T : MonoBehaviourPun
-    {
-        if (!IsValidBroadcastMethod(owner, methodInfo))
-            return;
-
-        var RPCTargetType = ConvertRPCTargetType(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType);
-    }
-
-    private void BroadcastMethod<T>(T owner, MethodInfo methodInfo, ENUM_RPC_TARGET targetType, params object[] parameters)
-        where T : MonoBehaviourPun
-    {
-        if (!IsValidBroadcastMethod(owner, methodInfo))
-            return;
-
-        var RPCTargetType = ConvertRPCTargetType(targetType);
-        owner.photonView.RPC(methodInfo.Name, RPCTargetType, parameters);
-    }
-
-
-    #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
-    public static int Register(PhotonView view)
-    {
-        if (view == null)
-            return 0;
-
-        if (view.ViewID == 0)
-            PhotonNetwork.AllocateViewID(view);
-
-        if (view.ViewID == 0)
-		{
-            Debug.LogError("유효한 포톤 뷰 객체가 아님 ㅅㅂ 암튼 아님 문의줘보셈");
-            return 0;
-        }
-            
-        if (!photonViewDictionary.ContainsKey(view.ViewID))
-        {
-            photonViewDictionary.Add(view.ViewID, view);
-        }
-        else
-        {
-            Debug.LogWarning($"같은 MonoBehaviourPhoton 오브젝트를 추가하려 들었음. {view.ViewID}");
-            return 0;
-        }
-
-        return view.ViewID;
-    }
-
-    public static int Unregister(int viewID)
-    {
-        PhotonView view = null;
-
-        if (photonViewDictionary.TryGetValue(viewID, out view))
-        {
-            view.ViewID = 0;
-            photonViewDictionary.Remove(viewID);
-        }
-        else
-        {
-            Debug.LogWarning($"등록되지 않은 MonoBehaviourPhoton 오브젝트를 제거하려 들었음. {viewID}");
-        }
-
-        return 0;
-    }
-
-    #endregion
-
-
-
-    #region 포톤 자체 콜백 - 가급적 건드리지 마시오.
-
-    /// <summary>
-    /// 마스터 서버 접속 시도 성공 시 콜백
-    /// </summary>
 
     public override void OnConnectedToMaster() 
     {
@@ -325,11 +208,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnConnectedToMaster = null;
     }
 
-    /// <summary>
-    /// 접속 중 접속이 끊어졌을 때 불리는 콜백
-    /// </summary>
-    /// <param name="cause"></param>
-
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarning($"마스터 서버로부터 접속이 끊어졌습니다. 사유 : {cause}");
@@ -338,31 +216,17 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnDisconnectedFromMaster = null;
     }
 
-    /// <summary>
-    /// 방 만들기 성공 시 콜백
-    /// </summary>
-
 	public override void OnCreatedRoom()
 	{
         _OnCreateRoom?.Invoke();
         _OnCreateRoom = null;
     }
 
-    /// <summary>
-    /// 방 만들기 실패 시 콜백
-    /// </summary>
-    /// <param name="returnCode"></param>
-    /// <param name="message"></param>
-
 	public override void OnCreateRoomFailed(short returnCode, string message)
 	{
         _OnCreateRoomFailed?.Invoke(returnCode, message);
         _OnCreateRoomFailed = null;
     }
-
-	/// <summary>
-	/// 로비에 접속되었을 때 불리는 콜백
-	/// </summary>
 
 	public override void OnJoinedLobby()
 	{
@@ -373,12 +237,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnJoinLobbyFailed = null;
     }
 
-    /// <summary>
-    /// 로비에 접속이 실패했을 때 불리는 콜백
-    /// </summary>
-    /// <param name="returnCode"></param>
-    /// <param name="message"></param>
-
 	public override void OnJoinRandomFailed(short returnCode, string message)
 	{
         Debug.LogError($"{returnCode} - {message} ");
@@ -387,12 +245,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnJoinLobby = null;
         _OnJoinLobbyFailed = null;
     }
-
-	/// <summary>
-	/// Room에 참가했을 때 불리는 콜백
-    /// 이 곳에서 로그인이 완료가 되어 있어야 한다.
-	/// </summary>
-	/// 
 
 	public override void OnJoinedRoom()
     {
@@ -438,12 +290,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return true;
     }
 
-    /// <summary>
-    /// Room 참가에 실패했을 때 불리는 콜백
-    /// </summary> 
-    /// <param name="returnCode"></param> 
-    /// <param name="message"></param>
-
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.LogError($"룸 접속에 실패하였습니다. 코드 : {returnCode}, 사유 : {message}");
@@ -453,17 +299,10 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnJoinRoomFailed = null;
     }
 
-	public override void OnConnected()
-	{
-		base.OnConnected();
-	}
-
 	public override void OnLeftRoom()
 	{
         PhotonNetwork.AutomaticallySyncScene = false;
         Debug.LogWarning($"유저가 방을 떠났습니다.");
-
-        // 이 곳에서 Player 세팅 해제해야 합니다.
 
         _OnLeftRoom?.Invoke();
         _OnLeftRoom = null;
@@ -477,11 +316,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnLeftLobby = null;
     }
 
-    /// <summary>
-    /// 방 리스트 정보 업데이트
-    /// </summary>
-    /// <param name="roomList"></param>
-
 	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
         customRoomList.Clear();
@@ -490,11 +324,13 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             string masterClientNickname = string.Empty;
             ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.BasicMap;
 
-            if (room.CustomProperties.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), out var value))
+            var table = GetCustomPropertyTable(room);
+
+            if (table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), out var value))
 			{
                 masterClientNickname = (string)value;
             }
-            if (room.CustomProperties.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out value))
+            if (table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out value))
             {
                 currentMapType = (ENUM_MAP_TYPE)value;
             }
@@ -523,11 +359,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		}
     }
 
-	/// <summary>
-	/// 방장 바뀜
-	/// </summary>
-	/// <param name="newMasterClient"></param>
-
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
         OnChangeRoomMasterClient(newMasterClient?.NickName);
@@ -535,11 +366,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         Debug.LogWarning($"{newMasterClient.NickName} 으로 방장이 바뀌었습니다.");
     }
 
-    /// <summary>
-    /// 룸 설정 변경
-    /// </summary>
-    /// <param name="targetPlayer"></param>
-    /// <param name="changedProps"></param>
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
@@ -550,7 +376,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             roomPostProcess?.OnUpdateRoomProperty(property);
         }
 
-        Debug.LogWarning($"방 설정이 바뀌었습니다.");
+        Debug.LogWarning($"{property} : 방 설정이 바뀌었습니다.");
     }
 
     private CustomRoomProperty MakeRoomProperty(Hashtable propertiesThatChanged)
@@ -568,12 +394,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         return property;
     }
-
-    /// <summary>
-    /// 룸 내 플레이어 정보 변경
-    /// </summary>
-    /// <param name="targetPlayer"></param>
-    /// <param name="changedProps"></param>
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
 	{
@@ -610,28 +430,26 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         {
             characterType = (ENUM_CHARACTER_TYPE)value;
         }
-        
-        // DB는 잠시 보류
 
-        //Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
-        //{
-        //    CustomPlayerProperty property = new CustomPlayerProperty()
-        //    {
-        //        isReady = isReady,
-        //        data = userData,
-        //        characterType = characterType
-        //    };
-    
-        //    foreach (var roomPostProcess in roomPostProcesses)
-        //    {
-        //        roomPostProcess?.OnUpdateRoomPlayerProperty(property);
-        //    }
+		//Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
+		//{
+		//	CustomPlayerProperty property = new CustomPlayerProperty()
+		//	{
+		//		isReady = isReady,
+		//		data = userData,
+		//		characterType = characterType
+		//	};
 
-        //}, OnFailed: () => 
-        //{ 
-        //    Debug.LogError($"{loginType} - {userKey} 검색 실패"); 
-        //});
-    }
+		//	foreach (var roomPostProcess in roomPostProcesses)
+		//	{
+		//		roomPostProcess?.OnUpdateRoomPlayerProperty(property);
+		//	}
+
+		//}, OnFailed: () =>
+		//{
+		//	Debug.LogError($"{loginType} - {userKey} 검색 실패");
+		//});
+	}
 
     /// <summary>
     /// 유저 입장
@@ -688,6 +506,4 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         print(str);
         return str.ToString();
     }
-
-    #endregion
 }

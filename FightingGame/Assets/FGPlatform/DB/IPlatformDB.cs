@@ -11,6 +11,8 @@ using System;
 /// <summary>
 /// (ID 토큰, 플랫폼) - 닉네임 - 승점 - 커피 구매 갯수
 /// 너무 적어서 디비를 나눌 필요도 없음
+/// 
+/// 소리쿤.0.0.0.0 같은 느낌으로 저장한다.
 /// </summary>
 
 public enum DB_CATEGORY
@@ -126,14 +128,31 @@ namespace FGPlatform.Datebase
                 {
                     DataSnapshot snapshot = task.Result;
 
-                    // 여기서 DBUserData를 만들 수 있어야 함
-                    DBUserData data = (DBUserData)(snapshot.Value);
+                    string data = (string)(snapshot.Value);
+                    var dbData = ParseData(data);
 
-                    OnSuccess?.Invoke(data);
+                    OnSuccess?.Invoke(dbData);
                 }
             });
 
             return true;
+        }
+
+        private DBUserData ParseData(string data)
+		{
+            string[] splitData = data.Split('.');
+
+            if (splitData.Length <= (int)DB_CATEGORY.PurchaseCoffee)
+                return null;
+
+            string nickname = splitData[(int)DB_CATEGORY.Nickname];
+            Int64.TryParse(splitData[(int)DB_CATEGORY.VictoryPoint], out long VictoryPoint);
+            Int64.TryParse(splitData[(int)DB_CATEGORY.DefeatPoint], out long DefeatPoint);
+            Int64.TryParse(splitData[(int)DB_CATEGORY.RatingPoint], out long RatingPoint);
+            Int64.TryParse(splitData[(int)DB_CATEGORY.PurchaseCoffee], out long PurchaseCoffee);
+
+            var outData = new DBUserData(nickname, VictoryPoint, DefeatPoint, RatingPoint, PurchaseCoffee);
+            return outData;
         }
     }
 
