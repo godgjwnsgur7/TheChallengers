@@ -422,14 +422,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         CustomRoomProperty property = new CustomRoomProperty();
 
-        if (propertiesThatChanged.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), out var value))
-        {
-            property.masterClientNickname = (string)value;
-        }
-        if (propertiesThatChanged.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out value))
-        {
-            property.currentMapType = (ENUM_MAP_TYPE)value;
-        }
+        property.masterClientNickname = (string)GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
+        property.currentMapType = (ENUM_MAP_TYPE)GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
 
         return property;
     }
@@ -438,7 +432,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         PublishPlayerProperty(targetPlayer);
 
-        Debug.LogWarning($"플레이어 설정이 바뀌어 데이터를 재검색합니다.");
+        Debug.LogWarning($"플레이어 설정이 바뀌어 데이터를 재검색합니다. 확실히 레디만 해도 불리는 게 좀 그렇긴 하다.");
     }
 
     private void PublishPlayerProperty(Player targetPlayer)
@@ -446,49 +440,40 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (roomPostProcesses.Count <= 0)
             return;
 
-        var propertiesThatChanged = targetPlayer.CustomProperties;
+        if (targetPlayer == null)
+            return;
 
-        ENUM_LOGIN_TYPE loginType = ENUM_LOGIN_TYPE.None;
-        string userKey = string.Empty;
-        bool isReady = false;
-        ENUM_CHARACTER_TYPE characterType = ENUM_CHARACTER_TYPE.Default;
+        bool isReady = (bool)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.READY);
+        string userKey = (string)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
 
-        if (propertiesThatChanged.TryGetValue(ENUM_PLAYER_STATE_PROPERTIES.READY.ToString(), out var value))
+        ENUM_LOGIN_TYPE loginType = (ENUM_LOGIN_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE);
+        ENUM_CHARACTER_TYPE characterType = (ENUM_CHARACTER_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER);
+
+        MakePlayerProperty(targetPlayer.IsMasterClient, isReady, userKey, loginType, characterType);
+    }
+
+    private void MakePlayerProperty(bool isMasterClient, bool isReady, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
+	{
+        Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
         {
-            isReady = (bool)value;
-        }
-        if (propertiesThatChanged.TryGetValue(ENUM_PLAYER_STATE_PROPERTIES.USERKEY.ToString(), out value))
-        {
-            userKey = (string)value;
-        }
-        if (propertiesThatChanged.TryGetValue(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE.ToString(), out value))
-        {
-            loginType = (ENUM_LOGIN_TYPE)value;
-        }
-        if (propertiesThatChanged.TryGetValue(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER.ToString(), out value))
-        {
-            characterType = (ENUM_CHARACTER_TYPE)value;
-        }
+            CustomPlayerProperty property = new CustomPlayerProperty()
+            {
+                isMasterClient = isMasterClient,
+                isReady = isReady,
+                data = userData,
+                characterType = characterType
+            };
 
-		//Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
-		//{
-		//	CustomPlayerProperty property = new CustomPlayerProperty()
-		//	{
-		//		isReady = isReady,
-		//		data = userData,
-		//		characterType = characterType
-		//	};
+            foreach (var roomPostProcess in roomPostProcesses)
+            {
+                roomPostProcess?.OnUpdateRoomPlayerProperty(property);
+            }
 
-		//	foreach (var roomPostProcess in roomPostProcesses)
-		//	{
-		//		roomPostProcess?.OnUpdateRoomPlayerProperty(property);
-		//	}
-
-		//}, OnFailed: () =>
-		//{
-		//	Debug.LogError($"{loginType} - {userKey} 검색 실패");
-		//});
-	}
+        }, OnFailed: () =>
+        {
+            Debug.LogError($"{loginType} - {userKey} 검색 실패");
+        });
+    }
 
     /// <summary>
     /// 유저 입장
@@ -502,7 +487,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		}
 
         Debug.LogWarning($"{newPlayer.NickName} 님이 입장하였습니다.");
-
         onEnterRoomPlayer?.Invoke(newPlayer.NickName);
     }
 
@@ -518,7 +502,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
 
         Debug.LogWarning($"{otherPlayer.NickName} 님이 퇴장하였습니다.");
-
         onLeftRoomPlayer?.Invoke(otherPlayer.NickName);
     }
 

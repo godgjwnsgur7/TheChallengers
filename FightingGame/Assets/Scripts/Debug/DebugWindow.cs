@@ -77,7 +77,7 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickDBUpdate(int inputData)
 	{
-		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, ENUM_LOGIN_TYPE.Guest, "solhwi", (long)inputData, OnUpdateDBData);
+		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, (long)inputData, OnUpdateDBData);
 	}
 
 	private void OnSelectDBData(DBUserData data)

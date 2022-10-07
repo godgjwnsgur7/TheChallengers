@@ -7,6 +7,7 @@ using Firebase.Database;
 using Firebase.Extensions;
 using System.Threading.Tasks;
 using System;
+using System.Text;
 
 /// <summary>
 /// (ID 토큰, 플랫폼) - 닉네임 - 승점 - 커피 구매 갯수
@@ -33,7 +34,7 @@ namespace FGPlatform.Datebase
     public interface IPlatformDB
     {
         public void InitDataBase();
-        bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+        bool UpdateDB<T>(DB_CATEGORY category, string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
         
         // 가져올 땐 한 방에
         bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
@@ -56,6 +57,8 @@ namespace FGPlatform.Datebase
 
         private DatabaseReference dbRootReference;
 
+        private DBUserData myUserData = null;
+
         public void InitDataBase()
         {
             app = FirebaseApp.DefaultInstance;
@@ -65,7 +68,7 @@ namespace FGPlatform.Datebase
             dbRootReference = database.RootReference;
         }
 
-        public bool UpdateDB<T>(string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+        public bool UpdateDB<T>(DB_CATEGORY category, string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
         {
             if (!typeof(T).IsSerializable)
             {
@@ -80,7 +83,25 @@ namespace FGPlatform.Datebase
                 reference = reference.Child(path);
             }
 
-            reference.SetValueAsync(data).ContinueWithOnMainThread(task =>
+            string jsonData = string.Empty;
+
+            if (myUserData != null)
+            {
+                SetDBData(category, data, ref myUserData);
+                jsonData = ParseUserData(myUserData);
+            }
+            else
+            {
+                SelectDB(hierachyPath, (userData) =>
+                {
+                    SetDBData(category, data, ref userData);
+                    string strData = ParseUserData(userData);
+                });
+
+                return false;
+            }
+
+            reference.SetValueAsync(jsonData).ContinueWithOnMainThread(task =>
             {
                 if (task.IsFaulted)
                 {
@@ -98,6 +119,10 @@ namespace FGPlatform.Datebase
 
             return true;
         }
+
+        /// <summary>
+        /// 최초 1회 실행 권장
+        /// </summary>
 
         public bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
         {
@@ -129,16 +154,16 @@ namespace FGPlatform.Datebase
                     DataSnapshot snapshot = task.Result;
 
                     string data = (string)(snapshot.Value);
-                    var dbData = ParseData(data);
+                    myUserData = ParseStringData(data);
 
-                    OnSuccess?.Invoke(dbData);
+                    OnSuccess?.Invoke(myUserData);
                 }
             });
 
             return true;
         }
 
-        private DBUserData ParseData(string data)
+        private DBUserData ParseStringData(string data)
 		{
             string[] splitData = data.Split('.');
 
@@ -154,6 +179,50 @@ namespace FGPlatform.Datebase
             var outData = new DBUserData(nickname, VictoryPoint, DefeatPoint, RatingPoint, PurchaseCoffee);
             return outData;
         }
+
+		private string ParseUserData(DBUserData data)
+		{
+            if (data == null)
+                return string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(data.nickname);
+            sb.Append('.');
+            sb.Append(data.victoryPoint);
+            sb.Append('.');
+            sb.Append(data.defeatPoint);
+            sb.Append('.');
+            sb.Append(data.ratingPoint);
+            sb.Append('.');
+            sb.Append(data.purchaseCoffeeCount);
+
+            return sb.ToString();
+        }
+
+        private void SetDBData(DB_CATEGORY category, object value, ref DBUserData data)
+		{
+            if(category == DB_CATEGORY.Nickname)
+			{
+				data.nickname = (string)value;
+            }
+            else if(category == DB_CATEGORY.VictoryPoint)
+            {
+                data.victoryPoint = (long)value;
+            }
+            else if(category == DB_CATEGORY.DefeatPoint)
+			{
+                data.defeatPoint = (long)value;
+            }
+            else if(category == DB_CATEGORY.RatingPoint)
+			{
+                data.ratingPoint = (long)value;
+            }
+            else if(category == DB_CATEGORY.PurchaseCoffee)
+			{
+                data.purchaseCoffeeCount = (long)value;
+            }
+		}
     }
 
 }

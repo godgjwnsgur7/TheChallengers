@@ -10,11 +10,11 @@ using FGPlatform.Purchase;
 [Serializable]
 public class DBUserData
 {
-	public readonly string nickname = string.Empty;
-	public readonly long victoryPoint = 0L;
-	public readonly long defeatPoint = 0L;
-	public readonly long ratingPoint = 0L;
-	public readonly long purchaseCoffeeCount = 0L;
+	public string nickname = string.Empty;
+	public long victoryPoint = 0L;
+	public long defeatPoint = 0L;
+	public long ratingPoint = 0L;
+	public long purchaseCoffeeCount = 0L;
 
 	public DBUserData(string nickname, long victoryPoint, long defeatPoint, long ratingPoint, long purchaseCoffeeCount)
 	{
@@ -81,15 +81,24 @@ namespace FGPlatform
 			Auth.SignOut();
 		}
 
-		public bool DBUpdate<T>(DB_CATEGORY category, ENUM_LOGIN_TYPE loginType, string userId, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+		public bool DBUpdate<T>(DB_CATEGORY category, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
 		{
 			if (!CheckCategoryDataType(category, typeof(T)))
 				return false;
 
+			var loginType = Auth.CurrentLoginType;
+			var userId = GetUserID();
+
+			if (loginType == ENUM_LOGIN_TYPE.None || userId.Equals(string.Empty))
+			{
+				Debug.LogError("로그인 상태가 아닙니다.");
+				return false;
+			}
+
 			string token = GetHashToken(loginType, userId);
 			string[] hierachyPath = new string[] { token };
 
-			return DB.UpdateDB<T>(hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
+			return DB.UpdateDB<T>(category, hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
 		}
 
 		public bool DBSelect(ENUM_LOGIN_TYPE loginType, string userId, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
