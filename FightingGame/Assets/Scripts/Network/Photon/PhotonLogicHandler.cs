@@ -259,11 +259,13 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         _OnCreateRoom?.Invoke();
         _OnCreateRoom = null;
+        _OnCreateRoomFailed = null;
     }
 
 	public override void OnCreateRoomFailed(short returnCode, string message)
 	{
         _OnCreateRoomFailed?.Invoke(returnCode, message);
+        _OnCreateRoom = null;
         _OnCreateRoomFailed = null;
     }
 
@@ -360,19 +362,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         customRoomList.Clear();
         foreach (var room in roomList)
 		{
-            string masterClientNickname = string.Empty;
-            ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.BasicMap;
-
-            var table = GetCustomPropertyTable(room);
-
-            if (table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), out var value))
-			{
-                masterClientNickname = (string)value;
-            }
-            if (table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out value))
-            {
-                currentMapType = (ENUM_MAP_TYPE)value;
-            }
+            string masterClientNickname = (string)GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
+            ENUM_MAP_TYPE currentMapType = (ENUM_MAP_TYPE)GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
 
             CustomRoomInfo info = new CustomRoomInfo()
             {
