@@ -22,7 +22,7 @@ public class InputKeyManagement : MonoBehaviour
 
         for(int i = 0; i < keySettingData.Length; i++)
         {
-            inputKey = inputPanel.Get_InputKey((ENUM_OPERATINGKEY_NAME)i);
+            inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
             inputRectTr = inputKey.GetComponent<RectTransform>();
             keySettingData[i] = playerPrefsManagement.Get_KeySettingData((ENUM_KEYSETTING_NAME)i);
 
@@ -32,7 +32,7 @@ public class InputKeyManagement : MonoBehaviour
                 playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
             }
 
-            Set_InputKey((ENUM_OPERATINGKEY_NAME)i, inputKey);
+            Set_InputKey((ENUM_INPUTKEY_NAME)i, inputKey);
         }
     }
 
@@ -49,7 +49,7 @@ public class InputKeyManagement : MonoBehaviour
         playerPrefsManagement.Save_KeySettingData();
     }
 
-    public void Set_InputKey(ENUM_OPERATINGKEY_NAME operatingName, InputKey inputKey)
+    public void Set_InputKey(ENUM_INPUTKEY_NAME operatingName, InputKey inputKey)
     {
         inputRectTr = inputKey.GetComponent<RectTransform>();
         inputImage = inputKey.GetComponent<Image>();
