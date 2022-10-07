@@ -90,5 +90,8 @@ public class KeySettingData
 
     #endregion
 
-
+    public void Save_KeySettingData()
+    {
+        PlayerPrefs.Save();
+    }
 }
