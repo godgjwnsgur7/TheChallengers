@@ -8,6 +8,7 @@ public class PlayerCharacter : MonoBehaviour
 {
     public ActiveCharacter activeCharacter;
     [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] InputKeyController inputKeyController;
 
     public float moveDir = 0f;
 
@@ -20,6 +21,8 @@ public class PlayerCharacter : MonoBehaviour
         // #.Mobile Controller
         // Managers.Input.Action -= OnJoystick;
         // Managers.Input.Action += OnJoystick;
+
+        // Set_Character 하단에서 임시처리중임
     }
 
     private void Update()
@@ -51,6 +54,7 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         playerCamera.Init(activeCharacter.transform);
+        inputKeyController.Init(); // 임시 (InputMgr에게 위탁할 것)
     }
 
     public void Connect_Status(StatusWindowUI _statusWindowUI)

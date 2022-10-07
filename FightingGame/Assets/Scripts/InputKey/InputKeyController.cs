@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class InputKeyController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    InputPanel inputPanel = null;
 
-    // Update is called once per frame
-    void Update()
+    public void Init()
     {
-        
+        if(inputPanel == null)
+        {
+            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        }
     }
 }
