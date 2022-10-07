@@ -35,10 +35,11 @@ namespace FGPlatform.Datebase
     {
         public void InitDataBase();
         bool UpdateDB<T>(DB_CATEGORY category, string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
-        
+
+        bool InsertDB(string[] hierachyPath, string nickname, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+
         // 가져올 땐 한 방에
         bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
-
     }
 
 
@@ -121,7 +122,8 @@ namespace FGPlatform.Datebase
         }
 
         /// <summary>
-        /// 최초 1회 실행 권장
+        /// 최초 1회 실행 권장함
+        /// 실행하고, null이라면 Insert로 초기값을 넣어주어야 함
         /// </summary>
 
         public bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
@@ -156,6 +158,37 @@ namespace FGPlatform.Datebase
                     string data = (string)(snapshot.Value);
                     myUserData = ParseStringData(data);
 
+                    OnSuccess?.Invoke(myUserData);
+                }
+            });
+
+            return true;
+        }
+
+        public bool InsertDB(string[] hierachyPath, string nickname, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+        {
+            DatabaseReference reference = dbRootReference;
+
+            foreach (string path in hierachyPath)
+            {
+                reference = reference.Child(path);
+            }
+
+            myUserData = new DBUserData(nickname, 0L, 0L, 0L, 0L);
+            string jsonData = ParseUserData(myUserData);
+
+            reference.SetValueAsync(jsonData).ContinueWithOnMainThread(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    OnFailed?.Invoke();
+                }
+                else if (task.IsCanceled)
+                {
+                    OnCanceled?.Invoke();
+                }
+                else if (task.IsCompleted)
+                {
                     OnSuccess?.Invoke(myUserData);
                 }
             });
@@ -223,7 +256,7 @@ namespace FGPlatform.Datebase
                 data.purchaseCoffeeCount = (long)value;
             }
 		}
-    }
+	}
 
 }
 

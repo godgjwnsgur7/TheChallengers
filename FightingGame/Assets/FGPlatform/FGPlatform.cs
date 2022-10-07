@@ -109,6 +109,36 @@ namespace FGPlatform
 			return DB.SelectDB(hierachyPath, OnSuccess, OnFailed, OnCanceled);
 		}
 
+		/// <summary>
+		/// 유저 로그인 시 1회 호출합니다.
+		/// 데이터가 있는 지 검사하고, 데이터가 없다면 새로운 데이터로 초기화합니다.
+		/// </summary>
+
+		public void InitializeCurrentUserDB(string nickname, Action<DBUserData> OnCompleted = null)
+		{
+			var loginType = Auth.CurrentLoginType;
+			var userId = GetUserID();
+
+			if (loginType == ENUM_LOGIN_TYPE.None || userId.Equals(string.Empty))
+			{
+				Debug.LogError("로그인 상태가 아닙니다.");
+				return;
+			}
+
+			OnCompleted += (data) => { Debug.Log($"{loginType} - {userId} 데이터 초기화 완료"); };
+
+			string token = GetHashToken(loginType, userId);
+			string[] hierachyPath = new string[] { token };
+
+			DB.SelectDB(hierachyPath, (data) =>
+			{
+				if(data == null)
+				{
+					DB.InsertDB(hierachyPath, "", OnCompleted);
+				}
+			});
+		}
+
 		public void ShowBanner()
 		{
 			AdMob.ShowBanner();
@@ -121,23 +151,7 @@ namespace FGPlatform
 
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)
 		{
-			string hashToken = type.ToString() + id;
-
-			// string typeStr = type.ToString();
-
-			//using(MD5 md5 = MD5.Create())
-			//{
-			//    var loginData = Encoding.UTF8.GetBytes(id);
-			//    var typeData = Encoding.UTF8.GetBytes(typeStr);
-
-			//    md5.TransformBlock(loginData, 0, loginData.Length, loginData, 0);
-			//    md5.TransformBlock(typeData, 0, typeData.Length, typeData, 0);
-			//    md5.TransformFinalBlock(new byte[0], 0, 0);
-
-			//    hashToken = Encoding.Default.GetString(md5.Hash);
-			//}
-
-			return hashToken;
+			return type.ToString() + id;
 		}
 
 		private bool CheckCategoryDataType(DB_CATEGORY category, Type parameterType)
