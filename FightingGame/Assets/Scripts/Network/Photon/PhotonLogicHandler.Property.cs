@@ -40,7 +40,7 @@ public class CustomRoomInfo
     public int maxPlayerCount;
 
     public string MasterClientNickname => customProperty != null ? customProperty.masterClientNickname : string.Empty;
-    public ENUM_MAP_TYPE CurrentMapType => customProperty != null ? customProperty.currentMapType : ENUM_MAP_TYPE.BasicMap; 
+    public ENUM_MAP_TYPE CurrentMapType => customProperty != null ? customProperty.currentMapType : ENUM_MAP_TYPE.BasicMap;
 }
 
 public class CustomRoomProperty
@@ -56,160 +56,103 @@ public class CustomPlayerProperty
     public DBUserData data = null;
 }
 
-public partial class PhotonLogicHandler
+public interface ILobbyPostProcess
 {
-    /// <summary>
-    /// 현재 자신이 마스터 서버에 연결이 되어 있는가?
-    /// </summary>
-    public static bool IsConnected
+    void OnUpdateLobby(List<CustomRoomInfo> roomList);
+}
+
+public interface IRoomPostProcess
+{
+    void OnUpdateRoomProperty(CustomRoomProperty property);
+    void OnUpdateRoomPlayerProperty(CustomPlayerProperty property);
+}
+
+
+public partial class PhotonLogicHandler : ILobbyCallbacks
+{
+    private List<CustomRoomInfo> customRoomList = new List<CustomRoomInfo>();
+
+    private List<ILobbyPostProcess> lobbyPostProcesses = new List<ILobbyPostProcess>();
+    private List<IRoomPostProcess> roomPostProcesses = new List<IRoomPostProcess>();
+
+    public void ChangeMap(ENUM_MAP_TYPE mapType)
     {
-        get
+        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE, mapType);
+    }
+
+    private void OnChangeRoomMasterClient(string nickname)
+    {
+        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME, nickname);
+        onChangeMasterClientNickname?.Invoke(nickname);
+    }
+
+
+    public void ChangeCharacter(ENUM_CHARACTER_TYPE characterType)
+    {
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, characterType);
+    }
+
+    public bool IsAllReady()
+    {
+        var players = PhotonNetwork.PlayerList;
+        string readyStr = ENUM_PLAYER_STATE_PROPERTIES.READY.ToString();
+        return players.All(p => p.CustomProperties.ContainsKey(readyStr) && (bool)p.CustomProperties[readyStr]);
+    }
+
+    public void Ready()
+    {
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, true);
+    }
+
+    public void UnReady()
+    {
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
+    }
+
+    private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
+    {
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
+    }
+
+    public void RegisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
+    {
+        if (!lobbyPostProcesses.Contains(lobbyPostProcess))
         {
-            return PhotonNetwork.IsConnected;
+            lobbyPostProcesses.Add(lobbyPostProcess);
         }
     }
 
-    public static bool IsMasterClient
+    public void UnregisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
     {
-        get
+        if (lobbyPostProcesses.Contains(lobbyPostProcess))
         {
-            return PhotonNetwork.IsMasterClient;
+            lobbyPostProcesses.Remove(lobbyPostProcess);
         }
     }
 
-    public static bool IsMine(int viewID)
+    public void RegisterIRoomPostProcess(IRoomPostProcess roomPostProcess)
     {
-        PhotonView view = null;
-
-        if (viewID == 0)
-            return false;
-
-        if (photonViewDictionary.TryGetValue(viewID, out view))
-            return view.IsMine;
-
-        return false;
-    }
-
-    public static bool IsFullRoom
-	{
-        get
-		{
-            return CurrentRoomMemberCount == CurrentRoomMemberCountMax;
-
-        }
-	}
-
-    public static string CurrentMapName
-	{
-        get
-		{
-            if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(typeof(ENUM_MAP_TYPE).ToString()))
-                return string.Empty;
-
-            return (string)PhotonNetwork.CurrentRoom.CustomProperties[typeof(ENUM_MAP_TYPE).ToString()];
-		}
-	}
-
-    public static string CurrentMasterClientNickname
-	{
-        get
-		{
-            return PhotonNetwork.MasterClient.NickName;
-
-        }
-	}
-
-    public static int CurrentRoomMemberCount
-    {
-        get
+        if (!roomPostProcesses.Contains(roomPostProcess))
         {
-            return PhotonNetwork.CurrentRoom.PlayerCount;
+            roomPostProcesses.Add(roomPostProcess);
         }
     }
 
-    public static int CurrentRoomMemberCountMax
+    public void UnregisterIRoomPostProcess(IRoomPostProcess roomPostProcess)
     {
-        get
+        if (roomPostProcesses.Contains(roomPostProcess))
         {
-            return PhotonNetwork.CurrentRoom.MaxPlayers;
+            roomPostProcesses.Remove(roomPostProcess);
         }
-    }
-
-    public static string CurrentRoomName
-	{
-        get
-		{
-            return PhotonNetwork.CurrentRoom.Name;
-		}
-	}
-
-    public static bool IsJoinedRoom
-    {
-        get
-        {
-            return PhotonNetwork.InRoom;
-        }
-    }
-
-    public static int UsableRoomCountOnServer
-    {
-        get
-        {
-            return PhotonNetwork.CountOfRooms;
-        }
-    }
-
-    public static int Ping
-    {
-        get
-        {
-            return PhotonNetwork.GetPing();
-        }
-    }
-
-    public bool IsConnectedAndReady() => PhotonNetwork.IsConnectedAndReady;
-    public bool IsMasterServer() => PhotonNetwork.Server == ServerConnection.MasterServer;
-    public bool IsInLobby() => PhotonNetwork.InLobby;
-    public bool IsInRoom() => PhotonNetwork.InRoom;
-
-
-    public static List<CustomRoomInfo> AllRoomInfos
-	{
-        get
-		{
-            return Instance.customRoomList;
-		}
-	}
-
-    public static CustomRoomInfo GetRoomInfo(string roomName)
-	{
-        var list = Instance.customRoomList;
-        return list?.Find(roomInfo => roomInfo.roomName == roomName);
-    }
-
-    public static CustomRoomInfo GetRoomInfo(int masterClientId)
-	{
-        var list = Instance.customRoomList;
-        return list?.Find(roomInfo => roomInfo.masterClientId == masterClientId);
-    }
-
-    public GameObject TryInstantiate(string prefabPath, Vector3 pos = default, Quaternion quaternion = default)
-    {
-        return PhotonNetwork.Instantiate(prefabPath, pos, quaternion);
-    }
-
-    public void TryDestroy(MonoBehaviourPhoton obj)
-    {
-        if (obj == null)
-            return;
-
-        PhotonNetwork.Destroy(obj.gameObject);
     }
 
     private Hashtable GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE type)
-	{
-        switch(type)
-		{
+    {
+        switch (type)
+        {
             case ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES:
                 return PhotonNetwork.CurrentRoom.CustomProperties;
 
@@ -219,23 +162,23 @@ public partial class PhotonLogicHandler
             default:
                 return null;
         }
-	}
+    }
 
     private Hashtable GetCustomPropertyTable(Player player)
-	{
+    {
         return player.CustomProperties;
-	}
+    }
 
     private Hashtable GetCustomPropertyTable(RoomInfo roomInfo)
-	{
+    {
         return roomInfo.CustomProperties;
-	}
+    }
 
     private object GetCustomPropertyTable(RoomInfo roomInfo, ENUM_CUSTOM_ROOM_PROPERTIES propertyType)
-	{
+    {
         var table = GetCustomPropertyTable(roomInfo);
 
-        if(table.TryGetValue(propertyType.ToString(), out object value))
+        if (table.TryGetValue(propertyType.ToString(), out object value))
             return value;
 
         return null;
@@ -252,7 +195,7 @@ public partial class PhotonLogicHandler
     }
 
     private void SetCustomPlayerPropertyTable(Player player, ENUM_PLAYER_STATE_PROPERTIES propertyType, object value)
-	{
+    {
         var table = GetCustomPropertyTable(player);
 
         if (table.ContainsKey(propertyType))
@@ -266,7 +209,7 @@ public partial class PhotonLogicHandler
     }
 
     private void SetCustomRoomPropertyTable(RoomInfo roomInfo, ENUM_PLAYER_STATE_PROPERTIES propertyType, object value)
-	{
+    {
         var table = GetCustomPropertyTable(roomInfo);
 
         if (table.ContainsKey(propertyType))
@@ -280,23 +223,23 @@ public partial class PhotonLogicHandler
     }
 
     private void SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES propertyType, object value)
-	{
+    {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_PLAYER_STATE_PROPERTIES);
-        
-        if(table.ContainsKey(propertyType))
-		{
+
+        if (table.ContainsKey(propertyType))
+        {
             table[propertyType] = value;
         }
         else
-		{
+        {
             table.Add(propertyType, value);
         }
     }
 
     private void SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES propertyType, object value)
-	{
+    {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
-        
+
         if (table.ContainsKey(propertyType))
         {
             table[propertyType] = value;
@@ -307,5 +250,4 @@ public partial class PhotonLogicHandler
         }
 
     }
-
 }

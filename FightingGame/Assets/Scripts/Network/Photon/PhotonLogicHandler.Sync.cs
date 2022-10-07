@@ -11,99 +11,17 @@ using System.Text;
 using FGDefine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public interface ILobbyPostProcess
+public enum ENUM_RPC_TARGET
 {
-    void OnUpdateLobby(List<CustomRoomInfo> roomList);
+    All,
+    MASTER,
+    OTHER
 }
 
-public interface IRoomPostProcess
+public class BroadcastMethodAttribute : PunRPC { }
+
+public partial class PhotonLogicHandler
 {
-    void OnUpdateRoomProperty(CustomRoomProperty property);
-    void OnUpdateRoomPlayerProperty(CustomPlayerProperty property);
-}
-
-
-public partial class PhotonLogicHandler : ILobbyCallbacks
-{
-    private List<CustomRoomInfo> customRoomList = new List<CustomRoomInfo>();
-
-    private List<ILobbyPostProcess> lobbyPostProcesses = new List<ILobbyPostProcess>();
-    private List<IRoomPostProcess> roomPostProcesses = new List<IRoomPostProcess>();
-
-    public void ChangeMap(ENUM_MAP_TYPE mapType)
-    {
-        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE, mapType);
-    }
-
-    private void OnChangeRoomMasterClient(string nickname)
-    {
-        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME, nickname);
-        onChangeMasterClientNickname?.Invoke(nickname);
-    }
-
-
-    public void ChangeCharacter(ENUM_CHARACTER_TYPE characterType)
-    {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, characterType);
-    }
-
-    public bool IsAllReady()
-    {
-        var players = PhotonNetwork.PlayerList;
-        string readyStr = ENUM_PLAYER_STATE_PROPERTIES.READY.ToString();
-        return players.All(p => p.CustomProperties.ContainsKey(readyStr) && (bool)p.CustomProperties[readyStr]);
-    }
-
-    public void Ready()
-    {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, true);
-    }
-
-    public void UnReady()
-    {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
-    }
-
-    private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
-    {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey);
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType);
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
-    }
-
-    public void RegisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
-    {
-        if (!lobbyPostProcesses.Contains(lobbyPostProcess))
-        {
-            lobbyPostProcesses.Add(lobbyPostProcess);
-        }
-    }
-
-    public void UnregisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
-    {
-        if (lobbyPostProcesses.Contains(lobbyPostProcess))
-        {
-            lobbyPostProcesses.Remove(lobbyPostProcess);
-        }
-    }
-
-    public void RegisterIRoomPostProcess(IRoomPostProcess roomPostProcess)
-    {
-        if (!roomPostProcesses.Contains(roomPostProcess))
-        {
-            roomPostProcesses.Add(roomPostProcess);
-        }
-    }
-
-    public void UnregisterIRoomPostProcess(IRoomPostProcess roomPostProcess)
-    {
-        if (roomPostProcesses.Contains(roomPostProcess))
-        {
-            roomPostProcesses.Remove(roomPostProcess);
-        }
-    }
-
     public void TryBroadcastMethod<T, TParam1, TParam2, TParam3, TParam4, TParam5>(T owner, Action<TParam1, TParam2, TParam3, TParam4, TParam5> targetMethod, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5, ENUM_RPC_TARGET targetType = ENUM_RPC_TARGET.All)
         where T : MonoBehaviourPun
     {
@@ -237,54 +155,5 @@ public partial class PhotonLogicHandler : ILobbyCallbacks
         var RPCTargetType = ConvertRPCTargetType(targetType);
         owner.photonView.RPC(methodInfo.Name, RPCTargetType, parameters);
     }
-
-
-    #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
-    public static int Register(PhotonView view)
-    {
-        if (view == null)
-            return 0;
-
-        if (view.ViewID == 0)
-            PhotonNetwork.AllocateViewID(view);
-
-        if (view.ViewID == 0)
-        {
-            Debug.LogError("유효한 포톤 뷰 객체가 아님 ㅅㅂ 암튼 아님 문의줘보셈");
-            return 0;
-        }
-
-        if (!photonViewDictionary.ContainsKey(view.ViewID))
-        {
-            photonViewDictionary.Add(view.ViewID, view);
-        }
-        else
-        {
-            Debug.LogWarning($"같은 MonoBehaviourPhoton 오브젝트를 추가하려 들었음. {view.ViewID}");
-            return 0;
-        }
-
-        return view.ViewID;
-    }
-
-    public static int Unregister(int viewID)
-    {
-        PhotonView view = null;
-
-        if (photonViewDictionary.TryGetValue(viewID, out view))
-        {
-            view.ViewID = 0;
-            photonViewDictionary.Remove(viewID);
-        }
-        else
-        {
-            Debug.LogWarning($"등록되지 않은 MonoBehaviourPhoton 오브젝트를 제거하려 들었음. {viewID}");
-        }
-
-        return 0;
-    }
-
-    #endregion
-
 
 }

@@ -12,15 +12,6 @@ using FGDefine;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public enum ENUM_RPC_TARGET
-{
-    All,
-    MASTER,
-    OTHER
-}
-
-public class BroadcastMethodAttribute : PunRPC { }
-
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message);
 
@@ -67,6 +58,54 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public event PlayerCallBack onChangeMasterClientNickname = null;
     public event PlayerCallBack onLeftRoomPlayer = null;
     public event PlayerCallBack onEnterRoomPlayer = null;
+
+    #region Register 계열 외부 함수, MonoBehaviourPhoton을 등록, 파기할 때 사용
+    public static int Register(PhotonView view)
+    {
+        if (view == null)
+            return 0;
+
+        if (view.ViewID == 0)
+            PhotonNetwork.AllocateViewID(view);
+
+        if (view.ViewID == 0)
+        {
+            Debug.LogError("유효한 포톤 뷰 객체가 아님 ㅅㅂ 암튼 아님 문의줘보셈");
+            return 0;
+        }
+
+        if (!photonViewDictionary.ContainsKey(view.ViewID))
+        {
+            photonViewDictionary.Add(view.ViewID, view);
+        }
+        else
+        {
+            Debug.LogWarning($"같은 MonoBehaviourPhoton 오브젝트를 추가하려 들었음. {view.ViewID}");
+            return 0;
+        }
+
+        return view.ViewID;
+    }
+
+    public static int Unregister(int viewID)
+    {
+        PhotonView view = null;
+
+        if (photonViewDictionary.TryGetValue(viewID, out view))
+        {
+            view.ViewID = 0;
+            photonViewDictionary.Remove(viewID);
+        }
+        else
+        {
+            Debug.LogWarning($"등록되지 않은 MonoBehaviourPhoton 오브젝트를 제거하려 들었음. {viewID}");
+        }
+
+        return 0;
+    }
+
+    #endregion
+
 
     private void OnDestroy()
     {
