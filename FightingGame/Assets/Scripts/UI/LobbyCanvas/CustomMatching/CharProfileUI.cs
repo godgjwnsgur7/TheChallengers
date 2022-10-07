@@ -31,7 +31,7 @@ public class CharProfileUI : MonoBehaviour
 
         isInit = true;
 
-        // Set_UserNickname(string userNickname) // 내 닉네임 받아와
+        Set_UserNickname("닉네임 받아와야 함");
     }
 
     public void Set_UserNickname(string userNickname)
