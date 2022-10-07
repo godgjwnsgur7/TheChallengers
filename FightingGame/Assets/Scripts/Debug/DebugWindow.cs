@@ -72,7 +72,7 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickDBSelect()
 	{
-		Managers.Platform.DBSelect(ENUM_LOGIN_TYPE.Guest, "solhwi", OnSelectDBData);
+		Managers.Platform.DBSelect(ENUM_LOGIN_TYPE.Guest, "vdF1LpBzJYZahUGZLHiYtLKiXtD3", OnSelectDBData);
 	}
 
 	public void OnClickDBUpdate(int inputData)
@@ -82,7 +82,11 @@ public class DebugWindow : BaseCanvas
 
 	private void OnSelectDBData(DBUserData data)
 	{
-		Debug.Log(data);
+		Debug.Log("닉네임 : " + data.nickname);
+		Debug.Log("승수 : " + data.victoryPoint);
+		Debug.Log("패수 : " + data.defeatPoint);
+		Debug.Log("RP : " + data.ratingPoint);
+		Debug.Log("커피 구매 횟수 : " + data.purchaseCoffeeCount);
 	}
 
 	private void OnUpdateDBData(long inputData)
