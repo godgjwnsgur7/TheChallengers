@@ -140,7 +140,7 @@ namespace FGPlatform
 			{
 				if(data == null)
 				{
-					DB.InsertDB(hierachyPath, "", OnCompleted);
+					DB.InsertDB(hierachyPath, nickname, OnCompleted);
 				}
 			});
 		}
