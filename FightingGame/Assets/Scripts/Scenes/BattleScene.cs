@@ -14,17 +14,6 @@ public class BattleScene : BaseScene
     [SerializeField] ENUM_CHARACTER_TYPE testPlayerCharacterType;
     [SerializeField] ENUM_CHARACTER_TYPE testEnemyCharacterType;
 
-    protected new IEnumerator Start()
-	{
-        if(PhotonLogicHandler.IsConnected && PhotonLogicHandler.IsFullRoom)
-		{
-            while (!NetworkDataHandler.IsAliveInstance)
-                yield return null;
-        }
-
-        Init();
-	}
-
     public override void Init()
     {
         base.Init();
