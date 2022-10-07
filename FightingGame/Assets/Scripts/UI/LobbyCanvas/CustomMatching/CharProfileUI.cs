@@ -76,13 +76,15 @@ public class CharProfileUI : MonoBehaviour
         {
             StartCoroutine(IReadyLock(1f));
             readyStateImage.sprite = readySprite;
-            isReady = true; // 서버 전달
+            isReady = true;
+            PhotonLogicHandler.Instance.Ready();
         }
         else
         {
             StartCoroutine(IReadyLock(2f));
             readyStateImage.sprite = unreadySprite;
-            isReady = false; // 서버 전달
+            isReady = false;
+            PhotonLogicHandler.Instance.UnReady();
         }
     }
 
