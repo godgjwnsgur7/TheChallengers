@@ -39,7 +39,7 @@ namespace FGPlatform.Datebase
         bool InsertDB(string[] hierachyPath, string nickname, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
         // 가져올 땐 한 방에
-        bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
+        bool SelectDB(string[] hierachyPath, bool isMine, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
     }
 
 
@@ -93,7 +93,7 @@ namespace FGPlatform.Datebase
             }
             else
             {
-                SelectDB(hierachyPath, (userData) =>
+                SelectDB(hierachyPath, true, (userData) =>
                 {
                     UpdateDB(category, hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
                 });
@@ -122,11 +122,11 @@ namespace FGPlatform.Datebase
         }
 
         /// <summary>
-        /// 최초 1회 실행 권장함
+        /// 최초 자신에 대하여 1회 실행 권장함
         /// 실행하고, null이라면 Insert로 초기값을 넣어주어야 함
         /// </summary>
 
-        public bool SelectDB(string[] hierachyPath, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
+        public bool SelectDB(string[] hierachyPath, bool isMine, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
         {
             if (!typeof(DBUserData).IsSerializable)
             {
@@ -156,9 +156,12 @@ namespace FGPlatform.Datebase
                     DataSnapshot snapshot = task.Result;
 
                     string data = (string)(snapshot.Value);
-                    myUserData = ParseStringData(data);
+                    var userData = ParseStringData(data);
 
-                    OnSuccess?.Invoke(myUserData);
+                    OnSuccess?.Invoke(userData);
+
+                    if(isMine)
+                        myUserData = userData;
                 }
             });
 

@@ -103,10 +103,16 @@ namespace FGPlatform
 
 		public bool DBSelect(ENUM_LOGIN_TYPE loginType, string userId, Action<DBUserData> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
 		{
+			bool isMine = userId == GetUserID() && loginType == CurrentLoginType;
+			if(!isMine)
+			{
+				Debug.LogError("다른 유저의 데이터베이스에 접근합니다. 주의해주세요.");
+			}
+
 			string token = GetHashToken(loginType, userId);
 			string[] hierachyPath = new string[] { token };
 
-			return DB.SelectDB(hierachyPath, OnSuccess, OnFailed, OnCanceled);
+			return DB.SelectDB(hierachyPath, isMine, OnSuccess, OnFailed, OnCanceled);
 		}
 
 		/// <summary>
@@ -130,7 +136,7 @@ namespace FGPlatform
 			string token = GetHashToken(loginType, userId);
 			string[] hierachyPath = new string[] { token };
 
-			DB.SelectDB(hierachyPath, (data) =>
+			DB.SelectDB(hierachyPath, true, (data) =>
 			{
 				if(data == null)
 				{
