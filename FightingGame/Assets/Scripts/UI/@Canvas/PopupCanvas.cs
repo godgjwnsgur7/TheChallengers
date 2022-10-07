@@ -16,8 +16,6 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;
 
-    FailedCallBack OnFailedCallBack;
-
     private void Start()
     {
         Init();
@@ -31,6 +29,11 @@ public class PopupCanvas : MonoBehaviour
     public void Check_ActivePopup()
     {
         // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중
+    }
+
+    public void Open_ErrorPopup(short _returnCode, string _message)
+    {
+        // 에러팝업 구현해야 함
     }
 
     public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack)

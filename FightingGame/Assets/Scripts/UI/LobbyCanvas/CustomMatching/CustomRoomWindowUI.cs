@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-
-public class CustomRoomWindowUI : MonoBehaviour
+public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 {
     public bool isInit = false;
 
@@ -70,7 +69,10 @@ public class CustomRoomWindowUI : MonoBehaviour
         MyProfile.Clear();
         this.gameObject.SetActive(false);
     }
-
+    
+    /// <summary>
+    /// 방에 최초 입장 시에 불리는 함수
+    /// </summary>
     public void Set_CurrRoomInfo()
     {
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
@@ -101,6 +103,8 @@ public class CustomRoomWindowUI : MonoBehaviour
 
         // 해제
         PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
+
+
     }
     public void Set_SlaveClient()
     {
@@ -110,6 +114,8 @@ public class CustomRoomWindowUI : MonoBehaviour
 
         // 등록
         PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
+
+
     }
 
     /// <summary>
@@ -122,7 +128,6 @@ public class CustomRoomWindowUI : MonoBehaviour
 
     /// <summary>
     /// 마스터 클라이언트가 변경됐을 때 불리는 함수 (매개변수로는 마스터 닉네임을 줌)
-    /// 
     /// </summary>
     public void MasterClientExitCallBack(string nickname)
     {
@@ -134,14 +139,13 @@ public class CustomRoomWindowUI : MonoBehaviour
         {
             MyProfile.Set_Character(slaveProfile.currCharType);
 
-           // 슬레이브 클라이언트의 정보를 가져와서 세.
+            // 슬레이브 클라이언트의 정보를 가져와서 세.
         }
         else // 슬레이브 클라이언트가 됐을 때
         {
             MyProfile.Set_Character(masterProfile.currCharType);
             slaveProfile.Set_UserNickname(nickname);
         }
-
     }
 
     /// <summary>
@@ -186,5 +190,17 @@ public class CustomRoomWindowUI : MonoBehaviour
 
         // 일단 그냥 입장
         PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
+    }
+
+    public void OnUpdateRoomProperty(CustomRoomProperty property)
+    {
+        if (PhotonLogicHandler.IsMasterClient) return;
+        // 얘는 마스터밖에 못바꿈 ㅇㅇ 마스터면 리턴시키던가 하면 될듯
+
+    }
+
+    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
+    {
+        // 방 유저 정보 변경된거임 ㅇㅋ?
     }
 }

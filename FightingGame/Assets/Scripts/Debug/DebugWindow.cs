@@ -96,6 +96,7 @@ public class DebugWindow : BaseCanvas
 		{
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+			SetStatus("로그인 성공");
 		}, null, null, "godgjwnsgur7@gmail.com", "123456");
 	}
 
@@ -110,6 +111,8 @@ public class DebugWindow : BaseCanvas
 		{
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+			SetStatus("로그인 성공");
+
 		}, null, null, "psh50zmfhtm@gmail.com", "123456");
 	}
 
