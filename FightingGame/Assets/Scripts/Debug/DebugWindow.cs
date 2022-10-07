@@ -140,7 +140,7 @@ public class DebugWindow : BaseCanvas
 
 	public void OnClickMoveScene()
 	{
-		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle, true);
+		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
 	}
 
 	public void SetError(string cause)
