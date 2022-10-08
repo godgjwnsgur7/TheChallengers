@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FGDefine;
 
 public class InputKeyManagement : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
-        keySettingData = new KeySettingData[(int)ENUM_KEYSETTING_NAME.Max];
+        keySettingData = new KeySettingData[(int)ENUM_INPUTKEY_NAME.Max];
 
         // InputPanel Instantiate
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
@@ -24,12 +25,12 @@ public class InputKeyManagement : MonoBehaviour
             inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
             inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
-            keySettingData[i] = PlayerPrefsManagement.Load_KeySettingData((ENUM_KEYSETTING_NAME)i);
+            //keySettingData[i] = PlayerPrefsManagement.Load_KeySettingData((ENUM_INPUTKEY_NAME)i);
             if (keySettingData[i] == null)
             {
-                keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
-                PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
-                Debug.Log((ENUM_KEYSETTING_NAME)i + "초기화");
+                // keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
+               // PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_INPUTKEY_NAME)i);
+                Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
 
             Set_InputKey(i, inputKey);
@@ -88,14 +89,16 @@ public class InputKeyManagement : MonoBehaviour
         Debug.Log("눌렀다.");
     }
 
-    public void Set_KeySettingData(KeySettingData keySettingData, ENUM_KEYSETTING_NAME keyName)
+    public void Set_KeySettingData(KeySettingData keySettingData, ENUM_INPUTKEY_NAME keyName)
     {
         this.keySettingData[(int)keyName] = keySettingData;
     }
 
     public void Save_KeySettingData()
     {
+        /*
         for(int i = 0; i < keySettingData.Length; i++)
-            PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
+            PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_INPUTKEY_NAME)i);
+        */
     }
 }
