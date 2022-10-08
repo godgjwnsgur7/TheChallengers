@@ -37,29 +37,31 @@ public class KeySettingData
 
  public class PlayerPrefsManagement : MonoBehaviour
 {
+    #region KeySettingData
+
     // PlayerPrefs Set 계열 함수들. keyName_keyType 을 키값으로 저장함
-    private void Set_Float(float value, string keyName, string keyType)
+    private static void Set_Float(float value, string keyName, string keyType)
         => PlayerPrefs.SetFloat($"{keyName}_{keyType}", value);
-    private void Set_String(string value, string keyName, string keyType)
+    private static void Set_String(string value, string keyName, string keyType)
         => PlayerPrefs.SetString($"{keyName}_{keyType}", value);
-    private void Set_Int(int value, string keyName, string keyType)
+    private static void Set_Int(int value, string keyName, string keyType)
         => PlayerPrefs.SetInt($"{keyName}_{keyType}", value);
 
     // PlayerPrefs Get 계열 함수들. keyName_keyType 을 키값으로 불러옴
-    private float Get_Float(string keyName, string keyType)
+    private static float Get_Float(string keyName, string keyType)
     { return PlayerPrefs.GetFloat($"{keyName}_{keyType}"); }
-    private string Get_String(string keyName, string keyType)
+    private static string Get_String(string keyName, string keyType)
     { return PlayerPrefs.GetString($"{keyName}_{keyType}"); }
-    private int Get_Int(string keyName, string keyType)
+    private static int Get_Int(string keyName, string keyType)
     { return PlayerPrefs.GetInt($"{keyName}_{keyType}"); }
 
+    #endregion
 
-    #region KeySettingData
 
     /// <summary>
     /// KeySettingData가 null이면 저장하지 않고, false를 리턴
     /// </summary>
-    public bool Set_KeySettingData(KeySettingData keySettingData, ENUM_KEYSETTING_NAME keyName)
+    public static bool Save_KeySettingData(KeySettingData keySettingData, ENUM_KEYSETTING_NAME keyName)
     {
         if (keySettingData == null)
             return false;
@@ -69,13 +71,14 @@ public class KeySettingData
         Set_Float(keySettingData.rectTrX, nameof(keySettingData.rectTrX), keyName.ToString());
         Set_Float(keySettingData.rectTrY, nameof(keySettingData.rectTrY), keyName.ToString());
 
+        PlayerPrefs.Save();
         return true;
     }
 
     /// <summary>
     /// 만약 저장된 값이 없다면 null을 리턴
     /// </summary>
-    public KeySettingData Get_KeySettingData(ENUM_KEYSETTING_NAME keyName)
+    public static KeySettingData Load_KeySettingData(ENUM_KEYSETTING_NAME keyName)
     {
         if (!PlayerPrefs.HasKey($"{keyName}_{nameof(KeySettingData.size)}"))
         {
@@ -89,12 +92,5 @@ public class KeySettingData
         float _rectTrY = Get_Float(keyName.ToString(), nameof(KeySettingData.rectTrY));
 
         return new KeySettingData(_size, _opacity, _rectTrX, _rectTrY);
-    }
-
-    #endregion
-
-    public void Save_KeySettingData()
-    {
-        PlayerPrefs.Save();
     }
 }

@@ -20,18 +20,18 @@ public class InputKeyManagement : MonoBehaviour
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
         inputPanel.Init(Select_InputKey, Select_InputKey);
 
-        // InputKey ¼¼ÆÃ
+        // InputKey ì„¸íŒ…
         for(int i = 0; i < keySettingData.Length; i++)
         {
             inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
             inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
-            keySettingData[i] = playerPrefsManagement.Get_KeySettingData((ENUM_KEYSETTING_NAME)i);
+            // keySettingData[i] = playerPrefsManagement.Get_KeySettingData((ENUM_KEYSETTING_NAME)i);
             if (keySettingData[i] == null)
             {
                 keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
-                playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
-                Debug.Log((ENUM_KEYSETTING_NAME)i + "ÃÊ±âÈ­");
+                // playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
+                Debug.Log((ENUM_KEYSETTING_NAME)i + "ì´ˆê¸°í™”");
             }
 
             Set_InputKey(i, inputKey);
@@ -74,10 +74,10 @@ public class InputKeyManagement : MonoBehaviour
         inputKeyRectTr.position = changeVector;
     }
 
-    // InputPanel Init Å×½ºÆ® ¿ë ÀÓ½Ã
+    // InputPanel Init í…ŒìŠ¤íŠ¸ ìš© ìž„ì‹œ
     public void Select_InputKey(InputKey inputKey)
     {
-        Debug.Log("´­·¶´Ù.");
+        Debug.Log("ëˆŒë €ë‹¤.");
     }
 
     public void Set_KeySettingData(KeySettingData keySettingData, ENUM_KEYSETTING_NAME keyName)
@@ -87,9 +87,11 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Save_KeySettingData()
     {
+        /*
         for(int i = 0; i < keySettingData.Length; i++)
             playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
 
         playerPrefsManagement.Save_KeySettingData();
-    }
+        */
+        }
 }
