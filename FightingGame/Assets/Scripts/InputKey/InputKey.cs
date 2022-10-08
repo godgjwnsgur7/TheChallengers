@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class InputKey : MonoBehaviour
@@ -8,6 +9,7 @@ public class InputKey : MonoBehaviour
     Action<InputKey> OnPointDownCallBack;
     Action<InputKey> OnPointUpCallBack;
 
+    public Image[] inputKeyImages;
     bool isInit = false;
 
     public void Init(Action<InputKey> _OnPointDownCallBack, Action<InputKey> _OnPointUpCallBack)
