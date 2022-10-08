@@ -15,6 +15,7 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;
+    [SerializeField] ErrorPopup errorPopup;
 
     private void Start()
     {
@@ -31,11 +32,24 @@ public class PopupCanvas : MonoBehaviour
         // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중
     }
 
+    /// <summary>
+    /// 에러코드와 메세지를 출력하는 Popup Window
+    /// 
+    /// </summary>
     public void Open_ErrorPopup(short _returnCode, string _message)
     {
-        // 에러팝업 구현해야 함
+        if(errorPopup.isUsing)
+        {
+            Debug.Log("이미 에러팝업창이 떠있습니다.");
+            return;
+        }
+
+        errorPopup.Open(_returnCode, _message);
     }
 
+    /// <summary>
+    /// 캐릭터 선택창 Popup Window
+    /// </summary>
     public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack)
     {
         if(charSelectPopup.isUsing)

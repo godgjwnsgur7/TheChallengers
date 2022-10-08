@@ -1,18 +1,104 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using FGDefine;
 
 public class InputKeyManagement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private KeySettingData[] keySettingData = null;
+    private InputPanel inputPanel = null;
+    private InputKey inputKey = null;
+    private RectTransform inputKeyRectTr = null;
+
+    public void Init()
     {
-        
+        keySettingData = new KeySettingData[(int)ENUM_INPUTKEY_NAME.Max];
+
+        // InputPanel Instantiate
+        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        inputPanel.Init(Select_InputKey, Select_InputKey);
+
+        // InputKey 세팅
+        for(int i = 0; i < keySettingData.Length; i++)
+        {
+            inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
+            inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+
+            //keySettingData[i] = PlayerPrefsManagement.Load_KeySettingData((ENUM_INPUTKEY_NAME)i);
+            if (keySettingData[i] == null)
+            {
+                // keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
+               // PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_INPUTKEY_NAME)i);
+                Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
+            }
+
+            Set_InputKey(i, inputKey);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Set_InputKey(int inputkeyNum, InputKey inputKey)
     {
+        Set_InputKeySize(keySettingData[inputkeyNum].size, inputKey);
+        Set_InputKeyOpacity(keySettingData[inputkeyNum].opacity, inputKey);
+        Set_InputKeyTransForm(keySettingData[inputkeyNum].rectTrX, keySettingData[inputkeyNum].rectTrY, inputKey);
+    }
+
+    public void Set_InputKeySize(float size, InputKey inputKey)
+    {
+        float sizeRatio = (50 + size) / 100;
+
+        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+        inputKeyRectTr.localScale = new Vector3(1, 1, 1) * sizeRatio;
+    }
+
+    public void Set_InputKeyOpacity(float opacity, InputKey inputKey)
+    {
+        float opacityRatio = 0.5f + (opacity / 200);
+        Color changeColor;
+        Image inputKeyImage;
         
+        if (inputKey.transform.Find("SlotImage") != null)
+        {
+            inputKeyImage = inputKey.transform.Find("SlotImage").GetComponent<Image>();
+            changeColor = inputKeyImage.color;
+            changeColor.a = opacityRatio;
+            inputKeyImage.color = changeColor;
+        }
+        
+        if (inputKey.transform.Find("IconArea") != null)
+        {
+            inputKeyImage = inputKey.transform.Find("IconArea").GetChild(0).GetComponent<Image>();
+            changeColor = inputKeyImage.color;
+            changeColor.a = opacityRatio;
+            inputKeyImage.color = changeColor;
+        }
+    }
+
+    public void Set_InputKeyTransForm(float rectTrX, float rectTrY, InputKey inputKey)
+    {
+        Vector2 changeVector = new Vector2(rectTrX, rectTrY);
+
+        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+        inputKeyRectTr.position = changeVector;
+    }
+
+    // InputPanel Init 테스트 용 임시
+    public void Select_InputKey(InputKey inputKey)
+    {
+        Debug.Log("눌렀다.");
+    }
+
+    public void Set_KeySettingData(KeySettingData keySettingData, ENUM_INPUTKEY_NAME keyName)
+    {
+        this.keySettingData[(int)keyName] = keySettingData;
+    }
+
+    public void Save_KeySettingData()
+    {
+        /*
+        for(int i = 0; i < keySettingData.Length; i++)
+            PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_INPUTKEY_NAME)i);
+        */
     }
 }

@@ -37,7 +37,7 @@ public class NotifyPopup : PopupUI
         this.gameObject.SetActive(true);
     }
 
-    public void OnClick_Close()
+    public void OnClick_Check()
     {
         if(callBack != null) callBack();
 
