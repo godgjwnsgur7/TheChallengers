@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class InputKeyManagement : MonoBehaviour
 {
-    private PlayerPrefsManagement playerPrefsManagement = null;
     private KeySettingData[] keySettingData = null;
     private InputPanel inputPanel = null;
     private InputKey inputKey = null;
@@ -13,7 +12,6 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
-        playerPrefsManagement = new PlayerPrefsManagement();
         keySettingData = new KeySettingData[(int)ENUM_KEYSETTING_NAME.Max];
 
         // InputPanel Instantiate
@@ -26,11 +24,11 @@ public class InputKeyManagement : MonoBehaviour
             inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
             inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
-            // keySettingData[i] = playerPrefsManagement.Get_KeySettingData((ENUM_KEYSETTING_NAME)i);
+            keySettingData[i] = PlayerPrefsManagement.Load_KeySettingData((ENUM_KEYSETTING_NAME)i);
             if (keySettingData[i] == null)
             {
                 keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
-                // playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
+                PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
                 Debug.Log((ENUM_KEYSETTING_NAME)i + "초기화");
             }
 
@@ -57,16 +55,26 @@ public class InputKeyManagement : MonoBehaviour
     {
         float opacityRatio = 0.5f + (opacity / 200);
         Color changeColor;
-
-        for(int i = 0; i < inputKey.inputKeyImages.Length; i++)
+        Image inputKeyImage;
+        
+        if (inputKey.transform.Find("SlotImage") != null)
         {
-            changeColor = inputKey.inputKeyImages[i].color;
+            inputKeyImage = inputKey.transform.Find("SlotImage").GetComponent<Image>();
+            changeColor = inputKeyImage.color;
             changeColor.a = opacityRatio;
-            inputKey.inputKeyImages[i].color = changeColor;
+            inputKeyImage.color = changeColor;
+        }
+        
+        if (inputKey.transform.Find("IconArea") != null)
+        {
+            inputKeyImage = inputKey.transform.Find("IconArea").GetChild(0).GetComponent<Image>();
+            changeColor = inputKeyImage.color;
+            changeColor.a = opacityRatio;
+            inputKeyImage.color = changeColor;
         }
     }
 
-        public void Set_InputKeyTransForm(float rectTrX, float rectTrY, InputKey inputKey)
+    public void Set_InputKeyTransForm(float rectTrX, float rectTrY, InputKey inputKey)
     {
         Vector2 changeVector = new Vector2(rectTrX, rectTrY);
 
@@ -87,11 +95,7 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Save_KeySettingData()
     {
-        /*
         for(int i = 0; i < keySettingData.Length; i++)
-            playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
-
-        playerPrefsManagement.Save_KeySettingData();
-        */
-        }
+            PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
+    }
 }
