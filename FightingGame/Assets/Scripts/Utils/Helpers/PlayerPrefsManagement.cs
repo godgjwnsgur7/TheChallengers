@@ -77,8 +77,11 @@ public class KeySettingData
     /// </summary>
     public KeySettingData Get_KeySettingData(ENUM_KEYSETTING_NAME keyName)
     {
-        if(PlayerPrefs.HasKey($"{keyName}_{nameof(KeySettingData.size)}"))
+        if (!PlayerPrefs.HasKey($"{keyName}_{nameof(KeySettingData.size)}"))
+        {
+            Debug.Log("없음");
             return null;
+        }
 
         float _size = Get_Float(keyName.ToString(), nameof(KeySettingData.size));
         float _opacity = Get_Float(keyName.ToString(), nameof(KeySettingData.opacity));

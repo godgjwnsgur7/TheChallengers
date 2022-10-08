@@ -5,35 +5,79 @@ using UnityEngine.UI;
 
 public class InputKeyManagement : MonoBehaviour
 {
-    PlayerPrefsManagement playerPrefsManagement = null;
-    KeySettingData[] keySettingData = null;
-    InputPanel inputPanel = null;
-    InputKey inputKey = null;
-    RectTransform inputRectTr = null;
-    Image inputImage = null;
+    private PlayerPrefsManagement playerPrefsManagement = null;
+    private KeySettingData[] keySettingData = null;
+    private InputPanel inputPanel = null;
+    private InputKey inputKey = null;
+    private RectTransform inputKeyRectTr = null;
 
     public void Init()
     {
         playerPrefsManagement = new PlayerPrefsManagement();
         keySettingData = new KeySettingData[(int)ENUM_KEYSETTING_NAME.Max];
 
+        // InputPanel Instantiate
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-        // inputPanel.Init();
+        inputPanel.Init(Select_InputKey, Select_InputKey);
 
+        // InputKey 세팅
         for(int i = 0; i < keySettingData.Length; i++)
         {
             inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-            inputRectTr = inputKey.GetComponent<RectTransform>();
-            keySettingData[i] = playerPrefsManagement.Get_KeySettingData((ENUM_KEYSETTING_NAME)i);
+            inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
-            if(keySettingData[i] == null)
+            keySettingData[i] = playerPrefsManagement.Get_KeySettingData((ENUM_KEYSETTING_NAME)i);
+            if (keySettingData[i] == null)
             {
-                keySettingData[i] = new KeySettingData(50, 100, inputRectTr.position.x, inputRectTr.position.y);
+                keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
                 playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
+                Debug.Log((ENUM_KEYSETTING_NAME)i + "초기화");
             }
 
-            Set_InputKey((ENUM_INPUTKEY_NAME)i, inputKey);
+            Set_InputKey(i, inputKey);
         }
+    }
+
+    public void Set_InputKey(int inputkeyNum, InputKey inputKey)
+    {
+        Set_InputKeySize(keySettingData[inputkeyNum].size, inputKey);
+        Set_InputKeyOpacity(keySettingData[inputkeyNum].opacity, inputKey);
+        Set_InputKeyTransForm(keySettingData[inputkeyNum].rectTrX, keySettingData[inputkeyNum].rectTrY, inputKey);
+    }
+
+    public void Set_InputKeySize(float size, InputKey inputKey)
+    {
+        float sizeRatio = (50 + size) / 100;
+
+        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+        inputKeyRectTr.localScale = new Vector3(1, 1, 1) * sizeRatio;
+    }
+
+    public void Set_InputKeyOpacity(float opacity, InputKey inputKey)
+    {
+        float opacityRatio = 0.5f + (opacity / 200);
+        Color changeColor;
+
+        for(int i = 0; i < inputKey.inputKeyImages.Length; i++)
+        {
+            changeColor = inputKey.inputKeyImages[i].color;
+            changeColor.a = opacityRatio;
+            inputKey.inputKeyImages[i].color = changeColor;
+        }
+    }
+
+        public void Set_InputKeyTransForm(float rectTrX, float rectTrY, InputKey inputKey)
+    {
+        Vector2 changeVector = new Vector2(rectTrX, rectTrY);
+
+        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+        inputKeyRectTr.position = changeVector;
+    }
+
+    // InputPanel Init 테스트 용 임시
+    public void Select_InputKey(InputKey inputKey)
+    {
+        Debug.Log("눌렀다.");
     }
 
     public void Set_KeySettingData(KeySettingData keySettingData, ENUM_KEYSETTING_NAME keyName)
@@ -47,20 +91,5 @@ public class InputKeyManagement : MonoBehaviour
             playerPrefsManagement.Set_KeySettingData(keySettingData[i], (ENUM_KEYSETTING_NAME)i);
 
         playerPrefsManagement.Save_KeySettingData();
-    }
-
-    public void Set_InputKey(ENUM_INPUTKEY_NAME operatingName, InputKey inputKey)
-    {
-        inputRectTr = inputKey.GetComponent<RectTransform>();
-        inputImage = inputKey.GetComponent<Image>();
-
-        inputRectTr.localScale *= (50 + keySettingData[(int)operatingName].size);
-
-        Color changeColor = inputImage.color;
-        changeColor.a = 0.5f + (keySettingData[(int)operatingName].opacity / 200);
-        inputImage.color = changeColor;
-
-        Vector2 changeVector = new Vector2(keySettingData[(int)operatingName].rectTrX, keySettingData[(int)operatingName].rectTrY);
-        inputRectTr.position = changeVector;
     }
 }
