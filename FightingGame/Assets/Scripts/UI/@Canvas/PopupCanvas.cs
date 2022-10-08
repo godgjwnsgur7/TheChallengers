@@ -33,7 +33,7 @@ public class PopupCanvas : MonoBehaviour
 
     public void Open_ErrorPopup(short _returnCode, string _message)
     {
-        // 에러팝업 구현해야 함
+        
     }
 
     public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack)

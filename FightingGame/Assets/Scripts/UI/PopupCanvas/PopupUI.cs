@@ -11,6 +11,8 @@ public abstract class PopupUI : MonoBehaviour
     private Coroutine closeCoroutine;
     [SerializeField] GameObject popupWindow;
 
+    Image popupImage = null;
+
     public void Open_Effect()
     {
         if (this.gameObject.activeSelf)
@@ -41,7 +43,8 @@ public abstract class PopupUI : MonoBehaviour
     IEnumerator Open_Coroutine()
     {
         float time = 0;
-        Image popupImage = popupWindow.GetComponent<Image>();
+        if (popupImage == null)
+            popupImage = popupWindow.GetComponent<Image>();
 
         while (time < 1f)
         {
@@ -56,7 +59,8 @@ public abstract class PopupUI : MonoBehaviour
     IEnumerator Close_Coroutine()
     {
         float time = 0;
-        Image popupImage = popupWindow.GetComponent<Image>();
+        if (popupImage == null)
+            popupImage = popupWindow.GetComponent<Image>();
 
         while (time < 1f)
         {
