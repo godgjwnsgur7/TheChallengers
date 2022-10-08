@@ -6,42 +6,40 @@ using FGDefine;
 
 public class InputKeyManagement : MonoBehaviour
 {
-    private KeySettingData[] keySettingData = null;
+    List<KeySettingData> keySettingDataList = null;
     private InputPanel inputPanel = null;
     private InputKey inputKey = null;
     private RectTransform inputKeyRectTr = null;
 
     public void Init()
     {
-        keySettingData = new KeySettingData[(int)ENUM_INPUTKEY_NAME.Max];
-
         // InputPanel Instantiate
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
         inputPanel.Init(Select_InputKey, Select_InputKey);
 
-        // InputKey 세팅
-        for(int i = 0; i < keySettingData.Length; i++)
+        if (PlayerPrefsManagement.Load_KeySettingData() == null)
         {
-            inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-            inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+            keySettingDataList = new List<KeySettingData>();
 
-            //keySettingData[i] = PlayerPrefsManagement.Load_KeySettingData((ENUM_INPUTKEY_NAME)i);
-            if (keySettingData[i] == null)
+            for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
             {
-                // keySettingData[i] = new KeySettingData(50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y);
-               // PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_INPUTKEY_NAME)i);
+                inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
+                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y));
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
+                Set_InputKey(i, inputKey);
             }
-
-            Set_InputKey(i, inputKey);
+            PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
         }
+        else
+            keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
     }
 
     public void Set_InputKey(int inputkeyNum, InputKey inputKey)
     {
-        Set_InputKeySize(keySettingData[inputkeyNum].size, inputKey);
-        Set_InputKeyOpacity(keySettingData[inputkeyNum].opacity, inputKey);
-        Set_InputKeyTransForm(keySettingData[inputkeyNum].rectTrX, keySettingData[inputkeyNum].rectTrY, inputKey);
+        Set_InputKeySize(keySettingDataList[inputkeyNum].size, inputKey);
+        Set_InputKeyOpacity(keySettingDataList[inputkeyNum].opacity, inputKey);
+        Set_InputKeyTransForm(keySettingDataList[inputkeyNum].rectTrX, keySettingDataList[inputkeyNum].rectTrY, inputKey);
     }
 
     public void Set_InputKeySize(float size, InputKey inputKey)
@@ -89,16 +87,8 @@ public class InputKeyManagement : MonoBehaviour
         Debug.Log("눌렀다.");
     }
 
-    public void Set_KeySettingData(KeySettingData keySettingData, ENUM_INPUTKEY_NAME keyName)
-    {
-        this.keySettingData[(int)keyName] = keySettingData;
-    }
-
     public void Save_KeySettingData()
     {
-        /*
-        for(int i = 0; i < keySettingData.Length; i++)
-            PlayerPrefsManagement.Save_KeySettingData(keySettingData[i], (ENUM_INPUTKEY_NAME)i);
-        */
+        PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
     }
 }

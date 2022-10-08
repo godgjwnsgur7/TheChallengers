@@ -49,7 +49,7 @@ public class PlayerPrefsManagement : MonoBehaviour
     /// </summary>
     public static bool Save_KeySettingData(List<KeySettingData> keySettingDatas)
     {
-        if (keySettingDatas == null || keySettingDatas.Count != Enum.GetValues(typeof(ENUM_INPUTKEY_NAME)).Length)
+        if (keySettingDatas == null || keySettingDatas.Count != (int)ENUM_INPUTKEY_NAME.Max)
         {
             Debug.Log("keySettingDatas가 Null이거나 키 전체가 넘어오지 않았습니다.");
             return false;
@@ -64,10 +64,10 @@ public class PlayerPrefsManagement : MonoBehaviour
                 return false;
             }
 
-            Set_Float(keySettingDatas[i].size, nameof(KeySettingData.size), keyName);
-            Set_Float(keySettingDatas[i].opacity, nameof(KeySettingData.opacity), keyName);
-            Set_Float(keySettingDatas[i].rectTrX, nameof(KeySettingData.rectTrX), keyName);
-            Set_Float(keySettingDatas[i].rectTrY, nameof(KeySettingData.rectTrY), keyName);
+            Set_Float(keySettingDatas[i].size, keyName, nameof(KeySettingData.size));
+            Set_Float(keySettingDatas[i].opacity, keyName, nameof(KeySettingData.size));
+            Set_Float(keySettingDatas[i].rectTrX, keyName, nameof(KeySettingData.size));
+            Set_Float(keySettingDatas[i].rectTrY, keyName, nameof(KeySettingData.size));
         }
 
         PlayerPrefs.Save();
@@ -81,7 +81,7 @@ public class PlayerPrefsManagement : MonoBehaviour
     {
         List<KeySettingData> keySettingDatas = new List<KeySettingData>();
 
-        for (int i = 0; i < Enum.GetValues(typeof(ENUM_INPUTKEY_NAME)).Length; i++)
+        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             string inputKeyName = Enum.GetName(typeof(ENUM_INPUTKEY_NAME), i);
             if(inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(KeySettingData.size)}"))
