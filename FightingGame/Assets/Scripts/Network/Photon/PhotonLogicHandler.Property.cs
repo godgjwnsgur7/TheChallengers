@@ -69,7 +69,7 @@ public interface IRoomPostProcess
 }
 
 
-public partial class PhotonLogicHandler : ILobbyCallbacks
+public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 {
     private List<CustomRoomInfo> customRoomList = new List<CustomRoomInfo>();
 
@@ -112,8 +112,8 @@ public partial class PhotonLogicHandler : ILobbyCallbacks
 
     private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
     {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey);
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
     }
@@ -207,13 +207,13 @@ public partial class PhotonLogicHandler : ILobbyCallbacks
     {
         var table = GetCustomPropertyTable(player);
 
-        if (table.ContainsKey(propertyType))
+        if (table.ContainsKey(propertyType.ToString()))
         {
             table[propertyType] = value;
         }
         else
         {
-            table.Add(propertyType, value);
+            table.Add(propertyType.ToString(), value);
         }
     }
     private void SetCustomRoomPropertyTable(Hashtable table, ENUM_CUSTOM_ROOM_PROPERTIES property, object value)
@@ -233,42 +233,46 @@ public partial class PhotonLogicHandler : ILobbyCallbacks
     {
         var table = GetCustomPropertyTable(roomInfo);
 
-        if (table.ContainsKey(propertyType))
+        if (table.ContainsKey(propertyType.ToString()))
         {
             table[propertyType] = value;
         }
         else
         {
-            table.Add(propertyType, value);
+            table.Add(propertyType.ToString(), value);
         }
     }
 
-    private void SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES propertyType, object value)
+    private void SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES propertyType, object value, bool isUpdate = true)
     {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_PLAYER_STATE_PROPERTIES);
 
-        if (table.ContainsKey(propertyType))
+        if (table.ContainsKey(propertyType.ToString()))
         {
             table[propertyType] = value;
         }
         else
         {
-            table.Add(propertyType, value);
+            table.Add(propertyType.ToString(), value);
         }
+
+        if(isUpdate)
+            PhotonNetwork.LocalPlayer.SetCustomProperties(table);
     }
 
     private void SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES propertyType, object value)
     {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
 
-        if (table.ContainsKey(propertyType))
+        if (table.ContainsKey(propertyType.ToString()))
         {
             table[propertyType] = value;
         }
         else
         {
-            table.Add(propertyType, value);
+            table.Add(propertyType.ToString(), value);
         }
 
+        PhotonNetwork.CurrentRoom.SetCustomProperties(table);
     }
 }

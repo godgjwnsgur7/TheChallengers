@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class DebugWindow : BaseCanvas
+public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 {
 	[SerializeField] private InputField roomNameInput = null;
 
@@ -20,6 +20,14 @@ public class DebugWindow : BaseCanvas
 	private void Start()
 	{
 		Managers.Platform.Initialize();
+		this.RegisterLobbyCallback();
+		this.RegisterRoomCallback();
+	}
+
+	private void OnDestroy()
+	{
+		this.UnregisterLobbyCallback();
+		this.UnregisterRoomCallback();
 	}
 
 	public void OnClickMasterServer()
@@ -27,6 +35,11 @@ public class DebugWindow : BaseCanvas
 		bool a = PhotonLogicHandler.Instance.TryConnectToMaster(
 			() => { SetStatus("마스터 서버 접속 완료"); },
 			SetError);
+	}
+
+	public void OnClickDisconnectMasterServer()
+	{
+		PhotonLogicHandler.Instance.TryDisconnectToMaster();
 	}
 
 	public void OnClickJoinRandomRoom()
@@ -57,6 +70,16 @@ public class DebugWindow : BaseCanvas
 		OnCreateRoom: () => { SetStatus("방 만들기 성공"); }, 
 		OnCreateRoomFailed: SetError, 
 		roomName: roomNameInput.text);
+	}
+
+	public void OnClickLeaveRoom()
+	{
+		PhotonLogicHandler.Instance.TryLeaveRoom(() => { SetStatus("방 탈출 완료"); });
+	}
+
+	public void OnClickLeaveLobby()
+	{
+		PhotonLogicHandler.Instance.TryLeaveLobby(() => { SetStatus("로비 탈출 완료"); });
 	}
 
 	public void OnClickFindCustomRoom()
@@ -150,6 +173,30 @@ public class DebugWindow : BaseCanvas
 		PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
 	}
 
+	public void OnClickChangeMyCharacter(int character)
+	{
+		if (character >= (int)ENUM_CHARACTER_TYPE.Max)
+			return;
+		PhotonLogicHandler.Instance.ChangeCharacter((ENUM_CHARACTER_TYPE)character);
+	}
+
+	public void OnClickChanageMap(int mapType)
+	{
+		if (mapType > (int)ENUM_MAP_TYPE.BasicMap)
+			return;
+		PhotonLogicHandler.Instance.ChangeMap((ENUM_MAP_TYPE)mapType);
+	}
+
+	public void OnClickReady()
+	{
+		PhotonLogicHandler.Instance.Ready();
+	}
+
+	public void OnClickUnready()
+	{
+		PhotonLogicHandler.Instance.UnReady();
+	}
+
 	public void SetError(string cause)
 	{
 		SetStatus($"{cause} - 해당 사유로 접속 실패, 혹은 끊어짐");
@@ -164,5 +211,37 @@ public class DebugWindow : BaseCanvas
 	{
 		statusPanel.text = txt;
 		detailStatusPanel.text = PhotonLogicHandler.Instance.Info();
+	}
+
+	public void OnUpdateLobby(List<CustomRoomInfo> roomList)
+	{
+		foreach(var room in roomList)
+		{
+			Debug.Log($"현재 맵 : {room.CurrentMapType}");
+			Debug.Log($"방장 고유 ID : {room.masterClientId}");
+			Debug.Log($"방장 닉네임 : {room.MasterClientNickname}");
+			Debug.Log($"현재 방 인원 : {room.currentPlayerCount}");
+			Debug.Log($"방 최대 인원 : {room.maxPlayerCount}");
+		}
+	}
+
+	public void OnUpdateRoomProperty(CustomRoomProperty property)
+	{
+		Debug.Log($"현재 맵 : {property.currentMapType}");
+		Debug.Log($"방장 닉네임 : {property.masterClientNickname}");
+	}
+
+	public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
+	{
+		Debug.Log($"현재 캐릭터 : {property.characterType}");
+
+		Debug.Log($"이색휘 마스터 클라이언트임? : {property.isMasterClient}");
+		Debug.Log($"플레이어 닉네임 : {property.isReady}");
+
+		Debug.Log("닉네임 : " + property.data.nickname);
+		Debug.Log("승수 : " + property.data.victoryPoint);
+		Debug.Log("패수 : " + property.data.defeatPoint);
+		Debug.Log("RP : " + property.data.ratingPoint);
+		Debug.Log("커피 구매 횟수 : " + property.data.purchaseCoffeeCount);
 	}
 }

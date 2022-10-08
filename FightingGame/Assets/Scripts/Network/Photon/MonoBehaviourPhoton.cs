@@ -130,6 +130,16 @@ public static class MonoBehaviourPhotonExtension
     {
         PhotonLogicHandler.Instance.UnregisterILobbyPostProcess(mono);
     }
+
+    public static void RegisterRoomCallback(this IRoomPostProcess mono)
+    {
+        PhotonLogicHandler.Instance.RegisterIRoomPostProcess(mono);
+    }
+
+    public static void UnregisterRoomCallback(this IRoomPostProcess mono)
+    {
+        PhotonLogicHandler.Instance.UnregisterIRoomPostProcess(mono);
+    }
 }
 
 

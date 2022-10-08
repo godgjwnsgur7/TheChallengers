@@ -106,17 +106,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     #endregion
 
-
-    private void OnDestroy()
-    {
-        _OnConnectedToMaster = null;
-        _OnDisconnectedFromMaster = null;
-        _OnJoinRoom = null;
-        _OnJoinRoomFailed = null;
-        _OnJoinLobby = null;
-        _OnJoinLobbyFailed = null;
-    }
-
     PhotonView view = null;
 
     private void Initialize()
@@ -127,6 +116,19 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         if (view.ViewID == 0)
             PhotonNetwork.AllocateViewID(view);
+
+        PhotonNetwork.NetworkingClient.AddCallbackTarget(instance);
+    }
+    private void OnDestroy()
+    {
+        _OnConnectedToMaster = null;
+        _OnDisconnectedFromMaster = null;
+        _OnJoinRoom = null;
+        _OnJoinRoomFailed = null;
+        _OnJoinLobby = null;
+        _OnJoinLobbyFailed = null;
+
+        PhotonNetwork.NetworkingClient.RemoveCallbackTarget(instance);
     }
 
     public bool TryConnectToMaster(Action _OnConnectedToMaster = null, DisconnectCallBack _OnDisconnectedFromMaster = null)
@@ -145,6 +147,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         PhotonNetwork.GameVersion = GameVersion;
         return PhotonNetwork.ConnectUsingSettings(); // 마스터 서버 접속 시도
+    }
+
+    public void TryDisconnectToMaster()
+	{
+        PhotonNetwork.Disconnect();
     }
 
     public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed)
@@ -362,8 +369,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         customRoomList.Clear();
         foreach (var room in roomList)
 		{
-            string masterClientNickname = (string)GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
-            ENUM_MAP_TYPE currentMapType = (ENUM_MAP_TYPE)GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
+            var nickname = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
+            var mapType = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
+
+            if (nickname == null || mapType == null)
+                continue;
 
             CustomRoomInfo info = new CustomRoomInfo()
             {
@@ -372,8 +382,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
                 customProperty = new CustomRoomProperty()
 				{
-                    masterClientNickname = masterClientNickname,
-                    currentMapType = currentMapType,
+                    masterClientNickname = (string)nickname,
+                    currentMapType = (ENUM_MAP_TYPE)mapType,
                 },
 
                 currentPlayerCount = room.PlayerCount,
@@ -400,6 +410,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         var property = MakeRoomProperty(propertiesThatChanged);
+        if (property == null)
+            return;
 
         foreach (var roomPostProcess in roomPostProcesses)
         {
@@ -413,9 +425,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	{
         CustomRoomProperty property = new CustomRoomProperty();
 
-        property.masterClientNickname = (string)GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
-        property.currentMapType = (ENUM_MAP_TYPE)GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
+        var nickname = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
+        var mapType = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
 
+        if (nickname == null || mapType == null)
+            return null;
+
+        property.masterClientNickname = (string)nickname;
+        property.currentMapType = (ENUM_MAP_TYPE)mapType;
         return property;
     }
 
@@ -434,13 +451,15 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (targetPlayer == null)
             return;
 
-        bool isReady = (bool)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.READY);
-        string userKey = (string)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
+        var isReady = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.READY);
+        var userKey = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
+        if (isReady == null || userKey == null)
+            return;
 
         ENUM_LOGIN_TYPE loginType = (ENUM_LOGIN_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE);
         ENUM_CHARACTER_TYPE characterType = (ENUM_CHARACTER_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER);
 
-        MakePlayerProperty(targetPlayer.IsMasterClient, isReady, userKey, loginType, characterType);
+        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (string)userKey, loginType, characterType);
     }
 
     private void MakePlayerProperty(bool isMasterClient, bool isReady, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
