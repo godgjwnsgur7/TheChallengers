@@ -20,27 +20,27 @@ public enum ENUM_INPUTKEY_NAME
 
 public class InputPanel : MonoBehaviour
 {
-    InputKey[] operatingKeys = new InputKey[Enum.GetValues(typeof(ENUM_INPUTKEY_NAME)).Length];
+    InputKey[] inputKeys = new InputKey[Enum.GetValues(typeof(ENUM_INPUTKEY_NAME)).Length];
 
     public void Init(Action<InputKey> OnPointDownCallBack, Action<InputKey> OnPointUpCallBack)
     {
-        for(int index = 0; index < operatingKeys.Length; index++)
+        for(int index = 0; index < inputKeys.Length; index++)
         {
-            operatingKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<InputKey>();
+            inputKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<InputKey>();
             
-            if(operatingKeys[index] == null)
+            if(inputKeys[index] == null)
             {
                 Debug.LogError($"{Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)} 를 찾지 못했습니다.");
                 return;
             }
-            
-            operatingKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack);
+
+            inputKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack);
         }
     }
     
     public InputKey Get_InputKey(ENUM_INPUTKEY_NAME keyName)
     {
-       return operatingKeys[(int)keyName];
+       return inputKeys[(int)keyName];
     }
 
     // 추가로 필요한 기능이 있는 것 같다면, 요청하면 됨! 모르는건 물어보3!
