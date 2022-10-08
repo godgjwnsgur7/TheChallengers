@@ -236,7 +236,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		Debug.Log($"현재 캐릭터 : {property.characterType}");
 
 		Debug.Log($"이색휘 마스터 클라이언트임? : {property.isMasterClient}");
-		Debug.Log($"플레이어 닉네임 : {property.isReady}");
+		Debug.Log($"레디 한 거임? : {property.isReady}");
 
 		Debug.Log("닉네임 : " + property.data.nickname);
 		Debug.Log("승수 : " + property.data.victoryPoint);

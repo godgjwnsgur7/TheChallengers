@@ -102,19 +102,19 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 
     public void Ready()
     {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, true);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, true, true);
     }
 
     public void UnReady()
     {
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, true);
     }
 
     private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
     {
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType, false);
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
     }
 
@@ -209,7 +209,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 
         if (table.ContainsKey(propertyType.ToString()))
         {
-            table[propertyType] = value;
+            table[propertyType.ToString()] = value;
         }
         else
         {
@@ -235,7 +235,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 
         if (table.ContainsKey(propertyType.ToString()))
         {
-            table[propertyType] = value;
+            table[propertyType.ToString()] = value;
         }
         else
         {
@@ -249,7 +249,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 
         if (table.ContainsKey(propertyType.ToString()))
         {
-            table[propertyType] = value;
+            table[propertyType.ToString()] = value;
         }
         else
         {
@@ -266,7 +266,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 
         if (table.ContainsKey(propertyType.ToString()))
         {
-            table[propertyType] = value;
+            table[propertyType.ToString()] = value;
         }
         else
         {
