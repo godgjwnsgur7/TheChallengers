@@ -197,6 +197,26 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		PhotonLogicHandler.Instance.UnReady();
 	}
 
+	public void OnClickRequestRoomCustomProperty()
+	{
+		PhotonLogicHandler.Instance.RequestRoomCustomProperty();
+	}
+
+	public void OnClickRequestRoomList()
+	{
+		PhotonLogicHandler.Instance.RequestRoomList();
+	}
+
+	public void OnClickRequestCurrentPlayerProperty()
+	{
+		PhotonLogicHandler.Instance.RequestCurrentPlayerProperty();
+	}
+
+	public void OnClickRequestEveryPlayerProperty()
+	{
+		PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
+	}
+
 	public void SetError(string cause)
 	{
 		SetStatus($"{cause} - 해당 사유로 접속 실패, 혹은 끊어짐");

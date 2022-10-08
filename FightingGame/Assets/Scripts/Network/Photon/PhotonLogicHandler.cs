@@ -38,6 +38,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     }
 
     private readonly string GameVersion = "1";
+    TypedLobby GameLobby = new TypedLobby("1", LobbyType.SqlLobby);
+
     private static Dictionary<int, PhotonView> photonViewDictionary = new Dictionary<int, PhotonView>();
 
     private Action _OnCreateRoom = null;
@@ -171,7 +173,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         };
 
-        return PhotonNetwork.JoinRandomOrCreateRoom(optionTable, 0);
+        return PhotonNetwork.JoinRandomOrCreateRoom(optionTable, 0, typedLobby: GameLobby);
     }
 
     public bool TryJoinRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
@@ -206,7 +208,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinLobby = onSuccess;
         this._OnJoinLobbyFailed = onfailed;
 
-        return PhotonNetwork.JoinLobby();
+        return PhotonNetwork.JoinLobby(GameLobby);
     }
 
     public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType)
@@ -243,7 +245,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         roomOptions.CustomRoomPropertiesForLobby = new string[] { ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
 
-        return PhotonNetwork.CreateRoom(roomName, roomOptions);
+        return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: GameLobby);
     }
 
     public override void OnConnectedToMaster() 

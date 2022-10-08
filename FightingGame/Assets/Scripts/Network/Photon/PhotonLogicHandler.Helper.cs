@@ -161,4 +161,33 @@ public partial class PhotonLogicHandler
 
         PhotonNetwork.Destroy(obj.gameObject);
     }
+
+    public void RequestRoomCustomProperty()
+    {
+        var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(table);
+    }
+
+    public void RequestRoomList()
+    {
+        PhotonNetwork.GetCustomRoomList(GameLobby, "");
+    }
+
+    public void RequestCurrentPlayerProperty()
+    {
+        var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_PLAYER_STATE_PROPERTIES);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(table);
+    }
+
+    public void RequestEveryPlayerProperty()
+	{
+        var players = PhotonNetwork.PlayerList;
+        if (players == null)
+            return;
+
+        foreach(var player in players)
+		{
+            player.SetCustomProperties(player.CustomProperties);
+		}
+	}
 }
