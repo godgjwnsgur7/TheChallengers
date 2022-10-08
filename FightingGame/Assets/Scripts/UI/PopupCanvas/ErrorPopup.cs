@@ -10,6 +10,8 @@ public class ErrorPopup : PopupUI
 
     public void Open(short _returnCode, string _message)
     {
+        isUsing = true;
+
         titleText.text = $"코드번호 : {_returnCode}";
         errorMessageText.text = _message;
 
@@ -21,6 +23,7 @@ public class ErrorPopup : PopupUI
         this.gameObject.SetActive(false);
         titleText.text = null;
         errorMessageText.text = null;
+        isUsing = false;
     }
 
     public void OnClick_Check()
