@@ -430,6 +430,8 @@ public partial class ActiveCharacter : Character
         invincibility = false;
     }
 
+    #region Animation Event Function
+
     protected void Summon_AttackObject(int _attackTypeNum)
     {
         if (!isControl) return;
@@ -496,7 +498,7 @@ public partial class ActiveCharacter : Character
         }
 
     }
-    
+
     protected void SuperArmourState_On()
     {
         if (!isControl) return;
@@ -511,7 +513,7 @@ public partial class ActiveCharacter : Character
         superArmour = false;
     }
 
-    protected void Move_Attack(float vecX)
+    protected void AnimEvent_Move(float vecX)
     {
         if (!isControl) return;
 
@@ -520,4 +522,7 @@ public partial class ActiveCharacter : Character
 
         Push_Rigid2D(new Vector2(vecX, 0));
     }
+
+    #endregion
+
 }
