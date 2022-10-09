@@ -170,7 +170,7 @@ public partial class PhotonLogicHandler
 
     public void RequestRoomList()
     {
-        PhotonNetwork.GetCustomRoomList(GameLobby, "");
+        PhotonNetwork.GetCustomRoomList(GameLobby, "C0 = ''");
     }
 
     public void RequestCurrentPlayerProperty()

@@ -39,6 +39,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private readonly string GameVersion = "1";
     TypedLobby GameLobby = new TypedLobby("1", LobbyType.SqlLobby);
+    private readonly string ROOM_PROP_KEY = "C0";
 
     private static Dictionary<int, PhotonView> photonViewDictionary = new Dictionary<int, PhotonView>();
 
@@ -240,10 +241,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         roomOptions.CustomRoomProperties = new Hashtable();
 
+        roomOptions.CustomRoomProperties.Add(ROOM_PROP_KEY, "");
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), defaultMapType);
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), "허준혁");
 
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { ROOM_PROP_KEY, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
 
         return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: GameLobby);
     }
