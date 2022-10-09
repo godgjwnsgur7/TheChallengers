@@ -162,23 +162,37 @@ public partial class PhotonLogicHandler
         PhotonNetwork.Destroy(obj.gameObject);
     }
 
+    /// <summary>
+    /// 호출 시 현재 참여 중인 방의 OnUpdateRoomProperty가 불림
+    /// </summary>
+
     public void RequestRoomCustomProperty()
     {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
         PhotonNetwork.CurrentRoom.SetCustomProperties(table);
     }
 
+    /// <summary>
+    /// 호출 시 현재 로비 내 룸 리스트에 대한 OnUpdateLobby가 불림
+    /// </summary>
+
     public void RequestRoomList()
     {
-        PhotonNetwork.GetCustomRoomList(GameLobby, "C0 = ''");
+        PhotonNetwork.GetCustomRoomList(GameLobby, $"{ROOM_PROP_KEY} = ''");
     }
 
+    /// <summary>
+    /// 호출 시 본인에 대한 OnUpdateRoomPlayerProperty가 불림
+    /// </summary>
     public void RequestCurrentPlayerProperty()
     {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_PLAYER_STATE_PROPERTIES);
         PhotonNetwork.LocalPlayer.SetCustomProperties(table);
     }
 
+    /// <summary>
+    /// 호출 시 모든 플레이어에 대하여 OnUpdateRoomPlayerProperty가 불림
+    /// </summary>
     public void RequestEveryPlayerProperty()
 	{
         var players = PhotonNetwork.PlayerList;
