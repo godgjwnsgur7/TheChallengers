@@ -47,21 +47,20 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         Init();
 
+        // 포톤콜백함수 등록
+        PhotonLogicHandler.Instance.onEnterRoomPlayer += SlaveClientEnterCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
+        PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
+
         Set_CurrRoomInfo(); // 임시로 일단 여기에 호출
-
         this.gameObject.SetActive(true);
-
-        if (PhotonLogicHandler.IsMasterClient)
-            Set_MasterClient();
-        else
-            Set_SlaveClient();
-
     }
 
     private void Close()
     {
         isInit = false;
 
+        // 포톤콜백함수 해제
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
         PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
@@ -95,29 +94,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         }
     }
 
-    public void Set_MasterClient()
-    {
-        // 등록
-        PhotonLogicHandler.Instance.onEnterRoomPlayer += SlaveClientEnterCallBack;
-        PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
-
-        // 해제
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
-
-
-    }
-    public void Set_SlaveClient()
-    {
-        // 해제
-        PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
-        PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
-
-        // 등록
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
-
-
-    }
-
     /// <summary>
     /// 슬레이브 클라이언트 입장 시 불리는 콜백함수
     /// </summary>
@@ -149,7 +125,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     }
 
     /// <summary>
-    /// 슬레이브 클라이언트가 나갔을 때 불리는 함수
+    /// 자신 외의 클라이언트가 나갔을 때 불리는 함수
     /// </summary>
     public void SlaveClientExitCallBack(string nickname)
     {
@@ -158,9 +134,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void ExitRoom()
     {
-        bool isExit = PhotonLogicHandler.Instance.TryLeaveRoom(Close);
-        if (!isExit)
-            Managers.UI.popupCanvas.Open_NotifyPopup("방에서 나가지 못했습니다.");
+        PhotonLogicHandler.Instance.TryLeaveRoom(Close);
     }
 
     public void OnClick_ChangeMap()
