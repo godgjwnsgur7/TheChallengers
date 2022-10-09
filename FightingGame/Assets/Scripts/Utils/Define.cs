@@ -73,7 +73,7 @@ namespace FGDefine
         Skill3 = 5,
         Jump = 6,
 
-        Max = 7
+        Max
     }
 
     /// <summary>

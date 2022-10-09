@@ -6,7 +6,7 @@ using FGDefine;
 
 public class InputPanel : MonoBehaviour
 {
-    InputKey[] inputKeys = new InputKey[Enum.GetValues(typeof(ENUM_INPUTKEY_NAME)).Length];
+    InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
 
     public void Init(Action<InputKey> OnPointDownCallBack, Action<InputKey> OnPointUpCallBack)
     {
