@@ -24,11 +24,7 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 
         isUpdateLock = true;
 
-        roomInfoList = PhotonLogicHandler.AllRoomInfos;
-
-        Debug.Log($"roomInfoListCount : {roomInfoList.Count} ");
-
-        Update_RoomList();
+        PhotonLogicHandler.Instance.RequestRoomList();
 
         StartCoroutine(IUpdateLockTime(1.0f));        
     }
@@ -60,6 +56,10 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
     public void OnUpdateLobby(List<CustomRoomInfo> roomList)
 	{
         roomInfoList = roomList;
+
+        Debug.Log($"roomInfoListCount : {roomInfoList.Count} ");
+        
+        Update_RoomList();
     }
 
 	public void Update_RoomList()
