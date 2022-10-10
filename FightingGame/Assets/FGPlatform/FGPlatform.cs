@@ -73,6 +73,11 @@ namespace FGPlatform
 
 		public void Login(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "")
 		{
+			OnSignInSuccess += () =>
+			{
+				InitializeCurrentUserDB("");
+			};
+
 			Auth.SignIn(loginType, OnSignInSuccess, OnSignInFailed, OnSignCanceled, email, password);
 		}
 
