@@ -85,7 +85,7 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
         // 현재 생성되어 있는 방의 갯수만큼 Open.
         for (int i = 0; i < roomInfoList.Count; i++)
         {
-            roomList[i].Open(roomInfoList[i], Update_RoomList, Active_CustomRoomWindow);
+            roomList[i].Open(roomInfoList[i], Get_CustomRoomList, Active_CustomRoomWindow);
         }
 
         noneRoomTextObject.SetActive(false);
