@@ -57,8 +57,6 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
     /// <summary>
     /// 로비 내 룸이 갱신될 때마다 해당 콜백이 불림
     /// </summary>
-    /// <param name="roomList"></param>
-
     public void OnUpdateLobby(List<CustomRoomInfo> roomList)
 	{
         roomInfoList = roomList;

@@ -121,11 +121,6 @@ public class RoomListElementUI : MonoBehaviour
 
     public void JoinRoom()
     {
-        // 기존에 방을 참여한 다음 콜백으로 OnActiveRoomWindow를 수행하고 있지 않았음
-
-        // 여기서 JoinRoom이 뱉는 리턴값은 성공 실패 여부이기는 한데,
-        // 성공했다고 반드시 룸에 입장한 이후라고 보장할 수는 없기 때문에 콜백을 달아놓은 것임
-        
         if (!PhotonLogicHandler.Instance.TryJoinRoom(OnActiveRoomWindow, null, myRoomInfo.roomName))
             Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);
 

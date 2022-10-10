@@ -17,6 +17,7 @@ public class CustomMatchingUI : MonoBehaviour
         if (!isRegiserSuccess)
         {
             gameObject.SetActive(false);
+            Debug.Log("등록 실패");
             return;
         }
 

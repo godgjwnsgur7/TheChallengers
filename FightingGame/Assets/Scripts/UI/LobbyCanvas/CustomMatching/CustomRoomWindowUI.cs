@@ -64,7 +64,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
         PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
 
-        MyProfile.Clear();
+        masterProfile.Clear();
+        slaveProfile.Clear();
         this.gameObject.SetActive(false);
     }
     
@@ -107,18 +108,17 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void MasterClientExitCallBack(string nickname)
     {
         MyProfile.Clear();
-        MyProfile.Init(); // 닉네임 셋팅 됨
+        MyProfile.Init();
         
-        if (PhotonLogicHandler.IsMasterClient) // 마스터 클라이언트가 됐을 때
+        if (PhotonLogicHandler.IsMasterClient)
         {
             MyProfile.Set_Character(slaveProfile.currCharType);
 
             // 슬레이브 클라이언트의 정보를 가져와서 세.
         }
-        else // 슬레이브 클라이언트가 됐을 때
+        else
         {
-            MyProfile.Set_Character(masterProfile.currCharType);
-            slaveProfile.Set_UserNickname(nickname);
+            // 아직 이럴 일이 없다~ 나중에 가자
         }
     }
 

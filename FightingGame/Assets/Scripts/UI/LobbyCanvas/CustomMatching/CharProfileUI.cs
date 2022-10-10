@@ -9,7 +9,7 @@ public class CharProfileUI : MonoBehaviour
 {
     public bool isInit = false;
     public bool isReady = false;
-    public bool isReadyLock = false;
+    bool isReadyLock = false;
 
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
 
@@ -38,6 +38,7 @@ public class CharProfileUI : MonoBehaviour
     public void Set_UserNickname(string userNickname)
     {
         userNicknameText.text = userNickname; // 서버 전달
+        
     }
 
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
@@ -131,6 +132,7 @@ public class CharProfileUI : MonoBehaviour
             if(allReadyState)
             {
                 // 일단 그냥 시작시켜 나중에 ㅋㅋ 확인해
+                PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
 
                 break;
             }
