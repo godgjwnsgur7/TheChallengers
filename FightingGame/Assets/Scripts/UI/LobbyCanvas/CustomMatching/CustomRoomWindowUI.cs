@@ -34,7 +34,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (isInit) return;
 
         isInit = true;
-        MyProfile.isMine = true;
 
         MyProfile.Set_UserNickname("닉네임 받아와야 함");
         MyProfile.Set_Character(ENUM_CHARACTER_TYPE.Default);
@@ -108,7 +107,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void MasterClientExitCallBack(string nickname)
     {
         MyProfile.Clear();
-        MyProfile.isMine = true;
         MyProfile.Init(); // 닉네임 셋팅 됨
         
         if (PhotonLogicHandler.IsMasterClient) // 마스터 클라이언트가 됐을 때
@@ -130,6 +128,23 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void SlaveClientExitCallBack(string nickname)
     {
         slaveProfile.Clear();
+    }
+
+    public void OnUpdateRoomProperty(CustomRoomProperty property)
+    {
+        if (PhotonLogicHandler.IsMasterClient)
+            return; // 나의 변경된 정보면 리턴
+
+        Set_CurrMapInfo(property.currentMapType);
+    }
+
+    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
+    {
+        if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
+            return; // 나의 변경된 정보면 리턴
+
+        MyProfile.Set_Character(property.characterType);
+        MyProfile.Set_ReadyState(property.isReady);
     }
 
     public void ExitRoom()
@@ -164,17 +179,5 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         // 일단 그냥 입장
         PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
-    }
-
-    public void OnUpdateRoomProperty(CustomRoomProperty property)
-    {
-        if (PhotonLogicHandler.IsMasterClient) return;
-        // 얘는 마스터밖에 못바꿈 ㅇㅇ 마스터면 리턴시키던가 하면 될듯
-
-    }
-
-    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
-    {
-        // 방 유저 정보 변경된거임 ㅇㅋ?
     }
 }

@@ -9,7 +9,6 @@ public class CharProfileUI : MonoBehaviour
 {
     public bool isInit = false;
     public bool isReady = false;
-    public bool isMine = false;
     public bool isReadyLock = false;
 
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
@@ -24,6 +23,8 @@ public class CharProfileUI : MonoBehaviour
     [Header("Setting Resources With Editor")]
     [SerializeField] Sprite readySprite;
     [SerializeField] Sprite unreadySprite;
+
+    Coroutine allReadyCheckCoroutine;
 
     public void Init()
     {
@@ -41,28 +42,26 @@ public class CharProfileUI : MonoBehaviour
 
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
     {
-        if (!isMine || currCharType == _charType) return;
+        if ((int)_charType <= (int)ENUM_CHARACTER_TYPE.Max 
+            || currCharType == _charType)
+            return;
 
         currCharType = _charType;
 
-        // 서버 전달
+        PhotonLogicHandler.Instance.ChangeCharacter(currCharType);
 
         switch (currCharType)
         {
             case ENUM_CHARACTER_TYPE.Default:
-
                 charNameText.text = "캐릭터 미선택";
                 break;
             case ENUM_CHARACTER_TYPE.Knight:
-
                 charNameText.text = "나이트";
                 break;
             case ENUM_CHARACTER_TYPE.Wizard:
-
                 charNameText.text = "위저드";
                 break;
             default:
-
                 charNameText.text = "알 수 없음";
                 break;
         }
@@ -78,9 +77,11 @@ public class CharProfileUI : MonoBehaviour
             readyStateImage.sprite = readySprite;
             isReady = true;
             PhotonLogicHandler.Instance.Ready();
+            allReadyCheckCoroutine = StartCoroutine(IAllReadyCheck());
         }
         else
         {
+            StopCoroutine(allReadyCheckCoroutine);
             StartCoroutine(IReadyLock(2f));
             readyStateImage.sprite = unreadySprite;
             isReady = false;
@@ -90,7 +91,13 @@ public class CharProfileUI : MonoBehaviour
 
     public void OnClick_SeleteChar()
     {
-        if (!isMine) return;
+        if (isReady)
+        {
+            StopCoroutine(allReadyCheckCoroutine);
+            readyStateImage.sprite = unreadySprite;
+            isReady = false;
+            PhotonLogicHandler.Instance.UnReady();
+        }
 
         Managers.UI.popupCanvas.Open_CharSelectPopup(Set_Character);
     }
@@ -102,7 +109,6 @@ public class CharProfileUI : MonoBehaviour
 
         Set_ReadyState(false);
         isInit = false;
-        isMine = false;
     }
 
     protected IEnumerator IReadyLock(float waitTime)
@@ -112,5 +118,35 @@ public class CharProfileUI : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         isReadyLock = false;
+    }
+
+    protected IEnumerator IAllReadyCheck()
+    {
+        bool allReadyState = false;
+
+        while(isReady)
+        {
+            allReadyState = PhotonLogicHandler.Instance.IsAllReady();
+
+            if(allReadyState)
+            {
+                // 일단 그냥 시작시켜 나중에 ㅋㅋ 확인해
+
+                break;
+            }
+            yield return null;
+        }
+        
+    }
+
+    protected IEnumerator IUnReadyCheck()
+    {
+        while(true)
+        {
+
+            yield return null;
+        }
+
+        
     }
 }

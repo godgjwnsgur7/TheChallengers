@@ -46,7 +46,7 @@ public class CustomRoomInfo
 public class CustomRoomProperty
 {
     public string masterClientNickname;
-    public ENUM_MAP_TYPE currentMapType;
+    public ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.BasicMap;
 }
 
 public class CustomPlayerProperty
