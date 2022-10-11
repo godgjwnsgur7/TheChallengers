@@ -71,9 +71,17 @@ public partial class PhotonLogicHandler
         get
 		{
             return PhotonNetwork.MasterClient.NickName;
-
+            
         }
 	}
+
+    public static string CurrentMyNickname
+    {
+        get
+        {
+            return PhotonNetwork.LocalPlayer.NickName;
+        }
+    }
 
     public static int CurrentRoomMemberCount
     {

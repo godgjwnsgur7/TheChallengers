@@ -7,13 +7,7 @@ using System;
 
 public class CharProfileUI : MonoBehaviour
 {
-    public bool isInit = false;
-    public bool isReady = false;
-    bool isReadyLock = false;
-
-    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-
-    [Header ("Set In Editor")]
+    [Header("Set In Editor")]
     [SerializeField] Image charImage;
     [SerializeField] Image readyStateImage;
 
@@ -24,32 +18,55 @@ public class CharProfileUI : MonoBehaviour
     [SerializeField] Sprite readySprite;
     [SerializeField] Sprite unreadySprite;
 
-    Coroutine allReadyCheckCoroutine;
+    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
+    public bool isInit = false;
+    public bool isMine = false;
+    bool isReady = false;
+
+    public bool IsReady
+    {
+        get { return isReady; }
+        private set
+        {
+            if (isReady == value) return;
+            isReady = value;
+
+            if (isReady)
+            {
+                readyStateImage.sprite = readySprite;
+                if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+                    PhotonLogicHandler.Instance.Ready();
+            }
+            else
+            {
+                readyStateImage.sprite = unreadySprite;
+                if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+                    PhotonLogicHandler.Instance.UnReady();
+            }
+        }
+    }
 
     public void Init()
     {
         if (isInit) return;
 
         isInit = true;
-
-        Set_UserNickname("닉네임 받아와야 함");
+        isMine = true;
+        Set_ReadyState(false);
     }
 
-    public void Set_UserNickname(string userNickname)
-    {
-        userNicknameText.text = userNickname; // 서버 전달
-        
-    }
-
+    public void Set_UserNickname(string userNickname) => userNicknameText.text = userNickname;
+    
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
     {
-        if ((int)_charType <= (int)ENUM_CHARACTER_TYPE.Max 
-            || currCharType == _charType)
+        if ((int)_charType >= (int)ENUM_CHARACTER_TYPE.Max
+            || (int)currCharType == (int)_charType)
             return;
 
         currCharType = _charType;
 
-        PhotonLogicHandler.Instance.ChangeCharacter(currCharType);
+        if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+            PhotonLogicHandler.Instance.ChangeCharacter(currCharType);
 
         switch (currCharType)
         {
@@ -67,39 +84,24 @@ public class CharProfileUI : MonoBehaviour
                 break;
         }
     }
-    
+
     public void Set_ReadyState(bool readyState)
     {
-        if (isReadyLock || readyState == isReady) return;
+        if (readyState && currCharType == ENUM_CHARACTER_TYPE.Default)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택하지 않았습니다.");
+            return;
+        }
 
-        if (readyState)
-        {
-            StartCoroutine(IReadyLock(1f));
-            readyStateImage.sprite = readySprite;
-            isReady = true;
-            PhotonLogicHandler.Instance.Ready();
-            allReadyCheckCoroutine = StartCoroutine(IAllReadyCheck());
-        }
-        else
-        {
-            StopCoroutine(allReadyCheckCoroutine);
-            StartCoroutine(IReadyLock(2f));
-            readyStateImage.sprite = unreadySprite;
-            isReady = false;
-            PhotonLogicHandler.Instance.UnReady();
-        }
+        IsReady = readyState;
     }
 
     public void OnClick_SeleteChar()
     {
-        if (isReady)
-        {
-            StopCoroutine(allReadyCheckCoroutine);
-            readyStateImage.sprite = unreadySprite;
-            isReady = false;
-            PhotonLogicHandler.Instance.UnReady();
-        }
-
+        if (!isMine)
+            return;
+        
+        Set_ReadyState(false);
         Managers.UI.popupCanvas.Open_CharSelectPopup(Set_Character);
     }
 
@@ -107,48 +109,7 @@ public class CharProfileUI : MonoBehaviour
     {
         Set_UserNickname("");
         Set_Character(ENUM_CHARACTER_TYPE.Default);
-
         Set_ReadyState(false);
         isInit = false;
-    }
-
-    protected IEnumerator IReadyLock(float waitTime)
-    {
-        isReadyLock = true;
-
-        yield return new WaitForSeconds(waitTime);
-
-        isReadyLock = false;
-    }
-
-    protected IEnumerator IAllReadyCheck()
-    {
-        bool allReadyState = false;
-
-        while(isReady)
-        {
-            allReadyState = PhotonLogicHandler.Instance.IsAllReady();
-
-            if(allReadyState)
-            {
-                // 일단 그냥 시작시켜 나중에 ㅋㅋ 확인해
-                PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
-
-                break;
-            }
-            yield return null;
-        }
-        
-    }
-
-    protected IEnumerator IUnReadyCheck()
-    {
-        while(true)
-        {
-
-            yield return null;
-        }
-
-        
     }
 }

@@ -16,7 +16,7 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
     [SerializeField] GameObject noneRoomTextObject;
 
     bool isUpdateLock = false;
-    bool isRegisting = false;
+    bool isLobbyRegisting = false;
 
     public void Get_CustomRoomList()
     {
@@ -31,22 +31,22 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 
     public bool Register_LobbyCallback()
     {
-        if (isRegisting)
+        if (isLobbyRegisting)
         {
             Debug.Log("이미 등록된 상태");
             return false;
         }
 
-        isRegisting = true;
+        isLobbyRegisting = true;
         this.RegisterLobbyCallback();
         return true;
     }
     public void UnRegister_LobbyCallback()
     {
-        if (!isRegisting)
+        if (!isLobbyRegisting)
             return;
 
-        isRegisting = false;
+        isLobbyRegisting = false;
         this.UnregisterLobbyCallback();
     }
 
