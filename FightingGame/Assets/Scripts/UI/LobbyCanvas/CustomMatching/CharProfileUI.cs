@@ -52,7 +52,6 @@ public class CharProfileUI : MonoBehaviour
 
         isInit = true;
         isMine = true;
-        Set_ReadyState(false);
     }
 
     public void Set_UserNickname(string userNickname) => userNicknameText.text = userNickname;
