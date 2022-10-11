@@ -9,4 +9,9 @@ public class TrainingScene : BaseScene
     {
 
     }
+
+    public override void Init()
+    {
+        base.Init();
+    }
 }
