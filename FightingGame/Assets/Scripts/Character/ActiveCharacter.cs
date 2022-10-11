@@ -482,7 +482,7 @@ public partial class ActiveCharacter : Character
 
         if (effectObject != null)
         {
-            effectObject.FollowingTarget(this.transform);
+            effectObject.Set_Position(this.transform);
 
             if (isConnected)
             {

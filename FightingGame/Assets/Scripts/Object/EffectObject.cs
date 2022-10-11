@@ -76,13 +76,13 @@ public class EffectObject : Poolable
         Managers.Resource.Destroy(this.gameObject);
     }
 
-    public void FollowingTarget(Transform _targetTr)
+    public void Set_Position(Transform _targetTr)
     {
         targetTr = _targetTr;
         this.transform.position = targetTr.position;
     }
 
-    public void FollowingTarget(Vector3 _targetPos)
+    public void Set_Position(Vector2 _targetPos)
     {
         this.transform.position = _targetPos;
     }

@@ -123,8 +123,8 @@ public class AttackObject : Poolable
 
         if (effectObject != null)
         {
-            Vector3 HitPosition = this.GetComponent<Collider2D>().bounds.ClosestPoint(_targetTransform.position);
-            effectObject.FollowingTarget(HitPosition);
+            Vector2 HitPosition = this.GetComponent<Collider2D>().bounds.ClosestPoint(_targetTransform.position);
+            effectObject.Set_Position(HitPosition);
 
             if (isConnected)
             {

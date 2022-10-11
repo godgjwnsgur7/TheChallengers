@@ -70,6 +70,8 @@ public class InputKeyManagement : MonoBehaviour
 
         inputKeyRectTr = inputKey.GetComponent<RectTransform>();
         inputKeyRectTr.localScale = changeScale;
+
+        keySettingDataList[_inputkeyNum].size = size;
     }
 
     public void Set_InputKeyOpacity(float opacity, int _inputkeyNum)
@@ -96,6 +98,8 @@ public class InputKeyManagement : MonoBehaviour
             changeColor.a = opacityRatio;
             inputKeyImage.color = changeColor;
         }
+
+        keySettingDataList[_inputkeyNum].opacity = opacity;
     }
 
     public void Set_InputKeyTransForm(float rectTrX, float rectTrY, int _inputkeyNum)
@@ -109,6 +113,9 @@ public class InputKeyManagement : MonoBehaviour
         inputKeyRectTr = inputKey.GetComponent<RectTransform>();
         inputKeyRectTr.position = changeVector;
         areaRectTr.position = changeVector;
+
+        keySettingDataList[_inputkeyNum].rectTrX = rectTrX;
+        keySettingDataList[_inputkeyNum].rectTrY = rectTrY;
     }
 
     // InputPanel Init 테스트 용 임시

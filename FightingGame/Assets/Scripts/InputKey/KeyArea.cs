@@ -48,12 +48,12 @@ public class KeyArea : MonoBehaviour
         
         if(triggerCount > 0)
         {
-            changeColor = new Color(255, 0, 0, 1f);
+            changeColor = new Color(255, 0, 0, 0.5f);
             areaImage.color = changeColor;
         }
         else if (isSelect && triggerCount < 1)
         {
-            changeColor = new Color(0, 255, 0, 1f);
+            changeColor = new Color(0, 255, 0, 0.5f);
             areaImage.color = changeColor;
         }
         else if (!isSelect && triggerCount < 1)
