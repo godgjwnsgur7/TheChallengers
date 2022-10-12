@@ -7,34 +7,34 @@ using System;
 
 public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 {
-    [SerializeField] Text roomNameText;
+    [SerializeField] UserProfileUI masterProfile;
+    [SerializeField] UserProfileUI slaveProfile;
+    UserProfileUI MyProfile
+    {
+        get
+        {
+            if (PhotonLogicHandler.IsMasterClient)
+                return masterProfile;
+            else
+                return slaveProfile;
+        }
+    }
+    UserProfileUI YourProfile
+    {
+        get
+        {
+            if (PhotonLogicHandler.IsMasterClient)
+                return slaveProfile;
+            else
+                return masterProfile;
+        }
+    }
 
     [SerializeField] Image currMapIamge;
     [SerializeField] Image nextMapIamge_Left;
     [SerializeField] Image nextMapIamge_Right;
 
-    [SerializeField] CharProfileUI masterProfile;
-    [SerializeField] CharProfileUI slaveProfile;
-    CharProfileUI MyProfile
-    {
-        get
-        {
-            if (PhotonLogicHandler.IsMasterClient)
-                return masterProfile;
-            else
-                return slaveProfile;
-        }
-    }
-    CharProfileUI YourProfile
-    {
-        get
-        {
-            if (PhotonLogicHandler.IsMasterClient)
-                return slaveProfile;
-            else
-                return masterProfile;
-        }
-    }
+    [SerializeField] Text roomNameText;
 
     public bool isInit = false;
     public bool isRoomRegisting = false;
@@ -221,6 +221,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if(PhotonLogicHandler.IsMasterClient && MyProfile.IsReady)
         {
+            if (allReadyCheckCoroutine != null)
+                allReadyCheckCoroutine = null;
+
             allReadyCheckCoroutine = StartCoroutine(IAllReadyCheck());
         }
     }

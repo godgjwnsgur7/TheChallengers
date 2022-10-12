@@ -5,18 +5,16 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class CharProfileUI : MonoBehaviour
+public class UserProfileUI : MonoBehaviour
 {
     [Header("Set In Editor")]
+    [SerializeField] UserInfoWindowUI userInfoWindow;
+
     [SerializeField] Image charImage;
     [SerializeField] Image readyStateImage;
 
     [SerializeField] Text charNameText;
     [SerializeField] Text userNicknameText; // 닉네임 받아와야 함
-
-    [Header("Setting Resources With Editor")]
-    [SerializeField] Sprite readySprite;
-    [SerializeField] Sprite unreadySprite;
 
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
     public bool isInit = false;
@@ -33,13 +31,13 @@ public class CharProfileUI : MonoBehaviour
 
             if (isReady)
             {
-                readyStateImage.sprite = readySprite;
-                if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+                readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/ReadySprite");
+                if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
                     PhotonLogicHandler.Instance.Ready();
             }
             else
             {
-                readyStateImage.sprite = unreadySprite;
+                readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/UnreadySprite");
                 if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
                     PhotonLogicHandler.Instance.UnReady();
             }
@@ -93,6 +91,15 @@ public class CharProfileUI : MonoBehaviour
         }
 
         IsReady = readyState;
+    }
+    
+    public void OnClick_UserProfile()
+    {
+        if (userInfoWindow.gameObject.activeSelf
+            || userNicknameText.text == "")
+            return;
+
+        userInfoWindow.Open(userNicknameText.text);
     }
 
     public void OnClick_SeleteChar()

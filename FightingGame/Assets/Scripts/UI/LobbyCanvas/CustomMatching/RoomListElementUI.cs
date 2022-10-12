@@ -17,10 +17,6 @@ public class RoomListElementUI : MonoBehaviour
     [SerializeField] Image personnelImage;
     [SerializeField] Text personnelText;
 
-    [Header("Setting Resources With Editor")]
-    [SerializeField] Sprite personnel_NoneSprite;
-    [SerializeField] Sprite personnel_ExistSprite;
-
     Action OnUpdateRoomList = null;
     Action OnActiveRoomWindow = null;
     public CustomRoomInfo myRoomInfo;
@@ -96,9 +92,9 @@ public class RoomListElementUI : MonoBehaviour
         Set_MapImage(myRoomInfo.CurrentMapType);
 
         if (myRoomInfo.currentPlayerCount == 1)
-            personnelImage.sprite = personnel_NoneSprite;
+            personnelImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/Personnel_NoneSprite");
         else if (myRoomInfo.currentPlayerCount == 2)
-            personnelImage.sprite = personnel_ExistSprite;
+            personnelImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/Personnel_ExistSprite");
         else
             Debug.Log($"currentPlayerCount 값 오류 : {myRoomInfo.currentPlayerCount}");
     }
