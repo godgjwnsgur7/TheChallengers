@@ -21,9 +21,14 @@ public class RoomListElementUI : MonoBehaviour
     Action OnActiveRoomWindow = null;
     public CustomRoomInfo myRoomInfo;
 
-    ENUM_MAP_TYPE currMap
+    ENUM_MAP_TYPE currMap;
+    ENUM_MAP_TYPE CurrMap
     {
-        set { mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");}
+        set
+        {
+            currMap = value;
+            mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");
+        }
     }
 
     public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList, Action _OnActiveRoomWindow)
@@ -94,7 +99,7 @@ public class RoomListElementUI : MonoBehaviour
         masterNicknameText.text = myRoomInfo.MasterClientNickname;
 
         // Set Image
-        Set_MapImage(myRoomInfo.CurrentMapType);
+        CurrMap = myRoomInfo.CurrentMapType;
 
         if (myRoomInfo.currentPlayerCount == 1)
             personnelImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/Personnel_NoneSprite");
@@ -102,11 +107,6 @@ public class RoomListElementUI : MonoBehaviour
             personnelImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/Personnel_ExistSprite");
         else
             Debug.Log($"currentPlayerCount 값 오류 : {myRoomInfo.currentPlayerCount}");
-    }
-
-    public void Set_MapImage(ENUM_MAP_TYPE _mapType = ENUM_MAP_TYPE.BasicMap)
-    {
-        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_S");
     }
 
     public void OnClick_JoinRoom()

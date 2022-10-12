@@ -13,19 +13,22 @@ public class CreateRoomUI : MonoBehaviour
     [SerializeField] Text personnelText;
     [SerializeField] InputField userInputField;
 
-    ENUM_MAP_TYPE currMap
+    ENUM_MAP_TYPE currMap;
+    ENUM_MAP_TYPE CurrMap
     {
         set
         {
+            currMap = value;
             mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");
         }
+        get { return currMap; }
     }
 
     private void OnEnable()
     {
         masterIDText.text = "닉네임 받아와야함";
         userInputField.text = "";
-        currMap = ENUM_MAP_TYPE.BasicMap;
+        CurrMap = ENUM_MAP_TYPE.BasicMap;
     }
     
     public void OnClick_CreatRoom()
@@ -39,11 +42,32 @@ public class CreateRoomUI : MonoBehaviour
             Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
             return;
         }
-        
+
         // 금지어 체크해야 함
-    
-        PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, userInputField.text);
+
+        Debug.Log(CurrMap);
+        PhotonLogicHandler.Instance.TryCreateRoom(Open_CustomRoom, null, userInputField.text, 2, CurrMap);
         Managers.UI.popupCanvas.Close_LoadingPopup();
+    }
+
+    public void OnClick_ChangeMap(bool _isUp)
+    {
+        int _mapIndex = (int)CurrMap;
+
+        if (_isUp)
+        {
+            _mapIndex += 1;
+            if (_mapIndex >= (int)ENUM_MAP_TYPE.Max)
+                _mapIndex = 0;
+        }
+        else
+        {
+            _mapIndex -= 1;
+            if (_mapIndex <= 0)
+                _mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
+        }
+
+        CurrMap = (ENUM_MAP_TYPE)_mapIndex;
     }
 
     private void Open_CustomRoom()

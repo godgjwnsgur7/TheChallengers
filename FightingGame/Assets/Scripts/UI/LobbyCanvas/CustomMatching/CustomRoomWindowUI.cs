@@ -42,19 +42,26 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     Coroutine readyLockCoroutine;
     Coroutine allReadyCheckCoroutine;
 
-    ENUM_MAP_TYPE currMap
+    ENUM_MAP_TYPE currMap;
+    ENUM_MAP_TYPE CurrMap
     {
         set
         {
+            if (currMap == value) return;
+
+            if (PhotonLogicHandler.IsMasterClient) // 마스터일 경우에만 전달
+                PhotonLogicHandler.Instance.ChangeMap(value);
+
+            currMap = value;
             currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_L");
 
-            int mapIndex = (int)value;
-            if (mapIndex - 1 <= 0)
+            int mapIndex = (int)value - 1;
+            if (mapIndex <= 0)
                 mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
             nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
 
-            mapIndex = (int)value;
-            if (mapIndex + 1 >= (int)ENUM_MAP_TYPE.Max)
+            mapIndex = (int)value + 1;
+            if (mapIndex >= (int)ENUM_MAP_TYPE.Max)
                 mapIndex = 0;
             nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
         }
@@ -115,7 +122,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (PhotonLogicHandler.IsMasterClient)
             return; // 나의 변경된 정보면 리턴
 
-        Set_CurrMapInfo(property.currentMapType);
+        CurrMap = property.currentMapType;
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
@@ -177,26 +184,20 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
 
-        // 임시처리임 - 에러남 에러내용은 하단 주석
-        currMap = ENUM_MAP_TYPE.BasicMap;
-
-        // Error : ArgumentNullException: Value cannot be null.
-        // ENUM_MAP_TYPE mapType = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), PhotonLogicHandler.CurrentMapName);
-        // Set_CurrMapInfo(mapType);
-    }
-
-    public void Set_CurrMapInfo(ENUM_MAP_TYPE _mapType = ENUM_MAP_TYPE.BasicMap)
-    {
-        switch (_mapType)
+        string tempStr = PhotonLogicHandler.CurrentMapName;
+        if (tempStr == null || tempStr == "")
         {
-            case ENUM_MAP_TYPE.BasicMap:
-                PhotonLogicHandler.Instance.ChangeMap(_mapType);
-                return;
-            default:
-                Debug.Log("알 수 없는 맵을 선택");
-                return;
+            CurrMap = ENUM_MAP_TYPE.BasicMap;
+            Debug.Log($"PhotonLogicHandler.CurrentMapName is Null");
+            return;
+        }
+        else // 이쪽이 정상...인데 일로 왜 안탈까? ㅎㅋ
+        { 
+            CurrMap = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), tempStr);
+            Debug.Log("방이름까진 가져옴");
         }
     }
+
     public void GoTo_BattleScene()
     {
         if (!PhotonLogicHandler.IsMasterClient)
@@ -220,20 +221,22 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnClick_ChangeMap(bool _isRight)
     {
-        int _mapIndex = (int)currMap;
+        int _mapIndex = (int)CurrMap;
 
         if (_isRight)
-        {            
-            if (_mapIndex + 1 >= (int)ENUM_MAP_TYPE.Max)
+        {
+            _mapIndex += 1;
+            if (_mapIndex >= (int)ENUM_MAP_TYPE.Max)
                 _mapIndex = 0;
         }
         else
         {
-            if (_mapIndex - 1 <= 0)
+            _mapIndex -= 1;
+            if (_mapIndex <= 0)
                 _mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
         }
 
-        currMap = (ENUM_MAP_TYPE)_mapIndex;
+        CurrMap = (ENUM_MAP_TYPE)_mapIndex;
     }
 
     public void OnClick_ExitRoom()

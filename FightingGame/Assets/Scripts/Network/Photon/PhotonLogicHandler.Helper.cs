@@ -59,10 +59,10 @@ public partial class PhotonLogicHandler
 	{
         get
 		{
-            if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(typeof(ENUM_MAP_TYPE).ToString()))
+            if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString()))
                 return string.Empty;
 
-            return (string)PhotonNetwork.CurrentRoom.CustomProperties[typeof(ENUM_MAP_TYPE).ToString()];
+            return ((ENUM_MAP_TYPE)PhotonNetwork.CurrentRoom.CustomProperties[ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString()]).ToString();
 		}
 	}
 
