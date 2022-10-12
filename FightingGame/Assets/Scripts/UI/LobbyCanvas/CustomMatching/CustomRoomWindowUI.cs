@@ -184,18 +184,20 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
 
-        string tempStr = PhotonLogicHandler.CurrentMapType.ToString();
-        if (tempStr == null || tempStr == "")
-        {
-            CurrMap = ENUM_MAP_TYPE.BasicMap;
-            Debug.Log($"PhotonLogicHandler.CurrentMapName is Null");
-            return;
-        }
-        else // 이쪽이 정상...인데 일로 왜 안탈까? ㅎㅋ
-        { 
-            CurrMap = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), tempStr);
-            Debug.Log("방이름까진 가져옴");
-        }
+        //string tempStr = PhotonLogicHandler.CurrentMapType.ToString();
+        //if (tempStr == null || tempStr == "")
+        //{
+        //    CurrMap = ENUM_MAP_TYPE.BasicMap;
+        //    Debug.Log($"PhotonLogicHandler.CurrentMapName is Null");
+        //    return;
+        //}
+        //else // 이쪽이 정상...인데 일로 왜 안탈까? ㅎㅋ
+        //{ 
+        //    CurrMap = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), tempStr);
+        //    Debug.Log("방이름까진 가져옴");
+        //}
+
+        CurrMap = PhotonLogicHandler.CurrentMapType;
     }
 
     public void GoTo_BattleScene()
