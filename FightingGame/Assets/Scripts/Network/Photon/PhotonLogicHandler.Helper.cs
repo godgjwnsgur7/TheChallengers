@@ -55,14 +55,18 @@ public partial class PhotonLogicHandler
         }
 	}
 
-    public static string CurrentMapName
+    public static ENUM_MAP_TYPE CurrentMapType
 	{
         get
 		{
-            if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString()))
-                return string.Empty;
+            var table = Instance.GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
+            if (table == null)
+                return ENUM_MAP_TYPE.BasicMap;
 
-            return ((ENUM_MAP_TYPE)PhotonNetwork.CurrentRoom.CustomProperties[ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString()]).ToString();
+            if(!table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out object value))
+                return ENUM_MAP_TYPE.BasicMap;
+
+            return (ENUM_MAP_TYPE)value;
 		}
 	}
 

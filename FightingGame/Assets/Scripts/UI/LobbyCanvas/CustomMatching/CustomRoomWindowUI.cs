@@ -184,7 +184,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
 
-        string tempStr = PhotonLogicHandler.CurrentMapName;
+        string tempStr = PhotonLogicHandler.CurrentMapType.ToString();
         if (tempStr == null || tempStr == "")
         {
             CurrMap = ENUM_MAP_TYPE.BasicMap;
