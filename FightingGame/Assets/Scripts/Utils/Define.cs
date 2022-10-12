@@ -83,6 +83,7 @@ namespace FGDefine
     public enum ENUM_MAP_TYPE
     {
         BasicMap = 0,
+        Max = 1,
     }
 
     /// <summary>

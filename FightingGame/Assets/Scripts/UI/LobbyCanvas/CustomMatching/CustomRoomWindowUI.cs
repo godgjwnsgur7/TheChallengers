@@ -42,6 +42,25 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     Coroutine readyLockCoroutine;
     Coroutine allReadyCheckCoroutine;
 
+    ENUM_MAP_TYPE currMap
+    {
+        set
+        {
+            currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_L");
+
+            int mapIndex = (int)value;
+            if (mapIndex - 1 <= 0)
+                mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
+            nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
+
+            mapIndex = (int)value;
+            if (mapIndex + 1 >= (int)ENUM_MAP_TYPE.Max)
+                mapIndex = 0;
+            nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
+        }
+        get { return currMap; }
+    }
+
     #region Register, CallBack, OnUpdateProperty 함수 (Server)
     public bool Register_LobbyCallback()
     {
@@ -157,7 +176,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
-        
+
+        // 임시처리임 - 에러남 에러내용은 하단 주석
+        currMap = ENUM_MAP_TYPE.BasicMap;
 
         // Error : ArgumentNullException: Value cannot be null.
         // ENUM_MAP_TYPE mapType = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), PhotonLogicHandler.CurrentMapName);
@@ -197,10 +218,22 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.TryLeaveRoom(Close);
     }
 
-    public void OnClick_ChangeMap()
+    public void OnClick_ChangeMap(bool _isRight)
     {
-        Debug.Log("맵 변경시켜. (미구현)");
-        // 맵 변경시켜.
+        int _mapIndex = (int)currMap;
+
+        if (_isRight)
+        {            
+            if (_mapIndex + 1 >= (int)ENUM_MAP_TYPE.Max)
+                _mapIndex = 0;
+        }
+        else
+        {
+            if (_mapIndex - 1 <= 0)
+                _mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
+        }
+
+        currMap = (ENUM_MAP_TYPE)_mapIndex;
     }
 
     public void OnClick_ExitRoom()

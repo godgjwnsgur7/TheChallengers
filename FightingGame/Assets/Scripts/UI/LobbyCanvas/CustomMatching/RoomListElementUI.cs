@@ -10,7 +10,7 @@ public class RoomListElementUI : MonoBehaviour
     public bool isUsing = false;
 
     [Header ("Set In Editor")]
-    [SerializeField] Image MapImage;
+    [SerializeField] Image mapImage;
     [SerializeField] Text roomNameText;
     [SerializeField] Text masterNicknameText;
 
@@ -20,6 +20,11 @@ public class RoomListElementUI : MonoBehaviour
     Action OnUpdateRoomList = null;
     Action OnActiveRoomWindow = null;
     public CustomRoomInfo myRoomInfo;
+
+    ENUM_MAP_TYPE currMap
+    {
+        set { mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");}
+    }
 
     public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList, Action _OnActiveRoomWindow)
     {
@@ -34,7 +39,7 @@ public class RoomListElementUI : MonoBehaviour
         myRoomInfo = _roomInfo;
         OnUpdateRoomList = _OnUpdateRoomList;
         OnActiveRoomWindow = _OnActiveRoomWindow;
-
+        
         Show_MyRoomInfo();
 
         this.gameObject.SetActive(true);
@@ -99,9 +104,9 @@ public class RoomListElementUI : MonoBehaviour
             Debug.Log($"currentPlayerCount 값 오류 : {myRoomInfo.currentPlayerCount}");
     }
 
-    public void Set_MapImage(ENUM_MAP_TYPE _mapType)
+    public void Set_MapImage(ENUM_MAP_TYPE _mapType = ENUM_MAP_TYPE.BasicMap)
     {
-        // 맵 정보 받아와서 갱신
+        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_S");
     }
 
     public void OnClick_JoinRoom()
