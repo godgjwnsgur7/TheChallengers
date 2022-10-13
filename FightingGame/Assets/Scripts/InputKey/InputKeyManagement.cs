@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
-using System;
+using UnityEngine.EventSystems;
 
 public class InputKeyManagement : MonoBehaviour
 {
@@ -18,6 +18,7 @@ public class InputKeyManagement : MonoBehaviour
     private RectTransform areaRectTr = null;
 
     private SettingPanel settingPanel;
+    private EventTrigger eventTrigger;
 
     public void Init()
     {
@@ -29,7 +30,7 @@ public class InputKeyManagement : MonoBehaviour
 
         // InputPanel Instantiate
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-        inputPanel.Init(Select_InputKey, Select_InputKey);
+        inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
 
         // 설정된 PlayerPrefs 호출
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
@@ -65,12 +66,15 @@ public class InputKeyManagement : MonoBehaviour
         float sizeRatio = (50 + size) / 100;
         Vector3 changeScale = new Vector3(1, 1, 1) * sizeRatio;
 
-        areaRectTr = keyArea.GetComponent<RectTransform>();
-        areaRectTr.localScale = changeScale;
-
+        // InputKey 크기 변경
         inputKeyRectTr = inputKey.GetComponent<RectTransform>();
         inputKeyRectTr.localScale = changeScale;
 
+        // KeyArea 크기 변경
+        areaRectTr = keyArea.GetComponent<RectTransform>();
+        areaRectTr.localScale = changeScale;
+
+        // 변경값 임시 저장
         keySettingDataList[_inputkeyNum].size = size;
     }
 
@@ -99,6 +103,7 @@ public class InputKeyManagement : MonoBehaviour
             inputKeyImage.color = changeColor;
         }
 
+        // 변경값 임시 저장
         keySettingDataList[_inputkeyNum].opacity = opacity;
     }
 
@@ -108,33 +113,76 @@ public class InputKeyManagement : MonoBehaviour
         keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)_inputkeyNum);
 
         Vector2 changeVector = new Vector2(rectTrX, rectTrY);
-        areaRectTr = keyArea.GetComponent<RectTransform>();
 
+        // InputKey 위치 변경
         inputKeyRectTr = inputKey.GetComponent<RectTransform>();
         inputKeyRectTr.position = changeVector;
+
+        // KeyArea 위치 변경
+        areaRectTr = keyArea.GetComponent<RectTransform>();
         areaRectTr.position = changeVector;
 
+        // 변경값 임시 저장
         keySettingDataList[_inputkeyNum].rectTrX = rectTrX;
         keySettingDataList[_inputkeyNum].rectTrY = rectTrY;
     }
 
     // InputPanel Init 테스트 용 임시
-    public void Select_InputKey(InputKey _inputKey)
+    private void OnClick_BeginClick(InputKey _inputKey)
     {
+        // 기존 선택 상태이던 버튼 area 색상 변경
         keyArea.isSelect = false;
         keyArea.Set_AreaColor();
 
+        // 선택한 InputKey에 해당하는 Enum번호 찾기
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             if (((ENUM_INPUTKEY_NAME)i).ToString() == _inputKey.name)
             {
-                keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)i);
-                settingPanel.OnClick_SetInputKey(i);
+                int inputKeyNum = i;
+                // Enum번호로 SettingPanel 등록
+                settingPanel.OnClick_SetInputKey(inputKeyNum);
+
+                // keyArea 색상 변경
+                keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)inputKeyNum);
                 keyArea.isSelect = true;
                 keyArea.Set_AreaColor();
+
+                // 드래그 이벤트 트리거 생성
+                Set_DragEventTrigger(_inputKey, inputKeyNum);
+                break;
             }
         }
         Debug.Log($"{_inputKey.name}세팅");
+    }
+
+    private void Set_DragEventTrigger(InputKey _inputKey, int inputKeyNum)
+    {
+        eventTrigger = _inputKey.GetComponent<EventTrigger>();
+
+        if (eventTrigger.triggers.Count > 2)
+            return;
+
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drag;
+        entry.callback.AddListener((data) => { OnDrag((PointerEventData)data, inputKeyNum); });
+        eventTrigger.triggers.Add(entry);
+    }
+
+    private void OnDrag(PointerEventData data, int inputKeyNum) 
+    {
+        Set_InputKeyTransForm(data.position.x, data.position.y, inputKeyNum);
+    }
+
+    private void OnClick_EndClick(InputKey _inputKey)
+    {
+        EventTrigger eventTrigger = _inputKey.GetComponent<EventTrigger>();
+        OnEndDrag(eventTrigger);
+    }
+
+    private void OnEndDrag(EventTrigger eventTrigger)
+    {
+        eventTrigger.triggers.RemoveRange(2, eventTrigger.triggers.Count - 2);
     }
 
     public void Save_KeySettingData()
