@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 using UnityEngine.EventSystems;
+using System;
 
 public class InputKeyManagement : MonoBehaviour
 {
@@ -22,8 +23,6 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
-        settingPanel = this.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
-
         // AreaPanel Instantiate
         areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
         areaPanel.Init();
@@ -49,6 +48,9 @@ public class InputKeyManagement : MonoBehaviour
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
         }
+
+        settingPanel = this.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
+        settingPanel.Init();
     }
 
     public void Set_InputKey(int _inputkeyNum)
@@ -58,12 +60,12 @@ public class InputKeyManagement : MonoBehaviour
         Set_InputKeyTransForm(keySettingDataList[_inputkeyNum].rectTrX, keySettingDataList[_inputkeyNum].rectTrY, _inputkeyNum);
     }
 
-    public void Set_InputKeySize(float size, int _inputkeyNum)
+    public void Set_InputKeySize(float _size, int _inputkeyNum)
     {
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
         keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)_inputkeyNum);
 
-        float sizeRatio = (50 + size) / 100;
+        float sizeRatio = (50 + _size) / 100;
         Vector3 changeScale = new Vector3(1, 1, 1) * sizeRatio;
 
         // InputKey 크기 변경
@@ -75,12 +77,12 @@ public class InputKeyManagement : MonoBehaviour
         areaRectTr.localScale = changeScale;
 
         // 변경값 임시 저장
-        keySettingDataList[_inputkeyNum].size = size;
+        keySettingDataList[_inputkeyNum].size = _size;
     }
 
-    public void Set_InputKeyOpacity(float opacity, int _inputkeyNum)
+    public void Set_InputKeyOpacity(float _opacity, int _inputkeyNum)
     {
-        float opacityRatio = 0.5f + (opacity / 200);
+        float opacityRatio = 0.5f + (_opacity / 200);
         Color changeColor;
         Image inputKeyImage;
 
@@ -104,15 +106,15 @@ public class InputKeyManagement : MonoBehaviour
         }
 
         // 변경값 임시 저장
-        keySettingDataList[_inputkeyNum].opacity = opacity;
+        keySettingDataList[_inputkeyNum].opacity = _opacity;
     }
 
-    public void Set_InputKeyTransForm(float rectTrX, float rectTrY, int _inputkeyNum)
+    public void Set_InputKeyTransForm(float _rectTrX, float _rectTrY, int _inputkeyNum)
     {
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
         keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)_inputkeyNum);
 
-        Vector2 changeVector = new Vector2(rectTrX, rectTrY);
+        Vector2 changeVector = new Vector2(_rectTrX, _rectTrY);
 
         // InputKey 위치 변경
         inputKeyRectTr = inputKey.GetComponent<RectTransform>();
@@ -123,8 +125,8 @@ public class InputKeyManagement : MonoBehaviour
         areaRectTr.position = changeVector;
 
         // 변경값 임시 저장
-        keySettingDataList[_inputkeyNum].rectTrX = rectTrX;
-        keySettingDataList[_inputkeyNum].rectTrY = rectTrY;
+        keySettingDataList[_inputkeyNum].rectTrX = _rectTrX;
+        keySettingDataList[_inputkeyNum].rectTrY = _rectTrY;
     }
 
     // InputPanel Init 테스트 용 임시
@@ -156,7 +158,7 @@ public class InputKeyManagement : MonoBehaviour
         Debug.Log($"{_inputKey.name}세팅");
     }
 
-    private void Set_DragEventTrigger(InputKey _inputKey, int inputKeyNum)
+    private void Set_DragEventTrigger(InputKey _inputKey, int _inputKeyNum)
     {
         eventTrigger = _inputKey.GetComponent<EventTrigger>();
 
@@ -164,14 +166,22 @@ public class InputKeyManagement : MonoBehaviour
             return;
 
         EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.Drag;
-        entry.callback.AddListener((data) => { OnDrag((PointerEventData)data, inputKeyNum); });
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry.callback.AddListener((data) => { OnBeginDrag((PointerEventData)data, _inputKeyNum); });
         eventTrigger.triggers.Add(entry);
     }
 
-    private void OnDrag(PointerEventData data, int inputKeyNum) 
+    private void OnBeginDrag(PointerEventData data, int _inputKeyNum)
     {
-        Set_InputKeyTransForm(data.position.x, data.position.y, inputKeyNum);
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drag;
+        entry.callback.AddListener((data) => { OnDrag((PointerEventData)data, _inputKeyNum); });
+        eventTrigger.triggers.Add(entry);
+    }
+
+    private void OnDrag(PointerEventData data, int _inputKeyNum) 
+    {
+        Set_InputKeyTransForm(data.position.x, data.position.y, _inputKeyNum);
     }
 
     private void OnClick_EndClick(InputKey _inputKey)
@@ -180,13 +190,21 @@ public class InputKeyManagement : MonoBehaviour
         OnEndDrag(eventTrigger);
     }
 
-    private void OnEndDrag(EventTrigger eventTrigger)
+    private void OnEndDrag(EventTrigger _eventTrigger)
     {
-        eventTrigger.triggers.RemoveRange(2, eventTrigger.triggers.Count - 2);
+        if (_eventTrigger.triggers.Count <= 2)
+            return;
+
+        _eventTrigger.triggers.RemoveRange(2, eventTrigger.triggers.Count - 2);
     }
 
     public void Save_KeySettingData()
     {
         PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
+    }
+
+    public KeySettingData Get_KeySettingData(int _inputKeyNum)
+    {
+        return keySettingDataList[_inputKeyNum];
     }
 }
