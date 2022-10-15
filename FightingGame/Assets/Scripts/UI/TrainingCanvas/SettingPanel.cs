@@ -5,9 +5,10 @@ using UnityEngine.UI;
 using FGDefine;
 
 public class SettingPanel : UIElement
-{
+{   
     private float moveSpeed = 1;
     private bool isMove = false;
+
     private int inputNum;
     private InputPanel inputPanel;
     private InputKey inputKey;
@@ -32,7 +33,7 @@ public class SettingPanel : UIElement
     public void Init()
     {
         this.inputKeyManagement = this.transform.root.Find("InputKeyManagement").GetComponent<InputKeyManagement>();
-        this.inputPanel = this.inputKeyManagement.transform.Find("InputPanel").GetComponent<InputPanel>();
+        this.inputPanel = inputKeyManagement.inputPanel;
     }
 
     // 클릭 InputKey, Slider 세팅
@@ -53,17 +54,19 @@ public class SettingPanel : UIElement
     // SizeSlider 값 변경
     public void OnValueChanged_SetSizeSlider()
     {
-        this.sizeText.text = (int)this.sizeSlider.value + "%";
-        this.keySettingData.size = this.sizeSlider.value;
-        this.inputKeyManagement.Set_InputKeySize(this.keySettingData.size, this.inputNum);
+        int sizeValue = (int)this.sizeSlider.value;
+
+        this.sizeText.text = $"{sizeValue}%";
+        this.inputKeyManagement.Set_InputKeySize(sizeValue, this.inputNum);
     }
 
     // Opacity 값 변경
     public void OnValueChanged_SetOpacitySlider()
     {
-        this.opacityText.text = (int)this.opacitySlider.value + "%";
-        this.keySettingData.opacity = this.opacitySlider.value;
-        this.inputKeyManagement.Set_InputKeyOpacity(this.keySettingData.opacity, this.inputNum);
+        int opacityValue = (int)this.opacitySlider.value;
+
+        this.opacityText.text = $"{opacityValue}%";
+        this.inputKeyManagement.Set_InputKeyOpacity(opacityValue, this.inputNum);
     }
 
     // InputKet 이동
@@ -103,9 +106,38 @@ public class SettingPanel : UIElement
                     Debug.Log("범위 벗어남");
                     break;
             }
+
             moveSpeed += 1 * Time.deltaTime;
             this.inputKeyManagement.Set_InputKeyTransForm(_movePos.x, _movePos.y, this.inputNum);
             yield return null;
         }
+    }
+
+    public void OnClick_PopupOpen(string buttonName)
+    {
+        switch (buttonName)
+        {
+            case "Close":
+                Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "버튼 설정을 종료하시겠습니까?");
+                break;
+            case "Reset":
+                Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
+                break;
+            case "Save":
+                Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
+                break;
+            default:
+                Debug.Log("범위벗어남");
+                break;
+
+        }
+    }
+
+    public void Reset_InputKeyValue()
+    {
+        inputKeyManagement.Reset_InputKeyValue();
+
+        sizeSlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).size;
+        opacitySlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).opacity;
     }
 }

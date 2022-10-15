@@ -10,7 +10,7 @@ public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
-    private InputPanel inputPanel = null;
+    public InputPanel inputPanel = null;
     private InputKey inputKey = null;
     private RectTransform inputKeyRectTr = null;
 
@@ -43,9 +43,18 @@ public class InputKeyManagement : MonoBehaviour
                 inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
                 inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
-                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.position.x, inputKeyRectTr.position.y));
+                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
                 Set_InputKey(i);
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
+            }
+
+            PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
+        }
+        else
+        {
+            for (int i = 0; i < keySettingDataList.Count; i++)
+            {
+                Set_InputKey(i);
             }
         }
 
@@ -75,8 +84,7 @@ public class InputKeyManagement : MonoBehaviour
         // KeyArea 크기 변경
         areaRectTr = keyArea.GetComponent<RectTransform>();
         areaRectTr.localScale = changeScale;
-
-        // 변경값 임시 저장
+        
         keySettingDataList[_inputkeyNum].size = _size;
     }
 
@@ -105,7 +113,6 @@ public class InputKeyManagement : MonoBehaviour
             inputKeyImage.color = changeColor;
         }
 
-        // 변경값 임시 저장
         keySettingDataList[_inputkeyNum].opacity = _opacity;
     }
 
@@ -118,13 +125,12 @@ public class InputKeyManagement : MonoBehaviour
 
         // InputKey 위치 변경
         inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-        inputKeyRectTr.position = changeVector;
+        inputKeyRectTr.anchoredPosition = changeVector;
 
         // KeyArea 위치 변경
         areaRectTr = keyArea.GetComponent<RectTransform>();
-        areaRectTr.position = changeVector;
+        areaRectTr.anchoredPosition = changeVector;
 
-        // 변경값 임시 저장
         keySettingDataList[_inputkeyNum].rectTrX = _rectTrX;
         keySettingDataList[_inputkeyNum].rectTrY = _rectTrY;
     }
@@ -132,15 +138,18 @@ public class InputKeyManagement : MonoBehaviour
     // InputPanel Init 테스트 용 임시
     private void OnClick_BeginClick(InputKey _inputKey)
     {
-        // 기존 선택 상태이던 버튼 area 색상 변경
-        keyArea.isSelect = false;
-        keyArea.Set_AreaColor();
-
         // 선택한 InputKey에 해당하는 Enum번호 찾기
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             if (((ENUM_INPUTKEY_NAME)i).ToString() == _inputKey.name)
             {
+                // 기존 선택 상태이던 버튼 area 색상 변경
+                if (keyArea != null)
+                {
+                    keyArea.isSelect = false;
+                    keyArea.Set_AreaColor();
+                }
+
                 int inputKeyNum = i;
                 // Enum번호로 SettingPanel 등록
                 settingPanel.OnClick_SetInputKey(inputKeyNum);
@@ -156,6 +165,17 @@ public class InputKeyManagement : MonoBehaviour
             }
         }
         Debug.Log($"{_inputKey.name}세팅");
+    }
+
+    // InputKey 초기화
+    public void Reset_InputKeyValue()
+    {
+        keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
+
+        for (int i = 0; i < keySettingDataList.Count; i++)
+        {
+            Set_InputKey(i);
+        }
     }
 
     private void Set_DragEventTrigger(InputKey _inputKey, int _inputKeyNum)
@@ -177,11 +197,15 @@ public class InputKeyManagement : MonoBehaviour
         entry.eventID = EventTriggerType.Drag;
         entry.callback.AddListener((data) => { OnDrag((PointerEventData)data, _inputKeyNum); });
         eventTrigger.triggers.Add(entry);
+
+        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputKeyNum);
+        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
     }
 
     private void OnDrag(PointerEventData data, int _inputKeyNum) 
     {
-        Set_InputKeyTransForm(data.position.x, data.position.y, _inputKeyNum);
+        Vector2 movePos = inputKeyRectTr.anchoredPosition + data.delta;
+        Set_InputKeyTransForm(movePos.x, movePos.y, _inputKeyNum);
     }
 
     private void OnClick_EndClick(InputKey _inputKey)

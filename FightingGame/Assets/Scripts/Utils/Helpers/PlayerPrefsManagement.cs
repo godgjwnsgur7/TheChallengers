@@ -65,9 +65,9 @@ public class PlayerPrefsManagement : MonoBehaviour
             }
 
             Set_Float(keySettingDatas[i].size, keyName, nameof(KeySettingData.size));
-            Set_Float(keySettingDatas[i].opacity, keyName, nameof(KeySettingData.size));
-            Set_Float(keySettingDatas[i].rectTrX, keyName, nameof(KeySettingData.size));
-            Set_Float(keySettingDatas[i].rectTrY, keyName, nameof(KeySettingData.size));
+            Set_Float(keySettingDatas[i].opacity, keyName, nameof(KeySettingData.opacity));
+            Set_Float(keySettingDatas[i].rectTrX, keyName, nameof(KeySettingData.rectTrX));
+            Set_Float(keySettingDatas[i].rectTrY, keyName, nameof(KeySettingData.rectTrY));
         }
 
         PlayerPrefs.Save();
