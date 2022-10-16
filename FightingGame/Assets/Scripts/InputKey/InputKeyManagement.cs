@@ -203,8 +203,10 @@ public class InputKeyManagement : MonoBehaviour
         if (eventTrigger.triggers.Count > 2)
             return;
 
-        EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.Drag;
+        EventTrigger.Entry entry = new EventTrigger.Entry
+        {
+            eventID = EventTriggerType.Drag,
+        };
         entry.callback.AddListener((data) => { OnDrag((PointerEventData)data, _inputKeyNum); });
         eventTrigger.triggers.Add(entry);
 
@@ -220,7 +222,6 @@ public class InputKeyManagement : MonoBehaviour
 
     private void OnClick_EndClick(InputKey _inputKey)
     {
-        EventTrigger eventTrigger = _inputKey.GetComponent<EventTrigger>();
         if (eventTrigger.triggers.Count <= 2)
             return;
 

@@ -72,7 +72,7 @@ public class SettingPanel : UIElement
     // InputKet 이동
     public void OnPointerDown_MovePos(string _direction)
     {
-        Vector2 movePos = this.inputKey.transform.position;
+        Vector2 movePos = this.inputKey.GetComponent<RectTransform>().anchoredPosition;
         isMove = true;
         StartCoroutine(MovePosCoroutine(movePos, _direction));
     }
