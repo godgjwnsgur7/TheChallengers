@@ -10,6 +10,7 @@ public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
+    private int inputKeyNum;
     public InputPanel inputPanel = null;
     private RectTransform panelTr = null;
     private InputKey inputKey = null;
@@ -21,6 +22,10 @@ public class InputKeyManagement : MonoBehaviour
 
     private SettingPanel settingPanel;
     private EventTrigger eventTrigger;
+    private EventTrigger.Entry triggerEntry = new EventTrigger.Entry
+    {
+        eventID = EventTriggerType.Drag,
+    };
 
     public void Init()
     {
@@ -60,6 +65,13 @@ public class InputKeyManagement : MonoBehaviour
             }
         }
 
+        // 드래그 이벤트트리거 생성
+        for(int i = 0; i < keySettingDataList.Count; i++)
+        {
+            Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
+        }
+
+        // 세팅패널 활성화
         settingPanel = this.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
         settingPanel.Init();
     }
@@ -168,7 +180,11 @@ public class InputKeyManagement : MonoBehaviour
                     keyArea.Set_AreaColor();
                 }
 
-                int inputKeyNum = i;
+                inputKeyNum = i;
+                inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
+                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+                triggerEntry.callback.AddListener(OnDrag);
+
                 // Enum번호로 SettingPanel 등록
                 settingPanel.OnClick_SetInputKey(inputKeyNum);
 
@@ -176,9 +192,6 @@ public class InputKeyManagement : MonoBehaviour
                 keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)inputKeyNum);
                 keyArea.isSelect = true;
                 keyArea.Set_AreaColor();
-
-                // 드래그 이벤트 트리거 생성
-                Set_DragEventTrigger(_inputKey, inputKeyNum);
                 break;
             }
         }
@@ -196,36 +209,28 @@ public class InputKeyManagement : MonoBehaviour
         }
     }
 
-    private void Set_DragEventTrigger(InputKey _inputKey, int _inputKeyNum)
+    // InputKey EventTrigger에 OnDrag추가
+    private void Set_DragEventTrigger(InputKey _inputKey)
     {
         eventTrigger = _inputKey.GetComponent<EventTrigger>();
-
-        if (eventTrigger.triggers.Count > 2)
-            return;
-
-        EventTrigger.Entry entry = new EventTrigger.Entry
-        {
-            eventID = EventTriggerType.Drag,
-        };
-        entry.callback.AddListener((data) => { OnDrag((PointerEventData)data, _inputKeyNum); });
-        eventTrigger.triggers.Add(entry);
-
-        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputKeyNum);
-        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+        eventTrigger.triggers.Add(triggerEntry);
     }
 
-    private void OnDrag(PointerEventData data, int _inputKeyNum) 
+    // 드래그로 InputKey 위치이동
+    private void OnDrag(BaseEventData _data) 
     {
+        PointerEventData data = (PointerEventData)_data;
         Vector2 movePos = inputKeyRectTr.anchoredPosition + data.delta;
-        Set_InputKeyTransForm(movePos.x, movePos.y, _inputKeyNum);
+        Set_InputKeyTransForm(movePos.x, movePos.y, inputKeyNum);
     }
 
-    private void OnClick_EndClick(InputKey _inputKey)
+    // PointerUp Event
+    private void OnClick_EndClick(InputKey _ienputKey)
     {
         if (eventTrigger.triggers.Count <= 2)
             return;
 
-        eventTrigger.triggers.RemoveRange(2, eventTrigger.triggers.Count - 2);
+        triggerEntry.callback.RemoveListener(OnDrag);
     }
 
     public void Save_KeySettingData()
