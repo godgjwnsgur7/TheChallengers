@@ -47,10 +47,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         set
         {
-            if (currMap == value) return;
+            if (!PhotonLogicHandler.IsMasterClient) return;
 
-            if (PhotonLogicHandler.IsMasterClient) // 마스터일 경우에만 전달
-                PhotonLogicHandler.Instance.ChangeMap(value);
+            PhotonLogicHandler.Instance.ChangeMap(value);
 
             currMap = value;
             currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_L");
@@ -184,20 +183,14 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
 
-        //string tempStr = PhotonLogicHandler.CurrentMapType.ToString();
-        //if (tempStr == null || tempStr == "")
-        //{
-        //    CurrMap = ENUM_MAP_TYPE.BasicMap;
-        //    Debug.Log($"PhotonLogicHandler.CurrentMapName is Null");
-        //    return;
-        //}
-        //else // 이쪽이 정상...인데 일로 왜 안탈까? ㅎㅋ
-        //{ 
-        //    CurrMap = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), tempStr);
-        //    Debug.Log("방이름까진 가져옴");
-        //}
-
         CurrMap = PhotonLogicHandler.CurrentMapType;
+    }
+
+    public void UpdateMap(ENUM_MAP_TYPE _mapType)
+    {
+        if (currMap == _mapType)
+            return;
+
     }
 
     public void GoTo_BattleScene()

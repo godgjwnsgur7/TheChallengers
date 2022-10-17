@@ -26,6 +26,7 @@ public class RoomListElementUI : MonoBehaviour
     {
         set
         {
+            if (currMap == value) return;
             currMap = value;
             mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");
         }
