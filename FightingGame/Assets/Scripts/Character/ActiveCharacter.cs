@@ -116,7 +116,9 @@ public partial class ActiveCharacter : Character
                 
                 break;
             case ENUM_CHARACTER_TYPE.Wizard:
-                // 아직 풀링할 오브젝트가 없음.
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 3);
                 break;
             default:
                 Debug.Log($"Failed to SkillObject : {charType}");
