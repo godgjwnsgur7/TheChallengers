@@ -159,8 +159,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void CurrmapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
-        if (!PhotonLogicHandler.IsMasterClient) return;
-
+        if (PhotonLogicHandler.IsMasterClient)
         PhotonLogicHandler.Instance.ChangeMap(_mapType);
 
         currMap = _mapType;
@@ -218,6 +217,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnClick_ChangeMap(bool _isRight)
     {
+        if (!PhotonLogicHandler.IsMasterClient)
+            return;
+
         int _mapIndex = (int)CurrMap;
 
         if (_isRight)

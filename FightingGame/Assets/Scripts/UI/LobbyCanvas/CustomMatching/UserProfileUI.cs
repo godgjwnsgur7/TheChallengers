@@ -16,6 +16,7 @@ public class UserProfileUI : MonoBehaviour
     [SerializeField] Text charNameText;
     [SerializeField] Text userNicknameText; // 닉네임 받아와야 함
 
+    [SerializeField] ENUM_TEAM_TYPE teamType;
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
     public bool isInit = false;
     public bool isMine = false;
@@ -60,11 +61,11 @@ public class UserProfileUI : MonoBehaviour
     
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
     {
-        if ((int)_charType >= (int)ENUM_CHARACTER_TYPE.Max
-            || (int)currCharType == (int)_charType)
+        if ((int)_charType >= (int)ENUM_CHARACTER_TYPE.Max || (int)currCharType == (int)_charType)
             return;
 
         currCharType = _charType;
+        Managers.Game.Set_CharacterType(_charType, teamType);
 
         if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
             PhotonLogicHandler.Instance.ChangeCharacter(currCharType);

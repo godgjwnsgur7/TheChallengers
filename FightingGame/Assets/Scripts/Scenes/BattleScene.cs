@@ -36,15 +36,15 @@ public class BattleScene : BaseScene
             if (PhotonLogicHandler.IsMasterClient)
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
-                SetCharacterWithPos(map.blueTeamSpawnPoint.position);
-                playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
+                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Game.Get_CharacterType(ENUM_TEAM_TYPE.Blue)));
             }
             else
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
-                SetCharacterWithPos(map.redTeamSpawnPoint.position);
-                playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
+                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Game.Get_CharacterType(ENUM_TEAM_TYPE.Red)));
             }
+            
+            playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
         }
         else // 클라 하나
         {
