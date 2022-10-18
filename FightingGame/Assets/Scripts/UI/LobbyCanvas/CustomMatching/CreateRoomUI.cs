@@ -16,11 +16,7 @@ public class CreateRoomUI : MonoBehaviour
     ENUM_MAP_TYPE currMap;
     ENUM_MAP_TYPE CurrMap
     {
-        set
-        {
-            currMap = value;
-            mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");
-        }
+        set { CurrMapInfoUpdateCallBack(value); }
         get { return currMap; }
     }
 
@@ -30,7 +26,14 @@ public class CreateRoomUI : MonoBehaviour
         userInputField.text = "";
         CurrMap = ENUM_MAP_TYPE.BasicMap;
     }
-    
+
+    public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
+    {
+        currMap = _mapType;
+        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
+    }
+
+
     public void OnClick_CreatRoom()
     {
         Managers.UI.popupCanvas.Open_LoadingPopup();

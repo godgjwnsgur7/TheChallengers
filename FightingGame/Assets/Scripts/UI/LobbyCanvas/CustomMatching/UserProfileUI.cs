@@ -24,24 +24,7 @@ public class UserProfileUI : MonoBehaviour
     public bool IsReady
     {
         get { return isReady; }
-        private set
-        {
-            if (isReady == value) return;
-            isReady = value;
-
-            if (isReady)
-            {
-                readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/ReadySprite");
-                if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
-                    PhotonLogicHandler.Instance.Ready();
-            }
-            else
-            {
-                readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/UnreadySprite");
-                if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
-                    PhotonLogicHandler.Instance.UnReady();
-            }
-        }
+        private set { IsReadyInfoUpdateCallBack(value); } 
     }
 
     public void Init()
@@ -50,6 +33,27 @@ public class UserProfileUI : MonoBehaviour
 
         isInit = true;
         isMine = true;
+    }
+
+    public void IsReadyInfoUpdateCallBack(bool _readyState)
+    {
+        if (isReady == _readyState)
+            return;
+        
+        isReady = _readyState;
+
+        if (isReady)
+        {
+            readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/ReadySprite");
+            if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+                PhotonLogicHandler.Instance.Ready();
+        }
+        else
+        {
+            readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/UnreadySprite");
+            if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+                PhotonLogicHandler.Instance.UnReady();
+        }
     }
 
     public void Set_UserNickname(string userNickname) => userNicknameText.text = userNickname;

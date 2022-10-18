@@ -24,12 +24,7 @@ public class RoomListElementUI : MonoBehaviour
     ENUM_MAP_TYPE currMap;
     ENUM_MAP_TYPE CurrMap
     {
-        set
-        {
-            if (currMap == value) return;
-            currMap = value;
-            mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_M");
-        }
+        set { CurrMapInfoUpdateCallBack(value); }
     }
 
     public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList, Action _OnActiveRoomWindow)
@@ -59,6 +54,13 @@ public class RoomListElementUI : MonoBehaviour
         OnUpdateRoomList = null;
         OnActiveRoomWindow = null;
         isUsing = false;
+    }
+    
+    public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
+    {
+        if (currMap == _mapType) return;
+        currMap = _mapType;
+        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
     }
 
     public bool Update_MyRoomInfo()

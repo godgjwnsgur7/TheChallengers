@@ -43,28 +43,10 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     Coroutine allReadyCheckCoroutine;
 
     ENUM_MAP_TYPE currMap;
-    ENUM_MAP_TYPE CurrMap
+    public ENUM_MAP_TYPE CurrMap
     {
-        set
-        {
-            if (!PhotonLogicHandler.IsMasterClient) return;
-
-            PhotonLogicHandler.Instance.ChangeMap(value);
-
-            currMap = value;
-            currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{value}_L");
-
-            int mapIndex = (int)value - 1;
-            if (mapIndex <= 0)
-                mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
-            nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
-
-            mapIndex = (int)value + 1;
-            if (mapIndex >= (int)ENUM_MAP_TYPE.Max)
-                mapIndex = 0;
-            nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
-        }
         get { return currMap; }
+        private set { CurrmapInfoUpdateCallBack(value); }
     }
 
     #region Register, CallBack, OnUpdateProperty 함수 (Server)
@@ -173,6 +155,26 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         UnRegister_LobbyCallback();
         this.gameObject.SetActive(false);
+    }
+
+    public void CurrmapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
+    {
+        if (!PhotonLogicHandler.IsMasterClient) return;
+
+        PhotonLogicHandler.Instance.ChangeMap(_mapType);
+
+        currMap = _mapType;
+        currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_L");
+
+        int mapIndex = (int)_mapType - 1;
+        if (mapIndex <= 0)
+            mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
+        nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
+
+        mapIndex = (int)_mapType + 1;
+        if (mapIndex >= (int)ENUM_MAP_TYPE.Max)
+            mapIndex = 0;
+        nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
     }
 
     public void Set_CurrRoomInfo()
