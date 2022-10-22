@@ -119,6 +119,7 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 3);
                 break;
             default:
                 Debug.Log($"Failed to SkillObject : {charType}");

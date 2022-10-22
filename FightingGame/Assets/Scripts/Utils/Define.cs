@@ -105,7 +105,7 @@ namespace FGDefine
         Wizard_Attack1 = 10,
         Wizard_Attack2 = 11,
         Wizard_ThrowAttackObject = 12,
-
+        Wizard_ThrowJumpAttackObject = 13,
     }
 
     /// <summary>

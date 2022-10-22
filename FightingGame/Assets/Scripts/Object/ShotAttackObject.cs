@@ -7,6 +7,7 @@ public class ShotAttackObject : AttackObject
 {
     Rigidbody2D rigid2D;
     [SerializeField] Vector3 subPos;
+    [SerializeField] Vector2 shotSpeed;
 
     public override void Init()
     {
@@ -48,12 +49,14 @@ public class ShotAttackObject : AttackObject
         else
             CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
 
-        // 날아가는 힘을 받아야 하는데, 고민중 (임시)
-
-        float speed = 500.0f;
-
-        if (_reverseState) speed *= -1f;
-
-        rigid2D.AddForce(new Vector2(speed, 0));
+        // 날아가는 힘을 받아야 하는데, 마땅치가 않네..
+        if (reverseState)
+        {
+            rigid2D.AddForce(new Vector2(-shotSpeed.x, shotSpeed.y));
+        }
+        else
+        {
+            rigid2D.AddForce(shotSpeed);
+        }
     }
 }
