@@ -25,29 +25,29 @@ public class BattleScene : BaseScene
         if(battleCanvas == null)
             Debug.LogError("BattleCanvas is Null");
 
-        // 일단 무조건 베이직맵 가져와 (임시)
-        map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
-        
-        // 카메라 가두기
-        playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
-
         if(PhotonLogicHandler.IsConnected)
         {
+            map = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
+            playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
+
             if (PhotonLogicHandler.IsMasterClient)
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
-                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Game.Get_CharacterType(ENUM_TEAM_TYPE.Blue)));
+                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Game.Get_CharacterType()));
             }
             else
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
-                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Game.Get_CharacterType(ENUM_TEAM_TYPE.Red)));
+                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Game.Get_CharacterType()));
             }
             
             playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
         }
         else // 클라 하나
         {
+            map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
+            playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
+
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
             playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, testPlayerCharacterType));
             playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));

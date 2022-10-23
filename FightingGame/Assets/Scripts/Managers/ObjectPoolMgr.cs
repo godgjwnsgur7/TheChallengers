@@ -146,12 +146,6 @@ public class ObjectPoolMgr
 
         pools.Add(original.name, pool);
     }
-    
-    public void AddPool(GameObject original, int count)
-    {
-        GameObject g = GetOriginal(original.name);
-
-    }
 
     public void Push(Poolable poolable)
     {

@@ -65,10 +65,12 @@ public class UserProfileUI : MonoBehaviour
             return;
 
         currCharType = _charType;
-        Managers.Game.Set_CharacterType(_charType, teamType);
-
+        
         if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
+        {
             PhotonLogicHandler.Instance.ChangeCharacter(currCharType);
+            Managers.Game.Set_CharacterType(currCharType);
+        }
 
         switch (currCharType)
         {
