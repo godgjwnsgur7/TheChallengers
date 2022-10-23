@@ -72,7 +72,7 @@ public class InputKeyManagement : MonoBehaviour
         }
 
         // 세팅패널 활성화
-        settingPanel = this.transform.root.Find("SettingPanel").GetComponent<SettingPanel>();
+        settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
         settingPanel.Init();
     }
 
