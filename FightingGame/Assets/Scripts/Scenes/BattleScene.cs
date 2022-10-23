@@ -59,11 +59,6 @@ public class BattleScene : BaseScene
         }
     }
 
-    private void SetCharacterWithPos(Vector3 spawnPos)
-    {
-        playerCharacter.Set_Character(Init_Character(spawnPos));
-    }
-
     public override void Clear()
     {
 

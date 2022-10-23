@@ -107,6 +107,9 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack3", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_1", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_2", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_3", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_JumpAttack", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 3);

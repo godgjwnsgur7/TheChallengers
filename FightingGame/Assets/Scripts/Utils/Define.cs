@@ -92,20 +92,23 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_ATTACKOBJECT_NAME
     {
-        Knight_JumpAttack = 0,
         Knight_Attack1 = 1,
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
-        Knight_ThrowSkillObject = 4,
-        Knight_SmashSkillObject = 5,
-        Knight_DashSkill = 6,
-        Knight_SmashSkillObject_1 = 7,
-        Knight_SmashSkillObject_2 = 8,
-        Knight_SmashSkillObject_3 = 9,
-        Wizard_Attack1 = 10,
-        Wizard_Attack2 = 11,
-        Wizard_ThrowAttackObject = 12,
-        Wizard_ThrowJumpAttackObject = 13,
+        Knight_DashSkill_1 = 4,
+        Knight_DashSkill_2 = 5,
+        Knight_DashSkill_3 = 6,
+        Knight_JumpAttack = 7,
+        Knight_ThrowSkillObject = 8,
+        Knight_SmashSkillObject = 9,
+        Knight_SmashSkillObject_1 = 10,
+        Knight_SmashSkillObject_2 = 11,
+        Knight_SmashSkillObject_3 = 12,
+
+        Wizard_Attack1 = 21,
+        Wizard_Attack2 = 22,
+        Wizard_ThrowAttackObject = 23,
+        Wizard_ThrowJumpAttackObject = 24,
     }
 
     /// <summary>
