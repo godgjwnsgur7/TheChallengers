@@ -108,7 +108,7 @@ public class UserProfileUI : MonoBehaviour
             || userNicknameText.text == "")
             return;
 
-        userInfoWindow.Request_Open(isMasterProfile);
+        userInfoWindow.Open_Request(isMasterProfile);
     }
 
     public void OnClick_SeleteChar()

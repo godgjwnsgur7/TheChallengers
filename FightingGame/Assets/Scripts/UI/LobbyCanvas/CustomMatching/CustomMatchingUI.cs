@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class CustomMatchingUI : MonoBehaviour
 {
-    public CustomRoomListUI customRoomList;
-    public CustomRoomWindowUI customRoomWindow;
+    [SerializeField] CustomRoomListUI customRoomList;
+    [SerializeField] CustomRoomWindowUI customRoomWindow;
+    [SerializeField] CreateRoomWindowUI createRoomWindow;
 
     bool isRegiserSuccess;
 

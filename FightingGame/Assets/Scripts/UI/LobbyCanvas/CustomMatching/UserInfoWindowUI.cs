@@ -14,7 +14,7 @@ public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
     bool isMasterProfile; // 선택한 프로필
     bool isOpen = false;
 
-    public void Request_Open(bool _isMasterProfile)
+    public void Open_Request(bool _isMasterProfile)
     {
         if (this.gameObject.activeSelf)
             return;

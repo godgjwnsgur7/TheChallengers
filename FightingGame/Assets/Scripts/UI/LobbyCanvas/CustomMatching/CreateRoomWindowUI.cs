@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class CreateRoomUI : MonoBehaviour
+public class CreateRoomWindowUI : MonoBehaviour
 {
     [SerializeField] CustomRoomWindowUI customRoomWindow;
 
     [SerializeField] Image mapImage;
-    [SerializeField] Text masterIDText;
+    [SerializeField] Text mapNameText;
     [SerializeField] Text personnelText;
     [SerializeField] InputField userInputField;
 
@@ -22,9 +22,9 @@ public class CreateRoomUI : MonoBehaviour
 
     private void OnEnable()
     {
-        masterIDText.text = "닉네임 받아와야함";
         userInputField.text = "";
         CurrMap = ENUM_MAP_TYPE.BasicMap;
+        mapNameText.text = "마법사의 숲";
     }
 
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
@@ -33,6 +33,7 @@ public class CreateRoomUI : MonoBehaviour
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
     }
 
+    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property) { }
 
     public void OnClick_CreatRoom()
     {

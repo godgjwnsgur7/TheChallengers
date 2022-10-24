@@ -1779,7 +1779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customRoomWindow: {fileID: 1216234724}
   mapImage: {fileID: 1945801625}
-  masterIDText: {fileID: 437712558}
+  mapNameText: {fileID: 437712558}
   personnelText: {fileID: 906600026}
   userInputField: {fileID: 763303988}
 --- !u!1 &303269928
@@ -2248,7 +2248,7 @@ GameObject:
   - component: {fileID: 437712559}
   - component: {fileID: 437712558}
   m_Layer: 5
-  m_Name: MasterIDText
+  m_Name: MapNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2270,8 +2270,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: 115}
-  m_SizeDelta: {x: 400, y: 60}
+  m_AnchoredPosition: {x: 325, y: 115}
+  m_SizeDelta: {x: 350, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &437712558
 MonoBehaviour:
@@ -2306,7 +2306,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC720\uC800 \uB2C9\uB124\uC784"
+  m_Text: "\uB9C8\uBC95\uC0AC\uC758 \uC232"
 --- !u!222 &437712559
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3683,7 +3683,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uBC29\uC7A5 : "
+  m_Text: "\uB9F5 \uC774\uB984 :"
 --- !u!222 &590005082
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6315,7 +6315,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 445608023}
-        m_TargetAssemblyTypeName: LobbyCanvas, Assembly-CSharp
+        m_TargetAssemblyTypeName: BaseCanvas, Assembly-CSharp
         m_MethodName: OnClick_Activate
         m_Mode: 2
         m_Arguments:
@@ -7504,7 +7504,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 445608023}
-        m_TargetAssemblyTypeName: LobbyCanvas, Assembly-CSharp
+        m_TargetAssemblyTypeName: BaseCanvas, Assembly-CSharp
         m_MethodName: OnClick_Deactivate
         m_Mode: 2
         m_Arguments:
@@ -9171,6 +9171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customRoomList: {fileID: 2056595589}
   customRoomWindow: {fileID: 1216234724}
+  createRoomWindow: {fileID: 259152398}
 --- !u!222 &1793376486
 CanvasRenderer:
   m_ObjectHideFlags: 0
