@@ -33,12 +33,12 @@ public class BattleScene : BaseScene
             if (PhotonLogicHandler.IsMasterClient)
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
-                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Game.Get_CharacterType()));
+                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
             }
             else
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
-                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Game.Get_CharacterType()));
+                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
             }
             
             playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));

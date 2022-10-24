@@ -43,8 +43,7 @@ public class SoundMgr
 
     public void Clear()
     {
-        // BGM도 팍팍 꺼질탠데, 페이드인 아웃을 넣을까 고민중
-        // 그래서 코루틴핸들러도 마련함 (임시)
+        // BGM은 페이드 인아웃을 넣어야 함.
         foreach (AudioSource audioSources in audioSources)
         {
             audioSources.clip = null;

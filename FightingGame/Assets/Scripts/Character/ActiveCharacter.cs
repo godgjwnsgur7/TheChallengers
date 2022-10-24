@@ -306,6 +306,8 @@ public partial class ActiveCharacter : Character
 
         SetAnimTrigger("DieTrigger");
         SetAnimBool("IsDie", true);
+
+        
     }
 
     public void Input_MoveKey(bool _moveKey)

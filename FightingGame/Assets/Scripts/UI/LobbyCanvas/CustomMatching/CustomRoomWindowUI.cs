@@ -49,28 +49,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         private set { CurrmapInfoUpdateCallBack(value); }
     }
 
-    #region Register, CallBack, OnUpdateProperty 함수 (Server)
-    public bool Register_LobbyCallback()
-    {
-        if (isRoomRegisting)
-        {
-            Debug.Log("이미 등록된 상태");
-            return false;
-        }
-
-        isRoomRegisting = true;
-        this.RegisterRoomCallback();
-        return true;
-    }
-    public void UnRegister_LobbyCallback()
-    {
-        if (!isRoomRegisting)
-            return;
-
-        isRoomRegisting = false;
-        this.UnregisterRoomCallback();
-    }
-
+    #region CallBack, OnUpdateProperty 함수 (Server)
     /// <summary>
     /// 슬레이브 클라이언트가 방에 입장하면 불리는 콜백함수
     /// </summary>
@@ -128,8 +107,10 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void Open()
     {
-        Register_LobbyCallback();
+        if (this.gameObject.activeSelf)
+            return;
 
+        this.RegisterRoomCallback();
         Init();
 
         // 포톤콜백함수 등록
@@ -143,6 +124,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     private void Close()
     {
+        if (!this.gameObject.activeSelf)
+            return;
+
         isInit = false;
 
         // 포톤콜백함수 해제
@@ -153,7 +137,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         masterProfile.Clear();
         slaveProfile.Clear();
 
-        UnRegister_LobbyCallback();
+        this.UnregisterRoomCallback();
         this.gameObject.SetActive(false);
     }
 

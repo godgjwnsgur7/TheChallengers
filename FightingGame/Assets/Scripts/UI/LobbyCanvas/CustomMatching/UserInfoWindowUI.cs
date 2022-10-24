@@ -3,25 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UserInfoWindowUI : MonoBehaviour
+public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
 {
     [SerializeField] Text userNicknameText;
-    [SerializeField] Text RankingText;
+    [SerializeField] Text ratingPointText;
     [SerializeField] Text winCountText;
     [SerializeField] Text loseCountText;
     [SerializeField] Text winningRateText;
 
-    public void Open(string userNickname)
-    {
-        Debug.Log($"검색할 유저 닉네임 : {userNickname}");
-        // userNickname을 확인해 검색
-        // 정보가 없는 유저일 경우 알림창 팝업 띄우기
+    bool isMasterProfile; // 선택한 프로필
+    bool isOpen = false;
 
-        gameObject.SetActive(true);
+    public void Request_Open(bool _isMasterProfile)
+    {
+        if (this.gameObject.activeSelf)
+            return;
+
+        isMasterProfile = _isMasterProfile;
+
+        this.RegisterRoomCallback();
+
+        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
 
-    public void OnClick_Close()
+    public void Open(DBUserData userData)
     {
+        isOpen = true;
+
+        userNicknameText.text = userData.nickname;
+        ratingPointText.text = $"{userData.ratingPoint}점";
+        winCountText.text = userData.victoryPoint.ToString();
+        loseCountText.text = userData.defeatPoint.ToString();
+        long winningRate = userData.victoryPoint / (userData.victoryPoint + userData.defeatPoint) * 100;
+        winningRateText.text = $"{winningRate}%";
+
+        this.gameObject.SetActive(true);
+    }
+
+    private void Close()
+    {
+        if (!this.gameObject.activeSelf)
+            return;
+
+        this.UnregisterRoomCallback();
         gameObject.SetActive(false);
+
+        userNicknameText.text = "유저 닉네임";
+        ratingPointText.text = "0000점";
+        winCountText.text = "00";
+        loseCountText.text = "00";
+        winningRateText.text = "0%";
+
+        isOpen = false;
     }
+
+    public void OnUpdateRoomProperty(CustomRoomProperty property) { }
+    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
+    {
+        if (isMasterProfile != property.isMasterClient || isOpen)
+            return;
+
+        Open(property.data);
+    }
+
+    public void OnClick_Close() => Close();
 }

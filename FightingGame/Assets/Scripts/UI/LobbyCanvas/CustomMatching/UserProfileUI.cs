@@ -14,9 +14,11 @@ public class UserProfileUI : MonoBehaviour
     [SerializeField] Image readyStateImage;
 
     [SerializeField] Text charNameText;
-    [SerializeField] Text userNicknameText; // 닉네임 받아와야 함
+    [SerializeField] Text userNicknameText;
 
     [SerializeField] ENUM_TEAM_TYPE teamType;
+    [SerializeField] bool isMasterProfile;
+    
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
     public bool isInit = false;
     public bool isMine = false;
@@ -69,7 +71,7 @@ public class UserProfileUI : MonoBehaviour
         if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
         {
             PhotonLogicHandler.Instance.ChangeCharacter(currCharType);
-            Managers.Game.Set_CharacterType(currCharType);
+            Managers.Battle.Set_CharacterType(currCharType);
         }
 
         switch (currCharType)
@@ -106,7 +108,7 @@ public class UserProfileUI : MonoBehaviour
             || userNicknameText.text == "")
             return;
 
-        userInfoWindow.Open(userNicknameText.text);
+        userInfoWindow.Request_Open(isMasterProfile);
     }
 
     public void OnClick_SeleteChar()
