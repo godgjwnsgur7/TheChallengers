@@ -307,7 +307,7 @@ public partial class ActiveCharacter : Character
         SetAnimTrigger("DieTrigger");
         SetAnimBool("IsDie", true);
 
-        
+        Managers.Battle.EndGame();
     }
 
     public void Input_MoveKey(bool _moveKey)

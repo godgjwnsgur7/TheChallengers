@@ -24,13 +24,13 @@ public class CreateRoomWindowUI : MonoBehaviour
     {
         userInputField.text = "";
         CurrMap = ENUM_MAP_TYPE.BasicMap;
-        mapNameText.text = "마법사의 숲";
     }
 
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
         currMap = _mapType;
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
+        mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property) { }

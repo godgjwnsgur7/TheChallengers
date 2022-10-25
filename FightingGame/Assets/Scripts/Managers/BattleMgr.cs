@@ -12,6 +12,11 @@ public class BattleMgr
     public bool isInTheCustom = false;
 
     ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
+
+    private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
+    {
+        {ENUM_MAP_TYPE.BasicMap, "마법사의 숲" },
+    };
     
     public void Init()
     {
@@ -21,6 +26,17 @@ public class BattleMgr
     public void Clear()
     {
 
+    }
+
+    public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
+    {
+        if(!mapNameDict.ContainsKey(mapType))
+        {
+            Debug.Log($"해당하는 맵 타입이 맵 이름 사전에 없습니다. : {mapType}");
+            return null;
+        }
+
+        return mapNameDict[mapType];
     }
 
 
@@ -36,7 +52,9 @@ public class BattleMgr
 
     public void EndGame()
     {
-        // 상대 클라이언트에도 게임이 끝났음을 전달할 필요가 있지 않을까?
+        // 상대 클라이언트에도 게임이 끝났음을 전달할 필요가 있는데... 어쩌지 ㅋ
+        
+
     }
     
     protected IEnumerator IGameEndCheck()

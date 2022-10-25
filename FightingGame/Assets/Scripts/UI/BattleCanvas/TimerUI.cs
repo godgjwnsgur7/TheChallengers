@@ -13,16 +13,12 @@ public class TimerUI : MonoBehaviour
 
     bool isTimerLock = false;
 
-    // 우려되는 예외상황 : 핸드폰 내의 날짜와 시간으로 측정될탠데, (임시)
-    // 만약 핸드폰 내의 시간이 한국 시간으로 되어있지 않는, 등의 예외상황에서는?..
-    // + 현 함수 자체를 브로드캐스트 하는 것은 불가능. 상대에게도 요청해야함.
-    // 가능하면 포톤을 안 달고 하는 것이 바람직.
-    public void Start_Timer(Action _timeOutCallBack, float startTime)
+    public void Start_Timer(Action _timeOutCallBack)
     {
         timeOutCallBack = _timeOutCallBack;
 
         isTimerLock = false; 
-        timerCoroutine = StartCoroutine(IStartTimer(startTime));
+        timerCoroutine = StartCoroutine(IStartTimer());
     }
 
     public void Stop_Timer()
@@ -31,15 +27,18 @@ public class TimerUI : MonoBehaviour
         isTimerLock = true;
     }
 
-    protected IEnumerator IStartTimer(float startTime)
+    protected IEnumerator IStartTimer()
     {
+        /*
         float limitTime = 240.0f; // 일단 게임시간은 4분으로 고정 (임시)
         float currLimitImte;
         float elapsedTime;
         int minute;
+        */
 
         while (!isTimerLock)
         {
+            /* 방식을 바꿔야 함
             elapsedTime = Time.time - startTime;
             currLimitImte = limitTime - elapsedTime;
 
@@ -47,6 +46,7 @@ public class TimerUI : MonoBehaviour
             currLimitImte -= minute * 60;
 
             timerText.text = string.Format("{0:00}:{1:00}", minute, currLimitImte);
+            */
 
             yield return null;
         }

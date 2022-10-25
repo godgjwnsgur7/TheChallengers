@@ -35,6 +35,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     [SerializeField] Image nextMapIamge_Right;
 
     [SerializeField] Text roomNameText;
+    [SerializeField] Text mapNameText;
 
     public bool isInit = false;
     public bool isRoomRegisting = false;
@@ -148,6 +149,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         currMap = _mapType;
         currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_L");
+        mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
 
         int mapIndex = (int)_mapType - 1;
         if (mapIndex <= 0)
