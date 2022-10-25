@@ -34,7 +34,7 @@ Dev Period : 2020.05.09 ~ ing
 ---
 
 
-Game Designer (2) : Heo Jun Hyeok, Kwon Yeong Jun
+Game Designer (2) : Heo Jun Hyeok, Kwon Young Jun
 
 Game Artists (4) : Lee Gyeong Ju, Baek Seo A, Jang Ha Ri, Kim A Rin
 
