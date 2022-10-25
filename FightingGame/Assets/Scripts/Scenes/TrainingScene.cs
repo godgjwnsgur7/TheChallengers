@@ -172,14 +172,14 @@ public class TrainingScene : BaseScene
     }
 
     // 캐릭터 선택
-    public void SelectPlayerCharacter(int charType)
+    public void SelectPlayerCharacter(ENUM_CHARACTER_TYPE charType)
     {
         playerType = (ENUM_CHARACTER_TYPE)charType;
         Debug.Log(playerType);
         CallPlayer();
     }
 
-    public void SelectEnemyCharacter(int charType)
+    public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE charType)
     {
         enemyType = (ENUM_CHARACTER_TYPE)charType;
         Debug.Log(playerType);
