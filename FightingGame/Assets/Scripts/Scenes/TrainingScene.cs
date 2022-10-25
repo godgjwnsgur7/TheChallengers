@@ -175,8 +175,6 @@ public class TrainingScene : BaseScene
         playerType = (ENUM_CHARACTER_TYPE)charType;
         Debug.Log(playerType);
         CallPlayer();
-
-        // select창 닫기 추가예정
     }
 
     public void SelectEnemyCharacter(int charType)
@@ -184,7 +182,5 @@ public class TrainingScene : BaseScene
         enemyType = (ENUM_CHARACTER_TYPE)charType;
         Debug.Log(playerType);
         CallEnemy();
-
-        // select창 닫기 추가예정
     }
 }
