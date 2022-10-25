@@ -10,6 +10,7 @@ public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
+    public bool isInit = false;
     private int inputKeyNum;
     public InputPanel inputPanel = null;
     private RectTransform panelTr = null;
@@ -74,6 +75,8 @@ public class InputKeyManagement : MonoBehaviour
         // 세팅패널 활성화
         settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
         settingPanel.Init();
+
+        Change_IsInit(true);
     }
 
     public void Set_InputKey(int _inputkeyNum)
@@ -169,32 +172,27 @@ public class InputKeyManagement : MonoBehaviour
     private void OnClick_BeginClick(InputKey _inputKey)
     {
         // 선택한 InputKey에 해당하는 Enum번호 찾기
-        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        inputKeyNum = (int)Enum.Parse(typeof(ENUM_INPUTKEY_NAME), _inputKey.name);
+
+        // 기존 선택 상태이던 버튼 area 색상 변경
+        if (keyArea != null)
         {
-            if (((ENUM_INPUTKEY_NAME)i).ToString() == _inputKey.name)
-            {
-                // 기존 선택 상태이던 버튼 area 색상 변경
-                if (keyArea != null)
-                {
-                    keyArea.isSelect = false;
-                    keyArea.Set_AreaColor();
-                }
-
-                inputKeyNum = i;
-                inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
-                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-                triggerEntry.callback.AddListener(OnDrag);
-
-                // Enum번호로 SettingPanel 등록
-                settingPanel.OnClick_SetInputKey(inputKeyNum);
-
-                // keyArea 색상 변경
-                keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)inputKeyNum);
-                keyArea.isSelect = true;
-                keyArea.Set_AreaColor();
-                break;
-            }
+            keyArea.isSelect = false;
+            keyArea.Set_AreaColor();
         }
+
+        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
+        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+        triggerEntry.callback.AddListener(OnDrag);
+
+        // Enum번호로 SettingPanel 등록
+        settingPanel.OnClick_SetInputKey(inputKeyNum);
+
+        // keyArea 색상 변경
+        keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)inputKeyNum);
+        keyArea.isSelect = true;
+        keyArea.Set_AreaColor();
+
         Debug.Log($"{_inputKey.name}세팅");
     }
 
@@ -241,5 +239,16 @@ public class InputKeyManagement : MonoBehaviour
     public KeySettingData Get_KeySettingData(int _inputKeyNum)
     {
         return keySettingDataList[_inputKeyNum];
+    }
+
+    public void Destroy_InputPanel()
+    {
+        Destroy(this.inputPanel.gameObject);
+        Change_IsInit(false);
+    }
+
+    public void Change_IsInit(bool _changeBool)
+    {
+        isInit = _changeBool;
     }
 }

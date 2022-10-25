@@ -29,11 +29,13 @@ public class ShotAttackObject : AttackObject
         targetTr = null;
         reverseState = _reverseState;
         teamType = _teamType;
+        Vector2 shotVec = shotSpeed;
 
         if (reverseState)
         {
             transform.localEulerAngles = new Vector3(0, 180, 0);
             transform.position += new Vector3(subPos.x * -1.0f, subPos.y, 0);
+            shotVec.x *= -1f; 
         }
         else
         {
@@ -49,14 +51,6 @@ public class ShotAttackObject : AttackObject
         else
             CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
 
-        // 날아가는 힘을 받아야 하는데, 마땅치가 않네..
-        if (reverseState)
-        {
-            rigid2D.AddForce(new Vector2(-shotSpeed.x, shotSpeed.y));
-        }
-        else
-        {
-            rigid2D.AddForce(shotSpeed);
-        }
+        rigid2D.AddForce(shotVec);
     }
 }
