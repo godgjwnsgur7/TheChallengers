@@ -54,7 +54,7 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         playerCamera.Init(activeCharacter.transform);
-        inputKeyController.Init(); // 임시 (InputMgr에게 위탁할 것)
+        //inputKeyController.Init(); // 임시 (InputMgr에게 위탁할 것)
     }
 
     public void Connect_Status(StatusWindowUI _statusWindowUI)

@@ -23,6 +23,7 @@ public class SettingPanel : UIElement
     public override void Close()
     {
         base.Close();
+        inputKeyManagement.Change_IsInit(false);
     }
 
     public override void Open(UIParam param = null)
