@@ -891,8 +891,7 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
-  m_StateMachineBehaviours:
-  - {fileID: 7016666844707324162}
+  m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 170, y: -30, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
@@ -2022,6 +2021,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc0e64461f46ea4fb831382c6bff225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeCharacter: {fileID: 0}
+  jumpState: 0
 --- !u!114 &7058094392985251806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2045,7 +2046,7 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: DropTrigger
     m_EventTreshold: 0
-  - m_ConditionMode: 2
+  - m_ConditionMode: 1
     m_ConditionEvent: IsDrop
     m_EventTreshold: 0
   - m_ConditionMode: 2

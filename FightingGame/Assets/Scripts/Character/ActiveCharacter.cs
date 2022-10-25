@@ -184,6 +184,8 @@ public partial class ActiveCharacter : Character
 
         SetAnimBool("IsJump", true);
         SetAnimTrigger("JumpTrigger");
+
+        StartCoroutine(ICharDropStateCheck());
     }
 
     public override void Attack(CharacterParam param)
@@ -359,30 +361,32 @@ public partial class ActiveCharacter : Character
     }
 
     /// <summary>
-    /// 점프상태임을 감지하는 코루틴 (업데이트문이나 다름없는 상태임 일단)
+    /// 점프상태임을 감지 (업데이트문이나 다름없는 상태)
     /// </summary>
     /// <returns></returns>
     protected IEnumerator IJumpStateCheck()
     {
-        bool _jumpState;
+        bool LandingState;
         
         while(true)
         {
             Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
-            _jumpState = !Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
+            LandingState = Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
 
-            if(jumpState != _jumpState)
+            if (LandingState)
+                SetAnimBool("IsDrop", false);
+
+            if (jumpState == LandingState)
             {
-                jumpState = _jumpState;
+                jumpState = !jumpState;
                 
-
                 if (!anim.GetBool("IsJump") &&
                     (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
                 {
+                    SetAnimBool("IsDrop", true);
                     SetAnimTrigger("DropTrigger");
                 }
                 SetAnimBool("IsJump", jumpState);
-
             }
 
             yield return null;
@@ -390,10 +394,8 @@ public partial class ActiveCharacter : Character
     }
 
     /// <summary>
-    /// 경직 시간을 부여하기 위한 함수
+    /// 경직 시간을 부여, 경직 시간은 호출 전에 세팅
     /// </summary>
-    /// <param name="_hitTime"></param>
-    /// <returns>경직시간</returns>
     protected IEnumerator IStunTimeCheck()
     {
         while (stunTime >= curStunTime)
@@ -415,9 +417,8 @@ public partial class ActiveCharacter : Character
     }
 
     /// <summary>
-    /// 공중 히트 상태에서 바닥에 착지하는 것을 감지하는 함수
+    /// 공중 히트 상태에서 바닥에 착지하는 것을 감지
     /// </summary>
-    /// <returns></returns>
     protected IEnumerator ILandingCheck()
     {
         while (jumpState)
@@ -431,6 +432,30 @@ public partial class ActiveCharacter : Character
         SetAnimBool("IsHit", false);
     }
 
+    /// <summary>
+    /// 점프 키를 눌렀을 때 호출되며, 낙하상태로 들어감을 감지
+    /// </summary>
+    private IEnumerator ICharDropStateCheck()
+    {
+        bool dropState = false;
+
+        float charPosY = transform.position.y;
+
+        while (!dropState)
+        {
+            dropState = charPosY > transform.position.y;
+
+            if(!dropState)
+                charPosY = transform.position.y;
+
+            yield return null;
+        }
+
+        Debug.Log("드랍상태로 진입");
+
+        SetAnimBool("IsDrop", true);
+    }
+
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
         yield return new WaitForSeconds(_invincibleTime);
@@ -439,7 +464,6 @@ public partial class ActiveCharacter : Character
     }
 
     #region Animation Event Function
-
     protected void Summon_AttackObject(int _attackTypeNum)
     {
         if (!isControl) return;
