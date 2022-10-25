@@ -451,8 +451,6 @@ public partial class ActiveCharacter : Character
             yield return null;
         }
 
-        Debug.Log("드랍상태로 진입");
-
         SetAnimBool("IsDrop", true);
     }
 
