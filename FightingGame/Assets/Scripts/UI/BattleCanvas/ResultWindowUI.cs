@@ -10,7 +10,9 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open()
     {
-       // 졌는지 이겼는지 비겼는지 판단한 값을 받아야 함
+       // 임시로 갈겨
+       gameObject.SetActive(true);
+        
     }
 
     public void Close()
@@ -22,6 +24,6 @@ public class ResultWindowUI : MonoBehaviour
     {
         Close();
 
-        // 커스텀룸에서 시작한 게임이라면 돌아가야 함.
+        Managers.Battle.GoToLobby();
     }
 }

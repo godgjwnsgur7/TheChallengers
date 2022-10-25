@@ -308,8 +308,6 @@ public partial class ActiveCharacter : Character
 
         SetAnimTrigger("DieTrigger");
         SetAnimBool("IsDie", true);
-
-        Managers.Battle.EndGame();
     }
 
     public void Input_MoveKey(bool _moveKey)
@@ -346,11 +344,32 @@ public partial class ActiveCharacter : Character
             Sync_ReverseState(_reverseState);
     }
 
-    [BroadcastMethodAttribute]
+    [BroadcastMethod]
     public void Sync_ReverseState(bool _reverseState)
     {
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
+    }
+
+    public void EndGame()
+    {
+        Debug.Log("실행확인1");
+
+        if (PhotonLogicHandler.IsConnected)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>(this, Sync_EndGame);
+    }
+    
+    [BroadcastMethod]
+    public void Sync_EndGame()
+    {
+        Debug.Log("실행확인2");
+
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        if(battleCanvas == null)
+            Debug.Log("battleCanvas is Null");
+
+        battleCanvas.EndGame();
+        Managers.Battle.EndGame();
     }
 
     public void Invincible()
@@ -360,6 +379,7 @@ public partial class ActiveCharacter : Character
         StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
+    #region IEnumerator ( Courotine )
     /// <summary>
     /// 점프상태임을 감지 (업데이트문이나 다름없는 상태)
     /// </summary>
@@ -460,6 +480,7 @@ public partial class ActiveCharacter : Character
 
         invincibility = false;
     }
+    #endregion
 
     #region Animation Event Function
     protected void Summon_AttackObject(int _attackTypeNum)

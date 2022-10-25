@@ -52,9 +52,16 @@ public class BattleMgr
 
     public void EndGame()
     {
-        // 상대 클라이언트에도 게임이 끝났음을 전달할 필요가 있는데... 어쩌지 ㅋ
+        Time.timeScale = 0;
         
+        
+    }
 
+    public void GoToLobby()
+    {
+        Time.timeScale = 1;
+
+        // 로비로 이동해야하고, 커스텀 룸일 때, 방으로 돌아가고, 매칭일 때 돌아가지 않음
     }
     
     protected IEnumerator IGameEndCheck()

@@ -31,7 +31,9 @@ public class BattleCanvas : BaseCanvas
 
     public void EndGame()
     {
-        
+        Debug.Log("실행확인3");
+
+        resultWindow.Open();
     }
 
 }
