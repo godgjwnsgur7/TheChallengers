@@ -6,6 +6,7 @@ using FGDefine;
 public class TrainingScene : BaseScene
 {
     BaseMap map;
+    [SerializeField] Camera mainCamera;
     [SerializeField] TrainingCanvas trainingCanvas;
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerCharacter playerCharacter;
@@ -71,7 +72,7 @@ public class TrainingScene : BaseScene
         playerCharacter.Connect_Status(trainingCanvas.Get_StatusWindowUI(playerCharacter.teamType));
 
         isCallPlayer = true;
-
+        mainCamera.gameObject.SetActive(false);
         /*if (keyPanelArea.isOpen == false)
         {
             Managers.UI.OpenUI<KeyPanelArea>();
@@ -149,6 +150,7 @@ public class TrainingScene : BaseScene
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         playerCharacter.activeCharacter = null;
 
+        mainCamera.gameObject.SetActive(true);
         //if (keyPanelArea.isOpen)
         //    Managers.UI.CloseUI<KeyPanelArea>();
     }
