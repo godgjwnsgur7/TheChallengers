@@ -36,13 +36,13 @@ namespace FGPlatform
 		private CoffeeMachine IAPController = new IAPController();
 
 		private static readonly Dictionary<DB_CATEGORY, Type> validCategoryTypeDictionary = new Dictionary<DB_CATEGORY, Type>()
-	{
-		{ DB_CATEGORY.Nickname, typeof(string) },
-		{ DB_CATEGORY.VictoryPoint, typeof(long) },
-		{ DB_CATEGORY.DefeatPoint, typeof(long) },
-		{ DB_CATEGORY.RatingPoint, typeof(long) },
-		{ DB_CATEGORY.PurchaseCoffee, typeof(long) },
-	};
+		{
+			{ DB_CATEGORY.Nickname, typeof(string) },
+			{ DB_CATEGORY.VictoryPoint, typeof(long) },
+			{ DB_CATEGORY.DefeatPoint, typeof(long) },
+			{ DB_CATEGORY.RatingPoint, typeof(long) },
+			{ DB_CATEGORY.PurchaseCoffee, typeof(long) },
+		};
 
 		public void Initialize()
 		{
@@ -71,14 +71,21 @@ namespace FGPlatform
 			}
 		}
 
-		public void Login(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "")
-		{
-			OnSignInSuccess += () =>
-			{
-				InitializeCurrentUserDB("");
-			};
+		public string CurrentUserNickName;
 
-			Auth.SignIn(loginType, OnSignInSuccess, OnSignInFailed, OnSignCanceled, email, password);
+		public void Login(ENUM_LOGIN_TYPE loginType, Action _OnSignInSuccess = null, Action _OnSignInFailed = null, Action _OnSignCanceled = null, Action<bool> _OnCheckFirstUser = null, string email = "", string password = "")
+		{
+			Auth.SignIn(loginType, 
+			OnSignInSuccess: () => // 로그인 성공 시 
+			{
+				_OnCheckFirstUser += (bool b) => // 체크 및 Initialize 먼저 하고, 
+				{
+					_OnSignInSuccess?.Invoke(); // 성공 콜백을 호출해야 서순이 맞음
+				};
+
+				CheckFirstUserOrInitialize(_OnCheckFirstUser);
+			},
+			_OnSignInFailed, _OnSignCanceled, email, password);
 		}
 
 		public void Logout()
@@ -120,12 +127,15 @@ namespace FGPlatform
 			return DB.SelectDB(hierachyPath, isMine, OnSuccess, OnFailed, OnCanceled);
 		}
 
-		/// <summary>
-		/// 유저 로그인 시 1회 호출합니다.
-		/// 데이터가 있는 지 검사하고, 데이터가 없다면 새로운 데이터로 초기화합니다.
-		/// </summary>
+		private void CheckFirstUserOrInitialize(Action<bool> checkRoutine)
+		{
+			InitializeCurrentUserDB(OnCompleted: (data) =>
+			{
+				checkRoutine?.Invoke(data == null);
+			});
+		}
 
-		public void InitializeCurrentUserDB(string nickname, Action<DBUserData> OnCompleted = null)
+		private void InitializeCurrentUserDB(Action<DBUserData> OnCompleted = null)
 		{
 			var loginType = Auth.CurrentLoginType;
 			var userId = GetUserID();
@@ -136,16 +146,18 @@ namespace FGPlatform
 				return;
 			}
 
-			OnCompleted += (data) => { Debug.Log($"{loginType} - {userId} 데이터 초기화 완료"); };
-
 			string token = GetHashToken(loginType, userId);
 			string[] hierachyPath = new string[] { token };
 
 			DB.SelectDB(hierachyPath, true, (data) =>
 			{
-				if(data == null)
+				if (data == null)
 				{
-					DB.InsertDB(hierachyPath, nickname, OnCompleted);
+					DB.InsertDB(hierachyPath, "", OnCompleted);
+				}
+				else
+				{
+					OnCompleted?.Invoke(null);
 				}
 			});
 		}

@@ -124,7 +124,10 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
 			SetStatus("로그인 성공");
-		}, null, null, "godgjwnsgur7@gmail.com", "123456");
+
+			PhotonLogicHandler.CurrentMyNickname = "godgjwnsgur";
+
+		}, null, null, email: "godgjwnsgur7@gmail.com", password:"123456");
 	}
 
 	public void OnClickGuestLogout()
@@ -140,15 +143,26 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
 			SetStatus("로그인 성공");
 
-		}, null, null, "psh50zmfhtm@gmail.com", "123456");
+			PhotonLogicHandler.CurrentMyNickname = "sorikun";
+
+		}, null, null, email: "psh50zmfhtm@gmail.com", password: "123456");
 	}
 
 	public void OnClickGoogleLogin()
 	{
-		Managers.Platform.Login(ENUM_LOGIN_TYPE.Google, () =>
+		Managers.Platform.Login(ENUM_LOGIN_TYPE.Google, 
+		_OnSignInSuccess: () =>
 		{
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+		},
+		_OnCheckFirstUser: (bool isFirstLogin) =>
+		{
+			if(isFirstLogin)
+			{
+				// 최초 로그인이면 창 띄워서 닉네임 받아서 이렇게 세팅을 해줘야 합니다.
+				PhotonLogicHandler.CurrentMyNickname = "sorikun";
+			}
 		});
 	}
 
@@ -242,6 +256,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 			Debug.Log($"방장 닉네임 : {room.MasterClientNickname}");
 			Debug.Log($"현재 방 인원 : {room.currentPlayerCount}");
 			Debug.Log($"방 최대 인원 : {room.maxPlayerCount}");
+			Debug.Log($"커스텀한 방인가? : {room.IsCustom}");
 		}
 	}
 

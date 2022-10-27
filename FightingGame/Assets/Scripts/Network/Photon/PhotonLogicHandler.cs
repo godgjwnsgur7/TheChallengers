@@ -167,14 +167,53 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        PhotonNetwork.LocalPlayer.NickName = "";
+        return PhotonNetwork.JoinRandomRoom();
+    }
 
-        ExitGames.Client.Photon.Hashtable optionTable = new ExitGames.Client.Photon.Hashtable()
-        {
+    public bool TryJoinOrCreateRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, int maxPlayerCount = 2, ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.BasicMap,  bool isCustomRoom = false)
+    {
+        Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 
-        };
+        if (!CheckEnableJoinRoom())
+            return false;
 
-        return PhotonNetwork.JoinRandomOrCreateRoom(optionTable, 0, typedLobby: GameLobby);
+        this._OnJoinRoom = _OnJoinRoom;
+        this._OnJoinRoomFailed = _OnJoinRoomFailed;
+
+        var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, mapType,  isCustomRoom);
+        return PhotonNetwork.JoinRandomOrCreateRoom(
+            matchingType: MatchmakingMode.RandomMatching, 
+            typedLobby: GameLobby,
+            roomOptions: roomOptions);
+    }
+
+    public bool TryCreateRoom(string roomName, Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, bool isCustomRoom = false, int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.BasicMap)
+    {
+        if (!CheckEnableJoinRoom())
+            return false;
+
+        this._OnCreateRoom = OnCreateRoom;
+        this._OnCreateRoomFailed = OnCreateRoomFailed;
+
+        var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, defaultMapType, isCustomRoom);
+
+        return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: GameLobby);
+    }
+
+    private RoomOptions MakeRoomOptions(string nickname, byte maxPlayerCount, ENUM_MAP_TYPE mapType, bool isCustomRoom)
+	{
+        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
+
+        roomOptions.CustomRoomProperties = new Hashtable();
+
+        roomOptions.CustomRoomProperties.Add(ROOM_PROP_KEY, "");
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), mapType);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), nickname);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(), isCustomRoom);
+
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { ROOM_PROP_KEY, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
+
+        return roomOptions;
     }
 
     public bool TryJoinRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
@@ -185,7 +224,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        PhotonNetwork.LocalPlayer.NickName = "";
         return PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -226,30 +264,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(sceneType.ToString());
         return true;
     }
-
-    public bool TryCreateRoom(Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, string roomName = "이름 없음", int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.BasicMap)
-    {
-        if (!CheckEnableJoinRoom())
-            return false;
-
-        this._OnCreateRoom = OnCreateRoom;
-        this._OnCreateRoomFailed = OnCreateRoomFailed;
-
-        PhotonNetwork.LocalPlayer.NickName = "허준혁";
-
-        RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
-
-        roomOptions.CustomRoomProperties = new Hashtable();
-
-        roomOptions.CustomRoomProperties.Add(ROOM_PROP_KEY, "");
-        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), defaultMapType);
-        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), "허준혁");
-
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { ROOM_PROP_KEY, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
-
-        return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: GameLobby);
-    }
-
     public override void OnConnectedToMaster() 
     {
         Debug.Log("마스터 서버에 성공적으로 접속했습니다.");
@@ -375,6 +389,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		{
             var nickname = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
             var mapType = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
+            var isCustom = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM);
 
             if (nickname == null || mapType == null)
                 continue;
@@ -385,13 +400,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
                 masterClientId = room.masterClientId,
 
                 customProperty = new CustomRoomProperty()
-				{
+                {
                     masterClientNickname = (string)nickname,
                     currentMapType = (ENUM_MAP_TYPE)mapType,
+                    isCustom = (bool)isCustom
                 },
 
                 currentPlayerCount = room.PlayerCount,
-                maxPlayerCount = room.MaxPlayers
+                maxPlayerCount = room.MaxPlayers,
             };
 
             customRoomList.Add(info);
@@ -431,12 +447,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         var nickname = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
         var mapType = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
+        var isCustom = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM);
 
         if (nickname == null || mapType == null)
             return null;
 
         property.masterClientNickname = (string)nickname;
         property.currentMapType = (ENUM_MAP_TYPE)mapType;
+        property.isCustom = (bool)isCustom;
         return property;
     }
 

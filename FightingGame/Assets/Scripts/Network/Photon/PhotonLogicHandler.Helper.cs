@@ -85,6 +85,11 @@ public partial class PhotonLogicHandler
         {
             return PhotonNetwork.LocalPlayer.NickName;
         }
+        set
+		{
+            PhotonNetwork.LocalPlayer.NickName = value;
+            Managers.Platform.DBUpdate(DB_CATEGORY.Nickname, value);
+		}
     }
 
     public static int CurrentRoomMemberCount
@@ -153,6 +158,12 @@ public partial class PhotonLogicHandler
 	{
         var list = Instance.customRoomList;
         return list?.Find(roomInfo => roomInfo.roomName == roomName);
+    }
+
+    public static CustomRoomInfo GetRoomInfoList(bool isCustom)
+	{
+        var list = Instance.customRoomList;
+        return list?.Find(roomInfo => roomInfo.IsCustom == isCustom);
     }
 
     public static CustomRoomInfo GetRoomInfo(int masterClientId)

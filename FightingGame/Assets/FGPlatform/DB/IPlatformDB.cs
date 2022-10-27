@@ -158,10 +158,10 @@ namespace FGPlatform.Datebase
                     string data = (string)(snapshot.Value);
                     var userData = ParseStringData(data);
 
-                    OnSuccess?.Invoke(userData);
-
-                    if(isMine)
+                    if (isMine)
                         myUserData = userData;
+
+                    OnSuccess?.Invoke(userData);
                 }
             });
 

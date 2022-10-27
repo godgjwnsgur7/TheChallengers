@@ -21,6 +21,7 @@ public enum ENUM_CUSTOM_ROOM_PROPERTIES
 {
     MAP_TYPE = 0,
     MASTER_CLIENT_NICKNAME = 1,
+    IS_CUSTOM = 2,
 }
 
 public enum ENUM_PLAYER_STATE_PROPERTIES
@@ -41,12 +42,14 @@ public class CustomRoomInfo
 
     public string MasterClientNickname => customProperty != null ? customProperty.masterClientNickname : string.Empty;
     public ENUM_MAP_TYPE CurrentMapType => customProperty != null ? customProperty.currentMapType : ENUM_MAP_TYPE.BasicMap;
+    public bool IsCustom => customProperty != null ? customProperty.isCustom : false;
 }
 
 public class CustomRoomProperty
 {
     public string masterClientNickname;
     public ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.BasicMap;
+    public bool isCustom;
 }
 
 public class CustomPlayerProperty
