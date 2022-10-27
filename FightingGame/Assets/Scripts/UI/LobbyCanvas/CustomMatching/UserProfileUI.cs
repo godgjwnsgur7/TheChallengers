@@ -74,21 +74,7 @@ public class UserProfileUI : MonoBehaviour
             Managers.Battle.Set_CharacterType(currCharType);
         }
 
-        switch (currCharType)
-        {
-            case ENUM_CHARACTER_TYPE.Default:
-                charNameText.text = "캐릭터 미선택";
-                break;
-            case ENUM_CHARACTER_TYPE.Knight:
-                charNameText.text = "나이트";
-                break;
-            case ENUM_CHARACTER_TYPE.Wizard:
-                charNameText.text = "위저드";
-                break;
-            default:
-                charNameText.text = "알 수 없음";
-                break;
-        }
+        charNameText.text = Managers.Battle.Get_CharNameDict(currCharType);
     }
 
     public void Set_ReadyState(bool readyState)

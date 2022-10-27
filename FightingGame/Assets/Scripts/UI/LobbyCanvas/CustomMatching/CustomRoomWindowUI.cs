@@ -187,7 +187,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.CurrentRoomMemberCount == 2)
+        {
+            MyProfile.Set_ReadyState(false);
+            YourProfile.Set_ReadyState(false); // 이럴면 슬레이브 클라이언트는 준비해제가 되지않아. (해결해야함)
             PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
+        }
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.", UnReadyMyProfile);
     }

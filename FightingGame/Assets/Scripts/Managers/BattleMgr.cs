@@ -13,6 +13,14 @@ public class BattleMgr
 
     ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
 
+    private Dictionary<ENUM_CHARACTER_TYPE, string> charNameDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
+    {
+        {ENUM_CHARACTER_TYPE.Default, "캐릭터 미선택" },
+        {ENUM_CHARACTER_TYPE.Knight, "나이트" },
+        {ENUM_CHARACTER_TYPE.Wizard, "위저드" },
+        {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
+    };
+    
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
         {ENUM_MAP_TYPE.BasicMap, "마법사의 숲" },
@@ -37,6 +45,17 @@ public class BattleMgr
         }
 
         return mapNameDict[mapType];
+    }
+
+    public string Get_CharNameDict(ENUM_CHARACTER_TYPE charType)
+    {
+        if (!charNameDict.ContainsKey(charType))
+        {
+            Debug.Log($"해당하는 캐릭터 타입이 캐릭터 이름 사전에 없습니다. : {charType}");
+            return null;
+        }
+
+        return charNameDict[charType];
     }
 
 

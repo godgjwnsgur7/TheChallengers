@@ -12,18 +12,30 @@ public class MatchingWindowUI : MonoBehaviour
 
     bool isStopwatchLock = false;
 
+    ENUM_CHARACTER_TYPE selectedCharType;
+
     public void OnClick_Matching()
     {
-        Managers.UI.popupCanvas.Open_CharSelectPopup(MathingStart);
+        Managers.UI.popupCanvas.Open_CharSelectPopup(Check_MathingStart);
     }
 
-    public void MathingStart(ENUM_CHARACTER_TYPE charType)
+    public void Check_MathingStart(ENUM_CHARACTER_TYPE charType)
+    {
+        selectedCharType = charType;
+
+        Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null,
+            $"'{Managers.Battle.Get_CharNameDict(charType)}'캐릭터로 랭킹전 매칭을 시작하시겠습니까?");
+    }
+
+    public void MathingStart()
     {
         this.gameObject.SetActive(true);
         isStopwatchLock = false;
         timerCoroutine = StartCoroutine(IStopwatch());
 
-        // 매칭 돌리기
+        Debug.Log(selectedCharType);
+
+        // 매칭 돌리기 선택한 캐릭터는 selectCharType로 확인하면 됨
     }
 
     public void OnClick_Exit()
