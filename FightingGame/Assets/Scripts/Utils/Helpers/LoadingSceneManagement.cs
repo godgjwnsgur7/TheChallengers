@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 동기화 이동을 할 때 사용
+/// </summary>
 public class LoadingSceneManagement : MonoBehaviour
 {
     public static string nextScene;
@@ -38,8 +41,10 @@ public class LoadingSceneManagement : MonoBehaviour
                     timer = 0f;
                 }
             }
-            else // 일단 90% 로드가 완료되면 1초에 걸쳐 100%를 만들고 로드 (임시)
+            else
             {
+                // 일단 90% 로드가 완료되면 1초에 걸쳐 100%를 만들고 로드 (임시)
+
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
                 if (progressBar.fillAmount == 1.0f)
                 {

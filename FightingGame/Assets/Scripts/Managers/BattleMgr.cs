@@ -61,7 +61,7 @@ public class BattleMgr
     {
         Time.timeScale = 1;
 
-        // 로비로 이동해야하고, 커스텀 룸일 때, 방으로 돌아가고, 매칭일 때 돌아가지 않음
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
     
     protected IEnumerator IGameEndCheck()

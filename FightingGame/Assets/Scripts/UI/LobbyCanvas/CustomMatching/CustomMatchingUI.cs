@@ -30,6 +30,11 @@ public class CustomMatchingUI : MonoBehaviour
         customRoomList.UnRegister_LobbyCallback();
     }
 
+    public void Set_InTheCustomRoom()
+    {
+        customRoomWindow.Open();
+    }
+
     public void OnClick_GetLobbyList()
     {
         customRoomList.Get_CustomRoomList();

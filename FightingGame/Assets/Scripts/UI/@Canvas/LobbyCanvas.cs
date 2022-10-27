@@ -12,13 +12,9 @@ public class LobbyCanvas : BaseCanvas
     {
         base.Init();
 
-        // 디버그용
+        // 디버그용 : 마스터 서버에 접속과 로비 접속은 메인 씬에서 하고 넘어옴
         PhotonLogicHandler.Instance.TryConnectToMaster(
            () => { Debug.Log("마스터 서버 접속 완료"); Join_Lobby(); });
-
-        // 마스터 서버에 접속은 로그인씬에서 체크하고,
-        // 로비로 성공적으로 넘어왔다면, 여기서 로비에 접속?
-        // 아니면 그냥 둘다 로그인씬에서? (고민, 임시)
     }
 
 
@@ -26,6 +22,13 @@ public class LobbyCanvas : BaseCanvas
     {
         PhotonLogicHandler.Instance.TryJoinLobby(
                () => { Debug.Log("로비 진입 완료"); });
+    }
+
+    public void Set_InTheCustomRoom()
+    {
+        customMatching.gameObject.SetActive(true);
+
+        customMatching.Set_InTheCustomRoom();
     }
 
     public void OnClick_CustomMathing()
@@ -39,9 +42,7 @@ public class LobbyCanvas : BaseCanvas
             Managers.UI.popupCanvas.Open_NotifyPopup("마스터 서버에 접속해있지 않습니다.");
         }
     }
-
     public void OnClick_Mathing() => matchingWindow.OnClick_Matching();
-
     public void OnClick_Training() => Managers.UI.popupCanvas.Open_SelectPopup
         (GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
 
@@ -49,12 +50,4 @@ public class LobbyCanvas : BaseCanvas
     {
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
     }
-    
-    public override T GetUIComponent<T>()
-    {
-
-        return default(T);
-    }
-
-    
 }

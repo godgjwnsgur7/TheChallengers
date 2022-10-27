@@ -25,12 +25,6 @@ public class MainCanvas : BaseCanvas
         else Debug.Log("범위 벗어남");
     }
 
-    public override T GetUIComponent<T>()
-    {
-
-        return default(T);
-    }
-
     public void OnClickStart()
     {
         if (PlayerPrefs.HasKey("LoginUser")) // 로그인 중 일 때로 변경해야함
