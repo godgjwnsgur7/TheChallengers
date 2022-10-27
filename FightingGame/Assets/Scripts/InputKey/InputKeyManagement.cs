@@ -10,7 +10,7 @@ public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
-    public bool isInit = false;
+    public bool isActive = false;
     private int inputKeyNum;
     public InputPanel inputPanel = null;
     private RectTransform panelTr = null;
@@ -29,15 +29,18 @@ public class InputKeyManagement : MonoBehaviour
     };
 
     public void Init()
-    {
-        // AreaPanel Instantiate
-        areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
-        areaPanel.Init();
+    {   
+        if(inputPanel == null)
+        {
+            // AreaPanel Instantiate
+            areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
+            areaPanel.Init();
 
-        // InputPanel Instantiate
-        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-        inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
-        panelTr = inputPanel.GetComponent<RectTransform>();
+            // InputPanel Instantiate
+            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+            inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
+            panelTr = inputPanel.GetComponent<RectTransform>();
+        }
 
         // 설정된 PlayerPrefs 호출
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
@@ -76,7 +79,8 @@ public class InputKeyManagement : MonoBehaviour
         settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
         settingPanel.Init();
 
-        Change_IsInit(true);
+        Set_Active(true);
+        isActive = true;
     }
 
     public void Set_InputKey(int _inputkeyNum)
@@ -244,11 +248,19 @@ public class InputKeyManagement : MonoBehaviour
     public void Destroy_InputPanel()
     {
         Destroy(this.inputPanel.gameObject);
-        Change_IsInit(false);
+        Set_Active(false);
     }
 
-    public void Change_IsInit(bool _changeBool)
+    public void Set_Active(bool _changeBool)
     {
-        isInit = _changeBool;
+        this.inputPanel.gameObject.SetActive(_changeBool);
+        this.areaPanel.gameObject.SetActive(_changeBool);
+
+        if (!_changeBool)
+        {
+            keyArea.isSelect = false;
+            keyArea.Set_AreaColor();
+            return;
+        }
     }
 }

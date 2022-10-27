@@ -29,7 +29,6 @@ public class ButtonPanel : UIElement
         inputKeyManagement.Init();
         this.Close();
         settingPanel.Open();
-
     }
 
     public void SetPanelOpenButtonText(string text)

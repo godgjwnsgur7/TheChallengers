@@ -54,7 +54,7 @@ public class TrainingScene : BaseScene
     // 플레이어 소환
     public void CallPlayer()
     {
-        if (inputKeyManagement.isInit)
+        if (inputKeyManagement.isActive)
         {
             //trainingCanvas.SetNotionText("버튼 설정 중에는 소환할 수 없습니다.");
             return;
@@ -150,9 +150,8 @@ public class TrainingScene : BaseScene
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         playerCharacter.activeCharacter = null;
 
+        inputKeyController.Set_Active(false);
         mainCamera.gameObject.SetActive(true);
-        //if (keyPanelArea.isOpen)
-        //    Managers.UI.CloseUI<KeyPanelArea>();
     }
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)

@@ -10,10 +10,10 @@ public class SettingPanel : UIElement
     private bool isMove = false;
 
     private int inputNum;
-    private InputPanel inputPanel;
-    private InputKey inputKey;
-    private InputKeyManagement inputKeyManagement;
-    private KeySettingData keySettingData;
+    private InputPanel inputPanel = null;
+    private InputKey inputKey = null;
+    private InputKeyManagement inputKeyManagement = null;
+    private KeySettingData keySettingData = null;
 
     [SerializeField] Slider sizeSlider;
     [SerializeField] Slider opacitySlider;
@@ -22,8 +22,9 @@ public class SettingPanel : UIElement
 
     public override void Close()
     {
+        inputKeyManagement.Set_Active(false);
+        Reset_SettingPanel();
         base.Close();
-        inputKeyManagement.Change_IsInit(false);
     }
 
     public override void Open(UIParam param = null)
@@ -55,6 +56,9 @@ public class SettingPanel : UIElement
     // SizeSlider 값 변경
     public void OnValueChanged_SetSizeSlider()
     {
+        if (inputKey = null)
+            return;
+
         int sizeValue = (int)this.sizeSlider.value;
 
         this.sizeText.text = $"{sizeValue}%";
@@ -64,6 +68,9 @@ public class SettingPanel : UIElement
     // Opacity 값 변경
     public void OnValueChanged_SetOpacitySlider()
     {
+        if (inputKey = null)
+            return;
+
         int opacityValue = (int)this.opacitySlider.value;
 
         this.opacityText.text = $"{opacityValue}%";
@@ -140,5 +147,16 @@ public class SettingPanel : UIElement
 
         sizeSlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).size;
         opacitySlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).opacity;
+    }
+
+    public void Reset_SettingPanel()
+    {
+        this.inputKeyManagement.isActive = false;
+        this.inputKey = null;
+
+        this.sizeSlider.value = 50;
+        this.opacitySlider.value = 100;
+        this.sizeText.text = "50%";
+        this.opacityText.text = "100%";
     }
 }
