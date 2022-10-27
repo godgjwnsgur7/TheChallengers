@@ -113,6 +113,26 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, true);
     }
 
+    public void ReadyAll()
+	{
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.READY, true);
+        }
+
+        RequestEveryPlayerProperty();
+    }
+
+    public void UnReadyAll()
+	{
+        foreach(var player in PhotonNetwork.PlayerList)
+		{
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.READY, false);
+        }
+
+        RequestEveryPlayerProperty();
+    }
+
     private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
     {
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);
