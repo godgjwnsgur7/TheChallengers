@@ -251,7 +251,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.JoinLobby(GameLobby);
     }
 
-    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType)
+    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> _OnProgress = null)
     {
         if (!CheckEnableJoinRoom())
             return false;
@@ -263,8 +263,25 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
 
         PhotonNetwork.LoadLevel(sceneType.ToString());
+
+        StartCoroutine(OnProgress(_OnProgress));
+
         return true;
     }
+
+    private IEnumerator OnProgress(Action<float> _OnProgress)
+	{
+        while(PhotonNetwork.LevelLoadingProgress < 0.0f)
+		{
+            yield return null;
+
+            _OnProgress?.Invoke(PhotonNetwork.LevelLoadingProgress);
+        }
+
+        _OnProgress?.Invoke(1.0f);
+    }
+
+
     public override void OnConnectedToMaster() 
     {
         Debug.Log("마스터 서버에 성공적으로 접속했습니다.");
