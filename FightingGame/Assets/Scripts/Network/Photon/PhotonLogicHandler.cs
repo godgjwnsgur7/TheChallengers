@@ -271,7 +271,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private IEnumerator LoadingSceneProgress(Action<float> OnProgress)
 	{
-        while(PhotonNetwork.LevelLoadingProgress < 0.0f)
+        while(PhotonNetwork.LevelLoadingProgress < 1.0f)
 		{
             yield return null;
 
