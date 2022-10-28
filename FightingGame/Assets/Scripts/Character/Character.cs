@@ -35,8 +35,8 @@ public class Character : MonoBehaviourPhoton
     {
         base.Init();
 
-        // 임시
-        currHP = 100.0f;
+        if(currHP == 0f)
+            currHP = 100.0f;
 
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();

@@ -57,12 +57,6 @@ public class PlayerCharacter : MonoBehaviour
         inputKeyController.Init(); // 임시 (InputMgr에게 위탁할 것)
     }
 
-    public void Connect_Status(StatusWindowUI _statusWindowUI)
-    {
-        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, activeCharacter.currHP);
-        activeCharacter.statusWindowUI = _statusWindowUI;
-    }
-
     // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
     {

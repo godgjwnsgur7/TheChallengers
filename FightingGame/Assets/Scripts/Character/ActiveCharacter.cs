@@ -56,9 +56,16 @@ public partial class ActiveCharacter : Character
     public void Set_Character()
     {
         if (PhotonLogicHandler.IsConnected)
+        {
             isControl = PhotonLogicHandler.IsMine(viewID);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
+                (this, Connect_MyStatusUI);
+        }
         else
+        {
             isControl = true;
+            Connect_MyStatusUI();
+        }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
             ReverseSprites(-1.0f);
@@ -294,10 +301,45 @@ public partial class ActiveCharacter : Character
         }
     }
 
-    private void Update_CurrHP(float _damage)
+    [BroadcastMethod]
+    public void Connect_MyStatusUI()
     {
-        currHP -= _damage;
-        statusWindowUI.CurrHP = currHP;
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+
+        if(battleCanvas == null)
+        {
+            TrainingCanvas trainingCanvas = Managers.UI.currCanvas.GetComponent<TrainingCanvas>();
+
+            statusWindowUI = trainingCanvas.Get_StatusWindowUI(teamType);
+        }
+        else
+        {
+            statusWindowUI = battleCanvas.Get_StatusWindowUI(teamType);
+        }
+
+        statusWindowUI.Set_StatusWindowUI(characterType, currHP);
+    }
+
+    public void Update_CurrHP(float _damage)
+    {
+        float _currHP = currHP - _damage;
+
+        if(PhotonLogicHandler.IsConnected)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, float>
+                (this, Sync_CurrHP, _currHP, ENUM_RPC_TARGET.All);
+        }
+        else
+        {
+            Sync_CurrHP(_currHP);
+        }
+    }
+
+    [BroadcastMethod]
+    public void Sync_CurrHP(float _currHP)
+    {
+        currHP = _currHP;
+        statusWindowUI.Update_CurrHP(_currHP);
     }
     
     public override void Die()

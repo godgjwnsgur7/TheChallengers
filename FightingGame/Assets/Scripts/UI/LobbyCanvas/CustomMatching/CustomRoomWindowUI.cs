@@ -171,14 +171,12 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
 
+        if (PhotonLogicHandler.CurrentRoomMemberCount == 2 && YourProfile.Get_UserNickname() == "")
+            YourProfile.Set_UserNickname("입장 대기 중...");
+        
         CurrMap = PhotonLogicHandler.CurrentMapType;
-    }
 
-    public void UpdateMap(ENUM_MAP_TYPE _mapType)
-    {
-        if (currMap == _mapType)
-            return;
-
+        // hotonLogicHandler.Instance.UnReady();
     }
 
     public void GoTo_BattleScene()
@@ -188,8 +186,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.CurrentRoomMemberCount == 2)
         {
-            MyProfile.Set_ReadyState(false);
-            YourProfile.Set_ReadyState(false); // 이럴면 슬레이브 클라이언트는 준비해제가 되지않아. (해결해야함)
+            PhotonLogicHandler.Instance.UnReadyAll(); // 모두 준비해제 시키고 배틀 씬 이동
             PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
         }
         else

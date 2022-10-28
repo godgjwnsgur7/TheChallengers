@@ -35,8 +35,10 @@ public class MatchingWindowUI : MonoBehaviour
 
         Debug.Log(selectedCharType);
 
+        // PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom();
         // 매칭 돌리기 선택한 캐릭터는 selectCharType로 확인하면 됨
     }
+
 
     public void OnClick_Exit()
     {

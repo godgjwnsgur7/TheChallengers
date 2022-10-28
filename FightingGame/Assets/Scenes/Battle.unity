@@ -1571,7 +1571,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1031008978}
-  - component: {fileID: 1031008980}
   - component: {fileID: 1031008979}
   m_Layer: 5
   m_Name: RedTeamStatus
@@ -1616,30 +1615,7 @@ MonoBehaviour:
   teamType: 2
   hpBarSlider: {fileID: 300823535}
   charFrameImage: {fileID: 1326637338}
-  maxHP: 0
---- !u!114 &1031008980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1031008977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1031008979}
-  sceneViewId: 2
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  maxHP: 100
 --- !u!1001 &1076386729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3415,6 +3391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4b8e7d09e88c942a00b55615775921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
+  inputPanel: {fileID: 0}
 --- !u!1 &1894778258
 GameObject:
   m_ObjectHideFlags: 0
@@ -3501,7 +3479,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1982183690}
-  - component: {fileID: 1982183692}
   - component: {fileID: 1982183691}
   m_Layer: 5
   m_Name: BlueTeamStatus
@@ -3546,30 +3523,7 @@ MonoBehaviour:
   teamType: 1
   hpBarSlider: {fileID: 2115963284}
   charFrameImage: {fileID: 1835017364}
-  maxHP: 0
---- !u!114 &1982183692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1982183689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1982183691}
-  sceneViewId: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  maxHP: 100
 --- !u!1 &2000539096
 GameObject:
   m_ObjectHideFlags: 0

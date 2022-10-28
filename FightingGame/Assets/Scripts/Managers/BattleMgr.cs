@@ -73,7 +73,7 @@ public class BattleMgr
     {
         Time.timeScale = 0;
         
-        
+        // 승패를 판단해야해~
     }
 
     public void GoToLobby()

@@ -211,7 +211,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), nickname);
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(), isCustomRoom);
 
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { ROOM_PROP_KEY, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString() };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { ROOM_PROP_KEY, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), 
+            ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString() };
 
         return roomOptions;
     }

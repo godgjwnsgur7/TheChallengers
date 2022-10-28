@@ -69,7 +69,6 @@ public class TrainingScene : BaseScene
         // 플레이어 스폰
         //trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
-        playerCharacter.Connect_Status(trainingCanvas.Get_StatusWindowUI(playerCharacter.teamType));
 
         isCallPlayer = true;
         mainCamera.gameObject.SetActive(false);
@@ -117,9 +116,6 @@ public class TrainingScene : BaseScene
         }
 
         isCallEnemy = true;
-
-        // StatusUI 연결
-        enemyPlayer.Connect_Status(trainingCanvas.Get_StatusWindowUI(enemyPlayer.teamType));
     }
 
     // 적 제거

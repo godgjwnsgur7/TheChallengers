@@ -25,11 +25,6 @@ public class EnemyPlayer : MonoBehaviour
         activeCharacter.Init();
         activeCharacter.Set_Character();
     }
-    public void Connect_Status(StatusWindowUI _statusWindowUI)
-    {
-        _statusWindowUI.Set_StatusWindowUI(activeCharacter.characterType, activeCharacter.currHP);
-        activeCharacter.statusWindowUI = _statusWindowUI;
-    }
 
     private void Update()
     {

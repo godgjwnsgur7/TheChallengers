@@ -20,11 +20,6 @@ public class BattleScene : BaseScene
 
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-
-        if(battleCanvas == null)
-            Debug.LogError("BattleCanvas is Null");
-
         if(PhotonLogicHandler.IsConnected)
         {
             map = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
@@ -40,22 +35,18 @@ public class BattleScene : BaseScene
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
                 playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
             }
-            
-            playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
         }
-        else // 클라 하나
+        else // 클라 하나 (테스트)
         {
             map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
             playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
 
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
             playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, testPlayerCharacterType));
-            playerCharacter.Connect_Status(battleCanvas.Get_StatusWindowUI(playerCharacter.teamType));
             
             enemyPlayer.gameObject.SetActive(true);
             enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
             enemyPlayer.Set_Character(Init_Character(map.redTeamSpawnPoint.position, testEnemyCharacterType));
-            enemyPlayer.Connect_Status(battleCanvas.Get_StatusWindowUI(enemyPlayer.teamType));
         }
     }
 

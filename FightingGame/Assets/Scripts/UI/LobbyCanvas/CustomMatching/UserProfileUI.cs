@@ -60,7 +60,11 @@ public class UserProfileUI : MonoBehaviour
     }
 
     public void Set_UserNickname(string userNickname) => userNicknameText.text = userNickname;
-    
+    public string Get_UserNickname()
+    {
+        return userNicknameText.text;
+    }
+
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
     {
         if ((int)_charType >= (int)ENUM_CHARACTER_TYPE.Max || (int)currCharType == (int)_charType)

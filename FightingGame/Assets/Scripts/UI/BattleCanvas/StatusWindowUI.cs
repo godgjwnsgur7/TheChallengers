@@ -4,48 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class StatusWindowUI : MonoBehaviourPhoton
+public class StatusWindowUI : MonoBehaviour
 {
     [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] Slider hpBarSlider;
     [SerializeField] Image charFrameImage;
 
     private float currHP;
-    public float CurrHP
-    {
-        get { return currHP; }
-        set
-        {
-            currHP = value;
-            if (PhotonLogicHandler.IsConnected)
-                PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI>(this, Sync_CurrHP);
-            else
-                Sync_CurrHP();
-        }
-    }
     public float maxHP;
 
     Coroutine hpBarCoroutine;
 
     public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
     {
-        if(PhotonLogicHandler.IsConnected)
-        {
-            Init();
-
-            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, ENUM_CHARACTER_TYPE>
-                (this, Set_CharFrameImage, _charType);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<StatusWindowUI, float>
-                (this, Set_MaxHP, _maxHP);
-        }
-        else
-        {
-            Set_CharFrameImage(_charType);
-            Set_MaxHP(_maxHP);
-        }
+        maxHP = _maxHP;
+        currHP = _maxHP;
+        Set_CharFrameImage(_charType);
     }
 
-    [BroadcastMethod]
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
     {
         switch (_charType)
@@ -62,27 +38,17 @@ public class StatusWindowUI : MonoBehaviourPhoton
         }
     }
 
-    [BroadcastMethod]
-    public void Set_MaxHP(float _maxHP)
+    public void Update_CurrHP(float _currHP)
     {
-        CurrHP = _maxHP;
-        maxHP = _maxHP;
-    }
+        currHP = _currHP;
 
-
-    [BroadcastMethod]
-    public void Sync_CurrHP()
-    {
         if (hpBarCoroutine != null)
             StopCoroutine(hpBarCoroutine);
 
-        if (CurrHP > 0)
-        {
-            hpBarCoroutine = StartCoroutine(IFadeHpBar(CurrHP / maxHP));
-            return;
-        }
-
-        hpBarCoroutine = StartCoroutine(IFadeHpBar(0f));
+        if (currHP > 0)
+            hpBarCoroutine = StartCoroutine(IFadeHpBar(currHP / maxHP));
+        else
+            hpBarCoroutine = StartCoroutine(IFadeHpBar(0f));
     }
 
     protected IEnumerator IFadeHpBar(float _goalHPValue)
@@ -95,19 +61,5 @@ public class StatusWindowUI : MonoBehaviourPhoton
 
         hpBarSlider.value = _goalHPValue;
         hpBarCoroutine = null;
-    }
-
-    protected override void OnMineSerializeView(PhotonWriteStream writeStream)
-    {
-        writeStream.Write(CurrHP);
-
-        base.OnMineSerializeView(writeStream);
-    }
-
-    protected override void OnOtherSerializeView(PhotonReadStream readStream)
-    {
-        CurrHP = readStream.Read<float>();
-
-        base.OnOtherSerializeView(readStream);
     }
 }

@@ -30,8 +30,6 @@ public class DeadLanding : StateMachineBehaviour
             color.a -= 0.01f;
             charSpriteRenderer.color = color;
 
-            Debug.Log($"2번 : {color.a}");
-
             yield return null;
         }
 
