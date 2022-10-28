@@ -22,7 +22,7 @@ public class SettingPanel : UIElement
 
     public override void Close()
     {
-        inputKeyManagement.Set_Active(false);
+        inputKeyManagement.Set_PanelActive(false);
         Reset_SettingPanel();
         base.Close();
     }
@@ -149,11 +149,10 @@ public class SettingPanel : UIElement
         opacitySlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).opacity;
     }
 
+    // 세팅패널 초기화
     public void Reset_SettingPanel()
     {
-        this.inputKeyManagement.isActive = false;
         this.inputKey = null;
-
         this.sizeSlider.value = 50;
         this.opacitySlider.value = 100;
         this.sizeText.text = "50%";

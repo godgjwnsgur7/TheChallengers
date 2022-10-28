@@ -11,7 +11,9 @@ public class InputKeyManagement : MonoBehaviour
     List<KeySettingData> keySettingDataList = null;
 
     public bool isActive = false;
+    private bool isInit = false;
     private int inputKeyNum;
+
     public InputPanel inputPanel = null;
     private RectTransform panelTr = null;
     private InputKey inputKey = null;
@@ -64,23 +66,21 @@ public class InputKeyManagement : MonoBehaviour
         else
         {
             for (int i = 0; i < keySettingDataList.Count; i++)
-            {
                 Set_InputKey(i);
-            }
         }
 
-        // 드래그 이벤트트리거 생성
-        for(int i = 0; i < keySettingDataList.Count; i++)
-        {
-            Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
-        }
+        // 첫Init 때 드래그 이벤트트리거 생성
+        if(!isInit)
+            for (int i = 0; i < keySettingDataList.Count; i++)
+                Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
+
+        Set_PanelActive(true);
 
         // 세팅패널 활성화
         settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
         settingPanel.Init();
 
-        Set_Active(true);
-        isActive = true;
+        isInit = true;
     }
 
     public void Set_InputKey(int _inputkeyNum)
@@ -113,30 +113,32 @@ public class InputKeyManagement : MonoBehaviour
     // opacity 조절
     public void Set_InputKeyOpacity(float _opacity, int _inputkeyNum)
     {
-        float opacityRatio = 0.5f + (_opacity / 200);
-        Color changeColor;
         Image inputKeyImage;
-
+        float opacityRatio = 0.5f + (_opacity / 200);
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
+
         Transform imageObjectTr = inputKey.transform.Find("SlotImage");
         if (imageObjectTr != null)
         {
             inputKeyImage = imageObjectTr.GetComponent<Image>();
-            changeColor = inputKeyImage.color;
-            changeColor.a = opacityRatio;
-            inputKeyImage.color = changeColor;
+            Set_ChangeColor(inputKeyImage, opacityRatio);
         }
 
         imageObjectTr = inputKey.transform.Find("IconArea");
         if (imageObjectTr != null)
         {
             inputKeyImage = imageObjectTr.GetChild(0).GetComponent<Image>();
-            changeColor = inputKeyImage.color;
-            changeColor.a = opacityRatio;
-            inputKeyImage.color = changeColor;
+            Set_ChangeColor(inputKeyImage, opacityRatio);
         }
 
         keySettingDataList[_inputkeyNum].opacity = _opacity;
+    }
+
+    public void Set_ChangeColor(Image _inputKeyImage, float _opacityRatio)
+    {
+        Color changeColor = _inputKeyImage.color;
+        changeColor.a = _opacityRatio;
+        _inputKeyImage.color = changeColor;
     }
 
     // 위치 조절
@@ -172,7 +174,7 @@ public class InputKeyManagement : MonoBehaviour
         return new Vector2(vecRangeX, vecRangeY);
     }
 
-    // InputPanel Init 임시
+    // PointerDown Event
     private void OnClick_BeginClick(InputKey _inputKey)
     {
         // 선택한 InputKey에 해당하는 Enum번호 찾기
@@ -206,9 +208,7 @@ public class InputKeyManagement : MonoBehaviour
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
 
         for (int i = 0; i < keySettingDataList.Count; i++)
-        {
             Set_InputKey(i);
-        }
     }
 
     // InputKey EventTrigger에 OnDrag추가
@@ -235,24 +235,10 @@ public class InputKeyManagement : MonoBehaviour
         triggerEntry.callback.RemoveListener(OnDrag);
     }
 
-    public void Save_KeySettingData()
+    // Panel들 Active상태 변환
+    public void Set_PanelActive(bool _changeBool)
     {
-        PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
-    }
-
-    public KeySettingData Get_KeySettingData(int _inputKeyNum)
-    {
-        return keySettingDataList[_inputKeyNum];
-    }
-
-    public void Destroy_InputPanel()
-    {
-        Destroy(this.inputPanel.gameObject);
-        Set_Active(false);
-    }
-
-    public void Set_Active(bool _changeBool)
-    {
+        this.isActive = _changeBool;
         this.inputPanel.gameObject.SetActive(_changeBool);
         this.areaPanel.gameObject.SetActive(_changeBool);
 
@@ -263,4 +249,29 @@ public class InputKeyManagement : MonoBehaviour
             return;
         }
     }
+
+    public void Save_KeySettingData()
+    {
+        PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
+    }
+
+    public KeySettingData Get_KeySettingData(int _inputKeyNum)
+    {
+        return keySettingDataList[_inputKeyNum];
+    }
+
+    // 임시
+    public InputPanel Get_InputPanel()
+    {
+        if (inputPanel == null)
+            Init();
+
+        return this.inputPanel;
+    }
+
+    /*public void Destroy_InputPanel()
+    {
+        Destroy(this.inputPanel.gameObject);
+        Set_PanelActive(false);
+    }*/
 }

@@ -29,13 +29,11 @@ public class ShotAttackObject : AttackObject
         targetTr = null;
         reverseState = _reverseState;
         teamType = _teamType;
-        Vector2 shotVec = shotSpeed;
 
         if (reverseState)
         {
             transform.localEulerAngles = new Vector3(0, 180, 0);
             transform.position += new Vector3(subPos.x * -1.0f, subPos.y, 0);
-            shotVec.x *= -1f; 
         }
         else
         {
@@ -51,6 +49,14 @@ public class ShotAttackObject : AttackObject
         else
             CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
 
-        rigid2D.AddForce(shotVec);
+        Move_AttackObject(shotSpeed);
+    }
+
+    public void Move_AttackObject(Vector2 _shotSpeed)
+    {
+        if (reverseState)
+            _shotSpeed.x *= -1f;
+
+        rigid2D.AddForce(_shotSpeed);
     }
 }

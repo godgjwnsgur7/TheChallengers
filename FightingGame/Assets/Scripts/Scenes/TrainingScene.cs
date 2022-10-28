@@ -146,7 +146,7 @@ public class TrainingScene : BaseScene
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         playerCharacter.activeCharacter = null;
 
-        inputKeyController.Set_Active(false);
+        inputKeyController.Set_PanelActive(false);
         mainCamera.gameObject.SetActive(true);
     }
 
