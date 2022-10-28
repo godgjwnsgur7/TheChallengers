@@ -251,7 +251,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.JoinLobby(GameLobby);
     }
 
-    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> _OnProgress = null)
+    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> OnProgress = null)
     {
         if (!CheckEnableJoinRoom())
             return false;
@@ -264,21 +264,21 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LoadLevel(sceneType.ToString());
 
-        StartCoroutine(OnProgress(_OnProgress));
+        StartCoroutine(LoadingSceneProgress(OnProgress));
 
         return true;
     }
 
-    private IEnumerator OnProgress(Action<float> _OnProgress)
+    private IEnumerator LoadingSceneProgress(Action<float> OnProgress)
 	{
         while(PhotonNetwork.LevelLoadingProgress < 0.0f)
 		{
             yield return null;
 
-            _OnProgress?.Invoke(PhotonNetwork.LevelLoadingProgress);
+            OnProgress?.Invoke(PhotonNetwork.LevelLoadingProgress);
         }
 
-        _OnProgress?.Invoke(1.0f);
+        OnProgress?.Invoke(1.0f);
     }
 
 
