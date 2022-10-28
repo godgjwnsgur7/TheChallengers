@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-/// <summary>
-/// 룸 갱신 정보를 받을 클래스에게 ILobbyPostProcess 인터페이스 상속
-/// </summary>
 public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
 {
     List<RoomListElementUI> roomList = new List<RoomListElementUI>();

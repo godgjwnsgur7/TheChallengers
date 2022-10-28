@@ -22,7 +22,8 @@ public class CustomMatchingUI : MonoBehaviour
             return;
         }
 
-        OnClick_GetLobbyList();
+        if(!Managers.Battle.isInTheCustom)
+            OnClick_GetLobbyList();
     }
 
     private void OnDisable()

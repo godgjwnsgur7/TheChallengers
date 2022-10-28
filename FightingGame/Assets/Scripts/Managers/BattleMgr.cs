@@ -9,6 +9,8 @@ using FGDefine;
 /// </summary>
 public class BattleMgr
 {
+    ActiveCharacter enemyCharacter = null;
+
     public bool isInTheCustom = false;
 
     ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
@@ -28,7 +30,7 @@ public class BattleMgr
     
     public void Init()
     {
-
+        isInTheCustom = false;
     }
 
     public void Clear()
@@ -58,22 +60,33 @@ public class BattleMgr
         return charNameDict[charType];
     }
 
+    public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
 
-    public void Set_CharacterType(ENUM_CHARACTER_TYPE _charType)
-    {
-        charType = _charType;
-    }
-
+    public void Set_CharacterType(ENUM_CHARACTER_TYPE _charType) => charType = _charType;
     public ENUM_CHARACTER_TYPE Get_CharacterType()
     {
         return charType;
     }
 
-    public void EndGame()
+    public void EndGame(bool isWin)
     {
-        Time.timeScale = 0;
-        
-        // 승패를 판단해야해~
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        if (battleCanvas == null)
+            Debug.Log("battleCanvas is Null");
+        battleCanvas.EndGame();
+        /*
+        if (enemyCharacter.currState == ENUM_PLAYER_STATE.Die)
+        {
+            // 이럼 무승부, timeScale은 0으로 하지 않아도 될듯
+            battleCanvas.EndGame(true);
+        }
+        else
+        {
+            Time.timeScale = 0;
+
+            battleCanvas.EndGame(false, isWin);
+        }
+        */
     }
 
     public void GoToLobby()

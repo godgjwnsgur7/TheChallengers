@@ -50,6 +50,26 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         private set { CurrmapInfoUpdateCallBack(value); }
     }
 
+    private void OnEnable()
+    {
+        // 포톤콜백함수 등록
+        PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
+        PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
+
+        PhotonLogicHandler.Instance.onEnterRoomPlayer += SlaveClientEnterCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
+        PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
+    }
+
+    private void OnDisable()
+    {
+        // 포톤콜백함수 해제
+        PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
+        PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
+    }
+
     #region CallBack, OnUpdateProperty 함수 (Server)
     /// <summary>
     /// 슬레이브 클라이언트가 방에 입장하면 불리는 콜백함수
@@ -58,6 +78,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(nickname);
+
+        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
 
     /// <summary>
@@ -115,11 +137,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         this.RegisterRoomCallback();
         Init();
 
-        // 포톤콜백함수 등록
-        PhotonLogicHandler.Instance.onEnterRoomPlayer += SlaveClientEnterCallBack;
-        PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
-
         Set_CurrRoomInfo();
         this.gameObject.SetActive(true);
     }
@@ -130,11 +147,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         isInit = false;
-
-        // 포톤콜백함수 해제
-        PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
-        PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -172,11 +184,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
 
         if (PhotonLogicHandler.CurrentRoomMemberCount == 2 && YourProfile.Get_UserNickname() == "")
-            YourProfile.Set_UserNickname("입장 대기 중...");
+            YourProfile.Set_UserNickname("유저를 기다리는 중...");
         
         CurrMap = PhotonLogicHandler.CurrentMapType;
-
-        // hotonLogicHandler.Instance.UnReady();
     }
 
     public void GoTo_BattleScene()

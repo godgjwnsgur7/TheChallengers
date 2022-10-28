@@ -395,24 +395,15 @@ public partial class ActiveCharacter : Character
 
     public void EndGame()
     {
-        Debug.Log("실행확인1");
-
         if (PhotonLogicHandler.IsConnected)
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>(this, Sync_EndGame);
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
+                (this, Sync_EndGame, teamType);
+        }  
     }
     
-    [BroadcastMethod]
-    public void Sync_EndGame()
-    {
-        Debug.Log("실행확인2");
-
-        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-        if(battleCanvas == null)
-            Debug.Log("battleCanvas is Null");
-
-        battleCanvas.EndGame();
-        Managers.Battle.EndGame();
-    }
+    [BroadcastMethod] public void Sync_EndGame(ENUM_TEAM_TYPE losingTeam) => Managers.Battle.EndGame(true);    
+    [BroadcastMethod] public void Receive_EnemyChar() => Managers.Battle.Set_EnemyChar(this);
 
     public void Invincible()
     {
@@ -523,7 +514,6 @@ public partial class ActiveCharacter : Character
         invincibility = false;
     }
     #endregion
-
     #region Animation Event Function
     protected void Summon_AttackObject(int _attackTypeNum)
     {
@@ -617,5 +607,4 @@ public partial class ActiveCharacter : Character
     }
 
     #endregion
-
 }

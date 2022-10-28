@@ -57,16 +57,19 @@ public class Managers : MonoBehaviour
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();
-
             s_Instance.battle.Init();
         }
     }
 
+    /// <summary>
+    /// 씬이 넘어갈때마다 호출
+    /// </summary>
     public static void Clear()
     {
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
+        Battle.Clear();
     }
 }

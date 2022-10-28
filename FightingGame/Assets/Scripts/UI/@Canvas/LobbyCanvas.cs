@@ -13,8 +13,7 @@ public class LobbyCanvas : BaseCanvas
         base.Init();
 
         // 디버그용 : 마스터 서버에 접속과 로비 접속은 메인 씬에서 하고 넘어옴
-        PhotonLogicHandler.Instance.TryConnectToMaster(
-           () => { Debug.Log("마스터 서버 접속 완료"); Join_Lobby(); });
+        // PhotonLogicHandler.Instance.TryConnectToMaster(() => { Debug.Log("마스터 서버 접속 완료"); Join_Lobby(); });
     }
 
 

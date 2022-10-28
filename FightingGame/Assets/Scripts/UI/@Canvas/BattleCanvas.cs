@@ -26,14 +26,28 @@ public class BattleCanvas : BaseCanvas
 
     public void StartGame()
     {
-        timer.Start_Timer(EndGame);
+        // timer.Start_Timer(EndGame);
     }
 
+    /// <summary>
+    /// 무승부 시에 호출
+    /// </summary>
     public void EndGame()
     {
-        Debug.Log("실행확인3");
+        // 임시 바꿔 ㅋㅋ
 
         resultWindow.Open();
     }
 
+    public void EndGame(bool isWin)
+    {
+        if(isWin)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
 }

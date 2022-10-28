@@ -62,6 +62,9 @@ public class BattleScene : BaseScene
         if (PhotonLogicHandler.IsConnected)
         {
             activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
+
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
+                (activeCharacter, activeCharacter.Receive_EnemyChar, ENUM_RPC_TARGET.OTHER);
         }
         else
         {
