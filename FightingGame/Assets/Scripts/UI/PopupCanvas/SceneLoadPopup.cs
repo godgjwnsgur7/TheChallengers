@@ -12,6 +12,7 @@ public class SceneLoadPopup : PopupUI
     public void Open(ENUM_SCENE_TYPE _sceneType)
     {
         this.gameObject.SetActive(true);
+        
         StartCoroutine(LoadScene(_sceneType));
     }
 
