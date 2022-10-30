@@ -6,6 +6,7 @@ using FGDefine;
 
 public class AreaPanel : MonoBehaviour
 {
+    public bool isUpdate;
     KeyArea[] keyArea = new KeyArea[(int)ENUM_INPUTKEY_NAME.Max];
 
     public void Init()
@@ -26,5 +27,19 @@ public class AreaPanel : MonoBehaviour
     public KeyArea Get_keyArea(ENUM_INPUTKEY_NAME keyName)
     {
         return keyArea[(int)keyName];
+    }
+
+    public bool Get_Updatable()
+    {
+        for (int i = 0; i < keyArea.Length; i++)
+        {
+            isUpdate = keyArea[i].Get_Updatable();
+            if (isUpdate)
+                continue;
+            else
+                break;
+        }
+
+        return isUpdate;
     }
 }

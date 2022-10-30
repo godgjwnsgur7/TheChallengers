@@ -15,6 +15,8 @@ public class SettingPanel : UIElement
     private InputKeyManagement inputKeyManagement = null;
     private KeySettingData keySettingData = null;
 
+    private AreaPanel areaPanel = null;
+
     [SerializeField] Slider sizeSlider;
     [SerializeField] Slider opacitySlider;
     [SerializeField] Text sizeText;
@@ -36,6 +38,7 @@ public class SettingPanel : UIElement
     {
         this.inputKeyManagement = this.transform.root.Find("InputKeyManagement").GetComponent<InputKeyManagement>();
         this.inputPanel = inputKeyManagement.inputPanel;
+        this.areaPanel = inputKeyManagement.areaPanel;
     }
 
     // 클릭 InputKey, Slider 세팅
@@ -132,7 +135,10 @@ public class SettingPanel : UIElement
                 Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
                 break;
             case "Save":
-                Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
+                if (areaPanel.Get_Updatable())
+                    Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
+                else
+                    Managers.UI.popupCanvas.Open_NotifyPopup("버튼의 영역이 겹쳐 수정이 불가능합니다.");
                 break;
             default:
                 Debug.Log("범위벗어남");

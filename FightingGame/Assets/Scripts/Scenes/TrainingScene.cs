@@ -66,10 +66,10 @@ public class TrainingScene : BaseScene
             DeletePlayer();
         }
 
+        isCallPlayer = true;
+
         // 플레이어 스폰
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
-
-        isCallPlayer = true;
         mainCamera.gameObject.SetActive(false);
     }
 
@@ -81,6 +81,8 @@ public class TrainingScene : BaseScene
         {
             DeleteEnemy();
         }
+
+        isCallEnemy = true;
 
         // 소환된 플레이어가 없을 경우 지정된 스폰에서 생성
         if (!isCallPlayer)
@@ -107,8 +109,6 @@ public class TrainingScene : BaseScene
 
             enemyPlayer.Set_Character(Init_Enemy(respownPos, enemyType));
         }
-
-        isCallEnemy = true;
     }
 
     // 적 제거
@@ -130,8 +130,7 @@ public class TrainingScene : BaseScene
 
         isCallPlayer = false;
 
-        Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
-        playerCharacter.activeCharacter = null;
+        Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);  
 
         inputKeyController.Set_PanelActive(false);
         mainCamera.gameObject.SetActive(true);

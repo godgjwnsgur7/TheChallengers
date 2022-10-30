@@ -62,4 +62,12 @@ public class KeyArea : MonoBehaviour
             areaImage.color = changeColor;
         }
     }
+
+    public bool Get_Updatable()
+    {
+        if (triggerCount > 0)
+            return false;
+        else
+            return true;
+    }
 }

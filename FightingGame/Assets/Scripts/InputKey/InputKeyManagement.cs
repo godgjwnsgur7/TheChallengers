@@ -19,7 +19,7 @@ public class InputKeyManagement : MonoBehaviour
     private InputKey inputKey = null;
     private RectTransform inputKeyRectTr = null;
 
-    private AreaPanel areaPanel = null;
+    public AreaPanel areaPanel = null;
     private KeyArea keyArea = null;
     private RectTransform areaRectTr = null;
 
