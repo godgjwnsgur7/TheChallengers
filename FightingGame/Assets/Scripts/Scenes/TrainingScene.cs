@@ -56,7 +56,7 @@ public class TrainingScene : BaseScene
     {
         if (inputKeyManagement.isActive)
         {
-            //trainingCanvas.SetNotionText("버튼 설정 중에는 소환할 수 없습니다.");
+            Debug.Log("버튼 설정중");
             return;
         }
 
@@ -67,15 +67,10 @@ public class TrainingScene : BaseScene
         }
 
         // 플레이어 스폰
-        //trainingCanvas.SetNotionText("플레이어를 소환하였습니다.");
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
 
         isCallPlayer = true;
         mainCamera.gameObject.SetActive(false);
-        /*if (keyPanelArea.isOpen == false)
-        {
-            Managers.UI.OpenUI<KeyPanelArea>();
-        }*/
     }
 
     // 적 소환
@@ -90,12 +85,10 @@ public class TrainingScene : BaseScene
         // 소환된 플레이어가 없을 경우 지정된 스폰에서 생성
         if (!isCallPlayer)
         {
-            //trainingCanvas.SetNotionText("적을 소환하였습니다.");
             enemyPlayer.Set_Character(Init_Enemy(map.redTeamSpawnPoint.position, enemyType));
         }
         else // 소환된 플레이어가 있을 경우 근처에 스폰하고 싶은데...
         {
-            //trainingCanvas.SetNotionText("플레이어 위치에 적을 소환하였습니다.");
             float re = playerCharacter.activeCharacter.reverseState ? -2f : 2f;
 
             // 플레이어 앞 위치
@@ -124,7 +117,6 @@ public class TrainingScene : BaseScene
         if (!isCallEnemy)
             return;
 
-        //trainingCanvas.SetNotionText("적을 역소환하였습니다.");
         isCallEnemy = false;
 
         Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
@@ -140,7 +132,6 @@ public class TrainingScene : BaseScene
         //if (isCallEnemy && enemyPlayer.activeCharacter.GetComponent<EnemyAI>() != null)
         //    OffEnemyAI();
 
-        //trainingCanvas.SetNotionText("플레이어를 역소환하였습니다.");
         isCallPlayer = false;
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);

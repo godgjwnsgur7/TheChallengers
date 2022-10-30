@@ -44,6 +44,26 @@ public class InputKeyManagement : MonoBehaviour
             panelTr = inputPanel.GetComponent<RectTransform>();
         }
 
+        Set_keySettingDataList();
+
+        // 첫Init 때 드래그 이벤트트리거 생성
+        if (!isInit)
+        {
+            for (int i = 0; i < keySettingDataList.Count; i++)
+                Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
+
+            // 세팅패널 활성화
+            settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
+            settingPanel.Init();
+        }
+            
+        Set_PanelActive(true);
+        isInit = true;
+    }
+
+    // PlayerPrefs 값 호출
+    private void Set_keySettingDataList()
+    {
         // 설정된 PlayerPrefs 호출
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
 
@@ -68,19 +88,6 @@ public class InputKeyManagement : MonoBehaviour
             for (int i = 0; i < keySettingDataList.Count; i++)
                 Set_InputKey(i);
         }
-
-        // 첫Init 때 드래그 이벤트트리거 생성
-        if(!isInit)
-            for (int i = 0; i < keySettingDataList.Count; i++)
-                Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
-
-        Set_PanelActive(true);
-
-        // 세팅패널 활성화
-        settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
-        settingPanel.Init();
-
-        isInit = true;
     }
 
     public void Set_InputKey(int _inputkeyNum)
