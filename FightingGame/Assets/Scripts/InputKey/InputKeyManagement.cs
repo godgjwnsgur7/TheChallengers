@@ -91,6 +91,7 @@ public class InputKeyManagement : MonoBehaviour
         }
     }
 
+    #region inputKey 조절
     public void Set_InputKey(int _inputkeyNum)
     {
         Set_InputKeySize(keySettingDataList[_inputkeyNum].size, _inputkeyNum);
@@ -182,6 +183,17 @@ public class InputKeyManagement : MonoBehaviour
         return new Vector2(vecRangeX, vecRangeY);
     }
 
+    // InputKey 초기화
+    public void Reset_InputKeyValue()
+    {
+        keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
+
+        for (int i = 0; i < keySettingDataList.Count; i++)
+            Set_InputKey(i);
+    }
+
+    #endregion 
+
     // PointerDown Event
     private void OnClick_BeginClick(InputKey _inputKey)
     {
@@ -208,15 +220,6 @@ public class InputKeyManagement : MonoBehaviour
         keyArea.Set_AreaColor();
 
         Debug.Log($"{_inputKey.name}세팅");
-    }
-
-    // InputKey 초기화
-    public void Reset_InputKeyValue()
-    {
-        keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
-
-        for (int i = 0; i < keySettingDataList.Count; i++)
-            Set_InputKey(i);
     }
 
     // InputKey EventTrigger에 OnDrag추가
