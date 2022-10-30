@@ -16,6 +16,7 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;
     [SerializeField] ErrorPopup errorPopup;
+    [SerializeField] SceneLoadPopup sceneLoadPopup;
 
     private void Start()
     {
@@ -90,6 +91,20 @@ public class PopupCanvas : MonoBehaviour
         }
 
         notifyPopup.Open(_message, _checkCallBack);
+    }
+
+    /// <summary>
+    /// 동기화 이동을 위해서 사용
+    /// </summary>
+    public void Open_SyncSceneLoadPopup(ENUM_SCENE_TYPE _sceneType)
+    {
+        if(sceneLoadPopup.isUsing)
+        {
+            Debug.Log("이미 씬로드팝업이 사용중입니다.?");
+            return;
+        }
+
+        sceneLoadPopup.Open(_sceneType);
     }
 
     /// <summary>

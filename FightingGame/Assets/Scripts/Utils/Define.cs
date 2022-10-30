@@ -169,6 +169,10 @@ namespace FGDefine
         Max
     }
 
+    /// <summary>
+    /// 씬 이름과 같아야 함
+    /// Unknown 제외
+    /// </summary>
     [Serializable]
     public enum ENUM_SCENE_TYPE
     {
@@ -176,7 +180,6 @@ namespace FGDefine
         Login,
         Lobby,
         Battle,
-        Loading,
         Main,
         Training,
         Debug, // 테스트씬

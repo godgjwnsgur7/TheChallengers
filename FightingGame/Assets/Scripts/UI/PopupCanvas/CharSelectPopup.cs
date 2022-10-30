@@ -6,19 +6,19 @@ using FGDefine;
 
 public class CharSelectPopup : PopupUI
 {
-    Action<ENUM_CHARACTER_TYPE> charCallBack = null;
+    Action<ENUM_CHARACTER_TYPE> charTypeCallBack = null;
 
-    public void Open(Action<ENUM_CHARACTER_TYPE> _charCallBack)
+    public void Open(Action<ENUM_CHARACTER_TYPE> _charTypeCallBack)
     {
         isUsing = true;
 
-        if(_charCallBack == null)
+        if(_charTypeCallBack == null)
         {
             Debug.LogError("charCallBack is Null!");
             return;
         }
 
-        charCallBack = _charCallBack;
+        charTypeCallBack = _charTypeCallBack;
         this.gameObject.SetActive(true);
     }
 
@@ -32,7 +32,7 @@ public class CharSelectPopup : PopupUI
             return;
         }
 
-        charCallBack(charType);
+        charTypeCallBack(charType);
         Close();
     }
 
@@ -40,7 +40,7 @@ public class CharSelectPopup : PopupUI
     {
         this.gameObject.SetActive(false);
 
-        charCallBack = null;
+        charTypeCallBack = null;
         isUsing = false;
     }
 }
