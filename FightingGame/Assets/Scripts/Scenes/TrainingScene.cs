@@ -128,10 +128,6 @@ public class TrainingScene : BaseScene
         if (!isCallPlayer)
             return;
 
-        // 플레이어 제거시 적군의 AI가 설정되어있으면 해제
-        //if (isCallEnemy && enemyPlayer.activeCharacter.GetComponent<EnemyAI>() != null)
-        //    OffEnemyAI();
-
         isCallPlayer = false;
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);

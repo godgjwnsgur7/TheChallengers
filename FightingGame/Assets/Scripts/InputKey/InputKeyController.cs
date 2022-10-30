@@ -20,12 +20,6 @@ public class InputKeyController : MonoBehaviour
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
         // 이제 생각해보니 Controller가 Init될때마다 Management에서 수정된 값으로 InputKey들의 크기등을 바꿔야하는데
         // 수정은 Management에서만 하네..? 수정을 어케하지...
-
-        if (!this.inputPanel.gameObject.activeSelf)
-        {
-            Set_PanelActive(true);
-            this.isActive = true;
-        }
     }
 
     public void Set_PanelActive(bool _binary)

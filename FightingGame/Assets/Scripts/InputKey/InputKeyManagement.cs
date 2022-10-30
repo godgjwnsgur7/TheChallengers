@@ -55,10 +55,11 @@ public class InputKeyManagement : MonoBehaviour
             // 세팅패널 활성화
             settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
             settingPanel.Init();
+
+            isInit = true;
         }
             
         Set_PanelActive(true);
-        isInit = true;
     }
 
     // PlayerPrefs 값 호출
@@ -266,19 +267,4 @@ public class InputKeyManagement : MonoBehaviour
     {
         return keySettingDataList[_inputKeyNum];
     }
-
-    // 임시
-    public InputPanel Get_InputPanel()
-    {
-        if (inputPanel == null)
-            Init();
-
-        return this.inputPanel;
-    }
-
-    /*public void Destroy_InputPanel()
-    {
-        Destroy(this.inputPanel.gameObject);
-        Set_PanelActive(false);
-    }*/
 }
