@@ -8,7 +8,7 @@ public class SettingPanel : UIElement
 {
     private float moveSpeed = 1;
     private bool isMove = false;
-    private bool isHide = false;
+    public bool isHide = false;
     private Coroutine runningCoroutine = null;
 
     private int inputNum;
@@ -157,21 +157,46 @@ public class SettingPanel : UIElement
         this.opacityText.text = "100%";
     }
 
+    // 세팅패널 숨기기, 보이기
     public void Move_SettingPanel()
     {
         if (runningCoroutine != null)
             return;
 
+        if (isHide)
+            Show_SettingPanel();
+        else
+            Hide_SettingPanel();
+    }
+
+    public void Hide_SettingPanel()
+    {
+        if (runningCoroutine != null)
+            return;
+
+        isHide = true;
+
         Vector3 target = thisRect.position;
         float panelSizeY = thisRect.sizeDelta.y;
-
-        if (isHide)
-            panelSizeY *= -1f;
 
         target.y += panelSizeY;
 
         runningCoroutine = StartCoroutine(MoveVec(target));
-        isHide = !isHide;
+    }
+
+    public void Show_SettingPanel()
+    {
+        if (runningCoroutine != null)
+            return;
+
+        isHide = false;
+
+        Vector3 target = thisRect.position;
+        float panelSizeY = thisRect.sizeDelta.y;
+
+        target.y += panelSizeY * -1f;
+
+        runningCoroutine = StartCoroutine(MoveVec(target));
     }
 
     IEnumerator MoveVec(Vector3 vec)

@@ -232,10 +232,15 @@ public class InputKeyManagement : MonoBehaviour
     // 드래그로 InputKey 위치이동
     private void OnDrag(BaseEventData _data) 
     {
+        if (!settingPanel.isHide)
+            OnBeginDrag();
+
         PointerEventData data = (PointerEventData)_data;
         Vector2 movePos = inputKeyRectTr.anchoredPosition + data.delta;
         Set_InputKeyTransForm(movePos.x, movePos.y, inputKeyNum);
     }
+
+    private void OnBeginDrag() => settingPanel.Hide_SettingPanel();
 
     // PointerUp Event
     private void OnClick_EndClick(InputKey _ienputKey)
