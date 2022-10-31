@@ -32,8 +32,8 @@ public class TrainingScene : BaseScene
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
         playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
 
-        Change_CharacterType(ENUM_CHARACTER_TYPE.Knight, "Player");
-        Change_CharacterType(ENUM_CHARACTER_TYPE.Knight, "Enemy");
+        Change_CharacterType(ENUM_CHARACTER_TYPE.Default, "Player");
+        Change_CharacterType(ENUM_CHARACTER_TYPE.Default, "Enemy");
 
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
@@ -56,7 +56,7 @@ public class TrainingScene : BaseScene
     {
         if (inputKeyManagement.isActive)
         {
-            Debug.Log("버튼 설정중");
+            Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;
         }
 
@@ -76,6 +76,12 @@ public class TrainingScene : BaseScene
     // 적 소환
     public void CallEnemy()
     {
+        if (inputKeyManagement.isActive)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
+            return;
+        }
+
         // 이미 소환된 적이 있을 경우
         if (isCallEnemy)
         {
@@ -153,17 +159,29 @@ public class TrainingScene : BaseScene
     }
 
     // 캐릭터 선택
-    public void SelectPlayerCharacter(ENUM_CHARACTER_TYPE charType)
+    public void SelectPlayerCharacter(ENUM_CHARACTER_TYPE _charType)
     {
-        playerType = (ENUM_CHARACTER_TYPE)charType;
+        if(playerType == _charType)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+            return;
+        }
+
+        playerType = (ENUM_CHARACTER_TYPE)_charType;
         Debug.Log(playerType);
-        CallPlayer();
+        Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, null, $"{playerType}를 소환하시겠습니까?");
     }
 
-    public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE charType)
+    public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
     {
-        enemyType = (ENUM_CHARACTER_TYPE)charType;
-        Debug.Log(playerType);
-        CallEnemy();
+        if (enemyType == _charType)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+            return;
+        }
+
+        enemyType = (ENUM_CHARACTER_TYPE)_charType;
+        Debug.Log(enemyType);
+        Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, null, $"{enemyType}를 소환하시겠습니까?");
     }
 }

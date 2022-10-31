@@ -40,6 +40,7 @@ public class ButtonPanel : UIElement
     {
         userType = _userType;
         Managers.UI.popupCanvas.Open_CharSelectPopup(Onclick_CallCharacter);
+        this.Close();
     }
 
     public void Onclick_CallCharacter(ENUM_CHARACTER_TYPE _charType)

@@ -5,9 +5,11 @@ using UnityEngine.UI;
 using FGDefine;
 
 public class SettingPanel : UIElement
-{   
+{
     private float moveSpeed = 1;
     private bool isMove = false;
+    private bool isHide = false;
+    private Coroutine runningCoroutine = null;
 
     private int inputNum;
     private InputPanel inputPanel = null;
@@ -16,11 +18,13 @@ public class SettingPanel : UIElement
     private KeySettingData keySettingData = null;
 
     private AreaPanel areaPanel = null;
+    private RectTransform thisRect;
 
     [SerializeField] Slider sizeSlider;
     [SerializeField] Slider opacitySlider;
     [SerializeField] Text sizeText;
     [SerializeField] Text opacityText;
+    [SerializeField] Text HideButtonText;
 
     public override void Close()
     {
@@ -39,6 +43,7 @@ public class SettingPanel : UIElement
         this.inputKeyManagement = this.transform.root.Find("InputKeyManagement").GetComponent<InputKeyManagement>();
         this.inputPanel = inputKeyManagement.inputPanel;
         this.areaPanel = inputKeyManagement.areaPanel;
+        this.thisRect = GetComponent<RectTransform>();
     }
 
     // 클릭 InputKey, Slider 세팅
@@ -124,27 +129,14 @@ public class SettingPanel : UIElement
         }
     }
 
-    public void OnClick_PopupOpen(string buttonName)
+    public void OnClick_CloseBtn() => Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "버튼 설정을 종료하시겠습니까?");
+    public void OnClick_ResetBtn() => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
+    public void OnClick_SaveBtn()
     {
-        switch (buttonName)
-        {
-            case "Close":
-                Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "버튼 설정을 종료하시겠습니까?");
-                break;
-            case "Reset":
-                Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
-                break;
-            case "Save":
-                if (areaPanel.Get_Updatable())
-                    Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
-                else
-                    Managers.UI.popupCanvas.Open_NotifyPopup("버튼의 영역이 겹쳐 수정이 불가능합니다.");
-                break;
-            default:
-                Debug.Log("범위벗어남");
-                break;
-
-        }
+        if (areaPanel.Get_Updatable())
+            Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
+        else
+            Managers.UI.popupCanvas.Open_NotifyPopup("버튼의 영역이 겹쳐 수정이 불가능합니다.");
     }
 
     public void Reset_InputKeyValue()
@@ -163,5 +155,33 @@ public class SettingPanel : UIElement
         this.opacitySlider.value = 100;
         this.sizeText.text = "50%";
         this.opacityText.text = "100%";
+    }
+
+    public void Move_SettingPanel()
+    {
+        if (runningCoroutine != null)
+            return;
+
+        Vector3 target = thisRect.position;
+        float panelSizeY = thisRect.sizeDelta.y;
+
+        if (isHide)
+            panelSizeY *= -1f;
+
+        target.y += panelSizeY;
+
+        runningCoroutine = StartCoroutine(MoveVec(target));
+        isHide = !isHide;
+    }
+
+    IEnumerator MoveVec(Vector3 vec)
+    {
+        while (thisRect.position != vec)
+        {
+            thisRect.position = Vector3.MoveTowards(thisRect.position, vec, 5);
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        runningCoroutine = null;
     }
 }

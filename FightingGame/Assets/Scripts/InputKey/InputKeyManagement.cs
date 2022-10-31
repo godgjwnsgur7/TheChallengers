@@ -178,7 +178,7 @@ public class InputKeyManagement : MonoBehaviour
 
         // 최대 이동범위 가로축 : InputPanel범위 안, 세로축 : InputPanel의 중심의 아래쪽
         float vecRangeX = Mathf.Clamp(changeVector.x, -panelHalfSize.x + scaleSizeX, panelHalfSize.x - scaleSizeX);
-        float vecRangeY = Mathf.Clamp(changeVector.y, -panelHalfSize.y + scaleSizeY, panelTr.anchoredPosition.y - scaleSizeY);
+        float vecRangeY = Mathf.Clamp(changeVector.y, -panelHalfSize.y + scaleSizeY, (panelHalfSize.y / 2) - scaleSizeY);
 
         return new Vector2(vecRangeX, vecRangeY);
     }
