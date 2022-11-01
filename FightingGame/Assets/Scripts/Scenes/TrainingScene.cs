@@ -16,8 +16,8 @@ public class TrainingScene : BaseScene
 
     ENUM_CHARACTER_TYPE playerType;
     ENUM_CHARACTER_TYPE enemyType;
-    private bool isCallEnemy = false;
-    private bool isCallPlayer = false;
+    public bool isCallEnemy = false;
+    public bool isCallPlayer = false;
 
     public override void Clear()
     {
@@ -32,24 +32,16 @@ public class TrainingScene : BaseScene
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
         playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
 
-        Change_CharacterType(ENUM_CHARACTER_TYPE.Default, "Player");
-        Change_CharacterType(ENUM_CHARACTER_TYPE.Default, "Enemy");
+        Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+        Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
 
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
     }
 
-    public void Change_CharacterType(ENUM_CHARACTER_TYPE _value, string _changeCharacter)
-    {
-        if (_changeCharacter.Equals("Player"))
-            playerType = _value;
-        else if (_changeCharacter.Equals("Enemy"))
-            enemyType = _value;
-        else
-            return;
-
-        Debug.Log($"{_changeCharacter}캐릭터 변경 : {_value}");
-    }
+    // 캐릭터 타입 변경
+    public void Change_PlayerType(ENUM_CHARACTER_TYPE _value) => playerType = _value;
+    public void Change_EnemyType(ENUM_CHARACTER_TYPE _value) => enemyType = _value;
 
     // 플레이어 소환
     public void CallPlayer()
@@ -62,9 +54,7 @@ public class TrainingScene : BaseScene
 
         // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (isCallPlayer)
-        {
             DeletePlayer();
-        }
 
         isCallPlayer = true;
 
@@ -84,9 +74,7 @@ public class TrainingScene : BaseScene
 
         // 이미 소환된 적이 있을 경우
         if (isCallEnemy)
-        {
             DeleteEnemy();
-        }
 
         isCallEnemy = true;
 
@@ -126,6 +114,7 @@ public class TrainingScene : BaseScene
         isCallEnemy = false;
 
         Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
+        Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
     }
 
     // 플레이어 제거
@@ -136,7 +125,8 @@ public class TrainingScene : BaseScene
 
         isCallPlayer = false;
 
-        Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);  
+        Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+        Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
 
         inputKeyController.Set_PanelActive(false);
         mainCamera.gameObject.SetActive(true);
@@ -167,7 +157,7 @@ public class TrainingScene : BaseScene
             return;
         }
 
-        playerType = (ENUM_CHARACTER_TYPE)_charType;
+        Change_PlayerType(_charType);
         Debug.Log(playerType);
         Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, null, $"{playerType}를 소환하시겠습니까?");
     }
@@ -180,7 +170,7 @@ public class TrainingScene : BaseScene
             return;
         }
 
-        enemyType = (ENUM_CHARACTER_TYPE)_charType;
+        Change_EnemyType(_charType);
         Debug.Log(enemyType);
         Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, null, $"{enemyType}를 소환하시겠습니까?");
     }

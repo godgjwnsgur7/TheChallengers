@@ -26,6 +26,18 @@ public class ButtonPanel : UIElement
 
     public void OnClick_OpenSettingPanel()
     {
+        if (trainingScene.isCallPlayer)
+        {
+            trainingScene.DeletePlayer();
+            trainingScene.Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+        }
+
+        if (trainingScene.isCallEnemy)
+        {
+            trainingScene.DeleteEnemy();
+            trainingScene.Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
+        }
+
         inputKeyManagement.Init();
         this.Close();
         settingPanel.Open();
