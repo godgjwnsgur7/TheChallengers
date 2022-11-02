@@ -31,12 +31,12 @@ public class PopupCanvas : MonoBehaviour
 
     public void Check_ActivePopup()
     {
-        // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중
+        // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중인데
+        // 나중에 해보던가 하자
     }
 
     /// <summary>
     /// 에러코드와 메세지를 출력하는 Popup Window
-    /// 
     /// </summary>
     public void Open_ErrorPopup(short _returnCode, string _message)
     {
@@ -94,13 +94,23 @@ public class PopupCanvas : MonoBehaviour
         notifyPopup.Open(_message, _checkCallBack);
     }
 
+    /// <summary>
+    /// 일정 시간 뒤에 자동으로 사라지는 알림창 Popup Window 
+    /// 알림 팝업창은 중복해서 호출 시에 새로운 창으로 갱신됨
+    /// </summary>
     public void Open_TimeNotifyPopup(string _message, float _runTime)
     {
+        if (timerNotifyPopup.isUsing)
+        {
+            timerNotifyPopup.Open_Again(_message, _runTime);
+            return;
+        }
+
         timerNotifyPopup.Open(_message, _runTime);
     }
 
     /// <summary>
-    /// 동기화 이동을 위해서 사용
+    /// 동기화 씬 이동을 위해서 사용
     /// </summary>
     public void Open_SyncSceneLoadPopup(ENUM_SCENE_TYPE _sceneType)
     {

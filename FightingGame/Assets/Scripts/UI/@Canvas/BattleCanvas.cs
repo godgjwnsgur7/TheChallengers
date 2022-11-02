@@ -10,6 +10,7 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] StatusWindowUI buleTeamStatusWindow;
     [SerializeField] StatusWindowUI redTeamStatusWindow;
     [SerializeField] ResultWindowUI resultWindow;
+    [SerializeField] GameStartCounterUI gameStartCounter;
     [SerializeField] TimerUI timer;
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
@@ -22,6 +23,11 @@ public class BattleCanvas : BaseCanvas
             Debug.Log($"_teamType 오류 : {_teamType}");
             return null;
         }
+    }
+
+    public void Register_TimerCallBack()
+    {
+        timer.Register_TimerCallBack();
     }
 
     public void StartGame()

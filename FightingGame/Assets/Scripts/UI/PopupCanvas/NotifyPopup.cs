@@ -21,19 +21,9 @@ public class NotifyPopup : PopupUI
 
     public void Open_Again(string _message, Action _callBack = null)
     {
-        if(isUsing)
-        {
-            Open(_message, _callBack);
-            return;
-        }
-        
         this.gameObject.SetActive(false);
 
-        popupText.text = _message;
-
-        callBack = _callBack;
-
-        this.gameObject.SetActive(true);
+        Open(_message, _callBack);
     }
 
     public void OnClick_Check()

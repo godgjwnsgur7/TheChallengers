@@ -15,6 +15,12 @@ public class TimerNotifyPopup : PopupUI
 
         StartCoroutine(ICloseTimeCheck(_runTime));
     }
+    public void Open_Again(string _message, float _runTime = 2.0f)
+    {
+        this.gameObject.SetActive(false);
+
+        Open(_message, _runTime);
+    }
 
     private void Close()
     {

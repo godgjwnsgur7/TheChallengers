@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
+using System;
 
 /// <summary>
 /// 배틀 씬에서의 게임 시작 전 후의 임시데이터를 임시저장
@@ -9,10 +10,18 @@ using FGDefine;
 /// </summary>
 public class BattleMgr
 {
+    NetworkSyncData networkSyncData;
+
     ActiveCharacter activeCharacter = null;
     ActiveCharacter enemyCharacter = null;
 
     ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
+
+    public bool isGameStartState
+    {
+        private set;
+        get;
+    }
 
     private Dictionary<ENUM_CHARACTER_TYPE, string> charNameDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
     {
@@ -29,11 +38,25 @@ public class BattleMgr
     
     public void Init()
     {
+
     }
 
     public void Clear()
     {
+        if(networkSyncData == null)
+        {
+            Debug.Log("networkSyncData is Null ? ㅋㅋ");
+            return;
+        }
+        
+        networkSyncData.Clear();
+       
+    }
 
+    public void Set_NetworkSyncData()
+    {
+        if (PhotonLogicHandler.IsConnected && PhotonLogicHandler.IsMasterClient)
+            networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
     }
 
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
@@ -58,22 +81,32 @@ public class BattleMgr
         return charNameDict[charType];
     }
 
-    public void Set_CharacterType(ENUM_CHARACTER_TYPE _charType) => charType = _charType;
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
     public void Set_MyChar(ActiveCharacter _activeCharacter)
     {
         activeCharacter = _activeCharacter;
     }
+
+    public void Set_CharacterType(ENUM_CHARACTER_TYPE _charType) => charType = _charType;
     public ENUM_CHARACTER_TYPE Get_CharacterType()
     {
         return charType;
     }
 
+    public void Connect_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Connect_TimerCallBack(_updateTimerCallBack);
+
+    public void StartGame()
+    {
+        isGameStartState = true;
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_GameTimer);
+    }
+
     public void EndGame(ENUM_TEAM_TYPE losingTeam)
     {
+        isGameStartState = false;
+
         BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-        if (battleCanvas == null)
-            Debug.Log("battleCanvas is Null");
 
         bool isEnemyCharDead = enemyCharacter.currState == ENUM_PLAYER_STATE.Die;
         bool isMyCharDead = losingTeam == activeCharacter.teamType;
