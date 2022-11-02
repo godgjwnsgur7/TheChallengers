@@ -22,7 +22,7 @@ public class CustomMatchingUI : MonoBehaviour
             return;
         }
 
-        if(!Managers.Battle.isInTheCustom)
+        if(!PhotonLogicHandler.IsJoinedRoom)
             OnClick_GetLobbyList();
     }
 

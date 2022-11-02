@@ -402,7 +402,7 @@ public partial class ActiveCharacter : Character
         }  
     }
     
-    [BroadcastMethod] public void Sync_EndGame(ENUM_TEAM_TYPE losingTeam) => Managers.Battle.EndGame(true);    
+    [BroadcastMethod] public void Sync_EndGame(ENUM_TEAM_TYPE losingTeam) => Managers.Battle.EndGame(losingTeam);    
     [BroadcastMethod] public void Receive_EnemyChar() => Managers.Battle.Set_EnemyChar(this);
 
     public void Invincible()

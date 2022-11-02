@@ -13,9 +13,9 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] TimerUI timer;
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
-        if(_teamType == ENUM_TEAM_TYPE.Blue)
+        if (_teamType == ENUM_TEAM_TYPE.Blue)
             return buleTeamStatusWindow;
-        else if(_teamType == ENUM_TEAM_TYPE.Red)
+        else if (_teamType == ENUM_TEAM_TYPE.Red)
             return redTeamStatusWindow;
         else
         {
@@ -29,25 +29,5 @@ public class BattleCanvas : BaseCanvas
         // timer.Start_Timer(EndGame);
     }
 
-    /// <summary>
-    /// 무승부 시에 호출
-    /// </summary>
-    public void EndGame()
-    {
-        // 임시 바꿔 ㅋㅋ
-
-        resultWindow.Open();
-    }
-
-    public void EndGame(bool isWin)
-    {
-        if(isWin)
-        {
-
-        }
-        else
-        {
-
-        }
-    }
+    public void EndGame(bool isDraw, bool isWin) => resultWindow.Open(isDraw, isWin);
 }

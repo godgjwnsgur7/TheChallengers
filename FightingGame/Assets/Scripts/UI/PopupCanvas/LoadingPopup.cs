@@ -11,6 +11,6 @@ public class LoadingPopup : PopupUI
 
     public void Close()
     {
-        isUsing = false;
+        this.gameObject.SetActive(false);
     }
 }

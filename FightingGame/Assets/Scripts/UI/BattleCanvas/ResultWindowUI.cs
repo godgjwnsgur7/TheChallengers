@@ -8,16 +8,33 @@ public class ResultWindowUI : MonoBehaviour
     [SerializeField] GameObject loseWindow;
     [SerializeField] GameObject drawWindow;
 
-    public void Open()
+    public void Open(bool isDraw, bool isWin = true)
     {
-       // 임시로 갈겨
+        if(isDraw)
+        {
+            drawWindow.SetActive(true);
+        }
+        else
+        {
+            if (isWin)
+            {
+                winWindow.SetActive(true);
+            }
+            else
+            {
+                loseWindow.SetActive(true);
+            }
+        }
+
        gameObject.SetActive(true);
         
     }
 
     public void Close()
     {
-
+        winWindow.SetActive(false);
+        loseWindow.SetActive(false);
+        drawWindow.SetActive(false);
     }
 
     public void OnClick_Check()

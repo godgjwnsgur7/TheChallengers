@@ -126,7 +126,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         isInit = true;
 
         MyProfile.Init();
-        Managers.Battle.isInTheCustom = true;
     }
 
     public void Open()
@@ -211,7 +210,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void ExitRoom()
     {
         PhotonLogicHandler.Instance.TryLeaveRoom(Close);
-        Managers.Battle.isInTheCustom = false;
     }
 
     public void OnClick_ChangeMap(bool _isRight)
