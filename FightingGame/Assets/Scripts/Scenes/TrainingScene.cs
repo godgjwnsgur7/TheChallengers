@@ -54,7 +54,7 @@ public class TrainingScene : BaseScene
 
         // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (isCallPlayer)
-            DeletePlayer();
+            Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
 
         isCallPlayer = true;
 
@@ -73,7 +73,7 @@ public class TrainingScene : BaseScene
 
         // 이미 소환된 적이 있을 경우
         if (isCallEnemy)
-            DeleteEnemy();
+            Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
 
         isCallEnemy = true;
 
