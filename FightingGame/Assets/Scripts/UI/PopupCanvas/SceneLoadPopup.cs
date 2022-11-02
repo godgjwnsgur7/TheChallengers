@@ -13,7 +13,8 @@ public class SceneLoadPopup : PopupUI
     {
         this.gameObject.SetActive(true);
         
-        StartCoroutine(LoadScene(_sceneType));
+        
+        StartCoroutine(SyncLoadScene(_sceneType));
     }
 
     public void Close()
@@ -21,7 +22,7 @@ public class SceneLoadPopup : PopupUI
         this.gameObject.SetActive(false);
     }
 
-    IEnumerator LoadScene(ENUM_SCENE_TYPE _sceneType)
+    IEnumerator SyncLoadScene(ENUM_SCENE_TYPE _sceneType)
     {
         yield return null;
         AsyncOperation op = SceneManager.LoadSceneAsync(_sceneType.ToString());

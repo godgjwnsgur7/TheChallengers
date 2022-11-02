@@ -13,6 +13,10 @@ public abstract class PopupUI : MonoBehaviour
 
     Image popupImage = null;
 
+    private void OnEnable() => isUsing = true;
+
+    private void OnDisable() => isUsing = false;
+
     public void Open_Effect()
     {
         if (this.gameObject.activeSelf)

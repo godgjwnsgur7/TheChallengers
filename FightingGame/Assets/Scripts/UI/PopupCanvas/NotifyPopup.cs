@@ -12,7 +12,6 @@ public class NotifyPopup : PopupUI
 
     public void Open(string _message, Action _callBack = null)
     {
-        isUsing = true;
         popupText.text = _message;
 
         callBack = _callBack;
@@ -44,6 +43,5 @@ public class NotifyPopup : PopupUI
         this.gameObject.SetActive(false);
         callBack = null;
         popupText.text = null;
-        isUsing = false;
     }
 }

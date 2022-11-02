@@ -17,6 +17,7 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] LoadingPopup loadingPopup;
     [SerializeField] ErrorPopup errorPopup;
     [SerializeField] SceneLoadPopup sceneLoadPopup;
+    [SerializeField] TimerNotifyPopup timerNotifyPopup;
 
     private void Start()
     {
@@ -91,6 +92,11 @@ public class PopupCanvas : MonoBehaviour
         }
 
         notifyPopup.Open(_message, _checkCallBack);
+    }
+
+    public void Open_TimeNotifyPopup(string _message, float _runTime)
+    {
+        timerNotifyPopup.Open(_message, _runTime);
     }
 
     /// <summary>

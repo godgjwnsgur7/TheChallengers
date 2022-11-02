@@ -13,7 +13,6 @@ public class SelectPopup : PopupUI
 
     public void Open(Action _succeededCallBack, Action _failedCallBack, string _message)
     {
-        isUsing = true;
         popupText.text = _message;
         succeededCallBack = _succeededCallBack;
         failedCallBack = _failedCallBack;
@@ -43,6 +42,5 @@ public class SelectPopup : PopupUI
 
         succeededCallBack = null;
         failedCallBack = null;
-        isUsing = false;
     }
 }
