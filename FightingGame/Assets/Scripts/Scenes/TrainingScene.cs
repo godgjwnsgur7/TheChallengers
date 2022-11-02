@@ -6,7 +6,6 @@ using FGDefine;
 public class TrainingScene : BaseScene
 {
     BaseMap map;
-    [SerializeField] Camera mainCamera;
     [SerializeField] TrainingCanvas trainingCanvas;
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerCharacter playerCharacter;
@@ -31,6 +30,7 @@ public class TrainingScene : BaseScene
 
         map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
         playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
+        playerCamera.Map_target(map.transform.position);
 
         Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
         Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
@@ -60,7 +60,6 @@ public class TrainingScene : BaseScene
 
         // 플레이어 스폰
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
-        mainCamera.gameObject.SetActive(false);
     }
 
     // 적 소환
@@ -109,7 +108,10 @@ public class TrainingScene : BaseScene
     public void DeleteEnemy()
     {
         if (!isCallEnemy)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("소환된 적이 없습니다.");
             return;
+        }
 
         isCallEnemy = false;
 
@@ -121,7 +123,13 @@ public class TrainingScene : BaseScene
     public void DeletePlayer()
     {
         if (!isCallPlayer)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("소환된 플레이어가 없습니다.");
             return;
+        }
+
+        float size = playerCamera.GetComponent<Camera>().orthographicSize;
+        playerCamera.Set_CameraZoomOut(0.05f, size, 10);
 
         isCallPlayer = false;
 
@@ -129,7 +137,6 @@ public class TrainingScene : BaseScene
         Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
 
         inputKeyController.Set_PanelActive(false);
-        mainCamera.gameObject.SetActive(true);
     }
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)

@@ -653,8 +653,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 110583156}
         m_TargetAssemblyTypeName: ButtonPanel, Assembly-CSharp
-        m_MethodName: Set_UserType
-        m_Mode: 5
+        m_MethodName: OnClick_CallPlayer
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -718,7 +718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &156460907
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1528,9 +1528,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1948010699}
-        m_TargetAssemblyTypeName: TrainingScene, Assembly-CSharp
-        m_MethodName: DeletePlayer
+      - m_Target: {fileID: 110583156}
+        m_TargetAssemblyTypeName: ButtonPanel, Assembly-CSharp
+        m_MethodName: OnClick_DestroyPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1909,9 +1909,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1948010699}
-        m_TargetAssemblyTypeName: TrainingScene, Assembly-CSharp
-        m_MethodName: DeleteEnemy
+      - m_Target: {fileID: 110583156}
+        m_TargetAssemblyTypeName: ButtonPanel, Assembly-CSharp
+        m_MethodName: OnClick_DestroyEnemy
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2486,7 +2486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973984475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -1.87, y: -0.97, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1418530637}
@@ -2506,6 +2506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   target: {fileID: 0}
+  movetarget: {x: 0, y: 0, z: 0}
   halfHeight: 0
   halfWidth: 0
   clampedX: 0
@@ -2547,7 +2548,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2842,8 +2843,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 110583156}
         m_TargetAssemblyTypeName: ButtonPanel, Assembly-CSharp
-        m_MethodName: Set_UserType
-        m_Mode: 5
+        m_MethodName: OnClick_CallEnemy
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5019,13 +5020,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509a81fb41204ff45af1d7a16e929a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 156460908}
   trainingCanvas: {fileID: 42189881}
   playerCamera: {fileID: 973984477}
   playerCharacter: {fileID: 1418530638}
   enemyPlayer: {fileID: 14942414}
   inputKeyManagement: {fileID: 1111203226}
   inputKeyController: {fileID: 1621611177}
+  isCallEnemy: 0
+  isCallPlayer: 0
 --- !u!4 &1948010700
 Transform:
   m_ObjectHideFlags: 0

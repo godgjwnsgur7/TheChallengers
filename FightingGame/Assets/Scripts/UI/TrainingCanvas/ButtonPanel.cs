@@ -48,23 +48,28 @@ public class ButtonPanel : UIElement
         panelOpenBtnText.text = text;
     }
 
-    public void Set_UserType(string _userType)
+    public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectPlayerCharacter);
+    public void OnClick_SelectPlayerCharacter(ENUM_CHARACTER_TYPE _charType)
     {
-        userType = _userType;
-        Managers.UI.popupCanvas.Open_CharSelectPopup(Onclick_CallCharacter);
+        trainingScene.SelectPlayerCharacter(_charType);
         this.Close();
     }
 
-    public void Onclick_CallCharacter(ENUM_CHARACTER_TYPE _charType)
+    public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectEnemyCharacter);
+    public void OnClick_SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
     {
-        switch (userType)
-        {
-            case "Player":
-                trainingScene.SelectPlayerCharacter(_charType);
-                break;
-            case "Enemy":
-                trainingScene.SelectEnemyCharacter(_charType);
-                break;
-        }
+        trainingScene.SelectEnemyCharacter(_charType);
+        this.Close();
+    }
+
+    public void OnClick_DestroyPlayer()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(trainingScene.DeletePlayer, null, "소환된 캐릭터를 역소환하시겠습니까?");
+        this.Close();
+    }
+    public void OnClick_DestroyEnemy()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(trainingScene.DeleteEnemy, null, "소환된 적를 역소환하시겠습니까?");
+        this.Close();
     }
 }
