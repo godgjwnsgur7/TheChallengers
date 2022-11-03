@@ -34,5 +34,4 @@ public class TimerUI : MonoBehaviour
     {
         timerText.text = String.Format("{0:0}:{1:00}", minutes, seconds);
     }
-
 }

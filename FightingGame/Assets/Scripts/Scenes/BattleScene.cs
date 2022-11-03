@@ -31,6 +31,8 @@ public class BattleScene : BaseScene
                 playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
 
                 Managers.Battle.Set_NetworkSyncData();
+
+                StartCoroutine(IGameStartTimeCheck(2.0f));
             }
             else
             {
@@ -79,6 +81,8 @@ public class BattleScene : BaseScene
 
     protected IEnumerator IGameStartTimeCheck(float waitTime)
     {
+        Debug.Log("IGameStartTimeCheck");
+
         yield return new WaitForSeconds(waitTime);
 
         Managers.Battle.StartGame();

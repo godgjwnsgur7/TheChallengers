@@ -12,7 +12,7 @@ public class NetworkSyncData : MonoBehaviourPhoton
 
     Coroutine timerCoroutine = null;
 
-    float gameTimeLimit = 270.0f; // 게임 시간은 4분 30초로 고정
+    float gameRunTimeLimit = 270.0f; // 게임 시간은 4분 30초로 고정
 
     bool isInitialized = false;
     // 얘로 로드된 시점 받아와도 괜찮을 거 같은데, 일단 보류
@@ -41,14 +41,14 @@ public class NetworkSyncData : MonoBehaviourPhoton
     #region Sync Variable
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
-        stream.Write(gameTimeLimit);
+        stream.Write(gameRunTimeLimit);
 
         base.OnMineSerializeView(stream);
     }
 
     protected override void OnOtherSerializeView(PhotonReadStream stream)
     {
-        gameTimeLimit = stream.Read<float>();
+        gameRunTimeLimit = stream.Read<float>();
 
         base.OnOtherSerializeView(stream);
     }
@@ -72,13 +72,13 @@ public class NetworkSyncData : MonoBehaviourPhoton
     }
 
     [BroadcastMethod]
-    public void Start_GameTimer()
+    public void Start_Game()
     {
         timerCoroutine = StartCoroutine(IStartTimer());
     }
 
     [BroadcastMethod]
-    public void Stop_GameTimer()
+    public void Stop_Game()
     {
         if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
@@ -92,17 +92,22 @@ public class NetworkSyncData : MonoBehaviourPhoton
 
     protected IEnumerator IStartTimer()
     {
-        while(gameTimeLimit >= 0.1f)
+        Debug.Log("IStartTimer");
+
+        if (updateTimerCallBack == null)
+            Debug.Log("Null임 ㅋㅋ");
+
+        while (gameRunTimeLimit >= 0.1f)
         {
-            gameTimeLimit -= Time.deltaTime;
+            gameRunTimeLimit -= Time.deltaTime;
 
             PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData, float>
-                (this, Sync_TimerCallBack, gameTimeLimit);
+                (this, Sync_TimerCallBack, gameRunTimeLimit);
 
             yield return null;
         }
 
-        if(gameTimeLimit < 0.1f)
+        if(gameRunTimeLimit < 0.1f)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData, float>
                     (this, Sync_TimerCallBack, 0.0f);
@@ -110,6 +115,6 @@ public class NetworkSyncData : MonoBehaviourPhoton
 
         // 게임 종료 go.
         PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>
-                    (this, Stop_GameTimer);
+                    (this, Stop_Game);
     }
 }

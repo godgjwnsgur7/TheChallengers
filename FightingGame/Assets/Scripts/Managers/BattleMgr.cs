@@ -107,7 +107,7 @@ public class BattleMgr
     {
         isGameStartState = true;
 
-        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_GameTimer);
+        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
     }
 
     public void EndGame(ENUM_TEAM_TYPE losingTeam)

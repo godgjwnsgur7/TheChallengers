@@ -55,7 +55,7 @@ public class InputKeyController : MonoBehaviour
             for (int i = 0; i < keySettingDataList.Count; i++)
             {
                 Set_InputKey(i);
-                Debug.Log((ENUM_INPUTKEY_NAME)i + "호출");
+                // Debug.Log((ENUM_INPUTKEY_NAME)i + "호출");
             }
         }
     }
@@ -70,7 +70,7 @@ public class InputKeyController : MonoBehaviour
     // size 조절
     public void Set_InputKeySize(float _size, int _inputkeyNum)
     {
-        Debug.Log(inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum).name);
+        // Debug.Log(inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum).name);
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
         float sizeRatio = (50 + _size) / 100;
         Vector3 changeScale = new Vector3(1, 1, 1) * sizeRatio;
