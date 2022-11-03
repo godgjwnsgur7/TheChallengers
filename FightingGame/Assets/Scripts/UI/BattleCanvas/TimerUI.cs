@@ -10,7 +10,7 @@ public class TimerUI : MonoBehaviour
 
     public void Register_TimerCallBack()
     {
-        Managers.Battle.Connect_TimerCallBack(Update_Timer);
+        Managers.Battle.Set_TimerCallBack(Update_Timer);
     }
 
     /// <summary>

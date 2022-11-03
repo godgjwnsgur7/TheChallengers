@@ -30,9 +30,7 @@ public class BattleScene : BaseScene
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
                 playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
 
-                Managers.Battle.Set_NetworkSyncData();
-
-                StartCoroutine(IGameStartTimeCheck(2.0f));
+                Managers.Battle.Sync_CreatNetworkSyncData();
             }
             else
             {
@@ -77,14 +75,5 @@ public class BattleScene : BaseScene
         }
 
         return activeCharacter;
-    }
-
-    protected IEnumerator IGameStartTimeCheck(float waitTime)
-    {
-        Debug.Log("IGameStartTimeCheck");
-
-        yield return new WaitForSeconds(waitTime);
-
-        Managers.Battle.StartGame();
     }
 }

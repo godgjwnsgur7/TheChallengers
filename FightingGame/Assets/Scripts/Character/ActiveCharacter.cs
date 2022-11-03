@@ -15,6 +15,7 @@ public partial class ActiveCharacter : Character
 
     Coroutine stunTimeCoroutine;
     Coroutine landCoroutine;
+    Coroutine dropCoroutine;
 
     public float stunTime;
     public float curStunTime;
@@ -189,10 +190,10 @@ public partial class ActiveCharacter : Character
 
         base.Jump();
 
+        dropCoroutine = StartCoroutine(ICharDropStateCheck());
+
         SetAnimBool("IsJump", true);
         SetAnimTrigger("JumpTrigger");
-
-        StartCoroutine(ICharDropStateCheck());
     }
 
     public override void Attack(CharacterParam param)
@@ -416,7 +417,6 @@ public partial class ActiveCharacter : Character
     /// <summary>
     /// 점프상태임을 감지 (업데이트문이나 다름없는 상태)
     /// </summary>
-    /// <returns></returns>
     protected IEnumerator IJumpStateCheck()
     {
         bool LandingState;
@@ -433,7 +433,7 @@ public partial class ActiveCharacter : Character
             {
                 jumpState = !jumpState;
                 
-                if (!anim.GetBool("IsJump") &&
+                if (dropCoroutine == null &&
                     (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
                 {
                     SetAnimBool("IsDrop", true);
@@ -493,7 +493,7 @@ public partial class ActiveCharacter : Character
         bool dropState = false;
 
         float charPosY = transform.position.y;
-
+         
         while (!dropState)
         {
             dropState = charPosY > transform.position.y;
@@ -504,6 +504,7 @@ public partial class ActiveCharacter : Character
             yield return null;
         }
 
+        dropCoroutine = null;
         SetAnimBool("IsDrop", true);
     }
 

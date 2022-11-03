@@ -28,6 +28,14 @@ public class NetworkSyncData : MonoBehaviourPhoton
         isInitialized = true;
 
         base.Init();
+
+        Managers.Battle.Set_NetworkSyncData(this);
+        Request_ConnectTimerCallBack();
+
+        if (PhotonLogicHandler.IsMasterClient)
+        {
+            StartCoroutine(IGameStartTimeCheck(2.0f));
+        }
     }
 
     public void Clear()
@@ -54,22 +62,8 @@ public class NetworkSyncData : MonoBehaviourPhoton
     }
     #endregion
 
-    [BroadcastMethod]
     public void Request_ConnectTimerCallBack() => Managers.UI.currCanvas.GetComponent<BattleCanvas>().Register_TimerCallBack();
-
-    /// <summary>
-    /// 슬레이브 클라이언트에서 호출될 함수
-    /// </summary>
-    [BroadcastMethod]
-    public void Connect_BattleMgr()
-    {
-        Managers.Battle.Get_NetworkSyncData(this);
-    }
-
-    public void Connect_TimerCallBack(Action<float> _updateTimerCallBack)
-    {
-        updateTimerCallBack = _updateTimerCallBack;
-    }
+    public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => updateTimerCallBack = _updateTimerCallBack;
 
     [BroadcastMethod]
     public void Start_Game()
@@ -90,13 +84,15 @@ public class NetworkSyncData : MonoBehaviourPhoton
         updateTimerCallBack(_gameTimeLimit);
     }
 
+    protected IEnumerator IGameStartTimeCheck(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        Managers.Battle.StartGame();
+    }
+
     protected IEnumerator IStartTimer()
     {
-        Debug.Log("IStartTimer");
-
-        if (updateTimerCallBack == null)
-            Debug.Log("Null임 ㅋㅋ");
-
         while (gameRunTimeLimit >= 0.1f)
         {
             gameRunTimeLimit -= Time.deltaTime;

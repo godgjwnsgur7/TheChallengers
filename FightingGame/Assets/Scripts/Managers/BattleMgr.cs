@@ -23,6 +23,7 @@ public class BattleMgr
         get;
     }
 
+    #region Dictionary
     private Dictionary<ENUM_CHARACTER_TYPE, string> charNameDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
     {
         {ENUM_CHARACTER_TYPE.Default, "캐릭터 미선택" },
@@ -36,23 +37,6 @@ public class BattleMgr
         {ENUM_MAP_TYPE.BasicMap, "마법사의 숲" },
     };
     
-    public void Init()
-    {
-
-    }
-
-    public void Clear()
-    {
-        if(networkSyncData == null)
-        {
-            Debug.Log("networkSyncData is Null ? ㅋㅋ");
-            return;
-        }
-        
-        networkSyncData.Clear();
-       
-    }
-
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
     {
         if(!mapNameDict.ContainsKey(mapType))
@@ -74,26 +58,30 @@ public class BattleMgr
 
         return charNameDict[charType];
     }
+    #endregion
 
-    public void Set_NetworkSyncData()
+    public void Init()
     {
-        if (PhotonLogicHandler.IsConnected || PhotonLogicHandler.IsMasterClient)
+
+    }
+
+    public void Clear()
+    {
+
+    }
+
+    public void Sync_CreatNetworkSyncData()
+    {
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsMasterClient)
             return;
 
         networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
-
-        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Connect_BattleMgr, ENUM_RPC_TARGET.OTHER);
-
-        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Request_ConnectTimerCallBack);
     }
 
-    public void Get_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
-
+    public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Set_TimerCallBack(_updateTimerCallBack);
+    public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
-    public void Set_MyChar(ActiveCharacter _activeCharacter)
-    {
-        activeCharacter = _activeCharacter;
-    }
+    public void Set_MyChar(ActiveCharacter _activeCharacter) => activeCharacter = _activeCharacter;
 
     public void Set_CharacterType(ENUM_CHARACTER_TYPE _charType) => charType = _charType;
     public ENUM_CHARACTER_TYPE Get_CharacterType()
@@ -101,12 +89,10 @@ public class BattleMgr
         return charType;
     }
 
-    public void Connect_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Connect_TimerCallBack(_updateTimerCallBack);
-
     public void StartGame()
     {
         isGameStartState = true;
-
+        
         PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
     }
 
