@@ -31,8 +31,6 @@ public class BattleScene : BaseScene
                 playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
 
                 Managers.Battle.Set_NetworkSyncData();
-
-
             }
             else
             {

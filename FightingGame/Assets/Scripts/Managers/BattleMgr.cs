@@ -53,12 +53,6 @@ public class BattleMgr
        
     }
 
-    public void Set_NetworkSyncData()
-    {
-        if (PhotonLogicHandler.IsConnected && PhotonLogicHandler.IsMasterClient)
-            networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
-    }
-
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
     {
         if(!mapNameDict.ContainsKey(mapType))
@@ -80,6 +74,20 @@ public class BattleMgr
 
         return charNameDict[charType];
     }
+
+    public void Set_NetworkSyncData()
+    {
+        if (PhotonLogicHandler.IsConnected || PhotonLogicHandler.IsMasterClient)
+            return;
+
+        networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Connect_BattleMgr, ENUM_RPC_TARGET.OTHER);
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Request_ConnectTimerCallBack);
+    }
+
+    public void Get_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
 
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
     public void Set_MyChar(ActiveCharacter _activeCharacter)

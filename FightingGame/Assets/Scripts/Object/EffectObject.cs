@@ -63,17 +63,7 @@ public class EffectObject : Poolable
         isUsing = false;
         targetTr = null;
 
-        if (PhotonLogicHandler.IsConnected)
-            PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject>(this, Sync_DestroyMine);
-        else
-            Managers.Resource.Destroy(gameObject);
-
-    }
-
-    [BroadcastMethod]
-    public virtual void Sync_DestroyMine()
-    {
-        Managers.Resource.Destroy(this.gameObject);
+        Managers.Resource.Destroy(gameObject);
     }
 
     public void Set_Position(Transform _targetTr)
