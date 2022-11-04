@@ -9,6 +9,7 @@ using System;
 public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
+    [SerializeField] InputKeyController inputKeyController;
 
     public bool isActive = false;
     private bool isInit = false;
@@ -31,17 +32,17 @@ public class InputKeyManagement : MonoBehaviour
     };
 
     public void Init()
-    {   
-        if(inputPanel == null)
+    {
+        this.inputPanel = inputKeyController.inputPanel;
+        this.inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
+        this.panelTr = inputPanel.GetComponent<RectTransform>();
+
+
+        if (this.areaPanel == null)
         {
             // AreaPanel Instantiate
-            areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
-            areaPanel.Init();
-
-            // InputPanel Instantiate
-            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
-            panelTr = inputPanel.GetComponent<RectTransform>();
+            this.areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
+            this.areaPanel.Init();
         }
 
         Set_keySettingDataList();
@@ -81,8 +82,6 @@ public class InputKeyManagement : MonoBehaviour
                 Set_InputKey(i);
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
-
-            PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
         }
         else
         {
@@ -186,10 +185,34 @@ public class InputKeyManagement : MonoBehaviour
     // InputKey 초기화
     public void Reset_InputKeyValue()
     {
-        keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
+        if (this.keyArea != null)
+        {
+            this.keyArea.isSelect = false;
+            this.keyArea.Set_AreaColor();
+        }
+
+        Destroy(this.inputKeyController.inputPanel.gameObject);
+        this.inputKeyController.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.inputKeyController.transform).GetComponent<InputPanel>();
+       
+        this.inputPanel = inputKeyController.inputPanel;
+        this.inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
+        this.panelTr = inputPanel.GetComponent<RectTransform>();
+
+        keySettingDataList = new List<KeySettingData>();
+        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        {
+            inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
+            inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+
+            keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
+            Set_InputKey(i);
+        }
 
         for (int i = 0; i < keySettingDataList.Count; i++)
-            Set_InputKey(i);
+            Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
+
+        settingPanel.Init();
+        settingPanel.Reset_SettingPanel();
     }
 
     #endregion 

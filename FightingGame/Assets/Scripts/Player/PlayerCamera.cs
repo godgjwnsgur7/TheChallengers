@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using FGDefine;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -15,7 +17,10 @@ public class PlayerCamera : MonoBehaviour
 
     public Vector2 minBound;
     public Vector2 maxBound;
-    public Vector3 maptarget;
+    ENUM_MAP_TYPE mapType;
+    public Vector3 mapTarget;
+    float mapSize;
+    float playerCamSize;
 
     private void LateUpdate()
     {
@@ -25,10 +30,15 @@ public class PlayerCamera : MonoBehaviour
         FollowingCamera();
     }
 
+    private void Start()
+    {
+        cam = Camera.main;
+    }
+
     public void Init(Transform target)
     {
         cam = Camera.main;
-        Set_CameraZoomIn(-0.1f, cam.orthographicSize, 5);
+        Set_ZoomIn();
         Set_target(target);
     }
 
@@ -46,44 +56,69 @@ public class PlayerCamera : MonoBehaviour
         transform.position = new Vector3(clampedX, clampedY, -10);
     }
 
-    private void Set_OrthographicSize(float _size) => cam.orthographicSize = _size;
-    public void Set_CameraZoomIn(float _zoomSpeed, float _currSize, float _zoomSize) => StartCoroutine(Zoom_In(_zoomSpeed, _currSize, _zoomSize));
-    public void Set_CameraZoomOut(float _zoomSpeed, float _currSize, float _zoomSize) => StartCoroutine(Zoom_Out(_zoomSpeed, _currSize, _zoomSize));
+    public void Set_OrthographicSize(float _size) => cam.orthographicSize = _size;
+    public void Set_CameraZoomIn(float _zoomSpeed) 
+        => StartCoroutine(Zoom_In(_zoomSpeed));
+    public void Set_CameraZoomOut(float _zoomSpeed) 
+        => StartCoroutine(Zoom_Out(_zoomSpeed));
 
-    IEnumerator Zoom_In(float _zoomSpeed, float _currSize, float _zoomSize)
+    IEnumerator Zoom_In(float _zoomSpeed)
     {
-        while (_currSize >= _zoomSize)
+        while (cam.orthographicSize > playerCamSize)
         {
             halfHeight = cam.orthographicSize;
             halfWidth = halfHeight * Screen.width / Screen.height;
 
-            _currSize += _zoomSpeed;
-            Set_OrthographicSize(_currSize);
+            cam.orthographicSize += _zoomSpeed;
+            Set_OrthographicSize(cam.orthographicSize);
             yield return new WaitForSeconds(0.01f);
         }
     }
 
-    IEnumerator Zoom_Out(float _zoomSpeed, float _currSize, float _zoomSize)
+    IEnumerator Zoom_Out(float _zoomSpeed)
     {
-        while (_currSize <= _zoomSize)
+        while (cam.orthographicSize < mapSize)
         {
             halfHeight = cam.orthographicSize;
             halfWidth = halfHeight * Screen.width / Screen.height;
 
-            transform.position = Vector3.MoveTowards(transform.position, maptarget, 0.12f);
+            transform.position = Vector3.MoveTowards(transform.position, mapTarget, 0.5f);
 
-            _currSize += _zoomSpeed;
-            Set_OrthographicSize(_currSize);
+            cam.orthographicSize += _zoomSpeed;
+            Set_OrthographicSize(cam.orthographicSize);
             yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    public void Set_MapData(BaseMap _map)
+    {
+        Set_Maptarget(_map.transform);
+        Set_CameraBounds(_map.maxBound, _map.minBound);
+
+        mapType = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), _map.name);
+        playerCamSize = Managers.Battle.Get_playerCamSizeDict(mapType);
+        mapSize = Managers.Battle.Get_MapSizeDict(mapType);
+        Set_OrthographicSize(mapSize);
+    }
+
+    // 맵의 위치값
+    public void Set_Maptarget(Transform _transform)
+    {
+        this.mapTarget = _transform.position;
+        this.mapTarget.z = this.transform.position.z;
+    }
+
+    public void Set_ZoomOut()
+    {
+        if (this.mapSize > cam.orthographicSize)
+            StartCoroutine(Zoom_Out(0.1f));
+    }
+
+    public void Set_ZoomIn()
+    {
+        if (this.playerCamSize < cam.orthographicSize)
+            StartCoroutine(Zoom_In(-0.1f));
     }
 
     public void Set_target(Transform _transform) => this.target = _transform;
-
-    // 맵의 위치값
-    public void Map_target(Vector3 _position)
-    {
-        maptarget = _position;
-        maptarget.z = transform.position.z;
-    }
 }

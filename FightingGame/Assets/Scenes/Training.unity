@@ -263,8 +263,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2071825307}
-  - {fileID: 1621611176}
   - {fileID: 1111203227}
+  - {fileID: 1621611176}
   - {fileID: 110583153}
   - {fileID: 2131874536}
   - {fileID: 1418530637}
@@ -2506,13 +2506,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   target: {fileID: 0}
-  movetarget: {x: 0, y: 0, z: 0}
   halfHeight: 0
   halfWidth: 0
   clampedX: 0
   clampedY: 0
   minBound: {x: 0, y: 0}
   maxBound: {x: 0, y: 0}
+  mapTarget: {x: 0, y: 0, z: 0}
 --- !u!81 &973984478
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2548,7 +2548,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2920,6 +2920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bfcadb72056284eb17630742784cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputKeyController: {fileID: 1621611177}
   isActive: 0
   inputPanel: {fileID: 0}
   areaPanel: {fileID: 0}
@@ -2935,7 +2936,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 42189880}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3922,7 +3923,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 42189880}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6290,7 +6291,7 @@ MonoBehaviour:
   opacitySlider: {fileID: 1745490867}
   sizeText: {fileID: 1852533411}
   opacityText: {fileID: 1388497869}
-  HideButtonText: {fileID: 0}
+  HideButtonText: {fileID: 821430693}
 --- !u!1 &2133940163
 GameObject:
   m_ObjectHideFlags: 0

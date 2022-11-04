@@ -11,7 +11,7 @@ public class SettingPanel : UIElement
     public bool isHide = false;
     private Coroutine runningCoroutine = null;
 
-    private int inputNum;
+    private int inputNum = -1;
     private InputPanel inputPanel = null;
     private InputKey inputKey = null;
     private InputKeyManagement inputKeyManagement = null;
@@ -67,6 +67,9 @@ public class SettingPanel : UIElement
         if (inputKey = null)
             return;
 
+        if (inputNum < 0)
+            return;
+
         int sizeValue = (int)this.sizeSlider.value;
 
         this.sizeText.text = $"{sizeValue}%";
@@ -79,6 +82,9 @@ public class SettingPanel : UIElement
         if (inputKey = null)
             return;
 
+        if (inputNum < 0)
+            return;
+
         int opacityValue = (int)this.opacitySlider.value;
 
         this.opacityText.text = $"{opacityValue}%";
@@ -88,6 +94,9 @@ public class SettingPanel : UIElement
     // InputKet 이동
     public void OnPointerDown_MovePos(string _direction)
     {
+        if (this.inputKey == null)
+            return;
+
         Vector2 movePos = this.inputKey.GetComponent<RectTransform>().anchoredPosition;
         isMove = true;
         StartCoroutine(MovePosCoroutine(movePos, _direction));
@@ -142,6 +151,9 @@ public class SettingPanel : UIElement
     public void Reset_InputKeyValue()
     {
         inputKeyManagement.Reset_InputKeyValue();
+
+        if (this.inputNum < 0)
+            return;
 
         sizeSlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).size;
         opacitySlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).opacity;

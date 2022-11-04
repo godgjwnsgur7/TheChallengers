@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
+using System;
 
 public class TrainingScene : BaseScene
 {
@@ -28,9 +29,9 @@ public class TrainingScene : BaseScene
         base.Init();
         SceneType = ENUM_SCENE_TYPE.Training;
 
-        map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
-        playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
-        playerCamera.Map_target(map.transform.position);
+        string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), 0);
+        map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
+        playerCamera.Set_MapData(map);
 
         Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
         Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
@@ -128,8 +129,7 @@ public class TrainingScene : BaseScene
             return;
         }
 
-        float size = playerCamera.GetComponent<Camera>().orthographicSize;
-        playerCamera.Set_CameraZoomOut(0.05f, size, 10);
+        playerCamera.Set_ZoomOut();
 
         isCallPlayer = false;
 

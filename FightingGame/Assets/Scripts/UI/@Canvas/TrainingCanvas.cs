@@ -16,6 +16,7 @@ public class TrainingCanvas : BaseCanvas
     public override void Init()
     {
         base.Init();
+        inputKeyController.Init();
     }
 
 

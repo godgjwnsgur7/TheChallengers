@@ -22,10 +22,15 @@ public class InputKeyController : MonoBehaviour
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(null, null);
             panelTr = inputPanel.GetComponent<RectTransform>();
+            Set_PanelActive(false);
+            Set_keySettingDataList();
         }
-
-        Set_keySettingDataList();
-        Set_PanelActive(true);
+        else
+        {
+            inputPanel.Set_PoniterEvent(null, null);
+            panelTr = inputPanel.GetComponent<RectTransform>();
+            Set_PanelActive(true);
+        }
     }
 
     // PlayerPrefs 값 호출
