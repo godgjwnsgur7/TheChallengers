@@ -17,7 +17,7 @@ public class BattleMgr
 
     ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
 
-    public bool isGameStartState
+    public bool isGamePlayingState
     {
         private set;
         get;
@@ -89,16 +89,21 @@ public class BattleMgr
         return charType;
     }
 
-    public void StartGame()
+    public void ReadyGame()
     {
-        isGameStartState = true;
+
+    }
+
+    public void GameStart()
+    {
+        isGamePlayingState = true;
         
         PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
     }
 
     public void EndGame(ENUM_TEAM_TYPE losingTeam)
     {
-        isGameStartState = false;
+        isGamePlayingState = false;
 
         BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
@@ -110,14 +115,11 @@ public class BattleMgr
 
     public void GoToLobby()
     {
+        // 로직 수정 필요함
+
         Time.timeScale = 1;
 
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
-    
-    protected IEnumerator IGameEndCheck()
-    {
-        yield return null;
-
-    }
+   
 }

@@ -110,7 +110,7 @@ public class PopupCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// 동기화 씬 이동을 위해서 사용
+    /// 씬 이동 동기화를 위해서 사용
     /// </summary>
     public void Open_SyncSceneLoadPopup(ENUM_SCENE_TYPE _sceneType)
     {

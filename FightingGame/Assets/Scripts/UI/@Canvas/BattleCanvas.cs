@@ -10,7 +10,7 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] StatusWindowUI buleTeamStatusWindow;
     [SerializeField] StatusWindowUI redTeamStatusWindow;
     [SerializeField] ResultWindowUI resultWindow;
-    [SerializeField] GameStartCounterUI gameStartCounter;
+    [SerializeField] GameStateNotifyUI gameStateNotify;
     [SerializeField] TimerUI timer;
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {

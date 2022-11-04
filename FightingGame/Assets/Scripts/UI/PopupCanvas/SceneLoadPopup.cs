@@ -13,13 +13,18 @@ public class SceneLoadPopup : PopupUI
     {
         this.gameObject.SetActive(true);
         
-        
-        StartCoroutine(SyncLoadScene(_sceneType));
+        PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(_sceneType, Update_ProgressBar);
+        // StartCoroutine(SyncLoadScene(_sceneType));
     }
 
     public void Close()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void Update_ProgressBar(float _fillAmount)
+    {
+        progressBar.fillAmount = _fillAmount;
     }
 
     IEnumerator SyncLoadScene(ENUM_SCENE_TYPE _sceneType)
@@ -43,7 +48,7 @@ public class SceneLoadPopup : PopupUI
             else
             {
                 // 일단 90% 로드가 완료되면 1초에 걸쳐 100%를 만들고 로드
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1.0f, timer);
                 if (progressBar.fillAmount == 1.0f)
                 {
                     op.allowSceneActivation = true;

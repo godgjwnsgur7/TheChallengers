@@ -1,28 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResultWindowUI : MonoBehaviour
 {
-    [SerializeField] GameObject winWindow;
-    [SerializeField] GameObject loseWindow;
-    [SerializeField] GameObject drawWindow;
+    [SerializeField] Text resultText;
+    
+    [SerializeField] RankingScoreUI rankingScore;
+    
+    [SerializeField] Text notifyCountText;
+
+
+
 
     public void Open(bool isDraw, bool isWin = true)
     {
         if(isDraw)
         {
-            drawWindow.SetActive(true);
+            // 무승부
+
         }
         else
         {
             if (isWin)
             {
-                winWindow.SetActive(true);
+               // 승리
+
             }
             else
             {
-                loseWindow.SetActive(true);
+                // 패배
+
             }
         }
 
@@ -32,9 +41,6 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Close()
     {
-        winWindow.SetActive(false);
-        loseWindow.SetActive(false);
-        drawWindow.SetActive(false);
     }
 
     public void OnClick_Check()
