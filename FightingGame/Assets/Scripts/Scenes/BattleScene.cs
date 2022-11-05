@@ -23,7 +23,7 @@ public class BattleScene : BaseScene
         if(PhotonLogicHandler.IsConnected)
         {
             map = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
-            playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
+            playerCamera.Set_MapData(map);
 
             if (PhotonLogicHandler.IsMasterClient)
             {
@@ -41,7 +41,7 @@ public class BattleScene : BaseScene
         else // 클라 하나 (테스트)
         {
             map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
-            playerCamera.Set_CameraBounds(map.maxBound, map.minBound);
+            playerCamera.Set_MapData(map);
 
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
             playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, testPlayerCharacterType));
