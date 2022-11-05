@@ -37,6 +37,8 @@ public class SoundMgr
                 audioSources[i] = go.AddComponent<AudioSource>();
                 go.transform.parent = root.transform;
             }
+
+            root.GetComponent<SoundObserver>().Init();
         }
 
         audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
@@ -46,7 +48,7 @@ public class SoundMgr
     {
         // BGM은 페이드 인아웃을 넣어야 함.
         foreach (AudioSource audioSources in audioSources)
-        {
+        { 
             audioSources.clip = null;
             audioSources.Stop();
         }
@@ -68,6 +70,7 @@ public class SoundMgr
 
         if (audioSource.isPlaying) audioSource.Stop();
 
+        audioSource.volume = 0f;
         audioSource.pitch = pitch;
         audioSource.clip = audioClip;
         audioSource.Play();
