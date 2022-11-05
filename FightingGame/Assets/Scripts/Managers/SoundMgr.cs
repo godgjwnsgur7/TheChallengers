@@ -27,6 +27,7 @@ public class SoundMgr
         if (root == null)
         {
             root = new GameObject { name = "@Sound" };
+            root.AddComponent<SoundObserver>();
             Object.DontDestroyOnLoad(root);
 
             string[] soundNames = System.Enum.GetNames(typeof(ENUM_SOUND_TYPE));
@@ -105,9 +106,15 @@ public class SoundMgr
         return audioClip;
     }
 
-    /* BGM 페이드 인 아웃 관련 레퍼런스 로직 (임시)
+    public void Observer_Scene(BaseScene _sceneType)
+    {
+        SoundObserver sceneObserver = GameObject.Find("@Sound").GetComponent<SoundObserver>();
+        sceneObserver.Change_Scene(_sceneType);
+    }
 
-    IEnumerator FadeInBGM()
+    //BGM 페이드 인 아웃 관련 레퍼런스 로직 (임시)
+
+    /*IEnumerator FadeInBGM()
     {
         float f_time = 0f;
         float currVolume = BGM.volume;
@@ -151,7 +158,5 @@ public class SoundMgr
             Set_BGM(nowIndex);
         }
         StartCoroutine(FadeIn());
-    }
-
-    */
+    }*/
 }

@@ -7,9 +7,9 @@ public class MainScene : BaseScene
 {
     public override void Init()
     {
-        base.Init();
-
         SceneType = ENUM_SCENE_TYPE.Main;
+
+        base.Init();
     }
 
     public override void Clear()

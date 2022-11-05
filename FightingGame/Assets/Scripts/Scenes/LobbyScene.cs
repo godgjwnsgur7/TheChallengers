@@ -7,9 +7,9 @@ public class LobbyScene : BaseScene
 {
     public override void Init()
     {
-        base.Init();
-
         SceneType = ENUM_SCENE_TYPE.Lobby;
+
+        base.Init();
 
         if(Managers.Battle.isCustom)
         {

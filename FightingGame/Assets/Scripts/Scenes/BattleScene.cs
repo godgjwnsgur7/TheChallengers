@@ -16,11 +16,11 @@ public class BattleScene : BaseScene
 
     public override void Init()
     {
-        base.Init();
-
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        if(PhotonLogicHandler.IsConnected)
+        base.Init();
+
+        if (PhotonLogicHandler.IsConnected)
         {
             map = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
             playerCamera.Set_MapData(map);

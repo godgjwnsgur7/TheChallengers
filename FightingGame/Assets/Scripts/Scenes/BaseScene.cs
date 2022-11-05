@@ -17,7 +17,7 @@ public abstract class BaseScene : MonoBehaviour
 
     public virtual void Init()
     {
-
+        Managers.Sound.Observer_Scene(GetComponent<BaseScene>());
     }
 
     public abstract void Clear();

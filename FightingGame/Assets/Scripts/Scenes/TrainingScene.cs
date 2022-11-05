@@ -26,8 +26,9 @@ public class TrainingScene : BaseScene
 
     public override void Init()
     {
-        base.Init();
         SceneType = ENUM_SCENE_TYPE.Training;
+
+        base.Init();
 
         string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), 0);
         map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();

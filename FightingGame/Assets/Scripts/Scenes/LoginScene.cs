@@ -7,9 +7,9 @@ public class LoginScene : BaseScene
 {
     public override void Init()
     {
-        base.Init();
-
         SceneType = ENUM_SCENE_TYPE.Login;
+
+        base.Init();
     }
 
     public override void Clear()
