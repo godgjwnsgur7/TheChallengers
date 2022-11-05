@@ -34,9 +34,7 @@ public class NetworkSyncData : MonoBehaviourPhoton
 
         if (PhotonLogicHandler.IsMasterClient)
         {
-
-
-            StartCoroutine(IGameStartTimeCheck(2.0f));
+            StartCoroutine(IGameStartDelayTimeCheck(1.0f));
         }
     }
 
@@ -68,8 +66,17 @@ public class NetworkSyncData : MonoBehaviourPhoton
     public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => updateTimerCallBack = _updateTimerCallBack;
 
     [BroadcastMethod]
+    public void Ready_Game()
+    {
+        Managers.Battle.GameReady();
+    }
+
+    [BroadcastMethod]
     public void Start_Game()
     {
+        if (!PhotonLogicHandler.IsMasterClient)
+            return;
+
         timerCoroutine = StartCoroutine(IStartTimer());
     }
 
@@ -92,11 +99,11 @@ public class NetworkSyncData : MonoBehaviourPhoton
 
     }
 
-    protected IEnumerator IGameStartTimeCheck(float waitTime)
+    protected IEnumerator IGameStartDelayTimeCheck(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        Managers.Battle.GameStart();
+        Managers.Battle.Sync_GameReady();
     }
 
     protected IEnumerator IStartTimer()

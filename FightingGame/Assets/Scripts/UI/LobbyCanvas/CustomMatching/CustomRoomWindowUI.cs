@@ -135,7 +135,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         this.RegisterRoomCallback();
         Init();
-
+        Managers.Battle.Join_CustomRoom();
         Set_CurrRoomInfo();
         this.gameObject.SetActive(true);
     }
@@ -146,6 +146,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         isInit = false;
+        Managers.Battle.Leave_CustomRoom();
 
         masterProfile.Clear();
         slaveProfile.Clear();

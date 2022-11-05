@@ -10,7 +10,7 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] StatusWindowUI buleTeamStatusWindow;
     [SerializeField] StatusWindowUI redTeamStatusWindow;
     [SerializeField] ResultWindowUI resultWindow;
-    [SerializeField] GameStateNotifyUI gameStateNotify;
+    [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
@@ -28,6 +28,11 @@ public class BattleCanvas : BaseCanvas
     public void Register_TimerCallBack()
     {
         timer.Register_TimerCallBack();
+    }
+
+    public void Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE effectType)
+    {
+        gameStateEffect.Play_GameStateEffect(effectType);
     }
 
     public void StartGame()

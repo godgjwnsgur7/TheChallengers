@@ -22,6 +22,8 @@ public class RankingScoreUI : MonoBehaviour
 
     public void Update_Score(int rankingScore)
     {
+
+
         // 커스텀 룸이면 리턴시켜 들어올 일도 없겠지만,
 
 
@@ -30,6 +32,7 @@ public class RankingScoreUI : MonoBehaviour
     private void Set_RankEmblemImage(char _rankEmblem)
     {
         // Image를 리턴시켜야 할지도 모름 ㅋㅋ
+        // 이펙트 때문.
 
         switch(_rankEmblem)
         {

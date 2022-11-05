@@ -12,12 +12,19 @@ public class BattleMgr
 {
     NetworkSyncData networkSyncData;
 
+    BattleCanvas battleCanvas = null;
     ActiveCharacter activeCharacter = null;
     ActiveCharacter enemyCharacter = null;
 
     ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
 
     public bool isGamePlayingState
+    {
+        private set;
+        get;
+    }
+
+    public bool isCustom
     {
         private set;
         get;
@@ -94,7 +101,7 @@ public class BattleMgr
 
     public void Init()
     {
-
+        isCustom = false;
     }
 
     public void Clear()
@@ -102,13 +109,8 @@ public class BattleMgr
 
     }
 
-    public void Sync_CreatNetworkSyncData()
-    {
-        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsMasterClient)
-            return;
-
-        networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
-    }
+    public void Join_CustomRoom() => isCustom = true;
+    public void Leave_CustomRoom() => isCustom = false;
 
     public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Set_TimerCallBack(_updateTimerCallBack);
     public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
@@ -121,23 +123,43 @@ public class BattleMgr
         return charType;
     }
 
-    public void ReadyGame()
+    public void Sync_CreatNetworkSyncData()
     {
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsMasterClient)
+            return;
 
+        networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
+    }
+
+    public void Sync_GameReady()
+    {
+        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Ready_Game);
     }
 
     public void GameStart()
     {
         isGamePlayingState = true;
-        
-        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
+
+        Debug.Log("게임 실행됨 여기서 키 락 해제");
+
+        if (PhotonLogicHandler.IsMasterClient)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
+    }
+
+    public void GameReady()
+    {
+        if (battleCanvas == null)
+            battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+
+        battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.ReadyAndStartTrigger);
     }
 
     public void EndGame(ENUM_TEAM_TYPE losingTeam)
     {
         isGamePlayingState = false;
 
-        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        if(battleCanvas == null)
+            battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
         bool isEnemyCharDead = enemyCharacter.currState == ENUM_PLAYER_STATE.Die;
         bool isMyCharDead = losingTeam == activeCharacter.teamType;
@@ -147,7 +169,7 @@ public class BattleMgr
 
     public void GoToLobby()
     {
-        // 로직 수정 필요함
+        // 로직 수정 필요함 -> 동시이동으로 변경
 
         Time.timeScale = 1;
 

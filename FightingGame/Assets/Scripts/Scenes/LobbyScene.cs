@@ -11,7 +11,7 @@ public class LobbyScene : BaseScene
 
         SceneType = ENUM_SCENE_TYPE.Lobby;
 
-        if(PhotonLogicHandler.IsJoinedRoom)
+        if(Managers.Battle.isCustom)
         {
             LobbyCanvas lobbyCanvas = Managers.UI.currCanvas.GetComponent<LobbyCanvas>();
             lobbyCanvas.Set_InTheCustomRoom();
