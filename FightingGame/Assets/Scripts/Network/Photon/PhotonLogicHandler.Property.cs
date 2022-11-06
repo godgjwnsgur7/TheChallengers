@@ -22,6 +22,7 @@ public enum ENUM_CUSTOM_ROOM_PROPERTIES
     MAP_TYPE = 0,
     MASTER_CLIENT_NICKNAME = 1,
     IS_CUSTOM = 2,
+    IS_STARTED = 3,
 }
 
 public enum ENUM_PLAYER_STATE_PROPERTIES
@@ -43,6 +44,7 @@ public class CustomRoomInfo
     public string MasterClientNickname => customProperty != null ? customProperty.masterClientNickname : string.Empty;
     public ENUM_MAP_TYPE CurrentMapType => customProperty != null ? customProperty.currentMapType : ENUM_MAP_TYPE.BasicMap;
     public bool IsCustom => customProperty != null ? customProperty.isCustom : false;
+    public bool IsStarted => customProperty != null ? customProperty.isStarted : false;
 }
 
 public class CustomRoomProperty
@@ -50,6 +52,7 @@ public class CustomRoomProperty
     public string masterClientNickname;
     public ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.BasicMap;
     public bool isCustom;
+    public bool isStarted;
 }
 
 public class CustomPlayerProperty
@@ -111,6 +114,16 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
     public void UnReady()
     {
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, true);
+    }
+
+    public void GameStart()
+    {
+        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED, true);
+    }
+
+    public void GameEnd()
+    {
+        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED, false);
     }
 
     public void ReadyAll()

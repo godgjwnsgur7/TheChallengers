@@ -257,6 +257,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 			Debug.Log($"현재 방 인원 : {room.currentPlayerCount}");
 			Debug.Log($"방 최대 인원 : {room.maxPlayerCount}");
 			Debug.Log($"커스텀한 방인가? : {room.IsCustom}");
+			Debug.Log($"이미 게임이 시작된 방인가? : {room.IsStarted}");
 		}
 	}
 

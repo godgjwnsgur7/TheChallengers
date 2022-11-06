@@ -205,14 +205,19 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
 
         roomOptions.CustomRoomProperties = new Hashtable();
-
         roomOptions.CustomRoomProperties.Add(ROOM_PROP_KEY, "");
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), mapType);
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), nickname);
-        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(), isCustomRoom);
+		roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(), isCustomRoom);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED.ToString(), false);
 
-        roomOptions.CustomRoomPropertiesForLobby = new string[] { ROOM_PROP_KEY, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), 
-            ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString() };
+		roomOptions.CustomRoomPropertiesForLobby = new string[] { 
+            ROOM_PROP_KEY, 
+            ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), 
+            ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), 
+            ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(),
+            ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED.ToString()
+        };
 
         return roomOptions;
     }
@@ -408,6 +413,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             var nickname = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
             var mapType = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
             var isCustom = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM);
+            var isStarted = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED);
 
             if (nickname == null || mapType == null)
                 continue;
@@ -421,7 +427,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
                 {
                     masterClientNickname = (string)nickname,
                     currentMapType = (ENUM_MAP_TYPE)mapType,
-                    isCustom = (bool)isCustom
+                    isCustom = (bool)isCustom,
+                    isStarted = (bool)isStarted,
                 },
 
                 currentPlayerCount = room.PlayerCount,
