@@ -57,12 +57,6 @@ public class PlayerCamera : MonoBehaviour
         transform.position = new Vector3(clampedX, clampedY, -10);
     }
 
-    public void Set_OrthographicSize(float _size) => cam.orthographicSize = _size;
-    public void Set_CameraZoomIn(float _zoomSpeed) 
-        => StartCoroutine(Zoom_In(_zoomSpeed));
-    public void Set_CameraZoomOut(float _zoomSpeed) 
-        => StartCoroutine(Zoom_Out(_zoomSpeed));
-
     IEnumerator Zoom_In(float _zoomSpeed)
     {
         while (cam.orthographicSize > playerCamSize)
@@ -127,4 +121,5 @@ public class PlayerCamera : MonoBehaviour
         this.mapCenterPos.z = this.transform.position.z;
     }
     public void Set_target(Transform _transform) => this.target = _transform;
+    public void Set_OrthographicSize(float _size) => cam.orthographicSize = _size;
 }
