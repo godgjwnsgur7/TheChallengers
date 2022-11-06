@@ -63,6 +63,8 @@ public class SoundObserver : MonoBehaviour
     public void Play_TrainingSceneBGM(ENUM_BGM_TYPE _bgmType)
         => Managers.Sound.Play(_bgmType, ENUM_SOUND_TYPE.BGM);
 
+
+    // 미완
     public void Pause_SceneBGM()
     {
         if (!bgmSource.isPlaying)
@@ -97,7 +99,7 @@ public class SoundObserver : MonoBehaviour
         bgmSource.volume = 1f;
         while (bgmSource.volume > 0)
         {
-            f_time += UnityEngine.Time.deltaTime;
+            f_time += Time.deltaTime;
             bgmSource.volume = Mathf.Lerp(currVolume, 0, f_time);
             yield return null;
         }

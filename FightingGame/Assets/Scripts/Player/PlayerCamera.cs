@@ -15,12 +15,13 @@ public class PlayerCamera : MonoBehaviour
     public float clampedX;
     public float clampedY;
 
+    ENUM_MAP_TYPE mapType;
     public Vector2 minBound;
     public Vector2 maxBound;
-    ENUM_MAP_TYPE mapType;
-    public Vector3 mapTarget;
+    public Vector3 mapCenterPos;
     float mapSize;
     float playerCamSize;
+    float zoomSpeed = 0.1f;
 
     private void LateUpdate()
     {
@@ -38,8 +39,8 @@ public class PlayerCamera : MonoBehaviour
     public void Init(Transform target)
     {
         cam = Camera.main;
-        Set_ZoomIn();
         Set_target(target);
+        Set_ZoomIn();
     }
 
     public void Set_CameraBounds(Vector2 _maxBound, Vector2 _minBound)
@@ -73,26 +74,32 @@ public class PlayerCamera : MonoBehaviour
             Set_OrthographicSize(cam.orthographicSize);
             yield return new WaitForSeconds(0.01f);
         }
+
+        Set_OrthographicSize(playerCamSize);
     }
 
     IEnumerator Zoom_Out(float _zoomSpeed)
     {
+        float zoomCount = (mapSize - cam.orthographicSize) / zoomSpeed;
+        float DistinceDelta = Vector3.Distance(transform.position, mapCenterPos) / zoomCount;
+
         while (cam.orthographicSize < mapSize)
         {
             halfHeight = cam.orthographicSize;
             halfWidth = halfHeight * Screen.width / Screen.height;
 
-            transform.position = Vector3.MoveTowards(transform.position, mapTarget, 0.5f);
-
+            transform.position = Vector3.MoveTowards(transform.position, mapCenterPos, DistinceDelta);
             cam.orthographicSize += _zoomSpeed;
             Set_OrthographicSize(cam.orthographicSize);
             yield return new WaitForSeconds(0.01f);
         }
+
+        Set_OrthographicSize(mapSize);
     }
 
     public void Set_MapData(BaseMap _map)
     {
-        Set_Maptarget(_map.transform);
+        Set_MapTransform(_map.transform.position);
         Set_CameraBounds(_map.maxBound, _map.minBound);
 
         mapType = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), _map.name);
@@ -101,24 +108,23 @@ public class PlayerCamera : MonoBehaviour
         Set_OrthographicSize(mapSize);
     }
 
-    // 맵의 위치값
-    public void Set_Maptarget(Transform _transform)
-    {
-        this.mapTarget = _transform.position;
-        this.mapTarget.z = this.transform.position.z;
-    }
-
     public void Set_ZoomOut()
     {
         if (this.mapSize > cam.orthographicSize)
-            StartCoroutine(Zoom_Out(0.1f));
+            StartCoroutine(Zoom_Out(zoomSpeed));
     }
 
     public void Set_ZoomIn()
     {
         if (this.playerCamSize < cam.orthographicSize)
-            StartCoroutine(Zoom_In(-0.1f));
+            StartCoroutine(Zoom_In(zoomSpeed * -1f));
     }
 
+    // 맵의 위치값
+    public void Set_MapTransform(Vector3 _position)
+    {
+        this.mapCenterPos = _position;
+        this.mapCenterPos.z = this.transform.position.z;
+    }
     public void Set_target(Transform _transform) => this.target = _transform;
 }
