@@ -473,6 +473,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         var nickname = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
         var mapType = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
         var isCustom = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM);
+        var isStarted = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED);
 
         if (nickname == null || mapType == null)
             return null;
@@ -480,6 +481,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         property.masterClientNickname = (string)nickname;
         property.currentMapType = (ENUM_MAP_TYPE)mapType;
         property.isCustom = (bool)isCustom;
+        property.isStarted = (bool)isStarted;
+
         return property;
     }
 
