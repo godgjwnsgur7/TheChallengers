@@ -235,7 +235,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210270447867617}
   - component: {fileID: 6219331264247767554}
-  - component: {fileID: 2368210270447867618}
   - component: {fileID: 7338957128392902277}
   - component: {fileID: 4961576060092030791}
   m_Layer: 5
@@ -278,52 +277,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210270447867618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210270447867616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!50 &7338957128392902277
 Rigidbody2D:
   serializedVersion: 4
@@ -381,7 +336,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210270869027280}
   - component: {fileID: 2957194473310026281}
-  - component: {fileID: 2368210270869027281}
   - component: {fileID: 8893247533527708273}
   - component: {fileID: 8019704400677849215}
   m_Layer: 5
@@ -424,52 +378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210270869027281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210270869027287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!50 &8893247533527708273
 Rigidbody2D:
   serializedVersion: 4
@@ -527,7 +437,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210270928486808}
   - component: {fileID: 5661005785643638798}
-  - component: {fileID: 2368210270928486809}
   - component: {fileID: 7870603920597990780}
   - component: {fileID: 5915154512792463933}
   m_Layer: 5
@@ -570,52 +479,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210270928486809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210270928486815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!50 &7870603920597990780
 Rigidbody2D:
   serializedVersion: 4
@@ -673,7 +538,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210271134067250}
   - component: {fileID: 3536921384121872524}
-  - component: {fileID: 2368210271134067251}
   - component: {fileID: 9173414712216677965}
   - component: {fileID: 3967515642292172650}
   m_Layer: 5
@@ -716,52 +580,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210271134067251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210271134067249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!50 &9173414712216677965
 Rigidbody2D:
   serializedVersion: 4
@@ -1014,6 +834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ea0504050efc646bf83799a0846943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUpdate: 0
 --- !u!1 &2368210271396466104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,7 +845,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210271396466105}
   - component: {fileID: 2215427386659814191}
-  - component: {fileID: 2368210271396466106}
   - component: {fileID: 8010892269489652628}
   - component: {fileID: 1632373770325105110}
   m_Layer: 5
@@ -1067,52 +887,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210271396466106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210271396466104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!50 &8010892269489652628
 Rigidbody2D:
   serializedVersion: 4
@@ -1245,7 +1021,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210271573010695}
   - component: {fileID: 8630218547193829167}
-  - component: {fileID: 2368210271573010688}
   - component: {fileID: 2976927514498113493}
   - component: {fileID: 888209660167505388}
   m_Layer: 5
@@ -1288,52 +1063,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210271573010688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210271573010694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!50 &2976927514498113493
 Rigidbody2D:
   serializedVersion: 4
@@ -1391,7 +1122,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2368210271859449556}
   - component: {fileID: 5342266021024613962}
-  - component: {fileID: 2368210271859449558}
   - component: {fileID: 2368210271859449557}
   - component: {fileID: 4738344052784232474}
   - component: {fileID: 2802812104912944288}
@@ -1435,52 +1165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaImage: {fileID: 0}
+  isSelect: 0
   triggerCount: 0
---- !u!114 &2368210271859449558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2368210271859449547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerDown
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
-          m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!222 &2368210271859449557
 CanvasRenderer:
   m_ObjectHideFlags: 0

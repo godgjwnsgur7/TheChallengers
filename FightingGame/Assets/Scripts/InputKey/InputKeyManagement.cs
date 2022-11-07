@@ -188,18 +188,18 @@ public class InputKeyManagement : MonoBehaviour
     // InputKey 초기화
     public void Reset_InputKeyValue()
     {
-        if (this.keyArea != null)
+        if (keyArea != null)
         {
-            this.keyArea.isSelect = false;
-            this.keyArea.Set_AreaColor();
+            keyArea.isSelect = false;
+            keyArea.Set_AreaColor();
         }
 
-        Destroy(this.inputKeyController.inputPanel.gameObject);
-        this.inputKeyController.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.inputKeyController.transform).GetComponent<InputPanel>();
+        Destroy(inputKeyController.inputPanel.gameObject);
+        inputKeyController.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", inputKeyController.transform).GetComponent<InputPanel>();
        
-        this.inputPanel = inputKeyController.inputPanel;
-        this.inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
-        this.panelTr = inputPanel.GetComponent<RectTransform>();
+        inputPanel = inputKeyController.inputPanel;
+        inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
+        panelTr = inputPanel.GetComponent<RectTransform>();
 
         keySettingDataList = new List<KeySettingData>();
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
@@ -225,7 +225,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         // 선택한 InputKey에 해당하는 Enum번호 찾기
         inputKeyNum = (int)Enum.Parse(typeof(ENUM_INPUTKEY_NAME), _inputKey.name);
-
+        
         // 기존 선택 상태이던 버튼 area 색상 변경
         if (keyArea != null)
         {
