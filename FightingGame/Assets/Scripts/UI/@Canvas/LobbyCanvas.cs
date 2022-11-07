@@ -7,6 +7,7 @@ public class LobbyCanvas : BaseCanvas
 {
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
+    [SerializeField] FightingInfoWindow fightingInfoWindow;
 
     public override void Init()
     {

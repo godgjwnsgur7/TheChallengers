@@ -109,7 +109,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if(property.isStarted)
         {
-            // 게임 시작한단 소리에용
+            // 게임 시작을 마스터에게 알림받음
         }
     }
 
@@ -121,6 +121,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         Debug.Log("상대에게 정보를 받아 갱신합니다.");
         YourProfile.Set_Character(property.characterType);
         YourProfile.Set_ReadyState(property.isReady);
+
+        Managers.Battle.Set_EnemyCharacterType(property.characterType);
     }
     #endregion
 
@@ -201,8 +203,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.CurrentRoomMemberCount == 2)
         {
-            PhotonLogicHandler.Instance.UnReadyAll(); // 모두 준비해제 시키고 배틀 씬 이동
-            PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
+            PhotonLogicHandler.Instance.UnReadyAll(); // 모두 준비해제 시키고
+            PhotonLogicHandler.Instance.GameStart(); // 게임 시작을 알림
+            
         }
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.", UnReadyMyProfile);

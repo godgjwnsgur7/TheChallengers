@@ -28,14 +28,14 @@ public class BattleScene : BaseScene
             if (PhotonLogicHandler.IsMasterClient)
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
-                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
+                playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_MyCharacterType()));
 
                 Managers.Battle.Sync_CreatNetworkSyncData();
             }
             else
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Red;
-                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Battle.Get_CharacterType()));
+                playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Battle.Get_MyCharacterType()));
             }
         }
         else // 클라 하나 (테스트)

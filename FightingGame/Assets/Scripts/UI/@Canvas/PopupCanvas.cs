@@ -16,7 +16,7 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] NotifyPopup notifyPopup;
     [SerializeField] LoadingPopup loadingPopup;
     [SerializeField] ErrorPopup errorPopup;
-    [SerializeField] SceneLoadPopup sceneLoadPopup;
+    [SerializeField] FadeEffectPopup fadeEffectPopup;
     [SerializeField] TimerNotifyPopup timerNotifyPopup;
 
     private void Start()
@@ -110,17 +110,28 @@ public class PopupCanvas : MonoBehaviour
     }
 
     /// <summary>
-    /// 씬 이동 동기화를 위해서 사용
+    /// 씬 이동 이펙트 팝업창 Popup Window
     /// </summary>
-    public void Open_SyncSceneLoadPopup(ENUM_SCENE_TYPE _sceneType)
+    public void Open_FadeInEffect(Action _FadeInCallBack, float _fadeInTime)
     {
-        if(sceneLoadPopup.isUsing)
+        if (fadeEffectPopup.isUsing)
         {
-            Debug.Log("이미 씬로드팝업이 사용중입니다.?");
+            Debug.Log("이미 페이드이펙트팝업이 사용중입니다.");
             return;
         }
 
-        sceneLoadPopup.Open(_sceneType);
+        fadeEffectPopup.Open_FadeInEffect(_FadeInCallBack, _fadeInTime);
+    }
+
+    public void Open_FadeOutEffect(Action _FadeOutCallBack, float _fadeOutTime)
+    {
+        if (fadeEffectPopup.isUsing)
+        {
+            Debug.Log("이미 페이드이펙트팝업이 사용중입니다.");
+            return;
+        }
+
+        fadeEffectPopup.Open_FadeOutEffect(_FadeOutCallBack, _fadeOutTime);
     }
 
     /// <summary>

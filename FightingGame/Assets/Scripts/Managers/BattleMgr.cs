@@ -16,7 +16,8 @@ public class BattleMgr
     ActiveCharacter activeCharacter = null;
     ActiveCharacter enemyCharacter = null;
 
-    ENUM_CHARACTER_TYPE charType = ENUM_CHARACTER_TYPE.Default;
+    ENUM_CHARACTER_TYPE MyCharType = ENUM_CHARACTER_TYPE.Default;
+    ENUM_CHARACTER_TYPE EnemyCharType = ENUM_CHARACTER_TYPE.Default;
 
     public bool isGamePlayingState
     {
@@ -117,10 +118,15 @@ public class BattleMgr
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
     public void Set_MyChar(ActiveCharacter _activeCharacter) => activeCharacter = _activeCharacter;
 
-    public void Set_CharacterType(ENUM_CHARACTER_TYPE _charType) => charType = _charType;
-    public ENUM_CHARACTER_TYPE Get_CharacterType()
+    public void Set_MyCharacterType(ENUM_CHARACTER_TYPE _charType) => MyCharType = _charType;
+    public void Set_EnemyCharacterType(ENUM_CHARACTER_TYPE _charType) => EnemyCharType = _charType;
+    public ENUM_CHARACTER_TYPE Get_MyCharacterType()
     {
-        return charType;
+        return MyCharType;
+    }
+    public ENUM_CHARACTER_TYPE Get_EnemyCharacterType()
+    {
+        return EnemyCharType;
     }
 
     public void Sync_CreatNetworkSyncData()
