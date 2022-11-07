@@ -47,37 +47,37 @@ public partial class PhotonLogicHandler
     }
 
     public static bool IsFullRoom
-	{
+    {
         get
-		{
+        {
             return CurrentRoomMemberCount == CurrentRoomMemberCountMax;
 
         }
-	}
+    }
 
     public static ENUM_MAP_TYPE CurrentMapType
-	{
+    {
         get
-		{
+        {
             var table = Instance.GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
             if (table == null)
                 return ENUM_MAP_TYPE.BasicMap;
 
-            if(!table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out object value))
+            if (!table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out object value))
                 return ENUM_MAP_TYPE.BasicMap;
 
             return (ENUM_MAP_TYPE)value;
-		}
-	}
+        }
+    }
 
     public static string CurrentMasterClientNickname
-	{
+    {
         get
-		{
+        {
             return PhotonNetwork.MasterClient.NickName;
-            
+
         }
-	}
+    }
 
     public static string CurrentMyNickname
     {
@@ -86,10 +86,10 @@ public partial class PhotonLogicHandler
             return PhotonNetwork.LocalPlayer.NickName;
         }
         set
-		{
+        {
             PhotonNetwork.LocalPlayer.NickName = value;
             Managers.Platform.DBUpdate(DB_CATEGORY.Nickname, value);
-		}
+        }
     }
 
     public static int CurrentRoomMemberCount
@@ -109,12 +109,12 @@ public partial class PhotonLogicHandler
     }
 
     public static string CurrentRoomName
-	{
+    {
         get
-		{
+        {
             return PhotonNetwork.CurrentRoom.Name;
-		}
-	}
+        }
+    }
 
     public static bool IsJoinedRoom
     {
@@ -137,6 +137,14 @@ public partial class PhotonLogicHandler
         get
         {
             return PhotonNetwork.GetPing();
+        }
+    }
+
+    public static float CurrentLoadingProgress
+    {
+        get
+        {
+            return PhotonNetwork.LevelLoadingProgress;
         }
     }
 

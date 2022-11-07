@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoadPopup : PopupUI
 {
-    [SerializeField] Image progressBar;
+    [SerializeField] Slider progressBar;
 
     public void Open(ENUM_SCENE_TYPE _sceneType)
     {
+        Init();
+
         this.gameObject.SetActive(true);
         
         PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(_sceneType, Update_ProgressBar);
@@ -22,9 +24,15 @@ public class SceneLoadPopup : PopupUI
         this.gameObject.SetActive(false);
     }
 
+    private void Init()
+    {
+        progressBar.value = 0f;
+
+    }
+
     public void Update_ProgressBar(float _fillAmount)
     {
-        progressBar.fillAmount = _fillAmount;
+        progressBar.value = _fillAmount;
     }
 
     IEnumerator SyncLoadScene(ENUM_SCENE_TYPE _sceneType)
@@ -39,8 +47,8 @@ public class SceneLoadPopup : PopupUI
             timer += Time.deltaTime;
             if (op.progress < 0.9f)
             {
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
-                if (progressBar.fillAmount >= op.progress)
+                progressBar.value = Mathf.Lerp(progressBar.value, op.progress, timer);
+                if (progressBar.value >= op.progress)
                 {
                     timer = 0f;
                 }
@@ -48,8 +56,8 @@ public class SceneLoadPopup : PopupUI
             else
             {
                 // 일단 90% 로드가 완료되면 1초에 걸쳐 100%를 만들고 로드
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1.0f, timer);
-                if (progressBar.fillAmount == 1.0f)
+                progressBar.value = Mathf.Lerp(progressBar.value, 1.0f, timer);
+                if (progressBar.value == 1.0f)
                 {
                     op.allowSceneActivation = true;
                     Close();

@@ -106,6 +106,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return; // 나의 변경된 정보면 리턴
 
         CurrMap = property.currentMapType;
+
+        if(property.isStarted)
+        {
+            // 게임 시작한단 소리에용
+        }
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
