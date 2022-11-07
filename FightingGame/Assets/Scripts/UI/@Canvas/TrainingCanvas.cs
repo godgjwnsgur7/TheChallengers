@@ -17,6 +17,7 @@ public class TrainingCanvas : BaseCanvas
     {
         base.Init();
         inputKeyController.Init();
+        inputKeyController.Set_PanelActive(false);
     }
 
 
