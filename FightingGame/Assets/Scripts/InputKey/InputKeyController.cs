@@ -22,15 +22,15 @@ public class InputKeyController : MonoBehaviour
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(null, null);
             panelTr = inputPanel.GetComponent<RectTransform>();
-            Set_PanelActive(false);
             Set_keySettingDataList();
         }
         else
         {
             inputPanel.Set_PoniterEvent(null, null);
             panelTr = inputPanel.GetComponent<RectTransform>();
-            Set_PanelActive(true);
         }
+
+        Set_PanelActive(true);
     }
 
     // PlayerPrefs 값 호출
@@ -50,19 +50,11 @@ public class InputKeyController : MonoBehaviour
 
                 keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
                 Set_InputKey(i);
-                Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
-
-            PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
         }
         else
-        {
             for (int i = 0; i < keySettingDataList.Count; i++)
-            {
                 Set_InputKey(i);
-                // Debug.Log((ENUM_INPUTKEY_NAME)i + "호출");
-            }
-        }
     }
 
     public void Set_InputKey(int _inputkeyNum)
@@ -75,7 +67,6 @@ public class InputKeyController : MonoBehaviour
     // size 조절
     public void Set_InputKeySize(float _size, int _inputkeyNum)
     {
-        // Debug.Log(inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum).name);
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
         float sizeRatio = (50 + _size) / 100;
         Vector3 changeScale = new Vector3(1, 1, 1) * sizeRatio;

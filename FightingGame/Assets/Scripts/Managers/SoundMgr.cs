@@ -14,7 +14,7 @@ public enum ENUM_SOUND_TYPE
 public class SoundMgr
 {
     AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max];
-
+    SoundObserver sceneObserver;
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
     // 임시로 여기에 셋팅
@@ -27,7 +27,7 @@ public class SoundMgr
         if (root == null)
         {
             root = new GameObject { name = "@Sound" };
-            root.AddComponent<SoundObserver>();
+            sceneObserver = root.AddComponent<SoundObserver>();
             Object.DontDestroyOnLoad(root);
 
             string[] soundNames = System.Enum.GetNames(typeof(ENUM_SOUND_TYPE));
@@ -37,8 +37,6 @@ public class SoundMgr
                 audioSources[i] = go.AddComponent<AudioSource>();
                 go.transform.parent = root.transform;
             }
-
-            root.GetComponent<SoundObserver>().Init();
         }
 
         audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
@@ -46,12 +44,9 @@ public class SoundMgr
 
     public void Clear()
     {
-        // BGM은 페이드 인아웃을 넣어야 함.
-        foreach (AudioSource audioSources in audioSources)
-        { 
-            audioSources.clip = null;
-            audioSources.Stop();
-        }
+        audioSources[1].clip = null;
+        audioSources[1].Stop();
+
         audioClips.Clear();
     }
 
@@ -74,6 +69,15 @@ public class SoundMgr
         audioSource.pitch = pitch;
         audioSource.clip = audioClip;
         audioSource.Play();
+        CoroutineHelper.StartCoroutine(FadeInBGM());
+    }
+
+    public void Check_Play(ENUM_BGM_TYPE bgmType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.BGM, float pitch = 0.0f)
+    {
+        if (audioSources[0].isPlaying)
+            CoroutineHelper.StartCoroutine(FadeOutBGM(bgmType));
+        else
+            Play(bgmType, soundType, pitch);
     }
 
 
@@ -87,9 +91,11 @@ public class SoundMgr
         if (audioClip == null) return;
 
         AudioSource audioSource = audioSources[(int)ENUM_SOUND_TYPE.SFX];
-        audioSource.pitch = pitch;
 
+        audioSource.volume = 0f;
+        audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);
+        CoroutineHelper.StartCoroutine(FadeInSFX());
     }
 
     private AudioClip GetOrAddAudioClip(string path)
@@ -109,41 +115,52 @@ public class SoundMgr
         return audioClip;
     }
 
-    public void Observer_Scene(BaseScene _sceneType)
-    {
-        SoundObserver sceneObserver = GameObject.Find("@Sound").GetComponent<SoundObserver>();
-        sceneObserver.Change_Scene(_sceneType);
-    }
+    public void Change_ObserverScene(BaseScene _sceneType) => sceneObserver.Change_Scene(_sceneType);
+    public void OnValueChanged_BGMVolume(float _volume) => audioSources[0].volume = _volume;
+    public void OnValueChanged_SFXVolume(float _volume) => audioSources[1].volume = _volume;
 
-    //BGM 페이드 인 아웃 관련 레퍼런스 로직 (임시)
-
-    /*IEnumerator FadeInBGM()
+    IEnumerator FadeInBGM()
     {
         float f_time = 0f;
-        float currVolume = BGM.volume;
-        while (BGM.volume < 0.9f)
+        float currVolume = audioSources[0].volume;
+        while (audioSources[0].volume < 0.9f)
         {
-            f_time += UnityEngine.Time.deltaTime;
-            BGM.volume = Mathf.Lerp(currVolume, 1, f_time);
+            f_time += Time.deltaTime;
+            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, 1, f_time));
             yield return null;
         }
-        BGM.volume = 1f;
+        audioSources[0].volume = 1f;
     }
-
-    IEnumerator FadeOutBGM()
+    
+    IEnumerator FadeOutBGM(ENUM_BGM_TYPE _bgmType)
     {
         float f_time = 0f;
-        float currVolume = BGM.volume;
-        BGM.volume = 1f;
-        while (BGM.volume > 0)
+        float currVolume = audioSources[0].volume;
+        audioSources[0].volume = 1f;
+        while (audioSources[0].volume > 0)
         {
-            f_time += UnityEngine.Time.deltaTime;
-            BGM.volume = Mathf.Lerp(currVolume, 0, f_time);
+            f_time += Time.deltaTime;
+            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, 0, f_time));
             yield return null;
         }
-        BGM.Pause();
+        audioSources[0].Stop();
+        Play(_bgmType);
     }
 
+    IEnumerator FadeInSFX()
+    {
+        float f_time = 0f;
+        float currVolume = audioSources[1].volume;
+        while (audioSources[1].volume < 0.9f)
+        {
+            f_time += Time.deltaTime;
+            OnValueChanged_SFXVolume(Mathf.Lerp(currVolume, 1, f_time));
+            yield return null;
+        }
+        audioSources[1].volume = 1f;
+    }
+
+    /* BGM 페이드 인 아웃 관련 레퍼런스 로직 (임시)
     IEnumerator FadeOutInBGM()
     {
         float f_time = 0f;
@@ -161,5 +178,12 @@ public class SoundMgr
             Set_BGM(nowIndex);
         }
         StartCoroutine(FadeIn());
-    }*/
+    }
+    
+    foreach (AudioSource audioSources in audioSources)
+    { 
+        audioSources.clip = null;
+        audioSources.Stop();
+    }
+     */
 }

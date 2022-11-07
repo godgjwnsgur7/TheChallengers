@@ -6,15 +6,7 @@ using FGDefine;
 public class SoundObserver : MonoBehaviour
 {
     private bool isSceneChange = false;
-
     public BaseScene currScene = null;
-    Coroutine runningCoroutine;
-    AudioSource bgmSource;
-
-    public void Init()
-    {
-        bgmSource = this.transform.Find("BGM").GetComponent<AudioSource>();
-    }
 
     void Update()
     {
@@ -47,62 +39,21 @@ public class SoundObserver : MonoBehaviour
             return;
         }
 
-        if (runningCoroutine != null)
-            StopCoroutine(runningCoroutine);
-
-        runningCoroutine = StartCoroutine(FadeInBGM());
         isSceneChange = false;
     }
 
     public void Play_BattleSceneBGM(ENUM_BGM_TYPE _bgmType)
-        => Managers.Sound.Play(_bgmType, ENUM_SOUND_TYPE.BGM);
+        => Managers.Sound.Check_Play(_bgmType, ENUM_SOUND_TYPE.BGM);
     public void Play_LobbySceneBGM(ENUM_BGM_TYPE _bgmType)
-        => Managers.Sound.Play(_bgmType, ENUM_SOUND_TYPE.BGM);
+        => Managers.Sound.Check_Play(_bgmType, ENUM_SOUND_TYPE.BGM);
     public void Play_MainSceneBGM(ENUM_BGM_TYPE _bgmType)
-        => Managers.Sound.Play(_bgmType, ENUM_SOUND_TYPE.BGM);
+        => Managers.Sound.Check_Play(_bgmType, ENUM_SOUND_TYPE.BGM);
     public void Play_TrainingSceneBGM(ENUM_BGM_TYPE _bgmType)
-        => Managers.Sound.Play(_bgmType, ENUM_SOUND_TYPE.BGM);
-
-
-    // 미완
-    public void Pause_SceneBGM()
-    {
-        if (!bgmSource.isPlaying)
-            return;
-
-        runningCoroutine = StartCoroutine(FadeOutBGM());
-    }
+        => Managers.Sound.Check_Play(_bgmType, ENUM_SOUND_TYPE.BGM);
 
     public void Change_Scene(BaseScene _basescene)
     {
         currScene = _basescene;
         isSceneChange = true;
-    }
-
-    IEnumerator FadeInBGM()
-    {
-        float f_time = 0f;
-        float currVolume = bgmSource.volume;
-        while (bgmSource.volume < 0.9f)
-        {
-            f_time += Time.deltaTime / 3;
-            bgmSource.volume = Mathf.Lerp(currVolume, 1, f_time);
-            yield return null;
-        }
-        bgmSource.volume = 1f;
-    }
-
-    IEnumerator FadeOutBGM()
-    {
-        float f_time = 0f;
-        float currVolume = bgmSource.volume;
-        bgmSource.volume = 1f;
-        while (bgmSource.volume > 0)
-        {
-            f_time += Time.deltaTime;
-            bgmSource.volume = Mathf.Lerp(currVolume, 0, f_time);
-            yield return null;
-        }
-        bgmSource.Pause();
     }
 }

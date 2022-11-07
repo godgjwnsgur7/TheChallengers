@@ -33,6 +33,9 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
+        if (inputKeyController.inputPanel == null)
+            inputKeyController.Init();
+
         this.inputPanel = inputKeyController.inputPanel;
         this.inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
         this.panelTr = inputPanel.GetComponent<RectTransform>();
