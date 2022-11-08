@@ -9,7 +9,6 @@ using System;
 public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
-    [SerializeField] InputKeyController inputKeyController;
 
     public bool isActive = false;
     private bool isInit = false;
@@ -24,7 +23,7 @@ public class InputKeyManagement : MonoBehaviour
     private KeyArea keyArea = null;
     private RectTransform areaRectTr = null;
 
-    private SettingPanel settingPanel;
+    [SerializeField] SettingPanel settingPanel;
     private EventTrigger eventTrigger;
     private EventTrigger.Entry triggerEntry = new EventTrigger.Entry
     {
@@ -33,19 +32,17 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
-        if (inputKeyController.inputPanel == null)
-            inputKeyController.Init();
-
-        this.inputPanel = inputKeyController.inputPanel;
-        this.inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
-        this.panelTr = inputPanel.GetComponent<RectTransform>();
-
-
         if (this.areaPanel == null)
         {
-            // AreaPanel Instantiate
             this.areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
             this.areaPanel.Init();
+        }
+
+        if (this.inputPanel == null)
+        {
+            this.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+            this.inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
+            this.panelTr = inputPanel.GetComponent<RectTransform>();
         }
 
         Set_keySettingDataList();
@@ -57,7 +54,6 @@ public class InputKeyManagement : MonoBehaviour
                 Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
 
             // 세팅패널 활성화
-            settingPanel = this.transform.root.Find("@SettingPanel").GetComponent<SettingPanel>();
             settingPanel.Init();
 
             isInit = true;
@@ -82,7 +78,6 @@ public class InputKeyManagement : MonoBehaviour
                 inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
                 keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
-                Set_InputKey(i);
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
         }
@@ -194,11 +189,9 @@ public class InputKeyManagement : MonoBehaviour
             keyArea.Set_AreaColor();
         }
 
-        Destroy(inputKeyController.inputPanel.gameObject);
-        inputKeyController.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", inputKeyController.transform).GetComponent<InputPanel>();
-       
-        inputPanel = inputKeyController.inputPanel;
-        inputPanel.Set_PoniterEvent(OnClick_BeginClick, OnClick_EndClick);
+        Destroy(inputPanel.gameObject);
+        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
         panelTr = inputPanel.GetComponent<RectTransform>();
 
         keySettingDataList = new List<KeySettingData>();
@@ -208,7 +201,6 @@ public class InputKeyManagement : MonoBehaviour
             inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
             keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
-            Set_InputKey(i);
         }
 
         for (int i = 0; i < keySettingDataList.Count; i++)
@@ -264,6 +256,9 @@ public class InputKeyManagement : MonoBehaviour
         PointerEventData data = (PointerEventData)_data;
         Vector2 movePos = inputKeyRectTr.anchoredPosition + data.delta;
         Set_InputKeyTransForm(movePos.x, movePos.y, inputKeyNum);
+
+        if (!settingPanel.isValueChange)
+            settingPanel.isValueChange = true;
     }
 
     private void OnBeginDrag() => settingPanel.Hide_SettingPanel();
@@ -295,6 +290,7 @@ public class InputKeyManagement : MonoBehaviour
     public void Save_KeySettingData()
     {
         PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
+        settingPanel.isValueChange = false;
     }
 
     public KeySettingData Get_KeySettingData(int _inputKeyNum)

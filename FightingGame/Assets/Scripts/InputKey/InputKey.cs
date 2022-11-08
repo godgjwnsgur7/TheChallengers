@@ -42,10 +42,4 @@ public class InputKey : MonoBehaviour
         
         OnPointUpCallBack(this);
     }
-
-    public void Set_PoniterEvent(Action<InputKey> _OnPointDownCallBack, Action<InputKey> _OnPointUpCallBack)
-    {
-        OnPointDownCallBack = _OnPointDownCallBack;
-        OnPointUpCallBack = _OnPointUpCallBack;
-    }
 }

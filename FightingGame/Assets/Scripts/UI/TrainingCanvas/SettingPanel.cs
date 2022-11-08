@@ -8,23 +8,23 @@ public class SettingPanel : UIElement
 {
     private float moveSpeed = 1;
     private bool isMove = false;
+    public bool isValueChange = false;
     public bool isHide = false;
     private Coroutine runningCoroutine = null;
 
     private int inputNum = -1;
     private InputPanel inputPanel = null;
     private InputKey inputKey = null;
-    private InputKeyManagement inputKeyManagement = null;
     private KeySettingData keySettingData = null;
 
     private AreaPanel areaPanel = null;
     private RectTransform thisRect;
 
+    [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] Slider sizeSlider;
     [SerializeField] Slider opacitySlider;
     [SerializeField] Text sizeText;
     [SerializeField] Text opacityText;
-    [SerializeField] Text HideButtonText;
 
     public override void Close()
     {
@@ -40,7 +40,6 @@ public class SettingPanel : UIElement
 
     public void Init()
     {
-        this.inputKeyManagement = this.transform.root.Find("InputKeyManagement").GetComponent<InputKeyManagement>();
         this.inputPanel = inputKeyManagement.inputPanel;
         this.areaPanel = inputKeyManagement.areaPanel;
         this.thisRect = GetComponent<RectTransform>();
@@ -74,6 +73,9 @@ public class SettingPanel : UIElement
 
         this.sizeText.text = $"{sizeValue}%";
         this.inputKeyManagement.Set_InputKeySize(sizeValue, this.inputNum);
+
+        if (!isValueChange)
+            isValueChange = true;
     }
 
     // Opacity 값 변경
@@ -89,6 +91,9 @@ public class SettingPanel : UIElement
 
         this.opacityText.text = $"{opacityValue}%";
         this.inputKeyManagement.Set_InputKeyOpacity(opacityValue, this.inputNum);
+
+        if (!isValueChange)
+            isValueChange = true;
     }
 
     // InputKet 이동
@@ -107,6 +112,9 @@ public class SettingPanel : UIElement
     {
         isMove = false;
         this.moveSpeed = 1;
+
+        if (!isValueChange)
+            isValueChange = true;
     }
 
     IEnumerator MovePosCoroutine(Vector2 _movePos, string _direction)
@@ -138,7 +146,13 @@ public class SettingPanel : UIElement
         }
     }
 
-    public void OnClick_CloseBtn() => Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "버튼 설정을 종료하시겠습니까?");
+    public void OnClick_CloseBtn()
+    {
+        if(isValueChange)
+            Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "값을 저장하지않고 종료하시겠습니까?");
+        else
+            Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "버튼 설정을 종료하시겠습니까?");
+    }
     public void OnClick_ResetBtn() => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
     public void OnClick_SaveBtn()
     {
@@ -162,6 +176,7 @@ public class SettingPanel : UIElement
     // 세팅패널 초기화
     public void Reset_SettingPanel()
     {
+        this.inputNum = -1;
         this.inputKey = null;
         this.sizeSlider.value = 50;
         this.opacitySlider.value = 100;
@@ -184,14 +199,14 @@ public class SettingPanel : UIElement
     public void Hide_SettingPanel()
     {
         if (runningCoroutine != null)
-            return;
+            StopCoroutine(runningCoroutine);
 
         isHide = true;
 
-        Vector3 target = thisRect.position;
-        float panelSizeY = thisRect.sizeDelta.y;
 
-        target.y += panelSizeY;
+        float showPos = Screen.height;
+        Vector3 target = thisRect.position;
+        target.y = showPos + thisRect.sizeDelta.y;
 
         runningCoroutine = StartCoroutine(MoveVec(target));
     }
@@ -199,14 +214,13 @@ public class SettingPanel : UIElement
     public void Show_SettingPanel()
     {
         if (runningCoroutine != null)
-            return;
+            StopCoroutine(runningCoroutine);
 
         isHide = false;
 
+        float showPos = Screen.height;
         Vector3 target = thisRect.position;
-        float panelSizeY = thisRect.sizeDelta.y;
-
-        target.y += panelSizeY * -1f;
+        target.y = showPos;
 
         runningCoroutine = StartCoroutine(MoveVec(target));
     }
@@ -215,7 +229,7 @@ public class SettingPanel : UIElement
     {
         while (thisRect.position != vec)
         {
-            thisRect.position = Vector3.MoveTowards(thisRect.position, vec, 5);
+            thisRect.position = Vector3.MoveTowards(thisRect.position, vec, 30);
             yield return new WaitForSeconds(Time.deltaTime);
         }
 

@@ -22,15 +22,15 @@ public class InputKeyController : MonoBehaviour
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(null, null);
             panelTr = inputPanel.GetComponent<RectTransform>();
-            Set_keySettingDataList();
-        }
-        else
-        {
-            inputPanel.Set_PoniterEvent(null, null);
-            panelTr = inputPanel.GetComponent<RectTransform>();
         }
 
+        Set_keySettingDataList();
         Set_PanelActive(true);
+    }
+
+    public void PointerDown(InputKey _inputkey)
+    {
+
     }
 
     // PlayerPrefs 값 호출
@@ -49,52 +49,42 @@ public class InputKeyController : MonoBehaviour
                 inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
                 keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
-                Set_InputKey(i);
             }
         }
         else
+        {
             for (int i = 0; i < keySettingDataList.Count; i++)
-                Set_InputKey(i);
-    }
+            {
+                inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
+                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
+                float ratio;
 
-    public void Set_InputKey(int _inputkeyNum)
-    {
-        Set_InputKeySize(keySettingDataList[_inputkeyNum].size, _inputkeyNum);
-        Set_InputKeyOpacity(keySettingDataList[_inputkeyNum].opacity, _inputkeyNum);
-        Set_InputKeyTransForm(keySettingDataList[_inputkeyNum].rectTrX, keySettingDataList[_inputkeyNum].rectTrY, _inputkeyNum);
-    }
+                // Set Size
+                ratio = (50 + keySettingDataList[i].size) / 100;
+                Vector3 changeVec = new Vector3(1, 1, 1) * ratio;
+                inputKeyRectTr.localScale = changeVec;
 
-    // size 조절
-    public void Set_InputKeySize(float _size, int _inputkeyNum)
-    {
-        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
-        float sizeRatio = (50 + _size) / 100;
-        Vector3 changeScale = new Vector3(1, 1, 1) * sizeRatio;
+                // Set Opacity
+                Image inputKeyImage;
+                ratio = 0.5f + (keySettingDataList[i].opacity / 200);
+                Transform imageObjectTr = inputKey.transform.Find("SlotImage");
+                if (imageObjectTr != null)
+                {
+                    inputKeyImage = imageObjectTr.GetComponent<Image>();
+                    Set_ChangeColor(inputKeyImage, ratio);
+                }
 
-        // InputKey 크기 변경
-        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-        inputKeyRectTr.localScale = changeScale;
-    }
+                imageObjectTr = inputKey.transform.Find("IconArea");
+                if (imageObjectTr != null)
+                {
+                    inputKeyImage = imageObjectTr.GetChild(0).GetComponent<Image>();
+                    Set_ChangeColor(inputKeyImage, ratio);
+                }
 
-    // opacity 조절
-    public void Set_InputKeyOpacity(float _opacity, int _inputkeyNum)
-    {
-        Image inputKeyImage;
-        float opacityRatio = 0.5f + (_opacity / 200);
-        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
-
-        Transform imageObjectTr = inputKey.transform.Find("SlotImage");
-        if (imageObjectTr != null)
-        {
-            inputKeyImage = imageObjectTr.GetComponent<Image>();
-            Set_ChangeColor(inputKeyImage, opacityRatio);
-        }
-
-        imageObjectTr = inputKey.transform.Find("IconArea");
-        if (imageObjectTr != null)
-        {
-            inputKeyImage = imageObjectTr.GetChild(0).GetComponent<Image>();
-            Set_ChangeColor(inputKeyImage, opacityRatio);
+                // Set Transform 
+                changeVec = new Vector2(keySettingDataList[i].rectTrX, keySettingDataList[i].rectTrY);
+                inputKeyRectTr.anchoredPosition = changeVec;
+            }
         }
     }
 
@@ -103,32 +93,6 @@ public class InputKeyController : MonoBehaviour
         Color changeColor = _inputKeyImage.color;
         changeColor.a = _opacityRatio;
         _inputKeyImage.color = changeColor;
-    }
-
-    // 위치 조절
-    public void Set_InputKeyTransForm(float _rectTrX, float _rectTrY, int _inputkeyNum)
-    {
-        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
-        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-
-        Vector2 movePos = CheckTransformRange(new Vector2(_rectTrX, _rectTrY));
-        inputKeyRectTr.anchoredPosition = movePos;
-    }
-
-    // UI 이동 범위 체크
-    public Vector2 CheckTransformRange(Vector2 changeVector)
-    {
-        Vector2 panelHalfSize = panelTr.sizeDelta / 2;
-
-        // InputKey 가로,세로 길이의 반
-        float scaleSizeX = (inputKeyRectTr.sizeDelta.x / 2) * inputKeyRectTr.localScale.x;
-        float scaleSizeY = (inputKeyRectTr.sizeDelta.y / 2) * inputKeyRectTr.localScale.y;
-
-        // 최대 이동범위 가로축 : InputPanel범위 안, 세로축 : InputPanel의 중심의 아래쪽
-        float vecRangeX = Mathf.Clamp(changeVector.x, -panelHalfSize.x + scaleSizeX, panelHalfSize.x - scaleSizeX);
-        float vecRangeY = Mathf.Clamp(changeVector.y, -panelHalfSize.y + scaleSizeY, panelTr.anchoredPosition.y - scaleSizeY);
-
-        return new Vector2(vecRangeX, vecRangeY);
     }
 
     public void Set_PanelActive(bool _binary)

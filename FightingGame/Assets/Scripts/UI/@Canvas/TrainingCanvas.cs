@@ -9,20 +9,20 @@ public class TrainingCanvas : BaseCanvas
     [Header("Set In Editor")]
     [SerializeField] StatusWindowUI blueTeamStatusWindowUI;
     [SerializeField] StatusWindowUI redTeamStatusWindowUI;
-    [SerializeField] InputKeyController inputKeyController;
     [SerializeField] ButtonPanel buttonPanel;
-
+    [SerializeField] SettingPanel settingPanel;
 
     public override void Init()
     {
         base.Init();
-        inputKeyController.Init();
-        inputKeyController.Set_PanelActive(false);
     }
 
 
     public void OnClick_OnOffButtonPanel()
     {
+        if (settingPanel.isOpen)
+            return;
+
         if (buttonPanel.gameObject.activeSelf)
             buttonPanel.Close();
         else
