@@ -109,29 +109,14 @@ public class PopupCanvas : MonoBehaviour
         timerNotifyPopup.Open(_message, _runTime);
     }
 
-    /// <summary>
-    /// 씬 이동 이펙트 팝업창 Popup Window
-    /// </summary>
-    public void Open_FadeInEffect(Action _FadeInCallBack, float _fadeInTime)
+    public void Play_FadeInEffect(Action _FadeInCallBack, float _fadeInTime)
     {
-        if (fadeEffectPopup.isUsing)
-        {
-            Debug.Log("이미 페이드이펙트팝업이 사용중입니다.");
-            return;
-        }
-
-        fadeEffectPopup.Open_FadeInEffect(_FadeInCallBack, _fadeInTime);
+        fadeEffectPopup.Play_FadeInEffect(_FadeInCallBack, _fadeInTime);
     }
 
-    public void Open_FadeOutEffect(Action _FadeOutCallBack, float _fadeOutTime)
+    public void Play_FadeOutEffect(Action _FadeOutCallBack, float _fadeOutTime)
     {
-        if (fadeEffectPopup.isUsing)
-        {
-            Debug.Log("이미 페이드이펙트팝업이 사용중입니다.");
-            return;
-        }
-
-        fadeEffectPopup.Open_FadeOutEffect(_FadeOutCallBack, _fadeOutTime);
+        fadeEffectPopup.Play_FadeOutEffect(_FadeOutCallBack, _fadeOutTime);
     }
 
     /// <summary>

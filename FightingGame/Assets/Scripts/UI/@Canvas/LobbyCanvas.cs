@@ -40,4 +40,9 @@ public class LobbyCanvas : BaseCanvas
     {
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
     }
+
+    public void Open_FightingInfoWindow()
+    {
+        fightingInfoWindow.Open();
+    }
 }

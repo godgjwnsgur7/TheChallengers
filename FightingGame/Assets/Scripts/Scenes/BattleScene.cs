@@ -18,6 +18,8 @@ public class BattleScene : BaseScene
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
 
+        Managers.UI.popupCanvas.Play_FadeOutEffect(null, 0.5f);
+
         base.Init();
 
         if (PhotonLogicHandler.IsConnected)

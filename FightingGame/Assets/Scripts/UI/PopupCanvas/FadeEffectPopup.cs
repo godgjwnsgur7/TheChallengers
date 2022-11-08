@@ -11,33 +11,52 @@ public class FadeEffectPopup : PopupUI
     Action fadeInCallBack = null;
     Action fadeOutCallBack = null;
 
-    public void Open_FadeInEffect(Action _fadeInCallBack, float _fadeInTime)
+    Coroutine fadeInCoroutine = null;
+    Coroutine fadeOutCoroutine = null;
+
+    private void Awake()
     {
-        fadeInCallBack = _fadeInCallBack;
-
-        backgroundImage.color = new Color(0, 0, 0, 1);
-
-        this.gameObject.SetActive(true);
-
-        StartCoroutine(IFadeInEffect(_fadeInTime));
+        
     }
 
-    public void Open_FadeOutEffect(Action _fadeOutCallBack, float _fadeOutTime)
+    /// <summary>
+    /// 서서히 검은 화면이 나타남
+    /// </summary>
+    public void Play_FadeInEffect(Action _fadeInCallBack, float _fadeInTime)
     {
-        fadeOutCallBack = _fadeOutCallBack;
+        if (fadeInCoroutine != null)
+            StopCoroutine(fadeInCoroutine);
+        if (fadeOutCoroutine != null)
+            StopCoroutine(fadeOutCoroutine);
+
+        fadeInCallBack = _fadeInCallBack;
 
         backgroundImage.color = new Color(0, 0, 0, 0);
 
         this.gameObject.SetActive(true);
 
-        StartCoroutine(IFadeOutEffect(_fadeOutTime));
+        fadeInCoroutine = StartCoroutine(IFadeInEffect(_fadeInTime));
+    }
+
+    /// <summary>
+    /// 서서히 검은 화면이 사라짐
+    /// </summary>
+    public void Play_FadeOutEffect(Action _fadeOutCallBack, float _fadeOutTime)
+    {
+        if (fadeInCoroutine != null)
+            StopCoroutine(fadeInCoroutine);
+        if (fadeOutCoroutine != null)
+            StopCoroutine(fadeOutCoroutine);
+
+        fadeOutCallBack = _fadeOutCallBack;
+
+        backgroundImage.color = new Color(0, 0, 0, 1);
+
+        fadeOutCoroutine = StartCoroutine(IFadeOutEffect(_fadeOutTime));
     }
 
     IEnumerator IFadeInEffect(float _fadeInTime)
     {
-        if(fadeInCallBack != null)
-            fadeInCallBack();
-
         Color tempColor = backgroundImage.color;
         while (tempColor.a < 1f)
         {
@@ -50,10 +69,18 @@ public class FadeEffectPopup : PopupUI
         }
 
         backgroundImage.color = tempColor;
+        if (fadeInCallBack != null)
+            fadeInCallBack();
+
+        fadeInCallBack = null;
+        fadeInCoroutine = null;
     }
 
     IEnumerator IFadeOutEffect(float _fadeOutTime)
     {
+        if (fadeOutCallBack != null)
+            fadeOutCallBack();
+
         Color tempColor = backgroundImage.color;
         while (tempColor.a > 0f)
         {
@@ -66,7 +93,10 @@ public class FadeEffectPopup : PopupUI
         }
 
         backgroundImage.color = tempColor;
-        if (fadeInCallBack != null)
-            fadeOutCallBack();
+        
+        fadeOutCallBack = null;
+        fadeOutCoroutine = null;
+
+        gameObject.SetActive(false);
     }
 }

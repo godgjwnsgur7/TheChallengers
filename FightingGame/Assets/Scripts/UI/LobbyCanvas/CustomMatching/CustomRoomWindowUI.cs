@@ -39,6 +39,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public bool isInit = false;
     public bool isRoomRegisting = false;
+    public bool isStarted = false;
 
     Coroutine readyLockCoroutine;
     Coroutine allReadyCheckCoroutine;
@@ -102,15 +103,17 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
-        if (PhotonLogicHandler.IsMasterClient)
-            return; // 나의 변경된 정보면 리턴
+        if (PhotonLogicHandler.IsMasterClient || isStarted)
+            return; // 나의 변경된 정보이거나 시작중이라면 리턴
+
+        if (property.isStarted) // 게임 시작을 알림받음
+        {
+            isStarted = true;
+            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow, 0.5f);
+            return;
+        }
 
         CurrMap = property.currentMapType;
-
-        if(property.isStarted)
-        {
-            // 게임 시작을 마스터에게 알림받음
-        }
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
@@ -205,7 +208,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         {
             PhotonLogicHandler.Instance.UnReadyAll(); // 모두 준비해제 시키고
             PhotonLogicHandler.Instance.GameStart(); // 게임 시작을 알림
-            
+            isStarted = true;
+            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow, 0.5f);
         }
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.", UnReadyMyProfile);
