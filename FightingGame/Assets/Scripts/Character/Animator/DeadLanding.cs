@@ -12,9 +12,6 @@ public class DeadLanding : StateMachineBehaviour
         if (activeCharacter == null)
             activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
 
-        if (!activeCharacter.isControl) return;
-
-
         CoroutineHelper.StartCoroutine(IDeadEffect());
     }
 
