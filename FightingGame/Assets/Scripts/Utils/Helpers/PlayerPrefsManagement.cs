@@ -22,12 +22,12 @@ public class KeySettingData
     }
 }
 
-public class SoundData
+public class VolumeData
 {
     public ENUM_SOUND_TYPE key;
     public float volume;
 
-    public SoundData(ENUM_SOUND_TYPE _key, float _volume)
+    public VolumeData(ENUM_SOUND_TYPE _key, float _volume)
     {
         key = _key;
         volume = _volume;
@@ -114,49 +114,49 @@ public class PlayerPrefsManagement : MonoBehaviour
     #endregion
 
     #region SoundData
-    public static bool Save_SoundData(List<SoundData> soundDatas)
+    public static bool Save_VolumeData(List<VolumeData> volumeDatas)
     {
-        if (soundDatas == null || soundDatas.Count != (int)ENUM_SOUND_TYPE.Max)
+        if (volumeDatas == null || volumeDatas.Count != (int)ENUM_SOUND_TYPE.Max)
         {
             Debug.Log("soundDatas Null이거나 키 전체가 넘어오지 않았습니다.");
             return false;
         }
 
-        for (int i = 0; i < soundDatas.Count; i++)
+        for (int i = 0; i < volumeDatas.Count; i++)
         {
-            string keyName = Enum.GetName(typeof(ENUM_SOUND_TYPE), soundDatas[i].key);
+            string keyName = Enum.GetName(typeof(ENUM_SOUND_TYPE), volumeDatas[i].key);
             if (keyName == null)
             {
                 Debug.Log($"soundDatas {i}번째 인자의 key Name가 없습니다.");
                 return false;
             }
 
-            Set_Float(soundDatas[i].volume, keyName, nameof(SoundData.volume));
+            Set_Float(volumeDatas[i].volume, keyName, nameof(VolumeData.volume));
         }
 
         PlayerPrefs.Save();
         return true;
     }
 
-    public static List<SoundData> Load_SoundData()
+    public static List<VolumeData> Load_VolumeData()
     {
-        List<SoundData> soundDatas = new List<SoundData>();
+        List<VolumeData> volumeDatas = new List<VolumeData>();
 
         for (int i = 0; i < (int)ENUM_SOUND_TYPE.Max; i++)
         {
             string inputKeyName = Enum.GetName(typeof(ENUM_SOUND_TYPE), i);
-            if (inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(SoundData.volume)}"))
+            if (inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(VolumeData.volume)}"))
             {
                 Debug.Log($"inputKeyName이 NUll이거나 저장된 {i}번째 키가 없습니다.");
                 return null;
             }
 
-            float _volume = Get_Float(inputKeyName, nameof(SoundData.volume));
+            float _volume = Get_Float(inputKeyName, nameof(VolumeData.volume));
 
-            soundDatas.Add(new SoundData((ENUM_SOUND_TYPE)i, _volume));;
+            volumeDatas.Add(new VolumeData((ENUM_SOUND_TYPE)i, _volume));;
         }
 
-        return soundDatas;
+        return volumeDatas;
     }
     #endregion
 }

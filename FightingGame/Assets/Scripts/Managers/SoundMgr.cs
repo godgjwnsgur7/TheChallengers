@@ -16,7 +16,7 @@ public class SoundMgr
     AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max];
     SoundObserver sceneObserver;
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
-    List<SoundData> soundDataList = null;
+    List<VolumeData> volumeDataList = null;
 
     // 임시로 여기에 셋팅
     private float bgmPitch = 0.7f;
@@ -42,12 +42,12 @@ public class SoundMgr
 
         audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
 
-        soundDataList = PlayerPrefsManagement.Load_SoundData();
-        if(soundDataList == null)
+        volumeDataList = PlayerPrefsManagement.Load_VolumeData();
+        if(volumeDataList == null)
         {
-            soundDataList = new List<SoundData>();
+            volumeDataList = new List<VolumeData>();
             for (int i = 0; i < (int)ENUM_SOUND_TYPE.Max; i++)
-                soundDataList.Insert(i, new SoundData((ENUM_SOUND_TYPE)i, 0.5f));
+                volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f));
         }
     }
 
@@ -127,19 +127,19 @@ public class SoundMgr
     public void Change_ObserverScene(BaseScene _sceneType) => sceneObserver.Change_Scene(_sceneType);
     public void OnValueChanged_BGMVolume(float _volume) => audioSources[0].volume = _volume;
     public void OnValueChanged_SFXVolume(float _volume) => audioSources[1].volume = _volume;
-    public void Save_SoundData() => PlayerPrefsManagement.Save_SoundData(soundDataList);
+    public void Save_SoundData() => PlayerPrefsManagement.Save_VolumeData(volumeDataList);
 
     IEnumerator FadeInBGM()
     {
         float f_time = 0f;
         float currVolume = audioSources[0].volume;
-        while (audioSources[0].volume < soundDataList[0].volume)
+        while (audioSources[0].volume < volumeDataList[0].volume)
         {
             f_time += Time.deltaTime;
-            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, soundDataList[0].volume, f_time));
+            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, volumeDataList[0].volume, f_time));
             yield return null;
         }
-        audioSources[0].volume = soundDataList[0].volume;
+        audioSources[0].volume = volumeDataList[0].volume;
     }
     
     IEnumerator FadeOutBGM(ENUM_BGM_TYPE _bgmType)
