@@ -109,14 +109,17 @@ public class PopupCanvas : MonoBehaviour
         timerNotifyPopup.Open(_message, _runTime);
     }
 
-    public void Play_FadeInEffect(Action _FadeInCallBack, float _fadeInTime)
+    public void Play_FadeInEffect(Action _FadeInCallBack = null)
     {
-        fadeEffectPopup.Play_FadeInEffect(_FadeInCallBack, _fadeInTime);
+        fadeEffectPopup.Play_FadeInEffect(_FadeInCallBack);
     }
 
-    public void Play_FadeOutEffect(Action _FadeOutCallBack, float _fadeOutTime)
+    public void Play_FadeOutEffect(Action _FadeOutCallBack = null)
     {
-        fadeEffectPopup.Play_FadeOutEffect(_FadeOutCallBack, _fadeOutTime);
+        if (!fadeEffectPopup.isUsing)
+            return;
+
+        fadeEffectPopup.Play_FadeOutEffect(_FadeOutCallBack);
     }
 
     /// <summary>

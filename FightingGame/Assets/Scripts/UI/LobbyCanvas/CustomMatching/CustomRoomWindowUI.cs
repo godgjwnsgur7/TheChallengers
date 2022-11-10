@@ -109,7 +109,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (property.isStarted) // 게임 시작을 알림받음
         {
             isStarted = true;
-            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow, 0.5f);
+            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
             return;
         }
 
@@ -209,7 +209,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.UnReadyAll(); // 모두 준비해제 시키고
             PhotonLogicHandler.Instance.GameStart(); // 게임 시작을 알림
             isStarted = true;
-            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow, 0.5f);
+            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
         }
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.", UnReadyMyProfile);

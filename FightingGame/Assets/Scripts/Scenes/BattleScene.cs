@@ -22,8 +22,6 @@ public class BattleScene : BaseScene
 
         if (PhotonLogicHandler.IsConnected)
         {
-            Managers.UI.popupCanvas.Play_FadeOutEffect(null, 0.5f);
-
             map = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
             playerCamera.Set_MapData(map);
 

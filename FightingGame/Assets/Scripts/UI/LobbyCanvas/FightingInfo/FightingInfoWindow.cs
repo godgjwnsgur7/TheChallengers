@@ -18,7 +18,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.RequestRoomCustomProperty();
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
         
-        Managers.UI.popupCanvas.Play_FadeOutEffect(Wait_PlayFadeInEffect, 0.5f);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Wait_PlayFadeInEffect);
     }
 
     public void Close()
@@ -61,7 +61,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         yield return new WaitForSeconds(waitTime);
 
-        Managers.UI.popupCanvas.Play_FadeInEffect(GameStart, 0.5f);
+        Managers.UI.popupCanvas.Play_FadeInEffect(GameStart);
     }
 
     public void GameStart()

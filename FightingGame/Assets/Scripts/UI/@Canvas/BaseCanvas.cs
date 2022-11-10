@@ -7,7 +7,7 @@ public abstract class BaseCanvas : MonoBehaviour
 {
     CanvasScaler scaler = null;
     
-    private void Start()
+    private void Awake()
     {
         Managers.UI.Init(); // 임시
         Init();

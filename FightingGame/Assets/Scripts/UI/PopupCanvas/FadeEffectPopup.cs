@@ -14,15 +14,12 @@ public class FadeEffectPopup : PopupUI
     Coroutine fadeInCoroutine = null;
     Coroutine fadeOutCoroutine = null;
 
-    private void Awake()
-    {
-        
-    }
+    float fadeEffectRunTime = 0.5f;
 
     /// <summary>
     /// 서서히 검은 화면이 나타남
     /// </summary>
-    public void Play_FadeInEffect(Action _fadeInCallBack, float _fadeInTime)
+    public void Play_FadeInEffect(Action _fadeInCallBack = null)
     {
         if (fadeInCoroutine != null)
             StopCoroutine(fadeInCoroutine);
@@ -35,13 +32,13 @@ public class FadeEffectPopup : PopupUI
 
         this.gameObject.SetActive(true);
 
-        fadeInCoroutine = StartCoroutine(IFadeInEffect(_fadeInTime));
+        fadeInCoroutine = StartCoroutine(IFadeInEffect(fadeEffectRunTime));
     }
 
     /// <summary>
     /// 서서히 검은 화면이 사라짐
     /// </summary>
-    public void Play_FadeOutEffect(Action _fadeOutCallBack, float _fadeOutTime)
+    public void Play_FadeOutEffect(Action _fadeOutCallBack = null)
     {
         if (fadeInCoroutine != null)
             StopCoroutine(fadeInCoroutine);
@@ -52,7 +49,7 @@ public class FadeEffectPopup : PopupUI
 
         backgroundImage.color = new Color(0, 0, 0, 1);
 
-        fadeOutCoroutine = StartCoroutine(IFadeOutEffect(_fadeOutTime));
+        fadeOutCoroutine = StartCoroutine(IFadeOutEffect(fadeEffectRunTime));
     }
 
     IEnumerator IFadeInEffect(float _fadeInTime)
