@@ -93,12 +93,6 @@ public class NetworkSyncData : MonoBehaviourPhoton
         updateTimerCallBack(_gameTimeLimit);
     }
 
-    [BroadcastMethod]
-    public void Sync_GoToLobby()
-    {
-
-    }
-
     protected IEnumerator IGameStartDelayTimeCheck(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);

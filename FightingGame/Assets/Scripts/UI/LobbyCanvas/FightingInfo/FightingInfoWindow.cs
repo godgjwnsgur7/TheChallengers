@@ -76,6 +76,6 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         yield return new WaitForSeconds(delayTime);
 
-        PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Battle);
+        Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Battle);
     }
 }

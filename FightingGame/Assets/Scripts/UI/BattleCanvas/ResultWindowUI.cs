@@ -74,13 +74,33 @@ public class ResultWindowUI : MonoBehaviour
             yield return new WaitForSeconds(1f);
             count--;
         }
-
-        notifyCountText.text = "로비로 이동합니다.";
+        
+        notifyCountText.text = $"{count}초 뒤에 로비로 이동합니다.";
         counterCorotine = null;
 
         if (PhotonLogicHandler.IsMasterClient)
         {
-            PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE.Lobby);
+            PhotonLogicHandler.Instance.GameEnd();
+
+            Managers.UI.popupCanvas.Play_FadeInEffect(GoTo_Lobby);
         }
+        else
+        {
+            Managers.UI.popupCanvas.Play_FadeInEffect();
+        }
+    }
+    public void GoTo_Lobby()
+    {
+        if (PhotonLogicHandler.IsMasterClient)
+        {
+            StartCoroutine(IWaitGoToLobby(1.0f));
+        }
+    }
+
+    protected IEnumerator IWaitGoToLobby(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
 }

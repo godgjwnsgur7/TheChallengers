@@ -61,6 +61,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.onEnterRoomPlayer += SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
         PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
+
+        this.RegisterRoomCallback();
     }
 
     private void OnDisable()
@@ -69,6 +71,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
         PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
+
+        this.UnregisterRoomCallback();
     }
 
     #region CallBack, OnUpdateProperty 함수 (Server)
@@ -103,6 +107,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
+        Debug.Log($"isStarted : {property.isStarted}");
+
         if (PhotonLogicHandler.IsMasterClient || isStarted)
             return; // 나의 변경된 정보이거나 시작중이라면 리턴
 
@@ -143,11 +149,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (this.gameObject.activeSelf)
             return;
 
-        this.RegisterRoomCallback();
+        this.gameObject.SetActive(true);
+
         Init();
         Managers.Battle.Join_CustomRoom();
         Set_CurrRoomInfo();
-        this.gameObject.SetActive(true);
     }
 
     private void Close()
@@ -161,7 +167,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         masterProfile.Clear();
         slaveProfile.Clear();
 
-        this.UnregisterRoomCallback();
         this.gameObject.SetActive(false);
     }
 
