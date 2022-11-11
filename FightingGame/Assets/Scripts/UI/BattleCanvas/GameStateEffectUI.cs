@@ -38,7 +38,7 @@ public class GameStateEffectUI : MonoBehaviour
     {
         if (PhotonLogicHandler.IsMasterClient)
         {
-
+            // 타임아웃 시, 미구현
         }
 
         this.gameObject.SetActive(false);

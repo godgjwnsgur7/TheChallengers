@@ -107,8 +107,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
-        Debug.Log($"isStarted : {property.isStarted}");
-
         if (PhotonLogicHandler.IsMasterClient || isStarted)
             return; // 나의 변경된 정보이거나 시작중이라면 리턴
 

@@ -20,7 +20,7 @@ public class DeadLanding : StateMachineBehaviour
         SpriteRenderer charSpriteRenderer = activeCharacter.GetComponent<SpriteRenderer>();
         Color color = charSpriteRenderer.color;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         while (color.a > 0.1f)
         {

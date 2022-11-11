@@ -57,13 +57,6 @@ public class ResultWindowUI : MonoBehaviour
     {
     }
 
-    public void OnClick_Check()
-    {
-        Close();
-
-        Managers.Battle.GoToLobby();
-    }
-
     protected IEnumerator INotifyTextCounter()
     {
         int count = 3;
@@ -89,6 +82,7 @@ public class ResultWindowUI : MonoBehaviour
             Managers.UI.popupCanvas.Play_FadeInEffect();
         }
     }
+
     public void GoTo_Lobby()
     {
         if (PhotonLogicHandler.IsMasterClient)

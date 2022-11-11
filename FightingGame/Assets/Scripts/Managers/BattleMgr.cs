@@ -167,19 +167,10 @@ public class BattleMgr
         if(battleCanvas == null)
             battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
-        bool isEnemyCharDead = enemyCharacter.currState == ENUM_PLAYER_STATE.Die;
-        bool isMyCharDead = losingTeam == activeCharacter.teamType;
+        bool isWin = (losingTeam != activeCharacter.teamType);
+        bool isDraw = (isWin ? enemyCharacter.currState == ENUM_PLAYER_STATE.Die
+            : activeCharacter.currState == ENUM_PLAYER_STATE.Die);
 
-        battleCanvas.EndGame(isEnemyCharDead, isMyCharDead);
+        battleCanvas.EndGame(isDraw, isWin);
     }
-
-    public void GoToLobby()
-    {
-        // 로직 수정 필요함 -> 동시이동으로 변경
-
-        Time.timeScale = 1;
-
-        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
-    }
-   
 }
