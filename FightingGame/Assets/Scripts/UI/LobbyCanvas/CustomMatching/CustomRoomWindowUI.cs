@@ -82,7 +82,10 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void SlaveClientEnterCallBack(string nickname)
     {
         if (PhotonLogicHandler.IsMasterClient)
+        {
             YourProfile.Set_UserNickname(nickname);
+            Managers.Battle.Set_SlaveNickname(nickname);
+        }
 
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
@@ -145,12 +148,15 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void Open()
     {
         if (this.gameObject.activeSelf)
+        {
+            Debug.Log("커스텀 룸 윈도우가 이미 열려있습니다.");
             return;
+        }
 
         this.gameObject.SetActive(true);
 
         Init();
-        Managers.Battle.Join_CustomRoom();
+        Managers.Battle.Join_CustomRoomUI();
         Set_CurrRoomInfo();
     }
 
@@ -160,7 +166,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         isInit = false;
-        Managers.Battle.Leave_CustomRoom();
+        Managers.Battle.Leave_CustomRoomUI();
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -195,10 +201,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         
         if (!PhotonLogicHandler.IsMasterClient)
             YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
-
-        if (PhotonLogicHandler.CurrentRoomMemberCount == 2 && YourProfile.Get_UserNickname() == "")
-            YourProfile.Set_UserNickname("유저를 기다리는 중...");
-        
+        else if(PhotonLogicHandler.CurrentRoomMemberCount == 2 && YourProfile.Get_UserNickname() == "")
+            YourProfile.Set_UserNickname(Managers.Battle.Get_SlaveNickname());   
+            
         CurrMap = PhotonLogicHandler.CurrentMapType;
     }
 

@@ -19,6 +19,8 @@ public class BattleMgr
     ENUM_CHARACTER_TYPE MyCharType = ENUM_CHARACTER_TYPE.Default;
     ENUM_CHARACTER_TYPE EnemyCharType = ENUM_CHARACTER_TYPE.Default;
 
+    string slaveNickname = null;
+
     public bool isGamePlayingState
     {
         private set;
@@ -110,8 +112,8 @@ public class BattleMgr
 
     }
 
-    public void Join_CustomRoom() => isCustom = true;
-    public void Leave_CustomRoom() => isCustom = false;
+    public void Join_CustomRoomUI() => isCustom = true;
+    public void Leave_CustomRoomUI() => isCustom = false;
 
     public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Set_TimerCallBack(_updateTimerCallBack);
     public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
@@ -172,5 +174,15 @@ public class BattleMgr
             : activeCharacter.currState == ENUM_PLAYER_STATE.Die);
 
         battleCanvas.EndGame(isDraw, isWin);
+    }
+
+    public void Set_SlaveNickname(string _slaveNickname) => slaveNickname = _slaveNickname;
+
+    public string Get_SlaveNickname()
+    {
+        if(slaveNickname == null)
+            Debug.Log("slaveNickname is Null!");
+
+        return slaveNickname;
     }
 }
