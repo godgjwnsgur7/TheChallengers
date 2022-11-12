@@ -21,7 +21,7 @@ public class TrainingScene : BaseScene
 
     public override void Clear()
     {
-
+        base.Clear();
     }
 
     public override void Init()
@@ -29,7 +29,7 @@ public class TrainingScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Training;
 
         base.Init();
-
+        
         string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), 0);
         map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
         playerCamera.Set_MapData(map);
@@ -181,5 +181,10 @@ public class TrainingScene : BaseScene
         Change_EnemyType(_charType);
         Debug.Log(enemyType);
         Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, null, $"{enemyType}를 소환하시겠습니까?");
+    }
+
+    public override void Update_BGM()
+    {
+        Managers.Sound.Play(ENUM_BGM_TYPE.TestBGM, ENUM_SOUND_TYPE.BGM);
     }
 }

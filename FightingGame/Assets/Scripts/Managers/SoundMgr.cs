@@ -11,12 +11,15 @@ public enum ENUM_SOUND_TYPE
     Max
 }
 
-public class SoundMgr
+public class SoundMgr : ISubject
 {
-    AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max];
-    SoundObserver sceneObserver;
-    Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
     List<VolumeData> volumeDataList = null;
+    List<IObserver> list_Observer = new List<IObserver>();
+
+    AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max];
+    Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
+
+    Coroutine bgmCoroutine;
 
     // 임시로 여기에 셋팅
     private float bgmPitch = 0.7f;
@@ -28,7 +31,6 @@ public class SoundMgr
         if (root == null)
         {
             root = new GameObject { name = "@Sound" };
-            sceneObserver = root.AddComponent<SoundObserver>();
             Object.DontDestroyOnLoad(root);
 
             string[] soundNames = System.Enum.GetNames(typeof(ENUM_SOUND_TYPE));
@@ -36,6 +38,7 @@ public class SoundMgr
             {
                 GameObject go = new GameObject { name = soundNames[i] };
                 audioSources[i] = go.AddComponent<AudioSource>();
+                audioSources[i].volume = 0f;
                 go.transform.parent = root.transform;
             }
         }
@@ -53,8 +56,11 @@ public class SoundMgr
 
     public void Clear()
     {
-        audioSources[1].clip = null;
-        audioSources[1].Stop();
+        /*foreach(AudioSource audios in audioSources)
+        {
+            audios.clip = null;
+        }*/
+        PauseBGM();
 
         audioClips.Clear();
     }
@@ -74,21 +80,29 @@ public class SoundMgr
 
         if (audioSource.isPlaying) audioSource.Stop();
 
-        audioSource.volume = 0f;
+        //audioSource.volume = 0f;
         audioSource.pitch = pitch;
         audioSource.clip = audioClip;
         audioSource.Play();
-        CoroutineHelper.StartCoroutine(FadeInBGM());
+
+        if (bgmCoroutine != null)
+            CoroutineHelper.StopCoroutine(bgmCoroutine);
+
+        bgmCoroutine = CoroutineHelper.StartCoroutine(FadeInBGM());
     }
 
     public void Check_Play(ENUM_BGM_TYPE bgmType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.BGM, float pitch = 0.0f)
     {
-        if (audioSources[0].isPlaying)
-            CoroutineHelper.StartCoroutine(FadeOutBGM(bgmType));
-        else
-            Play(bgmType, soundType, pitch);
+         Play(bgmType, soundType, pitch);
     }
 
+    public void PauseBGM()
+    {
+        if (bgmCoroutine != null)
+            CoroutineHelper.StopCoroutine(bgmCoroutine);
+
+        bgmCoroutine = CoroutineHelper.StartCoroutine(FadeOutBGM());
+    }
 
     public void Play(ENUM_SFX_TYPE sfxType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.SFX, float pitch = 0.0f)
     {
@@ -124,7 +138,6 @@ public class SoundMgr
         return audioClip;
     }
 
-    public void Change_ObserverScene(BaseScene _sceneType) => sceneObserver.Change_Scene(_sceneType);
     public void OnValueChanged_BGMVolume(float _volume) => audioSources[0].volume = _volume;
     public void OnValueChanged_SFXVolume(float _volume) => audioSources[1].volume = _volume;
     public void Save_SoundData() => PlayerPrefsManagement.Save_VolumeData(volumeDataList);
@@ -142,18 +155,17 @@ public class SoundMgr
         audioSources[0].volume = volumeDataList[0].volume;
     }
     
-    IEnumerator FadeOutBGM(ENUM_BGM_TYPE _bgmType)
+    IEnumerator FadeOutBGM()
     {
         float f_time = 0f;
         float currVolume = audioSources[0].volume;
         while (audioSources[0].volume > 0)
         {
-            f_time += Time.deltaTime;
+            f_time += Time.deltaTime * 1.5f;
             OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, 0, f_time));
             yield return null;
         }
-        audioSources[0].Stop();
-        Play(_bgmType);
+        audioSources[0].Pause();
     }
 
     IEnumerator FadeInSFX()
@@ -195,4 +207,29 @@ public class SoundMgr
         audioSources.Stop();
     }
      */
+
+    public void ResisterObserver(IObserver _observer)
+    {
+        if(list_Observer.Contains(_observer))
+            return;
+
+        list_Observer.Add(_observer);
+        Debug.Log($"{_observer} 추가");
+    }
+    public void RemoveObserver(IObserver _observer)
+    {
+        if (!list_Observer.Contains(_observer))
+            return;
+
+        list_Observer.Remove(_observer);
+        Debug.Log($"{_observer} 삭제");
+    }
+
+    public void NotifyObserver()
+    {
+        foreach(IObserver _ios in list_Observer)
+        {
+            _ios.Update_BGM();
+        }
+    }
 }

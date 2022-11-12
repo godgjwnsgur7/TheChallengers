@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using FGDefine;
 
-public abstract class BaseScene : MonoBehaviour
+public abstract class BaseScene : MonoBehaviour, IObserver
 {
     private ENUM_SCENE_TYPE sceneType;
     public ENUM_SCENE_TYPE SceneType { get; protected set; } = ENUM_SCENE_TYPE.Unknown;
@@ -13,16 +13,21 @@ public abstract class BaseScene : MonoBehaviour
     {
         Debug.Log("확인");
         yield return null;
+        Managers.Sound.ResisterObserver(this);
         Init();
     }
 
     public virtual void Init()
     {
-       Managers.Sound.Change_ObserverScene(GetComponent<BaseScene>());
-
-       Managers.UI.popupCanvas.Play_FadeOutEffect();
+        Managers.Sound.NotifyObserver();
+        Managers.UI.popupCanvas.Play_FadeOutEffect();
     }
 
-    public abstract void Clear();
+    public virtual void Clear()
+    {
+        Managers.Sound.RemoveObserver(this);
+    }
+
+    public abstract void Update_BGM();
 }
  

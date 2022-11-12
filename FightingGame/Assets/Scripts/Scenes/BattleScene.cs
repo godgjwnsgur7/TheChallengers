@@ -54,7 +54,7 @@ public class BattleScene : BaseScene
 
     public override void Clear()
     {
-
+        base.Clear();
     }
 
     public ActiveCharacter Init_Character(Vector3 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
@@ -75,5 +75,10 @@ public class BattleScene : BaseScene
         }
 
         return activeCharacter;
+    }
+
+    public override void Update_BGM()
+    {
+        Managers.Sound.Play(ENUM_BGM_TYPE.TestBGM, ENUM_SOUND_TYPE.BGM);
     }
 }
