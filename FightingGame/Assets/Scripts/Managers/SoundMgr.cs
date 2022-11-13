@@ -46,7 +46,7 @@ public class SoundMgr : ISubject
         audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
 
         volumeDataList = PlayerPrefsManagement.Load_VolumeData();
-        if(volumeDataList == null)
+        if (volumeDataList == null)
         {
             volumeDataList = new List<VolumeData>();
             for (int i = 0; i < (int)ENUM_SOUND_TYPE.Max; i++)
@@ -93,7 +93,7 @@ public class SoundMgr : ISubject
 
     public void Check_Play(ENUM_BGM_TYPE bgmType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.BGM, float pitch = 0.0f)
     {
-         Play(bgmType, soundType, pitch);
+        Play(bgmType, soundType, pitch);
     }
 
     public void PauseBGM()
@@ -140,7 +140,13 @@ public class SoundMgr : ISubject
 
     public void OnValueChanged_BGMVolume(float _volume) => audioSources[0].volume = _volume;
     public void OnValueChanged_SFXVolume(float _volume) => audioSources[1].volume = _volume;
-    public void Save_SoundData() => PlayerPrefsManagement.Save_VolumeData(volumeDataList);
+    public void Save_SoundData()
+    {
+        volumeDataList[0].volume = audioSources[0].volume;
+        volumeDataList[1].volume = audioSources[1].volume;
+
+        PlayerPrefsManagement.Save_VolumeData(volumeDataList);
+    }
 
     IEnumerator FadeInBGM()
     {
@@ -154,7 +160,7 @@ public class SoundMgr : ISubject
         }
         audioSources[0].volume = volumeDataList[0].volume;
     }
-    
+
     IEnumerator FadeOutBGM()
     {
         float f_time = 0f;
@@ -180,6 +186,8 @@ public class SoundMgr : ISubject
         }
         audioSources[1].volume = 1f;
     }
+
+    public List<VolumeData> Get_VolumeDatas() => volumeDataList;
 
     /* BGM 페이드 인 아웃 관련 레퍼런스 로직 (임시)
     IEnumerator FadeOutInBGM()

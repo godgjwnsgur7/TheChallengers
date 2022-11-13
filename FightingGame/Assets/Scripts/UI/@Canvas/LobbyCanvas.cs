@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using FGDefine;
 public class LobbyCanvas : BaseCanvas
@@ -8,10 +9,13 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] FightingInfoWindow fightingInfoWindow;
+    [SerializeField] VolumeSlider volumeSlider;
 
     public override void Init()
     {
         base.Init();
+
+        volumeSlider.Init();
     }
 
     public void Set_InTheCustomRoom()
