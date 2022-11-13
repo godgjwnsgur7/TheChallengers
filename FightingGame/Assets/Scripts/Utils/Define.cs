@@ -133,6 +133,7 @@ namespace FGDefine
     public enum ENUM_BGM_TYPE
     {
         TestBGM, // 테스트용
+        MainBGM,
     }
 
     /// <summary>
