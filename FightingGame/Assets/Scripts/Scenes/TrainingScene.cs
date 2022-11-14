@@ -41,10 +41,6 @@ public class TrainingScene : BaseScene
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
     }
 
-    // 캐릭터 타입 변경
-    public void Change_PlayerType(ENUM_CHARACTER_TYPE _value) => playerType = _value;
-    public void Change_EnemyType(ENUM_CHARACTER_TYPE _value) => enemyType = _value;
-
     // 플레이어 소환
     public void CallPlayer()
     {
@@ -118,7 +114,7 @@ public class TrainingScene : BaseScene
         isCallEnemy = false;
 
         Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
-        Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
+        Reset_EnemyType();
     }
 
     // 플레이어 제거
@@ -135,7 +131,7 @@ public class TrainingScene : BaseScene
         isCallPlayer = false;
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
-        Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+        Reset_PlayerType();
 
         inputKeyController.Set_PanelActive(false);
     }
@@ -167,7 +163,7 @@ public class TrainingScene : BaseScene
 
         Change_PlayerType(_charType);
         Debug.Log(playerType);
-        Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, null, $"{playerType}를 소환하시겠습니까?");
+        Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, Reset_PlayerType, $"{playerType}를 소환하시겠습니까?");
     }
 
     public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
@@ -180,8 +176,14 @@ public class TrainingScene : BaseScene
 
         Change_EnemyType(_charType);
         Debug.Log(enemyType);
-        Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, null, $"{enemyType}를 소환하시겠습니까?");
+        Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, Reset_EnemyType, $"{enemyType}를 소환하시겠습니까?");
     }
+
+    // 캐릭터 타입 변경
+    public void Change_PlayerType(ENUM_CHARACTER_TYPE _value) => playerType = _value;
+    public void Change_EnemyType(ENUM_CHARACTER_TYPE _value) => enemyType = _value;
+    private void Reset_PlayerType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+    private void Reset_EnemyType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
 
     public override void Update_BGM()
     {
