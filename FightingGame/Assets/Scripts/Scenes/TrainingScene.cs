@@ -52,12 +52,23 @@ public class TrainingScene : BaseScene
 
         // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (isCallPlayer)
+        {
+            if (playerCharacter.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), playerType)))
+            {
+                Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+                Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+                return;
+            }
+
             Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+        }
 
         isCallPlayer = true;
 
         // 플레이어 스폰
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
+
+        Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
     }
 
     // 적 소환
@@ -71,7 +82,16 @@ public class TrainingScene : BaseScene
 
         // 이미 소환된 적이 있을 경우
         if (isCallEnemy)
+        {
+            if(enemyPlayer.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), enemyType)))
+            {
+                Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+                Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
+                return;
+            }
+
             Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
+        }
 
         isCallEnemy = true;
 
@@ -100,6 +120,8 @@ public class TrainingScene : BaseScene
 
             enemyPlayer.Set_Character(Init_Enemy(respownPos, enemyType));
         }
+
+        Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
     }
 
     // 적 제거
@@ -168,12 +190,6 @@ public class TrainingScene : BaseScene
 
     public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
     {
-        if (enemyType == _charType)
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
-            return;
-        }
-
         Change_EnemyType(_charType);
         Debug.Log(enemyType);
         Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, Reset_EnemyType, $"{enemyType}를 소환하시겠습니까?");

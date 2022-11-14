@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &897554975862620762
+--- !u!1 &471606811442740454
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4970506477349008127}
-  - component: {fileID: 4827631979368694882}
-  - component: {fileID: 447069155534993588}
-  - component: {fileID: 503158711370937799}
-  - component: {fileID: 288330065209062726}
+  - component: {fileID: 471606811442740453}
+  - component: {fileID: 471606811442740452}
+  - component: {fileID: 471606811442740455}
+  - component: {fileID: 928075051646559816}
+  - component: {fileID: 2806461303393380031}
   m_Layer: 0
-  m_Name: Wizard_ThunderAttackObject3
+  m_Name: Wizard_ThunderAttackObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4970506477349008127
+--- !u!4 &471606811442740453
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897554975862620762}
+  m_GameObject: {fileID: 471606811442740454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.1, y: 2.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,13 +34,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4827631979368694882
+--- !u!212 &471606811442740452
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897554975862620762}
+  m_GameObject: {fileID: 471606811442740454}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -85,14 +85,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &447069155534993588
+--- !u!95 &471606811442740455
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897554975862620762}
+  m_GameObject: {fileID: 471606811442740454}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: a3ca30d2926c8a1498f9985f6112a88f, type: 2}
@@ -104,13 +104,13 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &503158711370937799
+--- !u!114 &928075051646559816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897554975862620762}
+  m_GameObject: {fileID: 471606811442740454}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -123,17 +123,17 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 288330065209062726}
+  - {fileID: 2806461303393380031}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &288330065209062726
+--- !u!114 &2806461303393380031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 897554975862620762}
+  m_GameObject: {fileID: 471606811442740454}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09e117df1cc37a94f8230624aec4b3a6, type: 3}
@@ -152,4 +152,4 @@ MonoBehaviour:
   targetTr: {fileID: 0}
   reverseState: 0
   isConnected: 0
-  subPos: {x: 4.5, y: 0.5, z: 0}
+  subPos: {x: 3.5, y: 0.5, z: 0}
