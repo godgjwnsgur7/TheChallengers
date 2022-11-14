@@ -13,7 +13,7 @@ public class InputKeyController : MonoBehaviour
     private InputKey inputKey = null;
     private RectTransform inputKeyRectTr = null;
 
-    public bool isActive = false;
+    public bool isPanelActive = false;
 
     public void Init()
     {
@@ -26,6 +26,13 @@ public class InputKeyController : MonoBehaviour
 
         Set_keySettingDataList();
         Set_PanelActive(true);
+
+        InputKeyManagement Ikm = gameObject.transform.parent.Find("InputKeyManagement").GetComponent<InputKeyManagement>();
+        if (Ikm == null)
+            return;
+
+        if (Ikm.isPanelActive)
+            Ikm.Set_PanelActive(false);
     }
 
     public void PointerDown(InputKey _inputkey)
@@ -97,7 +104,7 @@ public class InputKeyController : MonoBehaviour
 
     public void Set_PanelActive(bool _binary)
     {
-        this.isActive = _binary;
+        this.isPanelActive = _binary;
         this.inputPanel.gameObject.SetActive(_binary);
     }
 }

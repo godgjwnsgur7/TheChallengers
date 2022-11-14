@@ -16,8 +16,6 @@ public class TrainingScene : BaseScene
 
     ENUM_CHARACTER_TYPE playerType;
     ENUM_CHARACTER_TYPE enemyType;
-    public bool isCallEnemy = false;
-    public bool isCallPlayer = false;
 
     public override void Clear()
     {
@@ -44,26 +42,25 @@ public class TrainingScene : BaseScene
     // 플레이어 소환
     public void CallPlayer()
     {
-        if (inputKeyManagement.isActive)
+        if (inputKeyManagement.isPanelActive)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;
         }
 
         // 이미 소환된 플레이어 캐릭터가 있을 경우
-        if (isCallPlayer)
+        if (playerCharacter.activeCharacter != null)
         {
             if (playerCharacter.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), playerType)))
             {
-                Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+                //Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+                Managers.UI.popupCanvas.Open_TimeNotifyPopup("같은 캐릭터가 이미 소환되어있습니다.", 2.0f);
                 Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
                 return;
             }
 
             Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         }
-
-        isCallPlayer = true;
 
         // 플레이어 스폰
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
@@ -74,14 +71,14 @@ public class TrainingScene : BaseScene
     // 적 소환
     public void CallEnemy()
     {
-        if (inputKeyManagement.isActive)
+        if (inputKeyManagement.isPanelActive)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;
         }
 
         // 이미 소환된 적이 있을 경우
-        if (isCallEnemy)
+        if (enemyPlayer.activeCharacter != null)
         {
             if(enemyPlayer.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), enemyType)))
             {
@@ -93,19 +90,17 @@ public class TrainingScene : BaseScene
             Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
         }
 
-        isCallEnemy = true;
-
         // 소환된 플레이어가 없을 경우 지정된 스폰에서 생성
-        if (!isCallPlayer)
+        if (playerCharacter.activeCharacter == null)
         {
             enemyPlayer.Set_Character(Init_Enemy(map.redTeamSpawnPoint.position, enemyType));
         }
-        else // 소환된 플레이어가 있을 경우 근처에 스폰하고 싶은데...
+        else
         {
-            float re = playerCharacter.activeCharacter.reverseState ? -2f : 2f;
+            float playerFrontPos = playerCharacter.activeCharacter.reverseState ? -2f : 2f;
 
             // 플레이어 앞 위치
-            Vector2 respownPos = new Vector2(playerCharacter.activeCharacter.transform.position.x + re,
+            Vector2 respownPos = new Vector2(playerCharacter.activeCharacter.transform.position.x + playerFrontPos,
                 playerCharacter.activeCharacter.transform.position.y + 1);
 
             // 맵의 크기 밖에 소환되지 않게 체크
@@ -127,13 +122,11 @@ public class TrainingScene : BaseScene
     // 적 제거
     public void DeleteEnemy()
     {
-        if (!isCallEnemy)
+        if (enemyPlayer.activeCharacter == null)
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("소환된 적이 없습니다.");
+            Managers.UI.popupCanvas.Open_NotifyPopup("제거할 적이 없습니다.");
             return;
         }
-
-        isCallEnemy = false;
 
         Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
         Reset_EnemyType();
@@ -142,15 +135,13 @@ public class TrainingScene : BaseScene
     // 플레이어 제거
     public void DeletePlayer()
     {
-        if (!isCallPlayer)
+        if (playerCharacter.activeCharacter == null)
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("소환된 플레이어가 없습니다.");
+            Managers.UI.popupCanvas.Open_NotifyPopup("제거할 플레이어가 없습니다.");
             return;
         }
 
         playerCamera.Set_ZoomOut();
-
-        isCallPlayer = false;
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         Reset_PlayerType();
@@ -201,8 +192,5 @@ public class TrainingScene : BaseScene
     private void Reset_PlayerType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
     private void Reset_EnemyType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
 
-    public override void Update_BGM()
-    {
-        Managers.Sound.Play(ENUM_BGM_TYPE.TestBGM, ENUM_SOUND_TYPE.BGM);
-    }
+    public override void Update_BGM() => Managers.Sound.Play(ENUM_BGM_TYPE.TestBGM, ENUM_SOUND_TYPE.BGM);
 }

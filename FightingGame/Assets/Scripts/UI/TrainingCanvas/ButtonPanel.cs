@@ -10,6 +10,7 @@ public class ButtonPanel : UIElement
     [SerializeField] Text panelOpenBtnText;
     [SerializeField] SettingPanel settingPanel;
     [SerializeField] InputKeyManagement inputKeyManagement;
+    [SerializeField] InputKeyController inputKeyController;
     [SerializeField] TrainingScene trainingScene;
 
     public override void Open(UIParam param = null)
@@ -26,36 +27,24 @@ public class ButtonPanel : UIElement
 
     public void OnClick_OpenSettingPanel()
     {
-        if (trainingScene.isCallPlayer)
-        {
+        if (inputKeyController.isPanelActive)
             trainingScene.DeletePlayer();
-            trainingScene.Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
-        }
-
-        if (trainingScene.isCallEnemy)
-        {
-            trainingScene.DeleteEnemy();
-            trainingScene.Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
-        }
 
         inputKeyManagement.Init();
         this.Close();
         settingPanel.Open();
     }
 
-    public void SetPanelOpenButtonText(string text)
-    {
-        panelOpenBtnText.text = text;
-    }
+    public void SetPanelOpenButtonText(string text) => panelOpenBtnText.text = text;
 
     public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectPlayerCharacter);
+    public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectEnemyCharacter);
+
     public void OnClick_SelectPlayerCharacter(ENUM_CHARACTER_TYPE _charType)
     {
         trainingScene.SelectPlayerCharacter(_charType);
         this.Close();
     }
-
-    public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectEnemyCharacter);
     public void OnClick_SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
     {
         trainingScene.SelectEnemyCharacter(_charType);

@@ -10,7 +10,7 @@ public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
-    public bool isActive = false;
+    public bool isPanelActive = false;
     private bool isInit = false;
     private int inputKeyNum;
 
@@ -60,6 +60,13 @@ public class InputKeyManagement : MonoBehaviour
         }
             
         Set_PanelActive(true);
+
+        InputKeyController Ikc = gameObject.transform.parent.Find("InputKeyController").GetComponent<InputKeyController>();
+        if (Ikc == null)
+            return;
+
+        if (Ikc.isPanelActive)
+            Ikc.Set_PanelActive(false);
     }
 
     // PlayerPrefs 값 호출
@@ -275,7 +282,7 @@ public class InputKeyManagement : MonoBehaviour
     // Panel들 Active상태 변환
     public void Set_PanelActive(bool _changeBool)
     {
-        this.isActive = _changeBool;
+        this.isPanelActive = _changeBool;
         this.inputPanel.gameObject.SetActive(_changeBool);
         this.areaPanel.gameObject.SetActive(_changeBool);
 

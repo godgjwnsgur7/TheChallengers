@@ -45,8 +45,5 @@ public class TrainingCanvas : BaseCanvas
     public void OnClick_Lobby() => Managers.UI.popupCanvas.Open_SelectPopup
         (GoTo_LobbyScene, null, "로비에 돌아가시겠습니까?");
 
-    public void GoTo_LobbyScene()
-    {
-        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
-    }
+    public void GoTo_LobbyScene() => Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
 }
