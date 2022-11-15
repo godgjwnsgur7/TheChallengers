@@ -25,7 +25,7 @@ Dev Period : 2020.05.09 ~ ing
 
 > **기획(2)** : 허준혁(메인 기획 겸 프로그래머), 권영준
 
-> **그래픽(6)** : 이경주(캐릭터 디자인), 백서아(일러스트 디자인), 장하리(UI 디자인), 김아린(캐릭터 디자인), 고민지(UI, 캐릭터 디자인), 강유나(UI 디자인)
+> **그래픽(6)** : 이경주(캐릭터), 백서아(일러스트), 장하리(UI), 김아린(캐릭터), 고민지(UI, 캐릭터), 강유나(UI)
 
 > **서버 프로그래머(1)** : 박솔휘
 
@@ -36,7 +36,7 @@ Dev Period : 2020.05.09 ~ ing
 
 Game Designer (2) : Heo Jun Hyeok, Kwon Young Jun
 
-Game Artists (4) : Lee Gyeong Ju, Baek Seo A, Jang Ha Ri, Kim A Rin, Ko Min ji, Kang Yu na
+Game Artists (6) : Lee Gyeong Ju, Baek Seo A, Jang Ha Ri, Kim A Rin, Ko Min ji, Kang Yu na
 
 Server Programmer (1) : Park Sol Hwi
 
