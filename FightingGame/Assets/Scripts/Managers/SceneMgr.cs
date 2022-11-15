@@ -9,6 +9,13 @@ public class SceneMgr
     public BaseScene CurrentScene
     { get { return GameObject.FindObjectOfType<BaseScene>(); } }
 
+    public ENUM_SCENE_TYPE CurrSceneType
+    {
+        private set;
+        get;
+    }
+
+
     bool loadSceneLock;
 
     public void LoadScene(ENUM_SCENE_TYPE sceneType)
@@ -34,6 +41,12 @@ public class SceneMgr
         }
 
         PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(sceneType);
+    }
+
+    public void Get_CurrSceneType(ENUM_SCENE_TYPE sceneType)
+    {
+        CurrSceneType = sceneType;
+        Debug.Log(CurrSceneType);
     }
 
     public void Unlocking_loadSceneLock()

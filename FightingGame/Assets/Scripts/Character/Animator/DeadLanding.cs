@@ -32,7 +32,6 @@ public class DeadLanding : StateMachineBehaviour
 
         color.a = 0f;
         charSpriteRenderer.color = color;
-        Destroy(activeCharacter.gameObject);
         activeCharacter.EndGame();
     }
 }

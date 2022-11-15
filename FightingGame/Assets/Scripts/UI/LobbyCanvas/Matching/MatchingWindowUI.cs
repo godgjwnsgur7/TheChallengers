@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class MatchingWindowUI : MonoBehaviour
 {
+    [SerializeField] MatchingRoomUI matchingRoom;
+
     [SerializeField] Text stopwatchText;
 
     Coroutine timerCoroutine;

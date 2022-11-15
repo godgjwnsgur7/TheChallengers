@@ -26,6 +26,8 @@ public class TrainingScene : BaseScene
     {
         SceneType = ENUM_SCENE_TYPE.Training;
 
+        Debug.Log(SceneType);
+
         base.Init();
         
         string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), 0);

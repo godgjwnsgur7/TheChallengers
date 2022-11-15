@@ -399,6 +399,12 @@ public partial class ActiveCharacter : Character
 
     public void EndGame()
     {
+        if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Training)
+        {
+            Destroy(this);
+            return;
+        }
+
         if (PhotonLogicHandler.IsConnected)
         {
             if (!Managers.Battle.isGamePlayingState)
@@ -406,7 +412,7 @@ public partial class ActiveCharacter : Character
 
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
                 (this, Sync_EndGame, teamType);
-        }  
+        }
     }
     
     [BroadcastMethod] public void Sync_EndGame(ENUM_TEAM_TYPE losingTeam) => Managers.Battle.EndGame(losingTeam);    

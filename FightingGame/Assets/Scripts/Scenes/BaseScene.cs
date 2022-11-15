@@ -6,7 +6,6 @@ using FGDefine;
 
 public abstract class BaseScene : MonoBehaviour, IObserver
 {
-    private ENUM_SCENE_TYPE sceneType;
     public ENUM_SCENE_TYPE SceneType { get; protected set; } = ENUM_SCENE_TYPE.Unknown;
 
     protected IEnumerator Start()
@@ -21,6 +20,7 @@ public abstract class BaseScene : MonoBehaviour, IObserver
     {
         Managers.Sound.NotifyObserver();
         Managers.UI.popupCanvas.Play_FadeOutEffect();
+        Managers.Scene.Get_CurrSceneType(SceneType);
     }
 
     public virtual void Clear()

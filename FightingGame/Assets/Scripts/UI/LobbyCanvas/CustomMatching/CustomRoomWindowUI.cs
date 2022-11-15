@@ -37,7 +37,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     [SerializeField] Text roomNameText;
     [SerializeField] Text mapNameText;
 
-    public bool isInit = false;
+    private bool isInit = false;
     public bool isRoomRegisting = false;
     public bool isStarted = false;
 
