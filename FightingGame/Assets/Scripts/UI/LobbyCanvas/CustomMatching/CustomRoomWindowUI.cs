@@ -177,7 +177,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public void CurrmapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
         if (PhotonLogicHandler.IsMasterClient)
-        PhotonLogicHandler.Instance.ChangeMap(_mapType);
+            PhotonLogicHandler.Instance.ChangeMap(_mapType);
 
         currMap = _mapType;
         currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_L");

@@ -170,7 +170,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.JoinRandomRoom();
     }
 
-    public bool TryJoinOrCreateRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, int maxPlayerCount = 2, ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.BasicMap,  bool isCustomRoom = false)
+    public bool TryJoinOrCreateRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.BasicMap, int maxPlayerCount = 2,  bool isCustomRoom = false)
     {
         Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 

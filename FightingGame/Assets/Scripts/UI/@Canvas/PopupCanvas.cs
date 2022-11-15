@@ -98,7 +98,7 @@ public class PopupCanvas : MonoBehaviour
     /// 일정 시간 뒤에 자동으로 사라지는 알림창 Popup Window 
     /// 알림 팝업창은 중복해서 호출 시에 새로운 창으로 갱신됨
     /// </summary>
-    public void Open_TimeNotifyPopup(string _message, float _runTime)
+    public void Open_TimeNotifyPopup(string _message, float _runTime, Action _timeOutCallBack = null)
     {
         if (timerNotifyPopup.isUsing)
         {

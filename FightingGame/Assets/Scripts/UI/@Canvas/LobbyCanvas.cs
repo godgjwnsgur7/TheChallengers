@@ -33,7 +33,7 @@ public class LobbyCanvas : BaseCanvas
         }
         else
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("마스터 서버에 접속해있지 않습니다.");
+            Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.");
         }
     }
     public void OnClick_Mathing() => matchingWindow.OnClick_Matching();

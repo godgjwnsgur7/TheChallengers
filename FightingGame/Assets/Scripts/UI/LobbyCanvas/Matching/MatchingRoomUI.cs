@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
+using System;
 
 public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
 {
+    Action matchingCallBack;
+
+    bool isStarted;
+
     private void OnEnable()
     {
         // 포톤콜백함수 등록
@@ -25,20 +31,18 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
         this.UnregisterRoomCallback();
     }
 
-    public void OnUpdateLobby(List<CustomRoomInfo> roomList)
+    public void Open(Action _matchingCallBack, ENUM_CHARACTER_TYPE _selectCharType)
     {
+        PhotonLogicHandler.Instance.ChangeCharacter(_selectCharType);
+        Managers.Battle.Set_MyCharacterType(_selectCharType);
+        matchingCallBack = _matchingCallBack;
+
+        this.gameObject.SetActive(true);
     }
 
-    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
+    public void Close()
     {
-    }
-
-    public void OnUpdateRoomProperty(CustomRoomProperty property)
-    {
-        if (PhotonLogicHandler.IsMasterClient)
-            return; // 나의 변경된 정보면 리턴
-
-        
+        this.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -51,7 +55,10 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
             Managers.Battle.Set_SlaveNickname(nickname);
         }
 
-        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
+        PhotonLogicHandler.Instance.GameStart();
+
+        isStarted = true;
+        matchingCallBack();
     }
 
     /// <summary>
@@ -60,6 +67,27 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
     /// </summary>
     public void ExitSlaveClientCallBack(string nickname)
     {
+        // 강제종료했을 때 불릴 것으로 예상 중. (구현, 처리해야 함)
+    }
 
+    public void OnUpdateRoomProperty(CustomRoomProperty property)
+    {
+        if (PhotonLogicHandler.IsMasterClient || isStarted)
+            return; // 나의 변경된 정보이거나 시작중이라면 리턴
+
+        if(property.isStarted) // 게임 시작을 알림받음
+        {
+            isStarted = true;
+            matchingCallBack();
+        }
+    }
+
+    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
+    {
+        if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
+            return; // 나의 변경된 정보면 리턴
+
+        Debug.Log("상대에게 정보를 받아 갱신합니다.");
+        Managers.Battle.Set_EnemyCharacterType(property.characterType);
     }
 }

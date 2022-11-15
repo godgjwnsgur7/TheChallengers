@@ -35,12 +35,27 @@ public class MatchingWindowUI : MonoBehaviour
         isStopwatchLock = false;
         timerCoroutine = StartCoroutine(IStopwatch());
 
-        Debug.Log(selectedCharType);
+        bool isLoginState = PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom(
+            Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max)
+            ) ;
 
-        // PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom();
+        if(!isLoginState)
+        {
+            Managers.UI.popupCanvas.Open_TimeNotifyPopup("로그인상태가 아닙니다.", 1f, MathingFailed);
+        }
         // 매칭 돌리기 선택한 캐릭터는 selectCharType로 확인하면 됨
     }
 
+    public void Create_MatchingRoom() => matchingRoom.Open(MathingCallBack, selectedCharType);
+    public void MathingFailed() => OnClick_Exit();
+
+    public void MathingCallBack()
+    {
+        StopCoroutine(timerCoroutine);
+        isStopwatchLock = true;
+
+        Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
+    }
 
     public void OnClick_Exit()
     {
@@ -51,24 +66,25 @@ public class MatchingWindowUI : MonoBehaviour
 
     protected IEnumerator IStopwatch()
     {
-        float startTime = Time.time;
-        float elapsedSecondTime;
-        int minute = 0;
+        float seconds = 0;
+        int minutes = 0;
 
         while (!isStopwatchLock)
         {
-            elapsedSecondTime = Time.time - startTime;
-
-            if(elapsedSecondTime >= 60.0f)
+            seconds += Time.deltaTime;
+            
+            if((int)seconds >= 60)
             {
-                minute += 1;
-                startTime += 60.0f;
+                seconds -= 60;
+                minutes++;
             }
 
-            stopwatchText.text = string.Format("{0:00}:{1:00.00}", minute, elapsedSecondTime);
+            stopwatchText.text = string.Format("{0:00}:{1:00}", minutes, (int)seconds);
 
             yield return null;
         }
+
+        timerCoroutine = null;
     }
 
 }

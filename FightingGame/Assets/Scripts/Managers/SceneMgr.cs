@@ -46,7 +46,6 @@ public class SceneMgr
     public void Get_CurrSceneType(ENUM_SCENE_TYPE sceneType)
     {
         CurrSceneType = sceneType;
-        Debug.Log(CurrSceneType);
     }
 
     public void Unlocking_loadSceneLock()
