@@ -130,6 +130,7 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_2", 3);
@@ -149,6 +150,7 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 5);
+        Managers.Resource.GenerateInPool("EffectObjects/Wizard_ThunderEffect", 5);
     }
 
     public override void Idle()
