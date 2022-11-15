@@ -56,12 +56,10 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         // 포톤콜백함수 등록
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
-
+        
         PhotonLogicHandler.Instance.onEnterRoomPlayer += SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname += MasterClientExitCallBack;
-
+        
         this.RegisterRoomCallback();
     }
 
@@ -70,7 +68,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         // 포톤콜백함수 해제
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
-        PhotonLogicHandler.Instance.onChangeMasterClientNickname -= MasterClientExitCallBack;
 
         this.UnregisterRoomCallback();
     }
@@ -91,21 +88,22 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     }
 
     /// <summary>
-    /// 마스터 클라이언트가 변경됐을 때 불리는 콜백함수
-    /// </summary>
-    public void MasterClientExitCallBack(string nickname)
-    {
-        MyProfile.Clear();
-        MyProfile.Init();
-    }
-
-    /// <summary>
     /// 자신 외의 다른 클라이언트가 방을 나가면 불리는 콜백함수
     /// ( 이 경우, 자신이 무조건 마스터 클라이언트가 됨 )
     /// </summary>
     public void SlaveClientExitCallBack(string nickname)
     {
-        YourProfile.Clear();
+        slaveProfile.Clear();
+
+        if(!masterProfile.isMine)
+        {
+            masterProfile.Clear();
+            masterProfile.Init();
+            masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
+        }
+
+        Debug.Log($"IsFullRoom : {PhotonLogicHandler.IsFullRoom}");
+
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
@@ -172,6 +170,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         slaveProfile.Clear();
 
         this.gameObject.SetActive(false);
+
+        Debug.Log($"IsJoinedRoom : {PhotonLogicHandler.IsJoinedRoom}");
     }
 
     public void CurrmapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)

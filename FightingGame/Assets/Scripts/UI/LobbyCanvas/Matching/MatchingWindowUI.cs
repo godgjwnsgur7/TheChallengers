@@ -43,7 +43,6 @@ public class MatchingWindowUI : MonoBehaviour
         {
             Managers.UI.popupCanvas.Open_TimeNotifyPopup("로그인상태가 아닙니다.", 1f, MathingFailed);
         }
-        // 매칭 돌리기 선택한 캐릭터는 selectCharType로 확인하면 됨
     }
 
     public void Create_MatchingRoom() => matchingRoom.Open(MathingCallBack, selectedCharType);

@@ -15,6 +15,10 @@ public class LobbyScene : BaseScene
             LobbyCanvas lobbyCanvas = Managers.UI.currCanvas.GetComponent<LobbyCanvas>();
             lobbyCanvas.Set_InTheCustomRoom();
         }
+        else if (PhotonLogicHandler.IsJoinedRoom)
+        {
+            PhotonLogicHandler.Instance.TryLeaveRoom();
+        }
     }
 
     public override void Clear()
