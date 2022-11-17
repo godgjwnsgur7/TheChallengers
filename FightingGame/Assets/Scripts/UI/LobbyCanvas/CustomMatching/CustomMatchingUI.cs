@@ -5,39 +5,27 @@ using UnityEngine.UI;
 
 public class CustomMatchingUI : MonoBehaviour
 {
-    [SerializeField] CustomRoomListUI customRoomList;
+    [SerializeField] CustomRoomListWindowUI customRoomListWindow;
     [SerializeField] CustomRoomWindowUI customRoomWindow;
-    [SerializeField] CreateRoomWindowUI createRoomWindow;
-
-    bool isRegiserSuccess;
 
     private void OnEnable()
     {
-        isRegiserSuccess = customRoomList.Register_LobbyCallback();
-
-        if (!isRegiserSuccess)
-        {
-            gameObject.SetActive(false);
-            Debug.Log("등록 실패");
+        if (!PhotonLogicHandler.IsConnected)
             return;
+
+        if (!PhotonLogicHandler.IsJoinedRoom)
+        {
+            customRoomListWindow.Open();
         }
-
-        if(!PhotonLogicHandler.IsJoinedRoom)
-            OnClick_GetLobbyList();
+        else
+        {
+            customRoomWindow.Open();
+        }
     }
 
-    private void OnDisable()
+    public void Open()
     {
-        customRoomList.UnRegister_LobbyCallback();
-    }
-
-    public void Set_InTheCustomRoom()
-    {
-        customRoomWindow.Open();
-    }
-
-    public void OnClick_GetLobbyList()
-    {
-        customRoomList.Get_CustomRoomList();
+        if (!this.gameObject.activeSelf)
+            this.gameObject.SetActive(true);
     }
 }

@@ -13,7 +13,7 @@ public class LobbyScene : BaseScene
         if (Managers.Battle.isCustom)
         {
             LobbyCanvas lobbyCanvas = Managers.UI.currCanvas.GetComponent<LobbyCanvas>();
-            lobbyCanvas.Set_InTheCustomRoom();
+            lobbyCanvas.InTheCustomRoom();
         }
         else if (PhotonLogicHandler.IsJoinedRoom)
         {

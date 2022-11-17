@@ -9,27 +9,19 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] FightingInfoWindow fightingInfoWindow;
-    [SerializeField] VolumeSlider volumeSlider;
 
     public override void Init()
     {
         base.Init();
-
-        volumeSlider.Init();
     }
 
-    public void Set_InTheCustomRoom()
-    {
-        customMatching.gameObject.SetActive(true);
-
-        customMatching.Set_InTheCustomRoom();
-    }
+    public void InTheCustomRoom() => customMatching.Open();
 
     public void OnClick_CustomMathing()
     {
         if(PhotonLogicHandler.IsConnected)
         {
-            customMatching.gameObject.SetActive(true);
+            customMatching.Open();
         }
         else
         {

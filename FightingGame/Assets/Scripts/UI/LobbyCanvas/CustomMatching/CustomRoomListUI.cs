@@ -4,75 +4,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
-{
-    List<RoomListElementUI> roomList = new List<RoomListElementUI>();
-    List<CustomRoomInfo> roomInfoList = new List<CustomRoomInfo>();
-
+public class CustomRoomListUI : MonoBehaviour
+{ 
+    List<RoomListElementUI> roomListElement = new List<RoomListElementUI>();
+    
     [SerializeField] CustomRoomWindowUI customRoomWindow;
     [SerializeField] GameObject noneRoomTextObject;
 
-    bool isUpdateLock = false;
-    bool isLobbyRegisting = false;
+    bool isRoomUpdateLock = false;
 
-    public void Get_CustomRoomList()
+    public void Request_UpdateRoomList()
     {
-        if (isUpdateLock) return;
-
-        isUpdateLock = true;
-
-        PhotonLogicHandler.Instance.RequestRoomList();
-
-        StartCoroutine(IUpdateLockTime(1.0f));        
-    }
-
-    public bool Register_LobbyCallback()
-    {
-        if (isLobbyRegisting)
-        {
-            Debug.Log("이미 등록된 상태");
-            return false;
-        }
-
-        isLobbyRegisting = true;
-        this.RegisterLobbyCallback();
-        return true;
-    }
-    public void UnRegister_LobbyCallback()
-    {
-        if (!isLobbyRegisting)
+        if (isRoomUpdateLock)
             return;
 
-        isLobbyRegisting = false;
-        this.UnregisterLobbyCallback();
+        isRoomUpdateLock = true;
+        PhotonLogicHandler.Instance.RequestRoomList();
+
     }
 
-    /// <summary>
-    /// 로비 내 룸이 갱신될 때마다 해당 콜백이 불림
-    /// </summary>
-    public void OnUpdateLobby(List<CustomRoomInfo> roomList)
-	{
-        roomInfoList = roomList;
-
-        Debug.Log($"roomInfoListCount : {roomInfoList.Count} ");
-        
-        Update_RoomList();
-    }
-
-	public void Update_RoomList()
+	public void Update_RoomList(List<CustomRoomInfo> customRoomList)
     {
         gameObject.SetActive(false);
 
-        // 룸 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
-        if (roomInfoList.Count > roomList.Count)
-            for(int i = 0; i < roomInfoList.Count - roomList.Count; i++)
-                roomList.Add(Managers.Resource.Instantiate("UI/RoomListElement", this.transform).GetComponent<RoomListElementUI>());
+        // 커스텀룸의 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
+        if (customRoomList.Count > roomListElement.Count)
+            for(int i = 0; i < customRoomList.Count - roomListElement.Count; i++)
+                roomListElement.Add(Managers.Resource.Instantiate("UI/RoomListElement", this.transform).GetComponent<RoomListElementUI>());
 
         // 모든 방을 Close.
-        for (int i = 0; i < roomList.Count; i++)
-            roomList[i].Close();
+        for (int i = 0; i < roomListElement.Count; i++)
+            roomListElement[i].Close();
 
-        if (roomInfoList.Count <= 0) 
+        if (customRoomList.Count <= 0) 
         {
             noneRoomTextObject.SetActive(true);
             gameObject.SetActive(true);
@@ -80,9 +44,9 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
         }
 
         // 현재 생성되어 있는 방의 갯수만큼 Open.
-        for (int i = 0; i < roomInfoList.Count; i++)
+        for (int i = 0; i < customRoomList.Count; i++)
         {
-            roomList[i].Open(roomInfoList[i], Get_CustomRoomList, Active_CustomRoomWindow);
+            roomListElement[i].Open(customRoomList[i], Request_UpdateRoomList, Active_CustomRoomWindow);
         }
 
         noneRoomTextObject.SetActive(false);
@@ -92,12 +56,5 @@ public class CustomRoomListUI : MonoBehaviour, ILobbyPostProcess
     public void Active_CustomRoomWindow()
     {
         customRoomWindow.Open();
-    }
-
-    private IEnumerator IUpdateLockTime(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-
-        isUpdateLock = false;
     }
 }

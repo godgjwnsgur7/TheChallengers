@@ -58,6 +58,9 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void OnClick_Exit()
     {
+        if(PhotonLogicHandler.IsJoinedRoom)
+            PhotonLogicHandler.Instance.TryLeaveRoom();
+
         StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
         this.gameObject.SetActive(false);
