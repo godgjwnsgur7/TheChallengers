@@ -184,7 +184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14942412}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1636252111}
@@ -425,6 +425,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31bb076d91353e548878cd5b0cd674cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map: {fileID: 0}
+  trainingScene: {fileID: 1948010699}
   blueTeamStatusWindowUI: {fileID: 888973663}
   redTeamStatusWindowUI: {fileID: 2067127198}
   buttonPanel: {fileID: 110583156}
@@ -810,12 +812,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  userType: 
+  map: {fileID: 0}
   panelOpenBtnText: {fileID: 1273168653}
   settingPanel: {fileID: 2131874539}
   inputKeyManagement: {fileID: 1111203226}
   inputKeyController: {fileID: 1621611177}
-  trainingScene: {fileID: 1948010699}
+  playerCamera: {fileID: 973984477}
+  playerCharacter: {fileID: 1418530638}
+  enemyPlayer: {fileID: 14942414}
 --- !u!1 &117273678
 GameObject:
   m_ObjectHideFlags: 0
@@ -5396,7 +5400,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8315,7 +8319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418530636}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 973984476}
@@ -9246,7 +9250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 960, y: 540}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1668415560
@@ -10767,12 +10771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509a81fb41204ff45af1d7a16e929a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trainingCanvas: {fileID: 42189881}
-  playerCamera: {fileID: 973984477}
-  playerCharacter: {fileID: 1418530638}
-  enemyPlayer: {fileID: 14942414}
-  inputKeyManagement: {fileID: 1111203226}
-  inputKeyController: {fileID: 1621611177}
 --- !u!4 &1948010700
 Transform:
   m_ObjectHideFlags: 0

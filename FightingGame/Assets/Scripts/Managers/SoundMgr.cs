@@ -91,19 +91,6 @@ public class SoundMgr : ISubject
         bgmCoroutine = CoroutineHelper.StartCoroutine(FadeInBGM());
     }
 
-    public void Check_Play(ENUM_BGM_TYPE bgmType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.BGM, float pitch = 0.0f)
-    {
-        Play(bgmType, soundType, pitch);
-    }
-
-    public void PauseBGM()
-    {
-        if (bgmCoroutine != null)
-            CoroutineHelper.StopCoroutine(bgmCoroutine);
-
-        bgmCoroutine = CoroutineHelper.StartCoroutine(FadeOutBGM());
-    }
-
     public void Play(ENUM_SFX_TYPE sfxType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.SFX, float pitch = 0.0f)
     {
         if (pitch == 0.0f) pitch = sfxPitch;
@@ -118,7 +105,14 @@ public class SoundMgr : ISubject
         audioSource.volume = 0f;
         audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);
-        CoroutineHelper.StartCoroutine(FadeInSFX());
+    }
+
+    public void PauseBGM()
+    {
+        if (bgmCoroutine != null)
+            CoroutineHelper.StopCoroutine(bgmCoroutine);
+
+        bgmCoroutine = CoroutineHelper.StartCoroutine(FadeOutBGM());
     }
 
     private AudioClip GetOrAddAudioClip(string path)
@@ -174,42 +168,9 @@ public class SoundMgr : ISubject
         audioSources[0].Pause();
     }
 
-    IEnumerator FadeInSFX()
-    {
-        float f_time = 0f;
-        float currVolume = audioSources[1].volume;
-        while (audioSources[1].volume < 0.9f)
-        {
-            f_time += Time.deltaTime;
-            OnValueChanged_SFXVolume(Mathf.Lerp(currVolume, 1, f_time));
-            yield return null;
-        }
-        audioSources[1].volume = 1f;
-    }
-
     public List<VolumeData> Get_VolumeDatas() => volumeDataList;
 
-    /* BGM 페이드 인 아웃 관련 레퍼런스 로직 (임시)
-    IEnumerator FadeOutInBGM()
-    {
-        float f_time = 0f;
-        BGM.volume = 1f;
-        while (BGM.volume > 0.3f)
-        {
-            f_time += UnityEngine.Time.deltaTime;
-            BGM.volume = Mathf.Lerp(1, 0, f_time);
-            yield return null;
-        }
-        if (nowIndex != selectedIndex)
-        {
-            selectedIndex = nowIndex;
-            BGM.Pause();
-            Set_BGM(nowIndex);
-        }
-        StartCoroutine(FadeIn());
-    }
-    
-    foreach (AudioSource audioSources in audioSources)
+    /*foreach (AudioSource audioSources in audioSources)
     { 
         audioSources.clip = null;
         audioSources.Stop();

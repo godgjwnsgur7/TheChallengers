@@ -31,14 +31,8 @@ public class PlayerCamera : MonoBehaviour
         FollowingCamera();
     }
 
-    private void Start()
-    {
-        cam = Camera.main;
-    }
-
     public void Init(Transform target)
     {
-        cam = Camera.main;
         Set_target(target);
         Set_ZoomIn();
     }
@@ -93,6 +87,8 @@ public class PlayerCamera : MonoBehaviour
 
     public void Set_MapData(BaseMap _map)
     {
+        cam = Camera.main;
+
         Set_MapTransform(_map.transform.position);
         Set_CameraBounds(_map.maxBound, _map.minBound);
 

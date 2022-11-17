@@ -10,6 +10,9 @@ public class InputKeyManagement : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
+    [SerializeField] SettingPanel settingPanel;
+    private InputKeyController inputKeyController = null;
+
     public bool isPanelActive = false;
     private bool isInit = false;
     private int inputKeyNum;
@@ -23,7 +26,6 @@ public class InputKeyManagement : MonoBehaviour
     private KeyArea keyArea = null;
     private RectTransform areaRectTr = null;
 
-    [SerializeField] SettingPanel settingPanel;
     private EventTrigger eventTrigger;
     private EventTrigger.Entry triggerEntry = new EventTrigger.Entry
     {
@@ -42,7 +44,6 @@ public class InputKeyManagement : MonoBehaviour
         {
             this.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             this.inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
-            this.panelTr = inputPanel.GetComponent<RectTransform>();
         }
 
         Set_keySettingDataList();
@@ -61,12 +62,12 @@ public class InputKeyManagement : MonoBehaviour
             
         Set_PanelActive(true);
 
-        InputKeyController Ikc = gameObject.transform.parent.Find("InputKeyController").GetComponent<InputKeyController>();
-        if (Ikc == null)
+        inputKeyController = gameObject.transform.parent.Find("InputKeyController").GetComponent<InputKeyController>();
+        if (inputKeyController == null)
             return;
 
-        if (Ikc.isPanelActive)
-            Ikc.Set_PanelActive(false);
+        if (inputKeyController.isPanelActive)
+            inputKeyController.Set_PanelActive(false);
     }
 
     // PlayerPrefs 값 호출

@@ -68,6 +68,7 @@ public class InputKeyController : MonoBehaviour
         {
             CharacterSkillParam skillParam2 = new CharacterSkillParam(1);
             currPlayer.PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam2);
+
         }
 
         // Skill3

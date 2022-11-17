@@ -63,7 +63,7 @@ public class SettingPanel : UIElement
     // SizeSlider 값 변경
     public void OnValueChanged_SetSizeSlider()
     {
-        if (inputKey = null)
+        if (inputKey == null)
             return;
 
         if (inputNum < 0)
@@ -81,7 +81,7 @@ public class SettingPanel : UIElement
     // Opacity 값 변경
     public void OnValueChanged_SetOpacitySlider()
     {
-        if (inputKey = null)
+        if (inputKey == null)
             return;
 
         if (inputNum < 0)

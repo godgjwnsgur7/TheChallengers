@@ -132,7 +132,7 @@ public class ObjectPoolMgr
         if (root == null)
         {
             root = new GameObject { name = "@Pool_Root" }.transform;
-            // Object.DontDestroyOnLoad(root);
+            Object.DontDestroyOnLoad(root);
         }
 
         PhotonPrefabPool.Init();
@@ -217,7 +217,9 @@ public class ObjectPoolMgr
         if (root != null)
         {
             foreach (Transform child in root)
+            {
                 GameObject.Destroy(child.gameObject);
+            }
         }
 
         pools.Clear();

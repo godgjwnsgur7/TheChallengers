@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class TrainingCanvas : BaseCanvas
 {
+    public BaseMap map;
     [Header("Set In Editor")]
     [SerializeField] StatusWindowUI blueTeamStatusWindowUI;
     [SerializeField] StatusWindowUI redTeamStatusWindowUI;
@@ -15,13 +17,21 @@ public class TrainingCanvas : BaseCanvas
     public override void Init()
     {
         base.Init();
-    }
 
+        string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), 0);
+        map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
+
+        buttonPanel.Set_Map(map);
+        buttonPanel.Init();
+    }
 
     public void OnClick_OnOffButtonPanel()
     {
         if (settingPanel.isOpen)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("버튼설정 중에 누를 수 없습니다.");
             return;
+        }
 
         if (buttonPanel.gameObject.activeSelf)
             buttonPanel.Close();

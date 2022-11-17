@@ -8,8 +8,14 @@ public class InputPanel : MonoBehaviour
 {
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
 
+    public RectTransform inputKeyRectTr = null;
+    public RectTransform thisRectTr;
+
     public void Init(Action<InputKey> OnPointDownCallBack, Action<InputKey> OnPointUpCallBack)
     {
+        if (thisRectTr == null)
+            thisRectTr = GetComponent<RectTransform>();
+
         for(int index = 0; index < inputKeys.Length; index++)
         {
             inputKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<InputKey>();
@@ -27,6 +33,11 @@ public class InputPanel : MonoBehaviour
     public InputKey Get_InputKey(ENUM_INPUTKEY_NAME keyName)
     {
        return inputKeys[(int)keyName];
+    }
+
+    public void Set_InputKeyrRectTr(ENUM_INPUTKEY_NAME keyName)
+    {
+        inputKeyRectTr = inputKeys[(int)keyName].GetComponent<RectTransform>();
     }
 
     // 추가로 필요한 기능이 있는 것 같다면, 요청하면 됨! 모르는건 물어보3!
