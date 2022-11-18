@@ -10,7 +10,6 @@ public abstract class BaseScene : MonoBehaviour, IObserver
 
     protected IEnumerator Start()
     {
-        Debug.Log("확인");
         yield return null;
         Managers.Sound.ResisterObserver(this);
         Init();
