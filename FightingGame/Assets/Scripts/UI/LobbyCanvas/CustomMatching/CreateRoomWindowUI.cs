@@ -6,8 +6,6 @@ using FGDefine;
 
 public class CreateRoomWindowUI : MonoBehaviour
 {
-    [SerializeField] CustomRoomWindowUI customRoomWindow;
-
     [SerializeField] Image mapImage;
     [SerializeField] Text mapNameText;
     [SerializeField] Text personnelText;
@@ -25,6 +23,7 @@ public class CreateRoomWindowUI : MonoBehaviour
         userInputField.text = "";
         CurrMap = ENUM_MAP_TYPE.BasicMap;
     }
+    private void Open_CustomRoom() => Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
 
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
@@ -32,7 +31,7 @@ public class CreateRoomWindowUI : MonoBehaviour
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
         mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
     }
-
+    
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property) { }
 
     public void OnClick_CreatRoom()
@@ -74,9 +73,4 @@ public class CreateRoomWindowUI : MonoBehaviour
         CurrMap = (ENUM_MAP_TYPE)_mapIndex;
     }
 
-    private void Open_CustomRoom()
-    {
-        customRoomWindow.Open();
-        this.gameObject.SetActive(false);
-    }
 }

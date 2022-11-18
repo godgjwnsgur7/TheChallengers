@@ -18,7 +18,6 @@ public class RoomListElementUI : MonoBehaviour
     [SerializeField] Text personnelText;
 
     Action OnUpdateRoomList = null;
-    Action OnActiveRoomWindow = null;
     public CustomRoomInfo myRoomInfo;
 
     ENUM_MAP_TYPE currMap;
@@ -27,7 +26,7 @@ public class RoomListElementUI : MonoBehaviour
         set { CurrMapInfoUpdateCallBack(value); }
     }
 
-    public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList, Action _OnActiveRoomWindow)
+    public void Open(CustomRoomInfo _roomInfo, Action _OnUpdateRoomList)
     {
         if (_roomInfo == null || isUsing)
         {
@@ -39,7 +38,6 @@ public class RoomListElementUI : MonoBehaviour
 
         myRoomInfo = _roomInfo;
         OnUpdateRoomList = _OnUpdateRoomList;
-        OnActiveRoomWindow = _OnActiveRoomWindow;
         
         Show_MyRoomInfo();
 
@@ -52,7 +50,6 @@ public class RoomListElementUI : MonoBehaviour
 
         myRoomInfo = null;
         OnUpdateRoomList = null;
-        OnActiveRoomWindow = null;
         isUsing = false;
     }
     
@@ -125,8 +122,7 @@ public class RoomListElementUI : MonoBehaviour
 
     public void JoinRoom()
     {
-        if (!PhotonLogicHandler.Instance.TryJoinRoom(OnActiveRoomWindow, null, myRoomInfo.roomName))
+        if (!PhotonLogicHandler.Instance.TryJoinRoom(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow, null, myRoomInfo.roomName))
             Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);
-
     }
 }

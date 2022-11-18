@@ -148,17 +148,18 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (this.gameObject.activeSelf)
         {
             Debug.Log("커스텀 룸 윈도우가 이미 열려있습니다.");
-            return;
+        }
+        else
+        {
+            this.gameObject.SetActive(true);
+            Init();
         }
 
-        this.gameObject.SetActive(true);
-
-        Init();
         Managers.Battle.Join_CustomRoomUI();
         Set_CurrRoomInfo();
     }
 
-    private void Close()
+    public void Close()
     {
         if (!this.gameObject.activeSelf)
             return;
@@ -170,8 +171,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         slaveProfile.Clear();
 
         this.gameObject.SetActive(false);
-
-        Debug.Log($"IsJoinedRoom : {PhotonLogicHandler.IsJoinedRoom}");
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Close_CustomMatchingWindow();
     }
 
     public void CurrmapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)

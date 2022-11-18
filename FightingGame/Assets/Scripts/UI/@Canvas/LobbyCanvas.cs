@@ -14,8 +14,10 @@ public class LobbyCanvas : BaseCanvas
     {
         base.Init();
     }
+    public void Open_CustomMatchingWindow() => customMatching.Open();
+    public void Close_CustomMatchingWindow() => customMatching.Close();
+    public void Open_FightingInfoWindow() => fightingInfoWindow.Open();
 
-    public void InTheCustomRoom() => customMatching.Open();
 
     public void OnClick_CustomMathing()
     {
@@ -35,10 +37,5 @@ public class LobbyCanvas : BaseCanvas
     private void GoTo_TrainingScene()
     {
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
-    }
-
-    public void Open_FightingInfoWindow()
-    {
-        fightingInfoWindow.Open();
     }
 }

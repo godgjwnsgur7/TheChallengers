@@ -29,6 +29,11 @@ public class CustomRoomListWindowUI : MonoBehaviour, ILobbyPostProcess
         gameObject.SetActive(true);
     }
 
+    public void Close()
+    {
+        this.gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// 로비 내 룸이 갱신될 때마다 해당 콜백이 불림
     /// </summary>
