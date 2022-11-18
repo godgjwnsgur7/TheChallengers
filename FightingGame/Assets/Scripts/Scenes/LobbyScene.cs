@@ -25,9 +25,4 @@ public class LobbyScene : BaseScene
     {
         base.Clear();
     }
-
-    public override void Update_BGM()
-    {
-        Managers.Sound.Play(ENUM_BGM_TYPE.MainBGM, ENUM_SOUND_TYPE.BGM);
-    }
 }

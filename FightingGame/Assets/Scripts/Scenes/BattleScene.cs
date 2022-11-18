@@ -76,9 +76,4 @@ public class BattleScene : BaseScene
 
         return activeCharacter;
     }
-
-    public override void Update_BGM()
-    {
-        Managers.Sound.Play(ENUM_BGM_TYPE.TestBGM, ENUM_SOUND_TYPE.BGM);
-    }
 }

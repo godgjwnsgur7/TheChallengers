@@ -22,12 +22,12 @@ public abstract class BaseScene : MonoBehaviour, IObserver
         Managers.UI.popupCanvas.Play_FadeOutEffect();
         Managers.Scene.Get_CurrSceneType(SceneType);
     }
-
+    
     public virtual void Clear()
     {
         Managers.Sound.RemoveObserver(this);
     }
 
-    public abstract void Update_BGM();
+    public virtual void Update_BGM() { } // 사라질 예정
 }
  
