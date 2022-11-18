@@ -120,5 +120,6 @@ public class UserProfileUI : MonoBehaviour
         Set_Character(ENUM_CHARACTER_TYPE.Default);
         Set_ReadyState(false);
         isInit = false;
+        isMine = false;
     }
 }

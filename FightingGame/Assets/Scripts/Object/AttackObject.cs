@@ -157,8 +157,8 @@ public class AttackObject : Poolable
 
         DestroyMine();
     }
-    
-    public virtual void DestroyMine()
+        
+    public void DestroyMine()
     {
         if (!this.gameObject.activeSelf) return;
 
@@ -173,6 +173,11 @@ public class AttackObject : Poolable
 
     [BroadcastMethod]
     public virtual void Sync_DestroyMine()
+    {
+        Managers.Resource.Destroy(this.gameObject);
+    }
+
+    public void AnimEvent_DestoryMine()
     {
         Managers.Resource.Destroy(this.gameObject);
     }

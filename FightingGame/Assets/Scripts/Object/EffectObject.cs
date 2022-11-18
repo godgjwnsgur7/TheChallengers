@@ -56,7 +56,7 @@ public class EffectObject : Poolable
         effectRenderer.color = effectColors[colorNum];
     }
 
-    public virtual void DestroyMine()
+    public void AnimEvent_DestoryMine()
     {
         if (!this.gameObject.activeSelf) return;
 
