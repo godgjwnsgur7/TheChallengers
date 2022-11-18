@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class SettingPanel : UIElement
 {
-    private float moveSpeed = 1;
-    private bool isMove = false;
     public bool isValueChange = false;
     public bool isHide = false;
-    private Coroutine runningCoroutine = null;
+    private int inputKeyNum = -1;
 
-    private int inputNum = -1;
-    private InputPanel inputPanel = null;
     private InputKey inputKey = null;
-    private KeySettingData keySettingData = null;
-
-    private AreaPanel areaPanel = null;
-    private RectTransform thisRect;
+    private RectTransform thisRect = null;
+    private Coroutine runningCoroutine = null;
 
     [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] Slider sizeSlider;
@@ -40,39 +35,37 @@ public class SettingPanel : UIElement
 
     public void Init()
     {
-        this.inputPanel = inputKeyManagement.inputPanel;
-        this.areaPanel = inputKeyManagement.areaPanel;
         this.thisRect = GetComponent<RectTransform>();
     }
 
     // 클릭 InputKey, Slider 세팅
-    public void OnClick_SetInputKey(int _inputNum)
+    public void OnClick_SetInputKey(InputKey _inputKey, KeySettingData _keySettingData)
     {
         // InputKey세팅
-        this.inputNum = _inputNum;
-        this.inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)this.inputNum);
-        this.keySettingData = inputKeyManagement.Get_KeySettingData(this.inputNum);
+        this.inputKey = _inputKey;
+        inputKeyNum = (int)Enum.Parse(typeof(ENUM_INPUTKEY_NAME), _inputKey.name);
 
         // Slider 세팅
-        this.sizeSlider.value = this.keySettingData.size;
-        this.opacitySlider.value = this.keySettingData.opacity;
-        this.sizeText.text = (int)sizeSlider.value + "%";
-        this.opacityText.text = (int)opacitySlider.value + "%";
+        sizeSlider.value = _keySettingData.size;
+        opacitySlider.value = _keySettingData.opacity;
+        Set_SizeSliderText($"{(int)sizeSlider.value}%");
+        Set_OpacitySliderText($"{(int)opacitySlider.value}%");
     }
 
+    private void Set_SizeSliderText(string _text) => sizeText.text = _text;
+    private void Set_OpacitySliderText(string _text) => opacityText.text = _text;
+
+    #region 실린더값 변경
     // SizeSlider 값 변경
     public void OnValueChanged_SetSizeSlider()
     {
         if (inputKey == null)
             return;
 
-        if (inputNum < 0)
-            return;
-
         int sizeValue = (int)this.sizeSlider.value;
 
-        this.sizeText.text = $"{sizeValue}%";
-        this.inputKeyManagement.Set_InputKeySize(sizeValue, this.inputNum);
+        Set_SizeSliderText($"{sizeValue}%");
+        this.inputKeyManagement.Set_InputKeySize(sizeValue, this.inputKeyNum);
 
         if (!isValueChange)
             isValueChange = true;
@@ -84,68 +77,73 @@ public class SettingPanel : UIElement
         if (inputKey == null)
             return;
 
-        if (inputNum < 0)
-            return;
-
         int opacityValue = (int)this.opacitySlider.value;
 
-        this.opacityText.text = $"{opacityValue}%";
-        this.inputKeyManagement.Set_InputKeyOpacity(opacityValue, this.inputNum);
+        Set_OpacitySliderText($"{opacityValue}%");
+        this.inputKeyManagement.Set_InputKeyOpacity(opacityValue, this.inputKeyNum);
+
+        if (!isValueChange)
+            isValueChange = true;
+    }
+    #endregion
+
+    #region InputKey 이동버튼
+    // InputKey 이동 중지
+    public void OnPointerUp_MovePos()
+    {
+        inputKeyManagement.isMove = false;
 
         if (!isValueChange)
             isValueChange = true;
     }
 
     // InputKet 이동
-    public void OnPointerDown_MovePos(string _direction)
+    public void OnPointerDown_MovePosY(float _moveSpeed)
     {
         if (this.inputKey == null)
             return;
 
-        Vector2 movePos = this.inputKey.GetComponent<RectTransform>().anchoredPosition;
-        isMove = true;
-        StartCoroutine(MovePosCoroutine(movePos, _direction));
+        Vector2 movePos = this.inputKey.GetComponent<RectTransform>().position;
+        inputKeyManagement.isMove = true;
+        StartCoroutine(MovePosYCoroutine(movePos, _moveSpeed));
     }
 
-    // InputKey 이동 중지
-    public void OnPointerUp_MovePos()
+    public void OnPointerDown_MovePosX(float _moveSpeed)
     {
-        isMove = false;
-        this.moveSpeed = 1;
+        if (this.inputKey == null)
+            return;
 
-        if (!isValueChange)
-            isValueChange = true;
+        Vector2 movePos = this.inputKey.GetComponent<RectTransform>().position;
+        inputKeyManagement.isMove = true;
+        StartCoroutine(MovePosXCoroutine(movePos, _moveSpeed));
     }
 
-    IEnumerator MovePosCoroutine(Vector2 _movePos, string _direction)
+    IEnumerator MovePosYCoroutine(Vector2 _movePos, float _moveSpeed)
     {
-        while (isMove)
+        while (inputKeyManagement.isMove)
         {
-            switch (_direction)
-            {
-                case "Up":
-                    _movePos.y += moveSpeed;
-                    break;
-                case "Down":
-                    _movePos.y -= moveSpeed;
-                    break;
-                case "Left":
-                    _movePos.x -= moveSpeed;
-                    break;
-                case "Right":
-                    _movePos.x += moveSpeed;
-                    break;
-                default:
-                    Debug.Log("범위 벗어남");
-                    break;
-            }
+            _movePos.y += _moveSpeed;
+            _moveSpeed *= (1 + Time.deltaTime);
 
-            moveSpeed += 1 * Time.deltaTime;
-            this.inputKeyManagement.Set_InputKeyTransForm(_movePos.x, _movePos.y, this.inputNum);
+            this.inputKeyManagement.Set_InputKeyTransForm(_movePos.x, _movePos.y, this.inputKeyNum);
             yield return null;
         }
     }
 
+    IEnumerator MovePosXCoroutine(Vector2 _movePos, float _moveSpeed)
+    {
+        while (inputKeyManagement.isMove)
+        {
+            _movePos.x += _moveSpeed;
+            _moveSpeed *= (1 + Time.deltaTime);
+
+            this.inputKeyManagement.Set_InputKeyTransForm(_movePos.x, _movePos.y, this.inputKeyNum);
+            yield return null;
+        }
+    }
+    #endregion
+
+    #region Close, Reset, Save 버튼
     public void OnClick_CloseBtn()
     {
         if(isValueChange)
@@ -156,35 +154,14 @@ public class SettingPanel : UIElement
     public void OnClick_ResetBtn() => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
     public void OnClick_SaveBtn()
     {
-        if (areaPanel.Get_Updatable())
+        if (inputKeyManagement.inputPanel.Get_Updatable())
             Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼의 영역이 겹쳐 수정이 불가능합니다.");
     }
+    #endregion
 
-    public void Reset_InputKeyValue()
-    {
-        inputKeyManagement.Reset_InputKeyValue();
-
-        if (this.inputNum < 0)
-            return;
-
-        sizeSlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).size;
-        opacitySlider.value = inputKeyManagement.Get_KeySettingData(this.inputNum).opacity;
-    }
-
-    // 세팅패널 초기화
-    public void Reset_SettingPanel()
-    {
-        this.inputNum = -1;
-        this.inputKey = null;
-        this.sizeSlider.value = 50;
-        this.opacitySlider.value = 100;
-        this.sizeText.text = "50%";
-        this.opacityText.text = "100%";
-    }
-
-    // 세팅패널 숨기기, 보이기
+    #region 세팅패널 숨기기, 보이기
     public void Move_SettingPanel()
     {
         if (runningCoroutine != null)
@@ -234,5 +211,30 @@ public class SettingPanel : UIElement
         }
 
         runningCoroutine = null;
+    }
+    #endregion
+
+    public void Reset_InputKeyValue()
+    {
+        inputKeyManagement.Reset_InputKeyValue();
+
+        if (this.inputKeyNum < 0)
+            return;
+
+        sizeSlider.value = inputKeyManagement.Get_KeySettingData(this.inputKeyNum).size;
+        opacitySlider.value = inputKeyManagement.Get_KeySettingData(this.inputKeyNum).opacity;
+    }
+
+    // 세팅패널 초기화
+    public void Reset_SettingPanel()
+    {
+        this.inputKeyNum = -1;
+        this.inputKey = null;
+
+        this.sizeSlider.value = 50;
+        this.opacitySlider.value = 100;
+
+        Set_SizeSliderText("50%");
+        Set_OpacitySliderText("100%");
     }
 }

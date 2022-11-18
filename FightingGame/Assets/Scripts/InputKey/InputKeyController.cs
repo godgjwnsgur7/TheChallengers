@@ -9,13 +9,10 @@ public class InputKeyController : MonoBehaviour
 {
     List<KeySettingData> keySettingDataList = null;
 
-    private InputKeyManagement inputKeyManagement = null;
     private PlayerCharacter currPlayer;
 
     public InputPanel inputPanel = null;
-    private RectTransform panelTr = null;
     private InputKey inputKey = null;
-    private RectTransform inputKeyRectTr = null;
 
     public bool isPanelActive = false;
 
@@ -24,25 +21,18 @@ public class InputKeyController : MonoBehaviour
         if (inputPanel == null)
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(PointerDown, PointerUp);
-            panelTr = inputPanel.GetComponent<RectTransform>();
+            inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
         }
 
         Set_keySettingDataList();
+        inputPanel.Set_InputKeyData(keySettingDataList);
         Set_PanelActive(true);
-
-        /*inputKeyManagement = gameObject.transform.parent.Find("InputKeyManagement").GetComponent<InputKeyManagement>();
-        if (inputKeyManagement == null)
-            return;
-
-        if (inputKeyManagement.isPanelActive)
-            inputKeyManagement.Set_PanelActive(false);*/
     }
 
     public void Connect_Player(PlayerCharacter _player) => currPlayer = _player;
     public void Disconnect_Player() => currPlayer = null;
 
-    public void PointerDown(InputKey _inputkey)
+    public void OnClick_CallBackDown(InputKey _inputkey)
     {
         if (currPlayer == null)
             return;
@@ -99,7 +89,7 @@ public class InputKeyController : MonoBehaviour
         }
     }
 
-    public void PointerUp(InputKey _inputkey)
+    public void OnClick_CallBackUp(InputKey _inputkey)
     {
         if(currPlayer.activeCharacter.anim.GetBool("AttackState"))
             currPlayer.activeCharacter.Change_AttackState(false);
@@ -114,58 +104,22 @@ public class InputKeyController : MonoBehaviour
         }
     }
 
-    // PlayerPrefs 값 호출
-    public void Set_keySettingDataList()
+    // keySettingDataList 값 호출
+    private void Set_keySettingDataList()
     {
         // 설정된 PlayerPrefs 호출
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
 
-        // 설정된 PlayerPrefs가 없으면 초기화
         if (keySettingDataList == null)
         {
             keySettingDataList = new List<KeySettingData>();
             for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
             {
                 inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-
-                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
+                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKey.inputKeyRectTr.position.x, inputKey.inputKeyRectTr.position.y));
+                Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
-        }
-        else
-        {
-            for (int i = 0; i < keySettingDataList.Count; i++)
-            {
-                inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-                float ratio;
-
-                // Set Size
-                ratio = (50 + keySettingDataList[i].size) / 100;
-                Vector3 changeVec = new Vector3(1, 1, 1) * ratio;
-                inputKeyRectTr.localScale = changeVec;
-
-                // Set Opacity
-                Image inputKeyImage;
-                ratio = 0.5f + (keySettingDataList[i].opacity / 200);
-                Transform imageObjectTr = inputKey.transform.Find("SlotImage");
-                if (imageObjectTr != null)
-                {
-                    inputKeyImage = imageObjectTr.GetComponent<Image>();
-                    Set_ChangeColor(inputKeyImage, ratio);
-                }
-
-                imageObjectTr = inputKey.transform.Find("IconArea");
-                if (imageObjectTr != null)
-                {
-                    inputKeyImage = imageObjectTr.GetChild(0).GetComponent<Image>();
-                    Set_ChangeColor(inputKeyImage, ratio);
-                }
-
-                // Set Transform 
-                changeVec = new Vector2(keySettingDataList[i].rectTrX, keySettingDataList[i].rectTrY);
-                inputKeyRectTr.anchoredPosition = changeVec;
-            }
+            return;
         }
     }
 

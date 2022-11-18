@@ -150,7 +150,6 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 5);
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Wizard_ThunderEffect", 5);
     }
 
     public override void Idle()

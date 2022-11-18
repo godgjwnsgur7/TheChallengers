@@ -401,8 +401,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2071825307}
-  - {fileID: 1871202866}
   - {fileID: 675651420}
+  - {fileID: 1871202866}
   - {fileID: 2131874536}
   - {fileID: 787698120}
   m_Father: {fileID: 0}
@@ -426,7 +426,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 0}
-  trainingScene: {fileID: 1948010699}
   blueTeamStatusWindowUI: {fileID: 888973663}
   redTeamStatusWindowUI: {fileID: 2067127198}
   buttonPanel: {fileID: 110583156}
@@ -1003,8 +1002,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingPanel: {fileID: 146816640}
   isPanelActive: 0
+  isMove: 0
   inputPanel: {fileID: 0}
-  areaPanel: {fileID: 0}
 --- !u!1 &136924374
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,12 +1348,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158049543}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1012325731}
-  m_Father: {fileID: 2131874536}
+  m_Father: {fileID: 532448599}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2561,7 +2560,7 @@ GameObject:
   - component: {fileID: 408681455}
   - component: {fileID: 408681454}
   m_Layer: 5
-  m_Name: MoveButton
+  m_Name: MoveButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2574,7 +2573,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 408681452}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2582,8 +2581,8 @@ RectTransform:
   - {fileID: 1884708747}
   - {fileID: 2004679435}
   - {fileID: 474265196}
-  m_Father: {fileID: 2131874536}
-  m_RootOrder: 4
+  m_Father: {fileID: 532448599}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2859,13 +2858,13 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2131874539}
           m_TargetAssemblyTypeName: SettingPanel, Assembly-CSharp
-          m_MethodName: OnPointerDown_MovePos
-          m_Mode: 5
+          m_MethodName: OnPointerDown_MovePosX
+          m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: 0
+            m_FloatArgument: 1
             m_StringArgument: Right
             m_BoolArgument: 0
           m_CallState: 2
@@ -3297,6 +3296,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 517990546}
   m_CullTransparentMesh: 1
+--- !u!1 &532448598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 532448599}
+  m_Layer: 5
+  m_Name: Buttons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &532448599
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532448598}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 619630807}
+  - {fileID: 2133940164}
+  - {fileID: 158049544}
+  - {fileID: 408681453}
+  - {fileID: 2036011603}
+  m_Father: {fileID: 2131874536}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &595210828
 GameObject:
   m_ObjectHideFlags: 0
@@ -3535,12 +3574,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619630806}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1322004713}
-  m_Father: {fileID: 2131874536}
+  m_Father: {fileID: 532448599}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3708,7 +3747,7 @@ RectTransform:
   - {fileID: 1111203227}
   - {fileID: 1621611176}
   m_Father: {fileID: 42189880}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6457,8 +6496,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingPanel: {fileID: 2131874539}
   isPanelActive: 0
+  isMove: 0
   inputPanel: {fileID: 0}
-  areaPanel: {fileID: 0}
 --- !u!224 &1111203227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7984,7 +8023,7 @@ GameObject:
   - component: {fileID: 1362056367}
   - component: {fileID: 1362056366}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Sliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8004,7 +8043,7 @@ RectTransform:
   - {fileID: 55490561}
   - {fileID: 1745490866}
   m_Father: {fileID: 2131874536}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10034,7 +10073,7 @@ RectTransform:
   - {fileID: 1273168652}
   - {fileID: 110583153}
   m_Father: {fileID: 42189880}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10366,13 +10405,13 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2131874539}
           m_TargetAssemblyTypeName: SettingPanel, Assembly-CSharp
-          m_MethodName: OnPointerDown_MovePos
-          m_Mode: 5
+          m_MethodName: OnPointerDown_MovePosY
+          m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: 0
+            m_FloatArgument: -1
             m_StringArgument: Down
             m_BoolArgument: 0
           m_CallState: 2
@@ -10941,13 +10980,13 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2131874539}
           m_TargetAssemblyTypeName: SettingPanel, Assembly-CSharp
-          m_MethodName: OnPointerDown_MovePos
-          m_Mode: 5
+          m_MethodName: OnPointerDown_MovePosY
+          m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: 0
+            m_FloatArgument: 1
             m_StringArgument: Up
             m_BoolArgument: 0
           m_CallState: 2
@@ -11466,13 +11505,13 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2131874539}
           m_TargetAssemblyTypeName: SettingPanel, Assembly-CSharp
-          m_MethodName: OnPointerDown_MovePos
-          m_Mode: 5
+          m_MethodName: OnPointerDown_MovePosX
+          m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: 0
+            m_FloatArgument: -1
             m_StringArgument: Left
             m_BoolArgument: 0
           m_CallState: 2
@@ -11586,8 +11625,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 821430692}
-  m_Father: {fileID: 2131874536}
-  m_RootOrder: 5
+  m_Father: {fileID: 532448599}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12246,12 +12285,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 619630807}
-  - {fileID: 2133940164}
-  - {fileID: 158049544}
+  - {fileID: 532448599}
   - {fileID: 1362056365}
-  - {fileID: 408681453}
-  - {fileID: 2036011603}
   m_Father: {fileID: 42189880}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12344,12 +12379,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2133940163}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1955909883}
-  m_Father: {fileID: 2131874536}
+  m_Father: {fileID: 532448599}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

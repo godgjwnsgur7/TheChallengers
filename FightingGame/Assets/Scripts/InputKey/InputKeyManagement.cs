@@ -11,88 +11,44 @@ public class InputKeyManagement : MonoBehaviour
     List<KeySettingData> keySettingDataList = null;
 
     [SerializeField] SettingPanel settingPanel;
-    private InputKeyController inputKeyController = null;
 
     public bool isPanelActive = false;
-    private bool isInit = false;
+    public bool isMove = false;
     private int inputKeyNum;
 
     public InputPanel inputPanel = null;
-    private RectTransform panelTr = null;
     private InputKey inputKey = null;
-    private RectTransform inputKeyRectTr = null;
-
-    public AreaPanel areaPanel = null;
-    private KeyArea keyArea = null;
-    private RectTransform areaRectTr = null;
-
-    private EventTrigger eventTrigger;
-    private EventTrigger.Entry triggerEntry = new EventTrigger.Entry
-    {
-        eventID = EventTriggerType.Drag,
-    };
 
     public void Init()
     {
-        if (this.areaPanel == null)
-        {
-            this.areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
-            this.areaPanel.Init();
-        }
-
         if (this.inputPanel == null)
         {
             this.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            this.inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
+            this.inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
         }
 
         Set_keySettingDataList();
-
-        // 첫Init 때 드래그 이벤트트리거 생성
-        if (!isInit)
-        {
-            for (int i = 0; i < keySettingDataList.Count; i++)
-                Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
-
-            // 세팅패널 활성화
-            settingPanel.Init();
-
-            isInit = true;
-        }
-            
+        this.inputPanel.Set_InputKeyData(keySettingDataList);
         Set_PanelActive(true);
-
-        inputKeyController = gameObject.transform.parent.Find("InputKeyController").GetComponent<InputKeyController>();
-        if (inputKeyController == null)
-            return;
-
-        if (inputKeyController.isPanelActive)
-            inputKeyController.Set_PanelActive(false);
     }
 
-    // PlayerPrefs 값 호출
+    // keySettingDataList 값 호출
     private void Set_keySettingDataList()
     {
         // 설정된 PlayerPrefs 호출
         keySettingDataList = PlayerPrefsManagement.Load_KeySettingData();
 
-        // 설정된 PlayerPrefs가 없으면 초기화
+        // 없으면 초기값 생성
         if (keySettingDataList == null)
         {
             keySettingDataList = new List<KeySettingData>();
             for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
             {
                 inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-                inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-
-                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
+                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKey.inputKeyRectTr.position.x, inputKey.inputKeyRectTr.position.y));
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
-        }
-        else
-        {
-            for (int i = 0; i < keySettingDataList.Count; i++)
-                Set_InputKey(i);
+            return;
         }
     }
 
@@ -107,19 +63,11 @@ public class InputKeyManagement : MonoBehaviour
     // size 조절
     public void Set_InputKeySize(float _size, int _inputkeyNum)
     {
-        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
-        keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)_inputkeyNum);
-
         float sizeRatio = (50 + _size) / 100;
         Vector3 changeScale = new Vector3(1, 1, 1) * sizeRatio;
 
-        // InputKey 크기 변경
-        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-        inputKeyRectTr.localScale = changeScale;
-
-        // KeyArea 크기 변경
-        areaRectTr = keyArea.GetComponent<RectTransform>();
-        areaRectTr.localScale = changeScale;
+        inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
+        inputKey.inputKeyRectTr.localScale = changeScale;
         
         keySettingDataList[_inputkeyNum].size = _size;
     }
@@ -127,23 +75,16 @@ public class InputKeyManagement : MonoBehaviour
     // opacity 조절
     public void Set_InputKeyOpacity(float _opacity, int _inputkeyNum)
     {
-        Image inputKeyImage;
         float opacityRatio = 0.5f + (_opacity / 200);
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
 
-        Transform imageObjectTr = inputKey.transform.Find("SlotImage");
-        if (imageObjectTr != null)
-        {
-            inputKeyImage = imageObjectTr.GetComponent<Image>();
+        Image inputKeyImage = inputKey.Get_SlotImage();
+        if (inputKeyImage != null)
             Set_ChangeColor(inputKeyImage, opacityRatio);
-        }
 
-        imageObjectTr = inputKey.transform.Find("IconArea");
-        if (imageObjectTr != null)
-        {
-            inputKeyImage = imageObjectTr.GetChild(0).GetComponent<Image>();
+        inputKeyImage = inputKey.Get_IconImage();
+        if (inputKeyImage != null)
             Set_ChangeColor(inputKeyImage, opacityRatio);
-        }
 
         keySettingDataList[_inputkeyNum].opacity = _opacity;
     }
@@ -159,31 +100,24 @@ public class InputKeyManagement : MonoBehaviour
     public void Set_InputKeyTransForm(float _rectTrX, float _rectTrY, int _inputkeyNum)
     {
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)_inputkeyNum);
-        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
 
-        keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)_inputkeyNum);
-        areaRectTr = keyArea.GetComponent<RectTransform>();
-
-        Vector2 movePos = CheckTransformRange(new Vector2(_rectTrX, _rectTrY));
-        inputKeyRectTr.anchoredPosition = movePos;
-        areaRectTr.anchoredPosition = movePos;
+        Vector2 movePos = CheckRange_Position(new Vector2(_rectTrX, _rectTrY));
+        inputKey.inputKeyRectTr.position = movePos;
 
         keySettingDataList[_inputkeyNum].rectTrX = movePos.x;
         keySettingDataList[_inputkeyNum].rectTrY = movePos.y;
     }
 
     // UI 이동 범위 체크
-    public Vector2 CheckTransformRange(Vector2 changeVector)
+    private Vector2 CheckRange_Position(Vector2 _changeVector)
     {
-        Vector2 panelHalfSize = panelTr.sizeDelta / 2;
+        float scaleSizeX = (inputKey.inputKeyRectTr.sizeDelta.x / 2) * inputKey.inputKeyRectTr.localScale.x;
+        float scaleSizeY = (inputKey.inputKeyRectTr.sizeDelta.y / 2) * inputKey.inputKeyRectTr.localScale.y;
 
-        // InputKey 가로,세로 길이의 반
-        float scaleSizeX = (inputKeyRectTr.sizeDelta.x / 2) * inputKeyRectTr.localScale.x;
-        float scaleSizeY = (inputKeyRectTr.sizeDelta.y / 2) * inputKeyRectTr.localScale.y;
+        float vecRangeX = Mathf.Clamp(_changeVector.x, 0 + scaleSizeX, inputPanel.thisRectTr.sizeDelta.x - scaleSizeX);
+        float vecRangeY = Mathf.Clamp(_changeVector.y, 0 + scaleSizeY, (inputPanel.thisRectTr.sizeDelta.y * 0.75f) - scaleSizeY);
 
-        // 최대 이동범위 가로축 : InputPanel범위 안, 세로축 : InputPanel의 중심의 아래쪽
-        float vecRangeX = Mathf.Clamp(changeVector.x, -panelHalfSize.x + scaleSizeX, panelHalfSize.x - scaleSizeX);
-        float vecRangeY = Mathf.Clamp(changeVector.y, -panelHalfSize.y + scaleSizeY, (panelHalfSize.y / 2) - scaleSizeY);
+        _changeVector = new Vector2(vecRangeX, vecRangeY);
 
         return new Vector2(vecRangeX, vecRangeY);
     }
@@ -191,93 +125,56 @@ public class InputKeyManagement : MonoBehaviour
     // InputKey 초기화
     public void Reset_InputKeyValue()
     {
-        if (keyArea != null)
-        {
-            keyArea.isSelect = false;
-            keyArea.Set_AreaColor();
-        }
-
         Destroy(inputPanel.gameObject);
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-        inputPanel.Init(OnClick_BeginClick, OnClick_EndClick);
-        panelTr = inputPanel.GetComponent<RectTransform>();
+        inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
 
         keySettingDataList = new List<KeySettingData>();
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-            inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-
-            keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKeyRectTr.anchoredPosition.x, inputKeyRectTr.anchoredPosition.y));
+            keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKey.inputKeyRectTr.position.x, inputKey.inputKeyRectTr.position.y));
         }
 
-        for (int i = 0; i < keySettingDataList.Count; i++)
-            Set_DragEventTrigger(inputPanel.Get_InputKey(((ENUM_INPUTKEY_NAME)i)));
-
-        settingPanel.Init();
         settingPanel.Reset_SettingPanel();
     }
 
     #endregion 
 
-    // PointerDown Event
-    private void OnClick_BeginClick(InputKey _inputKey)
+    // CallBackDown Event
+    private void OnClick_CallBackDown(InputKey _inputKey)
     {
         // 선택한 InputKey에 해당하는 Enum번호 찾기
         inputKeyNum = (int)Enum.Parse(typeof(ENUM_INPUTKEY_NAME), _inputKey.name);
         
         // 기존 선택 상태이던 버튼 area 색상 변경
-        if (keyArea != null)
+        if (inputKey != null)
         {
-            keyArea.isSelect = false;
-            keyArea.Set_AreaColor();
+            inputKey.isSelect = false;
+            inputKey.Set_AreaColor();
         }
 
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
-        inputKeyRectTr = inputKey.GetComponent<RectTransform>();
-        triggerEntry.callback.AddListener(OnDrag);
 
-        // Enum번호로 SettingPanel 등록
-        settingPanel.OnClick_SetInputKey(inputKeyNum);
+        // InputKey를 SettingPanel 등록
+        settingPanel.OnClick_SetInputKey(_inputKey, keySettingDataList[inputKeyNum]);
 
-        // keyArea 색상 변경
-        keyArea = areaPanel.Get_keyArea((ENUM_INPUTKEY_NAME)inputKeyNum);
-        keyArea.isSelect = true;
-        keyArea.Set_AreaColor();
+        if (inputKey != null)
+        {
+            inputKey.isSelect = true;
+            inputKey.Set_AreaColor();
+        }
+
+        isMove = true;
+        StartCoroutine(MouseDrag(inputKeyNum));
 
         Debug.Log($"{_inputKey.name}세팅");
     }
 
-    // InputKey EventTrigger에 OnDrag추가
-    private void Set_DragEventTrigger(InputKey _inputKey)
+    // CallBackUp Event
+    private void OnClick_CallBackUp(InputKey _inputKey)
     {
-        eventTrigger = _inputKey.GetComponent<EventTrigger>();
-        eventTrigger.triggers.Add(triggerEntry);
-    }
-
-    // 드래그로 InputKey 위치이동
-    private void OnDrag(BaseEventData _data) 
-    {
-        if (!settingPanel.isHide)
-            OnBeginDrag();
-
-        PointerEventData data = (PointerEventData)_data;
-        Vector2 movePos = inputKeyRectTr.anchoredPosition + data.delta;
-        Set_InputKeyTransForm(movePos.x, movePos.y, inputKeyNum);
-
-        if (!settingPanel.isValueChange)
-            settingPanel.isValueChange = true;
-    }
-
-    private void OnBeginDrag() => settingPanel.Hide_SettingPanel();
-
-    // PointerUp Event
-    private void OnClick_EndClick(InputKey _ienputKey)
-    {
-        if (eventTrigger.triggers.Count <= 2)
-            return;
-
-        triggerEntry.callback.RemoveListener(OnDrag);
+        isMove = false;
     }
 
     // Panel들 Active상태 변환
@@ -285,12 +182,11 @@ public class InputKeyManagement : MonoBehaviour
     {
         this.isPanelActive = _changeBool;
         this.inputPanel.gameObject.SetActive(_changeBool);
-        this.areaPanel.gameObject.SetActive(_changeBool);
 
         if (!_changeBool)
         {
-            keyArea.isSelect = false;
-            keyArea.Set_AreaColor();
+            inputKey.isSelect = false;
+            inputKey.Set_AreaColor();
             return;
         }
     }
@@ -304,5 +200,20 @@ public class InputKeyManagement : MonoBehaviour
     public KeySettingData Get_KeySettingData(int _inputKeyNum)
     {
         return keySettingDataList[_inputKeyNum];
+    }
+
+    IEnumerator MouseDrag(int _inputKeyNum)
+    {
+        settingPanel.Hide_SettingPanel();
+
+        while (isMove)
+        {
+            Vector2 mousePos = Input.mousePosition;
+            Set_InputKeyTransForm(mousePos.x, mousePos.y, _inputKeyNum);
+
+            yield return null;
+        }
+
+        settingPanel.Show_SettingPanel();
     }
 }

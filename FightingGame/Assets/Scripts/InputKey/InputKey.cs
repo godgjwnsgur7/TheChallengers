@@ -13,6 +13,7 @@ public class InputKey : MonoBehaviour
     public Image slotImage;
     public Image iconImage;
     public Image TouchArea;
+    public RectTransform inputKeyRectTr = null;
 
     bool isInit = false;
     public bool isSelect = false;
@@ -23,6 +24,7 @@ public class InputKey : MonoBehaviour
         if (isInit) return;
 
         isInit = true;
+        inputKeyRectTr = this.GetComponent<RectTransform>();
 
         OnPointDownCallBack = _OnPointDownCallBack;
         OnPointUpCallBack = _OnPointUpCallBack;
@@ -99,5 +101,29 @@ public class InputKey : MonoBehaviour
             return false;
         else
             return true;
+    }
+
+    public Image Get_SlotImage()
+    {
+        if (slotImage == null)
+            return null;
+
+        return slotImage;
+    }
+
+    public Image Get_IconImage()
+    {
+        if (iconImage == null)
+            return null;
+
+        return iconImage;
+    }
+
+    public Image Get_TouchArea()
+    {
+        if (TouchArea == null)
+            return null;
+
+        return TouchArea;
     }
 }

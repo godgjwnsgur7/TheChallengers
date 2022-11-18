@@ -71,6 +71,7 @@ public class ButtonPanel : UIElement
 
     public void SetPanelOpenButtonText(string text) => panelOpenBtnText.text = text;
 
+    // 캐릭터 선택창 오픈
     public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectPlayerCharacter);
     public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectEnemyCharacter);
 
@@ -131,7 +132,6 @@ public class ButtonPanel : UIElement
         {
             if (playerCharacter.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), playerType)))
             {
-                //Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
                 Managers.UI.popupCanvas.Open_TimeNotifyPopup("같은 캐릭터가 이미 소환되어있습니다.", 2.0f);
                 Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
                 return;
@@ -160,7 +160,7 @@ public class ButtonPanel : UIElement
         {
             if (enemyPlayer.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), enemyType)))
             {
-                Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
+                Managers.UI.popupCanvas.Open_TimeNotifyPopup("같은 캐릭터가 이미 소환되어있습니다.", 2.0f);
                 Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
                 return;
             }
