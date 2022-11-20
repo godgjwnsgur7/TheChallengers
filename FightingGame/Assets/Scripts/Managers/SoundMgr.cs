@@ -170,14 +170,7 @@ public class SoundMgr : ISubject
 
     public List<VolumeData> Get_VolumeDatas() => volumeDataList;
 
-    /*foreach (AudioSource audioSources in audioSources)
-    { 
-        audioSources.clip = null;
-        audioSources.Stop();
-    }
-     */
-
-    public void ResisterObserver(IObserver _observer)
+    public void AddObserver(IObserver _observer)
     {
         if(list_Observer.Contains(_observer))
             return;

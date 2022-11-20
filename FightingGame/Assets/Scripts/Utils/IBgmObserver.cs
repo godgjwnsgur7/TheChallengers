@@ -5,7 +5,7 @@ using FGDefine;
 
 public interface ISubject
 {
-    void ResisterObserver(IObserver _observer);
+    void AddObserver(IObserver _observer);
     void RemoveObserver(IObserver _observer);
     void NotifyObserver();
 }

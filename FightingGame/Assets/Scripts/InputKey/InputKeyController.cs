@@ -82,10 +82,16 @@ public class InputKeyController : MonoBehaviour
         if (_inputkey.name.Equals(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), 1)))
             currPlayer.moveDir = 1.0f;
 
-        if (currPlayer.moveDir != 0f)
+        StartCoroutine(Move_Character());
+    }
+
+    IEnumerator Move_Character()
+    {
+        while (currPlayer.moveDir != 0f)
         {
             currPlayer.activeCharacter.Input_MoveKey(true);
             currPlayer.PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(currPlayer.moveDir));
+            yield return null;
         }
     }
 

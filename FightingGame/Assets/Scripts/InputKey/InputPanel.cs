@@ -9,8 +9,6 @@ public class InputPanel : MonoBehaviour
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
     public RectTransform thisRectTr = null;
 
-    bool isUpdate;
-
     public void Init(Action<InputKey> OnPointDownCallBack, Action<InputKey> OnPointUpCallBack)
     {
         if (thisRectTr == null)
@@ -33,20 +31,6 @@ public class InputPanel : MonoBehaviour
     public InputKey Get_InputKey(ENUM_INPUTKEY_NAME keyName)
     {
         return inputKeys[(int)keyName];
-    }
-
-    public bool Get_Updatable()
-    {
-        for (int i = 0; i < inputKeys.Length; i++)
-        {
-            isUpdate = inputKeys[i].Get_Updatable();
-            if (isUpdate)
-                continue;
-            else
-                break;
-        }
-
-        return isUpdate;
     }
 
     public void Set_InputKeyData(List<KeySettingData> _keySettingDataList)

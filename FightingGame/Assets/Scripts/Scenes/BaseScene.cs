@@ -11,7 +11,7 @@ public abstract class BaseScene : MonoBehaviour, IObserver
     protected IEnumerator Start()
     {
         yield return null;
-        Managers.Sound.ResisterObserver(this);
+        Managers.Sound.AddObserver(this);
         Init();
     }
 

@@ -151,14 +151,10 @@ public class SettingPanel : UIElement
         else
             Managers.UI.popupCanvas.Open_SelectPopup(Close, null, "버튼 설정을 종료하시겠습니까?");
     }
-    public void OnClick_ResetBtn() => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
+    public void OnClick_ResetBtn()
+        => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
     public void OnClick_SaveBtn()
-    {
-        if (inputKeyManagement.inputPanel.Get_Updatable())
-            Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
-        else
-            Managers.UI.popupCanvas.Open_NotifyPopup("버튼의 영역이 겹쳐 수정이 불가능합니다.");
-    }
+        => Managers.UI.popupCanvas.Open_SelectPopup(inputKeyManagement.Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
     #endregion
 
     #region 세팅패널 숨기기, 보이기

@@ -54,7 +54,11 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         playerCamera.Init(activeCharacter.transform);
-        inputKeyController.Init(); // 임시 (InputMgr에게 위탁할 것)
+
+        inputKeyController.Init();
+
+        if(PhotonLogicHandler.IsMine(activeCharacter.ViewID))
+            inputKeyController.Connect_Player(this);
     }
 
     // 디버깅용이니 쿨하게 다 때려박기

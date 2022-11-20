@@ -193,8 +193,30 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Save_KeySettingData()
     {
+        if (!Get_Updatable())
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("겹치는 영역이 있어 수정이 불가능합니다.");
+            return;
+        }
+
         PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
         settingPanel.isValueChange = false;
+    }
+
+    public bool Get_Updatable()
+    {
+        bool isUpdate = false;
+
+        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        {
+            isUpdate = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i).Get_Updatable();
+            if (isUpdate)
+                continue;
+            else
+                break;
+        }
+
+        return isUpdate;
     }
 
     public KeySettingData Get_KeySettingData(int _inputKeyNum)
