@@ -20,9 +20,6 @@ public class SoundMgr
 
     Coroutine bgmCoroutine;
 
-    // 임시로 여기에 셋팅
-    private float bgmPitch = 0.7f;
-    private float sfxPitch = 1.0f;
     private float fade_time = 0f;
 
     public void Init()
@@ -50,7 +47,7 @@ public class SoundMgr
         {
             volumeDataList = new List<VolumeData>();
             for (int i = 0; i < (int)ENUM_SOUND_TYPE.Max; i++)
-                volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f));
+                volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f, 0.7f));
         }
     }
 
@@ -67,7 +64,7 @@ public class SoundMgr
 
     public void Play(ENUM_BGM_TYPE bgmType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.BGM, float pitch = 0.0f)
     {
-        if (pitch == 0.0f) pitch = bgmPitch;
+        if (pitch == 0.0f) pitch = volumeDataList[0].pitch;
 
         string path = $"Sounds/{soundType}/{bgmType}";
 
@@ -92,7 +89,7 @@ public class SoundMgr
 
     public void Play(ENUM_SFX_TYPE sfxType, ENUM_SOUND_TYPE soundType = ENUM_SOUND_TYPE.SFX, float pitch = 0.0f)
     {
-        if (pitch == 0.0f) pitch = sfxPitch;
+        if (pitch == 0.0f) pitch = volumeDataList[1].pitch;
 
         string path = $"Sounds/{soundType}/{sfxType}";
 

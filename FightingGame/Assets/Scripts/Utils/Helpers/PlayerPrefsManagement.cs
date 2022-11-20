@@ -26,11 +26,13 @@ public class VolumeData
 {
     public ENUM_SOUND_TYPE key;
     public float volume;
+    public float pitch;
 
-    public VolumeData(ENUM_SOUND_TYPE _key, float _volume)
+    public VolumeData(ENUM_SOUND_TYPE _key, float _volume, float _pitch)
     {
         key = _key;
         volume = _volume;
+        pitch = _pitch;
     }
 }
 
@@ -132,6 +134,7 @@ public class PlayerPrefsManagement : MonoBehaviour
             }
 
             Set_Float(volumeDatas[i].volume, keyName, nameof(VolumeData.volume));
+            Set_Float(volumeDatas[i].pitch, keyName, nameof(VolumeData.pitch));
         }
 
         PlayerPrefs.Save();
@@ -152,8 +155,9 @@ public class PlayerPrefsManagement : MonoBehaviour
             }
 
             float _volume = Get_Float(inputKeyName, nameof(VolumeData.volume));
+            float _pitch = Get_Float(inputKeyName, nameof(VolumeData.pitch));
 
-            volumeDatas.Add(new VolumeData((ENUM_SOUND_TYPE)i, _volume));;
+            volumeDatas.Add(new VolumeData((ENUM_SOUND_TYPE)i, _volume, _pitch));
         }
 
         return volumeDatas;
