@@ -11,10 +11,9 @@ public enum ENUM_SOUND_TYPE
     Max
 }
 
-public class SoundMgr : ISubject
+public class SoundMgr
 {
     List<VolumeData> volumeDataList = null;
-    List<IObserver> list_Observer = new List<IObserver>();
 
     AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max];
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
@@ -24,6 +23,7 @@ public class SoundMgr : ISubject
     // 임시로 여기에 셋팅
     private float bgmPitch = 0.7f;
     private float sfxPitch = 1.0f;
+    private float fade_time = 0f;
 
     public void Init()
     {
@@ -38,12 +38,12 @@ public class SoundMgr : ISubject
             {
                 GameObject go = new GameObject { name = soundNames[i] };
                 audioSources[i] = go.AddComponent<AudioSource>();
-                audioSources[i].volume = 0f;
                 go.transform.parent = root.transform;
             }
         }
 
         audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = 0f;
 
         volumeDataList = PlayerPrefsManagement.Load_VolumeData();
         if (volumeDataList == null)
@@ -80,7 +80,6 @@ public class SoundMgr : ISubject
 
         if (audioSource.isPlaying) audioSource.Stop();
 
-        //audioSource.volume = 0f;
         audioSource.pitch = pitch;
         audioSource.clip = audioClip;
         audioSource.Play();
@@ -144,54 +143,29 @@ public class SoundMgr : ISubject
 
     IEnumerator FadeInBGM()
     {
-        float f_time = 0f;
         float currVolume = audioSources[0].volume;
         while (audioSources[0].volume < volumeDataList[0].volume)
         {
-            f_time += Time.deltaTime;
-            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, volumeDataList[0].volume, f_time));
+            fade_time += Time.deltaTime;
+            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, volumeDataList[0].volume, fade_time));
             yield return null;
         }
         audioSources[0].volume = volumeDataList[0].volume;
+        fade_time = 0f;
     }
 
     IEnumerator FadeOutBGM()
     {
-        float f_time = 0f;
         float currVolume = audioSources[0].volume;
         while (audioSources[0].volume > 0)
         {
-            f_time += Time.deltaTime * 1.5f;
-            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, 0, f_time));
+            fade_time += Time.deltaTime;
+            OnValueChanged_BGMVolume(Mathf.Lerp(currVolume, 0, fade_time));
             yield return null;
         }
         audioSources[0].Pause();
+        fade_time = 0f;
     }
 
     public List<VolumeData> Get_VolumeDatas() => volumeDataList;
-
-    public void AddObserver(IObserver _observer)
-    {
-        if(list_Observer.Contains(_observer))
-            return;
-
-        list_Observer.Add(_observer);
-        Debug.Log($"{_observer} 추가");
-    }
-    public void RemoveObserver(IObserver _observer)
-    {
-        if (!list_Observer.Contains(_observer))
-            return;
-
-        list_Observer.Remove(_observer);
-        Debug.Log($"{_observer} 삭제");
-    }
-
-    public void NotifyObserver()
-    {
-        foreach(IObserver _ios in list_Observer)
-        {
-            _ios.Update_BGM();
-        }
-    }
 }

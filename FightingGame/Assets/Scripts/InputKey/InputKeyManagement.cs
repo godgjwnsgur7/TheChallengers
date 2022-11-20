@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
-using UnityEngine.EventSystems;
 using System;
 
 public class InputKeyManagement : MonoBehaviour
@@ -183,7 +182,7 @@ public class InputKeyManagement : MonoBehaviour
         this.isPanelActive = _changeBool;
         this.inputPanel.gameObject.SetActive(_changeBool);
 
-        if (!_changeBool)
+        if (!_changeBool && inputKey != null)
         {
             inputKey.isSelect = false;
             inputKey.Set_AreaColor();

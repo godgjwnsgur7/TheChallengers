@@ -136,8 +136,11 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_BGM_TYPE
     {
-        TestBGM, // 테스트용
-        MainBGM,
+        LobbyBGM = 0, // 테스트 위해 임시로 1과 변경
+        TestBGM = 1,
+        BattleBGM = 2,
+        TrainingBGM = 3, // 테스트 위해 임시로 4와 변경
+        MainBGM = 4,
     }
 
     /// <summary>

@@ -8,12 +8,15 @@ public class VolumeSlider : MonoBehaviour
     [SerializeField] Slider BgmSlider;
     [SerializeField] Slider SfxSlider;
 
-    bool isChange;
+    bool isChange = false;
+    bool isInit = false;
 
     List<VolumeData> volumeDataList = new List<VolumeData>();
 
     private void OnEnable()
     {
+        Init();
+
         volumeDataList = Managers.Sound.Get_VolumeDatas();
 
         Changed_Volume();
@@ -27,8 +30,13 @@ public class VolumeSlider : MonoBehaviour
 
     public void Init()
     {
+        if (isInit)
+            return;
+
         BgmSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_BGMVolume);
         SfxSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_SFXVolume);
+
+        isInit = true;
     }
 
     public void Changed_Volume()

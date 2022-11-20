@@ -7,6 +7,8 @@ using FGDefine;
 public class InputMgr
 {
     public Action<ENUM_INPUT_TYPE> Action = null;
+    public InputKeyController inputKeyController;
+    public InputKeyManagement inputKeyManagement;
 
     public Vector2 touchPos
     { 
