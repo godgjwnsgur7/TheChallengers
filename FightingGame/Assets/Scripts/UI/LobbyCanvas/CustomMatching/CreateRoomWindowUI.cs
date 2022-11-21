@@ -36,14 +36,11 @@ public class CreateRoomWindowUI : MonoBehaviour
 
     public void OnClick_CreatRoom()
     {
-        Managers.UI.popupCanvas.Open_LoadingPopup();
-
         userInputField.text = userInputField.text.Trim();
 
         if(userInputField.text == "")
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
-            Managers.UI.popupCanvas.Close_LoadingPopup();
             return;
         }
 

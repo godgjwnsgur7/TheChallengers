@@ -6,6 +6,7 @@ using FGDefine;
 
 public class MainCanvas : BaseCanvas
 {
+    [SerializeField] FirstLoginWindowUI firstLoginWindow;
     [SerializeField] Button mainButton;
 
     [SerializeField] Text loginText;
@@ -19,6 +20,7 @@ public class MainCanvas : BaseCanvas
 
     private void Start()
     {
+        Managers.Platform.Initialize();
         Set_LoginEnvironment();
     }
 
@@ -43,45 +45,38 @@ public class MainCanvas : BaseCanvas
         textEffectCoroutine = StartCoroutine(ITextEffect_FadeOut(gameStartText));
     }
 
-    public void OnClick_Login()
+    public void Set_NickNameCallBack(string nickname)
     {
-        if (overlapLock)
-            return;
-
-        overlapLock = true;
-
-        Try_GuestLogin();
+        PhotonLogicHandler.CurrentMyNickname = nickname;
+        Set_GameStartEnvironment();
     }
 
-    public void OnClick_Start()
-    {
-        Managers.UI.popupCanvas.Open_LoadingPopup();
-
-        Try_ConnectMasterServerAndStart();
-    }
-
-    private void Try_GuestLogin()
+    private void Try_GoogleLogin()
     {
         string loginID;
 
-        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        Managers.Platform.Login(ENUM_LOGIN_TYPE.Google,
+        _OnSignInSuccess: () =>
         {
             loginID = Managers.Platform.GetUserID();
 
-            if(loginID == string.Empty)
+            if (loginID == string.Empty)
             {
                 Managers.UI.popupCanvas.Close_LoadingPopup();
                 Managers.UI.popupCanvas.Open_NotifyPopup("로그인에 실패했습니다. 다시 시도해주세요.");
                 return;
             }
 
-            Managers.UI.popupCanvas.Open_TimeNotifyPopup($"회원번호 : {loginID} 으로 로그인 완료", 1.0f);
-
-            PhotonLogicHandler.CurrentMyNickname = "godgjwnsgur";
-
-        }, null, null, email: "godgjwnsgur7@gmail.com", password: "123456");
-
-        Set_GameStartEnvironment();
+            Debug.Log($"회원번호 : {loginID} 으로 로그인 완료");
+            Set_GameStartEnvironment();
+        },
+        _OnCheckFirstUser: (bool isFirstLogin) =>
+        {
+            if (isFirstLogin)
+            {
+                firstLoginWindow.Open(Set_NickNameCallBack);
+            }
+        });   
     }
 
     private void Try_ConnectMasterServerAndStart()
@@ -115,6 +110,22 @@ public class MainCanvas : BaseCanvas
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
 
+    public void OnClick_Login()
+    {
+        if (overlapLock)
+            return;
+
+        overlapLock = true;
+
+        Try_GoogleLogin();
+    }
+
+    public void OnClick_Start()
+    {
+        Managers.UI.popupCanvas.Open_LoadingPopup();
+
+        Try_ConnectMasterServerAndStart();
+    }
     protected IEnumerator ITextEffect_FadeOut(Text effectTarget)
     {
         effectTarget.color = new Color(1f, 1f, 1f, 1f);
