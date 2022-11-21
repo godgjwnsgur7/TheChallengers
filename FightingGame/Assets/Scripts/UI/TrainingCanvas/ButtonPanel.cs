@@ -10,9 +10,8 @@ public class ButtonPanel : UIElement
     public BaseMap map;
 
     [SerializeField] Text panelOpenBtnText;
-    [SerializeField] SettingPanel settingPanel;
-    [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] InputKeyController inputKeyController;
+    [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] EnemyPlayer enemyPlayer;
@@ -43,6 +42,9 @@ public class ButtonPanel : UIElement
 
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
+
+        inputKeyManagement = Managers.UI.currCanvas.GetUIComponent<InputKeyManagement>();
+        inputKeyController = Managers.UI.currCanvas.GetUIComponent<InputKeyController>();
     }
 
     public void OnClick_OpenSettingPanel()
@@ -53,14 +55,14 @@ public class ButtonPanel : UIElement
         if (enemyPlayer.activeCharacter != null)
             DeleteEnemy();
 
+        inputKeyManagement.settingPanel.Open();
         inputKeyManagement.Init();
         this.Close();
-        settingPanel.Open();
     }
 
     public void OnClick_OnOffButtonPanel()
     {
-        if (settingPanel.isOpen)
+        if (inputKeyManagement.settingPanel.isOpen)
             return;
 
         if (this.gameObject.activeSelf)
@@ -121,7 +123,7 @@ public class ButtonPanel : UIElement
     // 플레이어 소환
     public void CallPlayer()
     {
-        if (inputKeyManagement.isPanelActive)
+        if (inputKeyManagement.settingPanel.isOpen)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;
@@ -149,7 +151,7 @@ public class ButtonPanel : UIElement
     // 적 소환
     public void CallEnemy()
     {
-        if (inputKeyManagement.isPanelActive)
+        if (inputKeyManagement.settingPanel.isOpen)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;

@@ -5,16 +5,15 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class InputKeyManagement : MonoBehaviour
+public class InputKeyManagement : UIElement
 {
     List<KeySettingData> keySettingDataList = null;
 
-    [SerializeField] SettingPanel settingPanel;
-
-    public bool isPanelActive = false;
     public bool isMove = false;
+    public bool isValueChange = false;
     private int inputKeyNum;
 
+    public SettingPanel settingPanel;
     public InputPanel inputPanel = null;
     private InputKey inputKey = null;
 
@@ -24,11 +23,15 @@ public class InputKeyManagement : MonoBehaviour
         {
             this.inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             this.inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
+            this.inputPanel.transform.SetAsFirstSibling();
         }
 
         Set_keySettingDataList();
         this.inputPanel.Set_InputKeyData(keySettingDataList);
         Set_PanelActive(true);
+
+        if(!settingPanel.isInit)
+            settingPanel.Init();
     }
 
     // keySettingDataList 값 호출
@@ -135,6 +138,8 @@ public class InputKeyManagement : MonoBehaviour
             keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKey.inputKeyRectTr.position.x, inputKey.inputKeyRectTr.position.y));
         }
 
+        inputKeyNum = -1;
+
         settingPanel.Reset_SettingPanel();
     }
 
@@ -156,7 +161,7 @@ public class InputKeyManagement : MonoBehaviour
         inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
 
         // InputKey를 SettingPanel 등록
-        settingPanel.OnClick_SetInputKey(_inputKey, keySettingDataList[inputKeyNum]);
+        settingPanel.OnClick_SetSliderValue(keySettingDataList[inputKeyNum]);
 
         if (inputKey != null)
         {
@@ -179,7 +184,6 @@ public class InputKeyManagement : MonoBehaviour
     // Panel들 Active상태 변환
     public void Set_PanelActive(bool _changeBool)
     {
-        this.isPanelActive = _changeBool;
         this.inputPanel.gameObject.SetActive(_changeBool);
 
         if (!_changeBool && inputKey != null)
@@ -199,7 +203,7 @@ public class InputKeyManagement : MonoBehaviour
         }
 
         PlayerPrefsManagement.Save_KeySettingData(keySettingDataList);
-        settingPanel.isValueChange = false;
+        isValueChange = false;
     }
 
     public bool Get_Updatable()
@@ -237,4 +241,116 @@ public class InputKeyManagement : MonoBehaviour
 
         settingPanel.Show_SettingPanel();
     }
+
+    #region SettingPanel 관련 함수
+
+    #region Slider값 OnValueChanged
+    public void OnValueChanged_SetSizeSlider(Slider _slider)
+    {
+        if (inputKeyNum < 0)
+            return;
+
+        int sizeValue = (int)_slider.value;
+
+        settingPanel.Set_SizeSliderText($"{sizeValue}%");
+        Set_InputKeySize(sizeValue, inputKeyNum);
+
+        if (!isValueChange)
+            isValueChange = true;
+    }
+
+    // Opacity 값 변경
+    public void OnValueChanged_SetOpacitySlider(Slider _slider)
+    {
+        if (inputKeyNum < 0)
+            return;
+
+        int opacityValue = (int)_slider.value;
+
+        settingPanel.Set_OpacitySliderText($"{opacityValue}%");
+        Set_InputKeyOpacity(opacityValue, inputKeyNum);
+
+        if (!isValueChange)
+            isValueChange = true;
+    }
+    #endregion
+
+    #region Close, Reset, Save 버튼
+    public void OnClick_CloseBtn()
+    {
+        if (isValueChange)
+            Managers.UI.popupCanvas.Open_SelectPopup(Close_SettingPanel, null, "값을 저장하지않고 종료하시겠습니까?");
+        else
+            Managers.UI.popupCanvas.Open_SelectPopup(Close_SettingPanel, null, "버튼 설정을 종료하시겠습니까?");
+    }
+    public void Close_SettingPanel()
+    {
+        settingPanel.Close();
+        Set_PanelActive(false);
+        inputKeyNum = -1;
+    }
+
+    public void OnClick_ResetBtn()
+        => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKeyValue, null, "버튼 설정을 초기화하시겠습니까?");
+    public void OnClick_SaveBtn()
+        => Managers.UI.popupCanvas.Open_SelectPopup(Save_KeySettingData, null, "버튼 설정을 저장하시겠습니까?");
+    #endregion
+
+    #region InputKey 이동버튼
+    // InputKey 이동 중지
+    public void OnPointerUp_MovePos()
+    {
+        isMove = false;
+
+        if (!isValueChange)
+            isValueChange = true;
+    }
+
+    // InputKet 이동
+    public void OnPointerDown_MovePosY(float _moveSpeed)
+    {
+        if (inputKeyNum < 0)
+            return;
+
+        Vector2 movePos = this.inputKey.GetComponent<RectTransform>().position;
+        isMove = true;
+        StartCoroutine(MovePosYCoroutine(movePos, _moveSpeed));
+    }
+
+    public void OnPointerDown_MovePosX(float _moveSpeed)
+    {
+        if (inputKeyNum < 0)
+            return;
+
+        Vector2 movePos = this.inputKey.GetComponent<RectTransform>().position;
+        isMove = true;
+        StartCoroutine(MovePosXCoroutine(movePos, _moveSpeed));
+    }
+
+    IEnumerator MovePosYCoroutine(Vector2 _movePos, float _moveSpeed)
+    {
+        while (isMove)
+        {
+            _movePos.y += _moveSpeed;
+            _moveSpeed *= (1 + Time.deltaTime);
+
+            Set_InputKeyTransForm(_movePos.x, _movePos.y, this.inputKeyNum);
+            yield return null;
+        }
+    }
+
+    IEnumerator MovePosXCoroutine(Vector2 _movePos, float _moveSpeed)
+    {
+        while (isMove)
+        {
+            _movePos.x += _moveSpeed;
+            _moveSpeed *= (1 + Time.deltaTime);
+
+            Set_InputKeyTransForm(_movePos.x, _movePos.y, this.inputKeyNum);
+            yield return null;
+        }
+    }
+    #endregion
+
+    #endregion
 }

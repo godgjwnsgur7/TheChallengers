@@ -71,5 +71,6 @@ public class Managers : MonoBehaviour
         UI.Clear();
         Pool.Clear();
         Battle.Clear();
+        Input.Clear();
     }
 }
