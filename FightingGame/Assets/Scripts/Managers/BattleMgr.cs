@@ -170,8 +170,8 @@ public class BattleMgr
             battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
         bool isWin = (losingTeam != activeCharacter.teamType);
-        bool isDraw = (isWin ? enemyCharacter.currState == ENUM_PLAYER_STATE.Die
-            : activeCharacter.currState == ENUM_PLAYER_STATE.Die);
+        bool isDraw = (isWin ? activeCharacter.currState == ENUM_PLAYER_STATE.Die
+            : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
 
         battleCanvas.EndGame(isDraw, isWin);
     }
