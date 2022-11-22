@@ -25,7 +25,7 @@ public class InputMgr
         return inputKeyManagement;
     }
 
-    public void Connect_InputKeyController()
+    public void Connect_InputKeyController(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (inputKeyManagement != null)
         {
@@ -36,7 +36,7 @@ public class InputMgr
         if (inputKeyController == null)
             inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
 
-        // inputKeyController.Init()
+        inputKeyController.Init(_OnPointDownCallBack, _OnPointUpCallBack);
         
     }
 
