@@ -43,8 +43,8 @@ public class ButtonPanel : UIElement
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
 
-        inputKeyManagement = Managers.UI.currCanvas.GetUIComponent<InputKeyManagement>();
-        inputKeyController = Managers.UI.currCanvas.GetUIComponent<InputKeyController>();
+        inputKeyManagement = Managers.Input.Get_InputKeyManagement();
+        inputKeyController = Managers.Input.Get_InputKeyController();
     }
 
     public void OnClick_OpenSettingPanel()
@@ -63,7 +63,10 @@ public class ButtonPanel : UIElement
     public void OnClick_OnOffButtonPanel()
     {
         if (inputKeyManagement.settingPanel.isOpen)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("버튼설정 중에 누를 수 없습니다.");
             return;
+        }
 
         if (this.gameObject.activeSelf)
             Close();
