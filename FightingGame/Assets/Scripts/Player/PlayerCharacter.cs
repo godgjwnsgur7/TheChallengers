@@ -52,6 +52,13 @@ public class PlayerCharacter : MonoBehaviour
             inputKeyController.Connect_Player(this);
     }
 
+    public void Connect_InputController()
+    {
+       //  Managers.Input.Connect_InputKeyController()
+    }
+
+
+
     // 디버깅용이니 쿨하게 다 때려박기
     private void OnKeyboard()
     {

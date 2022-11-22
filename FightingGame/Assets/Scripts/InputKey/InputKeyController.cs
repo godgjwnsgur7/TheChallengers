@@ -21,7 +21,7 @@ public class InputKeyController : MonoBehaviour
         if (inputPanel == null)
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
+            // inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
         }
 
 

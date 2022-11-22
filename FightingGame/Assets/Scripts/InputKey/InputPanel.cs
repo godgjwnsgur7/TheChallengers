@@ -8,7 +8,7 @@ public class InputPanel : MonoBehaviour
 {
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
 
-    public void Init(Action<InputKey> OnPointDownCallBack, Action<InputKey> OnPointUpCallBack)
+    public void Init(Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack)
     {
         List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
 

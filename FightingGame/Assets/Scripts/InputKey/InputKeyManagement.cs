@@ -27,12 +27,13 @@ public class InputKeyManagement : MonoBehaviour
             settingPanel.Init();
     }
 
-    public void OnPoint_DownCallBack(InputKey _inputKey)
+    public void OnPoint_DownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
         // 만약 코루틴 변수 안이 null이 아닌데 클릭을 했다면 여기서 리턴시켜버리셈
 
         isValueChange = true;
-        currInputKey = _inputKey;
+
+        currInputKey = inputPanel.Get_InputKey(_inputKeyName);
 
         // 주의! 무조건 currInputKey를 이용해서만 값을 변경해야 함!
         // currInputKey를 이용해서 코루틴 돌려서 현재 마우스포인터좌표위치로 이동시킴
@@ -41,7 +42,7 @@ public class InputKeyManagement : MonoBehaviour
         
     }
 
-    public void OnPoint_UpCallBack(InputKey _inputKey)
+    public void OnPoint_UpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
         // 담겨있는 코루틴 변수에 스탑코루틴 하고 후처리할거 하셈
         // 후처리 내용 - 겹치는 오브젝트 확인?

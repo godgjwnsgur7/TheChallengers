@@ -18,12 +18,14 @@ public class InputMgr
         }
 
         if (inputKeyManagement == null)
+        {
             inputKeyManagement = Managers.Resource.Instantiate("UI/InputKeyManagement", Managers.UI.currCanvas.transform).GetComponent<InputKeyManagement>();
+        }
 
         return inputKeyManagement;
     }
 
-    public InputKeyController Get_InputKeyController()
+    public void Connect_InputKeyController()
     {
         if (inputKeyManagement != null)
         {
@@ -34,7 +36,8 @@ public class InputMgr
         if (inputKeyController == null)
             inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
 
-        return inputKeyController;
+        // inputKeyController.Init()
+        
     }
 
     public void Clear()

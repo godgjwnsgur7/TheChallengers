@@ -7,21 +7,23 @@ using FGDefine;
 
 public class InputKey : MonoBehaviour
 {
-    Action<InputKey> OnPointDownCallBack;
-    Action<InputKey> OnPointUpCallBack;
+    Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack;
+    Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack;
 
     public Image slotImage;
     public Image iconImage;
 
     public RectTransform rectTr;
     bool isInit = false;
+    int inputKeyNum;
     
-    public void Init(Action<InputKey> _OnPointDownCallBack, Action<InputKey> _OnPointUpCallBack)
+    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (isInit) return;
 
         isInit = true;
         rectTr = this.GetComponent<RectTransform>();
+        inputKeyNum = (int)Enum.Parse(typeof(ENUM_INPUTKEY_NAME), gameObject.name);
 
         OnPointDownCallBack = _OnPointDownCallBack;
         OnPointUpCallBack = _OnPointUpCallBack;
@@ -35,7 +37,7 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        OnPointDownCallBack(this);
+        OnPointDownCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
 
     public void EventTrigger_PointerUp()
@@ -46,6 +48,6 @@ public class InputKey : MonoBehaviour
             return;
         }
         
-        OnPointUpCallBack(this);
+        OnPointUpCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
 }
