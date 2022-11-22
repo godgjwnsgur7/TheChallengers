@@ -43,18 +43,10 @@ public class InputPanel : MonoBehaviour
     public InputKey[] Get_InputKeys()
     {
         return inputKeys;
+    }
 
-        /*
-        List<KeySettingData> keySettingDatas = new List<KeySettingData>();
-
-        for(int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
-        {
-            KeySettingData keySettingData = new KeySettingData(i,
-                inputKeys[i].rectTr.localScale.x, null, inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
-            keySettingDatas.Add(keySettingData);
-        }
-
-        return keySettingDatas;
-        */
+    public InputKey Get_InputKey(ENUM_INPUTKEY_NAME inputKeyName)
+    {
+        return inputKeys[(int)inputKeyName];
     }
 }
