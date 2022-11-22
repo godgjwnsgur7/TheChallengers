@@ -75,7 +75,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     {
         Horizontal();
         Vertical();
-        Managers.Input.SetTouchPosition(touchPos);
+        // Managers.Input.SetTouchPosition(touchPos);
     }
 
     public float Horizontal()

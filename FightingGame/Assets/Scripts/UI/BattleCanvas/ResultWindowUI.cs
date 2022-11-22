@@ -22,7 +22,6 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open(bool isDraw, bool isWin = true)
     {
-
         rankingScore.Set_Score(1500); // 자기 점수로 넣어야 함
 
         // 자신의 점수와 상대의 점수

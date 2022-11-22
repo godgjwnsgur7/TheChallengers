@@ -16,15 +16,6 @@ public class PlayerCharacter : MonoBehaviour
 
     public ENUM_TEAM_TYPE teamType;
 
-    private void Start()
-    {
-        // #.Mobile Controller
-        // Managers.Input.Action -= OnJoystick;
-        // Managers.Input.Action += OnJoystick;
-
-        // Set_Character 하단에서 임시처리중임
-    }
-
     private void Update()
     {
         if (activeCharacter == null)

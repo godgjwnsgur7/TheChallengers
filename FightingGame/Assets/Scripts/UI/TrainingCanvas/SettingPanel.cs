@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class SettingPanel : UIElement
+public class SettingPanel : MonoBehaviour
 {
     public bool isHide = false;
     public bool isInit = false;
@@ -17,17 +17,6 @@ public class SettingPanel : UIElement
     [SerializeField] Slider opacitySlider;
     [SerializeField] Text sizeText;
     [SerializeField] Text opacityText;
-
-    public override void Close()
-    {
-        Reset_SettingPanel();
-        base.Close();
-    }
-
-    public override void Open(UIParam param = null)
-    {
-        base.Open(param);
-    }
 
     public void Init()
     {
@@ -52,8 +41,8 @@ public class SettingPanel : UIElement
     // 세팅패널 실린더 초기화
     public void Reset_SettingPanel()
     {
-        this.sizeSlider.value = 50f;
-        this.opacitySlider.value = 100f;
+        sizeSlider.value = 50f;
+        opacitySlider.value = 100f;
 
         Set_SizeSliderText("50%");
         Set_OpacitySliderText("100%");

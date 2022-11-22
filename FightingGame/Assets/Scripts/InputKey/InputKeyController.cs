@@ -12,7 +12,7 @@ public class InputKeyController : MonoBehaviour
     private PlayerCharacter currPlayer;
 
     public InputPanel inputPanel = null;
-    private InputKey inputKey = null;
+    private InputKey InputKey = null;
 
     public bool isPanelActive = false;
 
@@ -24,8 +24,7 @@ public class InputKeyController : MonoBehaviour
             inputPanel.Init(OnClick_CallBackDown, OnClick_CallBackUp);
         }
 
-        Set_keySettingDataList();
-        inputPanel.Set_InputKeyData(keySettingDataList);
+
         Set_PanelActive(true);
     }
 
@@ -110,7 +109,7 @@ public class InputKeyController : MonoBehaviour
         }
     }
 
-    // keySettingDataList 값 호출
+    /* keySettingDataList 값 호출
     private void Set_keySettingDataList()
     {
         // 설정된 PlayerPrefs 호출
@@ -122,12 +121,13 @@ public class InputKeyController : MonoBehaviour
             for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
             {
                 inputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i);
-                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKey.inputKeyRectTr.position.x, inputKey.inputKeyRectTr.position.y));
+                keySettingDataList.Insert(i, new KeySettingData(i, 50, 100, inputKey.rectTr.position.x, inputKey.rectTr.position.y));
                 Debug.Log((ENUM_INPUTKEY_NAME)i + "초기화");
             }
             return;
         }
     }
+    */
 
     public void Set_ChangeColor(Image _inputKeyImage, float _opacityRatio)
     {

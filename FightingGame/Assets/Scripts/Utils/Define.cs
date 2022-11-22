@@ -65,7 +65,7 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_INPUTKEY_NAME
     {
-        LeftArrow = 0, // 현재 Left는 이미지 회전을 시켜서 인식이 안됨. 이미지 다시 받을것임
+        LeftArrow = 0,
         RightArrow = 1,
         Attack = 2,
         Skill1 = 3,
@@ -153,16 +153,7 @@ namespace FGDefine
     {
         win, // 테스트용
     }
-
-    [Serializable]
-    public enum ENUM_INPUT_TYPE
-    {
-        Null = 0,
-        Joystick = 1,
-
-        Max
-    }
-
+    
     [Serializable]
     public enum ENUM_PLAYER_STATE
     {

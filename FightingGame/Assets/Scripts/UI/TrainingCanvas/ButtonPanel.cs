@@ -10,8 +10,6 @@ public class ButtonPanel : UIElement
     public BaseMap map;
 
     [SerializeField] Text panelOpenBtnText;
-    [SerializeField] InputKeyController inputKeyController;
-    [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] EnemyPlayer enemyPlayer;
@@ -43,8 +41,6 @@ public class ButtonPanel : UIElement
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
 
-        inputKeyManagement = Managers.Input.Get_InputKeyManagement();
-        inputKeyController = Managers.Input.Get_InputKeyController();
     }
 
     public void OnClick_OpenSettingPanel()
@@ -55,18 +51,20 @@ public class ButtonPanel : UIElement
         if (enemyPlayer.activeCharacter != null)
             DeleteEnemy();
 
-        inputKeyManagement.settingPanel.Open();
-        inputKeyManagement.Init();
+        // inputKeyManagement.settingPanel.Open();
+        // inputKeyManagement.Init();
         this.Close();
     }
 
     public void OnClick_OnOffButtonPanel()
     {
+        /*
         if (inputKeyManagement.settingPanel.isOpen)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼설정 중에 누를 수 없습니다.");
             return;
         }
+        */
 
         if (this.gameObject.activeSelf)
             Close();
@@ -126,11 +124,13 @@ public class ButtonPanel : UIElement
     // 플레이어 소환
     public void CallPlayer()
     {
+        /*
         if (inputKeyManagement.settingPanel.isOpen)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;
         }
+        */
 
         // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (playerCharacter.activeCharacter != null)
@@ -154,11 +154,13 @@ public class ButtonPanel : UIElement
     // 적 소환
     public void CallEnemy()
     {
+        /*
         if (inputKeyManagement.settingPanel.isOpen)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
             return;
         }
+        */
 
         // 이미 소환된 적이 있을 경우
         if (enemyPlayer.activeCharacter != null)
@@ -228,8 +230,6 @@ public class ButtonPanel : UIElement
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         Reset_PlayerType();
-
-        inputKeyController.Set_PanelActive(false);
     }
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
@@ -253,4 +253,5 @@ public class ButtonPanel : UIElement
     public void Change_EnemyType(ENUM_CHARACTER_TYPE _value) => enemyType = _value;
     private void Reset_PlayerType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
     private void Reset_EnemyType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+
 }

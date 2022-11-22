@@ -7,14 +7,12 @@ using FGDefine;
 public class InputPanel : MonoBehaviour
 {
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
-    public RectTransform thisRectTr = null;
 
     public void Init(Action<InputKey> OnPointDownCallBack, Action<InputKey> OnPointUpCallBack)
     {
-        if (thisRectTr == null)
-            thisRectTr = GetComponent<RectTransform>();
+        List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
 
-        for(int index = 0; index < inputKeys.Length; index++)
+        for (int index = 0; index < inputKeys.Length; index++)
         {
             inputKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<InputKey>();
             
@@ -24,42 +22,39 @@ public class InputPanel : MonoBehaviour
                 return;
             }
 
+            if(keySettingDatas != null)
+                Set_InputKey(inputKeys[index], keySettingDatas[index]);
+
             inputKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack);
         }
     }
-    
-    public InputKey Get_InputKey(ENUM_INPUTKEY_NAME keyName)
+
+    private void Set_InputKey(InputKey inputKey, KeySettingData keySettingData)
     {
-        return inputKeys[(int)keyName];
+        inputKey.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
+
+        inputKey.slotImage.color = new Color(1, 1, 1, 0.5f + (keySettingData.opacity / 200));
+        if (inputKey.iconImage != null)
+            inputKey.iconImage.color = new Color(1, 1, 1, 0.5f + (keySettingData.opacity / 200));
+
+        inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
     }
 
-    public void Set_InputKeyData(List<KeySettingData> _keySettingDataList)
+    public InputKey[] Get_InputKeys()
     {
-        if (_keySettingDataList == null)
-            return;
+        return inputKeys;
 
-        for (int i = 0; i < _keySettingDataList.Count; i++)
+        /*
+        List<KeySettingData> keySettingDatas = new List<KeySettingData>();
+
+        for(int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
-            // size
-            inputKeys[_keySettingDataList[i].key].inputKeyRectTr.localScale = new Vector3(1, 1, 1) * (50 + _keySettingDataList[i].size) / 100;
-            
-            // Opacity
-            Color tempColor = inputKeys[_keySettingDataList[i].key].slotImage.color;
-            tempColor.a = 0.5f + (_keySettingDataList[i].opacity / 200);
-
-            if (inputKeys[_keySettingDataList[i].key].iconImage != null)
-            {
-                tempColor = inputKeys[_keySettingDataList[i].key].iconImage.color;
-                tempColor.a = 0.5f + (_keySettingDataList[i].opacity / 200);
-            }
-
-            // Transform
-            inputKeys[_keySettingDataList[i].key].inputKeyRectTr.position =
-                new Vector2(_keySettingDataList[i].rectTrX, _keySettingDataList[i].rectTrY);
+            KeySettingData keySettingData = new KeySettingData(i,
+                inputKeys[i].rectTr.localScale.x, null, inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
+            keySettingDatas.Add(keySettingData);
         }
+
+        return keySettingDatas;
+        */
     }
-
-    public void Set_InputKeyIconImage(Sprite _iconImage, InputKey _inputKey) => _inputKey.iconImage.sprite = _iconImage;
-
-    // 추가로 필요한 기능이 있는 것 같다면, 요청하면 됨! 모르는건 물어보3!
 }

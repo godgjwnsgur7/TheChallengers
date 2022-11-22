@@ -6,50 +6,33 @@ using FGDefine;
 
 public class InputMgr
 {
-    public Action<ENUM_INPUT_TYPE> Action = null;
-    private InputKeyController inputKeyController;
-    private InputKeyManagement inputKeyManagement;
-    private BaseCanvas currCanvas;
-
-    public Vector2 touchPos
-    { 
-        get;
-        private set;
-    }
-
-    public void OnUpdate()
-    {
-        if (!Input.anyKey) return;
-
-        if (Action != null)
-        {
-            if (touchPos != Vector2.zero) // 이동
-                Action.Invoke(ENUM_INPUT_TYPE.Joystick);
-        }
-        
-    }
-
-    public void SetTouchPosition(Vector2 _touchPos)
-    {
-        touchPos = _touchPos;
-    }
-
+    InputKeyController inputKeyController = null;
+    InputKeyManagement inputKeyManagement = null;
+   
     public InputKeyManagement Get_InputKeyManagement()
     {
-        currCanvas = Managers.UI.currCanvas;
+        if (inputKeyController != null)
+        {
+            Managers.Resource.Destroy(inputKeyController.gameObject);
+            inputKeyController = null;
+        }
 
         if (inputKeyManagement == null)
-            inputKeyManagement = Managers.Resource.Instantiate("UI/InputKeyManagement", currCanvas.transform).GetComponent<InputKeyManagement>();
+            inputKeyManagement = Managers.Resource.Instantiate("UI/InputKeyManagement", Managers.UI.currCanvas.transform).GetComponent<InputKeyManagement>();
 
         return inputKeyManagement;
     }
 
     public InputKeyController Get_InputKeyController()
     {
-        currCanvas = Managers.UI.currCanvas;
+        if (inputKeyManagement != null)
+        {
+            Managers.Resource.Destroy(inputKeyManagement.gameObject);
+            inputKeyManagement = null;
+        }
 
         if (inputKeyController == null)
-            inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", currCanvas.transform).GetComponent<InputKeyController>();
+            inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
 
         return inputKeyController;
     }

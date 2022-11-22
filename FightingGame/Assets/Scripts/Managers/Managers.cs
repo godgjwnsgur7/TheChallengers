@@ -34,11 +34,6 @@ public class Managers : MonoBehaviour
         Init();
     }
 
-    private void Update()
-    {
-        // input.OnUpdate();
-    }
-
     private static void Init()
     {
         if (s_Instance == null)
