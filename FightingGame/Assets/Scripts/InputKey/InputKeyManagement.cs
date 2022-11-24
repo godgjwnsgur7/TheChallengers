@@ -45,13 +45,9 @@ public class InputKeyManagement : MonoBehaviour
 
     public void OnPoint_UpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        // 담겨있는 코루틴 변수에 스탑코루틴 하고 후처리할거 하셈
         isMove = false;
-        //currCoroutine = null;
 
-        settingPanel.Show_SettingPanel();
-        // 후처리 내용 - 겹치는 오브젝트 확인?
-
+        //settingPanel.Show_SettingPanel();
     }
 
     public void OnPoint_DownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
@@ -79,6 +75,11 @@ public class InputKeyManagement : MonoBehaviour
             settingPanel.OnClick_SetSliderValue(_inputKeyName);
     }
 
+    /// <summary>
+    /// InputKey 위치 변경
+    /// </summary>
+    /// <param name="_movePos"></param>
+    /// <param name="_inputkeyNum"></param>
     public void Set_InputKeyTransForm(Vector2 _movePos, ENUM_INPUTKEY_NAME _inputkeyNum)
     {
         RectTransform panelRectTr = inputPanel.GetComponent<RectTransform>();
@@ -93,6 +94,11 @@ public class InputKeyManagement : MonoBehaviour
         currAreaKey.transform.position = new Vector2(vecRangeX, vecRangeY);
     }
 
+    /// <summary>
+    /// InpuyKey 사이즈 변경
+    /// </summary>
+    /// <param name="_sizeValue"></param>
+    /// <param name="_inputKeyName"></param>
     public void Set_InputKeySize(float _sizeValue, ENUM_INPUTKEY_NAME _inputKeyName)
     {
         _sizeValue = (50 + _sizeValue) / settingPanel.Get_SizeMaxValue();
@@ -102,6 +108,11 @@ public class InputKeyManagement : MonoBehaviour
         currAreaKey.rectTr.localScale = changeScale;
     }
 
+    /// <summary>
+    /// InputKey 투명도 변경
+    /// </summary>
+    /// <param name="_opacityValue"></param>
+    /// <param name="_inputKeyName"></param>
     public void Set_InputKeyOpacity(float _opacityValue, ENUM_INPUTKEY_NAME _inputKeyName)
     {
         _opacityValue = 0.5f + _opacityValue / (settingPanel.Get_OpacityMaxValue() * 2);
@@ -174,6 +185,9 @@ public class InputKeyManagement : MonoBehaviour
             settingPanel.Init();
     }
 
+    /// <summary>
+    /// 사이즈 실린더값 변경시 실행, InputKey 사이즈 변경
+    /// </summary>
     public void OnValueChanged_SizeSlider(Slider _slider)
     {
         if (currInputKey == null)
@@ -185,6 +199,9 @@ public class InputKeyManagement : MonoBehaviour
         Set_InputKeySize(_slider.value, inputKeyName);
     }
 
+    /// <summary>
+    /// 투명도 실린더값 변경시 실행, InputKey 투명도 변경
+    /// </summary>
     public void OnValueChanged_OpacitySlider(Slider _slider)
     {
         if (currInputKey == null)
@@ -196,6 +213,9 @@ public class InputKeyManagement : MonoBehaviour
         Set_InputKeyOpacity(_slider.value, inputKeyName);
     }
 
+    /// <summary>
+    /// 버튼 설정 종료
+    /// </summary>
     public void OnClick_CloseBtn()
     {
         if (isValueChange)
@@ -215,6 +235,9 @@ public class InputKeyManagement : MonoBehaviour
         Destroy(areaPanel.gameObject);
     }
 
+    /// <summary>
+    /// 버튼 설정 리셋, 저장
+    /// </summary>
     public void OnClick_ResetBtn()
         => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKey, null, "버튼 설정을 초기화하시겠습니까?");
     public void OnClick_SaveBtn()
@@ -239,7 +262,9 @@ public class InputKeyManagement : MonoBehaviour
         Save_InputKeyDatas();
     }
 
-    // InputKey 이동 중지
+    /// <summary>
+    /// InputKey 이동 중지
+    /// </summary>
     public void OnPointerUp_MovePos()
     {
         isMove = false;
@@ -248,7 +273,9 @@ public class InputKeyManagement : MonoBehaviour
             isValueChange = true;
     }
 
-    // InputKet 이동
+    /// <summary>
+    /// InputKet 이동
+    /// </summary>
     public void OnPointerDown_MovePosY(float _moveSpeed)
     {
         if (currInputKey == null)
