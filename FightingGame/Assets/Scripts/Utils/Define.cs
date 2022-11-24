@@ -13,8 +13,8 @@ namespace FGDefine
         /// </summary>
         Default = 0,
         TransparentFX = 1,
-        IgnoreRaycast = 2, // 레이캐스트 무시
-        Water = 4, // 물 등 특이 장애물
+        IgnoreRaycast = 2,
+        Water = 4,
         UI = 5,
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace FGDefine
         Player = 6, // 유저
         Interaction = 7,
         Wall = 8,
-        Ground = 9, // 없애기 직전 (임시)
+        Ground = 9,
     }
 
     /// <summary>

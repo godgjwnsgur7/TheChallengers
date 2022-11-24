@@ -5,7 +5,6 @@ using System;
 using FGDefine;
 
 #region Skills
-
 [Serializable]
 public class Skill
 {
@@ -17,7 +16,6 @@ public class Skill
     public float pushingPower;
 }
 
-[Serializable]
 public class SkillData : ILoader<int, Skill>
 {
     public List<Skill> Skills = new List<Skill>();
@@ -28,6 +26,33 @@ public class SkillData : ILoader<int, Skill>
         foreach (Skill skill in Skills)
             skillDict.Add(skill.skillType, skill);
         return skillDict;
+    }
+}
+#endregion
+
+#region CharacterInfos
+[Serializable]
+public class CharacterInfo
+{
+    public int characterType; // ENUM_CHARACTER_TYPE (Key)
+    public float maxHP;
+    public float moveSpeed;
+    public float jumpPower;
+    public float skillCoolTime_1;
+    public float skillCoolTime_2;
+    public float skillCoolTime_3;
+}
+
+public class CharacterData : ILoader<int, CharacterInfo>
+{
+    public List<CharacterInfo> CharacterInfos = new List<CharacterInfo>();
+
+    public Dictionary<int, CharacterInfo> MakeDict()
+    {
+        Dictionary<int, CharacterInfo> CharInfoDict = new Dictionary<int, CharacterInfo>();
+        foreach (CharacterInfo charInfo in CharacterInfos)
+            CharInfoDict.Add(charInfo.characterType, charInfo);
+        return CharInfoDict;
     }
 }
 #endregion

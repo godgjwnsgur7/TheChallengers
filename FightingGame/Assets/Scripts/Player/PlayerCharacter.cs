@@ -154,25 +154,29 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         // 이동
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            activeCharacter.Input_MoveKey(true);
+            isLeftMove = true;
             moveDir = -1.0f;
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
+            if (moveCoroutine == null)
+                moveCoroutine = StartCoroutine(IMove());
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            activeCharacter.Input_MoveKey(true);
+            isRightMove = true;
             moveDir = 1.0f;
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
+            if (moveCoroutine == null)
+                moveCoroutine = StartCoroutine(IMove());
         }
 
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.A))
         {
-            moveDir = 0f;
-            activeCharacter.Input_MoveKey(false);
-            if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
-                PlayerCommand(ENUM_PLAYER_STATE.Idle);
+            isLeftMove = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            isRightMove = false;
         }
     }
     
@@ -203,7 +207,7 @@ public class PlayerCharacter : MonoBehaviour
                 activeCharacter.Skill(param);
                 break;
             case ENUM_PLAYER_STATE.Hit:
-                Debug.Log("PlayerCharacter에 Hit 명령이 들어옴");
+                Debug.Log("주의! PlayerCharacter에 Hit 명령이 들어옴");
                 break;
             case ENUM_PLAYER_STATE.Die:
                 activeCharacter.Die();

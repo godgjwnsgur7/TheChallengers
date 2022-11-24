@@ -9,7 +9,6 @@ public class InputKey : MonoBehaviour
 {
     Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack;
     Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack;
-    Action<ENUM_INPUTKEY_NAME> OnDragCallBack;
 
     public Image slotImage;
     public Image iconImage;
@@ -18,7 +17,7 @@ public class InputKey : MonoBehaviour
     bool isInit = false;
     public int inputKeyNum;
     
-    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    public virtual void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (isInit) return;
 

@@ -13,16 +13,18 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    public float currHP;
+    public CharacterInfo MyCharInfo
+    {
+        get;
+        protected set;
+    }
 
-    [SerializeField] float moveSpeed;
-    [SerializeField] float jumpPower;
+    protected float currHP;
 
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
     public ENUM_TEAM_TYPE teamType;
 
-    // 테스트 편의성을 위해 public
     public bool reverseState = false;
     public bool isControl = false;
     public bool isInitialized = false;
@@ -35,8 +37,10 @@ public class Character : MonoBehaviourPhoton
     {
         base.Init();
 
-        if(currHP == 0f)
-            currHP = 100.0f;
+        Managers.Data.CharInfoDict.TryGetValue((int)characterType, out CharacterInfo characterInfo);
+        MyCharInfo = characterInfo;
+
+        currHP = MyCharInfo.maxHP;
 
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
@@ -85,12 +89,12 @@ public class Character : MonoBehaviourPhoton
 
         var moveParam = param as CharacterMoveParam;
 
-        rigid2D.velocity = new Vector2(moveParam.moveDir * moveSpeed, rigid2D.velocity.y);
+        rigid2D.velocity = new Vector2(moveParam.moveDir * MyCharInfo.moveSpeed, rigid2D.velocity.y);
     }
 
     public virtual void Jump()
     {
-        rigid2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        rigid2D.AddForce(Vector2.up * MyCharInfo.jumpPower, ForceMode2D.Impulse);
     }
 
     public virtual void Attack(CharacterParam param)

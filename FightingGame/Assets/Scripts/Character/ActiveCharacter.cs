@@ -50,7 +50,6 @@ public partial class ActiveCharacter : Character
         var param = MakeSyncAnimParam();
         SyncAnimator(anim, param);
       
-
         isInitialized = true;
     }
 
