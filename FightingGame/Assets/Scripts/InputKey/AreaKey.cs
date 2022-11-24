@@ -7,9 +7,10 @@ using FGDefine;
 public class AreaKey : MonoBehaviour
 {
     public Image areaImage;
-    //bool isSelect = false;
-    bool isInit = false;
     public RectTransform rectTr;
+    bool isSelect = false;
+    bool isInit = false;
+    private int triggerCount = 0;
 
     public void Init()
     {
@@ -19,7 +20,7 @@ public class AreaKey : MonoBehaviour
         rectTr = this.GetComponent<RectTransform>();
 
     }
-/*
+
     private void OnTriggerEnter2D(Collider2D collision)
     { 
         if(collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
@@ -61,5 +62,19 @@ public class AreaKey : MonoBehaviour
             changeColor = new Color(255, 255, 255, 0f);
             areaImage.color = changeColor;
         }
-    }*/
+    }
+
+    public void Set_isSelect(bool _select)
+    {
+        isSelect = _select;
+        Set_AreaColor();
+    }
+
+    public bool Get_isOverlap()
+    {
+        if (triggerCount < 1)
+            return false;
+
+        return true;
+    }
 }

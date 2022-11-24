@@ -19,7 +19,6 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
-        //PlayerPrefs.DeleteAll();
         if (inputPanel == null)
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
@@ -69,9 +68,14 @@ public class InputKeyManagement : MonoBehaviour
             isSame = true;
 
         currInputKey = inputPanel.Get_InputKey(_inputKeyName);
-        currAreaKey = areaPanel.Get_AreaKey(_inputKeyName);
 
-        if(!isSame)
+        if (currAreaKey != null)
+            currAreaKey.Set_isSelect(false);
+
+        currAreaKey = areaPanel.Get_AreaKey(_inputKeyName);
+        currAreaKey.Set_isSelect(true);
+
+        if (!isSame)
             settingPanel.OnClick_SetSliderValue(_inputKeyName);
     }
 
@@ -148,30 +152,18 @@ public class InputKeyManagement : MonoBehaviour
         return true;
     }
 
-    public bool InputKey_OverlapCheck()
-    {
-
-        // 코루틴 안에 들어갈 아이로 현재 제어중인 currInputKey가 겹치는지 확인한다.
-
-        return false; // 임시로 해놈
-    }
-
     /// <summary>
     /// 겹치는 UI가 있는지 확인 (겹칠 경우 true)
     /// </summary>
     public bool InputKey_OverlapCheckAll()
     {
-        InputKey[] inputKeys = inputPanel.Get_InputKeys();
+        AreaKey[] areaKeys = areaPanel.Get_AreaKeys();
 
-        List<InputKey> inputKeysList = new List<InputKey>();
+        for (int i = 0; i < areaKeys.Length; i++)
+            if (areaKeys[i].Get_isOverlap())
+                return true;
 
-        // 각 인풋키의 끝 좌표를 받아오는데, 아마 크기로만 받아오면 안될거임
-        // 사이즈도 감안해서 수식세우고 꼭짓점 4곳에 레이캐스트를 쏴서 확인.
-        // 만약 겹치는 아이가 있다면 해당하는 이름을 확인하여 자신만 컬러변경
-        // 겹치는 아이가 없다면 영역표시 끄고
-
-
-        return false; // 그냥 임시로 해놈 수정바람
+        return false;
     }
 
     public void Open_SettingPanel()
