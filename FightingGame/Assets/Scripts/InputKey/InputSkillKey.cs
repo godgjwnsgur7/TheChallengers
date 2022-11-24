@@ -1,20 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using FGDefine;
 using System;
 
 public class InputSkillKey : InputKey
 {
+    [SerializeField] Image coolTimeImage;
     float coolTime;
 
-    public override void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    Coroutine coolTimeCoroutine;
+
+    public override void EventTrigger_PointerDown()
     {
-        base.Init(_OnPointDownCallBack, _OnPointUpCallBack);
+        if(coolTimeCoroutine != null)
+            return;
 
-        Skill _skill = new Skill();
-        Managers.Data.SkillDict.TryGetValue(inputKeyNum, out _skill);
+        base.EventTrigger_PointerDown();
+    }
 
-        // coolTime = _skill.
+    public void Set_SkillCoolTime(float _coolTime)
+    {
+        coolTime = _coolTime;
+    }
+
+    public void Use_Skill()
+    {
+        coolTimeImage.fillAmount = 1.0f;
+        coolTimeImage.gameObject.SetActive(true);
+        coolTimeCoroutine = StartCoroutine(ICoolTime());
+    }
+
+    protected IEnumerator ICoolTime()
+    {
+        float coolTimeFillAmount = 1.0f;
+
+        while (coolTimeFillAmount > 0.01f)
+        {
+            coolTimeFillAmount -= 1.0f * Time.deltaTime / coolTime;
+            coolTimeImage.fillAmount = coolTimeFillAmount;
+            yield return null;
+        }
+
+        coolTimeImage.fillAmount = 0.0f;
+        coolTimeCoroutine = null;
+        coolTimeImage.gameObject.SetActive(false);
     }
 }

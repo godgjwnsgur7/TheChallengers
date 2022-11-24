@@ -65,6 +65,7 @@ public partial class ActiveCharacter : Character
         {
             isControl = true;
             Connect_MyStatusUI();
+            Managers.Battle.Set_MyCharacterType(characterType);
         }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
@@ -78,7 +79,6 @@ public partial class ActiveCharacter : Character
     /// 동기화할 파라미터 배열 만들기
     /// </summary>
     /// <returns></returns>
-
     private AnimatorSyncParam[] MakeSyncAnimParam()
 	{
         AnimatorSyncParam[] syncParams = new AnimatorSyncParam[]
@@ -232,6 +232,7 @@ public partial class ActiveCharacter : Character
 
         if (skillParam != null)
         {
+            Managers.Input.Notify_UseSkill(skillParam.skillNum);
             SetAnimInt("SkillType", skillParam.skillNum);
             SetAnimTrigger("SkillTrigger");
         }

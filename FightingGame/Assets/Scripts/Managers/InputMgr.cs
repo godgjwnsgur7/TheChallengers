@@ -37,8 +37,9 @@ public class InputMgr
             inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
 
         inputKeyController.Init(_OnPointDownCallBack, _OnPointUpCallBack);
-        
     }
+
+    public void Notify_UseSkill(int skillNum) => inputKeyController.Notify_UseSkill(skillNum);
 
     public void Clear()
     {

@@ -39,6 +39,43 @@ public class InputPanel : MonoBehaviour
 
         inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
     }
+    
+    public void Set_InputSkillKeys(ENUM_CHARACTER_TYPE charType)
+    {
+        Managers.Data.CharInfoDict.TryGetValue((int)charType, out CharacterInfo charInfo);
+
+        InputSkillKey inputSkillKey;
+
+        inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_1);
+
+        inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_2);
+
+        inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_3);
+    }
+
+    public void Notify_UseSkill(int skillNum)
+    {
+        InputSkillKey inputSkillKey;
+
+        switch (skillNum)
+        {
+            case 0:
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
+                inputSkillKey.Use_Skill();
+                break;
+            case 1:
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
+                inputSkillKey.Use_Skill();
+                break;
+            case 2:
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
+                inputSkillKey.Use_Skill();
+                break;
+        }
+    }
 
     public InputKey[] Get_InputKeys()
     {

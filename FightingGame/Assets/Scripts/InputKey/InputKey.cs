@@ -17,7 +17,7 @@ public class InputKey : MonoBehaviour
     bool isInit = false;
     public int inputKeyNum;
     
-    public virtual void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (isInit) return;
 
@@ -29,7 +29,7 @@ public class InputKey : MonoBehaviour
         OnPointUpCallBack = _OnPointUpCallBack;
     }
 
-    public void EventTrigger_PointerDown()
+    public virtual void EventTrigger_PointerDown()
     {
         if(OnPointDownCallBack == null)
         {
