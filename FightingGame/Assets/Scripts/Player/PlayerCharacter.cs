@@ -13,8 +13,10 @@ public class PlayerCharacter : MonoBehaviour
     public float moveDir = 0f;
     public bool inabilityState = false;
 
-    bool isLeftMove;
-    bool isRightMove;
+    Coroutine moveCoroutine = null;
+
+    bool isLeftMove = false;
+    bool isRightMove = false;
 
     private void Update()
     {
@@ -57,6 +59,18 @@ public class PlayerCharacter : MonoBehaviour
     {
         switch (_inputKeyName)
         {
+            case ENUM_INPUTKEY_NAME.LeftArrow:
+                isLeftMove = true;
+                moveDir = -1.0f;
+                if (moveCoroutine == null)
+                    moveCoroutine = StartCoroutine(IMove());
+                break;
+            case ENUM_INPUTKEY_NAME.RightArrow:
+                isRightMove = true;
+                moveDir = 1.0f;
+                if (moveCoroutine == null)
+                    moveCoroutine = StartCoroutine(IMove());
+                break;
             case ENUM_INPUTKEY_NAME.Attack:
                 CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, activeCharacter.reverseState);
                 PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
@@ -85,31 +99,13 @@ public class PlayerCharacter : MonoBehaviour
         switch (_inputKeyName)
         {
             case ENUM_INPUTKEY_NAME.LeftArrow:
+                isLeftMove = false;
+                break;
             case ENUM_INPUTKEY_NAME.RightArrow:
-                moveDir = 0f;
-                activeCharacter.Input_MoveKey(false);
-                if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
-                    PlayerCommand(ENUM_PLAYER_STATE.Idle);
+                isRightMove = false;
                 break;
             case ENUM_INPUTKEY_NAME.Attack:
                 activeCharacter.Change_AttackState(false);
-                break;
-        }
-    }
-
-    public void OnDragCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
-    {
-        switch (_inputKeyName)
-        {
-            case ENUM_INPUTKEY_NAME.LeftArrow:
-                activeCharacter.Input_MoveKey(true);
-                moveDir = -1.0f;
-                PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
-                break;
-            case ENUM_INPUTKEY_NAME.RightArrow:
-                activeCharacter.Input_MoveKey(true);
-                moveDir = 1.0f;
-                PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
                 break;
         }
     }
@@ -157,18 +153,18 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Jump);
         }
 
-        moveDir = 0f;
-
         // 이동
         if (Input.GetKey(KeyCode.A))
         {
             activeCharacter.Input_MoveKey(true);
             moveDir = -1.0f;
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
         }
         if (Input.GetKey(KeyCode.D))
         {
             activeCharacter.Input_MoveKey(true);
             moveDir = 1.0f;
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
         }
 
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
@@ -177,11 +173,6 @@ public class PlayerCharacter : MonoBehaviour
             activeCharacter.Input_MoveKey(false);
             if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
                 PlayerCommand(ENUM_PLAYER_STATE.Idle);
-        }
-
-        if (moveDir != 0f)
-        {
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
         }
     }
     
@@ -218,5 +209,23 @@ public class PlayerCharacter : MonoBehaviour
                 activeCharacter.Die();
                 break;
         }
+    }
+
+    protected IEnumerator IMove()
+    {
+        activeCharacter.Input_MoveKey(true);
+
+        while (isLeftMove || isRightMove)
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
+            yield return null;
+        }
+
+        activeCharacter.Input_MoveKey(false);
+        if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
+            PlayerCommand(ENUM_PLAYER_STATE.Idle);
+
+        moveDir = 0.0f;
+        moveCoroutine = null;
     }
 }
