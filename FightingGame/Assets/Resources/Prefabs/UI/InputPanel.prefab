@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3633521371176328111}
-  - component: {fileID: 3633521371176328109}
   - component: {fileID: 3633521371176328110}
+  - component: {fileID: 8467095583172231044}
   m_Layer: 5
   m_Name: Skill1
   m_TagString: Untagged
@@ -38,22 +38,6 @@ RectTransform:
   m_AnchoredPosition: {x: 528, y: -279}
   m_SizeDelta: {x: 142, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3633521371176328109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3633521371176328104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbff2baab5517cb4980ebd85b71127e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotImage: {fileID: 3633521371298724328}
-  iconImage: {fileID: 3633521372138062143}
-  rectTr: {fileID: 0}
-  inputKeyNum: 0
 --- !u!114 &3633521371176328110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,8 +55,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521371176328109}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
+        - m_Target: {fileID: 8467095583172231044}
+          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerDown
           m_Mode: 1
           m_Arguments:
@@ -87,8 +71,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521371176328109}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
+        - m_Target: {fileID: 8467095583172231044}
+          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
           m_Mode: 1
           m_Arguments:
@@ -99,22 +83,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521371176328109}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+--- !u!114 &8467095583172231044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3633521371176328104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8358b5c4d3ca547905bb6d0b177966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotImage: {fileID: 0}
+  iconImage: {fileID: 0}
+  rectTr: {fileID: 0}
+  inputKeyNum: 0
 --- !u!1 &3633521371298724330
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,22 +727,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521371687195744}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &3633521371733909171
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,22 +827,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521371733909168}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!222 &3633521371733909175
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -892,8 +844,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3633521371904557611}
-  - component: {fileID: 3633521371904557609}
   - component: {fileID: 3633521371904557610}
+  - component: {fileID: 5122555773072072404}
   m_Layer: 5
   m_Name: Skill2
   m_TagString: Untagged
@@ -921,22 +873,6 @@ RectTransform:
   m_AnchoredPosition: {x: 685, y: -158}
   m_SizeDelta: {x: 142, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3633521371904557609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3633521371904557620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbff2baab5517cb4980ebd85b71127e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotImage: {fileID: 3633521372454873262}
-  iconImage: {fileID: 3633521372111072002}
-  rectTr: {fileID: 0}
-  inputKeyNum: 0
 --- !u!114 &3633521371904557610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,8 +890,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521371904557609}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
+        - m_Target: {fileID: 5122555773072072404}
+          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerDown
           m_Mode: 1
           m_Arguments:
@@ -970,8 +906,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521371904557609}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
+        - m_Target: {fileID: 5122555773072072404}
+          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
           m_Mode: 1
           m_Arguments:
@@ -982,22 +918,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521371904557609}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+--- !u!114 &5122555773072072404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3633521371904557620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8358b5c4d3ca547905bb6d0b177966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotImage: {fileID: 3633521372454873262}
+  iconImage: {fileID: 3633521372111072002}
+  rectTr: {fileID: 3633521371904557611}
+  inputKeyNum: 0
 --- !u!1 &3633521372111072012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,8 +1168,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3633521372321405172}
-  - component: {fileID: 3633521372321405162}
   - component: {fileID: 3633521372321405163}
+  - component: {fileID: 3476541961686536098}
   m_Layer: 5
   m_Name: Skill3
   m_TagString: Untagged
@@ -1261,22 +1197,6 @@ RectTransform:
   m_AnchoredPosition: {x: 854, y: -162}
   m_SizeDelta: {x: 142, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3633521372321405162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3633521372321405173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbff2baab5517cb4980ebd85b71127e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotImage: {fileID: 3633521371518673183}
-  iconImage: {fileID: 3633521371679526809}
-  rectTr: {fileID: 0}
-  inputKeyNum: 0
 --- !u!114 &3633521372321405163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1294,8 +1214,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521372321405162}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
+        - m_Target: {fileID: 3476541961686536098}
+          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerDown
           m_Mode: 1
           m_Arguments:
@@ -1310,8 +1230,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521372321405162}
-          m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
+        - m_Target: {fileID: 3476541961686536098}
+          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
           m_Mode: 1
           m_Arguments:
@@ -1322,22 +1242,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521372321405162}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+--- !u!114 &3476541961686536098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3633521372321405173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8358b5c4d3ca547905bb6d0b177966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotImage: {fileID: 3633521371518673183}
+  iconImage: {fileID: 3633521371679526809}
+  rectTr: {fileID: 3633521372321405172}
+  inputKeyNum: 0
 --- !u!1 &3633521372372719334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1465,7 +1385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotImage: {fileID: 3633521371562190703}
   iconImage: {fileID: 3633521372301366265}
-  rectTr: {fileID: 0}
+  rectTr: {fileID: 3633521372396394515}
   inputKeyNum: 0
 --- !u!114 &3633521372396394514
 MonoBehaviour:
@@ -1503,22 +1423,6 @@ MonoBehaviour:
         - m_Target: {fileID: 3633521372396394513}
           m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521372396394513}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1656,7 +1560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotImage: {fileID: 3633521371348947706}
   iconImage: {fileID: 3633521372372719332}
-  rectTr: {fileID: 0}
+  rectTr: {fileID: 3633521372770104292}
   inputKeyNum: 0
 --- !u!114 &3633521372770103835
 MonoBehaviour:
@@ -1694,22 +1598,6 @@ MonoBehaviour:
         - m_Target: {fileID: 3633521372770103834}
           m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3633521372770103834}
-          m_TargetAssemblyTypeName: InputKey, Assembly-CSharp
-          m_MethodName: EventTrigger_Drag
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

@@ -9,12 +9,12 @@ public class InputKeyController : MonoBehaviour
 {
     public InputPanel inputPanel = null;
 
-    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack, Action<ENUM_INPUTKEY_NAME> _OnDragCallBack)
+    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (inputPanel == null)
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack, _OnDragCallBack);
+            inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack);
         }
     }
 

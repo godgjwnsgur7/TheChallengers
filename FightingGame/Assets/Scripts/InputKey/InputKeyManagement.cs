@@ -22,7 +22,7 @@ public class InputKeyManagement : MonoBehaviour
         if (inputPanel == null)
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack, OnDragCallBack);
+            inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
             inputPanel.transform.SetAsFirstSibling();
         }
 
@@ -249,7 +249,7 @@ public class InputKeyManagement : MonoBehaviour
         Destroy(areaPanel.gameObject);
 
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack, OnDragCallBack);
+        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
         inputPanel.transform.SetAsFirstSibling();
 
         areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();

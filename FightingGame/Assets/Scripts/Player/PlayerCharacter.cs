@@ -50,21 +50,13 @@ public class PlayerCharacter : MonoBehaviour
 
     public void Connect_InputController()
     {
-        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack, OnDragCallBack);
+        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack);
     }
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
         switch (_inputKeyName)
         {
-            case ENUM_INPUTKEY_NAME.LeftArrow:
-                activeCharacter.Input_MoveKey(true);
-                moveDir = -1.0f;
-                break;
-            case ENUM_INPUTKEY_NAME.RightArrow:
-                activeCharacter.Input_MoveKey(true);
-                moveDir = 1.0f;
-                break;
             case ENUM_INPUTKEY_NAME.Attack:
                 CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, activeCharacter.reverseState);
                 PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
@@ -86,11 +78,6 @@ public class PlayerCharacter : MonoBehaviour
                 PlayerCommand(ENUM_PLAYER_STATE.Jump);
                 break;
         }
-
-        if (moveDir != 0f)
-        {
-            PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
-        }
     }
 
     public void OnPointUpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
@@ -107,30 +94,24 @@ public class PlayerCharacter : MonoBehaviour
             case ENUM_INPUTKEY_NAME.Attack:
                 activeCharacter.Change_AttackState(false);
                 break;
-            case ENUM_INPUTKEY_NAME.Skill1:
-                CharacterSkillParam skillParam1 = new CharacterSkillParam(0);
-                PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam1);
-                break;
-            case ENUM_INPUTKEY_NAME.Skill2:
-                CharacterSkillParam skillParam2 = new CharacterSkillParam(1);
-                PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam2);
-                break;
-            case ENUM_INPUTKEY_NAME.Skill3:
-                CharacterSkillParam skillParam3 = new CharacterSkillParam(2);
-                PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam3);
-                break;
-            case ENUM_INPUTKEY_NAME.Jump:
-                PlayerCommand(ENUM_PLAYER_STATE.Jump);
-                break;
-
-
         }
     }
 
-    // -------------------------------------------------------------------------
     public void OnDragCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        // 준혁이가 채울거...
+        switch (_inputKeyName)
+        {
+            case ENUM_INPUTKEY_NAME.LeftArrow:
+                activeCharacter.Input_MoveKey(true);
+                moveDir = -1.0f;
+                PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
+                break;
+            case ENUM_INPUTKEY_NAME.RightArrow:
+                activeCharacter.Input_MoveKey(true);
+                moveDir = 1.0f;
+                PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
+                break;
+        }
     }
 
     // 디버깅용이니 쿨하게 다 때려박기
