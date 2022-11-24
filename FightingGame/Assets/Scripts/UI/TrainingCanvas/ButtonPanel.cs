@@ -51,8 +51,8 @@ public class ButtonPanel : UIElement
         if (enemyPlayer.activeCharacter != null)
             DeleteEnemy();
 
-        // inputKeyManagement.settingPanel.Open();
-        // inputKeyManagement.Init();
+        InputKeyManagement inputKeyManagement = Managers.Input.Get_InputKeyManagement();
+        inputKeyManagement.Init();
         this.Close();
     }
 

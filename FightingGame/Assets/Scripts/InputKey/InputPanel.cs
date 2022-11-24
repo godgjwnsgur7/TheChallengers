@@ -8,7 +8,7 @@ public class InputPanel : MonoBehaviour
 {
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
 
-    public void Init(Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack)
+    public void Init(Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack, Action<ENUM_INPUTKEY_NAME> OnDragCallBack)
     {
         List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
 
@@ -22,10 +22,10 @@ public class InputPanel : MonoBehaviour
                 return;
             }
 
-            if(keySettingDatas != null)
-                Set_InputKey(inputKeys[index], keySettingDatas[index]);
+            inputKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack, OnDragCallBack);
 
-            inputKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack);
+            if (keySettingDatas != null)
+                Set_InputKey(inputKeys[index], keySettingDatas[index]);
         }
     }
 
@@ -33,9 +33,9 @@ public class InputPanel : MonoBehaviour
     {
         inputKey.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
 
-        inputKey.slotImage.color = new Color(1, 1, 1, 0.5f + (keySettingData.opacity / 200));
+        inputKey.slotImage.color = new Color(1, 1, 1, keySettingData.opacity);
         if (inputKey.iconImage != null)
-            inputKey.iconImage.color = new Color(1, 1, 1, 0.5f + (keySettingData.opacity / 200));
+            inputKey.iconImage.color = new Color(1, 1, 1, keySettingData.opacity);
 
         inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
     }

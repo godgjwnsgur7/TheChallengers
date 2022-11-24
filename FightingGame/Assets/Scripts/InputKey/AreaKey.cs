@@ -4,22 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class KeyArea : MonoBehaviour
+public class AreaKey : MonoBehaviour
 {
     public Image areaImage;
-    public bool isSelect = false;
+    //bool isSelect = false;
     bool isInit = false;
-    public int triggerCount = 0;
+    public RectTransform rectTr;
 
     public void Init()
     {
         if (isInit) return;
 
         isInit = true;
+        rectTr = this.GetComponent<RectTransform>();
 
-        areaImage = this.transform.Find("AreaImage").GetComponent<Image>();
     }
-
+/*
     private void OnTriggerEnter2D(Collider2D collision)
     { 
         if(collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
@@ -61,13 +61,5 @@ public class KeyArea : MonoBehaviour
             changeColor = new Color(255, 255, 255, 0f);
             areaImage.color = changeColor;
         }
-    }
-
-    public bool Get_Updatable()
-    {
-        if (triggerCount > 0)
-            return false;
-        else
-            return true;
-    }
+    }*/
 }

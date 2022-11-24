@@ -50,7 +50,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void Connect_InputController()
     {
-        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack);
+        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack, OnDragCallBack);
     }
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
@@ -125,6 +125,12 @@ public class PlayerCharacter : MonoBehaviour
 
 
         }
+    }
+
+    // -------------------------------------------------------------------------
+    public void OnDragCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
+    {
+        // 준혁이가 채울거...
     }
 
     // 디버깅용이니 쿨하게 다 때려박기

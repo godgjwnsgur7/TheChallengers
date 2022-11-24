@@ -811,8 +811,6 @@ MonoBehaviour:
   isOpen: 0
   map: {fileID: 0}
   panelOpenBtnText: {fileID: 1273168653}
-  inputKeyController: {fileID: 0}
-  inputKeyManagement: {fileID: 0}
   playerCamera: {fileID: 973984477}
   playerCharacter: {fileID: 1418530638}
   enemyPlayer: {fileID: 14942414}
@@ -997,11 +995,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bfcadb72056284eb17630742784cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   isMove: 0
   isValueChange: 0
   settingPanel: {fileID: 146816640}
   inputPanel: {fileID: 0}
+  currInputKey: {fileID: 0}
 --- !u!1 &136924374
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,7 +1189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ea816f708390647ab54dfbbbfe4e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   isHide: 0
   isInit: 0
   sizeSlider: {fileID: 972616289}
@@ -4751,8 +4748,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 888973663}
+  ObservedComponents: []
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -6491,11 +6487,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bfcadb72056284eb17630742784cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   isMove: 0
   isValueChange: 0
   settingPanel: {fileID: 2131874539}
   inputPanel: {fileID: 0}
+  currInputKey: {fileID: 0}
 --- !u!224 &1111203227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11799,8 +11795,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 2067127198}
+  ObservedComponents: []
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -12344,7 +12339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ea816f708390647ab54dfbbbfe4e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   isHide: 0
   isInit: 0
   sizeSlider: {fileID: 55490562}

@@ -9,15 +9,16 @@ public class InputKey : MonoBehaviour
 {
     Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack;
     Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack;
+    Action<ENUM_INPUTKEY_NAME> OnDragCallBack;
 
     public Image slotImage;
     public Image iconImage;
 
     public RectTransform rectTr;
     bool isInit = false;
-    int inputKeyNum;
+    public int inputKeyNum;
     
-    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack, Action<ENUM_INPUTKEY_NAME> _OnDragCallBack)
     {
         if (isInit) return;
 
@@ -27,6 +28,7 @@ public class InputKey : MonoBehaviour
 
         OnPointDownCallBack = _OnPointDownCallBack;
         OnPointUpCallBack = _OnPointUpCallBack;
+        OnDragCallBack = _OnDragCallBack;
     }
 
     public void EventTrigger_PointerDown()
@@ -49,5 +51,16 @@ public class InputKey : MonoBehaviour
         }
         
         OnPointUpCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
+    }
+
+    public void EventTrigger_Drag()
+    {
+        if(OnDragCallBack == null)
+        {
+            Debug.Log("OnDragCallBack is Null");
+            return;
+        }
+
+        OnDragCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
 }

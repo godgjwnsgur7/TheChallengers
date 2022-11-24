@@ -10,7 +10,7 @@ public class SettingPanel : MonoBehaviour
     public bool isHide = false;
     public bool isInit = false;
 
-    private RectTransform thisRect = null;
+    private RectTransform rectTr = null;
     private Coroutine runningCoroutine = null;
 
     [SerializeField] Slider sizeSlider;
@@ -23,17 +23,27 @@ public class SettingPanel : MonoBehaviour
         if (isInit)
             return;
 
-        this.thisRect = GetComponent<RectTransform>();
+        rectTr = GetComponent<RectTransform>();
 
         isInit = true;
     }
 
     // 클릭 InputKey, Slider 세팅
-    public void OnClick_SetSliderValue(KeySettingData _keySettingData)
+    public void OnClick_SetSliderValue(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        // Slider 세팅
-        sizeSlider.value = _keySettingData.size;
-        opacitySlider.value = _keySettingData.opacity;
+        List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
+
+        if (keySettingDatas == null)
+        {
+            sizeSlider.value = 50f;
+            opacitySlider.value = 100f;
+        }
+        else
+        {
+            sizeSlider.value = keySettingDatas[(int)_inputKeyName].size * Get_SizeMaxValue() - 50f;
+            opacitySlider.value = (keySettingDatas[(int)_inputKeyName].opacity - 0.5f) * (Get_OpacityMaxValue() * 2);
+        }
+
         Set_SizeSliderText($"{(int)sizeSlider.value}%");
         Set_OpacitySliderText($"{(int)opacitySlider.value}%");
     }
@@ -72,8 +82,8 @@ public class SettingPanel : MonoBehaviour
 
 
         float showPos = Screen.height;
-        Vector3 target = thisRect.position;
-        target.y = showPos + thisRect.sizeDelta.y;
+        Vector3 target = rectTr.position;
+        target.y = showPos + rectTr.sizeDelta.y;
 
         runningCoroutine = StartCoroutine(MoveVec(target));
     }
@@ -86,7 +96,7 @@ public class SettingPanel : MonoBehaviour
         isHide = false;
 
         float showPos = Screen.height;
-        Vector3 target = thisRect.position;
+        Vector3 target = rectTr.position;
         target.y = showPos;
 
         runningCoroutine = StartCoroutine(MoveVec(target));
@@ -94,13 +104,16 @@ public class SettingPanel : MonoBehaviour
 
     IEnumerator MoveVec(Vector3 vec)
     {
-        while (thisRect.position != vec)
+        while (rectTr.position != vec)
         {
-            thisRect.position = Vector3.MoveTowards(thisRect.position, vec, 30);
+            rectTr.position = Vector3.MoveTowards(rectTr.position, vec, 30);
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
         runningCoroutine = null;
     }
     #endregion
+
+    public float Get_SizeMaxValue() => sizeSlider.maxValue;
+    public float Get_OpacityMaxValue() => opacitySlider.maxValue;
 }
