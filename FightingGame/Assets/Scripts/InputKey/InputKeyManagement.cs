@@ -16,6 +16,11 @@ public class InputKeyManagement : MonoBehaviour
     public InputKey currInputKey = null;
     public AreaPanel areaPanel = null;
     public AreaKey currAreaKey = null;
+    private EventTrigger eventTrigger;
+    private EventTrigger.Entry dragEntry = new EventTrigger.Entry
+    {
+        eventID = EventTriggerType.Drag,
+    };
 
     public void Init()
     {
@@ -24,6 +29,8 @@ public class InputKeyManagement : MonoBehaviour
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
             inputPanel.transform.SetAsFirstSibling();
+
+            Set_OnDragCallBack();
         }
 
         if (areaPanel == null)
@@ -37,10 +44,21 @@ public class InputKeyManagement : MonoBehaviour
             Open_SettingPanel();
     }
 
-    public void OnDragCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
+    public void Set_OnDragCallBack()
     {
-        Vector2 mousePos = Input.mousePosition;
-        Set_InputKeyTransForm(mousePos, _inputKeyName);
+        dragEntry.callback.AddListener(OnDragListener);
+
+        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        {
+            eventTrigger = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i).GetComponent<EventTrigger>();
+            eventTrigger.triggers.Add(dragEntry);
+        }
+    }
+
+    public void OnDragListener(BaseEventData _data) 
+    {
+        Vector2 movePos = Input.mousePosition;
+        Set_InputKeyTransForm(movePos, (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum);
     }
 
     public void OnPoint_UpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
