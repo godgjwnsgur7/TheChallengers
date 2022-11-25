@@ -7,7 +7,7 @@ using FGDefine;
 public class BattleCanvas : BaseCanvas
 {
     [Header("Set In Editor")]
-    [SerializeField] StatusWindowUI buleTeamStatusWindow;
+    [SerializeField] StatusWindowUI blueTeamStatusWindow;
     [SerializeField] StatusWindowUI redTeamStatusWindow;
     [SerializeField] ResultWindowUI resultWindow;
     [SerializeField] GameStateEffectUI gameStateEffect;
@@ -15,7 +15,7 @@ public class BattleCanvas : BaseCanvas
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
         if (_teamType == ENUM_TEAM_TYPE.Blue)
-            return buleTeamStatusWindow;
+            return blueTeamStatusWindow;
         else if (_teamType == ENUM_TEAM_TYPE.Red)
             return redTeamStatusWindow;
         else

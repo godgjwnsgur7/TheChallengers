@@ -12,10 +12,12 @@ public class InputKeyManagement : MonoBehaviour
     public bool isValueChange = false;
 
     [SerializeField] SettingPanel settingPanel;
+
     public InputPanel inputPanel = null;
     public InputKey currInputKey = null;
     public AreaPanel areaPanel = null;
     public AreaKey currAreaKey = null;
+
     private EventTrigger eventTrigger;
     private EventTrigger.Entry dragEntry = new EventTrigger.Entry
     {

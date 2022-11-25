@@ -35,8 +35,8 @@ public class ButtonPanel : UIElement
     {
         playerCamera.Set_MapData(map);
 
-        Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
-        Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
+        Reset_PlayerType();
+        Reset_EnemyType();
 
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
@@ -51,20 +51,14 @@ public class ButtonPanel : UIElement
         if (enemyPlayer.activeCharacter != null)
             DeleteEnemy();
 
-        InputKeyManagement inputKeyManagement = Managers.Input.Get_InputKeyManagement();
-        inputKeyManagement.Init();
+        Managers.Input.Get_InputKeyManagement().Init();
         this.Close();
     }
 
     public void OnClick_OnOffButtonPanel()
     {
-        /*
-        if (inputKeyManagement.settingPanel.isOpen)
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("버튼설정 중에 누를 수 없습니다.");
+        if (Managers.Input.Get_InputKeyManagement().inputPanel != null)
             return;
-        }
-        */
 
         if (this.gameObject.activeSelf)
             Close();
@@ -84,7 +78,7 @@ public class ButtonPanel : UIElement
         this.Close();
     }
     public void OnClick_SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
-    {
+    { 
         SelectEnemyCharacter(_charType);
         this.Close();
     }
@@ -92,22 +86,24 @@ public class ButtonPanel : UIElement
     // 캐릭터 선택
     public void SelectPlayerCharacter(ENUM_CHARACTER_TYPE _charType)
     {
-        if (playerType == _charType)
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("같은 캐릭터가 이미 소환되어있습니다.");
-            return;
-        }
-
         Change_PlayerType(_charType);
         Debug.Log(playerType);
-        Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, Reset_PlayerType, $"{playerType}를 소환하시겠습니까?");
+
+        if (playerCharacter.activeCharacter != null)
+            Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, SelectCancel_Player, $"{playerType}를 재소환하시겠습니까?");
+        else
+            CallPlayer();
     }
 
     public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
     {
         Change_EnemyType(_charType);
         Debug.Log(enemyType);
-        Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, Reset_EnemyType, $"{enemyType}를 소환하시겠습니까?");
+
+        if (enemyPlayer.activeCharacter != null)
+            Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, SelectCancel_Enemy, $"{enemyType}를 재소환하시겠습니까?");
+        else
+            CallEnemy();
     }
 
     public void OnClick_DestroyPlayer()
@@ -124,56 +120,22 @@ public class ButtonPanel : UIElement
     // 플레이어 소환
     public void CallPlayer()
     {
-        /*
-        if (inputKeyManagement.settingPanel.isOpen)
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
-            return;
-        }
-        */
-
         // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (playerCharacter.activeCharacter != null)
-        {
-            if (playerCharacter.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), playerType)))
-            {
-                Managers.UI.popupCanvas.Open_TimeNotifyPopup("같은 캐릭터가 이미 소환되어있습니다.", 2.0f);
-                Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
-                return;
-            }
-
             Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
-        }
 
         // 플레이어 스폰
-            playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
+        playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
 
-        Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+        Reset_PlayerType();
     }
 
     // 적 소환
     public void CallEnemy()
     {
-        /*
-        if (inputKeyManagement.settingPanel.isOpen)
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("버튼 설정중에는 소환이불가능합니다.");
-            return;
-        }
-        */
-
         // 이미 소환된 적이 있을 경우
         if (enemyPlayer.activeCharacter != null)
-        {
-            if (enemyPlayer.activeCharacter.name.Equals(Enum.GetName(typeof(ENUM_CHARACTER_TYPE), enemyType)))
-            {
-                Managers.UI.popupCanvas.Open_TimeNotifyPopup("같은 캐릭터가 이미 소환되어있습니다.", 2.0f);
-                Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
-                return;
-            }
-
             Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
-        }
 
         // 소환된 플레이어가 없을 경우 지정된 스폰에서 생성
         if (playerCharacter.activeCharacter == null)
@@ -201,7 +163,19 @@ public class ButtonPanel : UIElement
             enemyPlayer.Set_Character(Init_Enemy(respownPos, enemyType));
         }
 
-        Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
+        Reset_EnemyType();
+    }
+
+    private void SelectCancel_Player()
+    {
+        Reset_PlayerType();
+        return;
+    }
+
+    private void SelectCancel_Enemy()
+    {
+        Reset_EnemyType();
+        return;
     }
 
     // 적 제거
@@ -252,6 +226,6 @@ public class ButtonPanel : UIElement
     public void Change_PlayerType(ENUM_CHARACTER_TYPE _value) => playerType = _value;
     public void Change_EnemyType(ENUM_CHARACTER_TYPE _value) => enemyType = _value;
     private void Reset_PlayerType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
-    private void Reset_EnemyType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
+    private void Reset_EnemyType() => Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
 
 }
