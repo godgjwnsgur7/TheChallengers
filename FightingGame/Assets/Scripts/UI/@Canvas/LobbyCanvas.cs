@@ -38,4 +38,11 @@ public class LobbyCanvas : BaseCanvas
     {
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
     }
+
+    public void Open_InputKeyManagement(Transform _transform)
+    {
+        InputKeyManagement go = Managers.Input.Get_InputKeyManagement();
+        go.transform.parent = _transform;
+        go.Init();
+    }
 }

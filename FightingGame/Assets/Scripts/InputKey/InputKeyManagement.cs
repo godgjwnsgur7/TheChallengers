@@ -31,8 +31,6 @@ public class InputKeyManagement : MonoBehaviour
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
             inputPanel.transform.SetAsFirstSibling();
-
-            Set_OnDragCallBack();
         }
 
         if (areaPanel == null)
@@ -42,19 +40,22 @@ public class InputKeyManagement : MonoBehaviour
             areaPanel.transform.SetAsFirstSibling();
         }
 
+        dragEntry.callback.AddListener(OnDragListener);
+        Set_OnDragCallBack();
+
         if (!settingPanel.gameObject.activeSelf)
             Open_SettingPanel();
     }
 
     public void Set_OnDragCallBack()
     {
-        dragEntry.callback.AddListener(OnDragListener);
-
+        Debug.Log("OnDrag 삽입");
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             eventTrigger = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i).GetComponent<EventTrigger>();
             eventTrigger.triggers.Add(dragEntry);
         }
+        Debug.Log("OnDrag 삽입 완료");
     }
 
     public void OnDragListener(BaseEventData _data) 
@@ -251,8 +252,7 @@ public class InputKeyManagement : MonoBehaviour
         settingPanel.Reset_SettingPanel();
         settingPanel.gameObject.SetActive(false);
 
-        Destroy(inputPanel.gameObject);
-        Destroy(areaPanel.gameObject);
+        Destroy(this.gameObject);
     }
 
     /// <summary>
@@ -269,10 +269,14 @@ public class InputKeyManagement : MonoBehaviour
         Destroy(areaPanel.gameObject);
 
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        inputPanel.Set_isReset(true);
         inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
         inputPanel.transform.SetAsFirstSibling();
 
+        Set_OnDragCallBack();
+
         areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
+        areaPanel.Set_isReset(true);
         areaPanel.Init();
         areaPanel.transform.SetAsFirstSibling();
     }

@@ -57,7 +57,7 @@ public class ButtonPanel : UIElement
 
     public void OnClick_OnOffButtonPanel()
     {
-        if (Managers.Input.Get_InputKeyManagement().inputPanel != null)
+        if (Managers.Input.Has_InputKeyManagement())
             return;
 
         if (this.gameObject.activeSelf)
