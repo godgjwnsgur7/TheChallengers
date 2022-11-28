@@ -132,7 +132,6 @@ public class ObjectPoolMgr
         if (root == null)
         {
             root = new GameObject { name = "@Pool_Root" }.transform;
-            Object.DontDestroyOnLoad(root);
         }
 
         PhotonPrefabPool.Init();

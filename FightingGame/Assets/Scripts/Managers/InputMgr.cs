@@ -8,7 +8,7 @@ public class InputMgr
 {
     InputKeyController inputKeyController = null;
     InputKeyManagement inputKeyManagement = null;
-   
+
     public InputKeyManagement Get_InputKeyManagement()
     {
         if (inputKeyController != null)
@@ -17,10 +17,8 @@ public class InputMgr
             inputKeyController = null;
         }
 
-        if (!Has_InputKeyManagement())
-        {
+        if (inputKeyManagement == null)
             inputKeyManagement = Managers.Resource.Instantiate("UI/InputKeyManagement", Managers.UI.currCanvas.transform).GetComponent<InputKeyManagement>();
-        }
 
         return inputKeyManagement;
     }
@@ -45,16 +43,5 @@ public class InputMgr
     {
         inputKeyController = null;
         inputKeyManagement = null;
-    }
-
-    /// <summary>
-    /// Management가 있으면 true
-    /// </summary>
-    public bool Has_InputKeyManagement()
-    {
-        if (inputKeyManagement == null)
-            return false;
-
-        return true;
     }
 }
