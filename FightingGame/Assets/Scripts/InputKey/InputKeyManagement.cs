@@ -265,8 +265,8 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Reset_InputKey()
     {
-        Destroy(inputPanel.gameObject);
-        Destroy(areaPanel.gameObject);
+        Managers.Resource.Destroy(inputPanel.gameObject);
+        Managers.Resource.Destroy(areaPanel.gameObject);
 
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
         inputPanel.Set_isReset(true);

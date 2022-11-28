@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9210702100472987900}
   - component: {fileID: 1066711314793333529}
   - component: {fileID: 7852408251714568752}
-  - component: {fileID: 1848704330491928493}
+  - component: {fileID: -6774523379235659512}
   m_Layer: 0
   m_Name: Wizard_ThunderAttackObject_3
   m_TagString: Untagged
@@ -102,8 +102,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &1848704330491928493
-PolygonCollider2D:
+--- !u!61 &-6774523379235659512
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,10 +112,10 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2, y: 0}
+  m_Offset: {x: 2.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -125,11 +125,6 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.82569456, y: 0.27640343}
-      - {x: -0.8480294, y: -1.5914577}
-      - {x: 0.75255024, y: -1.5886244}
-      - {x: 0.76823366, y: 0.23978749}
-      - {x: 0.7996216, y: 1.3566828}
-      - {x: -0.83572316, y: 1.358691}
+  serializedVersion: 2
+  m_Size: {x: 1.4, y: 4}
+  m_EdgeRadius: 0
