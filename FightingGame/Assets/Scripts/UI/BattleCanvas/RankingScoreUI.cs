@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class RankingScoreUI : MonoBehaviour
 {
-    [SerializeField] Image RankEmblemImage;
-    [SerializeField] Image ScoreChangeEffectImage;
+    [SerializeField] Image rankEmblemImage;
+    [SerializeField] Image scoreChangeEffectImage;
 
     [SerializeField] Text rankingScoreText;
     [SerializeField] Text ScoreChangeText;
 
-    int currRankingScore;
+    long currRankingScore;
     char currRankEmblem = 'F';
 
-    public void Set_Score(int _rankingScore)
+    public void Set_Score(long _rankingScore)
     {
         currRankingScore = _rankingScore;
         rankingScoreText.text = _rankingScore.ToString();

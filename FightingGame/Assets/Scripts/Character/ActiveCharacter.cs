@@ -18,7 +18,7 @@ public partial class ActiveCharacter : Character
     Coroutine dropCoroutine;
 
     public float stunTime;
-    public float curStunTime;
+    public float currStunTime;
 
     public override void Init()
     {
@@ -290,13 +290,13 @@ public partial class ActiveCharacter : Character
                 }
                 else if(stunTimeCoroutine == null && landCoroutine == null)
                 {
-                    curStunTime = 0.0f;
+                    currStunTime = 0.0f;
                     stunTime = _skillData.stunTime;
                     stunTimeCoroutine = StartCoroutine(IStunTimeCheck());
                 }
                 else if (stunTimeCoroutine != null)
                 {
-                    curStunTime = 0.0f;
+                    currStunTime = 0.0f;
                     stunTime = _skillData.stunTime;
                 }
             }
@@ -465,9 +465,9 @@ public partial class ActiveCharacter : Character
     /// </summary>
     protected IEnumerator IStunTimeCheck()
     {
-        while (stunTime >= curStunTime)
+        while (stunTime >= currStunTime)
         {
-            curStunTime += Time.deltaTime;
+            currStunTime += Time.deltaTime;
 
             if (jumpState && landCoroutine == null)
             {

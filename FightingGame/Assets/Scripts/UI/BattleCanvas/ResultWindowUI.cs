@@ -22,10 +22,13 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open(bool isDraw, bool isWin = true)
     {
-        rankingScore.Set_Score(1500); // 자기 점수로 넣어야 함
+        // 임시 세팅
+        long myScore = 1500;
+        long enemyScore = 1500;
 
-        // 자신의 점수와 상대의 점수
-        int point = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, 1500, 1500);
+        rankingScore.Set_Score(myScore); // 자기 점수로 넣어야 함
+
+        long point = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
 
         if (isDraw)
         {

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
 {
+    [SerializeField] Image rankEmblemImage;
     [SerializeField] Text userNicknameText;
     [SerializeField] Text ratingPointText;
     [SerializeField] Text winCountText;
@@ -30,6 +31,7 @@ public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
     {
         isOpen = true;
 
+        rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(userData.ratingPoint);
         userNicknameText.text = userData.nickname;
         ratingPointText.text = $"{userData.ratingPoint}점";
         winCountText.text = userData.victoryPoint.ToString();
