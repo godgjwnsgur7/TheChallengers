@@ -6,70 +6,38 @@ using UnityEngine.UI;
 public class RankingScoreUI : MonoBehaviour
 {
     [SerializeField] Image rankEmblemImage;
-    [SerializeField] Image scoreChangeEffectImage;
+    [SerializeField] Image scoreChangeEffectImage; // 오브젝트 비활성화 상태
 
     [SerializeField] Text rankingScoreText;
-    [SerializeField] Text ScoreChangeText;
+    [SerializeField] Text ScoreChangeText; // 비어있는 상태
 
     long currRankingScore;
-    char currRankEmblem = 'F';
 
-    public void Set_Score(long _rankingScore)
+    private void OnDisable()
     {
-        currRankingScore = _rankingScore;
-        rankingScoreText.text = _rankingScore.ToString();
+        // 코루틴 전체 스탑
     }
 
-    public void Update_Score(int rankingScore)
+    public void Open_Score(long _myRankingScore)
     {
+        if (Managers.Battle.isCustom)
+            return;
 
-
-        // 커스텀 룸이면 리턴시켜 들어올 일도 없겠지만,
-
-
+        currRankingScore = _myRankingScore;
+        rankingScoreText.text = _myRankingScore.ToString();
+        rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(currRankingScore);
+    
+        this.gameObject.SetActive(true); 
     }
 
-    private void Set_RankEmblemImage(char _rankEmblem)
+    public void Update_Score(long _myRankingScore)
     {
-        // Image를 리턴시켜야 할지도 모름 ㅋㅋ
-        // 이펙트 때문.
+        scoreChangeEffectImage.sprite = null; // 시작 이미지 넣어야 함
+        scoreChangeEffectImage.gameObject.SetActive(true);
+        // 이펙트 효과 넣어야 함
 
-        switch(_rankEmblem)
-        {
-            case 'S':
+        
 
-                break;
-            case 'A':
-
-                break;
-            case 'B':
-
-                break;
-            case 'C':
-
-                break;
-            case 'D':
-
-                break;
-            case 'E':
-
-                break;
-            case 'F':
-
-                break;
-            default:
-                
-                break;
-        }
-    }
-
-    private char Decide_Ranking(int _rankingScore)
-    {
-        // 구현해야 함
-
-        currRankEmblem = 'F';
-
-        return currRankEmblem;
     }
 
     /// <summary>

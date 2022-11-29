@@ -49,8 +49,16 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
         {
             slaveFightingInfo.Set_UserInfo(property.data);
         }
-    }
 
+        if(property.isMasterClient == PhotonLogicHandler.IsMasterClient)
+        {
+            Managers.Battle.Set_MyScore(property.data.ratingPoint);
+        }
+        else
+        {
+            Managers.Battle.Set_EnemyScore(property.data.ratingPoint);
+        }
+    }
 
     private void Set_MapInfo(ENUM_MAP_TYPE _mapType)
     {

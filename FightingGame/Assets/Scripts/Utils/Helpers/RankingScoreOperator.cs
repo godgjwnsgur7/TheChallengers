@@ -22,9 +22,11 @@ public class RankingScoreOperator : MonoBehaviour
 
     public static long Operator_RankingScore(bool isDraw, bool isWin, long myScore, long enemyScore)
     {
+        // 임시로 100을 무조건 +시키고 뱉음
+        myScore += 100;
+        
+        // DB에 정보 변경을 여기서 시키는 게 낫지 않을까?
 
-
-        // 임시로 1500만 뱉음
-        return 1500;
+        return myScore;
     }
 }

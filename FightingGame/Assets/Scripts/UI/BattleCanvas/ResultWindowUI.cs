@@ -14,6 +14,10 @@ public class ResultWindowUI : MonoBehaviour
 
     Coroutine counterCorotine;
 
+    int countTime;
+    long myScore;
+    long enemyScore;
+
     private void OnDisable()
     {
         if (counterCorotine != null)
@@ -22,37 +26,41 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open(bool isDraw, bool isWin = true)
     {
-        // 임시 세팅
-        long myScore = 1500;
-        long enemyScore = 1500;
+        myScore = Managers.Battle.myScore;
+        enemyScore = Managers.Battle.enemyScore;
 
-        rankingScore.Set_Score(myScore); // 자기 점수로 넣어야 함
+        countTime = 3;
 
-        long point = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
+        if(!Managers.Battle.isCustom)
+        {
+            countTime = 5;
+            rankingScore.Open_Score(myScore);
+        }
+
+        // 게임 중에 팅기거나 그랬을 때, 등의 예외상황 처리가 아직 안되어있음
+        myScore = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
 
         if (isDraw)
         {
             resultText.text = "무승부!";
-            
         }
         else
         {
             if (isWin)
             {
                 resultText.text = "승리!";
-
             }
             else
             {
                 resultText.text = "패배!";
-
             }
         }
 
-        notifyCountText.text = "3초 뒤에 로비로 이동합니다.";
+        notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         gameObject.SetActive(true);
-
+        
         counterCorotine = StartCoroutine(INotifyTextCounter());
+        StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
     }
 
     public void Close()
@@ -61,16 +69,14 @@ public class ResultWindowUI : MonoBehaviour
 
     protected IEnumerator INotifyTextCounter()
     {
-        int count = 3;
-
-        while (count != 0)
+        while (countTime != 0)
         {
-            notifyCountText.text = $"{count}초 뒤에 로비로 이동합니다.";
+            notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
             yield return new WaitForSeconds(1f);
-            count--;
+            countTime--;
         }
         
-        notifyCountText.text = $"{count}초 뒤에 로비로 이동합니다.";
+        notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         counterCorotine = null;
 
         if (PhotonLogicHandler.IsMasterClient)
@@ -91,6 +97,15 @@ public class ResultWindowUI : MonoBehaviour
         {
             StartCoroutine(IWaitGoToLobby(1.0f));
         }
+    }
+
+    protected IEnumerator IWaitUpdateScore(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        // 스코어 변경 계산해야 함
+
+        rankingScore.Update_Score(myScore);
     }
 
     protected IEnumerator IWaitGoToLobby(float delayTime)

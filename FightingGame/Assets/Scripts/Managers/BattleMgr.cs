@@ -21,6 +21,18 @@ public class BattleMgr
 
     string slaveNickname = null;
 
+    public long myScore
+    {
+        private set;
+        get;
+    }
+
+    public long enemyScore
+    {
+        private set;
+        get;
+    }
+
     public bool isGamePlayingState
     {
         private set;
@@ -119,9 +131,12 @@ public class BattleMgr
     public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
     public void Set_MyChar(ActiveCharacter _activeCharacter) => activeCharacter = _activeCharacter;
+    public void Set_MyScore(long _myScore) => myScore = _myScore;
+    public void Set_EnemyScore(long _enemyScore) => enemyScore = _enemyScore;
 
     public void Set_MyCharacterType(ENUM_CHARACTER_TYPE _charType) => MyCharType = _charType;
     public void Set_EnemyCharacterType(ENUM_CHARACTER_TYPE _charType) => EnemyCharType = _charType;
+    
     public ENUM_CHARACTER_TYPE Get_MyCharacterType()
     {
         return MyCharType;
