@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FightingUserInfoUI : MonoBehaviour
 {
     [SerializeField] Image charImage;
-    [SerializeField] Image ratingEmblem;
+    [SerializeField] Image ratingEmblemImage;
 
     [SerializeField] Text userNicknameText;
     [SerializeField] Text ratingPointText;
@@ -15,7 +15,8 @@ public class FightingUserInfoUI : MonoBehaviour
     public void Set_UserInfo(DBUserData userData)
     {
         // Image Setting
-        // 아직 이미지 없음
+        // charImage.sprite = // 아직 이미지 세팅 안됨 (임시)
+        ratingEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(userData.ratingPoint);
 
         // Text Setting
         userNicknameText.text = userData.nickname;
