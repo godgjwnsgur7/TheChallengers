@@ -39,6 +39,7 @@ public class ResultWindowUI : MonoBehaviour
 
         // 게임 중에 팅기거나 그랬을 때, 등의 예외상황 처리가 아직 안되어있음
         myScore = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
+        bool isDBUpdate = Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
 
         if (isDraw)
         {
@@ -58,9 +59,14 @@ public class ResultWindowUI : MonoBehaviour
 
         notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         gameObject.SetActive(true);
-        
-        counterCorotine = StartCoroutine(INotifyTextCounter());
-        StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
+
+        if(!isDBUpdate)
+        {
+            Debug.Log("DBUpdate Failed!");
+        }
+
+       counterCorotine = StartCoroutine(INotifyTextCounter());
+       StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
     }
 
     public void Close()
@@ -102,8 +108,6 @@ public class ResultWindowUI : MonoBehaviour
     protected IEnumerator IWaitUpdateScore(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
-
-        // 스코어 변경 계산해야 함
 
         rankingScore.Update_Score(myScore);
     }

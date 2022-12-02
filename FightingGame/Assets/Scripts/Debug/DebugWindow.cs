@@ -103,6 +103,17 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, (long)inputData, OnUpdateDBData);
 	}
 
+	public void OnInitDBRatinigPoint(long ratingPoint)
+    {
+		Debug.Log($"레이팅 점수를 {ratingPoint} 점으로 초기화됐습니다.");
+		SetStatus($"레이팅 점수를 {ratingPoint} 점으로 초기화됐습니다.");
+	}
+
+	public void OnClick_InitDB(int ratingPoint)
+    {
+		Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, (long)ratingPoint, OnInitDBRatinigPoint);
+	}
+
 	private void OnSelectDBData(DBUserData data)
 	{
 		Debug.Log("닉네임 : " + data.nickname);

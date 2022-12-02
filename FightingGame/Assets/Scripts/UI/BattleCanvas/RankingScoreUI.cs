@@ -13,9 +13,16 @@ public class RankingScoreUI : MonoBehaviour
 
     long currRankingScore;
 
+    Coroutine scoreEffectCoroutine = null;
+    Coroutine emblemEffectCoroutine = null;
+
     private void OnDisable()
     {
-        // 코루틴 전체 스탑
+        if (scoreEffectCoroutine != null)
+            StopCoroutine(scoreEffectCoroutine);
+
+        if (emblemEffectCoroutine != null)
+            StopCoroutine(emblemEffectCoroutine);
     }
 
     public void Open_Score(long _myRankingScore)
@@ -30,10 +37,30 @@ public class RankingScoreUI : MonoBehaviour
         this.gameObject.SetActive(true); 
     }
 
-    public void Update_Score(long _myRankingScore)
+    public void Update_Score(long changeRankingScore)
     {
         scoreChangeEffectImage.sprite = null; // 시작 이미지 넣어야 함
         scoreChangeEffectImage.gameObject.SetActive(true);
+
+        if (currRankingScore < changeRankingScore)
+        {
+            // 점수가 높아짐 - 랭크 변경 체크
+            
+        }
+        else if(currRankingScore > changeRankingScore)
+        {
+            // 점수가 낮아짐 - 랭크 변경 체크
+
+        }
+        else
+        {
+            // 변경점 없음 - 이미지만 세팅
+
+        }
+
+        scoreEffectCoroutine = StartCoroutine(IRankScoreEffect(changeRankingScore));
+
+        
         // 이펙트 효과 넣어야 함
 
         
@@ -48,30 +75,35 @@ public class RankingScoreUI : MonoBehaviour
         yield return null;
 
 
-        // StartCoroutine(IRankEmblem_ActiveEffect(_rank));
+
+        // if(emblemEffectCoroutine != null)
+        //     StartCoroutine(IRankEmblem_ActiveEffect(_rank));
     }
 
     protected IEnumerator IRankEmblem_ActiveEffect(char _rank)
     {
         yield return null;
+
+        emblemEffectCoroutine = null;
     }
 
-    protected IEnumerator IRankScoreEffect(int _score)
+    protected IEnumerator IRankScoreEffect(long _score)
     {
-        while(currRankingScore != _score)
-        {
-            if (currRankingScore > _score)
-                currRankingScore--;
-            else if (currRankingScore < _score)
-                currRankingScore++;
-            else
-                break;
+        float runTime = 0.0f;
+        float duration = 1.5f;
+        long tempRankingScore = currRankingScore;
 
+        while (runTime < duration)
+        {
+            runTime += Time.deltaTime;
+            currRankingScore = (long)Mathf.Lerp(tempRankingScore, _score, runTime / duration);
             rankingScoreText.text = currRankingScore.ToString();
 
-            yield return new WaitForSeconds(0.05f);
+            yield return null;
         }
 
         currRankingScore = _score;
+        rankingScoreText.text = currRankingScore.ToString();
+        scoreEffectCoroutine = null;
     }
 }
