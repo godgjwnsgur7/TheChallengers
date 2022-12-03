@@ -4,22 +4,32 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class TestScriptManager
+public class BotManager
 {
-    // A Test behaves as an ordinary method
-    [Test]
-    public void TestScriptSimplePasses()
+    FGBot[] bots = new FGBot[]
     {
-        
+        new TestBot(),
+    };
+    
+    [Test]
+    public void RunAllBot()
+    {
+        var iter = Process();
+
+        while (iter.MoveNext())
+        {
+
+        }
     }
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator TestScriptWithEnumeratorPasses()
+    private IEnumerator Process()
     {
-        // Use the Assert class to test conditions.
-        // Use yield to skip a frame.
-        yield return null;
+        foreach(var bot in bots)
+        {
+            bot.Run();
+
+            while (bot.IsProcessing())
+                yield return null;
+        }
     }
 }
