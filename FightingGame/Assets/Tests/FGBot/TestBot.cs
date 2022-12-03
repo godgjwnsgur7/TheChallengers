@@ -22,7 +22,8 @@ public class LoginBot : FGBot
 
     public override IEnumerator ProcessMain()
     {
-        yield return SceneManager.LoadSceneAsync(ENUM_SCENE_TYPE.Main.ToString());
+        yield return SceneManager.LoadSceneAsync(ENUM_SCENE_TYPE.Main.ToString(), LoadSceneMode.Additive);
+        SceneManager.SetActiveScene(SceneManager.GetActiveScene());
 
         if(!FindCanvas())
         {
