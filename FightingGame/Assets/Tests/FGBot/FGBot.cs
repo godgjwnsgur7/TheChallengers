@@ -1,7 +1,11 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 /// <summary>
 /// 유니티 테스트 자동화 도구로 쓸 봇을 만든다.
@@ -14,24 +18,22 @@ using UnityEngine;
 /// 2. 자주 발생할 만한 버그를 위주로 작성한다.
 /// </summary>
 
-public abstract class FGBot 
+public abstract class FGBot : IMonoBehaviourTest
 {
+    protected readonly int DefaultRetryCount = 2;
+    protected readonly WaitForSeconds DefaultWaitTime = new WaitForSeconds(3);
+
+    protected BotController controller = null;
+
     private bool isSuccessed = false;
-    protected bool isFailed = false;
+    private bool isFailed = false;
 
-    [Test]
-    public void Run()
+    public bool IsTestFinished => isSuccessed || isFailed;
+
+    public FGBot(BotController controller)
     {
-        var iter = CoProcess();
+        this.controller = controller;
 
-        while(iter.MoveNext())
-        {
-
-        }
-    }
-
-    protected virtual void Initialize()
-    {
         isSuccessed = false;
         isFailed = false;
     }
@@ -40,29 +42,28 @@ public abstract class FGBot
     {
         isSuccessed = true;
         isFailed = false;
+
+        End();
     }
 
     protected void Fail()
     {
         isFailed = true;
         isSuccessed = false;
+
+        End();
     }
 
-    public abstract IEnumerator CoProcess();
+    public abstract IEnumerator ProcessMain();
 
-    protected virtual void End()
+    public virtual bool Initialize()
     {
-        Assert.IsFalse(IsProcessing() || IsFailed());
+        return true;
     }
 
-    public bool IsSuccess()
+    private void End()
     {
-        return isSuccessed && !isFailed;
-    }
-
-    public bool IsProcessing()
-    {
-        return !isSuccessed && !isFailed;
+        Assert.IsFalse(!IsTestFinished || IsFailed());
     }
 
     public bool IsFailed()

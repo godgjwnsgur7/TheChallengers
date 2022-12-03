@@ -1,30 +1,71 @@
+using FGDefine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
-public class TestBot : FGBot
+public class LoginBot : FGBot
 {
-    bool fuckYou = true;
+    MainCanvas mainCanvas;
 
-    public override IEnumerator CoProcess()
+    public LoginBot(BotController controller) : base(controller)
     {
-        Initialize();
 
-        Debug.Log("테스트 1");
+    }
 
-        yield return null;
+    public override bool Initialize()
+    {
+        return true;
+    }
 
-        Debug.Log("테스트 2");
-        
-        if (fuckYou)
+    public override IEnumerator ProcessMain()
+    {
+        yield return SceneManager.LoadSceneAsync(ENUM_SCENE_TYPE.Main.ToString());
+
+        if(!FindCanvas())
         {
             Fail();
         }
-        else
+
+        yield return ProcessLogin();
+
+        Success();
+    }
+
+    private bool FindCanvas()
+    {
+        mainCanvas = controller.Find<MainCanvas>();
+
+        if (mainCanvas == null)
+            return false;
+
+        return true;
+
+    }
+
+    private IEnumerator ProcessLogin()
+    {
+        int count = DefaultRetryCount;
+
+        mainCanvas.OnClick_Login();
+
+        while (!IsValidLogin(Managers.Platform.GetUserID()) && count > 0)
         {
-            Success();
+            count--;
+            yield return DefaultWaitTime;
         }
-            
-        End();
+
+        // 시간 내에 못했을 경우 그냥 실패 처리함
+        if (count <= 0)
+        {
+            Fail();
+        }
+    }
+
+    private bool IsValidLogin(string userId)
+    {
+        return userId != string.Empty && userId != null;
     }
 }
