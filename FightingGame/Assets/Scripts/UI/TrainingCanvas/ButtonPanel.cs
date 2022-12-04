@@ -124,6 +124,9 @@ public class ButtonPanel : UIElement
         // 플레이어 스폰
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
 
+        GameObject go = playerCharacter.activeCharacter.transform.Find("Sound").gameObject;
+        Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_Player);
+
         Reset_PlayerType();
     }
 
@@ -159,6 +162,9 @@ public class ButtonPanel : UIElement
 
             enemyPlayer.Set_Character(Init_Enemy(respownPos, enemyType));
         }
+
+        GameObject go = enemyPlayer.activeCharacter.transform.Find("Sound").gameObject;
+        Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_Enemy);
 
         Reset_EnemyType();
     }

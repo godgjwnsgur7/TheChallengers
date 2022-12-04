@@ -60,12 +60,10 @@ public class SoundMgr
 
     public void Clear()
     {
-        /*foreach(AudioSource audios in audioSources)
-        {
-            audios.clip = null;
-        }*/
         PauseBGM();
 
+        audioSources[(int)ENUM_SOUND_TYPE.SFX_Player] = null;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX_Enemy] = null;
         audioClips.Clear();
     }
 
@@ -107,25 +105,8 @@ public class SoundMgr
         AudioSource audioSource = audioSources[(int)soundType];
 
         audioSource.pitch = pitch;
+        audioSource.volume = volumeDataList[1].volume;
         audioSource.PlayOneShot(audioClip);
-    }
-
-    public void Set_SFXCharacterAudio(ENUM_SOUND_TYPE soundType, Transform parentTr)
-    {
-        if (soundType < ENUM_SOUND_TYPE.SFX_Player)
-        {
-            Debug.Log("캐릭터 오디오 생성 범위 벗어남");
-            return;
-        }
-
-        GameObject go = new GameObject { name = soundType.ToString() };
-        audioSources[(int)soundType] = go.AddComponent<AudioSource>();
-        go.transform.parent = parentTr;
-
-        audioSources[(int)soundType].minDistance = 2f;
-        audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.BasicMap) * Screen.width / Screen.height; ;
-        audioSources[(int)soundType].spatialBlend = 1f;
-        audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
     }
 
     public void Set_AudioSource(AudioSource audioSource, ENUM_SOUND_TYPE soundType)
@@ -134,6 +115,8 @@ public class SoundMgr
             return;
 
         audioSources[(int)soundType] = audioSource;
+        audioSources[(int)soundType].volume = volumeDataList[1].volume;
+        audioSources[(int)soundType].pitch = volumeDataList[1].pitch;
         audioSources[(int)soundType].minDistance = 2f;
         audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.BasicMap) * Screen.width / Screen.height; ;
         audioSources[(int)soundType].spatialBlend = 1f;
@@ -203,3 +186,25 @@ public class SoundMgr
 
     public List<VolumeData> Get_VolumeDatas() => volumeDataList;
 }
+
+/*
+ public void Set_SFXCharacterAudio(ENUM_SOUND_TYPE soundType, Transform parentTr)
+    {
+        if (soundType < ENUM_SOUND_TYPE.SFX_Player)
+        {
+            Debug.Log("캐릭터 오디오 생성 범위 벗어남");
+            return;
+        }
+
+        GameObject go = new GameObject { name = soundType.ToString() };
+        audioSources[(int)soundType] = go.AddComponent<AudioSource>();
+        go.transform.parent = parentTr;
+
+        audioSources[(int)soundType].volume = volumeDataList[1].volume;
+        audioSources[(int)soundType].pitch = volumeDataList[1].pitch;
+        audioSources[(int)soundType].minDistance = 2f;
+        audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.BasicMap) * Screen.width / Screen.height; ;
+        audioSources[(int)soundType].spatialBlend = 1f;
+        audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
+    }
+ */
