@@ -188,6 +188,11 @@ public class BattleMgr
         bool isDraw = (isWin ? activeCharacter.currState == ENUM_PLAYER_STATE.Die
             : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
 
+        if (isWin)
+            Managers.Sound.Play(ENUM_SFX_TYPE.win, ENUM_SOUND_TYPE.SFX);
+        else
+            Managers.Sound.Play(ENUM_SFX_TYPE.loose, ENUM_SOUND_TYPE.SFX);
+
         battleCanvas.EndGame(isDraw, isWin);
     }
 

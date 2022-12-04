@@ -51,6 +51,16 @@ public partial class ActiveCharacter : Character
         SyncAnimator(anim, param);
       
         isInitialized = true;
+
+        if (PhotonLogicHandler.IsConnected)
+        {
+            isControl = PhotonLogicHandler.IsMine(viewID);
+            GameObject go = this.transform.Find("Sound").gameObject;
+            if (isControl)
+                Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_Player);
+            else
+                Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_Enemy);
+        }
     }
 
     public void Set_Character()

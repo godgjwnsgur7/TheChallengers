@@ -140,8 +140,8 @@ namespace FGDefine
         LobbyBGM = 0, // 테스트 위해 임시로 1과 변경
         TestBGM = 1,
         BattleBGM = 2,
-        TrainingBGM = 3, // 테스트 위해 임시로 4와 변경
-        MainBGM = 4,
+        MainBGM = 3, // 테스트 위해 임시로 4와 변경
+        TrainingBGM = 4,
     }
 
     /// <summary>
@@ -151,7 +151,12 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        win, // 테스트용
+        // 테스트용
+        win,
+        loose,
+        walk,
+        walkbeep1,
+        Attack1,
     }
     
     [Serializable]

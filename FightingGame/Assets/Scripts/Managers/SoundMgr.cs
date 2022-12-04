@@ -7,6 +7,8 @@ public enum ENUM_SOUND_TYPE
 {
     BGM,
     SFX,
+    SFX_Player,
+    SFX_Enemy,
 
     Max
 }
@@ -31,7 +33,7 @@ public class SoundMgr
             Object.DontDestroyOnLoad(root);
 
             string[] soundNames = System.Enum.GetNames(typeof(ENUM_SOUND_TYPE));
-            for (int i = 0; i < soundNames.Length - 1; i++)
+            for (int i = 0; i <= (int)ENUM_SOUND_TYPE.SFX; i++)
             {
                 GameObject go = new GameObject { name = soundNames[i] };
                 audioSources[i] = go.AddComponent<AudioSource>();
@@ -39,16 +41,21 @@ public class SoundMgr
             }
         }
 
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = 0f;
+        Set_BGMValue();
 
         volumeDataList = PlayerPrefsManagement.Load_VolumeData();
         if (volumeDataList == null)
         {
             volumeDataList = new List<VolumeData>();
-            for (int i = 0; i < (int)ENUM_SOUND_TYPE.Max; i++)
+            for (int i = 0; i <= (int)ENUM_SOUND_TYPE.SFX; i++)
                 volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f, 0.7f));
         }
+    }
+
+    private void Set_BGMValue()
+    {
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = 0f;
     }
 
     public void Clear()
@@ -66,7 +73,7 @@ public class SoundMgr
     {
         if (pitch == 0.0f) pitch = volumeDataList[0].pitch;
 
-        string path = $"Sounds/{soundType}/{bgmType}";
+        string path = $"Sounds/{ENUM_SOUND_TYPE.BGM.ToString()}/{bgmType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);
 
@@ -91,16 +98,46 @@ public class SoundMgr
     {
         if (pitch == 0.0f) pitch = volumeDataList[1].pitch;
 
-        string path = $"Sounds/{soundType}/{sfxType}";
+        string path = $"Sounds/{ENUM_SOUND_TYPE.SFX.ToString()}/{sfxType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);
-        if (audioClip == null) return;
+        if (audioClip == null)
+            Debug.Log($"AudioClip Missing ! {path}");
 
-        AudioSource audioSource = audioSources[(int)ENUM_SOUND_TYPE.SFX];
+        AudioSource audioSource = audioSources[(int)soundType];
 
-        audioSource.volume = 0f;
         audioSource.pitch = pitch;
         audioSource.PlayOneShot(audioClip);
+    }
+
+    public void Set_SFXCharacterAudio(ENUM_SOUND_TYPE soundType, Transform parentTr)
+    {
+        if (soundType < ENUM_SOUND_TYPE.SFX_Player)
+        {
+            Debug.Log("캐릭터 오디오 생성 범위 벗어남");
+            return;
+        }
+
+        GameObject go = new GameObject { name = soundType.ToString() };
+        audioSources[(int)soundType] = go.AddComponent<AudioSource>();
+        go.transform.parent = parentTr;
+
+        audioSources[(int)soundType].minDistance = 2f;
+        audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.BasicMap) * Screen.width / Screen.height; ;
+        audioSources[(int)soundType].spatialBlend = 1f;
+        audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
+    }
+
+    public void Set_AudioSource(AudioSource audioSource, ENUM_SOUND_TYPE soundType)
+    {
+        if (soundType < ENUM_SOUND_TYPE.SFX_Player)
+            return;
+
+        audioSources[(int)soundType] = audioSource;
+        audioSources[(int)soundType].minDistance = 2f;
+        audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.BasicMap) * Screen.width / Screen.height; ;
+        audioSources[(int)soundType].spatialBlend = 1f;
+        audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
     }
 
     public void PauseBGM()
