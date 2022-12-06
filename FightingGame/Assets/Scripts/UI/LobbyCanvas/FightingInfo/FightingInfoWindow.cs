@@ -52,7 +52,8 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
         if(property.isMasterClient == PhotonLogicHandler.IsMasterClient)
         {
-            Managers.Battle.Set_MyScore(property.data.ratingPoint);
+            Managers.Battle.Set_MyDBData(property.data);
+
         }
         else
         {

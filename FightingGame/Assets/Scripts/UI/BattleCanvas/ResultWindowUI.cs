@@ -26,7 +26,7 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open(bool isDraw, bool isWin = true)
     {
-        myScore = Managers.Battle.myScore;
+        myScore = Managers.Battle.myDBData.ratingPoint;
         enemyScore = Managers.Battle.enemyScore;
 
         countTime = 3;
@@ -35,38 +35,43 @@ public class ResultWindowUI : MonoBehaviour
         {
             countTime = 5;
             rankingScore.Open_Score(myScore);
-        }
 
-        // 게임 중에 팅기거나 그랬을 때, 등의 예외상황 처리가 아직 안되어있음
-        myScore = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
-        bool isDBUpdate = Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
+            // 게임 중에 팅기거나 그랬을 때, 등의 예외상황 처리가 아직 안되어있음
+            myScore = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
+            Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
+            if(!isDraw)
+            {
+                if(isWin)
+                    Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, Managers.Battle.myDBData.victoryPoint + 1);
+                else
+                    Managers.Platform.DBUpdate(DB_CATEGORY.DefeatPoint, Managers.Battle.myDBData.defeatPoint + 1);
+            }
+        }
 
         if (isDraw)
         {
             resultText.text = "무승부!";
+
         }
         else
         {
             if (isWin)
             {
                 resultText.text = "승리!";
+
             }
             else
             {
                 resultText.text = "패배!";
+
             }
         }
 
         notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         gameObject.SetActive(true);
 
-        if(!isDBUpdate)
-        {
-            Debug.Log("DBUpdate Failed!");
-        }
-
-       counterCorotine = StartCoroutine(INotifyTextCounter());
-       StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
+        counterCorotine = StartCoroutine(INotifyTextCounter());
+        StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
     }
 
     public void Close()

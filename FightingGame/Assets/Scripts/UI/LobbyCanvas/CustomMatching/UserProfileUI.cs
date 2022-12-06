@@ -98,10 +98,6 @@ public class UserProfileUI : MonoBehaviour
     
     public void OnClick_UserProfile()
     {
-        if (userInfoWindow.gameObject.activeSelf
-            || userNicknameText.text == "")
-            return;
-
         userInfoWindow.Open_Request(isMasterProfile);
     }
 
