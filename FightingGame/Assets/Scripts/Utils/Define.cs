@@ -151,7 +151,7 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        // 테스트용
+        // 테스트용 - 얘 왜 앞에 대문자 아니야? (확인 시 주석 지우셈)
         win,
         loose,
         walk,

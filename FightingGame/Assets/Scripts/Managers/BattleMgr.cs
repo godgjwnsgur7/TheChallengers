@@ -163,7 +163,7 @@ public class BattleMgr
     {
         isGamePlayingState = true;
 
-        Debug.Log("게임 실행됨 여기서 키 락 해제");
+        Debug.Log("게임 실행됨 여기서 키 락 해제해야 함");
 
         if (PhotonLogicHandler.IsMasterClient)
             PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
@@ -174,7 +174,7 @@ public class BattleMgr
         if (battleCanvas == null)
             battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
-        battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.ReadyAndStartTrigger);
+        battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.GameStartTrigger);
     }
 
     public void EndGame(ENUM_TEAM_TYPE losingTeam)
@@ -188,12 +188,24 @@ public class BattleMgr
         bool isDraw = (isWin ? activeCharacter.currState == ENUM_PLAYER_STATE.Die
             : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
 
-        if (isWin)
-            Managers.Sound.Play(ENUM_SFX_TYPE.win, ENUM_SOUND_TYPE.SFX);
+        if(isDraw)
+        {
+            // Managers.Sound.Play(ENUM_SFX_TYPE.Draw, ENUM_SOUND_TYPE.SFX);
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
+        }
         else
-            Managers.Sound.Play(ENUM_SFX_TYPE.loose, ENUM_SOUND_TYPE.SFX);
-
-        battleCanvas.EndGame(isDraw, isWin);
+        {
+            if(isWin)
+            {
+                //Managers.Sound.Play(ENUM_SFX_TYPE.Win, ENUM_SOUND_TYPE.SFX);
+                battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
+            }
+            else
+            {
+                //Managers.Sound.Play(ENUM_SFX_TYPE.Lose, ENUM_SOUND_TYPE.SFX);
+                battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
+            }
+        }
     }
 
     public void Set_SlaveNickname(string _slaveNickname) => slaveNickname = _slaveNickname;
