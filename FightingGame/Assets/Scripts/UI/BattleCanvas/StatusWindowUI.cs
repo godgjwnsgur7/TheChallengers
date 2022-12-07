@@ -9,7 +9,6 @@ public class StatusWindowUI : MonoBehaviour
     [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] Image charFrameImage;
     [SerializeField] Image HpFill;
-    [SerializeField] Image HpFillEnd;
 
     private float currHP;
     public float maxHP;
@@ -20,7 +19,6 @@ public class StatusWindowUI : MonoBehaviour
     {
         maxHP = _maxHP;
         currHP = _maxHP;
-        Fill_HPBar();
         Set_CharFrameImage(_charType);
     }
 
@@ -47,12 +45,6 @@ public class StatusWindowUI : MonoBehaviour
         if (hpBarCoroutine != null)
             StopCoroutine(hpBarCoroutine);
 
-        // 임시
-        if (currHP != maxHP)
-            HpFillEnd.fillAmount = 0f;
-        else
-            HpFillEnd.fillAmount = 1f;
-
         if (currHP > 0)
             hpBarCoroutine = StartCoroutine(IFadeHpBar(currHP / maxHP));
         else
@@ -70,6 +62,4 @@ public class StatusWindowUI : MonoBehaviour
         HpFill.fillAmount = _goalHPValue;
         hpBarCoroutine = null;
     }
-
-    public void Fill_HPBar() => Update_CurrHP(maxHP);
 }
