@@ -56,17 +56,18 @@ public class BattleMgr
     
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
-        {ENUM_MAP_TYPE.BasicMap, "마법사의 숲" },
+        {ENUM_MAP_TYPE.ForestMap, "잊혀진 숲" },
+        {ENUM_MAP_TYPE.VolcanicMap, "화산지대" }
     };
 
     private Dictionary<ENUM_MAP_TYPE, float> mapSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
     {
-        {ENUM_MAP_TYPE.BasicMap, 10.2f},
+        {ENUM_MAP_TYPE.ForestMap, 10.2f},
     };
 
     private Dictionary<ENUM_MAP_TYPE, float> playerCamSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
     {
-        {ENUM_MAP_TYPE.BasicMap, 5f},
+        {ENUM_MAP_TYPE.ForestMap, 5f},
     };
 
     public float Get_playerCamSizeDict(ENUM_MAP_TYPE mapType)

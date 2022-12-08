@@ -21,7 +21,7 @@ public class CreateRoomWindowUI : MonoBehaviour
     private void OnEnable()
     {
         userInputField.text = "";
-        CurrMap = ENUM_MAP_TYPE.BasicMap;
+        CurrMap = ENUM_MAP_TYPE.ForestMap;
     }
     private void Open_CustomRoom() => Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
 

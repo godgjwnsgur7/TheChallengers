@@ -209,7 +209,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	public void OnClickChanageMap(int mapType)
 	{
-		if (mapType > (int)ENUM_MAP_TYPE.BasicMap)
+		if (mapType > (int)ENUM_MAP_TYPE.ForestMap)
 			return;
 		PhotonLogicHandler.Instance.ChangeMap((ENUM_MAP_TYPE)mapType);
 	}

@@ -61,10 +61,10 @@ public partial class PhotonLogicHandler
         {
             var table = Instance.GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
             if (table == null)
-                return ENUM_MAP_TYPE.BasicMap;
+                return ENUM_MAP_TYPE.ForestMap;
 
             if (!table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), out object value))
-                return ENUM_MAP_TYPE.BasicMap;
+                return ENUM_MAP_TYPE.ForestMap;
 
             return (ENUM_MAP_TYPE)value;
         }

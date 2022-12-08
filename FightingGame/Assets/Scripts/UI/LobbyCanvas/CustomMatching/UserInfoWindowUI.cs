@@ -31,7 +31,7 @@ public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
     {
         isOpen = true;
 
-        if(userData.victoryPoint == 0 && userData.defeatPoint == 0)
+        if (userData.victoryPoint == 0 && userData.defeatPoint == 0)
         {
             rankEmblemImage.gameObject.SetActive(false);
             ratingPointText.text = "Unknown";
@@ -43,11 +43,16 @@ public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
             ratingPointText.text = $"{userData.ratingPoint}점";
         }
 
-        
         userNicknameText.text = userData.nickname;
         winCountText.text = userData.victoryPoint.ToString();
         loseCountText.text = userData.defeatPoint.ToString();
-        long winningRate = userData.victoryPoint / (userData.victoryPoint + userData.defeatPoint) * 100;
+        
+        long winningRate;
+        if (userData.victoryPoint != 0)
+            winningRate = userData.victoryPoint / (userData.victoryPoint + userData.defeatPoint) * 100;
+        else
+            winningRate = 0;
+        
         winningRateText.text = $"{winningRate}%";
 
         this.gameObject.SetActive(true);
