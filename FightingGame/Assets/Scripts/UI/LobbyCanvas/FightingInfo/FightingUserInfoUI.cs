@@ -12,8 +12,15 @@ public class FightingUserInfoUI : MonoBehaviour
     [SerializeField] Text ratingPointText;
     [SerializeField] Text battleRecordText;
 
+    bool isInit = false;
+
     public void Set_UserInfo(DBUserData userData)
     {
+        if (isInit)
+            return;
+
+        isInit = true;
+
         if(userData.victoryPoint == 0 && userData.defeatPoint == 0)
         {
             ratingEmblemImage.gameObject.SetActive(false);

@@ -8,15 +8,15 @@ using System;
 public enum ENUM_GAMESTATEEFFECT_TYPE
 {
     GameStartTrigger = 0,
-    TimeOutTrigger = 1,
-    WinTrigger = 2,
-    LoseTrigger = 3,
-    DrawTrigger = 4,
+    WinTrigger = 1,
+    LoseTrigger = 2,
+    DrawTrigger = 3,
 }
 
 public class GameStateEffectUI : MonoBehaviour
 {
     [SerializeField] Animator gameStateEffectAnim;
+    public BattleCanvas battleCanvas = null;
 
     ENUM_GAMESTATEEFFECT_TYPE currEffectType;
 
@@ -42,10 +42,13 @@ public class GameStateEffectUI : MonoBehaviour
     /// </summary>
     public void AnimEvent_EndGame()
     {
+        if(battleCanvas == null)
+            battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+
         bool isDraw = (currEffectType == ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
         bool isWin = (currEffectType == ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
 
-        Managers.UI.currCanvas.GetComponent<BattleCanvas>().EndGame(isDraw, isWin);
+        battleCanvas.EndGame(isDraw, isWin);
 
         this.gameObject.SetActive(false);
     }

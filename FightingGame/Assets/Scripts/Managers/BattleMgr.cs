@@ -63,11 +63,13 @@ public class BattleMgr
     private Dictionary<ENUM_MAP_TYPE, float> mapSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
     {
         {ENUM_MAP_TYPE.ForestMap, 10.2f},
+        {ENUM_MAP_TYPE.VolcanicMap, 10.2f},
     };
 
     private Dictionary<ENUM_MAP_TYPE, float> playerCamSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
     {
         {ENUM_MAP_TYPE.ForestMap, 5f},
+        {ENUM_MAP_TYPE.VolcanicMap, 5f},
     };
 
     public float Get_playerCamSizeDict(ENUM_MAP_TYPE mapType)
@@ -132,7 +134,13 @@ public class BattleMgr
     public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
     public void Set_MyChar(ActiveCharacter _activeCharacter) => activeCharacter = _activeCharacter;
-    public void Set_MyDBData(DBUserData _myDBData) => myDBData = _myDBData;
+    public void Set_MyDBData(DBUserData _myDBData)
+    {
+        myDBData = _myDBData;
+        if (_myDBData.ratingPoint == 0)
+            myDBData.ratingPoint = 1500;
+
+    }
     public void Set_EnemyScore(long _enemyScore) => enemyScore = _enemyScore;
 
     public void Set_MyCharacterType(ENUM_CHARACTER_TYPE _charType) => MyCharType = _charType;

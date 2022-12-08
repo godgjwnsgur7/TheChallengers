@@ -36,29 +36,19 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
         Set_MapInfo(property.currentMapType);
-
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
         if (property.isMasterClient)
-        {
             masterFightingInfo.Set_UserInfo(property.data);
-        }
         else
-        {
             slaveFightingInfo.Set_UserInfo(property.data);
-        }
 
         if(property.isMasterClient == PhotonLogicHandler.IsMasterClient)
-        {
             Managers.Battle.Set_MyDBData(property.data);
-
-        }
         else
-        {
             Managers.Battle.Set_EnemyScore(property.data.ratingPoint);
-        }
     }
 
     private void Set_MapInfo(ENUM_MAP_TYPE _mapType)

@@ -39,6 +39,9 @@ public class RankingScoreOperator : MonoBehaviour
                 myScore -= 150;
             }
         }
+
+        if (myScore < 500)
+            myScore = 500;
         
         return myScore;
     }
