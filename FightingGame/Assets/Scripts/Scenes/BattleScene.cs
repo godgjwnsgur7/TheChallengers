@@ -13,6 +13,7 @@ public class BattleScene : BaseScene
 
     [SerializeField] ENUM_CHARACTER_TYPE testPlayerCharacterType;
     [SerializeField] ENUM_CHARACTER_TYPE testEnemyCharacterType;
+    [SerializeField] ENUM_MAP_TYPE testMapType;
 
     public override void Init()
     {
@@ -40,7 +41,7 @@ public class BattleScene : BaseScene
         }
         else // 클라 하나 (테스트)
         {
-            map = Managers.Resource.Instantiate("Maps/BasicMap").GetComponent<BaseMap>();
+            map = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
             playerCamera.Set_MapData(map);
 
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;

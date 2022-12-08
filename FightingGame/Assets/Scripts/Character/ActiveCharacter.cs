@@ -55,11 +55,11 @@ public partial class ActiveCharacter : Character
         if (PhotonLogicHandler.IsConnected)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            GameObject go = this.transform.Find("Sound").gameObject;
+            AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();
             if (isControl)
-                Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_Player);
+                Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_Player);
             else
-                Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_Enemy);
+                Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_Enemy);
         }
     }
 
