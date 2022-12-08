@@ -26,10 +26,6 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open(bool isDraw, bool isWin = true)
     {
-        if(Managers.Battle.myDBData == null)
-        {
-            Debug.Log("얘 널인데 왜 널이냐?... 셋팅 하잖아 시팔?");
-        }
         myScore = Managers.Battle.myDBData.ratingPoint;
         enemyScore = Managers.Battle.enemyScore;
 
