@@ -29,20 +29,10 @@ public class SettingPanel : MonoBehaviour
     }
 
     // 클릭 InputKey, Slider 세팅
-    public void OnClick_SetSliderValue(ENUM_INPUTKEY_NAME _inputKeyName)
+    public void OnClick_SetSliderValue(InputKey _inputKey)
     {
-        List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
-
-        if (keySettingDatas == null)
-        {
-            sizeSlider.value = 50f;
-            opacitySlider.value = 100f;
-        }
-        else
-        {
-            sizeSlider.value = keySettingDatas[(int)_inputKeyName].size * Get_SizeMaxValue() - 50f;
-            opacitySlider.value = (keySettingDatas[(int)_inputKeyName].opacity - 0.5f) * (Get_OpacityMaxValue() * 2);
-        }
+        sizeSlider.value = _inputKey.GetComponent<RectTransform>().localScale.x * Get_SizeMaxValue() - 50;
+        opacitySlider.value = (_inputKey.slotImage.color.a - 0.5f) * (Get_OpacityMaxValue() * 2);
 
         Set_SizeSliderText($"{(int)sizeSlider.value}%");
         Set_OpacitySliderText($"{(int)opacitySlider.value}%");

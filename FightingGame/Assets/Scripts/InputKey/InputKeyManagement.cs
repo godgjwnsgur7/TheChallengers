@@ -26,6 +26,8 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Init()
     {
+        dragEntry.callback.AddListener(OnDragListener);
+
         if (inputPanel == null)
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
@@ -40,7 +42,6 @@ public class InputKeyManagement : MonoBehaviour
             areaPanel.transform.SetAsFirstSibling();
         }
 
-        dragEntry.callback.AddListener(OnDragListener);
         Set_OnDragCallBack();
 
         if (!settingPanel.gameObject.activeSelf)
@@ -49,13 +50,30 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Set_OnDragCallBack()
     {
-        Debug.Log("OnDrag 삽입");
-        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        Set_DirectionOnDragTrigger();
+
+        for (int i = 1; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             eventTrigger = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i).GetComponent<EventTrigger>();
             eventTrigger.triggers.Add(dragEntry);
+            Debug.Log($"{eventTrigger.name} : OnDrag 삽입");
         }
-        Debug.Log("OnDrag 삽입 완료");
+    }
+
+    private void Set_DirectionOnDragTrigger()
+    {
+        InputArrowKey inputArrowKey = inputPanel.Get_InputKey(ENUM_INPUTKEY_NAME.Direction).GetComponent<InputArrowKey>();
+
+        if (inputArrowKey == null)
+        {
+            Debug.LogError("inputArrowKey is Null!!");
+            return;
+        }
+
+        eventTrigger = inputArrowKey.transform.Find("LeftArrow").gameObject.AddComponent<EventTrigger>();
+        eventTrigger.triggers.Add(dragEntry);
+        eventTrigger = inputArrowKey.transform.Find("RightArrow").gameObject.AddComponent<EventTrigger>();
+        eventTrigger.triggers.Add(dragEntry);
     }
 
     public void OnDragListener(BaseEventData _data) 
@@ -84,23 +102,22 @@ public class InputKeyManagement : MonoBehaviour
         if (currInputKey != null && currInputKey.inputKeyNum == (int)_inputKeyName)
             isSame = true;
 
-        currInputKey = inputPanel.Get_InputKey(_inputKeyName);
-
-        if (currAreaKey != null)
-            currAreaKey.Set_isSelect(false);
-
-        currAreaKey = areaPanel.Get_AreaKey(_inputKeyName);
-        currAreaKey.Set_isSelect(true);
-
         if (!isSame)
-            settingPanel.OnClick_SetSliderValue(_inputKeyName);
+        {
+            currInputKey = inputPanel.Get_InputKey(_inputKeyName);
+
+            if (currAreaKey != null)
+                currAreaKey.Set_isSelect(false);
+
+            currAreaKey = areaPanel.Get_AreaKey(_inputKeyName);
+            currAreaKey.Set_isSelect(true);
+            settingPanel.OnClick_SetSliderValue(currInputKey);
+        }
     }
 
     /// <summary>
     /// InputKey 위치 변경
     /// </summary>
-    /// <param name="_movePos"></param>
-    /// <param name="_inputkeyNum"></param>
     public void Set_InputKeyTransForm(Vector2 _movePos, ENUM_INPUTKEY_NAME _inputkeyNum)
     {
         RectTransform panelRectTr = inputPanel.GetComponent<RectTransform>();
@@ -118,8 +135,6 @@ public class InputKeyManagement : MonoBehaviour
     /// <summary>
     /// InpuyKey 사이즈 변경
     /// </summary>
-    /// <param name="_sizeValue"></param>
-    /// <param name="_inputKeyName"></param>
     public void Set_InputKeySize(float _sizeValue, ENUM_INPUTKEY_NAME _inputKeyName)
     {
         _sizeValue = (50 + _sizeValue) / settingPanel.Get_SizeMaxValue();
@@ -132,8 +147,6 @@ public class InputKeyManagement : MonoBehaviour
     /// <summary>
     /// InputKey 투명도 변경
     /// </summary>
-    /// <param name="_opacityValue"></param>
-    /// <param name="_inputKeyName"></param>
     public void Set_InputKeyOpacity(float _opacityValue, ENUM_INPUTKEY_NAME _inputKeyName)
     {
         _opacityValue = 0.5f + _opacityValue / (settingPanel.Get_OpacityMaxValue() * 2);

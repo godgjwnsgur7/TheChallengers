@@ -15,6 +15,12 @@ public class InputArrowKey : InputKey
 
     public void EventTrigger_PointerEnter(float moveDir)
     {
+        if(OnPointEnterCallBack == null)
+        {
+            Debug.Log("OnPointEnterCallBack is Null");
+            return;
+        }
+
         OnPointEnterCallBack(moveDir);
     }
 }
