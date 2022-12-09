@@ -65,13 +65,12 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_INPUTKEY_NAME
     {
-        LeftArrow = 0,
-        RightArrow = 1,
-        Attack = 2,
-        Skill1 = 3,
-        Skill2 = 4,
-        Skill3 = 5,
-        Jump = 6,
+        Direction = 0,
+        Attack = 1,
+        Skill1 = 2,
+        Skill2 = 3,
+        Skill3 = 4,
+        Jump = 5,
 
         Max
     }

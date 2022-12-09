@@ -19,6 +19,22 @@ public class InputKeyController : MonoBehaviour
             inputPanel.Set_InputSkillKeys(Managers.Battle.Get_MyCharacterType());
         }
     }
+    
+    public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
+    {
+        if(inputPanel == null)
+            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+
+        InputArrowKey inputArrowKey = inputPanel.transform.Find(ENUM_INPUTKEY_NAME.Direction.ToString()).GetComponent<InputArrowKey>();
+        
+        if(inputArrowKey == null)
+        {
+            Debug.LogError("inputArrowKey is Null!!");
+            return;
+        }
+
+        inputArrowKey.Connect_Player(_OnPointEnterCallBack);
+    }
 
     public void Notify_UseSkill(int skillNum) => inputPanel.Notify_UseSkill(skillNum);
 }

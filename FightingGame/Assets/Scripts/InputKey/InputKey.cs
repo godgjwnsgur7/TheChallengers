@@ -14,8 +14,8 @@ public class InputKey : MonoBehaviour
     public Image iconImage;
 
     public RectTransform rectTr;
-    bool isInit = false;
     public int inputKeyNum;
+    bool isInit = false;
     
     public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
@@ -31,7 +31,9 @@ public class InputKey : MonoBehaviour
 
     public virtual void EventTrigger_PointerDown()
     {
-        if(OnPointDownCallBack == null)
+        Debug.Log("포인트 다운 실행");
+
+        if (OnPointDownCallBack == null)
         {
             Debug.Log("OnPointDownCallBack is Null");
             return;
@@ -42,7 +44,9 @@ public class InputKey : MonoBehaviour
 
     public void EventTrigger_PointerUp()
     {
-        if(OnPointDownCallBack == null)
+        Debug.Log("포인트 업 실행");
+
+        if (OnPointDownCallBack == null)
         {
             Debug.Log("OnPointUpCallBack is Null");
             return;

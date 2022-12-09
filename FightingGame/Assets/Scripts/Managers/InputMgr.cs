@@ -37,6 +37,14 @@ public class InputMgr
         inputKeyController.Init(_OnPointDownCallBack, _OnPointUpCallBack);
     }
 
+    public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
+    {
+        if (inputKeyController == null)
+            inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
+
+        inputKeyController.Connect_InputArrowKey(_OnPointEnterCallBack);
+    }
+
     public void Notify_UseSkill(int skillNum) => inputKeyController.Notify_UseSkill(skillNum);
 
     public void Clear()

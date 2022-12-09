@@ -15,8 +15,8 @@ public class PlayerCharacter : MonoBehaviour
 
     Coroutine moveCoroutine = null;
 
-    bool isLeftMove = false;
-    bool isRightMove = false;
+    bool isMove = false;
+
 
     private void Update()
     {
@@ -53,21 +53,15 @@ public class PlayerCharacter : MonoBehaviour
     public void Connect_InputController()
     {
         Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack);
+        Managers.Input.Connect_InputArrowKey(OnPointEnterCallBack);
     }
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
         switch (_inputKeyName)
         {
-            case ENUM_INPUTKEY_NAME.LeftArrow:
-                isLeftMove = true;
-                moveDir = -1.0f;
-                if (moveCoroutine == null)
-                    moveCoroutine = StartCoroutine(IMove());
-                break;
-            case ENUM_INPUTKEY_NAME.RightArrow:
-                isRightMove = true;
-                moveDir = 1.0f;
+            case ENUM_INPUTKEY_NAME.Direction:
+                isMove = true;
                 if (moveCoroutine == null)
                     moveCoroutine = StartCoroutine(IMove());
                 break;
@@ -98,16 +92,18 @@ public class PlayerCharacter : MonoBehaviour
     {
         switch (_inputKeyName)
         {
-            case ENUM_INPUTKEY_NAME.LeftArrow:
-                isLeftMove = false;
-                break;
-            case ENUM_INPUTKEY_NAME.RightArrow:
-                isRightMove = false;
+            case ENUM_INPUTKEY_NAME.Direction:
+                isMove = false;
                 break;
             case ENUM_INPUTKEY_NAME.Attack:
                 activeCharacter.Change_AttackState(false);
                 break;
         }
+    }
+
+    public void OnPointEnterCallBack(float _moveDir)
+    {
+        moveDir = _moveDir;
     }
 
     // 디버깅용이니 쿨하게 다 때려박기
@@ -156,14 +152,13 @@ public class PlayerCharacter : MonoBehaviour
         // 이동
         if (Input.GetKeyDown(KeyCode.A))
         {
-            isLeftMove = true;
             moveDir = -1.0f;
+            isMove = true;
             if (moveCoroutine == null)
                 moveCoroutine = StartCoroutine(IMove());
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            isRightMove = true;
             moveDir = 1.0f;
             if (moveCoroutine == null)
                 moveCoroutine = StartCoroutine(IMove());
@@ -171,12 +166,14 @@ public class PlayerCharacter : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.A))
         {
-            isLeftMove = false;
+            isMove = false;
+            moveDir = 0.0f;
         }
 
         if (Input.GetKeyUp(KeyCode.D))
         {
-            isRightMove = false;
+            isMove = false;
+            moveDir = 0.0f;
         }
     }
     
@@ -219,7 +216,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         activeCharacter.Input_MoveKey(true);
 
-        while (isLeftMove || isRightMove)
+        while (isMove)
         {
             PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
             yield return null;
