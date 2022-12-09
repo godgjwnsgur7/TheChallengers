@@ -153,7 +153,6 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             moveDir = -1.0f;
-            isMove = true;
             if (moveCoroutine == null)
                 moveCoroutine = StartCoroutine(IMove());
         }
@@ -167,13 +166,11 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A))
         {
             isMove = false;
-            moveDir = 0.0f;
         }
 
         if (Input.GetKeyUp(KeyCode.D))
         {
-            isMove = false;
-            moveDir = 0.0f;
+             isMove = false;
         }
     }
     
@@ -215,6 +212,7 @@ public class PlayerCharacter : MonoBehaviour
     protected IEnumerator IMove()
     {
         activeCharacter.Input_MoveKey(true);
+        isMove = true;
 
         while (isMove)
         {
@@ -226,7 +224,6 @@ public class PlayerCharacter : MonoBehaviour
         if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
             PlayerCommand(ENUM_PLAYER_STATE.Idle);
 
-        moveDir = 0.0f;
         moveCoroutine = null;
     }
 }
