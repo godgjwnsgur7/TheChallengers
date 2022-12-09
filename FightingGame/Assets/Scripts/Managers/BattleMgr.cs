@@ -132,11 +132,17 @@ public class BattleMgr
     {
 
     }
+    public void DebugFunction() // 디버그용
+    {
+        isGamePlayingState = true;
+    }
+
 
     public void Join_CustomRoomUI() => isCustom = true;
     public void Leave_CustomRoomUI() => isCustom = false;
 
     public void Start_ServerSync() => isServerSyncState = true;
+    
     public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Set_TimerCallBack(_updateTimerCallBack);
     public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
@@ -177,8 +183,6 @@ public class BattleMgr
     public void GameStart()
     {
         isGamePlayingState = true;
-
-        Debug.Log("게임 실행됨 여기서 키 락 해제해야 함");
 
         if (PhotonLogicHandler.IsMasterClient)
             PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);

@@ -70,6 +70,7 @@ public class ResultWindowUI : MonoBehaviour
         notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         gameObject.SetActive(true);
 
+        Managers.Input.Destroy_InputKeyController();
         counterCorotine = StartCoroutine(INotifyTextCounter());
         
         if(!Managers.Battle.isCustom)

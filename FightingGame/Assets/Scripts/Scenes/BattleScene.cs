@@ -41,6 +41,8 @@ public class BattleScene : BaseScene
         }
         else // 클라 하나 (테스트)
         {
+            Managers.Battle.DebugFunction();
+
             map = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
             playerCamera.Set_MapData(map);
 

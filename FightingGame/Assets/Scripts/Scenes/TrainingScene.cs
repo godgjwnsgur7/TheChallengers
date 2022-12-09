@@ -16,5 +16,7 @@ public class TrainingScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Training;
         
         base.Init();
+
+        Managers.Battle.DebugFunction();
     }
 }
