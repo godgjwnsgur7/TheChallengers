@@ -52,7 +52,7 @@ public partial class ActiveCharacter : Character
       
         isInitialized = true;
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
             AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();
@@ -61,11 +61,13 @@ public partial class ActiveCharacter : Character
             else
                 Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_Enemy);
         }
+        else
+            isControl = true;
     }
 
     public void Set_Character()
     {
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
@@ -340,7 +342,7 @@ public partial class ActiveCharacter : Character
     {
         float _currHP = currHP - _damage;
 
-        if(PhotonLogicHandler.IsConnected)
+        if(Managers.Battle.isServerSyncState)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, float>
                 (this, Sync_CurrHP, _currHP, ENUM_RPC_TARGET.All);
@@ -395,7 +397,7 @@ public partial class ActiveCharacter : Character
         if (reverseState == _reverseState)
             return;
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, bool>
                 (this, Sync_ReverseState, _reverseState);
         else
@@ -413,15 +415,12 @@ public partial class ActiveCharacter : Character
     {
         if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Training)
         {
-            Destroy(this);
+            Managers.Resource.Destroy(gameObject);
             return;
         }
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
-            if (!Managers.Battle.isGamePlayingState)
-                return;
-
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
                 (this, Sync_EndGame, teamType);
         }
@@ -547,9 +546,9 @@ public partial class ActiveCharacter : Character
         attackObject = null;
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
 
-        bool isConnected = PhotonLogicHandler.IsConnected;
+        bool isServerSyncState = Managers.Battle.isServerSyncState;
 
-        if (isConnected)
+        if (isServerSyncState)
             attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
         else
             attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
@@ -558,7 +557,7 @@ public partial class ActiveCharacter : Character
         {
             attackObject.FollowingTarget(this.transform);
 
-            if(isConnected)
+            if(isServerSyncState)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
                     (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
@@ -579,11 +578,11 @@ public partial class ActiveCharacter : Character
         attackObject = null;
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
-        bool isConnected = PhotonLogicHandler.IsConnected;
+        bool isServerSyncState = Managers.Battle.isServerSyncState;
 
         EffectObject effectObject = null;
 
-        if (isConnected)
+        if (isServerSyncState)
             effectObject = Managers.Resource.InstantiateEveryone(effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
         else
             effectObject = Managers.Resource.GetEffectObject(effectObjectName.ToString());
@@ -592,7 +591,7 @@ public partial class ActiveCharacter : Character
         {
             effectObject.Set_Position(this.transform);
 
-            if (isConnected)
+            if (isServerSyncState)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool, int>
                     (effectObject, effectObject.ActivatingEffectObject, reverseState, _effectTypeNum);

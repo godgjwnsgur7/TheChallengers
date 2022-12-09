@@ -39,6 +39,9 @@ public class RankingScoreUI : MonoBehaviour
 
     public void Update_Score(long changeRankingScore)
     {
+        if (Managers.Battle.isCustom)
+            return;
+
         scoreChangeEffectImage.sprite = null; // 시작 이미지 넣어야 함
         scoreChangeEffectImage.gameObject.SetActive(true);
 

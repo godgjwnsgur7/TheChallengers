@@ -20,7 +20,7 @@ public class EffectObject : Poolable
 
         effectRenderer = this.GetComponent<SpriteRenderer>();
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             SyncTransformView(transform);
         }

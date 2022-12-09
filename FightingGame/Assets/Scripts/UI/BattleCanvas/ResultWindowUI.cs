@@ -72,7 +72,7 @@ public class ResultWindowUI : MonoBehaviour
 
         counterCorotine = StartCoroutine(INotifyTextCounter());
         
-        if(Managers.Battle.isCustom)
+        if(!Managers.Battle.isCustom)
             StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
     }
 

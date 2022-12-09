@@ -17,7 +17,8 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
         PhotonLogicHandler.Instance.RequestRoomCustomProperty();
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
-        
+
+        Managers.Battle.Start_ServerSync();
         Managers.UI.popupCanvas.Play_FadeOutEffect(Wait_PlayFadeInEffect);
     }
 

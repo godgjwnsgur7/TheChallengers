@@ -17,7 +17,7 @@ public class ShotAttackObject : AttackObject
 
         rigid2D = GetComponent<Rigidbody2D>();
         
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             SyncPhysics(rigid2D);
         }
@@ -43,7 +43,7 @@ public class ShotAttackObject : AttackObject
 
         gameObject.SetActive(true);
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
             if (PhotonLogicHandler.IsMine(viewID))
                 CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
         else

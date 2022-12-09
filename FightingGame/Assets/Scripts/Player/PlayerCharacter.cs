@@ -34,7 +34,7 @@ public class PlayerCharacter : MonoBehaviour
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
             activeCharacter.Set_Character();

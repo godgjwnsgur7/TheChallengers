@@ -15,7 +15,7 @@ public class MultiAttackObject : AttackObject
     {
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Multi;
 
-        isConnected = PhotonLogicHandler.IsConnected;
+        isConnected = Managers.Battle.isServerSyncState;
 
         if (isConnected)
         {

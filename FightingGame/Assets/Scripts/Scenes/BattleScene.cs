@@ -62,7 +62,7 @@ public class BattleScene : BaseScene
     {
         ActiveCharacter activeCharacter;
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
             

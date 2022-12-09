@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3035543218563906351}
-  - component: {fileID: 8754625735241510129}
+  - component: {fileID: 9108317496448295855}
   m_Layer: 9
   m_Name: FloorColliderObejct (1)
   m_TagString: Ground
@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2880789079412090584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5, y: 2.45, z: 0}
+  m_LocalPosition: {x: -3, y: 2.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 904293183415045654}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &8754625735241510129
-PolygonCollider2D:
+--- !u!61 &9108317496448295855
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -54,16 +54,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 2.494962, y: -0.6898861}
-      - {x: 1.8448582, y: 0.7622514}
-      - {x: 1.2582226, y: 1.4716182}
-      - {x: -1.200737, y: 1.4741919}
-      - {x: -1.2183194, y: -0.47164}
-      - {x: -3.866342, y: -0.48750424}
-      - {x: -3.9017944, y: -1.449131}
-      - {x: 2.5372248, y: -1.4469414}
+  serializedVersion: 2
+  m_Size: {x: 6, y: 2}
+  m_EdgeRadius: 0
 --- !u!1 &5067412506158161156
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +633,8 @@ GameObject:
   - component: {fileID: 2513561452521058236}
   - component: {fileID: 8032530031678715454}
   - component: {fileID: 6640497937781490054}
-  m_Layer: 0
+  - component: {fileID: 1062273006587112962}
+  m_Layer: 9
   m_Name: VolcanicMap_Floating1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -731,6 +725,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &1062273006587112962
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5970900334095935174}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.25}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.002441, y: 10}
+    newSize: {x: 10.002441, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 8, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &6011132655459603603
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,7 +762,8 @@ GameObject:
   - component: {fileID: 1291581355642763069}
   - component: {fileID: 5789026019747236331}
   - component: {fileID: 4282274478803049212}
-  m_Layer: 0
+  - component: {fileID: 7962317561189563975}
+  m_Layer: 9
   m_Name: VolcanicMap_Floating5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -757,7 +778,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6011132655459603603}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.61, y: 0.62, z: 0}
+  m_LocalPosition: {x: 12.06, y: -2.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5191761580540666044}
@@ -833,6 +854,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &7962317561189563975
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6011132655459603603}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3, y: -0.1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.002441, y: 10}
+    newSize: {x: 10.002441, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &6387689126840199246
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,7 +891,8 @@ GameObject:
   - component: {fileID: 2963176526674506796}
   - component: {fileID: 211375961409867866}
   - component: {fileID: 8548491965827384842}
-  m_Layer: 0
+  - component: {fileID: 4755754747997943553}
+  m_Layer: 9
   m_Name: VolcanicMap_Floating3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -859,7 +907,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6387689126840199246}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.65, y: 3.43, z: 0}
+  m_LocalPosition: {x: 9.09, y: 1.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5191761580540666044}
@@ -935,6 +983,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &4755754747997943553
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6387689126840199246}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3, y: -0.2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.002441, y: 10}
+    newSize: {x: 10.002441, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &6431471948252421501
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,7 +1054,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.35}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1004,7 +1078,8 @@ GameObject:
   - component: {fileID: 8716695542180554237}
   - component: {fileID: 7017655480277745097}
   - component: {fileID: 3266235921979871454}
-  m_Layer: 0
+  - component: {fileID: 8804465632826214639}
+  m_Layer: 9
   m_Name: VolcanicMap_Floating4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1095,6 +1170,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &8804465632826214639
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8057508379688976105}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.15}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.002441, y: 10}
+    newSize: {x: 10.002441, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &8804781701774312195
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,7 +1207,8 @@ GameObject:
   - component: {fileID: 8423310611396470626}
   - component: {fileID: 2679290624141936925}
   - component: {fileID: 6223055381815049720}
-  m_Layer: 0
+  - component: {fileID: 1050976498859678211}
+  m_Layer: 9
   m_Name: VolcanicMap_Floating2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1121,7 +1223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8804781701774312195}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.53, y: -2.23, z: 0}
+  m_LocalPosition: {x: 6.54, y: -2.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5191761580540666044}
@@ -1197,3 +1299,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &1050976498859678211
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804781701774312195}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10.002441, y: 10}
+    newSize: {x: 10.002441, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 0.5}
+  m_EdgeRadius: 0

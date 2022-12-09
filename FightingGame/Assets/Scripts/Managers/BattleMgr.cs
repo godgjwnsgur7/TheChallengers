@@ -39,6 +39,12 @@ public class BattleMgr
         get;
     }
 
+    public bool isServerSyncState
+    {
+        private set;
+        get;
+    }
+
     public bool isCustom
     {
         private set;
@@ -130,6 +136,7 @@ public class BattleMgr
     public void Join_CustomRoomUI() => isCustom = true;
     public void Leave_CustomRoomUI() => isCustom = false;
 
+    public void Start_ServerSync() => isServerSyncState = true;
     public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Set_TimerCallBack(_updateTimerCallBack);
     public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
     public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
@@ -139,7 +146,6 @@ public class BattleMgr
         myDBData = _myDBData;
         if (_myDBData.ratingPoint == 0)
             myDBData.ratingPoint = 1500;
-
     }
     public void Set_EnemyScore(long _enemyScore) => enemyScore = _enemyScore;
 
@@ -157,7 +163,7 @@ public class BattleMgr
 
     public void Sync_CreatNetworkSyncData()
     {
-        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsMasterClient)
+        if (!isServerSyncState)
             return;
 
         networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
@@ -189,8 +195,9 @@ public class BattleMgr
     public void EndGame(ENUM_TEAM_TYPE losingTeam)
     {
         isGamePlayingState = false;
+        isServerSyncState = false;
 
-        if(battleCanvas == null)
+        if (battleCanvas == null)
             battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
         bool isWin = (losingTeam != activeCharacter.teamType);
@@ -199,19 +206,16 @@ public class BattleMgr
 
         if(isDraw)
         {
-            // Managers.Sound.Play(ENUM_SFX_TYPE.Draw, ENUM_SOUND_TYPE.SFX);
             battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
         }
         else
         {
             if(isWin)
             {
-                //Managers.Sound.Play(ENUM_SFX_TYPE.Win, ENUM_SOUND_TYPE.SFX);
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
             }
             else
             {
-                //Managers.Sound.Play(ENUM_SFX_TYPE.Lose, ENUM_SOUND_TYPE.SFX);
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
             }
         }

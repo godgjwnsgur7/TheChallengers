@@ -33,7 +33,7 @@ public class AttackObject : Poolable
             Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
         }
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
         {
             SyncTransformView(transform);
         }
@@ -51,7 +51,7 @@ public class AttackObject : Poolable
 
         gameObject.SetActive(true);
 
-        if(PhotonLogicHandler.IsConnected)
+        if(Managers.Battle.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
             {
@@ -90,7 +90,7 @@ public class AttackObject : Poolable
             CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState);
             
             
-            if(PhotonLogicHandler.IsConnected)
+            if(Managers.Battle.isServerSyncState)
                 PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, CharacterAttackParam>
                     (enemyCharacter, enemyCharacter.Hit, attackParam, ENUM_RPC_TARGET.OTHER);
             else
@@ -112,11 +112,11 @@ public class AttackObject : Poolable
     {
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
-        bool isConnected = PhotonLogicHandler.IsConnected;
+        bool isServerSyncState = Managers.Battle.isServerSyncState;
 
         EffectObject effectObject = null;
 
-        if (isConnected)
+        if (isServerSyncState)
             effectObject = Managers.Resource.InstantiateEveryone(effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
         else
             effectObject = Managers.Resource.GetEffectObject(effectObjectName.ToString());
@@ -126,7 +126,7 @@ public class AttackObject : Poolable
             Vector2 HitPosition = this.GetComponent<Collider2D>().bounds.ClosestPoint(_targetTransform.position);
             effectObject.Set_Position(HitPosition);
 
-            if (isConnected)
+            if (isServerSyncState)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool, int>
                     (effectObject, effectObject.ActivatingEffectObject, reverseState, _effectTypeNum);
@@ -165,7 +165,7 @@ public class AttackObject : Poolable
         isUsing = false;
         targetTr = null;
 
-        if (PhotonLogicHandler.IsConnected)
+        if (Managers.Battle.isServerSyncState)
             PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
         else
             Managers.Resource.Destroy(gameObject);
