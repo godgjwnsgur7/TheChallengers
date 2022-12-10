@@ -117,8 +117,8 @@ public class SoundMgr
         audioSources[(int)soundType] = audioSource;
         audioSources[(int)soundType].volume = volumeDataList[1].volume;
         audioSources[(int)soundType].pitch = volumeDataList[1].pitch;
-        audioSources[(int)soundType].minDistance = 2f;
-        audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.ForestMap) * Screen.width / Screen.height;
+        audioSources[(int)soundType].maxDistance = 10.2f;
+        audioSources[(int)soundType].minDistance = audioSources[(int)soundType].maxDistance;
         audioSources[(int)soundType].spatialBlend = 1f;
         audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
     }

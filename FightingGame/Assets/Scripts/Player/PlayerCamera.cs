@@ -15,7 +15,6 @@ public class PlayerCamera : MonoBehaviour
     public float clampedX;
     public float clampedY;
 
-    ENUM_MAP_TYPE mapType;
     public Vector2 minBound;
     public Vector2 maxBound;
     public Vector3 mapCenterPos;
@@ -91,12 +90,15 @@ public class PlayerCamera : MonoBehaviour
 
         Set_MapTransform(_map.transform.position);
         Set_CameraBounds(_map.maxBound, _map.minBound);
-
-        mapType = (ENUM_MAP_TYPE)Enum.Parse(typeof(ENUM_MAP_TYPE), _map.name);
-        playerCamSize = Managers.Battle.Get_playerCamSizeDict(mapType);
-        mapSize = Managers.Battle.Get_MapSizeDict(mapType);
-        Set_OrthographicSize(mapSize);
         Set_target(_map.transform);
+
+        playerCamSize = 5f;
+        mapSize = _map.maxBound.x * Screen.height / Screen.width;
+
+        Set_OrthographicSize(mapSize);
+
+        halfHeight = cam.orthographicSize;
+        halfWidth = halfHeight * Screen.width / Screen.height;
     }
 
     public void Set_ZoomOut()

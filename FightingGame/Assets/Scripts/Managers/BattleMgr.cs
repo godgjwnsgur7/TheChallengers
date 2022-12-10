@@ -66,40 +66,6 @@ public class BattleMgr
         {ENUM_MAP_TYPE.VolcanicMap, "화산지대" }
     };
 
-    private Dictionary<ENUM_MAP_TYPE, float> mapSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
-    {
-        {ENUM_MAP_TYPE.ForestMap, 10.2f},
-        {ENUM_MAP_TYPE.VolcanicMap, 7.69f},
-    };
-
-    private Dictionary<ENUM_MAP_TYPE, float> playerCamSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
-    {
-        {ENUM_MAP_TYPE.ForestMap, 5f},
-        {ENUM_MAP_TYPE.VolcanicMap, 5f},
-    };
-
-    public float Get_playerCamSizeDict(ENUM_MAP_TYPE mapType)
-    {
-        if (!playerCamSizeDict.ContainsKey(mapType))
-        {
-            Debug.Log($"해당하는 맵 타입이 플레이어 카메라 사전에 없습니다. : {mapType}");
-            return 0f;
-        }
-
-        return playerCamSizeDict[mapType];
-    }
-
-    public float Get_MapSizeDict(ENUM_MAP_TYPE mapType)
-    {
-        if (!mapSizeDict.ContainsKey(mapType))
-        {
-            Debug.Log($"해당하는 맵 타입이 맵 사이즈 사전에 없습니다. : {mapType}");
-            return 0f;
-        }
-
-        return mapSizeDict[mapType];
-    }
-
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
     {
         if(!mapNameDict.ContainsKey(mapType))
