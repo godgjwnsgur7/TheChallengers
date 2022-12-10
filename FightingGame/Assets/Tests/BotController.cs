@@ -8,48 +8,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class BotController : MonoBehaviour, IMonoBehaviourTest
+public class MonoBehaviourTestHelper : MonoBehaviour, IMonoBehaviourTest
 {
-    Coroutine botCoroutine = null;
-    List<FGBot> botList = new List<FGBot>();
+    public bool IsTestFinished
+	{
+        get
+		{
+			return true;
+		}
+	}
 
-    public bool IsTestFinished => botList.All(bot => bot.IsTestFinished == true);
-
-    public void Initialize()
-    {
-        botList = new List<FGBot>()
-        {
-            new LoginBot(this)
-        };
-    }
-
-    public void Run()
-    {
-        botCoroutine = StartCoroutine(Process());
-    }
-    
-    public void Stop()
-    {
-        StopCoroutine(botCoroutine);
-    }
-
-    private IEnumerator Process()
-    {
-        foreach (var bot in botList)
-        {
-            if(bot.Initialize())
-            {
-                yield return bot.ProcessMain();
-            }
-            
-            while (!bot.IsTestFinished)
-                yield return null;
-        }
-    }
-
-    public T Find<T>() where T : MonoBehaviour
+	public T Find<T>() where T : MonoBehaviour
     {
         return FindObjectOfType<T>();
     }
-
 }

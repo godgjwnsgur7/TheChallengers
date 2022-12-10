@@ -18,22 +18,15 @@ using UnityEngine.TestTools;
 /// 2. 자주 발생할 만한 버그를 위주로 작성한다.
 /// </summary>
 
-public abstract class FGBot : IMonoBehaviourTest
+public abstract class FGBot : MonoBehaviourTest<MonoBehaviourTestHelper>
 {
-    protected readonly int DefaultRetryCount = 2;
-    protected readonly WaitForSeconds DefaultWaitTime = new WaitForSeconds(3);
-
-    protected BotController controller = null;
-
     private bool isSuccessed = false;
     private bool isFailed = false;
 
     public bool IsTestFinished => isSuccessed || isFailed;
 
-    public FGBot(BotController controller)
+    public FGBot()
     {
-        this.controller = controller;
-
         isSuccessed = false;
         isFailed = false;
     }
@@ -54,7 +47,10 @@ public abstract class FGBot : IMonoBehaviourTest
         End();
     }
 
-    public abstract IEnumerator ProcessMain();
+    public virtual IEnumerator ProcessMain()
+	{
+        yield return null;
+	}
 
     public virtual bool Initialize()
     {
