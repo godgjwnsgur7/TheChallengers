@@ -7,7 +7,7 @@ using System;
 
 public class ButtonPanel : UIElement
 {
-    public BaseMap map;
+    BaseMap map;
 
     [SerializeField] Text panelOpenBtnText;
     [SerializeField] PlayerCamera playerCamera;
@@ -29,11 +29,9 @@ public class ButtonPanel : UIElement
         SetPanelOpenButtonText("설정");
     }
 
-    public void Set_Map(BaseMap map) => this.map = map;
-
     public void Init()
     {
-        playerCamera.Set_MapData(map);
+        Summon_Map((int)ENUM_MAP_TYPE.ForestMap);
 
         Reset_PlayerType();
         Reset_EnemyType();
@@ -41,6 +39,25 @@ public class ButtonPanel : UIElement
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
 
+    }
+
+    public void Summon_Map(int mapType)
+    {
+        if(map != null)
+        {
+            Managers.Resource.Destroy(map.gameObject);
+            map = null;
+        }
+
+        if (playerCharacter.activeCharacter != null)
+            DeletePlayer();
+
+        if (enemyPlayer.activeCharacter != null)
+            DeleteEnemy();
+
+        string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), mapType);
+        map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
+        playerCamera.Set_MapData(map);
     }
 
     public void OnClick_OpenSettingPanel()

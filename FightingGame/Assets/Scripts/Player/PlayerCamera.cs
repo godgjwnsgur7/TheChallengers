@@ -96,6 +96,7 @@ public class PlayerCamera : MonoBehaviour
         playerCamSize = Managers.Battle.Get_playerCamSizeDict(mapType);
         mapSize = Managers.Battle.Get_MapSizeDict(mapType);
         Set_OrthographicSize(mapSize);
+        Set_target(_map.transform);
     }
 
     public void Set_ZoomOut()

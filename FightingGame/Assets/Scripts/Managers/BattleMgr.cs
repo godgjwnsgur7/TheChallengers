@@ -69,7 +69,7 @@ public class BattleMgr
     private Dictionary<ENUM_MAP_TYPE, float> mapSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()
     {
         {ENUM_MAP_TYPE.ForestMap, 10.2f},
-        {ENUM_MAP_TYPE.VolcanicMap, 10.2f},
+        {ENUM_MAP_TYPE.VolcanicMap, 7.69f},
     };
 
     private Dictionary<ENUM_MAP_TYPE, float> playerCamSizeDict = new Dictionary<ENUM_MAP_TYPE, float>()

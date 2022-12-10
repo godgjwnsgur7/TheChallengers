@@ -17,10 +17,6 @@ public class TrainingCanvas : BaseCanvas
     {
         base.Init();
 
-        string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), 0);
-        map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
-
-        buttonPanel.Set_Map(map);
         buttonPanel.Init();
     }
 
