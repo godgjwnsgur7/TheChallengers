@@ -45,22 +45,7 @@ public class ResourceAttribute : Attribute
 	}
 }
 
-public interface IAsyncHandle
-{
-    bool IsDone
-	{
-        get;
-	}
-
-    bool IsValid
-	{
-        get;
-	}
-
-    UnityEngine.Object GetObject();
-}
-
-public class AsyncHandle<TObject> : IAsyncHandle where TObject : UnityEngine.Object
+public class AsyncHandle<TObject> where TObject : UnityEngine.Object
 {
     private AsyncOperationHandle<TObject> handle;
 
@@ -85,41 +70,10 @@ public class AsyncHandle<TObject> : IAsyncHandle where TObject : UnityEngine.Obj
         }
     }
 
-	public UnityEngine.Object GetObject()
+	public TObject GetObject()
 	{
         return handle.Result;
 	}
-}
-
-public class AsyncHandle : IAsyncHandle
-{
-    private AsyncOperationHandle handle;
-
-    public AsyncHandle(AsyncOperationHandle handle = default)
-    {
-        this.handle = handle;
-    }
-
-    public bool IsDone
-    {
-        get
-        {
-            return handle.IsDone;
-        }
-    }
-
-    public bool IsValid
-    {
-        get
-        {
-            return handle.Status == AsyncOperationStatus.Succeeded;
-        }
-    }
-
-    public UnityEngine.Object GetObject()
-    {
-        return (UnityEngine.Object)handle.Result;
-    }
 }
 
 public class AddressableMgr
@@ -163,7 +117,15 @@ public class AddressableMgr
     }
 #endif
 
-    public IAsyncHandle Instantiate<T>(Transform parent, Vector3 pos, Quaternion quaternion, bool isAttachComponent = true, Action<T> PushObj = null) where T : MonoBehaviour
+    public AsyncHandle<GameObject> Instantiate(string path, Transform parent = null, Vector3 pos = default, Quaternion quaternion = default, bool isAttachComponent = true)
+    {
+        if (path == null || path == string.Empty)
+            return null;
+
+        return Instantiate<MonoBehaviour>(path, parent, pos, quaternion, isAttachComponent, null, null);
+    }
+
+    public AsyncHandle<GameObject> Instantiate<T>(Transform parent = null, Vector3 pos = default, Quaternion quaternion = default, bool isAttachComponent = true, Action<T> PushObj = null) where T : MonoBehaviour
     {
         string path = AttributeUtil.GetResourcePath<T>();
 
@@ -173,44 +135,7 @@ public class AddressableMgr
         return Instantiate(path, parent, pos, quaternion, isAttachComponent, null, PushObj);
     }
 
-    public IAsyncHandle Instantiate<T>(Transform parent, bool isAttachComponent = true, Action <T> PushObj = null) where T : MonoBehaviour
-    {
-        string path = AttributeUtil.GetResourcePath<T>();
-
-        if (path == null)
-            return null;
-
-        return Instantiate(path, parent, isAttachComponent, null, PushObj);
-    }
-
-    private IAsyncHandle Instantiate<T>(string path, Transform parent,  bool isAttachComponent, Action OnCompleted, Action<T> ResultCallBack) where T : MonoBehaviour
-    {
-        var async = Addressables.InstantiateAsync(path, parent);
-
-        async.Completed += (op) =>
-        {
-            if (op.IsDone && op.Status == AsyncOperationStatus.Succeeded)
-            {
-                T monoObj = null;
-
-                if (isAttachComponent)
-                {
-                    monoObj = op.Result.GetOrAddComponent<T>();
-                }
-                else
-                {
-                    monoObj = op.Result.GetComponent<T>();
-                }
-
-                ResultCallBack?.Invoke(monoObj);
-                OnCompleted?.Invoke();
-            }
-        };
-
-        return new AsyncHandle<GameObject>(async);
-    }
-
-    private IAsyncHandle Instantiate<T>(string path, Transform parent, Vector3 pos, Quaternion quaternion, bool isAttachComponent, Action OnCompleted, Action<T> ResultCallBack) where T : MonoBehaviour
+    private AsyncHandle<GameObject> Instantiate<T>(string path, Transform parent, Vector3 pos, Quaternion quaternion, bool isAttachComponent, Action OnCompleted, Action<T> ResultCallBack) where T : MonoBehaviour
     {
         var async = Addressables.InstantiateAsync(path, pos, quaternion, parent);
 
@@ -229,8 +154,8 @@ public class AddressableMgr
                     monoObj = op.Result.GetComponent<T>();
                 }
 
-                ResultCallBack?.Invoke(monoObj);
                 OnCompleted?.Invoke();
+                ResultCallBack?.Invoke(monoObj);
             }
         };
 
@@ -246,16 +171,13 @@ public class AddressableMgr
         return UnityEngine.Object.Instantiate(obj);
     }
 
-    public IAsyncHandle LoadByPath(string path, Action OnLoaded = null, Action<GameObject> PushObj = null)
-    {
-        if (path == null ||
-            path == string.Empty)
-            return null;
-
-        return Load(path, OnLoaded, PushObj);
+    public AsyncHandle<T> Load<T>(Action OnCompleted = null, Action<T> ResultCallBack = null) where T : UnityEngine.Object
+	{
+        string path = AttributeUtil.GetResourcePath<T>();
+        return Load<T>(path, OnCompleted, ResultCallBack);
     }
 
-    private IAsyncHandle Load<T>(string path, Action OnCompleted, Action<T> ResultCallBack) where T : UnityEngine.Object
+    public AsyncHandle<T> Load<T>(string path, Action OnCompleted, Action<T> ResultCallBack) where T : UnityEngine.Object
     {
         var async = Addressables.LoadAssetAsync<T>(path);
 
@@ -269,21 +191,5 @@ public class AddressableMgr
         };
 
         return new AsyncHandle<T>(async);
-    }
-
-    private IAsyncHandle Load(string path, Action OnCompleted, Action<GameObject> ResultCallBack)
-    {
-        var async = Addressables.LoadAssetAsync<GameObject>(path);
-
-        async.Completed += (op) =>
-        {
-            if (op.IsDone && op.Status == AsyncOperationStatus.Succeeded)
-            {
-                OnCompleted?.Invoke();
-                ResultCallBack?.Invoke(op.Result);
-            }
-        };
-
-        return new AsyncHandle(async);
     }
 }

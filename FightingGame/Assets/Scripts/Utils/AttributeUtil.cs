@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class AttributeUtil
 {
-    public static string GetResourcePath<T>() where T : MonoBehaviour
+    public static string GetResourcePath<T>() where T : UnityEngine.Object
     {
         Type type = typeof(T);
 
@@ -24,7 +24,7 @@ public static class AttributeUtil
         return string.Empty;
     }
 
-    public static ResourceType GetResourceType<T>() where T : MonoBehaviour
+    public static ResourceType GetResourceType<T>() where T : UnityEngine.Object
     {
         Type type = typeof(T);
 
