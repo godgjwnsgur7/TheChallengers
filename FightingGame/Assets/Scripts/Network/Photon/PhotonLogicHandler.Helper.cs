@@ -96,6 +96,9 @@ public partial class PhotonLogicHandler
     {
         get
         {
+            if (PhotonNetwork.CurrentRoom == null)
+                return 0;
+
             return PhotonNetwork.CurrentRoom.PlayerCount;
         }
     }
@@ -104,6 +107,9 @@ public partial class PhotonLogicHandler
     {
         get
         {
+            if (PhotonNetwork.CurrentRoom == null)
+                return 2;
+
             return PhotonNetwork.CurrentRoom.MaxPlayers;
         }
     }

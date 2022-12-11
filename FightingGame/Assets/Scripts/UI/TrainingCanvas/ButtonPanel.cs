@@ -223,6 +223,7 @@ public class ButtonPanel : UIElement
         playerCamera.Set_ZoomOut();
 
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+        Managers.Input.Destroy_InputKeyController();
         Reset_PlayerType();
     }
 
