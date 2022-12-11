@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class VolumeSlider : MonoBehaviour
 {
-    [SerializeField] Slider BgmSlider;
-    [SerializeField] Slider SfxSlider;
+    [SerializeField] Slider bgmSlider;
+    [SerializeField] Slider sfxSlider;
+    [SerializeField] Text bgmSliderText;
+    [SerializeField] Text sfxSliderText;
 
     bool isChange = false;
     bool isInit = false;
@@ -24,7 +26,7 @@ public class VolumeSlider : MonoBehaviour
 
     private void OnDisable()
     {
-        if(isChange)
+        if (isChange)
             Managers.UI.popupCanvas.Open_SelectPopup(SaveVolume, Changed_Volume, "변경된 소리를 저장하시겠습니까?");
     }
 
@@ -33,16 +35,22 @@ public class VolumeSlider : MonoBehaviour
         if (isInit)
             return;
 
-        BgmSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_BGMVolume);
-        SfxSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_SFXVolume);
+        bgmSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_BGMVolume);
+        bgmSlider.onValueChanged.AddListener(Update_BgmSliderText);
+
+        sfxSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_SFXVolume);
+        sfxSlider.onValueChanged.AddListener(Update_SfxSliderText);
 
         isInit = true;
     }
 
     public void Changed_Volume()
     {
-        BgmSlider.value = volumeDataList[0].volume;
-        SfxSlider.value = volumeDataList[1].volume;
+        bgmSlider.value = volumeDataList[0].volume;
+        sfxSlider.value = volumeDataList[1].volume;
+
+        Update_BgmSliderText(bgmSlider.value);
+        Update_SfxSliderText(sfxSlider.value);
 
         Set_isChange(false);
     }
@@ -56,4 +64,8 @@ public class VolumeSlider : MonoBehaviour
         Managers.Sound.Save_SoundData();
         Set_isChange(false);
     }
+
+    public void Update_BgmSliderText(float _value) => bgmSliderText.text = $"BGM Volume : {(int)(_value * 100)}%";
+    public void Update_SfxSliderText(float _value) => sfxSliderText.text = $"SFX Volume : {(int)(_value * 100)}%";
 }
+

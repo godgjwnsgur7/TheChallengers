@@ -142,7 +142,7 @@ public class ButtonPanel : UIElement
         playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
 
         GameObject go = playerCharacter.activeCharacter.transform.Find("Sound").gameObject;
-        Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_BLUE);
+        Managers.Sound.Set_TeamAudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_BLUE);
 
         Reset_PlayerType();
     }
@@ -181,7 +181,7 @@ public class ButtonPanel : UIElement
         }
 
         GameObject go = enemyPlayer.activeCharacter.transform.Find("Sound").gameObject;
-        Managers.Sound.Set_AudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_RED);
+        Managers.Sound.Set_TeamAudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_RED);
 
         Reset_EnemyType();
     }

@@ -41,7 +41,8 @@ public class SoundMgr
             }
         }
 
-        Set_BGMValue();
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = 0f;
 
         volumeDataList = PlayerPrefsManagement.Load_VolumeData();
         if (volumeDataList == null)
@@ -50,12 +51,6 @@ public class SoundMgr
             for (int i = 0; i <= (int)ENUM_SOUND_TYPE.SFX; i++)
                 volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f, 0.7f));
         }
-    }
-
-    private void Set_BGMValue()
-    {
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true;
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = 0f;
     }
 
     public void Clear()
@@ -105,11 +100,11 @@ public class SoundMgr
         AudioSource audioSource = audioSources[(int)soundType];
 
         audioSource.pitch = pitch;
-        //audioSource.volume = volumeDataList[1].volume;
+        audioSource.volume = volumeDataList[1].volume;
         audioSource.PlayOneShot(audioClip);
     }
 
-    public void Set_AudioSource(AudioSource audioSource, ENUM_SOUND_TYPE soundType)
+    public void Set_TeamAudioSource(AudioSource audioSource, ENUM_SOUND_TYPE soundType)
     {
         if (soundType < ENUM_SOUND_TYPE.SFX_BLUE)
             return;
