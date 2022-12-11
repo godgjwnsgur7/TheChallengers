@@ -118,7 +118,7 @@ public class SoundMgr
         audioSources[(int)soundType].volume = volumeDataList[1].volume;
         audioSources[(int)soundType].pitch = volumeDataList[1].pitch;
         audioSources[(int)soundType].maxDistance = 10.2f;
-        audioSources[(int)soundType].minDistance = audioSources[(int)soundType].maxDistance - 0.2f;
+        audioSources[(int)soundType].minDistance = 8.7f;
         audioSources[(int)soundType].spatialBlend = 1f;
         audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
     }
