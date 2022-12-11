@@ -9,7 +9,6 @@ public class ButtonPanel : UIElement
 {
     BaseMap map;
 
-    [SerializeField] Text panelOpenBtnText;
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] EnemyPlayer enemyPlayer;
@@ -20,13 +19,11 @@ public class ButtonPanel : UIElement
     public override void Open(UIParam param = null)
     {
         base.Open(param);
-        SetPanelOpenButtonText("닫기");
     }
 
     public override void Close()
     {
         base.Close();
-        SetPanelOpenButtonText("설정");
     }
 
     public void Init()
@@ -80,8 +77,6 @@ public class ButtonPanel : UIElement
             Open();
     }
 
-    public void SetPanelOpenButtonText(string text) => panelOpenBtnText.text = text;
-
     // 캐릭터 선택창 오픈
     public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectPlayerCharacter);
     public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectEnemyCharacter);
@@ -101,7 +96,6 @@ public class ButtonPanel : UIElement
     public void SelectPlayerCharacter(ENUM_CHARACTER_TYPE _charType)
     {
         Change_PlayerType(_charType);
-        Debug.Log(playerType);
 
         if (playerCharacter.activeCharacter != null)
             Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, SelectCancel_Player, $"{playerType}를 재소환하시겠습니까?");
@@ -112,7 +106,6 @@ public class ButtonPanel : UIElement
     public void SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
     {
         Change_EnemyType(_charType);
-        Debug.Log(enemyType);
 
         if (enemyPlayer.activeCharacter != null)
             Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, SelectCancel_Enemy, $"{enemyType}를 재소환하시겠습니까?");

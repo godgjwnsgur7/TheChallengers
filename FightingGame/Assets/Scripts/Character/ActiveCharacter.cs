@@ -67,7 +67,7 @@ public partial class ActiveCharacter : Character
         else if (teamType == ENUM_TEAM_TYPE.Red)
             Managers.Sound.Set_TeamAudioSource(audioSource, ENUM_SOUND_TYPE.SFX_RED);
         else
-            Debug.Log($"팀 범위 벗어남 : {teamType}");
+            return;
     }
 
     public void Set_Character()
@@ -618,7 +618,7 @@ public partial class ActiveCharacter : Character
         else if (teamType == ENUM_TEAM_TYPE.Red)
             Managers.Sound.Play((ENUM_SFX_TYPE)sfxType, ENUM_SOUND_TYPE.SFX_RED);
         else
-            Debug.Log("팀 범위 벗어남");
+            return;
     }
 
     protected void SuperArmourState_On()

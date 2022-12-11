@@ -56,7 +56,6 @@ public class InputKeyManagement : MonoBehaviour
         {
             eventTrigger = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i).GetComponent<EventTrigger>();
             eventTrigger.triggers.Add(dragEntry);
-            Debug.Log($"{eventTrigger.name} : OnDrag 삽입");
         }
     }
 
