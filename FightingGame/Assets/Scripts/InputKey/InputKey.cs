@@ -31,8 +31,6 @@ public class InputKey : MonoBehaviour
 
     public virtual void EventTrigger_PointerDown()
     {
-        Debug.Log("포인트 다운 실행");
-
         if (OnPointDownCallBack == null)
         {
             Debug.Log("OnPointDownCallBack is Null");
@@ -44,8 +42,6 @@ public class InputKey : MonoBehaviour
 
     public void EventTrigger_PointerUp()
     {
-        Debug.Log("포인트 업 실행");
-
         if (OnPointDownCallBack == null)
         {
             Debug.Log("OnPointUpCallBack is Null");
