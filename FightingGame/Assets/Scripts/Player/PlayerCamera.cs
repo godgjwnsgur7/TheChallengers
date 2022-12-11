@@ -18,6 +18,7 @@ public class PlayerCamera : MonoBehaviour
     public Vector2 minBound;
     public Vector2 maxBound;
     public Vector3 mapCenterPos;
+
     float mapSize;
     float playerCamSize;
     float zoomSpeed = 0.1f;

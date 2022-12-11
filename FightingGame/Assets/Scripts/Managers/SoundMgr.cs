@@ -7,8 +7,8 @@ public enum ENUM_SOUND_TYPE
 {
     BGM,
     SFX,
-    SFX_Player,
-    SFX_Enemy,
+    SFX_BLUE,
+    SFX_RED,
 
     Max
 }
@@ -62,8 +62,8 @@ public class SoundMgr
     {
         PauseBGM();
 
-        audioSources[(int)ENUM_SOUND_TYPE.SFX_Player] = null;
-        audioSources[(int)ENUM_SOUND_TYPE.SFX_Enemy] = null;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX_BLUE] = null;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX_RED] = null;
         audioClips.Clear();
     }
 
@@ -105,20 +105,20 @@ public class SoundMgr
         AudioSource audioSource = audioSources[(int)soundType];
 
         audioSource.pitch = pitch;
-        audioSource.volume = volumeDataList[1].volume;
+        //audioSource.volume = volumeDataList[1].volume;
         audioSource.PlayOneShot(audioClip);
     }
 
     public void Set_AudioSource(AudioSource audioSource, ENUM_SOUND_TYPE soundType)
     {
-        if (soundType < ENUM_SOUND_TYPE.SFX_Player)
+        if (soundType < ENUM_SOUND_TYPE.SFX_BLUE)
             return;
 
         audioSources[(int)soundType] = audioSource;
         audioSources[(int)soundType].volume = volumeDataList[1].volume;
         audioSources[(int)soundType].pitch = volumeDataList[1].pitch;
         audioSources[(int)soundType].maxDistance = 10.2f;
-        audioSources[(int)soundType].minDistance = audioSources[(int)soundType].maxDistance;
+        audioSources[(int)soundType].minDistance = audioSources[(int)soundType].maxDistance - 0.2f;
         audioSources[(int)soundType].spatialBlend = 1f;
         audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
     }
@@ -186,25 +186,3 @@ public class SoundMgr
 
     public List<VolumeData> Get_VolumeDatas() => volumeDataList;
 }
-
-/*
- public void Set_SFXCharacterAudio(ENUM_SOUND_TYPE soundType, Transform parentTr)
-    {
-        if (soundType < ENUM_SOUND_TYPE.SFX_Player)
-        {
-            Debug.Log("캐릭터 오디오 생성 범위 벗어남");
-            return;
-        }
-
-        GameObject go = new GameObject { name = soundType.ToString() };
-        audioSources[(int)soundType] = go.AddComponent<AudioSource>();
-        go.transform.parent = parentTr;
-
-        audioSources[(int)soundType].volume = volumeDataList[1].volume;
-        audioSources[(int)soundType].pitch = volumeDataList[1].pitch;
-        audioSources[(int)soundType].minDistance = 2f;
-        audioSources[(int)soundType].maxDistance = Managers.Battle.Get_playerCamSizeDict(ENUM_MAP_TYPE.BasicMap) * Screen.width / Screen.height; ;
-        audioSources[(int)soundType].spatialBlend = 1f;
-        audioSources[(int)soundType].rolloffMode = AudioRolloffMode.Linear;
-    }
- */

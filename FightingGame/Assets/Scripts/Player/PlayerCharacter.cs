@@ -37,12 +37,14 @@ public class PlayerCharacter : MonoBehaviour
         if (Managers.Battle.isServerSyncState)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>(activeCharacter, activeCharacter.Set_Sound);
             activeCharacter.Set_Character();
         }
         else
         {
             activeCharacter.teamType = teamType;
             activeCharacter.Init();
+            activeCharacter.Set_Sound();
             activeCharacter.Set_Character();
         }
 

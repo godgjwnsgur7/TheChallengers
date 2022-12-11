@@ -53,16 +53,21 @@ public partial class ActiveCharacter : Character
         isInitialized = true;
 
         if (Managers.Battle.isServerSyncState)
-        {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();
-            if (isControl)
-                Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_Player);
-            else
-                Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_Enemy);
-        }
         else
             isControl = true;
+    }
+
+    [BroadcastMethod]
+    public void Set_Sound()
+    {
+        AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();
+        if (teamType == ENUM_TEAM_TYPE.Blue)
+            Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_BLUE);
+        else if (teamType == ENUM_TEAM_TYPE.Red)
+            Managers.Sound.Set_AudioSource(audioSource, ENUM_SOUND_TYPE.SFX_RED);
+        else
+            Debug.Log($"팀 범위 벗어남 : {teamType}");
     }
 
     public void Set_Character()
@@ -604,6 +609,16 @@ public partial class ActiveCharacter : Character
             Debug.Log($"ENUM_EFFECTOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_effectTypeNum}");
         }
 
+    }
+
+    protected void SFX_Play(int sfxType)
+    {
+        if (teamType == ENUM_TEAM_TYPE.Blue)
+            Managers.Sound.Play((ENUM_SFX_TYPE)sfxType, ENUM_SOUND_TYPE.SFX_BLUE);
+        else if (teamType == ENUM_TEAM_TYPE.Red)
+            Managers.Sound.Play((ENUM_SFX_TYPE)sfxType, ENUM_SOUND_TYPE.SFX_RED);
+        else
+            Debug.Log("팀 범위 벗어남");
     }
 
     protected void SuperArmourState_On()
