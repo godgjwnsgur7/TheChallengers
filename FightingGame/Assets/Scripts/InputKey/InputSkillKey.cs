@@ -20,9 +20,10 @@ public class InputSkillKey : InputKey
         base.EventTrigger_PointerDown();
     }
 
-    public void Set_SkillCoolTime(float _coolTime)
+    public void Set_SkillSetting(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
     {
         coolTime = _coolTime;
+        iconImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/SkillKey/Icon_{_charType}Skill{_num}");
     }
 
     public void Use_Skill()
