@@ -51,12 +51,10 @@ public class AttackObject : Poolable
 
         gameObject.SetActive(true);
 
-        if(Managers.Battle.isServerSyncState)
+        if (Managers.Battle.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
-            {
                 StartCoroutine(IRunTimeCheck(skillValue.runTime));
-            }
         }
         else
             StartCoroutine(IRunTimeCheck(skillValue.runTime));

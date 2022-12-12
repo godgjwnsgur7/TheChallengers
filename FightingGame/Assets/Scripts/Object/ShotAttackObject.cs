@@ -44,10 +44,12 @@ public class ShotAttackObject : AttackObject
         gameObject.SetActive(true);
 
         if (Managers.Battle.isServerSyncState)
+        {
             if (PhotonLogicHandler.IsMine(viewID))
-                CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
+                StartCoroutine(IRunTimeCheck(skillValue.runTime));
+        }
         else
-            CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            StartCoroutine(IRunTimeCheck(skillValue.runTime));
 
         Move_AttackObject(shotSpeed);
     }
