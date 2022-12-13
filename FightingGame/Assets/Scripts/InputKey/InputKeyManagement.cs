@@ -259,12 +259,14 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Close_SettingPanel()
     {
+        Managers.UI.popupCanvas.Play_FadeInEffect();
         currInputKey = null;
 
         settingPanel.Reset_SettingPanel();
         settingPanel.gameObject.SetActive(false);
 
         Destroy(this.gameObject);
+        Managers.UI.popupCanvas.Play_FadeOutEffect();
     }
 
     /// <summary>
