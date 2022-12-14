@@ -133,12 +133,14 @@ public class ButtonPanel : UIElement
     // 플레이어 소환
     public void CallPlayer()
     {
+        ENUM_CHARACTER_TYPE charType = playerType;
+
         // 이미 소환된 플레이어 캐릭터가 있을 경우
         if (playerCharacter.activeCharacter != null)
             Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
 
         // 플레이어 스폰
-        playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, playerType));
+        playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, charType));
 
         GameObject go = playerCharacter.activeCharacter.transform.Find("Sound").gameObject;
         Managers.Sound.Set_TeamAudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_BLUE);
@@ -219,11 +221,11 @@ public class ButtonPanel : UIElement
             return;
         }
 
-        playerCamera.Set_ZoomOut();
-
         Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
         Managers.Input.Destroy_InputKeyController();
         Reset_PlayerType();
+
+        playerCamera.Set_ZoomOut();
     }
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
