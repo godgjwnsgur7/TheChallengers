@@ -57,7 +57,7 @@ public class RoomListElementUI : MonoBehaviour
     {
         if (currMap == _mapType) return;
         currMap = _mapType;
-        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
+        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
     }
 
     public bool Update_MyRoomInfo()

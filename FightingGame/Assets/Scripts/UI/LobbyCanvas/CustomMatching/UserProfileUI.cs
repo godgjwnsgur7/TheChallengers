@@ -98,6 +98,9 @@ public class UserProfileUI : MonoBehaviour
     
     public void OnClick_UserProfile()
     {
+        if (userNicknameText.text == "")
+            return;
+
         userInfoWindow.Open_Request(isMasterProfile);
     }
 

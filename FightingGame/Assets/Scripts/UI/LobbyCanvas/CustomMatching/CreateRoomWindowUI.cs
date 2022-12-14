@@ -28,7 +28,7 @@ public class CreateRoomWindowUI : MonoBehaviour
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
         currMap = _mapType;
-        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_M");
+        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
     }
     

@@ -83,7 +83,7 @@ namespace FGDefine
     {
         ForestMap = 0,
         VolcanicMap = 1,
-        Max = 1,
+        Max = 2,
     }
 
     /// <summary>

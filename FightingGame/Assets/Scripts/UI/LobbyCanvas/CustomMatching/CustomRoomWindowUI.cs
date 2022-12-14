@@ -180,18 +180,18 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.ChangeMap(_mapType);
 
         currMap = _mapType;
-        currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}_L");
+        currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
 
         int mapIndex = (int)_mapType - 1;
         if (mapIndex <= 0)
             mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
-        nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
+        nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}");
 
         mapIndex = (int)_mapType + 1;
         if (mapIndex >= (int)ENUM_MAP_TYPE.Max)
             mapIndex = 0;
-        nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}_S");
+        nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}");
     }
 
     public void Set_CurrRoomInfo()
