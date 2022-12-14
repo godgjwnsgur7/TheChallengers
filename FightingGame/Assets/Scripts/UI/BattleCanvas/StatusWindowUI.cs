@@ -20,6 +20,8 @@ public class StatusWindowUI : MonoBehaviour
         maxHP = _maxHP;
         currHP = _maxHP;
         Set_CharFrameImage(_charType);
+
+        Update_CurrHP(maxHP);
     }
 
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
