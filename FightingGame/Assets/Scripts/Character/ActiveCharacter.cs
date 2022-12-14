@@ -171,8 +171,6 @@ public partial class ActiveCharacter : Character
 
     public override void Idle()
     {
-        if (jumpState) return;
-
         base.Idle();
 
         if (anim.GetBool("IsMove"))
