@@ -73,13 +73,6 @@ public class AttackObject : Poolable
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
-            // 충돌한 객체가 액티브캐릭터가 아니라면 파괴 (ShotAttackObject)
-        if (enemyCharacter == null && attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot)
-        {
-            DestroyMine();
-            return;
-        }
-
         if (enemyCharacter != null && skillValue != null)
         {
             if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
@@ -102,7 +95,7 @@ public class AttackObject : Poolable
         }
         else
         {
-            Debug.Log($"{gameObject.name}이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
+            // Debug.Log($"{gameObject.name}이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
         }
     }
 
