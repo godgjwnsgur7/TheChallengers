@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7593205343803776127}
   - component: {fileID: 7593205343803776120}
   - component: {fileID: 7593205343803776125}
-  - component: {fileID: 7593205343803776124}
+  - component: {fileID: 1368041888561522060}
   m_Layer: 0
   m_Name: Wizard_Attack1
   m_TagString: Untagged
@@ -102,8 +102,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &7593205343803776124
-PolygonCollider2D:
+--- !u!61 &1368041888561522060
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -115,25 +115,16 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.5, y: 3.5}
+    newSize: {x: 10, y: 10}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.4807205, y: 1.1076925}
-      - {x: -0.67297786, y: -1.116446}
-      - {x: 0.2908652, y: -1.3072157}
-      - {x: 0.71032244, y: -1.2097886}
-      - {x: 1.1303082, y: -0.9946944}
-      - {x: 1.4187573, y: -0.6885659}
-      - {x: 1.638839, y: -0.2931263}
-      - {x: 1.6210654, y: 0.25474286}
-      - {x: 1.386907, y: 0.7123511}
-      - {x: 1.0517569, y: 0.97763187}
+  serializedVersion: 2
+  m_Size: {x: 2.4, y: 2.5}
+  m_EdgeRadius: 0
