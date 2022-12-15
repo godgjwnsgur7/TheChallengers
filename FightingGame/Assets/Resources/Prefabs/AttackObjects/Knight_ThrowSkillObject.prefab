@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4985232905264149247}
   - component: {fileID: 3931098446154817999}
   - component: {fileID: 4985232905264149246}
-  - component: {fileID: 4985232905264149245}
   - component: {fileID: 4985232905264149241}
+  - component: {fileID: 876300878345551328}
   m_Layer: 0
   m_Name: Knight_ThrowSkillObject
   m_TagString: Untagged
@@ -153,39 +153,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &4985232905264149245
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4985232905264149235}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10, y: 10}
-    newSize: {x: 10, y: 10}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -1.9969277, y: -0.6206913}
-      - {x: -1.0175303, y: -0.82528573}
-      - {x: 0.3937888, y: -0.6554458}
-      - {x: 1.2610884, y: -0.10479504}
-      - {x: 1.2877715, y: 0.39093456}
-      - {x: 0.6884031, y: 0.75483036}
-      - {x: -0.13465405, y: 0.8537071}
-      - {x: -0.9211346, y: 0.6001313}
 --- !u!114 &4985232905264149241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +176,29 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!61 &876300878345551328
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4985232905264149235}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10, y: 10}
+    newSize: {x: 10, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3, y: 1.5}
+  m_EdgeRadius: 0
