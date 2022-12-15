@@ -647,10 +647,31 @@ public partial class ActiveCharacter : Character
         Push_Rigid2D(new Vector2(vecX, 0));
     }
 
-    protected void AnimEvent_AttackMove()
+    protected void AnimEvent_MoveToInputArrow(float vecX)
     {
+        if (!isControl) return;
 
+        if (reverseState)
+            vecX *= -1f;
+
+        if (inputArrowDir == 0.0f)
+        {
+            Push_Rigid2D(new Vector2(vecX, 0));
+            return;
+        }
+
+        bool inputArrowReverseState = inputArrowDir < 0.0f;
+
+        if (reverseState == inputArrowReverseState)
+            Push_Rigid2D(new Vector2(vecX * 1.5f, 0));
+        else
+            Push_Rigid2D(Vector2.zero);
     }
 
     #endregion
+
+    public void Set_inputArrowDir(float _inputArrowDir)
+    {
+        inputArrowDir = _inputArrowDir;
+    }
 }

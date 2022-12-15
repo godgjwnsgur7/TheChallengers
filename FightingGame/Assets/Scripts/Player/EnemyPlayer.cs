@@ -11,11 +11,9 @@ public class EnemyPlayer : MonoBehaviour
 {
     public ActiveCharacter activeCharacter;
 
-    public float moveDir = 0f;
-     
-    public bool inabilityState = false;
-
     public ENUM_TEAM_TYPE teamType;
+    public float moveDir;
+    public bool inabilityState = false;
 
     public void Set_Character(ActiveCharacter _activeCharacter)
     {
@@ -75,16 +73,19 @@ public class EnemyPlayer : MonoBehaviour
         {
             activeCharacter.Input_MoveKey(true);
             moveDir = -1.0f;
+            activeCharacter.Set_inputArrowDir(moveDir);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             activeCharacter.Input_MoveKey(true);
             moveDir = 1.0f;
+            activeCharacter.Set_inputArrowDir(moveDir);
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
         {
             moveDir = 0f;
+            activeCharacter.Set_inputArrowDir(moveDir);
             activeCharacter.Input_MoveKey(false);
             if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
                 PlayerCommand(ENUM_PLAYER_STATE.Idle);

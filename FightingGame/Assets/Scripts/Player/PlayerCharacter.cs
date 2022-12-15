@@ -10,7 +10,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] PlayerCamera playerCamera;
 
     public ENUM_TEAM_TYPE teamType;
-    public float moveDir = 0f;
+    public float moveDir;
     public bool inabilityState = false;
 
     Coroutine moveCoroutine = null;
@@ -210,10 +210,12 @@ public class PlayerCharacter : MonoBehaviour
 
         while (isMove)
         {
+            activeCharacter.Set_inputArrowDir(moveDir);
             PlayerCommand(ENUM_PLAYER_STATE.Move, new CharacterMoveParam(moveDir));
             yield return null;
         }
 
+        activeCharacter.Set_inputArrowDir(0.0f);
         activeCharacter.Input_MoveKey(false);
         if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
             PlayerCommand(ENUM_PLAYER_STATE.Idle);

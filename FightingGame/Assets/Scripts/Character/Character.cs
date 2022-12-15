@@ -20,6 +20,7 @@ public class Character : MonoBehaviourPhoton
     }
 
     protected float currHP;
+    protected float inputArrowDir = 0.0f;
 
     public ENUM_CHARACTER_TYPE characterType;
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;

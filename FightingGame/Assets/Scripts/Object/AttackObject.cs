@@ -78,7 +78,6 @@ public class AttackObject : Poolable
             if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
                 return;
 
-            Debug.Log("음?");
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
 
             // 이펙트 생성 (임시)
