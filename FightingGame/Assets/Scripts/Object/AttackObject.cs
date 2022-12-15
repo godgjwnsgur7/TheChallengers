@@ -67,8 +67,8 @@ public class AttackObject : Poolable
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    { 
-        if (!PhotonLogicHandler.IsMine(viewID) || collision.gameObject.GetComponent<AttackObject>() != null)
+    {
+        if (Managers.Battle.isServerSyncState && PhotonLogicHandler.IsMine(viewID))
             return;
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
@@ -78,14 +78,8 @@ public class AttackObject : Poolable
             if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
                 return;
 
-            CharacterAttackParam attackParam = new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState);
-            
-            
-            if(Managers.Battle.isServerSyncState)
-                PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, CharacterAttackParam>
-                    (enemyCharacter, enemyCharacter.Hit, attackParam, ENUM_RPC_TARGET.OTHER);
-            else
-                enemyCharacter.Hit(attackParam);
+            Debug.Log("음?");
+            enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
 
             // 이펙트 생성 (임시)
             int effectNum = UnityEngine.Random.Range(0, 3);

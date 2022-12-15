@@ -117,65 +117,54 @@ public class PlayerCharacter : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, activeCharacter.reverseState);
-            PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
-            activeCharacter.Change_AttackState(true); 
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Attack);
         }
 
         if (Input.GetKeyUp(KeyCode.F))
         {
-            activeCharacter.Change_AttackState(false);
+            OnPointUpCallBack(ENUM_INPUTKEY_NAME.Attack);
         }
 
         // 스킬 1번
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CharacterSkillParam skillParam = new CharacterSkillParam(0);
-            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill1);
         }
 
         // 스킬 2번
         if (Input.GetKeyDown(KeyCode.T))
         {
-            CharacterSkillParam skillParam = new CharacterSkillParam(1);
-            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill2);
         }
 
         // 스킬 3번
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            CharacterSkillParam skillParam = new CharacterSkillParam(2);
-            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill3);
         }
 
         // 점프
         if (Input.GetKeyDown(KeyCode.G))
         {
-            PlayerCommand(ENUM_PLAYER_STATE.Jump);
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Jump);
         }
 
         // 이동
         if (Input.GetKeyDown(KeyCode.A))
         {
-            moveDir = -1.0f;
-            if (moveCoroutine == null)
-                moveCoroutine = StartCoroutine(IMove());
+            moveDir = -1f;
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             moveDir = 1.0f;
-            if (moveCoroutine == null)
-                moveCoroutine = StartCoroutine(IMove());
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
         }
 
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
-            isMove = false;
-        }
-
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-             isMove = false;
+            if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+                OnPointUpCallBack(ENUM_INPUTKEY_NAME.Direction);
         }
     }
     

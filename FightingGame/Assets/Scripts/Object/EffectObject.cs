@@ -9,7 +9,7 @@ public class EffectObject : Poolable
     public Transform targetTr = null;
     public bool reverseState;
 
-    public Color[] effectColors;
+    private Color[] effectColors = {Color.white}; // 일단 흰색만
     private SpriteRenderer effectRenderer;
 
     [SerializeField] Vector3 subPos;

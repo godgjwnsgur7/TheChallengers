@@ -345,6 +345,9 @@ public partial class ActiveCharacter : Character
     {
         float _currHP = currHP - _damage;
 
+        if(_currHP <= 0 && isControl)
+            Die();
+
         if(Managers.Battle.isServerSyncState)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, float>
@@ -541,6 +544,7 @@ public partial class ActiveCharacter : Character
         invincibility = false;
     }
     #endregion
+
     #region Animation Event Function
     protected void Summon_AttackObject(int _attackTypeNum)
     {
@@ -641,6 +645,11 @@ public partial class ActiveCharacter : Character
             vecX *= -1f;
 
         Push_Rigid2D(new Vector2(vecX, 0));
+    }
+
+    protected void AnimEvent_AttackMove()
+    {
+
     }
 
     #endregion
