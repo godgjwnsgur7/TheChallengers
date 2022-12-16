@@ -13,6 +13,13 @@ public class FirstLoginWindowUI : MonoBehaviour
     public void Open(Action<string> _nickNameCallBack)
     {
         nickNameCallBack = _nickNameCallBack;
+        this.gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        nickNameCallBack = null;
+        this.gameObject.SetActive(false);
     }
 
     public void OnClick_Check()

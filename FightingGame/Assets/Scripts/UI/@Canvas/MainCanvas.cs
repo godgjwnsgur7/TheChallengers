@@ -6,6 +6,7 @@ using FGDefine;
 
 public class MainCanvas : BaseCanvas
 {
+    [SerializeField] GuestLoginWindow guestLoginWindow;
     [SerializeField] FirstLoginWindowUI firstLoginWindow;
     [SerializeField] Button mainButton;
 
@@ -23,6 +24,8 @@ public class MainCanvas : BaseCanvas
         Managers.Platform.Initialize();
         Set_LoginEnvironment();
     }
+
+    public void Set_OverlabLock(bool _value) => overlapLock = _value;
 
     private void Set_LoginEnvironment()
     {
@@ -45,10 +48,68 @@ public class MainCanvas : BaseCanvas
         textEffectCoroutine = StartCoroutine(ITextEffect_FadeOut(gameStartText));
     }
 
+    public void Try_GuestLogin()
+    {
+        if (!guestLoginWindow.Check_InputField())
+            return;
+
+        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        {
+            string id = Managers.Platform.GetUserID();
+            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+
+            if (string.IsNullOrEmpty(PhotonLogicHandler.CurrentMyNickname))
+                firstLoginWindow.Open(Set_NickNameCallBack);
+            else
+                Set_GameStartEnvironment();
+
+            OnClick_Deactivate(guestLoginWindow.gameObject);
+        },
+        _OnCheckFirstUser: (bool isFirstLogin) =>
+        {
+            if (isFirstLogin)
+            {
+                firstLoginWindow.Open(Set_NickNameCallBack);
+            }
+        }, email: guestLoginWindow.Get_EmailText(), password: guestLoginWindow.Get_PasswordText());
+    }
+
+    public void Try_GuestLoginA()
+    {
+        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        {
+            string id = Managers.Platform.GetUserID();
+            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+
+            PhotonLogicHandler.CurrentMyNickname = "godgjwnsgur";
+
+            Set_GameStartEnvironment();
+            OnClick_Deactivate(guestLoginWindow.gameObject);
+
+        }, null, null, email: "godgjwnsgur7@gmail.com", password: "123456");
+    }
+
+    public void Try_GuestLoginB()
+    {
+        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        {
+            string id = Managers.Platform.GetUserID();
+            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+
+            PhotonLogicHandler.CurrentMyNickname = "sorikun";
+
+            Set_GameStartEnvironment();
+            OnClick_Deactivate(guestLoginWindow.gameObject);
+
+        }, null, null, email: "psh50zmfhtm@gmail.com", password: "123456");
+    }
+
     public void Set_NickNameCallBack(string nickname)
     {
         PhotonLogicHandler.CurrentMyNickname = nickname;
         Set_GameStartEnvironment();
+
+        firstLoginWindow.Close();
     }
 
     private void Try_GoogleLogin()
@@ -117,7 +178,9 @@ public class MainCanvas : BaseCanvas
 
         overlapLock = true;
 
-        Try_GoogleLogin();
+        //Try_GoogleLogin();
+
+        OnClick_Activate(guestLoginWindow.gameObject);
     }
 
     public void OnClick_Start()
