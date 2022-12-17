@@ -45,47 +45,69 @@ public class RankingScoreUI : MonoBehaviour
         scoreChangeEffectImage.sprite = null; // 시작 이미지 넣어야 함
         scoreChangeEffectImage.gameObject.SetActive(true);
 
+        FGDefine.ENUM_RANK_TYPE changeRanking = RankingScoreOperator.Check_RankScore(changeRankingScore);
+
         if (currRankingScore < changeRankingScore)
         {
-            // 점수가 높아짐 - 랭크 변경 체크
-            
+            // scoreChangeEffectImage.sprite = ScoreUpImage;
         }
         else if(currRankingScore > changeRankingScore)
         {
-            // 점수가 낮아짐 - 랭크 변경 체크
-
+            //// scoreChangeEffectImage.sprite = ScoreDownImage;
         }
         else
         {
             // 변경점 없음 - 이미지만 세팅
-
+            // scoreChangeEffectImage.sprite = ScoreEqualsImage;
         }
 
         scoreEffectCoroutine = StartCoroutine(IRankScoreEffect(changeRankingScore));
 
-        
         // 이펙트 효과 넣어야 함
-
-        
-
+        if (RankingScoreOperator.Check_RankScore(currRankingScore) != changeRanking)
+            emblemEffectCoroutine = StartCoroutine(IRankEmblem_DeactiveEffect(changeRanking));
     }
 
     /// <summary>
     /// 기존 엠블렘이 없어지고 새로 생기는 이펙트
     /// </summary>
-    protected IEnumerator IRankEmblem_DeactiveEffect(char _rank)
+    protected IEnumerator IRankEmblem_DeactiveEffect(FGDefine.ENUM_RANK_TYPE _rank)
     {
-        yield return null;
+        Color tempColor = rankEmblemImage.color;
+        float runTime = 0.0f;
+        float duration = 1.5f;
 
+        while (rankEmblemImage.color.a > 0)
+        {
+            runTime += Time.deltaTime;
+            tempColor.a = Mathf.Lerp(rankEmblemImage.color.a, 0, runTime / duration);
+            rankEmblemImage.color = tempColor;
+            yield return null;
+        }
+        tempColor.a = 0;
+        rankEmblemImage.color = tempColor;
 
-
-        // if(emblemEffectCoroutine != null)
-        //     StartCoroutine(IRankEmblem_ActiveEffect(_rank));
+        if (emblemEffectCoroutine != null)
+            emblemEffectCoroutine = StartCoroutine(IRankEmblem_ActiveEffect(_rank));
     }
 
-    protected IEnumerator IRankEmblem_ActiveEffect(char _rank)
+    protected IEnumerator IRankEmblem_ActiveEffect(FGDefine.ENUM_RANK_TYPE _rank)
     {
-        yield return null;
+        Color tempColor = rankEmblemImage.color;
+        float runTime = 0.0f;
+        float duration = 1.0f;
+
+        rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(Managers.Battle.Get_RankDict(_rank));
+
+        while (rankEmblemImage.color.a < 1)
+        {
+            runTime += Time.deltaTime;
+            tempColor.a = Mathf.Lerp(rankEmblemImage.color.a, 1, runTime / duration);
+            rankEmblemImage.color = tempColor;
+            yield return null;
+        }
+        tempColor.a = 1;
+        rankEmblemImage.color = tempColor;
 
         emblemEffectCoroutine = null;
     }

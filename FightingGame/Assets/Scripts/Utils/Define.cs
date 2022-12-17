@@ -188,5 +188,16 @@ namespace FGDefine
         Training,
         Debug, // 테스트씬
     }
+
+    public enum ENUM_RANK_TYPE
+    {
+        S,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+    }
 }
 
