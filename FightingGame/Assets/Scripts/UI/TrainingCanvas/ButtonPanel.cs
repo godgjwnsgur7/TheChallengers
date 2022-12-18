@@ -12,6 +12,7 @@ public class ButtonPanel : UIElement
     [SerializeField] PlayerCamera playerCamera;
     [SerializeField] PlayerCharacter playerCharacter;
     [SerializeField] EnemyPlayer enemyPlayer;
+    [SerializeField] Button[] buttons;
 
     ENUM_CHARACTER_TYPE playerType;
     ENUM_CHARACTER_TYPE enemyType;
@@ -36,6 +37,8 @@ public class ButtonPanel : UIElement
         playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
         enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
 
+        for (int i = 0; i < buttons.Length; i++)
+            buttons[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
     }
 
     public void Summon_Map(int mapType)
@@ -47,31 +50,25 @@ public class ButtonPanel : UIElement
             map = null;
         }
 
-        if (playerCharacter.activeCharacter != null)
-            DeletePlayer();
-
-        if (enemyPlayer.activeCharacter != null)
-            DeleteEnemy();
+        DestroyCharacter();
 
         string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), mapType);
         map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
         playerCamera.Set_MapData(map);
 
         Managers.UI.popupCanvas.Play_FadeOutEffect();
+
+        Close();
     }
 
     public void OnClick_OpenSettingPanel()
     {
         Managers.UI.popupCanvas.Play_FadeInEffect();
 
-        if (playerCharacter.activeCharacter != null)
-            DeletePlayer();
-
-        if (enemyPlayer.activeCharacter != null)
-            DeleteEnemy();
-
+        DestroyCharacter();
         Managers.Input.Get_InputKeyManagement().Init();
         this.Close();
+
         Managers.UI.popupCanvas.Play_FadeOutEffect();
     }
 
@@ -119,14 +116,21 @@ public class ButtonPanel : UIElement
             CallEnemy();
     }
 
-    public void OnClick_DestroyPlayer()
+    // 임시 주석화
+    /*public void OnClick_DestroyPlayer()
     {
-        Managers.UI.popupCanvas.Open_SelectPopup(DeletePlayer, null, "소환된 캐릭터를 역소환하시겠습니까?");
+        Managers.UI.popupCanvas.Open_SelectPopup(DestroyPlayer, null, "소환된 캐릭터를 역소환하시겠습니까?");
         this.Close();
     }
     public void OnClick_DestroyEnemy()
     {
-        Managers.UI.popupCanvas.Open_SelectPopup(DeleteEnemy, null, "소환된 적를 역소환하시겠습니까?");
+        Managers.UI.popupCanvas.Open_SelectPopup(DestroyEnemy, null, "소환된 적를 역소환하시겠습니까?");
+        this.Close();
+    }*/
+
+    public void OnClick_DestroyCharacter()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(DestroyCharacter, null, "소환된 캐릭터를 역소환하시겠습니까?");
         this.Close();
     }
 
@@ -200,7 +204,7 @@ public class ButtonPanel : UIElement
     }
 
     // 적 제거
-    public void DeleteEnemy()
+    private void DestroyEnemy()
     {
         if (enemyPlayer.activeCharacter == null)
         {
@@ -213,7 +217,7 @@ public class ButtonPanel : UIElement
     }
 
     // 플레이어 제거
-    public void DeletePlayer()
+    private void DestroyPlayer()
     {
         if (playerCharacter.activeCharacter == null)
         {
@@ -226,6 +230,18 @@ public class ButtonPanel : UIElement
         Reset_PlayerType();
 
         playerCamera.Set_ZoomOut();
+    }
+
+    public void DestroyCharacter()
+    {
+        if (playerCharacter.activeCharacter != null)
+        {
+            DestroyPlayer();
+            playerCamera.Set_ZoomOut();
+        }
+
+        if (enemyPlayer.activeCharacter != null)
+            DestroyEnemy();
     }
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)

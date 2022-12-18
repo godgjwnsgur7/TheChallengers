@@ -155,6 +155,8 @@ public class InputKeyManagement : MonoBehaviour
 
         currInputKey.rectTr.localScale = changeScale;
         currAreaKey.rectTr.localScale = changeScale;
+
+        Set_InputKeyTransForm(currInputKey.transform.position, _inputKeyName);
     }
 
     /// <summary>
