@@ -24,6 +24,8 @@ public class InputKeyManagement : MonoBehaviour
         eventID = EventTriggerType.Drag,
     };
 
+    private ENUM_CHARACTER_TYPE skillIconType = ENUM_CHARACTER_TYPE.Knight;
+
     public void Init()
     {
         dragEntry.callback.AddListener(OnDragListener);
@@ -33,6 +35,8 @@ public class InputKeyManagement : MonoBehaviour
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
             inputPanel.transform.SetAsFirstSibling();
+
+            inputPanel.Set_InputSkillKeys(skillIconType);
         }
 
         if (areaPanel == null)
@@ -46,6 +50,16 @@ public class InputKeyManagement : MonoBehaviour
 
         if (!settingPanel.gameObject.activeSelf)
             Open_SettingPanel();
+    }
+
+    public void OnChange_InputSkillIcon()
+    {
+        skillIconType += 1;
+
+        if (skillIconType == ENUM_CHARACTER_TYPE.Max)
+            skillIconType = ENUM_CHARACTER_TYPE.Knight;
+
+        inputPanel.Set_InputSkillKeys(skillIconType);
     }
 
     public void Set_OnDragCallBack()
