@@ -189,6 +189,7 @@ namespace FGDefine
         Debug, // 테스트씬
     }
 
+    [Serializable]
     public enum ENUM_RANK_TYPE
     {
         S,

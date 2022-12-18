@@ -32,7 +32,10 @@ public class InputMgr
         }
 
         if (inputKeyController == null)
+        {
             inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
+            inputKeyController.transform.SetSiblingIndex(1); // 임시
+        }
 
         inputKeyController.Init(_OnPointDownCallBack, _OnPointUpCallBack);
     }
