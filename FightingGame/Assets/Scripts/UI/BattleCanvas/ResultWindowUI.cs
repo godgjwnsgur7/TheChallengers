@@ -6,10 +6,8 @@ using FGDefine;
 
 public class ResultWindowUI : MonoBehaviour
 {
-    [SerializeField] Text resultText;
-    
     [SerializeField] RankingScoreUI rankingScore;
-    
+    [SerializeField] Image backgroundImage;
     [SerializeField] Text notifyCountText;
 
     Coroutine counterCorotine;
@@ -50,20 +48,17 @@ public class ResultWindowUI : MonoBehaviour
 
         if (isDraw)
         {
-            resultText.text = "무승부!";
-
+            backgroundImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Draw_Popup");
         }
         else
         {
             if (isWin)
             {
-                resultText.text = "승리!";
-
+                backgroundImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Win_Popup");
             }
             else
             {
-                resultText.text = "패배!";
-
+                backgroundImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Lose_Popup");
             }
         }
 

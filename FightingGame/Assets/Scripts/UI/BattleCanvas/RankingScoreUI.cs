@@ -42,23 +42,25 @@ public class RankingScoreUI : MonoBehaviour
         if (Managers.Battle.isCustom)
             return;
 
-        scoreChangeEffectImage.sprite = null; // 시작 이미지 넣어야 함
+        //scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
         scoreChangeEffectImage.gameObject.SetActive(true);
 
         FGDefine.ENUM_RANK_TYPE changeRanking = RankingScoreOperator.Check_RankScore(changeRankingScore);
 
         if (currRankingScore < changeRankingScore)
         {
-            // scoreChangeEffectImage.sprite = ScoreUpImage;
+            scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreUp");
+            ScoreChangeText.text = "점수 Up!";
         }
         else if(currRankingScore > changeRankingScore)
         {
-            //// scoreChangeEffectImage.sprite = ScoreDownImage;
+            scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
+            ScoreChangeText.text = "점수 Down!";
         }
         else
         {
-            // 변경점 없음 - 이미지만 세팅
-            // scoreChangeEffectImage.sprite = ScoreEqualsImage;
+            //scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
+            ScoreChangeText.text = "변동 없음!";
         }
 
         scoreEffectCoroutine = StartCoroutine(IRankScoreEffect(changeRankingScore));
