@@ -27,14 +27,12 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// 일단 User 커스텀 태그만 둠
+    /// User 커스텀 태그
     /// </summary>
     [Serializable]
     public enum ENUM_TAG_TYPE
     {
         Ground = 0,
-        Enemy = 1, // 사라질 예정?
-        Ally = 2, // 사라질 예정?
     }
 
     [Serializable]

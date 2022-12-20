@@ -21,6 +21,18 @@ public class AttackObject : Poolable
     public Transform targetTr = null;
     public bool reverseState;
 
+    protected Coroutine runTimeCheckCoroutine = null;
+
+    public override void OnDisable()
+    {
+        isUsing = false;
+
+        if (runTimeCheckCoroutine != null)
+            StopCoroutine(runTimeCheckCoroutine);
+
+        base.OnDisable();
+    }
+
     public override void Init()
     {
         base.Init();
@@ -54,10 +66,10 @@ public class AttackObject : Poolable
         if (Managers.Battle.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
-                StartCoroutine(IRunTimeCheck(skillValue.runTime));
+                runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
         }
         else
-            StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
     public void FollowingTarget(Transform _targetTr)
@@ -70,6 +82,14 @@ public class AttackObject : Poolable
     {
         if (Managers.Battle.isServerSyncState && PhotonLogicHandler.IsMine(viewID))
             return;
+
+        /* 음.... 이게 맞나 싶긴 하네    
+        if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot && collision.tag == ENUM_TAG_TYPE.Ground.ToString())
+        {
+            DestroyMine();
+            return;
+        }
+        */
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
@@ -129,7 +149,7 @@ public class AttackObject : Poolable
     {
         float realTime = 0.0f;
 
-        while(realTime < _runTime && this.gameObject.activeSelf)
+        while(realTime < _runTime && isUsing)
         {
             realTime += Time.deltaTime;
             
@@ -139,14 +159,14 @@ public class AttackObject : Poolable
             yield return null;
         }
 
+        runTimeCheckCoroutine = null;
         DestroyMine();
     }
         
     public void DestroyMine()
     {
-        if (!this.gameObject.activeSelf) return;
+        if (!isUsing) return;
 
-        isUsing = false;
         targetTr = null;
 
         if (Managers.Battle.isServerSyncState)
@@ -158,6 +178,8 @@ public class AttackObject : Poolable
     [BroadcastMethod]
     public virtual void Sync_DestroyMine()
     {
+        isUsing = false;
+
         Managers.Resource.Destroy(this.gameObject);
     }
 

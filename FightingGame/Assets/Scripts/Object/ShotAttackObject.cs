@@ -46,10 +46,10 @@ public class ShotAttackObject : AttackObject
         if (Managers.Battle.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
-                StartCoroutine(IRunTimeCheck(skillValue.runTime));
+                runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
         }
         else
-            StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
 
         Move_AttackObject(shotSpeed);
     }
