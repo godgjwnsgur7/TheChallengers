@@ -410,11 +410,26 @@ public partial class ActiveCharacter : Character
             Sync_ReverseState(_reverseState);
     }
 
+    public void TransparentState(float color_a)
+    {
+        if (Managers.Battle.isServerSyncState)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, float>
+                (this, Sync_TransparentState, color_a);
+        else
+            Sync_TransparentState(color_a);
+    }
+
     [BroadcastMethod]
     public void Sync_ReverseState(bool _reverseState)
     {
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
+    }
+
+    [BroadcastMethod]
+    public void Sync_TransparentState(float color_a)
+    {
+        spriteRenderer.color = new Color(1f, 1f, 1f, color_a);
     }
 
     public void EndGame()
@@ -439,7 +454,7 @@ public partial class ActiveCharacter : Character
     {
         invincibility = true;
 
-        StartCoroutine(IInvincibleCheck(1f)); // 일단 무적시간을 고정값으로 부여 (임시)
+        StartCoroutine(IInvincibleCheck(1.5f)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
     #region IEnumerator ( Courotine )
@@ -539,8 +554,11 @@ public partial class ActiveCharacter : Character
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
+        TransparentState(0.8f);
+
         yield return new WaitForSeconds(_invincibleTime);
 
+        TransparentState(1f);
         invincibility = false;
     }
     #endregion
