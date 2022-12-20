@@ -6,23 +6,35 @@ using UnityEngine.UI;
 public class RankingScoreUI : MonoBehaviour
 {
     [SerializeField] Image rankEmblemImage;
-    [SerializeField] Image scoreChangeEffectImage; // 오브젝트 비활성화 상태
+    [SerializeField] Image scoreChangeEffectImage;
 
     [SerializeField] Text rankingScoreText;
     [SerializeField] Text ScoreChangeText; // 비어있는 상태
 
     long currRankingScore;
 
+    Coroutine scoreStatusEffectCoroutine = null;
     Coroutine scoreEffectCoroutine = null;
     Coroutine emblemEffectCoroutine = null;
 
+    private void OnEnable()
+    {
+        scoreChangeEffectImage.color = new Color(1, 1, 1, 0);
+
+    }
+
     private void OnDisable()
     {
+        scoreChangeEffectImage.color = new Color(1, 1, 1, 0);
+
         if (scoreEffectCoroutine != null)
             StopCoroutine(scoreEffectCoroutine);
 
         if (emblemEffectCoroutine != null)
             StopCoroutine(emblemEffectCoroutine);
+
+        if (scoreStatusEffectCoroutine != null)
+            StopCoroutine(scoreStatusEffectCoroutine);
     }
 
     public void Open_Score(long _myRankingScore)
@@ -33,8 +45,8 @@ public class RankingScoreUI : MonoBehaviour
         currRankingScore = _myRankingScore;
         rankingScoreText.text = _myRankingScore.ToString();
         rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(currRankingScore);
-    
-        this.gameObject.SetActive(true); 
+
+        this.gameObject.SetActive(true);
     }
 
     public void Update_Score(long changeRankingScore)
@@ -42,7 +54,6 @@ public class RankingScoreUI : MonoBehaviour
         if (Managers.Battle.isCustom)
             return;
 
-        //scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
         scoreChangeEffectImage.gameObject.SetActive(true);
 
         FGDefine.ENUM_RANK_TYPE changeRanking = RankingScoreOperator.Check_RankScore(changeRankingScore);
@@ -50,74 +61,69 @@ public class RankingScoreUI : MonoBehaviour
         if (currRankingScore < changeRankingScore)
         {
             scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreUp");
-            ScoreChangeText.text = "점수 Up!";
         }
-        else if(currRankingScore > changeRankingScore)
+        else if (currRankingScore > changeRankingScore)
         {
             scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
-            ScoreChangeText.text = "점수 Down!";
         }
         else
         {
-            //scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
-            ScoreChangeText.text = "변동 없음!";
+            // 이미지 없음
+            // scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
         }
 
+        scoreStatusEffectCoroutine = StartCoroutine(IFadeOut_ScoreChangeStatusEffect());
         scoreEffectCoroutine = StartCoroutine(IRankScoreEffect(changeRankingScore));
 
         // 이펙트 효과 넣어야 함
         if (RankingScoreOperator.Check_RankScore(currRankingScore) != changeRanking)
-            emblemEffectCoroutine = StartCoroutine(IRankEmblem_DeactiveEffect(changeRanking));
+            emblemEffectCoroutine = StartCoroutine(IFadeIn_RankEmblem(changeRanking));
     }
 
     /// <summary>
     /// 기존 엠블렘이 없어지고 새로 생기는 이펙트
     /// </summary>
-    protected IEnumerator IRankEmblem_DeactiveEffect(FGDefine.ENUM_RANK_TYPE _rank)
+    protected IEnumerator IFadeIn_RankEmblem(FGDefine.ENUM_RANK_TYPE _rank)
     {
-        Color tempColor = rankEmblemImage.color;
-        float runTime = 0.0f;
-        float duration = 1.5f;
+        float runTime = 0.5f;
+        Color color = rankEmblemImage.color;
 
-        while (rankEmblemImage.color.a > 0)
+        while (color.a < 0.1f)
         {
-            runTime += Time.deltaTime;
-            tempColor.a = Mathf.Lerp(rankEmblemImage.color.a, 0, runTime / duration);
-            rankEmblemImage.color = tempColor;
+            color.a -= Time.deltaTime / runTime;
+            scoreChangeEffectImage.color = color;
             yield return null;
         }
-        tempColor.a = 0;
-        rankEmblemImage.color = tempColor;
+
+        color.a = 0.0f;
+        scoreChangeEffectImage.color = color;
 
         if (emblemEffectCoroutine != null)
-            emblemEffectCoroutine = StartCoroutine(IRankEmblem_ActiveEffect(_rank));
+            emblemEffectCoroutine = StartCoroutine(IFadeOut_RankEmblem(_rank));
     }
 
-    protected IEnumerator IRankEmblem_ActiveEffect(FGDefine.ENUM_RANK_TYPE _rank)
+    protected IEnumerator IFadeOut_RankEmblem(FGDefine.ENUM_RANK_TYPE _rank)
     {
-        Color tempColor = rankEmblemImage.color;
-        float runTime = 0.0f;
-        float duration = 1.0f;
-
+        float runTime = 0.5f;
+        Color color = rankEmblemImage.color;
         rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(Managers.Battle.Get_RankDict(_rank));
 
-        while (rankEmblemImage.color.a < 1)
+        while (color.a < 0.9f)
         {
-            runTime += Time.deltaTime;
-            tempColor.a = Mathf.Lerp(rankEmblemImage.color.a, 1, runTime / duration);
-            rankEmblemImage.color = tempColor;
+            color.a += Time.deltaTime / runTime;
+            scoreChangeEffectImage.color = color;
             yield return null;
         }
-        tempColor.a = 1;
-        rankEmblemImage.color = tempColor;
 
+        color.a = 1.0f;
+        scoreChangeEffectImage.color = color;
         emblemEffectCoroutine = null;
     }
 
     protected IEnumerator IRankScoreEffect(long _score)
     {
         float runTime = 0.0f;
-        float duration = 1.5f;
+        float duration = 1.0f;
         long tempRankingScore = currRankingScore;
 
         while (runTime < duration)
@@ -132,5 +138,21 @@ public class RankingScoreUI : MonoBehaviour
         currRankingScore = _score;
         rankingScoreText.text = currRankingScore.ToString();
         scoreEffectCoroutine = null;
+    }
+
+    protected IEnumerator IFadeOut_ScoreChangeStatusEffect()
+    {
+        float fadeTime = 1.0f;
+
+        Color color = scoreChangeEffectImage.color;
+        while (color.a < 0.9f)
+        {
+            color.a += Time.deltaTime / fadeTime;
+            scoreChangeEffectImage.color = color;
+            yield return null;
+        }
+
+        scoreChangeEffectImage.color = new Color(1, 1, 1, 1);
+        scoreStatusEffectCoroutine = null;
     }
 }

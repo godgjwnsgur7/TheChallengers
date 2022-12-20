@@ -189,6 +189,7 @@ public class MainCanvas : BaseCanvas
 
         Try_ConnectMasterServerAndStart();
     }
+
     protected IEnumerator ITextEffect_FadeOut(Text effectTarget)
     {
         effectTarget.color = new Color(1f, 1f, 1f, 1f);
