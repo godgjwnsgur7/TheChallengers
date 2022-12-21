@@ -60,6 +60,13 @@ public class EnemyPlayer : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
         }
 
+        // 스킬 3번
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            CharacterSkillParam skillParam = new CharacterSkillParam(2);
+            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+        }
+
         // 점프
         if (Input.GetKeyDown(KeyCode.M))
         {

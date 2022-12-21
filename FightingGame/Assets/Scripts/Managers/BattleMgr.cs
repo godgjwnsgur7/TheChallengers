@@ -66,28 +66,6 @@ public class BattleMgr
         {ENUM_MAP_TYPE.VolcanicMap, "화산지대" }
     };
 
-    private Dictionary<ENUM_RANK_TYPE, long> rankDict = new Dictionary<ENUM_RANK_TYPE, long>()
-    {
-        { ENUM_RANK_TYPE.S, 2000},
-        { ENUM_RANK_TYPE.A, 1800},
-        { ENUM_RANK_TYPE.B, 1700},
-        { ENUM_RANK_TYPE.C, 1600},
-        { ENUM_RANK_TYPE.D, 1500},
-        { ENUM_RANK_TYPE.E, 1350},
-        { ENUM_RANK_TYPE.F, 0},
-    };
-
-    public long Get_RankDict(ENUM_RANK_TYPE rankType)
-    {
-        if (!rankDict.ContainsKey(rankType))
-        {
-            Debug.Log($"해당하는 랭크 타입이 랭크 사전에 없습니다. : {rankType}");
-            return 0;
-        }
-
-        return rankDict[rankType];
-    }
-
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
     {
         if(!mapNameDict.ContainsKey(mapType))

@@ -38,8 +38,9 @@ public class UserInfoWindowUI : MonoBehaviour, IRoomPostProcess
         }
         else
         {
+            char rank = RankingScoreOperator.Get_RankingEmblemChar(userData.ratingPoint);
             rankEmblemImage.gameObject.SetActive(true);
-            rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(userData.ratingPoint);
+            rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
             ratingPointText.text = $"{userData.ratingPoint}점";
         }
 

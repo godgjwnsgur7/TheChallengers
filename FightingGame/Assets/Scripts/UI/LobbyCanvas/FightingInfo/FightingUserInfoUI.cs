@@ -12,7 +12,7 @@ public class FightingUserInfoUI : MonoBehaviour
     [SerializeField] Text ratingPointText;
     [SerializeField] Text battleRecordText;
 
-    bool isInit = false;
+    public bool isInit = false;
 
     public void Set_UserInfo(DBUserData userData)
     {
@@ -28,8 +28,9 @@ public class FightingUserInfoUI : MonoBehaviour
         }
         else
         {
+            char rank = RankingScoreOperator.Get_RankingEmblemChar(userData.ratingPoint);
             ratingEmblemImage.gameObject.SetActive(true);
-            ratingEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(userData.ratingPoint);
+            ratingEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
             ratingPointText.text = $"{userData.ratingPoint}점";
         }
 

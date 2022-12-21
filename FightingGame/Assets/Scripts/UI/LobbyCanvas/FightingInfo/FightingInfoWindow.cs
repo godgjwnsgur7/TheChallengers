@@ -19,7 +19,8 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
 
         Managers.Battle.Start_ServerSync();
-        Managers.UI.popupCanvas.Play_FadeOutEffect(Wait_PlayFadeInEffect);
+        this.gameObject.SetActive(true);
+        StartCoroutine(IInfoSettingCheck());
     }
 
     public void Close()
@@ -29,8 +30,6 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     public void Wait_PlayFadeInEffect()
     {
-        this.gameObject.SetActive(true);
-
         StartCoroutine(IWaitFadeInEffect(3.0f));
     }
 
@@ -54,7 +53,17 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     private void Set_MapInfo(ENUM_MAP_TYPE _mapType)
     {
-        // 아직 미구현 - Map은 일단 배치되어있음
+        mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
+    }
+
+    protected IEnumerator IInfoSettingCheck()
+    {
+        while((mapImage.sprite == null) || masterFightingInfo.isInit || slaveFightingInfo.isInit)
+        {
+            yield return null;
+        }
+
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Wait_PlayFadeInEffect);
     }
 
     protected IEnumerator IWaitFadeInEffect(float waitTime)
@@ -68,6 +77,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         if(PhotonLogicHandler.IsMasterClient)
         {
+            // 실행 전에 둘 다 들어와있는지 확인해야 하려나?
             StartCoroutine(IWaitGameStart(1.0f));
         }
     }

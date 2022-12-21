@@ -9,7 +9,7 @@ public class RankingScoreUI : MonoBehaviour
     [SerializeField] Image scoreChangeEffectImage;
 
     [SerializeField] Text rankingScoreText;
-    [SerializeField] Text ScoreChangeText; // 비어있는 상태
+    [SerializeField] Text ScoreChangeText;
 
     long currRankingScore;
 
@@ -42,9 +42,11 @@ public class RankingScoreUI : MonoBehaviour
         if (Managers.Battle.isCustom)
             return;
 
+        char rank = RankingScoreOperator.Get_RankingEmblemChar(currRankingScore); 
+
         currRankingScore = _myRankingScore;
         rankingScoreText.text = _myRankingScore.ToString();
-        rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(currRankingScore);
+        rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
 
         this.gameObject.SetActive(true);
     }
@@ -56,7 +58,9 @@ public class RankingScoreUI : MonoBehaviour
 
         scoreChangeEffectImage.gameObject.SetActive(true);
 
-        FGDefine.ENUM_RANK_TYPE changeRanking = RankingScoreOperator.Check_RankScore(changeRankingScore);
+        ScoreChangeText.text = $"{changeRankingScore - currRankingScore}";
+
+        char changeRank = RankingScoreOperator.Get_RankingEmblemChar(changeRankingScore);
 
         if (currRankingScore < changeRankingScore)
         {
@@ -68,22 +72,20 @@ public class RankingScoreUI : MonoBehaviour
         }
         else
         {
-            // 이미지 없음
-            // scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreDown");
+            scoreChangeEffectImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result/Effect_ScoreNone");
         }
 
         scoreStatusEffectCoroutine = StartCoroutine(IFadeOut_ScoreChangeStatusEffect());
         scoreEffectCoroutine = StartCoroutine(IRankScoreEffect(changeRankingScore));
 
-        // 이펙트 효과 넣어야 함
-        if (RankingScoreOperator.Check_RankScore(currRankingScore) != changeRanking)
-            emblemEffectCoroutine = StartCoroutine(IFadeIn_RankEmblem(changeRanking));
+        if (RankingScoreOperator.Get_RankingEmblemChar(currRankingScore) != changeRank)
+            emblemEffectCoroutine = StartCoroutine(IFadeIn_RankEmblem(changeRank));
     }
 
     /// <summary>
     /// 기존 엠블렘이 없어지고 새로 생기는 이펙트
     /// </summary>
-    protected IEnumerator IFadeIn_RankEmblem(FGDefine.ENUM_RANK_TYPE _rank)
+    protected IEnumerator IFadeIn_RankEmblem(char _rank)
     {
         float runTime = 0.5f;
         Color color = rankEmblemImage.color;
@@ -102,11 +104,11 @@ public class RankingScoreUI : MonoBehaviour
             emblemEffectCoroutine = StartCoroutine(IFadeOut_RankEmblem(_rank));
     }
 
-    protected IEnumerator IFadeOut_RankEmblem(FGDefine.ENUM_RANK_TYPE _rank)
+    protected IEnumerator IFadeOut_RankEmblem(char _rank)
     {
         float runTime = 0.5f;
         Color color = rankEmblemImage.color;
-        rankEmblemImage.sprite = RankingScoreOperator.Get_RankingEmblemSprite(Managers.Battle.Get_RankDict(_rank));
+        rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{_rank}");
 
         while (color.a < 0.9f)
         {
