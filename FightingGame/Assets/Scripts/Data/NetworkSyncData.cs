@@ -81,10 +81,12 @@ public class NetworkSyncData : MonoBehaviourPhoton
     }
 
     [BroadcastMethod]
-    public void End_Game()
+    public void TimeOver_EndGame()
     {
         if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
+
+        Managers.Battle.TimeOver();
     }
 
     [BroadcastMethod]
@@ -118,7 +120,7 @@ public class NetworkSyncData : MonoBehaviourPhoton
             PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData, float>
                     (this, Sync_TimerCallBack, 0.0f);
             
-            PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(this, End_Game);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(this, TimeOver_EndGame);
         }
 
         timerCoroutine = null;

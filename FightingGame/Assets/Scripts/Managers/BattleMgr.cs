@@ -146,6 +146,19 @@ public class BattleMgr
         PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Ready_Game);
     }
 
+    public void TimeOver()
+    {
+        float myHpFilling = battleCanvas.Get_StatusWindowUI(activeCharacter.teamType).Get_HpBarFilling();
+        float enemyHpFilling = battleCanvas.Get_StatusWindowUI(enemyCharacter.teamType).Get_HpBarFilling();
+
+        if (myHpFilling > enemyHpFilling)
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
+        else if (myHpFilling < enemyHpFilling)
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
+        else
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
+    }
+
     public void GameStart()
     {
         isGamePlayingState = true;
@@ -175,19 +188,13 @@ public class BattleMgr
             : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
 
         if(isDraw)
-        {
             battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
-        }
         else
         {
             if(isWin)
-            {
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
-            }
             else
-            {
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
-            }
         }
     }
 

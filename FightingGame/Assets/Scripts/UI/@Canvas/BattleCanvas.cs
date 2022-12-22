@@ -35,10 +35,5 @@ public class BattleCanvas : BaseCanvas
         gameStateEffect.Play_GameStateEffect(effectType);
     }
 
-    public void StartGame()
-    {
-        // timer.Start_Timer(EndGame);
-    }
-
     public void EndGame(bool isDraw, bool isWin) => resultWindow.Open(isDraw, isWin);
 }
