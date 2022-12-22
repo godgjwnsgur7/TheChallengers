@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5234198739787816459}
   - component: {fileID: 5132647954888188406}
   - component: {fileID: 2893854960034050824}
-  - component: {fileID: 7917137624041861028}
+  - component: {fileID: 2921542686288712432}
   m_Layer: 0
   m_Name: Knight_SmashSkillObject_2
   m_TagString: Untagged
@@ -77,7 +77,6 @@ MonoBehaviour:
     stunTime: 0
     risingPower: 0
     pushingPower: 0
-    coolTime: 0
   teamType: 0
   attackObjectType: 0
   targetTr: {fileID: 0}
@@ -103,8 +102,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &7917137624041861028
-PolygonCollider2D:
+--- !u!61 &2921542686288712432
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -116,7 +115,7 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.35, y: -1.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -126,11 +125,6 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.43507504, y: -0.7537092}
-      - {x: -1.2192541, y: -0.75892377}
-      - {x: -2.2702494, y: -1.839668}
-      - {x: -2.0468926, y: -3.5173602}
-      - {x: 1.3173388, y: -3.5073657}
-      - {x: 1.490726, y: -1.9196196}
+  serializedVersion: 2
+  m_Size: {x: 5, y: 4}
+  m_EdgeRadius: 0
