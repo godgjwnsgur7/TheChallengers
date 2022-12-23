@@ -49,7 +49,7 @@ public class SoundMgr
         {
             volumeDataList = new List<VolumeData>();
             for (int i = 0; i <= (int)ENUM_SOUND_TYPE.SFX; i++)
-                volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f, 0.7f));
+                volumeDataList.Insert(i, new VolumeData((ENUM_SOUND_TYPE)i, 0.5f, 1f));
         }
     }
 
