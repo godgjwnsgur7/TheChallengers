@@ -58,6 +58,9 @@ public class InputPanel : MonoBehaviour
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
         inputSkillKey.Set_SkillSetting(charInfo.skillCoolTime_3, charType, 3);
+
+        inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
+        inputSkillKey.Set_SkillSetting(charInfo.skillCoolTime_4, charType, 4);
     }
 
     public void Notify_UseSkill(int skillNum)
