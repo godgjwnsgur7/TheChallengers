@@ -141,9 +141,7 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);
-                
-                break;
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);                break;
             case ENUM_CHARACTER_TYPE.Wizard:
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);

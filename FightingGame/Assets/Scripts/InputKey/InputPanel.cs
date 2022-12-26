@@ -37,9 +37,7 @@ public class InputPanel : MonoBehaviour
     {
         inputKey.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
 
-        inputKey.slotImage.color = new Color(1, 1, 1, keySettingData.opacity);
-        if (inputKey.iconImage != null)
-            inputKey.iconImage.color = new Color(1, 1, 1, keySettingData.opacity);
+        inputKey.Set_Opacity(keySettingData.opacity);
 
         inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
     }

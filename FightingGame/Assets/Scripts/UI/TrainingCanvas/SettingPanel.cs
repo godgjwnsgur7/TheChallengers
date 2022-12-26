@@ -32,7 +32,7 @@ public class SettingPanel : MonoBehaviour
     public void OnClick_SetSliderValue(InputKey _inputKey)
     {
         sizeSlider.value = _inputKey.GetComponent<RectTransform>().localScale.x * Get_SizeMaxValue() - 50;
-        opacitySlider.value = (_inputKey.slotImage.color.a - 0.5f) * (Get_OpacityMaxValue() * 2);
+        opacitySlider.value = (_inputKey.Get_Opacity() - 0.5f) * (Get_OpacityMaxValue() * 2);
 
         Set_SizeSliderText($"{(int)sizeSlider.value}%");
         Set_OpacitySliderText($"{(int)opacitySlider.value}%");

@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotImage: {fileID: 553463505732690347}
-  iconImage: {fileID: 3798609219930040790}
   rectTr: {fileID: 6621230002444901959}
   inputKeyNum: 0
+  iconImage: {fileID: 3798609219930040790}
   coolTimeImage: {fileID: 255839850540526844}
 --- !u!1 &322388334186308783
 GameObject:
@@ -192,7 +192,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotImage: {fileID: 160804299666409545}
-  iconImage: {fileID: 0}
   rectTr: {fileID: 8717166584137864418}
   inputKeyNum: 0
   leftArrowImage: {fileID: 1203481374974961667}
@@ -519,9 +518,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotImage: {fileID: 3633521371298724328}
-  iconImage: {fileID: 3633521372138062143}
   rectTr: {fileID: 3633521371176328111}
   inputKeyNum: 0
+  iconImage: {fileID: 3633521372138062143}
   coolTimeImage: {fileID: 6079403160805929354}
 --- !u!1 &3633521371298724330
 GameObject:
@@ -999,9 +998,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotImage: {fileID: 3633521372454873262}
-  iconImage: {fileID: 3633521372111072002}
   rectTr: {fileID: 3633521371904557611}
   inputKeyNum: 0
+  iconImage: {fileID: 3633521372111072002}
   coolTimeImage: {fileID: 2876155641831815117}
 --- !u!1 &3633521372111072012
 GameObject:
@@ -1325,9 +1324,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotImage: {fileID: 3633521371518673183}
-  iconImage: {fileID: 3633521371679526809}
   rectTr: {fileID: 3633521372321405172}
   inputKeyNum: 0
+  iconImage: {fileID: 3633521371679526809}
   coolTimeImage: {fileID: 8755849355943635192}
 --- !u!1 &3633521372372719334
 GameObject:
@@ -1413,8 +1412,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3633521372396394515}
-  - component: {fileID: 3633521372396394513}
   - component: {fileID: 3633521372396394514}
+  - component: {fileID: 7729702927198160162}
   m_Layer: 5
   m_Name: Jump
   m_TagString: Untagged
@@ -1442,22 +1441,6 @@ RectTransform:
   m_AnchoredPosition: {x: 544, y: -448}
   m_SizeDelta: {x: 142, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3633521372396394513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3633521372396394524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbff2baab5517cb4980ebd85b71127e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotImage: {fileID: 3633521371562190703}
-  iconImage: {fileID: 3633521372301366265}
-  rectTr: {fileID: 3633521372396394515}
-  inputKeyNum: 0
 --- !u!114 &3633521372396394514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,7 +1458,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521372396394513}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerDown
           m_Mode: 1
@@ -1491,7 +1474,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521372396394513}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
           m_Mode: 1
@@ -1503,6 +1486,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &7729702927198160162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3633521372396394524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe78539ef39814d4281da1f9803a569c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotImage: {fileID: 3633521371562190703}
+  rectTr: {fileID: 3633521372396394515}
+  inputKeyNum: 0
+  iconImage: {fileID: 3633521372301366265}
 --- !u!1 &3633521372454873256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,8 +1587,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3633521372770104292}
-  - component: {fileID: 3633521372770103834}
   - component: {fileID: 3633521372770103835}
+  - component: {fileID: 4479663431123758387}
   m_Layer: 5
   m_Name: Attack
   m_TagString: Untagged
@@ -1617,22 +1616,6 @@ RectTransform:
   m_AnchoredPosition: {x: 785, y: -353}
   m_SizeDelta: {x: 230, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3633521372770103834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3633521372770104293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbff2baab5517cb4980ebd85b71127e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotImage: {fileID: 3633521371348947706}
-  iconImage: {fileID: 3633521372372719332}
-  rectTr: {fileID: 3633521372770104292}
-  inputKeyNum: 0
 --- !u!114 &3633521372770103835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1650,7 +1633,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521372770103834}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerDown
           m_Mode: 1
@@ -1666,7 +1649,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3633521372770103834}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: OperatingKey, Assembly-CSharp
           m_MethodName: EventTrigger_PointerUp
           m_Mode: 1
@@ -1678,6 +1661,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &4479663431123758387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3633521372770104293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe78539ef39814d4281da1f9803a569c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotImage: {fileID: 3633521371348947706}
+  rectTr: {fileID: 3633521372770104292}
+  inputKeyNum: 0
+  iconImage: {fileID: 3633521372372719332}
 --- !u!1 &3633521372967377148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,9 +1980,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotImage: {fileID: 5793026894734411559}
-  iconImage: {fileID: 1034081181939457453}
   rectTr: {fileID: 7964237749457901653}
   inputKeyNum: 0
+  iconImage: {fileID: 1034081181939457453}
   coolTimeImage: {fileID: 364717389499621971}
 --- !u!1 &4571963471235664194
 GameObject:

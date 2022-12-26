@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class InputSkillKey : InputKey
+public class InputSkillKey : InputBasicKey
 {
     [SerializeField] Image coolTimeImage;
     float coolTime;

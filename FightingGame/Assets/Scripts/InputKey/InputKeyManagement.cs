@@ -166,13 +166,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         _opacityValue = 0.5f + _opacityValue / (settingPanel.Get_OpacityMaxValue() * 2);
 
-        Image inputKeyImage = currInputKey.slotImage;
-        if (inputKeyImage != null)
-            Set_ChangeColor(inputKeyImage, _opacityValue);
-
-        inputKeyImage = currInputKey.iconImage;
-        if (inputKeyImage != null)
-            Set_ChangeColor(inputKeyImage, _opacityValue);
+        currInputKey.Set_Opacity(_opacityValue);
     }
 
     public void Set_ChangeColor(Image _inputKeyImage, float _opacityValue)
@@ -201,7 +195,7 @@ public class InputKeyManagement : MonoBehaviour
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             KeySettingData keySettingData = new KeySettingData(i,
-                inputKeys[i].rectTr.localScale.x, inputKeys[i].slotImage.color.a,
+                inputKeys[i].rectTr.localScale.x, inputKeys[i].Get_Opacity(),
                 inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
             
             keySettingDatas.Add(keySettingData);
