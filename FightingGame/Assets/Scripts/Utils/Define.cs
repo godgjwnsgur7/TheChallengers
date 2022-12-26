@@ -64,11 +64,13 @@ namespace FGDefine
     public enum ENUM_INPUTKEY_NAME
     {
         Direction = 0,
-        Attack = 1,
-        Skill1 = 2,
-        Skill2 = 3,
-        Skill3 = 4,
-        Jump = 5,
+        Jump = 1,
+        Dash = 2,
+        Attack = 3,
+        Skill1 = 4,
+        Skill2 = 5,
+        Skill3 = 6,
+        Skill4 = 7,
 
         Max
     }
@@ -163,6 +165,7 @@ namespace FGDefine
         Idle,
         Move,
         Jump,
+        Dash,
         Attack,
         Skill,
         Down,

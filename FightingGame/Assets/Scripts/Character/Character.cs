@@ -98,6 +98,13 @@ public class Character : MonoBehaviourPhoton
         rigid2D.AddForce(Vector2.up * MyCharInfo.jumpPower, ForceMode2D.Impulse);
     }
 
+    public virtual void Dash()
+    {
+        currState = ENUM_PLAYER_STATE.Dash;
+
+        rigid2D.velocity = Vector2.zero;
+    }
+
     public virtual void Attack(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Attack;

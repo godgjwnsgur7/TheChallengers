@@ -110,6 +110,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("HitState", AnimParameterType.Bool),
             new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
             new AnimatorSyncParam("IsDie", AnimParameterType.Bool),
+            new AnimatorSyncParam("IsDash", AnimParameterType.Bool),
 
             new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
@@ -117,6 +118,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("DashTrigger", AnimParameterType.Trigger),
         };
 
         return syncParams;
@@ -200,7 +202,7 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
-        if (jumpState || currState == ENUM_PLAYER_STATE.Attack)
+        if (jumpState)
             return;
 
         if (currState != ENUM_PLAYER_STATE.Idle &&
@@ -215,9 +217,25 @@ public partial class ActiveCharacter : Character
         SetAnimTrigger("JumpTrigger");
     }
 
+    public override void Dash()
+    {
+        if (jumpState || currState == ENUM_PLAYER_STATE.Dash)
+            return;
+
+        if (currState != ENUM_PLAYER_STATE.Idle &&
+            currState != ENUM_PLAYER_STATE.Move)
+            return;
+
+        base.Dash();
+
+        SetAnimBool("IsDash", true);
+        SetAnimTrigger("DashTrigger");
+    }
+
     public override void Attack(CharacterParam param)
     {
-        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
+        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill
+            || currState == ENUM_PLAYER_STATE.Dash)
             return;
 
         if (attackObject != null)
