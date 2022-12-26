@@ -38,6 +38,7 @@ public class CharacterInfo
     public float maxHP;
     public float moveSpeed;
     public float jumpPower;
+    public float dashPower;
     public float skillCoolTime_Dash;
     public float skillCoolTime_1;
     public float skillCoolTime_2;

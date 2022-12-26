@@ -226,8 +226,11 @@ public partial class ActiveCharacter : Character
 
         base.Dash();
 
+        StartCoroutine(IDashTimeCheck(0.3f));
+
         SetAnimBool("IsDash", true);
         SetAnimTrigger("DashTrigger");
+
     }
 
     public override void Attack(CharacterParam param)
@@ -250,12 +253,13 @@ public partial class ActiveCharacter : Character
     }
 
     public override void Skill(CharacterParam param)
-    {
+    {  
+        if (jumpState || currState == ENUM_PLAYER_STATE.Skill
+            || currState == ENUM_PLAYER_STATE.Dash)
+            return;
+
         if (attackObject != null)
             attackObject = null;
-
-        if (currState == ENUM_PLAYER_STATE.Skill || jumpState)
-            return;
 
         base.Skill(param);
 
@@ -566,6 +570,13 @@ public partial class ActiveCharacter : Character
 
         dropCoroutine = null;
         SetAnimBool("IsDrop", true);
+    }
+
+    private IEnumerator IDashTimeCheck(float _DashTime)
+    {
+        yield return new WaitForSeconds(_DashTime);
+
+        SetAnimBool("IsDash", false);
     }
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)

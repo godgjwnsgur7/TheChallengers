@@ -74,6 +74,7 @@ public class PlayerCharacter : MonoBehaviour
                 PlayerCommand(ENUM_PLAYER_STATE.Jump);
                 break;
             case ENUM_INPUTKEY_NAME.Dash:
+
                 PlayerCommand(ENUM_PLAYER_STATE.Dash);
                 break;
             case ENUM_INPUTKEY_NAME.Attack:
