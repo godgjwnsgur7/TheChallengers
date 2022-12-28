@@ -18,10 +18,10 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void OnClick_Matching()
     {
-        Managers.UI.popupCanvas.Open_CharSelectPopup(Check_MathingStart);
+        Managers.UI.popupCanvas.Open_CharSelectPopup(CallBack_MathingStart);
     }
 
-    public void Check_MathingStart(ENUM_CHARACTER_TYPE charType)
+    public void CallBack_MathingStart(ENUM_CHARACTER_TYPE charType)
     {
         selectedCharType = charType;
 

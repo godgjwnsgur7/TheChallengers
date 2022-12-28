@@ -8,9 +8,15 @@ using System;
 public class InputSkillKey : InputBasicKey
 {
     [SerializeField] Image coolTimeImage;
-    float coolTime;
+    Button skillButton;
 
     Coroutine coolTimeCoroutine;
+    float coolTime;
+    
+    void Start()
+    {
+        skillButton = GetComponent<Button>();
+    }
 
     public override void EventTrigger_PointerDown()
     {
@@ -35,6 +41,7 @@ public class InputSkillKey : InputBasicKey
 
     protected IEnumerator ICoolTime()
     {
+        skillButton.interactable = false;
         float coolTimeFillAmount = 1.0f;
 
         while (coolTimeFillAmount > 0.01f)
@@ -47,5 +54,6 @@ public class InputSkillKey : InputBasicKey
         coolTimeImage.fillAmount = 0.0f;
         coolTimeCoroutine = null;
         coolTimeImage.gameObject.SetActive(false);
+        skillButton.interactable = true;
     }
 }

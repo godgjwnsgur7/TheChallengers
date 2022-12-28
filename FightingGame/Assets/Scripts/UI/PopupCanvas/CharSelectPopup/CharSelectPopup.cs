@@ -7,9 +7,12 @@ using FGDefine;
 
 public class CharSelectPopup : PopupUI
 {
+    [SerializeField] CharPanel charPanel;
 
     Action<ENUM_CHARACTER_TYPE> charTypeCallBack = null;
     ENUM_CHARACTER_TYPE selectedCharType = ENUM_CHARACTER_TYPE.Default;
+
+    bool isInit = false;
 
     public void Open(Action<ENUM_CHARACTER_TYPE> _charTypeCallBack)
     {
@@ -19,18 +22,23 @@ public class CharSelectPopup : PopupUI
             return;
         }
 
+        if(!isInit)
+        {
+            isInit = true;
+            charPanel.Init(Set_SelectedCharTypeCallBack);
+        }
+
         charTypeCallBack = _charTypeCallBack;
         this.gameObject.SetActive(true);
     }
 
-    public void OnClick_Char(string charTypeName)
+    public void Set_SelectedCharTypeCallBack(ENUM_CHARACTER_TYPE _selectedCharType)
     {
-        selectedCharType = (ENUM_CHARACTER_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), charTypeName);
-    
-
+        selectedCharType = _selectedCharType;
+        charPanel.Update_SelectCharState(selectedCharType);
     }
 
-    public void OnClick_Select()
+    public void OnClick_SelectCompletion()
     {
         if (selectedCharType == ENUM_CHARACTER_TYPE.Default || selectedCharType == ENUM_CHARACTER_TYPE.Max)
         {
@@ -48,5 +56,6 @@ public class CharSelectPopup : PopupUI
 
         charTypeCallBack = null;
         selectedCharType = ENUM_CHARACTER_TYPE.Default;
+        charPanel.Update_SelectCharState(selectedCharType);
     }
 }

@@ -81,15 +81,15 @@ public class ButtonPanel : UIElement
     }
 
     // 캐릭터 선택창 오픈
-    public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectPlayerCharacter);
-    public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(OnClick_SelectEnemyCharacter);
+    public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(Set_PlayerCharCallBack);
+    public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(Set_EnemyCharCallBack);
 
-    public void OnClick_SelectPlayerCharacter(ENUM_CHARACTER_TYPE _charType)
+    public void Set_PlayerCharCallBack(ENUM_CHARACTER_TYPE _charType)
     {
         SelectPlayerCharacter(_charType);
         this.Close();
     }
-    public void OnClick_SelectEnemyCharacter(ENUM_CHARACTER_TYPE _charType)
+    public void Set_EnemyCharCallBack(ENUM_CHARACTER_TYPE _charType)
     { 
         SelectEnemyCharacter(_charType);
         this.Close();
