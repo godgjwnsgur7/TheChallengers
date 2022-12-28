@@ -10,6 +10,7 @@ public class InputKeyManagement : MonoBehaviour
 {
     public bool isMove = false;
     public bool isValueChange = false;
+    private bool isSameBtn = false;
 
     [SerializeField] SettingPanel settingPanel;
 
@@ -99,7 +100,10 @@ public class InputKeyManagement : MonoBehaviour
     {
         isMove = false;
 
-        //settingPanel.Show_SettingPanel();
+        if(!isSameBtn)
+            settingPanel.OnClick_SetSliderValue(currInputKey);
+
+        isSameBtn = false;
     }
 
     public void OnPoint_DownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
@@ -110,12 +114,10 @@ public class InputKeyManagement : MonoBehaviour
         isValueChange = true;
         isMove = true;
 
-        bool isSame = false;
-
         if (currInputKey != null && currInputKey.inputKeyNum == (int)_inputKeyName)
-            isSame = true;
+            isSameBtn = true;
 
-        if (!isSame)
+        if (!isSameBtn)
         {
             currInputKey = inputPanel.Get_InputKey(_inputKeyName);
 
@@ -124,7 +126,6 @@ public class InputKeyManagement : MonoBehaviour
 
             currAreaKey = areaPanel.Get_AreaKey(_inputKeyName);
             currAreaKey.Set_isSelect(true);
-            settingPanel.OnClick_SetSliderValue(currInputKey);
         }
     }
 
@@ -303,6 +304,8 @@ public class InputKeyManagement : MonoBehaviour
         areaPanel.Set_isReset(true);
         areaPanel.Init();
         areaPanel.transform.SetAsFirstSibling();
+
+        settingPanel.Reset_SettingPanel();
     }
 
     public void Save_InputKey()
