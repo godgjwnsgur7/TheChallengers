@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using FGDefine;
 
 public class CharSelectPopup : PopupUI
 {
+
     Action<ENUM_CHARACTER_TYPE> charTypeCallBack = null;
+    ENUM_CHARACTER_TYPE selectedCharType = ENUM_CHARACTER_TYPE.Default;
 
     public void Open(Action<ENUM_CHARACTER_TYPE> _charTypeCallBack)
     {
@@ -22,22 +25,28 @@ public class CharSelectPopup : PopupUI
 
     public void OnClick_Char(string charTypeName)
     {
-        ENUM_CHARACTER_TYPE charType = (ENUM_CHARACTER_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), charTypeName);
+        selectedCharType = (ENUM_CHARACTER_TYPE)Enum.Parse(typeof(ENUM_CHARACTER_TYPE), charTypeName);
+    
 
-        if (charType == ENUM_CHARACTER_TYPE.Default || charType == ENUM_CHARACTER_TYPE.Max)
+    }
+
+    public void OnClick_Select()
+    {
+        if (selectedCharType == ENUM_CHARACTER_TYPE.Default || selectedCharType == ENUM_CHARACTER_TYPE.Max)
         {
-            Debug.Log($"{charTypeName} 이 charType에 없습니다.");
+            Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택하지 않았습니다.");
             return;
         }
 
-        charTypeCallBack(charType);
-        Close();
+        charTypeCallBack(selectedCharType);
+        OnClick_Exit();
     }
 
-    public void Close()
+    public void OnClick_Exit()
     {
         this.gameObject.SetActive(false);
 
         charTypeCallBack = null;
+        selectedCharType = ENUM_CHARACTER_TYPE.Default;
     }
 }
