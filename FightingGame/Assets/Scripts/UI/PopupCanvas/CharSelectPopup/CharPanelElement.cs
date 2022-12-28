@@ -31,19 +31,11 @@ public class CharPanelElement : MonoBehaviour
 
         charAreaImage.gameObject.GetComponent<Button>().onClick.AddListener(OnClick_CharType);
 
-        /* // CharIconImage Setting
+        /* // CharIconImage Setting (임시)
         charAreaImage.gameObject.transform.GetChild(0).GetComponent<Image>().sprite
             = Managers.Resource.Load<Sprite>("캐릭터 아이콘 경로 입력");
         */
     }
-
-    public void Set_CharAreaImageColor(Color _color)
-    {
-        charAreaImage.color = _color;
-    }
-
-    public void OnClick_CharType()
-    {
-        selectedCharTypeCallBack(myCharType);
-    }
+    public void Set_CharAreaImageColor(Color _color) => charAreaImage.color = _color;
+    public void OnClick_CharType() => selectedCharTypeCallBack(myCharType);
 }
