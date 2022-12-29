@@ -6,7 +6,7 @@ using FGDefine;
 
 public class Character : MonoBehaviourPhoton
 {
-    public Rigidbody2D rigid2D;
+    protected Rigidbody2D rigid2D;
     public Collider Col
     {
         get;
@@ -146,6 +146,8 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = new Vector2(0, rigid2D.velocity.y); // 받고있는 힘 초기화
         rigid2D.AddForce(vec, ForceMode2D.Impulse);
     }
+
+    public void ValueClear_Rigid() => rigid2D.velocity = Vector2.zero;
 
     [BroadcastMethod]
     public void Set_TeamType(ENUM_TEAM_TYPE _teamType)

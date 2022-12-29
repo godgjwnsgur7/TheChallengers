@@ -13,11 +13,13 @@ public class DataMgr
 {
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
     public Dictionary<int, CharacterInfo> CharInfoDict { get; private set; } = new Dictionary<int, CharacterInfo>();
+    public GameInfo gameInfo { get; private set; } = new GameInfo();
 
     public void Init()
     {
         SkillDict = LoadJson<SkillData, int, Skill>("SkillData").MakeDict();
         CharInfoDict = LoadJson<CharacterData, int, CharacterInfo>("CharacterData").MakeDict();
+        // gameInfo = 
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
@@ -25,4 +27,5 @@ public class DataMgr
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
         return JsonUtility.FromJson<Loader>(textAsset.text);
     }
+
 }

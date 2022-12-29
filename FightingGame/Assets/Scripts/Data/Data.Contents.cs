@@ -59,3 +59,12 @@ public class CharacterData : ILoader<int, CharacterInfo>
     }
 }
 #endregion
+
+#region GameInfo
+[Serializable]
+public class GameInfo
+{
+    float test;
+
+}
+#endregion

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Character Core : Jump - Landing
+/// Character Core : 
 /// </summary>
-public class Landing : StateMachineBehaviour
+public class StandHitImmunity: StateMachineBehaviour
 {
     private ActiveCharacter activeCharacter;
 
@@ -16,8 +16,7 @@ public class Landing : StateMachineBehaviour
 
         if (!activeCharacter.isControl) return;
 
-        activeCharacter.ValueClear_Rigid();
-        activeCharacter.currState = FGDefine.ENUM_PLAYER_STATE.Idle;
+        // 구현해야 함 (임시)
     }
 
 }
