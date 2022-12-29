@@ -55,7 +55,7 @@ public class CharacterAttackParam : CharacterParam
 }
 
 /// <summary>
-/// 캐릭터의 스킬 번호 ( 0 ~ 3 )
+/// 캐릭터의 스킬 번호 ( 0 ~ 4 ) 0 : Dash
 /// </summary>
 [Serializable]
 public class CharacterSkillParam : CharacterParam

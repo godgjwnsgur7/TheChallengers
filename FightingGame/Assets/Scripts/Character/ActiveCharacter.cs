@@ -228,9 +228,9 @@ public partial class ActiveCharacter : Character
 
         StartCoroutine(IDashTimeCheck(0.3f));
 
+        Managers.Input.Notify_UseSkill(0);
         SetAnimBool("IsDash", true);
         SetAnimTrigger("DashTrigger");
-
     }
 
     public override void Attack(CharacterParam param)

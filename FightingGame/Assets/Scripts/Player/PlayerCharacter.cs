@@ -74,7 +74,6 @@ public class PlayerCharacter : MonoBehaviour
                 PlayerCommand(ENUM_PLAYER_STATE.Jump);
                 break;
             case ENUM_INPUTKEY_NAME.Dash:
-
                 PlayerCommand(ENUM_PLAYER_STATE.Dash);
                 break;
             case ENUM_INPUTKEY_NAME.Attack:
@@ -83,19 +82,19 @@ public class PlayerCharacter : MonoBehaviour
                 activeCharacter.Change_AttackState(true);
                 break;
             case ENUM_INPUTKEY_NAME.Skill1:
-                CharacterSkillParam skillParam1 = new CharacterSkillParam(0);
+                CharacterSkillParam skillParam1 = new CharacterSkillParam(1);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam1);
                 break;
             case ENUM_INPUTKEY_NAME.Skill2:
-                CharacterSkillParam skillParam2 = new CharacterSkillParam(1);
+                CharacterSkillParam skillParam2 = new CharacterSkillParam(2);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam2);
                 break;
             case ENUM_INPUTKEY_NAME.Skill3:
-                CharacterSkillParam skillParam3 = new CharacterSkillParam(2);
+                CharacterSkillParam skillParam3 = new CharacterSkillParam(3);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam3);
                 break;
             case ENUM_INPUTKEY_NAME.Skill4:
-                CharacterSkillParam skillParam4 = new CharacterSkillParam(3);
+                CharacterSkillParam skillParam4 = new CharacterSkillParam(4);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam4);
                 break;
         }

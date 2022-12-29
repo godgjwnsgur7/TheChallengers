@@ -26,10 +26,12 @@ public class InputSkillKey : InputBasicKey
         base.EventTrigger_PointerDown();
     }
 
-    public void Set_SkillSetting(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
+    public void Set_SkillInfo(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
     {
         coolTime = _coolTime;
-        iconImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/SkillKey/Icon_{_charType}Skill{_num}");
+        
+        if(_num != 0) // 대쉬스킬 예외처리
+            iconImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/SkillKey/Icon_{_charType}Skill{_num}");
     }
 
     public void Use_Skill()
@@ -41,7 +43,6 @@ public class InputSkillKey : InputBasicKey
 
     protected IEnumerator ICoolTime()
     {
-        skillButton.interactable = false;
         float coolTimeFillAmount = 1.0f;
 
         while (coolTimeFillAmount > 0.01f)
@@ -54,6 +55,5 @@ public class InputSkillKey : InputBasicKey
         coolTimeImage.fillAmount = 0.0f;
         coolTimeCoroutine = null;
         coolTimeImage.gameObject.SetActive(false);
-        skillButton.interactable = true;
     }
 }
