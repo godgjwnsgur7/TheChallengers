@@ -10,19 +10,21 @@ public class InputKey : MonoBehaviour
     protected Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack;
     protected Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack;
 
-    public Image slotImage;
-    public Image iconImage;
+    [SerializeField] protected Image slotImage;
 
     public RectTransform rectTr;
     public int inputKeyNum;
+
     bool isInit = false;
     
     public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (isInit) return;
-
         isInit = true;
-        rectTr = this.GetComponent<RectTransform>();
+
+        if(rectTr == null)
+            rectTr = this.GetComponent<RectTransform>();
+        
         inputKeyNum = (int)Enum.Parse(typeof(ENUM_INPUTKEY_NAME), gameObject.name);
 
         OnPointDownCallBack = _OnPointDownCallBack;
@@ -37,11 +39,7 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        if(slotImage != null)
-            slotImage.color = new Color(1f, 1f, 1f, 0.9f);
-        
-        if(iconImage != null)
-            iconImage.color = new Color(1f, 1f, 1f, 0.9f);
+        Set_Opacity(0.9f);
 
         OnPointDownCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
@@ -54,12 +52,20 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        if (slotImage != null)
-            slotImage.color = new Color(1f, 1f, 1f, 1f);
-
-        if (iconImage != null)
-            iconImage.color = new Color(1f, 1f, 1f, 1f);
+        Set_Opacity(1f);
 
         OnPointUpCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
+    }
+
+    public virtual void Set_Opacity(float _opacity)
+    {
+        Color changeColor = slotImage.color;
+        changeColor.a = _opacity;
+        slotImage.color = changeColor;
+    }
+
+    public float Get_Opacity()
+    {
+        return slotImage.color.a;
     }
 }

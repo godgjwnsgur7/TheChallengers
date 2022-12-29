@@ -110,6 +110,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("HitState", AnimParameterType.Bool),
             new AnimatorSyncParam("IsDrop", AnimParameterType.Bool),
             new AnimatorSyncParam("IsDie", AnimParameterType.Bool),
+            new AnimatorSyncParam("IsDash", AnimParameterType.Bool),
 
             new AnimatorSyncParam("AttackTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("JumpTrigger", AnimParameterType.Trigger),
@@ -117,6 +118,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("DropTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("DashTrigger", AnimParameterType.Trigger),
         };
 
         return syncParams;
@@ -139,9 +141,7 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);
-                
-                break;
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);                break;
             case ENUM_CHARACTER_TYPE.Wizard:
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
@@ -200,7 +200,7 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
-        if (jumpState || currState == ENUM_PLAYER_STATE.Attack)
+        if (jumpState)
             return;
 
         if (currState != ENUM_PLAYER_STATE.Idle &&
@@ -215,9 +215,28 @@ public partial class ActiveCharacter : Character
         SetAnimTrigger("JumpTrigger");
     }
 
+    public override void Dash()
+    {
+        if (jumpState || currState == ENUM_PLAYER_STATE.Dash)
+            return;
+
+        if (currState != ENUM_PLAYER_STATE.Idle &&
+            currState != ENUM_PLAYER_STATE.Move)
+            return;
+
+        base.Dash();
+
+        StartCoroutine(IDashTimeCheck(0.3f));
+
+        Managers.Input.Notify_UseSkill(0);
+        SetAnimBool("IsDash", true);
+        SetAnimTrigger("DashTrigger");
+    }
+
     public override void Attack(CharacterParam param)
     {
-        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill)
+        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill
+            || currState == ENUM_PLAYER_STATE.Dash)
             return;
 
         if (attackObject != null)
@@ -234,12 +253,13 @@ public partial class ActiveCharacter : Character
     }
 
     public override void Skill(CharacterParam param)
-    {
+    {  
+        if (jumpState || currState == ENUM_PLAYER_STATE.Skill
+            || currState == ENUM_PLAYER_STATE.Dash)
+            return;
+
         if (attackObject != null)
             attackObject = null;
-
-        if (currState == ENUM_PLAYER_STATE.Skill || jumpState)
-            return;
 
         base.Skill(param);
 
@@ -550,6 +570,13 @@ public partial class ActiveCharacter : Character
 
         dropCoroutine = null;
         SetAnimBool("IsDrop", true);
+    }
+
+    private IEnumerator IDashTimeCheck(float _DashTime)
+    {
+        yield return new WaitForSeconds(_DashTime);
+
+        SetAnimBool("IsDash", false);
     }
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)

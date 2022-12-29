@@ -5,12 +5,18 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class InputSkillKey : InputKey
+public class InputSkillKey : InputBasicKey
 {
     [SerializeField] Image coolTimeImage;
-    float coolTime;
+    Button skillButton;
 
     Coroutine coolTimeCoroutine;
+    float coolTime;
+    
+    void Start()
+    {
+        skillButton = GetComponent<Button>();
+    }
 
     public override void EventTrigger_PointerDown()
     {
@@ -20,10 +26,12 @@ public class InputSkillKey : InputKey
         base.EventTrigger_PointerDown();
     }
 
-    public void Set_SkillSetting(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
+    public void Set_SkillInfo(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
     {
         coolTime = _coolTime;
-        iconImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/SkillKey/Icon_{_charType}Skill{_num}");
+        
+        if(_num != 0) // 대쉬스킬 예외처리
+            iconImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/SkillKey/Icon_{_charType}Skill{_num}");
     }
 
     public void Use_Skill()

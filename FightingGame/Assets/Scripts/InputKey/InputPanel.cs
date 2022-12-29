@@ -37,9 +37,7 @@ public class InputPanel : MonoBehaviour
     {
         inputKey.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
 
-        inputKey.slotImage.color = new Color(1, 1, 1, keySettingData.opacity);
-        if (inputKey.iconImage != null)
-            inputKey.iconImage.color = new Color(1, 1, 1, keySettingData.opacity);
+        inputKey.Set_Opacity(keySettingData.opacity);
 
         inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
     }
@@ -50,14 +48,20 @@ public class InputPanel : MonoBehaviour
 
         InputSkillKey inputSkillKey;
 
+        inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Dash] as InputSkillKey;
+        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_Dash, charType, 0);
+
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
-        inputSkillKey.Set_SkillSetting(charInfo.skillCoolTime_1, charType, 1);
+        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_1, charType, 1);
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
-        inputSkillKey.Set_SkillSetting(charInfo.skillCoolTime_2, charType, 2);
+        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_2, charType, 2);
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
-        inputSkillKey.Set_SkillSetting(charInfo.skillCoolTime_3, charType, 3);
+        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_3, charType, 3);
+
+        inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
+        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_4, charType, 4);
     }
 
     public void Notify_UseSkill(int skillNum)
@@ -67,15 +71,23 @@ public class InputPanel : MonoBehaviour
         switch (skillNum)
         {
             case 0:
-                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Dash] as InputSkillKey;
                 inputSkillKey.Use_Skill();
                 break;
             case 1:
-                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
                 inputSkillKey.Use_Skill();
                 break;
             case 2:
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
+                inputSkillKey.Use_Skill();
+                break;
+            case 3:
                 inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
+                inputSkillKey.Use_Skill();
+                break;
+            case 4:
+                inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
                 inputSkillKey.Use_Skill();
                 break;
         }

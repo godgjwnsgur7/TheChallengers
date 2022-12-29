@@ -38,9 +38,12 @@ public class CharacterInfo
     public float maxHP;
     public float moveSpeed;
     public float jumpPower;
+    public float dashPower;
+    public float skillCoolTime_Dash;
     public float skillCoolTime_1;
     public float skillCoolTime_2;
     public float skillCoolTime_3;
+    public float skillCoolTime_4;
 }
 
 public class CharacterData : ILoader<int, CharacterInfo>

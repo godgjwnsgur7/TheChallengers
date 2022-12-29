@@ -58,19 +58,20 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// 해당 스크립트를 가진 오브젝트가 자식으로 가진 조작키의 오브젝트 이름과 같아야 함
+    /// Prefabs/UI의 InputPanel, AreaPanel가 가진 조작키의 오브젝트 이름들과 같아야 함
     /// </summary>
     [Serializable]
     public enum ENUM_INPUTKEY_NAME
     {
         Direction = 0,
-        Attack = 1,
-        Skill1 = 2,
-        Skill2 = 3,
-        Skill3 = 4,
-        Jump = 5,
-
-        Max
+        Jump = 1,
+        Dash = 2,
+        Attack = 3,
+        Skill1 = 4,
+        Skill2 = 5,
+        Skill3 = 6,
+        Skill4 = 7,
+        Max = 8
     }
 
     /// <summary>
@@ -81,7 +82,7 @@ namespace FGDefine
     {
         ForestMap = 0,
         VolcanicMap = 1,
-        Max = 2,
+        Max = 2
     }
 
     /// <summary>
@@ -149,7 +150,6 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        // 테스트용 - 얘 왜 앞에 대문자 아니야? (확인 시 주석 지우셈)
         win,
         loose,
         walk,
@@ -163,6 +163,7 @@ namespace FGDefine
         Idle,
         Move,
         Jump,
+        Dash,
         Attack,
         Skill,
         Down,

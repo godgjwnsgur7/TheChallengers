@@ -70,25 +70,32 @@ public class PlayerCharacter : MonoBehaviour
                 if (moveCoroutine == null)
                     moveCoroutine = StartCoroutine(IMove());
                 break;
+            case ENUM_INPUTKEY_NAME.Jump:
+                PlayerCommand(ENUM_PLAYER_STATE.Jump);
+                break;
+            case ENUM_INPUTKEY_NAME.Dash:
+                PlayerCommand(ENUM_PLAYER_STATE.Dash);
+                break;
             case ENUM_INPUTKEY_NAME.Attack:
                 CharacterAttackParam attackParam = new CharacterAttackParam(ENUM_ATTACKOBJECT_NAME.Knight_Attack1, activeCharacter.reverseState);
                 PlayerCommand(ENUM_PLAYER_STATE.Attack, attackParam);
                 activeCharacter.Change_AttackState(true);
                 break;
             case ENUM_INPUTKEY_NAME.Skill1:
-                CharacterSkillParam skillParam1 = new CharacterSkillParam(0);
+                CharacterSkillParam skillParam1 = new CharacterSkillParam(1);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam1);
                 break;
             case ENUM_INPUTKEY_NAME.Skill2:
-                CharacterSkillParam skillParam2 = new CharacterSkillParam(1);
+                CharacterSkillParam skillParam2 = new CharacterSkillParam(2);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam2);
                 break;
             case ENUM_INPUTKEY_NAME.Skill3:
-                CharacterSkillParam skillParam3 = new CharacterSkillParam(2);
+                CharacterSkillParam skillParam3 = new CharacterSkillParam(3);
                 PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam3);
                 break;
-            case ENUM_INPUTKEY_NAME.Jump:
-                PlayerCommand(ENUM_PLAYER_STATE.Jump);
+            case ENUM_INPUTKEY_NAME.Skill4:
+                CharacterSkillParam skillParam4 = new CharacterSkillParam(4);
+                PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam4);
                 break;
         }
     }
@@ -185,6 +192,9 @@ public class PlayerCharacter : MonoBehaviour
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
                 break;
+            case ENUM_PLAYER_STATE.Dash:
+                activeCharacter.Dash();
+                break;
             case ENUM_PLAYER_STATE.Jump:
                 activeCharacter.Jump();
                 break;
@@ -195,7 +205,7 @@ public class PlayerCharacter : MonoBehaviour
                 activeCharacter.Skill(param);
                 break;
             case ENUM_PLAYER_STATE.Hit:
-                Debug.Log("주의! PlayerCharacter에 Hit 명령이 들어옴");
+                Debug.LogError("주의! PlayerCharacter에 Hit 명령이 들어옴");
                 break;
             case ENUM_PLAYER_STATE.Die:
                 activeCharacter.Die();
