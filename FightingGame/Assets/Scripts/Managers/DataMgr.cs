@@ -19,7 +19,7 @@ public class DataMgr
     {
         SkillDict = LoadJson<SkillData, int, Skill>("SkillData").MakeDict();
         CharInfoDict = LoadJson<CharacterData, int, CharacterInfo>("CharacterData").MakeDict();
-        // gameInfo = 
+        gameInfo = LoadJson<GameInfo>("GameData");
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
@@ -28,4 +28,9 @@ public class DataMgr
         return JsonUtility.FromJson<Loader>(textAsset.text);
     }
 
+    Loader LoadJson<Loader>(string path) where Loader : class
+    {
+        TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
+        return JsonUtility.FromJson<Loader>(textAsset.text);
+    }
 }
