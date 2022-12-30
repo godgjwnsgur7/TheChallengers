@@ -64,7 +64,7 @@ public class CharacterData : ILoader<int, CharacterInfo>
 [Serializable]
 public class GameInfo
 {
-    public float test;
-
+    public float invincibleTime; // 무적상태에서 기상 후 무적시간
+    public float dashSkillTime; // 대쉬시간
 }
 #endregion

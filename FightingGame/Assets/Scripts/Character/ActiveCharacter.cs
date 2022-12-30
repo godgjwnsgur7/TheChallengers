@@ -226,7 +226,7 @@ public partial class ActiveCharacter : Character
 
         base.Dash();
 
-        StartCoroutine(IDashTimeCheck(0.3f));
+        StartCoroutine(IDashTimeCheck(Managers.Data.gameInfo.dashSkillTime));
 
         Managers.Input.Notify_UseSkill(0);
         SetAnimBool("IsDash", true);
@@ -474,7 +474,7 @@ public partial class ActiveCharacter : Character
     {
         invincibility = true;
 
-        StartCoroutine(IInvincibleCheck(1.5f)); // 일단 무적시간을 고정값으로 부여 (임시)
+        StartCoroutine(IInvincibleCheck(Managers.Data.gameInfo.invincibleTime)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
     #region IEnumerator ( Courotine )
@@ -583,9 +583,14 @@ public partial class ActiveCharacter : Character
     {
         TransparentState(0.8f);
 
+        while(currState == ENUM_PLAYER_STATE.Hit)
+            yield return null;
+
         yield return new WaitForSeconds(_invincibleTime);
 
-        TransparentState(1f);
+        if(currState != ENUM_PLAYER_STATE.Die)
+            TransparentState(1f);
+    
         invincibility = false;
     }
     #endregion
