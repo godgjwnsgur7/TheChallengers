@@ -19,7 +19,12 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    protected float currHP;
+    public float currHP
+    {
+        get;
+        protected set;
+    }
+
     protected float inputArrowDir = 0.0f;
 
     public ENUM_CHARACTER_TYPE characterType;

@@ -16,6 +16,8 @@ public partial class ActiveCharacter : Character
     Coroutine stunTimeCoroutine;
     Coroutine landCoroutine;
     Coroutine dropCoroutine;
+    Coroutine invincibleCoroutine;
+    Coroutine hitImmunityCoroutine;
 
     public float stunTime;
     public float currStunTime;
@@ -119,6 +121,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("DieTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("DashTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("ImmunityTrigger", AnimParameterType.Trigger),
         };
 
         return syncParams;
@@ -294,7 +297,10 @@ public partial class ActiveCharacter : Character
                 SetAnimTrigger("HitTrigger");
 
                 base.Hit(param);
-                
+
+                if (hitImmunityCoroutine == null)
+                    hitImmunityCoroutine = StartCoroutine(IHitImmunityCheck(currHP));
+
                 Vector2 getPowerDir = new Vector2(_skillData.pushingPower, _skillData.risingPower);
 
                 if (attackParam.reverseState)
@@ -319,7 +325,7 @@ public partial class ActiveCharacter : Character
                     return;
                 }
 
-                if(jumpState && landCoroutine == null)
+                if (jumpState && landCoroutine == null)
                 {
                     landCoroutine = StartCoroutine(ILandingCheck());
                 }
@@ -472,9 +478,8 @@ public partial class ActiveCharacter : Character
 
     public void Invincible()
     {
-        invincibility = true;
-
-        StartCoroutine(IInvincibleCheck(Managers.Data.gameInfo.invincibleTime)); // 일단 무적시간을 고정값으로 부여 (임시)
+        if(invincibleCoroutine == null)
+            invincibleCoroutine = StartCoroutine(IInvincibleCheck(Managers.Data.gameInfo.invincibleTime)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
     #region IEnumerator ( Courotine )
@@ -550,6 +555,32 @@ public partial class ActiveCharacter : Character
     }
 
     /// <summary>
+    /// 히트 보정 체크
+    /// </summary>
+    protected IEnumerator IHitImmunityCheck(float _currHP)
+    {
+        float maxComboHP = _currHP - Managers.Data.gameInfo.maxComboDamage;
+
+        while (currState == ENUM_PLAYER_STATE.Hit)
+        {
+            if (maxComboHP >= currHP)
+            {
+                Invincible();
+                if (!jumpState)
+                {
+                    Push_Rigid2D(new Vector2(Managers.Data.gameInfo.hitImmunityPower * -1.0f, 0));
+                    SetAnimTrigger("ImmunityTrigger");
+                }
+                hitImmunityCoroutine = null;
+                yield break;
+            }
+            yield return null;
+        }
+
+        hitImmunityCoroutine = null;
+    }
+
+    /// <summary>
     /// 점프 키를 눌렀을 때 호출되며, 낙하상태로 들어감을 감지
     /// </summary>
     private IEnumerator ICharDropStateCheck()
@@ -581,9 +612,10 @@ public partial class ActiveCharacter : Character
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
+        invincibility = true;
         TransparentState(0.8f);
 
-        while(currState == ENUM_PLAYER_STATE.Hit)
+        while (currState == ENUM_PLAYER_STATE.Hit)
             yield return null;
 
         yield return new WaitForSeconds(_invincibleTime);
@@ -592,6 +624,7 @@ public partial class ActiveCharacter : Character
             TransparentState(1f);
     
         invincibility = false;
+        invincibleCoroutine = null;
     }
     #endregion
 

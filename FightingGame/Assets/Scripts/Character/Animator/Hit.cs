@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Hit : StateMachineBehaviour
 {
-    // 중복으로 들어오는 걸 방지하기 위해
-
     ActiveCharacter activeCharacter;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
