@@ -561,8 +561,19 @@ public partial class ActiveCharacter : Character
     {
         float maxComboHP = _currHP - Managers.Data.gameInfo.maxComboDamage;
 
-        while (currState == ENUM_PLAYER_STATE.Hit)
+        while (true)
         {
+            if (currState != ENUM_PLAYER_STATE.Hit)
+            {
+                yield return new WaitForSeconds(0.4f);
+                
+                if(currState != ENUM_PLAYER_STATE.Hit)
+                {
+                    hitImmunityCoroutine = null;
+                    yield break;
+                }
+            }
+
             if (maxComboHP >= currHP)
             {
                 Invincible();
@@ -576,8 +587,6 @@ public partial class ActiveCharacter : Character
             }
             yield return null;
         }
-
-        hitImmunityCoroutine = null;
     }
 
     /// <summary>
