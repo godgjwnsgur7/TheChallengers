@@ -133,27 +133,27 @@ public partial class ActiveCharacter : Character
         switch (charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack3", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_1", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_2", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_3", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_JumpAttack", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);                break;
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack3", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_1", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_2", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_3", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_JumpAttack", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 5);                break;
             case ENUM_CHARACTER_TYPE.Wizard:
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_1", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_2", 3);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_3", 3);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_1", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_2", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_3", 5);
                 break;
             default:
                 Debug.Log($"Failed to SkillObject : {charType}");

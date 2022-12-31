@@ -10,8 +10,9 @@ public class ButtonPanel : UIElement
     BaseMap map;
 
     [SerializeField] PlayerCamera playerCamera;
-    [SerializeField] PlayerCharacter playerCharacter;
-    [SerializeField] EnemyPlayer enemyPlayer;
+    [SerializeField] TrainingPlayer trainingPlayer;
+    [SerializeField] TrainingEnemy trainingEnemy;
+
     [SerializeField] Button[] buttons;
 
     ENUM_CHARACTER_TYPE playerType;
@@ -34,8 +35,8 @@ public class ButtonPanel : UIElement
         Reset_PlayerType();
         Reset_EnemyType();
 
-        playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
-        enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
+        trainingPlayer.teamType = ENUM_TEAM_TYPE.Blue;
+        trainingEnemy.teamType = ENUM_TEAM_TYPE.Red;
 
         for (int i = 0; i < buttons.Length; i++)
             buttons[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
@@ -100,7 +101,7 @@ public class ButtonPanel : UIElement
     {
         Change_PlayerType(_charType);
 
-        if (playerCharacter.activeCharacter != null)
+        if (trainingPlayer.activeCharacter != null)
             Managers.UI.popupCanvas.Open_SelectPopup(CallPlayer, SelectCancel_Player, $"{playerType}를 재소환하시겠습니까?");
         else
             CallPlayer();
@@ -110,23 +111,11 @@ public class ButtonPanel : UIElement
     {
         Change_EnemyType(_charType);
 
-        if (enemyPlayer.activeCharacter != null)
+        if (trainingEnemy.activeCharacter != null)
             Managers.UI.popupCanvas.Open_SelectPopup(CallEnemy, SelectCancel_Enemy, $"{enemyType}를 재소환하시겠습니까?");
         else
             CallEnemy();
     }
-
-    // 임시 주석화
-    /*public void OnClick_DestroyPlayer()
-    {
-        Managers.UI.popupCanvas.Open_SelectPopup(DestroyPlayer, null, "소환된 캐릭터를 역소환하시겠습니까?");
-        this.Close();
-    }
-    public void OnClick_DestroyEnemy()
-    {
-        Managers.UI.popupCanvas.Open_SelectPopup(DestroyEnemy, null, "소환된 적를 역소환하시겠습니까?");
-        this.Close();
-    }*/
 
     public void OnClick_DestroyCharacter()
     {
@@ -140,13 +129,13 @@ public class ButtonPanel : UIElement
         ENUM_CHARACTER_TYPE charType = playerType;
 
         // 이미 소환된 플레이어 캐릭터가 있을 경우
-        if (playerCharacter.activeCharacter != null)
-            Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+        if (trainingPlayer.activeCharacter != null)
+            Managers.Resource.Destroy(trainingPlayer.activeCharacter.gameObject);
 
         // 플레이어 스폰
-        playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, charType));
+        trainingPlayer.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, charType));
 
-        GameObject go = playerCharacter.activeCharacter.transform.Find("Sound").gameObject;
+        GameObject go = trainingPlayer.activeCharacter.transform.Find("Sound").gameObject;
         Managers.Sound.Set_TeamAudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_BLUE);
 
         Reset_PlayerType();
@@ -156,21 +145,21 @@ public class ButtonPanel : UIElement
     public void CallEnemy()
     {
         // 이미 소환된 적이 있을 경우
-        if (enemyPlayer.activeCharacter != null)
-            Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
+        if (trainingEnemy.activeCharacter != null)
+            Managers.Resource.Destroy(trainingEnemy.activeCharacter.gameObject);
 
         // 소환된 플레이어가 없을 경우 지정된 스폰에서 생성
-        if (playerCharacter.activeCharacter == null)
+        if (trainingPlayer.activeCharacter == null)
         {
-            enemyPlayer.Set_Character(Init_Enemy(map.redTeamSpawnPoint.position, enemyType));
+            trainingEnemy.Set_Character(Init_Enemy(map.redTeamSpawnPoint.position, enemyType));
         }
         else
         {
-            float playerFrontPos = playerCharacter.activeCharacter.reverseState ? -2f : 2f;
+            float playerFrontPos = trainingPlayer.activeCharacter.reverseState ? -2f : 2f;
 
             // 플레이어 앞 위치
-            Vector2 respownPos = new Vector2(playerCharacter.activeCharacter.transform.position.x + playerFrontPos,
-                playerCharacter.activeCharacter.transform.position.y + 1);
+            Vector2 respownPos = new Vector2(trainingPlayer.activeCharacter.transform.position.x + playerFrontPos,
+                trainingPlayer.activeCharacter.transform.position.y + 1);
 
             // 맵의 크기 밖에 소환되지 않게 체크
             if (respownPos.x <= map.minBound.x)
@@ -182,10 +171,10 @@ public class ButtonPanel : UIElement
             if (respownPos.y <= map.minBound.y)
                 respownPos.y = map.minBound.y - 1;
 
-            enemyPlayer.Set_Character(Init_Enemy(respownPos, enemyType));
+            trainingEnemy.Set_Character(Init_Enemy(respownPos, enemyType));
         }
 
-        GameObject go = enemyPlayer.activeCharacter.transform.Find("Sound").gameObject;
+        GameObject go = trainingEnemy.activeCharacter.transform.Find("Sound").gameObject;
         Managers.Sound.Set_TeamAudioSource(go.GetComponent<AudioSource>(), ENUM_SOUND_TYPE.SFX_RED);
 
         Reset_EnemyType();
@@ -206,26 +195,26 @@ public class ButtonPanel : UIElement
     // 적 제거
     private void DestroyEnemy()
     {
-        if (enemyPlayer.activeCharacter == null)
+        if (trainingEnemy.activeCharacter == null)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("제거할 적이 없습니다.");
             return;
         }
 
-        Managers.Resource.Destroy(enemyPlayer.activeCharacter.gameObject);
+        Managers.Resource.Destroy(trainingEnemy.activeCharacter.gameObject);
         Reset_EnemyType();
     }
 
     // 플레이어 제거
     private void DestroyPlayer()
     {
-        if (playerCharacter.activeCharacter == null)
+        if (trainingPlayer.activeCharacter == null)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("제거할 플레이어가 없습니다.");
             return;
         }
 
-        Managers.Resource.Destroy(playerCharacter.activeCharacter.gameObject);
+        Managers.Resource.Destroy(trainingPlayer.activeCharacter.gameObject);
         Managers.Input.Destroy_InputKeyController();
         Reset_PlayerType();
 
@@ -234,19 +223,19 @@ public class ButtonPanel : UIElement
 
     public void DestroyCharacter()
     {
-        if (playerCharacter.activeCharacter != null)
+        if (trainingPlayer.activeCharacter != null)
         {
             DestroyPlayer();
             playerCamera.Set_ZoomOut();
         }
 
-        if (enemyPlayer.activeCharacter != null)
+        if (trainingEnemy.activeCharacter != null)
             DestroyEnemy();
     }
 
     public ActiveCharacter Init_Character(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
-        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, playerCharacter.transform).GetComponent<ActiveCharacter>();
+        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, trainingPlayer.transform).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
 
         return activeCharacter;
@@ -254,7 +243,7 @@ public class ButtonPanel : UIElement
 
     public ActiveCharacter Init_Enemy(Vector2 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
-        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, enemyPlayer.transform).GetComponent<ActiveCharacter>();
+        ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, trainingEnemy.transform).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
 
         return activeCharacter;
