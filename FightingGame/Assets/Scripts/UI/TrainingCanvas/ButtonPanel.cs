@@ -29,7 +29,7 @@ public class ButtonPanel : UIElement
 
     public void Init()
     {
-        Summon_Map((int)ENUM_MAP_TYPE.ForestMap);
+        Summon_Map(ENUM_MAP_TYPE.ForestMap);
 
         Reset_PlayerType();
         Reset_EnemyType();
@@ -41,7 +41,7 @@ public class ButtonPanel : UIElement
             buttons[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
     }
 
-    public void Summon_Map(int mapType)
+    public void Summon_Map(ENUM_MAP_TYPE mapType)
     { 
         if(map != null)
         {

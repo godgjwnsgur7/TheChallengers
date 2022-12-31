@@ -37,4 +37,9 @@ public class TrainingCanvas : BaseCanvas
         (GoTo_LobbyScene, null, "로비에 돌아가시겠습니까?");
 
     public void GoTo_LobbyScene() => Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+
+    public override void PlaySFX_CallBack(int sfxNum) 
+    {
+        Managers.Sound.Play((ENUM_SFX_TYPE)sfxNum, ENUM_SOUND_TYPE.SFX);
+    }
 }

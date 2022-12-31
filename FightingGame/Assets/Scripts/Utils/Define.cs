@@ -80,9 +80,10 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_MAP_TYPE
     {
-        ForestMap = 0,
-        VolcanicMap = 1,
-        Max = 2
+        Default = 0,
+        ForestMap = 1,
+        VolcanicMap = 2,
+        Max = 3,
     }
 
     /// <summary>
@@ -150,11 +151,17 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        win,
-        loose,
-        walk,
-        walkbeep1,
-        Attack1,
+        Win = 0,
+        Lose = 1,
+        Click1 = 2,
+        Click2 = 3,
+        Click3 = 4,
+        Warning1 = 5,
+        Warning2 = 6,
+        Page = 7,
+        Matching_start = 8,
+        Matching_success = 9,
+
     }
     
     [Serializable]
