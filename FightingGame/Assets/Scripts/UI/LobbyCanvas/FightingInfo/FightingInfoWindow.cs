@@ -77,7 +77,6 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         if(PhotonLogicHandler.IsMasterClient)
         {
-            // 실행 전에 둘 다 들어와있는지 확인해야 하려나?
             StartCoroutine(IWaitGameStart(1.0f));
         }
     }

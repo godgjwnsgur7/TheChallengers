@@ -15,7 +15,10 @@ public class ShotAttackObject : AttackObject
 
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Shot;
 
-        rigid2D = GetComponent<Rigidbody2D>();
+        base.Init();
+
+        if(rigid2D == null)
+            rigid2D = GetComponent<Rigidbody2D>();
         
         if (Managers.Battle.isServerSyncState)
         {
@@ -43,10 +46,14 @@ public class ShotAttackObject : AttackObject
 
         gameObject.SetActive(true);
 
+        isMine = true;
+
         if (Managers.Battle.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
                 runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            else
+                isMine = false;
         }
         else
             runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));

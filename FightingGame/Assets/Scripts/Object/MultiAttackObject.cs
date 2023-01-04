@@ -15,6 +15,8 @@ public class MultiAttackObject : AttackObject
     {
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Multi;
 
+        base.Init();
+
         isConnected = Managers.Battle.isServerSyncState;
 
         if (isConnected)

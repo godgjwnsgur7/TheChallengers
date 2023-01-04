@@ -21,14 +21,16 @@ public class AttackObject : Poolable
     public Transform targetTr = null;
     public bool reverseState;
 
+    protected bool isMine = false;
+
     protected Coroutine runTimeCheckCoroutine = null;
 
     public override void OnDisable()
     {
-        isUsing = false;
-
         if (runTimeCheckCoroutine != null)
             StopCoroutine(runTimeCheckCoroutine);
+
+        isUsing = false;
 
         base.OnDisable();
     }
@@ -36,6 +38,7 @@ public class AttackObject : Poolable
     public override void Init()
     {
         base.Init();
+
         if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Default)
             attackObjectType = ENUM_ATTACKOBJECT_TYPE.Follow;
 
@@ -63,10 +66,14 @@ public class AttackObject : Poolable
 
         gameObject.SetActive(true);
 
+        isMine = true;
+
         if (Managers.Battle.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
                 runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
+            else
+                isMine = false;
         }
         else
             runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
@@ -80,16 +87,8 @@ public class AttackObject : Poolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Managers.Battle.isServerSyncState && PhotonLogicHandler.IsMine(viewID))
+        if (Managers.Battle.isServerSyncState && isMine)
             return;
-
-        /* 음.... 이게 맞나 싶긴 하네    
-        if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Shot && collision.tag == ENUM_TAG_TYPE.Ground.ToString())
-        {
-            DestroyMine();
-            return;
-        }
-        */
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
 
@@ -169,6 +168,9 @@ public class AttackObject : Poolable
 
         targetTr = null;
 
+        if (runTimeCheckCoroutine != null)
+            StopCoroutine(runTimeCheckCoroutine);
+        
         if (Managers.Battle.isServerSyncState)
             PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
         else

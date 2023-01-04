@@ -7,6 +7,7 @@ using System;
 public class TimerUI : MonoBehaviour
 {
     [SerializeField] Text timerText;
+    [SerializeField] Text pingText;
 
     public void Register_TimerCallBack()
     {
@@ -33,5 +34,6 @@ public class TimerUI : MonoBehaviour
     private void Set_TimerText(int minutes, int seconds)
     {
         timerText.text = String.Format("{0:0}:{1:00}", minutes, seconds);
+        pingText.text = $"Ping : {PhotonLogicHandler.Ping}";
     }
 }
