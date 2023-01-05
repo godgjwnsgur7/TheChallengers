@@ -24,8 +24,7 @@ public class MultiAttackObject : AttackObject
 	[BroadcastMethod]
     public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        reverseState = _reverseState;
-        teamType = _teamType;
+        base.ActivatingAttackObject(_teamType, _reverseState);
 
         if (reverseState)
         {
@@ -60,7 +59,7 @@ public class MultiAttackObject : AttackObject
 
         if (attackObject != null)
         {
-            attackObject.FollowingTarget(this.transform);
+            attackObject.Set_TargetTransform(this.transform);
 
             if (isServerSyncState)
             {

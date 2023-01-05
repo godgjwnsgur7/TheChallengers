@@ -32,11 +32,8 @@ public class RankingScoreOperator : MonoBehaviour
         }
 
         double expectedWinningRate = 1 / (1 + Math.Pow(10, (enemyScore - myScore) / 400));
-        Debug.Log($"계산된 승률 : {expectedWinningRate}");
 
         double changedMyScore = myScore + criteriaScore * ((isWin ? 1.0f : 0.0f) - expectedWinningRate);
-        Debug.Log($"변경될 점수 : {changedMyScore}");
-        Debug.Log($"형변환된 점수 : {(long)changedMyScore}");
 
         return (long)changedMyScore;
     }

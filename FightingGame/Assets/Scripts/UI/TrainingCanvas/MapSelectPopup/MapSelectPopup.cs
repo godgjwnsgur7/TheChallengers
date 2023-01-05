@@ -10,7 +10,7 @@ public class MapSelectPopup : PopupUI
     [SerializeField] MapPanel mapPanel;
     [SerializeField] ButtonPanel buttonPanel;
 
-    ENUM_MAP_TYPE selectedMapType = ENUM_MAP_TYPE.Default;
+    ENUM_MAP_TYPE selectedMapType = ENUM_MAP_TYPE.ForestMap;
 
     bool isInit = false;
 
@@ -46,6 +46,6 @@ public class MapSelectPopup : PopupUI
     public void OnClick_Exit()
     {
         this.gameObject.SetActive(false);
-        selectedMapType = ENUM_MAP_TYPE.Default;
+        selectedMapType = ENUM_MAP_TYPE.ForestMap;
     }
 }

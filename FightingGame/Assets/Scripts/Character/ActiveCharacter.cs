@@ -654,7 +654,7 @@ public partial class ActiveCharacter : Character
 
         if (attackObject != null)
         {
-            attackObject.FollowingTarget(this.transform);
+            attackObject.Set_TargetTransform(this.transform);
 
             if(isServerSyncState)
             {

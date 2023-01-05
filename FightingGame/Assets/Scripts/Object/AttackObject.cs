@@ -21,33 +21,16 @@ public class AttackObject : Poolable
     protected Transform targetTr = null;
     protected bool reverseState;
 
-    protected bool isMine = false;
+    protected bool isMine = true;
     protected bool isServerSyncState = false;
 
     protected Coroutine runTimeCheckCoroutine = null;
-
-    public override void OnDisable()
-    {
-        if (runTimeCheckCoroutine != null)
-            StopCoroutine(runTimeCheckCoroutine);
-
-        base.OnDisable();
-    }
 
     public override void Init()
     {
         base.Init();
 
         isServerSyncState = Managers.Battle.isServerSyncState;
-
-        if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Default)
-            attackObjectType = ENUM_ATTACKOBJECT_TYPE.Follow;
-
-        ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)Enum.Parse(typeof(ENUM_ATTACKOBJECT_NAME), gameObject.name.ToString());
-        if (!Managers.Data.SkillDict.TryGetValue((int)attackObjectName, out skillValue))
-        {
-            Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
-        }
 
         if (isServerSyncState)
         {
@@ -60,25 +43,9 @@ public class AttackObject : Poolable
     {
         reverseState = _reverseState;
         teamType = _teamType;
-
-        transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
-
-        gameObject.SetActive(true);
-
-        isMine = true;
-
-        if (Managers.Battle.isServerSyncState)
-        {
-            if (PhotonLogicHandler.IsMine(viewID))
-                runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
-            else
-                isMine = false;
-        }
-        else
-            runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
-    public void FollowingTarget(Transform _targetTr)
+    public void Set_TargetTransform(Transform _targetTr)
     {
         targetTr = _targetTr;
         this.transform.position = targetTr.position;
@@ -86,7 +53,7 @@ public class AttackObject : Poolable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Managers.Battle.isServerSyncState && isMine)
+        if (isServerSyncState && isMine)
             return;
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
@@ -114,8 +81,6 @@ public class AttackObject : Poolable
     {
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
-        bool isServerSyncState = Managers.Battle.isServerSyncState;
-
         EffectObject effectObject = null;
 
         if (isServerSyncState)
@@ -140,7 +105,6 @@ public class AttackObject : Poolable
         {
             Debug.Log($"ENUM_EFFECTOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_effectTypeNum}");
         }
-
     }
 
     protected IEnumerator IRunTimeCheck(float _runTime)
@@ -151,7 +115,7 @@ public class AttackObject : Poolable
         {
             realTime += Time.deltaTime;
             
-            if(attackObjectType != ENUM_ATTACKOBJECT_TYPE.Shot || targetTr != null)
+            if(attackObjectType == ENUM_ATTACKOBJECT_TYPE.Follow)
                 this.transform.position = targetTr.position;
 
             yield return null;
@@ -170,7 +134,7 @@ public class AttackObject : Poolable
         if (runTimeCheckCoroutine != null)
             StopCoroutine(runTimeCheckCoroutine);
         
-        if (Managers.Battle.isServerSyncState)
+        if (isServerSyncState)
             PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
         else
             Managers.Resource.Destroy(gameObject);
@@ -179,8 +143,6 @@ public class AttackObject : Poolable
     [BroadcastMethod]
     public virtual void Sync_DestroyMine()
     {
-        isUsing = false;
-
         Managers.Resource.Destroy(this.gameObject);
     }
 }

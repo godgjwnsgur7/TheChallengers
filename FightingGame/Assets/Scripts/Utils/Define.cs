@@ -80,10 +80,9 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_MAP_TYPE
     {
-        Default = 0,
-        ForestMap = 1,
-        VolcanicMap = 2,
-        Max = 3,
+        ForestMap = 0,
+        VolcanicMap = 1,
+        Max = 2,
     }
 
     /// <summary>
