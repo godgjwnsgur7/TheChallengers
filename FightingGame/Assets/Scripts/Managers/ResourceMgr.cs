@@ -157,9 +157,6 @@ public class ResourceMgr
             return;
         }
 
-        if (Managers.Pool.GetOriginal(original.name) != null)
-            return;
-
         Managers.Pool.GeneratePool(original, count, parent);
     }
 

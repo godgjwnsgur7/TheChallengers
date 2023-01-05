@@ -14,14 +14,15 @@ public enum ENUM_ATTACKOBJECT_TYPE
 
 public class AttackObject : Poolable
 {
-    public Skill skillValue;
-    public ENUM_TEAM_TYPE teamType;
-    public ENUM_ATTACKOBJECT_TYPE attackObjectType = ENUM_ATTACKOBJECT_TYPE.Default;
+    protected Skill skillValue;
+    protected ENUM_TEAM_TYPE teamType;
+    protected ENUM_ATTACKOBJECT_TYPE attackObjectType = ENUM_ATTACKOBJECT_TYPE.Default;
 
-    public Transform targetTr = null;
-    public bool reverseState;
+    protected Transform targetTr = null;
+    protected bool reverseState;
 
     protected bool isMine = false;
+    protected bool isServerSyncState = false;
 
     protected Coroutine runTimeCheckCoroutine = null;
 
@@ -30,14 +31,14 @@ public class AttackObject : Poolable
         if (runTimeCheckCoroutine != null)
             StopCoroutine(runTimeCheckCoroutine);
 
-        isUsing = false;
-
         base.OnDisable();
     }
 
     public override void Init()
     {
         base.Init();
+
+        isServerSyncState = Managers.Battle.isServerSyncState;
 
         if (attackObjectType == ENUM_ATTACKOBJECT_TYPE.Default)
             attackObjectType = ENUM_ATTACKOBJECT_TYPE.Follow;
@@ -48,7 +49,7 @@ public class AttackObject : Poolable
             Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
         }
 
-        if (Managers.Battle.isServerSyncState)
+        if (isServerSyncState)
         {
             SyncTransformView(transform);
         }
@@ -57,8 +58,6 @@ public class AttackObject : Poolable
     [BroadcastMethod]
     public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        isUsing = true;
-
         reverseState = _reverseState;
         teamType = _teamType;
 
@@ -182,11 +181,6 @@ public class AttackObject : Poolable
     {
         isUsing = false;
 
-        Managers.Resource.Destroy(this.gameObject);
-    }
-
-    public void AnimEvent_DestoryMine()
-    {
         Managers.Resource.Destroy(this.gameObject);
     }
 }

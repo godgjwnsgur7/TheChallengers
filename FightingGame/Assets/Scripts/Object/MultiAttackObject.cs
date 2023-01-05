@@ -7,8 +7,6 @@ public class MultiAttackObject : AttackObject
 {
     protected AttackObject attackObject;
 
-    public bool isConnected;
-
     [SerializeField] Vector3 subPos;
 
     public override void Init()
@@ -17,9 +15,7 @@ public class MultiAttackObject : AttackObject
 
         base.Init();
 
-        isConnected = Managers.Battle.isServerSyncState;
-
-        if (isConnected)
+        if (isServerSyncState)
         {
             SyncTransformView(transform);
         }
@@ -49,7 +45,7 @@ public class MultiAttackObject : AttackObject
     {
         bool isControl = true;
         
-        if(isConnected)
+        if(isServerSyncState)
             isControl = PhotonLogicHandler.IsMine(viewID);
 
         if (!isControl) return;
@@ -57,7 +53,7 @@ public class MultiAttackObject : AttackObject
         attackObject = null;
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
 
-        if (isConnected)
+        if (isServerSyncState)
             attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
         else
             attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
@@ -66,7 +62,7 @@ public class MultiAttackObject : AttackObject
         {
             attackObject.FollowingTarget(this.transform);
 
-            if (isConnected)
+            if (isServerSyncState)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
                     (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
@@ -78,5 +74,10 @@ public class MultiAttackObject : AttackObject
         {
             Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
         }
+    }
+
+    public void AnimEvent_DestoryMine()
+    {
+        Managers.Resource.Destroy(this.gameObject);
     }
 }
