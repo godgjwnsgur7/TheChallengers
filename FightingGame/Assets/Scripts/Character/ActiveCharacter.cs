@@ -150,10 +150,12 @@ public partial class ActiveCharacter : Character
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 5);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 5);
                 Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_1", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_2", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderAttackObject_3", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_1", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_2", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_3", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject", 5);
+                Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject_1", 5);
                 break;
             default:
                 Debug.Log($"Failed to SkillObject : {charType}");

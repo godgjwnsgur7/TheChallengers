@@ -108,10 +108,12 @@ namespace FGDefine
         Wizard_Attack2 = 22,
         Wizard_ThrowAttackObject = 23,
         Wizard_ThrowJumpAttackObject = 24,
-        Wizard_ThunderAttackObject = 25,
-        Wizard_ThunderAttackObject_1 = 26,
-        Wizard_ThunderAttackObject_2 = 27,
-        Wizard_ThunderAttackObject_3 = 28,
+        Wizard_ThunderSkillObject = 25,
+        Wizard_ThunderSkillObject_1 = 26,
+        Wizard_ThunderSkillObject_2 = 27,
+        Wizard_ThunderSkillObject_3 = 28,
+        Wizard_IceSkillObject = 29,
+        Wizard_IceSkillObject_1 = 30,
     }
 
     /// <summary>
