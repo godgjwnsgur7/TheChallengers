@@ -56,9 +56,9 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		SetError, roomNameInput.text);
 	}
 
-	public void OnClickJoinLobby()
+	public void OnClickJoinLobby(int type)
 	{
-		PhotonLogicHandler.Instance.TryJoinLobby(
+		PhotonLogicHandler.Instance.TryJoinLobby((ENUM_MATCH_TYPE)type,
 			   () => { SetStatus("로비 진입 완료"); },
 			  SetError);
 

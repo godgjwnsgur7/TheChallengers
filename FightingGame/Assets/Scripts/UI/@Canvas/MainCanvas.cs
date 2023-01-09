@@ -155,8 +155,7 @@ public class MainCanvas : BaseCanvas
 
     private void Try_JoinLobby()
     {
-        bool isSuccess = PhotonLogicHandler.Instance.TryJoinLobby(
-               () => GoTo_LobbyScene(), null);
+        bool isSuccess = PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, GoTo_LobbyScene);
 
         if (!isSuccess)
         {

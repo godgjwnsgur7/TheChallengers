@@ -17,6 +17,12 @@ public delegate void FailedCallBack(short returnCode, string message);
 
 public delegate void PlayerCallBack(string nickname);
 
+public enum ENUM_MATCH_TYPE
+{
+    RANDOM = 0,
+    CUSTOM = 1,
+}
+
 public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 {
     private static PhotonLogicHandler instance;
@@ -37,9 +43,16 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
     }
 
-    private readonly string GameVersion = "1";
-    TypedLobby GameLobby = new TypedLobby("1", LobbyType.SqlLobby);
+    private const string GameVersion = "1";
+    private const string CustomVersion = "2";
+
     private readonly string ROOM_PROP_KEY = "C0";
+
+    private readonly Dictionary<ENUM_MATCH_TYPE, TypedLobby> matchLobbyDictionary = new Dictionary<ENUM_MATCH_TYPE, TypedLobby>()
+    {
+        { ENUM_MATCH_TYPE.RANDOM, new TypedLobby(GameVersion, LobbyType.SqlLobby) },
+        { ENUM_MATCH_TYPE.CUSTOM, new TypedLobby(CustomVersion, LobbyType.SqlLobby) },
+    };
 
     private static Dictionary<int, PhotonView> photonViewDictionary = new Dictionary<int, PhotonView>();
 
@@ -183,7 +196,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, mapType, isCustomRoom);
         return PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: roomOptions.CustomRoomProperties,
             matchingType: MatchmakingMode.RandomMatching, 
-            typedLobby: GameLobby,
+            typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.RANDOM],
             roomOptions: roomOptions);
     }
 
@@ -197,7 +210,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, defaultMapType, isCustomRoom);
 
-        return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: GameLobby);
+        return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.CUSTOM]);
     }
 
     private RoomOptions MakeRoomOptions(string nickname, byte maxPlayerCount, ENUM_MAP_TYPE mapType, bool isCustomRoom)
@@ -245,7 +258,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.LeaveLobby();
     }
 
-    public bool TryJoinLobby(Action onSuccess = null, FailedCallBack onfailed = null)
+    public bool TryJoinLobby(ENUM_MATCH_TYPE matchType, Action onSuccess = null, FailedCallBack onfailed = null)
     {
         if (!CheckEnableJoinRoom())
             return false;
@@ -253,10 +266,10 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinLobby = onSuccess;
         this._OnJoinLobbyFailed = onfailed;
 
-        return PhotonNetwork.JoinLobby(GameLobby);
+        return PhotonNetwork.JoinLobby(matchLobbyDictionary[matchType]);
     }
 
-    public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> OnProgress = null)
+	public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> OnProgress = null)
     {
         if (!CheckEnableJoinRoom())
             return false;

@@ -215,7 +215,7 @@ public partial class PhotonLogicHandler
 
     public void RequestRoomList()
     {
-        PhotonNetwork.GetCustomRoomList(GameLobby, $"{ROOM_PROP_KEY} = ''");
+        PhotonNetwork.GetCustomRoomList(matchLobbyDictionary[ENUM_MATCH_TYPE.CUSTOM], $"{ROOM_PROP_KEY} = ''");
     }
 
     /// <summary>
