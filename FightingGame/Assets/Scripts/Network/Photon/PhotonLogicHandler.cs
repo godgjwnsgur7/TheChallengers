@@ -180,8 +180,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, mapType,  isCustomRoom);
-        return PhotonNetwork.JoinRandomOrCreateRoom(
+        var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, mapType, isCustomRoom);
+        return PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: roomOptions.CustomRoomProperties,
             matchingType: MatchmakingMode.RandomMatching, 
             typedLobby: GameLobby,
             roomOptions: roomOptions);
