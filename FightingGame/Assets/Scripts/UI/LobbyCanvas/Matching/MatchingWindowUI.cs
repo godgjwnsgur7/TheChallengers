@@ -36,8 +36,7 @@ public class MatchingWindowUI : MonoBehaviour
         timerCoroutine = StartCoroutine(IStopwatch());
 
         bool isLoginState = PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom(
-            Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max)
-            ) ;
+            Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
 
         if(!isLoginState)
         {
