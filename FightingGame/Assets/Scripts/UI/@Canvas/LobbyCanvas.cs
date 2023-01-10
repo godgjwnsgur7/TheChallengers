@@ -18,12 +18,11 @@ public class LobbyCanvas : BaseCanvas
     public void Close_CustomMatchingWindow() => customMatching.Close();
     public void Open_FightingInfoWindow() => fightingInfoWindow.Open();
 
-
     public void OnClick_CustomMathing()
     {
         if(PhotonLogicHandler.IsConnected)
         {
-            customMatching.Open();
+            PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.CUSTOM, customMatching.Open);
         }
         else
         {

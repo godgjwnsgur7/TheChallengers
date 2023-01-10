@@ -14,6 +14,11 @@ public class CustomMatchingUI : MonoBehaviour
         Open_CustomRoom();
     }
 
+    private void OnDisable()
+    {
+        
+    }
+
     public void Open()
     {
         if (!this.gameObject.activeSelf)
@@ -25,6 +30,11 @@ public class CustomMatchingUI : MonoBehaviour
     }
 
     public void Close()
+    {
+        PhotonLogicHandler.Instance.TryLeaveLobby(Close_CallBack);
+    }
+
+    private void Close_CallBack()
     {
         if (customRoomWindow.gameObject.activeSelf)
             customRoomWindow.Close();

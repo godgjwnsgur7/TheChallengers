@@ -47,7 +47,6 @@ public class CreateRoomWindowUI : MonoBehaviour
         // 금지어 체크해야 함
 
         PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, Open_CustomRoom, null, true, 2, CurrMap);
-        
     }
 
     public void OnClick_ChangeMap(bool _isUp)

@@ -15,7 +15,6 @@ public class NetworkSyncData : MonoBehaviourPhoton
     float gameRunTimeLimit = 270.0f; // 게임 시간은 4분 30초로 고정
 
     bool isInitialized = false;
-    // 얘로 로드된 시점 받아와도 괜찮을 거 같은데, 일단 보류
 
     public override void Init()
     {

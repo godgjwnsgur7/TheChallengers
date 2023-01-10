@@ -16,6 +16,11 @@ public class MatchingWindowUI : MonoBehaviour
 
     ENUM_CHARACTER_TYPE selectedCharType;
 
+    private void OnDisable()
+    {
+        PhotonLogicHandler.Instance.TryLeaveLobby();
+    }
+
     public void OnClick_Matching()
     {
         Managers.UI.popupCanvas.Open_CharSelectPopup(CallBack_MathingStart);
@@ -29,19 +34,19 @@ public class MatchingWindowUI : MonoBehaviour
             $"'{Managers.Battle.Get_CharNameDict(charType)}'캐릭터로 랭킹전 매칭을 시작하시겠습니까?");
     }
 
-    public void MathingStart()
+    private void MathingStart()
     {
         this.gameObject.SetActive(true);
         isStopwatchLock = false;
         timerCoroutine = StartCoroutine(IStopwatch());
 
-        bool isLoginState = PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom(
-            Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
+        PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, JoinRoomOrCreateRoom);
+    }
 
-        if(!isLoginState)
-        {
-            Managers.UI.popupCanvas.Open_TimeNotifyPopup("로그인상태가 아닙니다.", 1f, MathingFailed);
-        }
+    private void JoinRoomOrCreateRoom()
+    {
+        PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom(
+            Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
     }
 
     public void Create_MatchingRoom() => matchingRoom.Open(MathingCallBack, selectedCharType);

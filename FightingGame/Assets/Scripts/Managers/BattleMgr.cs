@@ -104,8 +104,8 @@ public class BattleMgr
     }
 
 
-    public void Join_CustomRoomUI() => isCustom = true;
-    public void Leave_CustomRoomUI() => isCustom = false;
+    public void Join_CustomRoom() => isCustom = true;
+    public void Leave_CustomRoom() => isCustom = false;
 
     public void Start_ServerSync() => isServerSyncState = true;
     
