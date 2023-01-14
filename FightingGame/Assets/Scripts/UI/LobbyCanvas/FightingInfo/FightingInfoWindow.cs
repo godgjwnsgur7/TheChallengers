@@ -10,6 +10,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     [SerializeField] FightingUserInfoUI slaveFightingInfo;
 
     [SerializeField] Image mapImage;
+    [SerializeField] Text mapNameText;
 
     public void Open()
     {
@@ -54,6 +55,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     private void Set_MapInfo(ENUM_MAP_TYPE _mapType)
     {
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
+        mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
     }
 
     protected IEnumerator IInfoSettingCheck()
