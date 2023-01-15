@@ -7,7 +7,6 @@ using System;
 
 public class TrainingCanvas : BaseCanvas
 {
-    public BaseMap map;
     [Header("Set In Editor")]
     [SerializeField] StatusWindowUI blueTeamStatusWindowUI;
     [SerializeField] StatusWindowUI redTeamStatusWindowUI;

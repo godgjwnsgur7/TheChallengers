@@ -66,7 +66,7 @@ public class SoundMgr
     {
         if (pitch == 0.0f) pitch = volumeDataList[0].pitch;
 
-        string path = $"Sounds/{ENUM_SOUND_TYPE.BGM.ToString()}/{bgmType}";
+        string path = $"Sounds/BGM/{bgmType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);
 
@@ -91,7 +91,7 @@ public class SoundMgr
     {
         if (pitch == 0.0f) pitch = volumeDataList[1].pitch;
 
-        string path = $"Sounds/{ENUM_SOUND_TYPE.SFX.ToString()}/{sfxType}";
+        string path = $"Sounds/SFX/{sfxType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);
         if (audioClip == null)
