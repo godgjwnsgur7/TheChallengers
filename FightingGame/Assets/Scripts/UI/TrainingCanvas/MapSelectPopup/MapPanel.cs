@@ -10,7 +10,7 @@ public class MapPanel : MonoBehaviour
 
     public void Init(Action<ENUM_MAP_TYPE> _selectedMapCallBack)
     {
-        for (int i = 1; i < (int)ENUM_MAP_TYPE.Max; i++)
+        for (int i = 0; i < (int)ENUM_MAP_TYPE.Max; i++)
         {
             ENUM_MAP_TYPE mapType = (ENUM_MAP_TYPE)i;
             if (mapPanelElementsDict.ContainsKey(mapType))
