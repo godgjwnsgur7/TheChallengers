@@ -63,8 +63,8 @@ public class MatchingWindowUI : MonoBehaviour
             
             if(!isLeaveRoom)
             {
-                Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 오류");
-                // 여기도 알 수 없는 오륜데...
+                // 이건 진짜 노답ㅋㅋ
+                Debug.Log("알 수 없는 이유로 방 나가기 실패");
             }
         }
         else
@@ -79,8 +79,9 @@ public class MatchingWindowUI : MonoBehaviour
 
         if(!isLeaveLobby)
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 오류");
-            // 알 수 없는 오류? 강제로그인해제 하던가 해야하나?...
+            Debug.Log("알 수 없는 이유로 로비 나가기 실패");
+
+            LeaveLobby_CallBack();
         }
     }
 

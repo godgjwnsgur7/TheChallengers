@@ -52,9 +52,9 @@ public class CustomMatchingUI : MonoBehaviour
 
         if(!isLeaveLobby)
         {
-            Open();
             Debug.Log("왜 실패했냐 ㅋㅋㅋ");
         }
+        
     }
 
     private void Open_CustomRoom()
