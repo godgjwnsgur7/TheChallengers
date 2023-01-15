@@ -16,12 +16,12 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         this.RegisterRoomCallback();
 
-        PhotonLogicHandler.Instance.RequestRoomCustomProperty();
-        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
-
         Managers.Battle.Start_ServerSync();
         this.gameObject.SetActive(true);
         StartCoroutine(IInfoSettingCheck());
+
+        PhotonLogicHandler.Instance.RequestRoomCustomProperty();
+        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
 
     public void Close()
@@ -54,6 +54,9 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     private void Set_MapInfo(ENUM_MAP_TYPE _mapType)
     {
+        if (this == null || !this.gameObject.activeSelf)
+            return;
+
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
     }

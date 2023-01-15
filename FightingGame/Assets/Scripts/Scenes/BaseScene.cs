@@ -10,7 +10,7 @@ public abstract class BaseScene : MonoBehaviour
 
     protected IEnumerator Start()
     {
-        yield return null;
+        yield return null; // new WaitUntil()
         Init();
     }
 
