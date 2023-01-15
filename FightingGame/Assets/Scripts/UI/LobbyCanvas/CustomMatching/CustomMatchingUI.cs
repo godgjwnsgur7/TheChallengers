@@ -14,11 +14,6 @@ public class CustomMatchingUI : MonoBehaviour
         Open_CustomRoom();
     }
 
-    private void OnDisable()
-    {
-        
-    }
-
     public void Open()
     {
         if (!this.gameObject.activeSelf)
@@ -31,7 +26,14 @@ public class CustomMatchingUI : MonoBehaviour
 
     public void Close()
     {
-        PhotonLogicHandler.Instance.TryLeaveLobby(Close_CallBack);
+        if(PhotonLogicHandler.IsJoinedRoom)
+        {
+            PhotonLogicHandler.Instance.TryLeaveRoom(Close_CallBack);
+        }
+        else
+        {
+            Close_CallBack();
+        }
     }
 
     private void Close_CallBack()
@@ -43,9 +45,16 @@ public class CustomMatchingUI : MonoBehaviour
             customRoomListWindow.Close();
 
         if (createRoomWindow.gameObject.activeSelf)
-            createRoomWindow.gameObject.SetActive(false);
+            createRoomWindow.Close();
 
+        bool isLeaveLobby = PhotonLogicHandler.Instance.TryLeaveLobby();
         this.gameObject.SetActive(false);
+
+        if(!isLeaveLobby)
+        {
+            Open();
+            Debug.Log("왜 실패했냐 ㅋㅋㅋ");
+        }
     }
 
     private void Open_CustomRoom()

@@ -16,11 +16,6 @@ public class MatchingWindowUI : MonoBehaviour
 
     ENUM_CHARACTER_TYPE selectedCharType;
 
-    private void OnDisable()
-    {
-        PhotonLogicHandler.Instance.TryLeaveLobby();
-    }
-
     public void OnClick_Matching()
     {
         Managers.UI.popupCanvas.Open_CharSelectPopup(CallBack_MathingStart);
@@ -62,9 +57,35 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void OnClick_Exit()
     {
-        if(PhotonLogicHandler.IsJoinedRoom)
-            PhotonLogicHandler.Instance.TryLeaveRoom();
+        if (PhotonLogicHandler.IsJoinedRoom)
+        {
+            bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(LeaveRoom_CallBack);
+            
+            if(!isLeaveRoom)
+            {
+                Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 오류");
+                // 여기도 알 수 없는 오륜데...
+            }
+        }
+        else
+        {
+            LeaveRoom_CallBack();
+        }
+    }
 
+    private void LeaveRoom_CallBack()
+    {
+        bool isLeaveLobby = PhotonLogicHandler.Instance.TryLeaveLobby(LeaveLobby_CallBack);
+
+        if(!isLeaveLobby)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 오류");
+            // 알 수 없는 오류? 강제로그인해제 하던가 해야하나?...
+        }
+    }
+
+    private void LeaveLobby_CallBack()
+    {
         StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
         this.gameObject.SetActive(false);

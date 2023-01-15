@@ -230,7 +230,12 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void ExitRoom()
     {
-        PhotonLogicHandler.Instance.TryLeaveRoom(Close);
+        bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(Close);
+
+        if(!isLeaveRoom)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 에러\n나가기 실패");
+        }
     }
 
     public void OnClick_ChangeMap(bool _isRight)

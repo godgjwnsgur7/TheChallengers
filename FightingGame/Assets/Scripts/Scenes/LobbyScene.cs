@@ -18,6 +18,7 @@ public class LobbyScene : BaseScene
         else if (PhotonLogicHandler.IsJoinedRoom)
         {
             PhotonLogicHandler.Instance.TryLeaveRoom();
+            PhotonLogicHandler.Instance.TryLeaveLobby();
         }
     }
 

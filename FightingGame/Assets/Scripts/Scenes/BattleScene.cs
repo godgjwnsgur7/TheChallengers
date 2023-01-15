@@ -30,7 +30,7 @@ public class BattleScene : BaseScene
             {
                 playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
                 playerCharacter.Set_Character(Init_Character(map.blueTeamSpawnPoint.position, Managers.Battle.Get_MyCharacterType()));
-
+                 
                 Managers.Battle.Sync_CreatNetworkSyncData();
             }
             else

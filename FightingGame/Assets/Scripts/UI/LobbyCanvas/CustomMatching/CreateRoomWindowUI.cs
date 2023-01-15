@@ -31,6 +31,11 @@ public class CreateRoomWindowUI : MonoBehaviour
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
     }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
     
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property) { }
 
