@@ -47,13 +47,7 @@ public class CustomMatchingUI : MonoBehaviour
         if (createRoomWindow.gameObject.activeSelf)
             createRoomWindow.Close();
 
-        bool isLeaveLobby = PhotonLogicHandler.Instance.TryLeaveLobby();
         this.gameObject.SetActive(false);
-
-        if(!isLeaveLobby)
-        {
-            Debug.Log("왜 실패했냐 ㅋㅋㅋ");
-        }
         
     }
 

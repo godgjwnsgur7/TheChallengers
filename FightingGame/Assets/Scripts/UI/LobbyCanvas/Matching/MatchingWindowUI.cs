@@ -63,7 +63,7 @@ public class MatchingWindowUI : MonoBehaviour
             
             if(!isLeaveRoom)
             {
-                // 이건 진짜 노답ㅋㅋ
+                // 음?
                 Debug.Log("알 수 없는 이유로 방 나가기 실패");
             }
         }
@@ -74,18 +74,6 @@ public class MatchingWindowUI : MonoBehaviour
     }
 
     private void LeaveRoom_CallBack()
-    {
-        bool isLeaveLobby = PhotonLogicHandler.Instance.TryLeaveLobby(LeaveLobby_CallBack);
-
-        if(!isLeaveLobby)
-        {
-            Debug.Log("알 수 없는 이유로 로비 나가기 실패");
-
-            LeaveLobby_CallBack();
-        }
-    }
-
-    private void LeaveLobby_CallBack()
     {
         StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
