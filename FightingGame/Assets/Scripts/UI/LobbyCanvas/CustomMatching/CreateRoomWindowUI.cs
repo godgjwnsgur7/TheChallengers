@@ -67,7 +67,7 @@ public class CreateRoomWindowUI : MonoBehaviour
         else
         {
             _mapIndex -= 1;
-            if (_mapIndex <= 0)
+            if (_mapIndex < 0)
                 _mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
         }
 
