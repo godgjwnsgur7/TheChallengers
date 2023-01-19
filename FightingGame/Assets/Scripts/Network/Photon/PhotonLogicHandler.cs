@@ -507,32 +507,34 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     }
 
     private void PublishPlayerProperty(Player targetPlayer)
-	{
+    {
         if (roomPostProcesses.Count <= 0)
             return;
 
         if (targetPlayer == null)
             return;
 
+        var isSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.SYNC);
         var isReady = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.READY);
         var userKey = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
-        if (isReady == null || userKey == null)
+        if (isReady == null || userKey == null || isSync == null)
             return;
 
         ENUM_LOGIN_TYPE loginType = (ENUM_LOGIN_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE);
         ENUM_CHARACTER_TYPE characterType = (ENUM_CHARACTER_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER);
 
-        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (string)userKey, loginType, characterType);
+        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (bool)isSync, (string)userKey, loginType, characterType);
     }
 
-    private void MakePlayerProperty(bool isMasterClient, bool isReady, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
-	{
+    private void MakePlayerProperty(bool isMasterClient, bool isReady, bool isSync, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
+    {
         Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
         {
             CustomPlayerProperty property = new CustomPlayerProperty()
             {
                 isMasterClient = isMasterClient,
                 isReady = isReady,
+                isSync = isSync,
                 data = userData,
                 characterType = characterType
             };
@@ -547,6 +549,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             Debug.LogError($"{loginType} - {userKey} 검색 실패");
         });
     }
+
 
     /// <summary>
     /// 유저 입장

@@ -31,6 +31,7 @@ public enum ENUM_PLAYER_STATE_PROPERTIES
     USERKEY = 1,
     LOGINTYPE = 2,
     CHARACTER = 3,
+    SYNC = 4,
 }
 
 public class CustomRoomInfo
@@ -59,6 +60,7 @@ public class CustomPlayerProperty
 {
     public bool isMasterClient = false;
     public bool isReady = false;
+    public bool isSync = false;
     public ENUM_CHARACTER_TYPE characterType = ENUM_CHARACTER_TYPE.Default;
     public DBUserData data = null;
 }
@@ -116,6 +118,24 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, true);
     }
 
+    public bool IsAllSync()
+    {
+        var players = PhotonNetwork.PlayerList;
+        string syncStr = ENUM_PLAYER_STATE_PROPERTIES.SYNC.ToString();
+        return players.All(p => p.CustomProperties.ContainsKey(syncStr) && (bool)p.CustomProperties[syncStr]);
+    }
+
+    public void SyncOK()
+    {
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.SYNC, true, true);
+    }
+
+    public void SyncNo()
+    {
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.SYNC, false, true);
+    }
+
+
     public void GameStart()
     {
         SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED, true);
@@ -151,6 +171,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, false);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.SYNC, false, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
     }
 
