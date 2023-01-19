@@ -20,9 +20,9 @@ public class FollowAttackObject : AttackObject
     }
 
     [BroadcastMethod]
-    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    public override void ActivatingAttackObject(Vector2 _target, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        base.ActivatingAttackObject(_teamType, _reverseState);
+        base.ActivatingAttackObject(_target, _teamType, _reverseState);
 
         transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
 

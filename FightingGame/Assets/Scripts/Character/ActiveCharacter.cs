@@ -486,7 +486,6 @@ public partial class ActiveCharacter : Character
             invincibleCoroutine = StartCoroutine(IInvincibleCheck(Managers.Data.gameInfo.invincibleTime)); // 일단 무적시간을 고정값으로 부여 (임시)
     }
 
-    #region IEnumerator ( Courotine )
     /// <summary>
     /// 점프상태임을 감지 (업데이트문이나 다름없는 상태)
     /// </summary>
@@ -639,7 +638,6 @@ public partial class ActiveCharacter : Character
         invincibility = false;
         invincibleCoroutine = null;
     }
-    #endregion
 
     #region Animation Event Function
     protected void Summon_AttackObject(int _attackTypeNum)
@@ -662,11 +660,11 @@ public partial class ActiveCharacter : Character
 
             if(isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
-                    (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, Vector2, ENUM_TEAM_TYPE, bool>
+                    (attackObject, attackObject.ActivatingAttackObject, transform.position, teamType, reverseState);
             }
             else
-                attackObject.ActivatingAttackObject(teamType, reverseState);
+                attackObject.ActivatingAttackObject(transform.position, teamType, reverseState);
         }
         else
         {
@@ -696,11 +694,11 @@ public partial class ActiveCharacter : Character
 
             if (isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool, int>
-                    (effectObject, effectObject.ActivatingEffectObject, reverseState, _effectTypeNum);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, bool, int>
+                    (effectObject, effectObject.ActivatingEffectObject, transform.position, reverseState, _effectTypeNum);
             }
             else
-                effectObject.ActivatingEffectObject(reverseState, _effectTypeNum);
+                effectObject.ActivatingEffectObject(transform.position, reverseState, _effectTypeNum);
         }
         else
         {

@@ -39,8 +39,9 @@ public class AttackObject : Poolable
     }
 
     [BroadcastMethod]
-    public virtual void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    public virtual void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
+        this.transform.position = _targetTr;
         reverseState = _reverseState;
         teamType = _teamType;
     }
@@ -67,7 +68,7 @@ public class AttackObject : Poolable
 
             // 이펙트 생성 (임시)
             int effectNum = UnityEngine.Random.Range(0, 3);
-            Summon_EffectObject(effectNum, collision.transform);
+            Summon_EffectObject(effectNum, collision.transform.position);
 
             DestroyMine();
         }
@@ -77,7 +78,7 @@ public class AttackObject : Poolable
         }
     }
 
-    protected void Summon_EffectObject(int _effectTypeNum, Transform _targetTransform)
+    protected void Summon_EffectObject(int _effectTypeNum, Vector2 _targetTr)
     {
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
@@ -90,16 +91,16 @@ public class AttackObject : Poolable
 
         if (effectObject != null)
         {
-            Vector2 HitPosition = this.GetComponent<Collider2D>().bounds.ClosestPoint(_targetTransform.position);
+            Vector2 HitPosition = this.GetComponent<Collider2D>().bounds.ClosestPoint(_targetTr);
             effectObject.Set_Position(HitPosition);
 
             if (isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, bool, int>
-                    (effectObject, effectObject.ActivatingEffectObject, reverseState, _effectTypeNum);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject,Vector2, bool, int>
+                    (effectObject, effectObject.ActivatingEffectObject, _targetTr, reverseState, _effectTypeNum);
             }
             else
-                effectObject.ActivatingEffectObject(reverseState, _effectTypeNum);
+                effectObject.ActivatingEffectObject(transform.position, reverseState, _effectTypeNum);
         }
         else
         {

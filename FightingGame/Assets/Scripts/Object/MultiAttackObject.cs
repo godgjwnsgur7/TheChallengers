@@ -22,9 +22,9 @@ public class MultiAttackObject : AttackObject
     }
 
 	[BroadcastMethod]
-    public override void ActivatingAttackObject(ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    public override void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        base.ActivatingAttackObject(_teamType, _reverseState);
+        base.ActivatingAttackObject(_targetTr, _teamType, _reverseState);
 
         if (reverseState)
         {
@@ -63,11 +63,11 @@ public class MultiAttackObject : AttackObject
 
             if (isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, ENUM_TEAM_TYPE, bool>
-                    (attackObject, attackObject.ActivatingAttackObject, teamType, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, Vector2, ENUM_TEAM_TYPE, bool>
+                    (attackObject, attackObject.ActivatingAttackObject, transform.position, teamType, reverseState);
             }
             else
-                attackObject.ActivatingAttackObject(teamType, reverseState);
+                attackObject.ActivatingAttackObject(transform.position, teamType, reverseState);
         }
         else
         {

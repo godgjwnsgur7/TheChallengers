@@ -27,10 +27,11 @@ public class EffectObject : Poolable
     }
 
     [BroadcastMethod]
-    public virtual void ActivatingEffectObject(bool _reverseState, int _effectTypeNum)
+    public virtual void ActivatingEffectObject(Vector2 _targetTr, bool _reverseState, int _effectTypeNum)
     {
         isUsing = true;
         reverseState = _reverseState;
+        transform.position = _targetTr;
 
         if (reverseState)
         {
