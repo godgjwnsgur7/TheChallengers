@@ -12,6 +12,8 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] ResultWindowUI resultWindow;
     [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
+    [SerializeField] FightingInfoWindow FightingInfoWindow;
+
     public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
     {
         if (_teamType == ENUM_TEAM_TYPE.Blue)

@@ -353,20 +353,22 @@ public partial class ActiveCharacter : Character
     [BroadcastMethod]
     public void Connect_MyStatusUI()
     {
-        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        Type canvasType = Managers.UI.currCanvas.GetType();
 
-        if(battleCanvas == null)
+        if (canvasType == typeof(BattleCanvas))
+        {
+            BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+            
+            statusWindowUI = battleCanvas.Get_StatusWindowUI(teamType);
+            statusWindowUI.Set_StatusWindowUI(characterType, currHP);
+        }
+        else if (canvasType == typeof(TrainingCanvas))
         {
             TrainingCanvas trainingCanvas = Managers.UI.currCanvas.GetComponent<TrainingCanvas>();
 
             statusWindowUI = trainingCanvas.Get_StatusWindowUI(teamType);
+            statusWindowUI.Set_StatusWindowUI(characterType, currHP);
         }
-        else
-        {
-            statusWindowUI = battleCanvas.Get_StatusWindowUI(teamType);
-        }
-
-        statusWindowUI.Set_StatusWindowUI(characterType, currHP);
     }
 
     public void Update_CurrHP(float _damage)
@@ -650,9 +652,9 @@ public partial class ActiveCharacter : Character
         bool isServerSyncState = Managers.Battle.isServerSyncState;
 
         if (isServerSyncState)
-            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
+            attackObject = Managers.Resource.InstantiateEveryone("AttackObjects/" + attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
         else
-            attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
+            attackObject = Managers.Resource.GetAttackObject("AttackObjects/" + attackObjectName.ToString());
 
         if (attackObject != null)
         {
