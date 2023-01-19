@@ -7,11 +7,11 @@ using FGDefine;
 
 public partial class ActiveCharacter : Character
 {
-    public Animator anim;
-    public SpriteRenderer spriteRenderer;
+    protected Animator anim;
+    protected SpriteRenderer spriteRenderer;
 
     public StatusWindowUI statusWindowUI;
-    public AttackObject attackObject;
+    protected AttackObject attackObject;
 
     Coroutine stunTimeCoroutine;
     Coroutine landCoroutine;
@@ -31,10 +31,6 @@ public partial class ActiveCharacter : Character
         }
 
         base.Init();
-
-        // Setting Pool
-        Skills_Pooling(characterType);
-        Effects_Pooling();
 
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -125,53 +121,6 @@ public partial class ActiveCharacter : Character
         };
 
         return syncParams;
-    }
-
-    // Polling Helper 를 따로 팔지 고민중
-    private void Skills_Pooling(ENUM_CHARACTER_TYPE charType)
-    {
-        switch (charType)
-        {
-            case ENUM_CHARACTER_TYPE.Knight:
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack3", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_1", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_2", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_3", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_JumpAttack", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 5);                break;
-            case ENUM_CHARACTER_TYPE.Wizard:
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_1", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_2", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_3", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject", 5);
-                Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject_1", 5);
-                break;
-            default:
-                Debug.Log($"Failed to SkillObject : {charType}");
-                break;
-        }
-    }
-
-    private void Effects_Pooling()
-    {
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 5);
-        Managers.Resource.GenerateInPool("EffectObjects/Wizard_ThunderEffect", 5);
     }
 
     public override void Idle()

@@ -10,6 +10,7 @@ public enum ENUM_ATTACKOBJECT_TYPE
     Shot = 1,
     Multi = 2,
     Follow = 3,
+    Fall = 4,
 }
 
 public class AttackObject : Poolable
