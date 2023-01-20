@@ -20,7 +20,7 @@ public class MultiAttackObject : AttackObject
             SyncTransformView(transform);
         }
     }
-
+ 
 	[BroadcastMethod]
     public override void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {

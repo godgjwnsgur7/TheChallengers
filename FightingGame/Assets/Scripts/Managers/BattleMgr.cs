@@ -51,7 +51,6 @@ public class BattleMgr
         get;
     }
 
-    #region Dictionary
     private Dictionary<ENUM_CHARACTER_TYPE, string> charNameDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
     {
         {ENUM_CHARACTER_TYPE.Default, "캐릭터 미선택" },
@@ -87,7 +86,6 @@ public class BattleMgr
 
         return charNameDict[charType];
     }
-    #endregion
 
     public void Init()
     {

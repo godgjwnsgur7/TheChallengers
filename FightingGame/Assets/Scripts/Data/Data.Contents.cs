@@ -68,5 +68,6 @@ public class GameInfo
     public float dashSkillTime; // 대쉬시간
     public float maxComboDamage; // 맥스 콤보 데미지
     public float hitImmunityPower; // 히트보정 시 작용하는 힘의 크기 (밀려나는 힘)
+    public float maxGameRunTime; // 게임의 제한시간
 }
 #endregion
