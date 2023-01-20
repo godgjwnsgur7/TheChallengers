@@ -122,10 +122,10 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, true);
     }
 
-    public bool IsAllSync()
+    public bool IsAllSync(ENUM_PLAYER_STATE_PROPERTIES playerProperty)
     {
         var players = PhotonNetwork.PlayerList;
-        string syncStr = ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC.ToString();
+        string syncStr = playerProperty.ToString();
         return players.All(p => p.CustomProperties.ContainsKey(syncStr) && (bool)p.CustomProperties[syncStr]);
     }
 
