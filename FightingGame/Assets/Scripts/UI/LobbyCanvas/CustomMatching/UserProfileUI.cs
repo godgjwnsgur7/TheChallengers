@@ -49,13 +49,13 @@ public class UserProfileUI : MonoBehaviour
         {
             readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/ReadySprite");
             if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
-                PhotonLogicHandler.Instance.Ready();
+                PhotonLogicHandler.Instance.OnReady();
         }
         else
         {
             readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/UnreadySprite");
             if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
-                PhotonLogicHandler.Instance.UnReady();
+                PhotonLogicHandler.Instance.OnUnReady();
         }
     }
 

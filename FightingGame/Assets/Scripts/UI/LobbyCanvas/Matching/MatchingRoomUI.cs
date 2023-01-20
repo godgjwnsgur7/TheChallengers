@@ -55,7 +55,7 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
             Managers.Battle.Set_SlaveNickname(nickname);
         }
 
-        PhotonLogicHandler.Instance.GameStart();
+        PhotonLogicHandler.Instance.OnGameStart();
 
         isStarted = true;
         matchingCallBack();

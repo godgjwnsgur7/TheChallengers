@@ -514,19 +514,22 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (targetPlayer == null)
             return;
 
-        var isSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.SYNC);
+        var isDataSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+        var isSceneSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
+        var isCharacterSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
+
         var isReady = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.READY);
         var userKey = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
-        if (isReady == null || userKey == null || isSync == null)
+        if (isReady == null || userKey == null || isDataSync == null || isSceneSync == null || isCharacterSync == null)
             return;
 
         ENUM_LOGIN_TYPE loginType = (ENUM_LOGIN_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE);
         ENUM_CHARACTER_TYPE characterType = (ENUM_CHARACTER_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER);
 
-        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (bool)isSync, (string)userKey, loginType, characterType);
+        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (bool)isDataSync, (bool)isSceneSync, (bool)isCharacterSync, (string)userKey, loginType, characterType);
     }
 
-    private void MakePlayerProperty(bool isMasterClient, bool isReady, bool isSync, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
+    private void MakePlayerProperty(bool isMasterClient, bool isReady, bool isDataSync, bool isSceneSync, bool isCharacterSync, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
     {
         Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
         {
@@ -534,7 +537,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             {
                 isMasterClient = isMasterClient,
                 isReady = isReady,
-                isSync = isSync,
+                isDataSync = isDataSync,
+                isCharacterSync = isCharacterSync,
+                isSceneSync = isSceneSync,
                 data = userData,
                 characterType = characterType
             };

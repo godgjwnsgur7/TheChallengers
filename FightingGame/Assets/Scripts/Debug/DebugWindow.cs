@@ -216,12 +216,12 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	public void OnClickReady()
 	{
-		PhotonLogicHandler.Instance.Ready();
+		PhotonLogicHandler.Instance.OnReady();
 	}
 
 	public void OnClickUnready()
 	{
-		PhotonLogicHandler.Instance.UnReady();
+		PhotonLogicHandler.Instance.OnUnReady();
 	}
 
 	public void OnClickRequestRoomCustomProperty()
