@@ -174,11 +174,13 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, false);
-        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
 
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC, false, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC, false, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC, false, false);
+
+        // 얘가 맨 마지막이어야
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
     }
 
     public void RegisterILobbyPostProcess(ILobbyPostProcess lobbyPostProcess)
