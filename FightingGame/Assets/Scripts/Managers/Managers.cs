@@ -10,7 +10,7 @@ public class Managers : MonoBehaviour
 
     private BattleMgr battle = new BattleMgr();
     private DataMgr data = new DataMgr();
-    private GameMgr game = new GameMgr();
+    private NetworkMgr network = new NetworkMgr();
     private InputMgr input = new InputMgr();
     private ObjectPoolMgr pool = new ObjectPoolMgr();
     private ResourceMgr resouce = new ResourceMgr();
@@ -22,7 +22,7 @@ public class Managers : MonoBehaviour
 
     public static BattleMgr Battle { get { return Instance.battle; } }
     public static DataMgr Data { get { return Instance.data; } }
-    public static GameMgr Game { get { return Instance.game; } }
+    public static NetworkMgr Network { get { return Instance.network; } }
     public static InputMgr Input { get { return Instance.input; } }
     public static ObjectPoolMgr Pool { get { return Instance.pool; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
@@ -52,7 +52,7 @@ public class Managers : MonoBehaviour
 
             s_Instance.battle.Init();
             s_Instance.data.Init();
-            s_Instance.game.Init();
+            s_Instance.network.Init();
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();

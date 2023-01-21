@@ -32,8 +32,8 @@ public enum ENUM_PLAYER_STATE_PROPERTIES
     LOGINTYPE = 2,
     CHARACTER = 3,
     DATA_SYNC = 4, // 데이터 싱크 완료
-    SCENE_SYNC = 5, // 배틀 씬 로드 완료
-    CHARACTER_SYNC = 6, // 캐릭터 로드 완료
+    CHARACTER_SYNC = 5, // 캐릭터 로드 완료
+    SCENE_SYNC = 6, // 배틀 씬 로드 완료
 }
 
 public class CustomRoomInfo
@@ -61,10 +61,10 @@ public class CustomRoomProperty
 public class CustomPlayerProperty
 {
     public bool isMasterClient = false;
-    public bool isReady = false;
     public bool isDataSync = false;
-    public bool isCharacterSync = false;
+    public bool isReady = false;
     public bool isSceneSync = false;
+    public bool isCharacterSync = false;
     public ENUM_CHARACTER_TYPE characterType = ENUM_CHARACTER_TYPE.Default;
     public DBUserData data = null;
 }
