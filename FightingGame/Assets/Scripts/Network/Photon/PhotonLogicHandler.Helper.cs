@@ -159,6 +159,27 @@ public partial class PhotonLogicHandler
     public bool IsInLobby() => PhotonNetwork.InLobby;
     public bool IsInRoom() => PhotonNetwork.InRoom;
 
+    public ENUM_MATCH_TYPE CurrentLobbyType
+    {
+        get
+        {
+            if (PhotonNetwork.CurrentLobby == null)
+                return ENUM_MATCH_TYPE.NONE;
+
+            switch(PhotonNetwork.CurrentLobby.Name)
+            {
+                case RandomVersion:
+                    return ENUM_MATCH_TYPE.RANDOM;
+
+                case CustomVersion:
+                    return ENUM_MATCH_TYPE.CUSTOM;
+
+                default:
+                    return ENUM_MATCH_TYPE.NONE;
+            }
+        }
+    }
+
 
     public static List<CustomRoomInfo> AllRoomInfos
 	{

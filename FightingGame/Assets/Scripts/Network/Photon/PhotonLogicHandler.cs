@@ -19,6 +19,7 @@ public delegate void PlayerCallBack(string nickname);
 
 public enum ENUM_MATCH_TYPE
 {
+    NONE = -1,
     RANDOM = 0,
     CUSTOM = 1,
 }
@@ -43,14 +44,14 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
     }
 
-    private const string GameVersion = "1";
+    private const string RandomVersion = "1";
     private const string CustomVersion = "2";
 
     private readonly string ROOM_PROP_KEY = "C0";
 
     private readonly Dictionary<ENUM_MATCH_TYPE, TypedLobby> matchLobbyDictionary = new Dictionary<ENUM_MATCH_TYPE, TypedLobby>()
     {
-        { ENUM_MATCH_TYPE.RANDOM, new TypedLobby(GameVersion, LobbyType.SqlLobby) },
+        { ENUM_MATCH_TYPE.RANDOM, new TypedLobby(RandomVersion, LobbyType.SqlLobby) },
         { ENUM_MATCH_TYPE.CUSTOM, new TypedLobby(CustomVersion, LobbyType.SqlLobby) },
     };
 
@@ -161,7 +162,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnConnectedToMaster = _OnConnectedToMaster;
         this._OnDisconnectedFromMaster = _OnDisconnectedFromMaster;
 
-        PhotonNetwork.GameVersion = GameVersion;
+        PhotonNetwork.GameVersion = RandomVersion;
         return PhotonNetwork.ConnectUsingSettings(); // 마스터 서버 접속 시도
     }
 
