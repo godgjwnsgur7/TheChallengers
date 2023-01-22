@@ -7,9 +7,9 @@ using System;
 
 public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 {
-    [SerializeField] UserProfileUI masterProfile;
-    [SerializeField] UserProfileUI slaveProfile;
-    UserProfileUI MyProfile
+    [SerializeField] MasterProfileUI masterProfile;
+    [SerializeField] SlaveProfileUI slaveProfile;
+    BaseProfile MyProfile
     {
         get
         {
@@ -19,7 +19,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 return slaveProfile;
         }
     }
-    UserProfileUI YourProfile
+    BaseProfile YourProfile
     {
         get
         {
@@ -114,7 +114,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (property.isStarted) // 게임 시작을 알림받음
         {
             isStarted = true;
-            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
+            Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
             return;
         }
 
@@ -181,7 +181,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         currMap = _mapType;
         currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
-        mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
+        mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
 
         int mapIndex = (int)_mapType - 1;
         if (mapIndex <= 0)
@@ -217,7 +217,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.OnUnReadyAll(); // 모두 준비해제 시키고
             PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
             isStarted = true;
-            Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
+            Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
         }
         else
             Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.", UnReadyMyProfile);

@@ -109,17 +109,41 @@ public class PopupCanvas : MonoBehaviour
         timerNotifyPopup.Open(_message, _runTime);
     }
 
-    public void Play_FadeInEffect(Action _FadeInCallBack = null)
+    /// <summary>
+    /// 반드시 FadeIn을 따로 호출해주어야 함
+    /// 마스터 클라이언트에 의해 끌려가는 경우가 있기 때문
+    /// </summary>
+    public void Play_FadeOutEffect(Action _fadeOutCallBack = null)
     {
-        fadeEffectPopup.Play_FadeInEffect(_FadeInCallBack);
+        if (fadeEffectPopup.isUsing)
+        {
+            Debug.Log("fadeEffect is Using!!");
+            return;
+        }
+
+        fadeEffectPopup.Play_FadeOutEffect(_fadeOutCallBack);
     }
 
-    public void Play_FadeOutEffect(Action _FadeOutCallBack = null)
+    public void Play_FadeInEffect(Action _fadeInCallBack = null)
     {
-        if (!fadeEffectPopup.isUsing)
+        if(!fadeEffectPopup.gameObject.activeSelf)
             return;
 
-        fadeEffectPopup.Play_FadeOutEffect(_FadeOutCallBack);
+        fadeEffectPopup.Play_FadeInEffect(_fadeInCallBack);
+    }
+
+    /// <summary>
+    /// 페이드아웃 -> 콜백실행 -> 페이드인
+    /// </summary>
+    public void Play_FadeOutInEffect(Action _fadeOutInCallBack)
+    {
+        if (fadeEffectPopup.isUsing)
+        {
+            Debug.Log("fadeEffect is Using!!");
+            return;
+        }
+
+        fadeEffectPopup.Play_FadeOutInEffect(_fadeOutInCallBack);
     }
 
     /// <summary>

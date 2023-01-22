@@ -42,7 +42,7 @@ public class CustomRoomListUI : MonoBehaviour
             return;
         }
 
-        // 현재 생성되어 있는 방의 갯수만큼 Open.
+        // 표시할 방의 갯수만큼 Open.
         for (int i = 0; i < customRoomList.Count; i++)
         {
             roomListElement[i].Open(customRoomList[i], Request_UpdateRoomList);

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class CustomMatchingUI : MonoBehaviour
 {
     [SerializeField] CustomRoomListWindowUI customRoomListWindow;
-    [SerializeField] CreateRoomWindowUI createRoomWindow;
     [SerializeField] CustomRoomWindowUI customRoomWindow;
 
     private void OnEnable()
@@ -44,18 +43,12 @@ public class CustomMatchingUI : MonoBehaviour
         if (customRoomListWindow.gameObject.activeSelf)
             customRoomListWindow.Close();
 
-        if (createRoomWindow.gameObject.activeSelf)
-            createRoomWindow.Close();
-
         this.gameObject.SetActive(false);
         
     }
 
     private void Open_CustomRoom()
     {
-        if (createRoomWindow.gameObject.activeSelf)
-            createRoomWindow.gameObject.SetActive(false);
-
         if (!PhotonLogicHandler.IsJoinedRoom)
         {
             customRoomListWindow.Open();

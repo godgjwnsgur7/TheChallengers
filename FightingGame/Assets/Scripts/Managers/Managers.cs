@@ -18,7 +18,7 @@ public class Managers : MonoBehaviour
     private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
     private PlatformMgr platform = new PlatformMgr();
-
+    private PlayerCharacter player = new PlayerCharacter();
 
     public static BattleMgr Battle { get { return Instance.battle; } }
     public static DataMgr Data { get { return Instance.data; } }
@@ -30,6 +30,13 @@ public class Managers : MonoBehaviour
     public static SoundMgr Sound { get { return Instance.sound; } }
     public static UIMgr UI { get { return Instance.ui; } }
     public static PlatformMgr Platform { get { return Instance.platform; } }
+    public static PlayerCharacter Player
+    { 
+        get 
+        {
+            return Instance.player; 
+        } 
+    }
     
     private void Start()
     {
@@ -50,7 +57,6 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_Instance = go.GetComponent<Managers>();
 
-            s_Instance.battle.Init();
             s_Instance.data.Init();
             s_Instance.network.Init();
             s_Instance.pool.Init();

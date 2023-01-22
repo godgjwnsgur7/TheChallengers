@@ -26,7 +26,7 @@ public class MatchingWindowUI : MonoBehaviour
         selectedCharType = charType;
 
         Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null,
-            $"'{Managers.Battle.Get_CharNameDict(charType)}'캐릭터로 랭킹전 매칭을 시작하시겠습니까?");
+            $"'{Managers.Data.Get_CharNameDict(charType)}'캐릭터로 랭킹전 매칭을 시작하시겠습니까?");
     }
 
     private void MathingStart()
@@ -52,7 +52,7 @@ public class MatchingWindowUI : MonoBehaviour
         StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
 
-        Managers.UI.popupCanvas.Play_FadeInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
     }
 
     public void OnClick_Exit()

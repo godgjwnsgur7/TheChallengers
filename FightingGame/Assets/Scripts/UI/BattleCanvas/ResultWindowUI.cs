@@ -88,17 +88,15 @@ public class ResultWindowUI : MonoBehaviour
         notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         counterCorotine = null;
 
-        Managers.Clear();
-
         if (PhotonLogicHandler.IsMasterClient)
         {
             PhotonLogicHandler.Instance.OnGameEnd();
 
-            Managers.UI.popupCanvas.Play_FadeInEffect(GoTo_Lobby);
+            Managers.UI.popupCanvas.Play_FadeOutEffect(GoTo_Lobby);
         }
         else
         {
-            Managers.UI.popupCanvas.Play_FadeInEffect();
+            Managers.UI.popupCanvas.Play_FadeOutEffect();
         }
     }
 

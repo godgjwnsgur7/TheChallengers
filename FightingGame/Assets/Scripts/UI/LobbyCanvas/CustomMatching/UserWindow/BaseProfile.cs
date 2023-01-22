@@ -5,24 +5,24 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class UserProfileUI : MonoBehaviour
+public class BaseProfile : MonoBehaviour
 {
     [Header("Set In Editor")]
     [SerializeField] UserInfoWindowUI userInfoWindow;
 
     [SerializeField] Image charImage;
-    [SerializeField] Image readyStateImage;
 
     [SerializeField] Text charNameText;
     [SerializeField] Text userNicknameText;
 
-    [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] bool isMasterProfile;
     
-    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-    public bool isInit = false;
+    private bool isInit = false;
+    
+    protected bool isReady = false;
+
     public bool isMine = false;
-    bool isReady = false;
+    public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
 
     public bool IsReady
     {
@@ -30,7 +30,7 @@ public class UserProfileUI : MonoBehaviour
         private set { IsReadyInfoUpdateCallBack(value); } 
     }
 
-    public void Init()
+    public virtual void Init()
     {
         if (isInit) return;
 
@@ -38,32 +38,16 @@ public class UserProfileUI : MonoBehaviour
         isMine = true;
     }
 
-    public void IsReadyInfoUpdateCallBack(bool _readyState)
+    public virtual void IsReadyInfoUpdateCallBack(bool _readyState)
     {
-        if (isReady == _readyState)
-            return;
-        
-        isReady = _readyState;
 
-        if (isReady)
-        {
-            readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/ReadySprite");
-            if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
-                PhotonLogicHandler.Instance.OnReady();
-        }
-        else
-        {
-            readyStateImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/UnreadySprite");
-            if (isMine) // 제어권을 가졌다면 서버의 정보를 변경함
-                PhotonLogicHandler.Instance.OnUnReady();
-        }
     }
 
-    public void Set_UserNickname(string userNickname) => userNicknameText.text = userNickname;
-    public string Get_UserNickname()
+    public void Set_UserNickname(string userNickname)
     {
-        return userNicknameText.text;
+        userNicknameText.text = userNickname;
     }
+    public string Get_UserNickname() => userNicknameText.text;
 
     public void Set_Character(ENUM_CHARACTER_TYPE _charType)
     {
@@ -82,20 +66,18 @@ public class UserProfileUI : MonoBehaviour
             Managers.Battle.Set_EnemyCharacterType(currCharType);
         }
 
-        charNameText.text = Managers.Battle.Get_CharNameDict(currCharType);
+        charNameText.text = Managers.Data.Get_CharNameDict(currCharType);
     }
 
-    public void Set_ReadyState(bool readyState)
+    public virtual void Set_ReadyState(bool readyState)
     {
-        if (readyState && currCharType == ENUM_CHARACTER_TYPE.Default)
-        {
-            Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택하지 않았습니다.");
-            return;
-        }
+        
 
         IsReady = readyState;
+
+        
     }
-    
+
     public void OnClick_UserProfile()
     {
         if (userNicknameText.text == "")
@@ -113,11 +95,10 @@ public class UserProfileUI : MonoBehaviour
         Managers.UI.popupCanvas.Open_CharSelectPopup(Set_Character);
     }
 
-    public void Clear()
+    public virtual void Clear()
     {
         Set_UserNickname("");
         Set_Character(ENUM_CHARACTER_TYPE.Default);
-        Set_ReadyState(false);
         isInit = false;
         isMine = false;
     }

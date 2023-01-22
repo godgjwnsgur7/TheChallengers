@@ -10,20 +10,25 @@ public abstract class BaseScene : MonoBehaviour
 
     protected IEnumerator Start()
     {
-        yield return null; // new WaitUntil()
+        yield return null;
         Init();
+    }
+
+    private void OnDestroy()
+    {
+        Clear();
     }
 
     public virtual void Init()
     {
         Managers.Sound.Play((ENUM_BGM_TYPE)SceneType, ENUM_SOUND_TYPE.BGM);
-        Managers.UI.popupCanvas.Play_FadeOutEffect();
+        Managers.UI.popupCanvas.Play_FadeInEffect();
         Managers.Scene.Get_CurrSceneType(SceneType);
     }
     
     public virtual void Clear()
     {
-
+        Managers.Clear();
     }
 }
  

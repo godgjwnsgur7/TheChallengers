@@ -17,7 +17,6 @@ public class PlayerCharacter : MonoBehaviour
 
     bool isMove = false;
 
-
     private void Update()
     {
         if (activeCharacter == null)
@@ -27,6 +26,33 @@ public class PlayerCharacter : MonoBehaviour
             return;
 
         OnKeyboard(); // 디버깅용
+    }
+
+    public void Init(ActiveCharacter _activeCharacter)
+    {
+        activeCharacter = _activeCharacter;
+        activeCharacter.transform.parent = this.transform;
+
+
+    }
+    public ActiveCharacter Init_Character(Vector3 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
+    {
+        ActiveCharacter activeCharacter;
+
+        if (Managers.Battle.isServerSyncState)
+        {
+            activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
+
+            Managers.Battle.Set_MyChar(activeCharacter);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
+                (activeCharacter, activeCharacter.Receive_EnemyChar, ENUM_RPC_TARGET.OTHER);
+        }
+        else
+        {
+            activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
+        }
+
+        return activeCharacter;
     }
 
     public void Set_Character(ActiveCharacter _activeCharacter)

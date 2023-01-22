@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
+using System;
 
 /// <summary>
 /// Ready, DataSync, SceneSync, CharacterSync
@@ -11,6 +13,7 @@ public class SyncData
     public bool isReady;
     public bool isSceneSync;
     public bool isCharacterSync;
+    public ENUM_CHARACTER_TYPE characterType;
 
     public SyncData(bool _isDataSync, bool _isReady, bool _isSceneSync, bool _isCharacterSync)
     {
@@ -24,11 +27,6 @@ public class SyncData
 /// <summary>
 /// 게임의 전반적인 관리를 할 매니저
 /// 서버접속상태 체크, 네트워크 끊김 등을 판단
-/// 
-/// 얘는 순차적으로 실행할 것
-/// yield return new WaitUntil 활용
-/// 실행시점 제어해야 해
-/// 
 /// </summary>
 public class NetworkMgr : IRoomPostProcess
 {
@@ -37,6 +35,8 @@ public class NetworkMgr : IRoomPostProcess
     SyncData masterSyncData = null;
     SyncData slaveSyncData = null;
 
+    Coroutine sequenceExecuteCoroutine = null;
+    
     public void Init()
     {
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= OnEnterRoomCallBack;
@@ -46,8 +46,6 @@ public class NetworkMgr : IRoomPostProcess
         PhotonLogicHandler.Instance.onLeftRoomPlayer += OnExitRoomCallBack;
 
         this.RegisterRoomCallback();
-        
-        
     }
 
     public void Set_UserSyncMediator(UserSyncMediator _userSyncMediator)
@@ -62,29 +60,32 @@ public class NetworkMgr : IRoomPostProcess
     {
         if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
         {
-
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
         else // 상대가 입장
         {
             if(PhotonLogicHandler.IsMasterClient)
             {
-                Managers.Resource.InstantiateEveryone("UserSyncMediator");
-                
-                
+                sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
             }
         }
     }
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
+        Managers.Resource.Destroy(userSyncMediator.gameObject);
+
+        // 나간 유저가 내가 아니라면 (내가 원래 마스터클라이언트였다면)
         if (PhotonLogicHandler.CurrentMyNickname != exitUserNickname)
         {
-            Managers.Resource.Destroy(userSyncMediator.gameObject);
+            CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
+            sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
         }
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
+
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
@@ -105,40 +106,43 @@ public class NetworkMgr : IRoomPostProcess
     protected IEnumerator INetworkSequenceExecuter()
     {
         if (!PhotonLogicHandler.IsMasterClient)
-            yield break;
-
-        // 1. 연결 확인
-        yield return new WaitUntil(Get_SceneSyncAllState);
-
-        // 2. 레디 확인
-        yield return new WaitUntil(Get_ReadyAllState);
-
-        // 3. 마스터한테 게임 시작할거냐고 물어봐
-        
-
-        // 4. 시작했다면, 양쪽 레디가 됐는지 다시 확인해
-        if (!Get_ReadyAllState())
         {
-            GameStart_Failed();
+            sequenceExecuteCoroutine = null;
             yield break;
         }
 
-        // 여기에 씬 로드하기 전에 필요한 처리과정
+        // 1. 연결 확인
+        yield return new WaitUntil(Get_DataSyncAllState);
+        // 양쪽 다 연결되면 유저싱크메디에이터를 생성함
+        Managers.Resource.InstantiateEveryone("UserSyncMediator");
 
+        // 2. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
+        yield return new WaitUntil(Get_ReadyAllState);
+        // 둘다 레디를 확인하면 게임 돌입을 알림
+        PhotonLogicHandler.Instance.OnGameStart();
 
-        // 5. 게임에 시작해 (씬이동하시고, 로드가 됐는지는 씬에서 판단해서 받아)
-        yield return new WaitUntil(Get_SceneSyncAllState);        
+        
 
-        // 6. 씬 로드 확인
+        // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
+        // 배틀 씬으로 둘다 넘어왔으므로 각 플레이어들을 준비해제시키고
+        PhotonLogicHandler.Instance.OnUnReadyAll();
 
-        // 7. 캐릭터 로드 확인
+        // 5. 캐릭터 로드 확인
+        yield return new WaitUntil(Get_CharacterSyncAllState);
+        
+        // 게임 시작 ㅋ
+    }
+
+    protected void GameStart()
+    {
 
     }
 
     protected void GameStart_Failed()
     {
-        
+        CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
+        sequenceExecuteCoroutine = null;
     }
 
     protected bool Get_DataSyncAllState() => masterSyncData.isDataSync && slaveSyncData.isDataSync;

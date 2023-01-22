@@ -58,7 +58,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
             return;
 
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
-        mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
+        mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
     }
 
     protected IEnumerator IInfoSettingCheck()
@@ -68,14 +68,14 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
             yield return null;
         }
 
-        Managers.UI.popupCanvas.Play_FadeOutEffect(Wait_PlayFadeInEffect);
+        Managers.UI.popupCanvas.Play_FadeInEffect(Wait_PlayFadeInEffect);
     }
 
     protected IEnumerator IWaitFadeInEffect(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        Managers.UI.popupCanvas.Play_FadeInEffect(GameStart);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(GameStart);
     }
 
     public void GameStart()

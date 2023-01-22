@@ -18,18 +18,21 @@ public class CreateRoomWindowUI : MonoBehaviour
         get { return currMap; }
     }
 
-    private void OnEnable()
-    {
-        userInputField.text = "";
-        CurrMap = ENUM_MAP_TYPE.ForestMap;
-    }
     private void Open_CustomRoom() => Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
 
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
         currMap = _mapType;
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
-        mapNameText.text = Managers.Battle.Get_MapNameDict(_mapType);
+        mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
+    }
+
+    public void Open()
+    {
+        userInputField.text = "";
+        CurrMap = ENUM_MAP_TYPE.ForestMap;
+
+        gameObject.SetActive(true);
     }
 
     public void Close()
@@ -37,8 +40,6 @@ public class CreateRoomWindowUI : MonoBehaviour
         gameObject.SetActive(false);
     }
     
-    public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property) { }
-
     public void OnClick_CreatRoom()
     {
         userInputField.text = userInputField.text.Trim();

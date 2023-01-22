@@ -45,7 +45,6 @@ public class NetworkSyncData : MonoBehaviourPhoton
         updateTimerCallBack = null;
     }
 
-    #region Sync Variable
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
         stream.Write(gameRunTimeLimit);
@@ -59,7 +58,6 @@ public class NetworkSyncData : MonoBehaviourPhoton
 
         base.OnOtherSerializeView(stream);
     }
-    #endregion
 
     public void Request_ConnectTimerCallBack() => Managers.UI.currCanvas.GetComponent<BattleCanvas>().Register_TimerCallBack();
     public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => updateTimerCallBack = _updateTimerCallBack;
