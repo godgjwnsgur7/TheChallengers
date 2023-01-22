@@ -5,22 +5,23 @@ using FGDefine;
 
 public class TrainingCharacter : MonoBehaviour
 {
-    public ActiveCharacter activeCharacter;
+    [SerializeField] PlayerCamera playerCamera;
 
+    public ActiveCharacter activeCharacter;
     public ENUM_TEAM_TYPE teamType;
     public float moveDir;
     public bool inabilityState = false;
 
-    Coroutine moveCoroutine = null;
-
     bool isMove = false;
+    Coroutine moveCoroutine = null;
 
     private void Update()
     {
         if (activeCharacter == null)
             return;
 
-        OnKeyboard();
+        if(!inabilityState)
+            OnKeyboard();
     }
 
     public virtual void Set_Character(ActiveCharacter _activeCharacter)
@@ -31,6 +32,20 @@ public class TrainingCharacter : MonoBehaviour
         activeCharacter.Init();
         activeCharacter.Set_Sound();
         activeCharacter.Set_Character();
+
+        Connect_InputController();
+
+        if(!inabilityState && playerCamera != null)
+            playerCamera.Init(activeCharacter.transform);
+    }
+
+    public void Connect_InputController()
+    {
+        if (inabilityState)
+            return;
+
+        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack);
+        Managers.Input.Connect_InputArrowKey(OnPointEnterCallBack);
     }
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
@@ -152,5 +167,59 @@ public class TrainingCharacter : MonoBehaviour
     }
 
     // 디버깅용
-    protected virtual void OnKeyboard() { }
+    protected virtual void OnKeyboard() 
+    {
+        // 공격
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Attack);
+        }
+
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            OnPointUpCallBack(ENUM_INPUTKEY_NAME.Attack);
+        }
+
+        // 스킬 1번
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill1);
+        }
+
+        // 스킬 2번
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill2);
+        }
+
+        // 스킬 3번
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill3);
+        }
+
+        // 점프
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Jump);
+        }
+
+        // 이동
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            moveDir = -1f;
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            moveDir = 1.0f;
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
+        }
+
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+                OnPointUpCallBack(ENUM_INPUTKEY_NAME.Direction);
+        }
+    }
 }

@@ -115,6 +115,7 @@ namespace FGDefine
         Wizard_IceSkillObject = 29,
         Wizard_IceSkillObject_1 = 30,
         Wizard_MeteorSkillObject = 31,
+        Wizard_MeteorSkillObject_1 = 32,
     }
 
     /// <summary>

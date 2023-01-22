@@ -132,9 +132,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 14942413}
-  - component: {fileID: 14942415}
+  - component: {fileID: 14942414}
   m_Layer: 0
-  m_Name: EnemyPlayer
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +154,7 @@ Transform:
   m_Father: {fileID: 1636252111}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &14942415
+--- !u!114 &14942414
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,9 +163,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 14942412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea852a5b55d8b2646868c4efd95db269, type: 3}
+  m_Script: {fileID: 11500000, guid: bce113ab877e072499930566a6e6a449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
   activeCharacter: {fileID: 0}
   teamType: 0
   moveDir: 0
@@ -455,8 +456,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isOpen: 0
   playerCamera: {fileID: 973984477}
-  trainingPlayer: {fileID: 1418530639}
-  trainingEnemy: {fileID: 14942415}
+  trainingPlayer: {fileID: 1418530638}
+  trainingEnemy: {fileID: 14942414}
   buttons:
   - {fileID: 117273680}
   - {fileID: 1089046553}
@@ -2797,7 +2798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1418530637}
-  - component: {fileID: 1418530639}
+  - component: {fileID: 1418530638}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2820,7 +2821,7 @@ Transform:
   m_Father: {fileID: 1636252111}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1418530639
+--- !u!114 &1418530638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2829,14 +2830,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1418530636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c6a35aa31b19d3458081d67f9d5e68e, type: 3}
+  m_Script: {fileID: 11500000, guid: bce113ab877e072499930566a6e6a449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 973984477}
   activeCharacter: {fileID: 0}
   teamType: 0
   moveDir: 0
   inabilityState: 0
-  playerCamera: {fileID: 973984477}
 --- !u!1 &1597525895
 GameObject:
   m_ObjectHideFlags: 0

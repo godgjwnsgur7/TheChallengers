@@ -10,8 +10,8 @@ public class ButtonPanel : UIElement
     BaseMap map;
 
     [SerializeField] PlayerCamera playerCamera;
-    [SerializeField] TrainingPlayer trainingPlayer;
-    [SerializeField] TrainingEnemy trainingEnemy;
+    [SerializeField] TrainingCharacter trainingPlayer;
+    [SerializeField] TrainingCharacter trainingEnemy;
 
     [SerializeField] Button[] buttons;
 
@@ -37,6 +37,8 @@ public class ButtonPanel : UIElement
 
         trainingPlayer.teamType = ENUM_TEAM_TYPE.Blue;
         trainingEnemy.teamType = ENUM_TEAM_TYPE.Red;
+        trainingPlayer.inabilityState = false;
+        trainingEnemy.inabilityState = true;
 
         for (int i = 0; i < buttons.Length; i++)
             buttons[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;

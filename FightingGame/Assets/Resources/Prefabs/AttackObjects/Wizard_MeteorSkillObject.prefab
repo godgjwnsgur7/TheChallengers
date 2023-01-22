@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 2378321226887214559}
   - component: {fileID: 2378321226887214552}
   - component: {fileID: 2378321226887214558}
-  - component: {fileID: -3342169967835698367}
+  - component: {fileID: -6882038095926090154}
   - component: {fileID: -1048784257589917864}
+  - component: {fileID: 1176222330773520468}
   m_Layer: 0
   m_Name: Wizard_MeteorSkillObject
   m_TagString: Untagged
@@ -124,11 +125,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: -3342169967835698367}
+  - {fileID: -6882038095926090154}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-3342169967835698367
+--- !u!114 &-6882038095926090154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,12 +138,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2378321226887214548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01115a712c73eb44687ed927be4e0bea, type: 3}
+  m_Script: {fileID: 11500000, guid: e7eb2e6e504d18b46b5d0c4c7dbc427e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isUsing: 0
-  subPos: {x: 1.5, y: 4, z: 0}
-  shotSpeed: {x: 120, y: 0}
+  subPos: {x: 1.5, y: 2, z: 0}
+  shotPos: {x: 400, y: -400}
 --- !u!50 &-1048784257589917864
 Rigidbody2D:
   serializedVersion: 4
@@ -158,9 +159,35 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.5
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &1176222330773520468
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2378321226887214548}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.4}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4.6666665, y: 4.667123}
+    newSize: {x: 10, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+  m_EdgeRadius: 0
