@@ -39,6 +39,7 @@ public class Wizard : ActiveCharacter
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject_1", 3);
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject", 3);
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject_1", 3);
+        Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject_2", 3);
 
         // Public Effect
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 3);

@@ -5,15 +5,18 @@ using FGDefine;
 using System;
 
 // 낙하해서 충돌하면 이펙트 발생
-public class FallAttackObject : MultiAttackObject
+public class FallAttackObject : AttackObject, IFallAttackObject
 {
     Animator anim;
     Rigidbody2D rigid2D;
+    AttackObject attackObject;
+    BoxCollider2D attackCollider;
+    bool isFirstHit = false;
 
-    [SerializeField] protected Vector2 shotPos;
+    [SerializeField] protected Vector2 shotSpeed;
     [SerializeField] protected Vector3 subPos;
 
-    bool reverseShot;
+    Coroutine FollowingObjectCoroutine;
 
     public override void Init()
     {
@@ -26,27 +29,21 @@ public class FallAttackObject : MultiAttackObject
             anim = GetComponent<Animator>();
 
         base.Init();
-
-        ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)Enum.Parse(typeof(ENUM_ATTACKOBJECT_NAME), gameObject.name.ToString());
-        if (!Managers.Data.SkillDict.TryGetValue((int)attackObjectName, out skillValue))
-        {
-            Debug.Log($"{gameObject.name} 를 초기화하지 못했습니다.");
-        }
     }
 
     public override void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
         base.ActivatingAttackObject(_targetTr, _teamType, _reverseState);
 
+        shotSpeed.x = Mathf.Abs(shotSpeed.x);
         if (reverseState)
         {
-            reverseShot = reverseState;
             transform.localEulerAngles = new Vector3(0, 180, 0);
             transform.position += new Vector3(subPos.x * -1.0f, subPos.y, 0);
+            shotSpeed.x *= -1f;
         }
         else
         {
-            reverseShot = reverseState;
             transform.localEulerAngles = Vector3.zero;
             transform.position += subPos;
         }
@@ -54,60 +51,88 @@ public class FallAttackObject : MultiAttackObject
         gameObject.SetActive(true);
 
         isMine = true;
-
-        if (isServerSyncState)
-        {
-            if (PhotonLogicHandler.IsMine(viewID))
-                runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
-            else
-                isMine = false;
-        }
-        else
-            runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
-    [BroadcastMethod]
-    public void Move_AttackObject()
-    {
-        Vector2 vecPos = shotPos;
-
-        if (reverseShot)
-            vecPos.x *= -1f;
-
-        rigid2D.AddForce(vecPos, ForceMode2D.Force);
-    }
+    public void Shot_AttackObject() => rigid2D.AddForce(shotSpeed);
 
     [BroadcastMethod]
-    public void Set_Bool(string _parametorName)
+    public void Reverse_Bool(string _parametorName)
     {
         anim.SetBool(_parametorName, !anim.GetBool(_parametorName));
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Check_GroundHit()
     {
-        if (isServerSyncState && isMine)
-            return;
-
-        ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();
-
-        if (enemyCharacter != null && skillValue != null)
+        Debug.DrawRay(attackObject.transform.position, transform.up * ((-attackCollider.size.y / 2) + attackCollider.offset.y), Color.red);
+        if (Physics2D.Raycast(attackObject.transform.position, Vector2.down, attackCollider.size.y/ 2 + Mathf.Abs(attackCollider.offset.y), LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString())))
         {
-            if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
-                return;
+            isFirstHit = true;
+            rigid2D.velocity = Vector2.zero;
+            Reverse_Bool("Hit");
+            Managers.Resource.Destroy(attackObject.gameObject);
+        }
+    }   
 
-            enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
+    public void Summon_AttackObject(int _attackTypeNum)
+    {
+        bool isControl = true;
 
-            // 이펙트 생성 (임시)
-            int effectNum = UnityEngine.Random.Range(0, 3);
-            Summon_EffectObject(effectNum, collision.transform.position);
+        if (isServerSyncState)
+            isControl = PhotonLogicHandler.IsMine(viewID);
 
-            Set_Bool("Hit");
+        if (!isControl) return;
 
-            rigid2D.velocity = Vector3.zero;
+        attackObject = null;
+        ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
+
+        if (isServerSyncState)
+            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
+        else
+            attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
+
+        attackCollider = attackObject.GetComponent<BoxCollider2D>();
+
+        if (attackObject != null)
+        {
+            attackObject.Set_TargetTransform(this.transform);
+
+            if (isServerSyncState)
+            {
+                PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, Vector2, ENUM_TEAM_TYPE, bool>
+                    (attackObject, attackObject.ActivatingAttackObject, transform.position, teamType, reverseState);
+            }
+            else
+                attackObject.ActivatingAttackObject(transform.position, teamType, reverseState);
         }
         else
         {
-            // Debug.Log($"{gameObject.name}이 {collision.gameObject.name}을 감지했으나 Hit하지 못함");
+            Debug.Log($"ENUM_SKILL_TYPE에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
+        }
+
+        if (FollowingObjectCoroutine != null)
+            StopCoroutine(FollowingObjectCoroutine);
+
+        FollowingObjectCoroutine = StartCoroutine(Folling_AttackObejct());
+    }
+
+    public void AnimEvent_DestoryMine()
+    {
+        if (FollowingObjectCoroutine != null)
+            StopCoroutine(FollowingObjectCoroutine);
+
+        isFirstHit = false;
+
+        Managers.Resource.Destroy(this.gameObject);
+    }
+
+    public IEnumerator Folling_AttackObejct()
+    {
+        while (attackObject != null)
+        {
+            attackObject.transform.position = this.transform.position;
+            if(!isFirstHit)
+                Check_GroundHit();
+            yield return null;
         }
     }
 }

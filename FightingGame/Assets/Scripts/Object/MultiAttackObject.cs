@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class MultiAttackObject : AttackObject
+public class MultiAttackObject : AttackObject, IMultiAttackObject
 {
     protected AttackObject attackObject;
 
@@ -40,7 +40,7 @@ public class MultiAttackObject : AttackObject
         gameObject.SetActive(true);
     }
 
-    protected void Summon_AttackObject(int _attackTypeNum)
+    public void Summon_AttackObject(int _attackTypeNum)
     {
         bool isControl = true;
         
