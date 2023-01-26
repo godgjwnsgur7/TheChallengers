@@ -21,9 +21,9 @@ public abstract class BaseScene : MonoBehaviour
 
     public virtual void Init()
     {
-        Managers.Sound.Play((ENUM_BGM_TYPE)SceneType, ENUM_SOUND_TYPE.BGM);
         Managers.UI.popupCanvas.Play_FadeInEffect();
         Managers.Scene.Get_CurrSceneType(SceneType);
+        Managers.Sound.Play((ENUM_BGM_TYPE)SceneType, ENUM_SOUND_TYPE.BGM);
     }
     
     public virtual void Clear()

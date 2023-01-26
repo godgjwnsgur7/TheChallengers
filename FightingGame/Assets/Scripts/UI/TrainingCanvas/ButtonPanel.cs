@@ -7,16 +7,7 @@ using System;
 
 public class ButtonPanel : UIElement
 {
-    BaseMap map;
-
-    [SerializeField] PlayerCamera playerCamera;
-    [SerializeField] TrainingCharacter trainingPlayer;
-    [SerializeField] TrainingCharacter trainingEnemy;
-
     [SerializeField] Button[] buttons;
-
-    ENUM_CHARACTER_TYPE playerType;
-    ENUM_CHARACTER_TYPE enemyType;
 
     public override void Open(UIParam param = null)
     {
@@ -30,6 +21,39 @@ public class ButtonPanel : UIElement
 
     public void Init()
     {
+        for (int i = 0; i < buttons.Length; i++)
+            buttons[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+    }
+
+    public void OnClick_OpenSettingPanel()
+    {
+        Managers.UI.popupCanvas.Play_FadeOutEffect();
+
+        //DestroyCharacter();
+        Managers.Input.Get_InputKeyManagement().Init();
+        this.Close();
+
+        Managers.UI.popupCanvas.Play_FadeInEffect();
+    }
+
+    public void OnClick_OnOffButtonPanel()
+    {
+        if (this.gameObject.activeSelf)
+            Close();
+        else
+            Open();
+    }
+
+    /*BaseMap map;
+
+    [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] TrainingCharacter trainingPlayer;
+    [SerializeField] TrainingCharacter trainingEnemy;*/
+
+    /*ENUM_CHARACTER_TYPE playerType;
+    ENUM_CHARACTER_TYPE enemyType;*/
+
+    /*
         Summon_Map(ENUM_MAP_TYPE.ForestMap);
 
         Reset_PlayerType();
@@ -39,12 +63,9 @@ public class ButtonPanel : UIElement
         trainingEnemy.teamType = ENUM_TEAM_TYPE.Red;
         trainingPlayer.inabilityState = false;
         trainingEnemy.inabilityState = true;
+    */
 
-        for (int i = 0; i < buttons.Length; i++)
-            buttons[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
-    }
-
-    public void Summon_Map(ENUM_MAP_TYPE mapType)
+    /*public void Summon_Map(ENUM_MAP_TYPE mapType)
     { 
         if(map != null)
         {
@@ -62,28 +83,9 @@ public class ButtonPanel : UIElement
         Managers.UI.popupCanvas.Play_FadeInEffect();
 
         Close();
-    }
+    }*/
 
-    public void OnClick_OpenSettingPanel()
-    {
-        Managers.UI.popupCanvas.Play_FadeOutEffect();
-
-        DestroyCharacter();
-        Managers.Input.Get_InputKeyManagement().Init();
-        this.Close();
-
-        Managers.UI.popupCanvas.Play_FadeInEffect();
-    }
-
-    public void OnClick_OnOffButtonPanel()
-    {
-        if (this.gameObject.activeSelf)
-            Close();
-        else
-            Open();
-    }
-
-    // 캐릭터 선택창 오픈
+    /*// 캐릭터 선택창 오픈
     public void OnClick_CallPlayer() => Managers.UI.popupCanvas.Open_CharSelectPopup(Set_PlayerCharCallBack);
     public void OnClick_CallEnemy() => Managers.UI.popupCanvas.Open_CharSelectPopup(Set_EnemyCharCallBack);
 
@@ -257,5 +259,5 @@ public class ButtonPanel : UIElement
     public void Change_PlayerType(ENUM_CHARACTER_TYPE _value) => playerType = _value;
     public void Change_EnemyType(ENUM_CHARACTER_TYPE _value) => enemyType = _value;
     private void Reset_PlayerType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
-    private void Reset_EnemyType() => Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
+    private void Reset_EnemyType() => Change_EnemyType(ENUM_CHARACTER_TYPE.Default);*/
 }
