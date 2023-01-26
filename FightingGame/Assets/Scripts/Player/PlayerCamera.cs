@@ -31,7 +31,7 @@ public class PlayerCamera : MonoBehaviour
         FollowingCamera();
     }
 
-    public void Init(Transform target)
+    public void Following_Target(Transform target)
     {
         Set_target(target);
         Set_ZoomIn();

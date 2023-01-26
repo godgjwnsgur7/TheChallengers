@@ -4,11 +4,6 @@ using UnityEngine;
 using FGDefine;
 using System;
 
-/// <summary>
-/// 생성도 얘가 해야되고, 로드 후처리도 얘가 하자.
-/// 매니저에 달던... 근데 음.... 객체화는 되어있어야될거 같은디..?
-/// 
-/// </summary>
 public class PlayerCharacter : MonoBehaviour
 {
     public ActiveCharacter activeCharacter;
@@ -59,7 +54,6 @@ public class PlayerCharacter : MonoBehaviour
         teamType = _teamType;
 
         playerCamera.Set_MapData(_currMap);
-
     }
     
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
@@ -109,7 +103,7 @@ public class PlayerCharacter : MonoBehaviour
             activeCharacter.Set_Character();
         }
 
-        playerCamera.Init(activeCharacter.transform);
+        playerCamera.Following_Target(activeCharacter.transform);
         Connect_InputController();
     }
 

@@ -36,7 +36,7 @@ public class TrainingCharacter : MonoBehaviour
         Connect_InputController();
 
         if(!inabilityState && playerCamera != null)
-            playerCamera.Init(activeCharacter.transform);
+            playerCamera.Following_Target(activeCharacter.transform);
     }
 
     public void Connect_InputController()

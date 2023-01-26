@@ -9,6 +9,7 @@ using FGDefine;
 public class BattleScene : BaseScene
 {
     BaseMap map;
+    [SerializeField] PlayerCharacter player;
     [SerializeField] EnemyPlayer enemyPlayer; // 디버그용
 
     [SerializeField] ENUM_CHARACTER_TYPE testPlayerCharacterType;
