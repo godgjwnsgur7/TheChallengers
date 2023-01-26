@@ -12,13 +12,29 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     [SerializeField] Image mapImage;
     [SerializeField] Text mapNameText;
 
+    Coroutine infoSettingCheckCoroutine = null;
+    Coroutine waitFadeInEffectCoroutine = null;
+
+    private void Awake()
+    {
+        Managers.Network.Register_GameInfoCallBack(Open);
+    }
+
+    private void OnDisable()
+    {
+        if (infoSettingCheckCoroutine != null)
+            StopCoroutine(infoSettingCheckCoroutine);
+
+        if(waitFadeInEffectCoroutine != null)
+            StopCoroutine(waitFadeInEffectCoroutine);
+    }
+
     public void Open()
     {
         this.RegisterRoomCallback();
 
-        Managers.Battle.Start_ServerSync();
         this.gameObject.SetActive(true);
-        StartCoroutine(IInfoSettingCheck());
+        infoSettingCheckCoroutine = StartCoroutine(IInfoSettingCheck());
 
         PhotonLogicHandler.Instance.RequestRoomCustomProperty();
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
@@ -31,7 +47,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     public void Wait_PlayFadeInEffect()
     {
-        StartCoroutine(IWaitFadeInEffect(3.0f));
+        waitFadeInEffectCoroutine = StartCoroutine(IWaitFadeInEffect(3.0f));
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
@@ -63,22 +79,25 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     protected IEnumerator IInfoSettingCheck()
     {
+        // 상대방 정보까지 Init이 됐다면, 보여주기
         while((mapImage.sprite == null) || masterFightingInfo.isInit || slaveFightingInfo.isInit)
         {
             yield return null;
         }
 
         Managers.UI.popupCanvas.Play_FadeInEffect(Wait_PlayFadeInEffect);
+        infoSettingCheckCoroutine = null;
     }
 
     protected IEnumerator IWaitFadeInEffect(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
-        Managers.UI.popupCanvas.Play_FadeOutEffect(GameStart);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(GoTo_BattleScene);
+        waitFadeInEffectCoroutine = null;
     }
 
-    public void GameStart()
+    public void GoTo_BattleScene()
     {
         if(PhotonLogicHandler.IsMasterClient)
         {

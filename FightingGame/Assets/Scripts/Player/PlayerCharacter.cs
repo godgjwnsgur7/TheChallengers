@@ -4,18 +4,25 @@ using UnityEngine;
 using FGDefine;
 using System;
 
+/// <summary>
+/// 생성도 얘가 해야되고, 로드 후처리도 얘가 하자.
+/// 매니저에 달던... 근데 음.... 객체화는 되어있어야될거 같은디..?
+/// 
+/// </summary>
 public class PlayerCharacter : MonoBehaviour
 {
     public ActiveCharacter activeCharacter;
     [SerializeField] PlayerCamera playerCamera;
 
-    public ENUM_TEAM_TYPE teamType;
+    private ENUM_TEAM_TYPE teamType;
     public float moveDir;
     public bool inabilityState = false;
 
     Coroutine moveCoroutine = null;
+    Coroutine debugCoroutine = null;
 
     bool isMove = false;
+    bool isDebugState = false;
 
     private void Update()
     {
@@ -28,13 +35,41 @@ public class PlayerCharacter : MonoBehaviour
         OnKeyboard(); // 디버깅용
     }
 
-    public void Init(ActiveCharacter _activeCharacter)
+    /* APK 뽑으면 활성화하고 Update문 삭제
+    private void OnEnable()
     {
-        activeCharacter = _activeCharacter;
-        activeCharacter.transform.parent = this.transform;
+        if(!PhotonLogicHandler.IsConnected) // 디버깅용
+        {
+            isDebugState = true;
+            debugCoroutine = StartCoroutine(IOnKeyboard());
+        }
+    }
+    */
 
+    private void OnDisable()
+    {
+        isDebugState = false;
+
+        if(debugCoroutine != null)
+            StopCoroutine(debugCoroutine);
+    }
+
+    public void Init(ENUM_TEAM_TYPE _teamType, BaseMap _currMap)
+    {
+        teamType = _teamType;
+
+        playerCamera.Set_MapData(_currMap);
 
     }
+    
+    public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
+    {
+        activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _summonPosVec).GetComponent<ActiveCharacter>();
+        activeCharacter.transform.parent = this.transform;
+
+        activeCharacter.Skills_Pooling();
+    }
+
     public ActiveCharacter Init_Character(Vector3 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
     {
         ActiveCharacter activeCharacter;
@@ -86,7 +121,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        if (!Managers.Battle.isGamePlayingState)
+        if (!Managers.Battle.isGamePlayingState  )
             return;
 
         switch (_inputKeyName)
@@ -142,63 +177,6 @@ public class PlayerCharacter : MonoBehaviour
     public void OnPointEnterCallBack(float _moveDir)
     {
         moveDir = _moveDir;
-    }
-
-    // 디버깅용이니 쿨하게 다 때려박기
-    private void OnKeyboard()
-    {
-        // 공격
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Attack);
-        }
-
-        if (Input.GetKeyUp(KeyCode.F))
-        {
-            OnPointUpCallBack(ENUM_INPUTKEY_NAME.Attack);
-        }
-
-        // 스킬 1번
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill1);
-        }
-
-        // 스킬 2번
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill2);
-        }
-
-        // 스킬 3번
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill3);
-        }
-
-        // 점프
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Jump);
-        }
-
-        // 이동
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            moveDir = -1f;
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            moveDir = 1.0f;
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
-        }
-
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-        {
-            if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-                OnPointUpCallBack(ENUM_INPUTKEY_NAME.Direction);
-        }
     }
     
     public void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
@@ -257,5 +235,74 @@ public class PlayerCharacter : MonoBehaviour
             PlayerCommand(ENUM_PLAYER_STATE.Idle);
 
         moveCoroutine = null;
+    }
+
+    // 디버깅용 코루틴
+    protected IEnumerator IOnKeyboard()
+    {
+        while(isDebugState)
+        {
+            OnKeyboard();
+            yield return null;
+        }
+
+        debugCoroutine = null;
+    }
+
+    // 디버깅용이니 쿨하게 다 때려박기
+    private void OnKeyboard()
+    {
+        // 공격
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Attack);
+        }
+
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            OnPointUpCallBack(ENUM_INPUTKEY_NAME.Attack);
+        }
+
+        // 스킬 1번
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill1);
+        }
+
+        // 스킬 2번
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill2);
+        }
+
+        // 스킬 3번
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill3);
+        }
+
+        // 점프
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Jump);
+        }
+
+        // 이동
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            moveDir = -1f;
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            moveDir = 1.0f;
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
+        }
+
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+                OnPointUpCallBack(ENUM_INPUTKEY_NAME.Direction);
+        }
     }
 }

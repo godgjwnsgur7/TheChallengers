@@ -98,6 +98,16 @@ public class NetworkMgr : IRoomPostProcess
             slaveSyncData = _syncData;
     }
 
+    public void Register_GameInfoCallBack(Action _showGameInfoCallBack)
+    {
+        userSyncMediator.Register_GameInfoCallBack(_showGameInfoCallBack);
+    }
+
+    public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
+    {
+        userSyncMediator.Register_TimerCallBack(_updateTimerCallBack);
+    }
+
     public void Clear()
     {
         this.UnregisterRoomCallback();
@@ -120,14 +130,14 @@ public class NetworkMgr : IRoomPostProcess
         yield return new WaitUntil(Get_ReadyAllState);
         // 둘다 레디를 확인하면 게임 돌입을 알림
         PhotonLogicHandler.Instance.OnGameStart();
-
-        
+        // 게임시작정보를 알려줌 (씬 로드는 이쪽에서 처리함)
+        userSyncMediator.Show_GameInfo();
 
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
         // 배틀 씬으로 둘다 넘어왔으므로 각 플레이어들을 준비해제시키고
         PhotonLogicHandler.Instance.OnUnReadyAll();
-
+        
         // 5. 캐릭터 로드 확인
         yield return new WaitUntil(Get_CharacterSyncAllState);
         
@@ -136,7 +146,7 @@ public class NetworkMgr : IRoomPostProcess
 
     protected void GameStart()
     {
-
+        
     }
 
     protected void GameStart_Failed()
@@ -150,5 +160,4 @@ public class NetworkMgr : IRoomPostProcess
     protected bool Get_SceneSyncAllState() => masterSyncData.isSceneSync && slaveSyncData.isCharacterSync;
     protected bool Get_CharacterSyncAllState() => masterSyncData.isCharacterSync && slaveSyncData.isCharacterSync;
 
-    
 }

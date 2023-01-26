@@ -12,8 +12,6 @@ public class Knight : ActiveCharacter
 
         base.Init();
 
-        Skills_Pooling();
-
         if (PhotonLogicHandler.IsMine(viewID))
         {
             Debug.Log("컨트롤이 가능한 객체");
@@ -24,8 +22,10 @@ public class Knight : ActiveCharacter
         }
     }
 
-    private void Skills_Pooling()
+    public override void Skills_Pooling()
     {
+        base.Skills_Pooling();
+
         // Attack
         Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 3);
         Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 3);
@@ -39,11 +39,6 @@ public class Knight : ActiveCharacter
         Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 35);
         Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 3);
         Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);
-
-        // Public Effect
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 3);
 
         // Effect
         Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 3);

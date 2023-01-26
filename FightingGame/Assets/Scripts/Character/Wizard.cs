@@ -24,8 +24,10 @@ public class Wizard : ActiveCharacter
         }
     }
 
-    private void Skills_Pooling()
+    public override void Skills_Pooling()
     {
+        base.Skills_Pooling();
+
         // Attack
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
@@ -41,12 +43,13 @@ public class Wizard : ActiveCharacter
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject_1", 3);
         Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject_2", 3);
 
-        // Public Effect
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 3);
-
         // Effect
         Managers.Resource.GenerateInPool("EffectObjects/Wizard_ThunderEffect", 3);
+
+        // Knight Effect
+        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 3);
+        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 3);
+        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 3);
     }
+
 }

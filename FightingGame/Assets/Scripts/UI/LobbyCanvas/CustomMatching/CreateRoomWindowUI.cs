@@ -18,8 +18,10 @@ public class CreateRoomWindowUI : MonoBehaviour
         get { return currMap; }
     }
 
-    private void Open_CustomRoom() => Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
-
+    private void Open_CustomRoom()
+    {
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
+    }
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
         currMap = _mapType;

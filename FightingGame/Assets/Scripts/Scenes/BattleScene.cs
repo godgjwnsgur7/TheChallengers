@@ -2,13 +2,13 @@ using System.Collections;
 using UnityEngine;
 using FGDefine;
 
+/// <summary>
+/// 플레이어한테 무언가를 하지 않을거야
+/// 
+/// </summary>
 public class BattleScene : BaseScene
 {
     BaseMap map;
-
-    [SerializeField] PlayerCharacter playerCharacter;
-    [SerializeField] PlayerCamera playerCamera;
-
     [SerializeField] EnemyPlayer enemyPlayer; // 디버그용
 
     [SerializeField] ENUM_CHARACTER_TYPE testPlayerCharacterType;
@@ -20,10 +20,28 @@ public class BattleScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Battle;
 
         base.Init();
+        
 
+        
+        if (PhotonLogicHandler.Instance.IsInRoom())
+        {
+            map = Managers.Resource.Instantiate($"Maps{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
+
+            ENUM_TEAM_TYPE teamType = PhotonLogicHandler.IsMasterClient ? ENUM_TEAM_TYPE.Red : ENUM_TEAM_TYPE.Blue;
+            // Managers.Player.Init(teamType, currMap.)
+            
+        }
+        else
+        {
+
+        }
+
+        // 따로 함수로 뺄 내용 (동기화 필요한 오브젝트)
+
+
+        /*
         if (PhotonLogicHandler.IsConnected)
         {
-            map = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
             playerCamera.Set_MapData(map);
 
             if (PhotonLogicHandler.IsMasterClient)
@@ -39,11 +57,14 @@ public class BattleScene : BaseScene
                 playerCharacter.Set_Character(Init_Character(map.redTeamSpawnPoint.position, Managers.Battle.Get_MyCharacterType()));
             }
         }
-        else // 클라 하나 (테스트)
+
+        if(!PhotonLogicHandler.IsConnected) // 디버그용
         {
             Managers.Battle.DebugFunction();
 
-            map = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
+            BaseMap currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
+            playerCharacter.Init()
+            
             playerCamera.Set_MapData(map);
 
             playerCharacter.teamType = ENUM_TEAM_TYPE.Blue;
@@ -53,30 +74,11 @@ public class BattleScene : BaseScene
             enemyPlayer.teamType = ENUM_TEAM_TYPE.Red;
             enemyPlayer.Set_Character(Init_Character(map.redTeamSpawnPoint.position, testEnemyCharacterType));
         }
+        */
     }
 
     public override void Clear()
     {
         base.Clear();
-    }
-
-    public ActiveCharacter Init_Character(Vector3 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
-    {
-        ActiveCharacter activeCharacter;
-
-        if (Managers.Battle.isServerSyncState)
-        {
-            activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
-            
-            Managers.Battle.Set_MyChar(activeCharacter);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
-                (activeCharacter, activeCharacter.Receive_EnemyChar, ENUM_RPC_TARGET.OTHER);
-        }
-        else
-        {
-            activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
-        }
-
-        return activeCharacter;
     }
 }

@@ -56,6 +56,14 @@ public partial class ActiveCharacter : Character
             isControl = true;
     }
 
+    public virtual void Skills_Pooling()
+    {
+        // Public Effect
+        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 3);
+        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 3);
+        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 3);
+    }
+
     [BroadcastMethod]
     public void Set_Sound()
     {

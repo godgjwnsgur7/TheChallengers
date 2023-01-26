@@ -51,40 +51,6 @@ public class PlayerCamera : MonoBehaviour
         transform.position = new Vector3(clampedX, clampedY, -10);
     }
 
-    IEnumerator Zoom_In(float _zoomSpeed)
-    {
-        while (cam.orthographicSize > playerCamSize)
-        {
-            halfHeight = cam.orthographicSize;
-            halfWidth = halfHeight * Screen.width / Screen.height;
-
-            cam.orthographicSize += _zoomSpeed;
-            Set_OrthographicSize(cam.orthographicSize);
-            yield return new WaitForSeconds(0.01f);
-        }
-
-        Set_OrthographicSize(playerCamSize);
-    }
-
-    IEnumerator Zoom_Out(float _zoomSpeed)
-    {
-        float zoomCount = (mapSize - cam.orthographicSize) / zoomSpeed;
-        float DistinceDelta = Vector3.Distance(transform.position, mapCenterPos) / zoomCount;
-
-        while (cam.orthographicSize < mapSize)
-        {
-            halfHeight = cam.orthographicSize;
-            halfWidth = halfHeight * Screen.width / Screen.height;
-
-            transform.position = Vector3.MoveTowards(transform.position, mapCenterPos, DistinceDelta);
-            cam.orthographicSize += _zoomSpeed;
-            Set_OrthographicSize(cam.orthographicSize);
-            yield return new WaitForSeconds(0.01f);
-        }
-
-        Set_OrthographicSize(mapSize);
-    }
-
     public void Set_MapData(BaseMap _map)
     {
         cam = Camera.main;
@@ -105,13 +71,13 @@ public class PlayerCamera : MonoBehaviour
     public void Set_ZoomOut()
     {
         if (this.mapSize > cam.orthographicSize)
-            StartCoroutine(Zoom_Out(zoomSpeed));
+            StartCoroutine(ICameera_ZoomOut(zoomSpeed));
     }
 
     public void Set_ZoomIn()
     {
         if (this.playerCamSize < cam.orthographicSize)
-            StartCoroutine(Zoom_In(zoomSpeed * -1f));
+            StartCoroutine(ICameera_ZoomIn(zoomSpeed * -1f));
     }
 
     // 맵의 위치값
@@ -120,6 +86,48 @@ public class PlayerCamera : MonoBehaviour
         this.mapCenterPos = _position;
         this.mapCenterPos.z = this.transform.position.z;
     }
-    public void Set_target(Transform _transform) => this.target = _transform;
-    public void Set_OrthographicSize(float _size) => cam.orthographicSize = _size;
+
+    public void Set_target(Transform _transform)
+    {
+        this.target = _transform;
+    }
+
+    public void Set_OrthographicSize(float _size)
+    {
+        cam.orthographicSize = _size;
+    }
+    
+    IEnumerator ICameera_ZoomIn(float _zoomSpeed)
+    {
+        while (cam.orthographicSize > playerCamSize)
+        {
+            halfHeight = cam.orthographicSize;
+            halfWidth = halfHeight * Screen.width / Screen.height;
+
+            cam.orthographicSize += _zoomSpeed;
+            Set_OrthographicSize(cam.orthographicSize);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        Set_OrthographicSize(playerCamSize);
+    }
+
+    IEnumerator ICameera_ZoomOut(float _zoomSpeed)
+    {
+        float zoomCount = (mapSize - cam.orthographicSize) / zoomSpeed;
+        float DistinceDelta = Vector3.Distance(transform.position, mapCenterPos) / zoomCount;
+
+        while (cam.orthographicSize < mapSize)
+        {
+            halfHeight = cam.orthographicSize;
+            halfWidth = halfHeight * Screen.width / Screen.height;
+
+            transform.position = Vector3.MoveTowards(transform.position, mapCenterPos, DistinceDelta);
+            cam.orthographicSize += _zoomSpeed;
+            Set_OrthographicSize(cam.orthographicSize);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        Set_OrthographicSize(mapSize);
+    }
 }

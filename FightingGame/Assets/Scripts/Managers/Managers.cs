@@ -18,7 +18,7 @@ public class Managers : MonoBehaviour
     private SoundMgr sound = new SoundMgr();
     private UIMgr ui = new UIMgr();
     private PlatformMgr platform = new PlatformMgr();
-    private PlayerCharacter player = new PlayerCharacter();
+    private PlayerCharacter player = null;
 
     public static BattleMgr Battle { get { return Instance.battle; } }
     public static DataMgr Data { get { return Instance.data; } }
@@ -34,8 +34,17 @@ public class Managers : MonoBehaviour
     { 
         get 
         {
+            if (Scene.CurrSceneType != FGDefine.ENUM_SCENE_TYPE.Battle)
+            {
+                Debug.Log("Player is Null : 배틀 씬이 아닙니다.");
+                return null;
+            }
+            
+            if(s_Instance.player == null)
+                s_Instance.player = GameObject.FindObjectOfType<PlayerCharacter>();
+
             return Instance.player; 
-        } 
+        }
     }
     
     private void Start()
