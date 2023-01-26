@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using FGDefine;
 
 /// <summary>
 /// 네트워크매니저가 브로드캐스트멀티를 사용하기 위해 존재
@@ -97,5 +98,11 @@ public class UserSyncMediator : MonoBehaviourPhoton
     {
         // FadeIn은 FightingGameInfo에서 정보를 받아온 후에 실행
         Managers.UI.popupCanvas.Play_FadeOutEffect(showGameInfoCallBack);
+    }
+
+    [BroadcastMethod]
+    public void Sync_SummonCharacter()
+    {
+        Managers.Player.Init(Managers.Network.Get_MyCharacterType());
     }
 }

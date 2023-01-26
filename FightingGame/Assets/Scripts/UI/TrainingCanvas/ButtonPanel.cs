@@ -57,7 +57,7 @@ public class ButtonPanel : UIElement
 
         string mapName = Enum.GetName(typeof(ENUM_MAP_TYPE), mapType);
         map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
-        playerCamera.Set_MapData(map);
+        playerCamera.Init(map);
 
         Managers.UI.popupCanvas.Play_FadeInEffect();
 
@@ -239,6 +239,7 @@ public class ButtonPanel : UIElement
     {
         ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, trainingPlayer.transform).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
+        activeCharacter.Skills_Pooling();
 
         return activeCharacter;
     }
@@ -247,6 +248,7 @@ public class ButtonPanel : UIElement
     {
         ActiveCharacter activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position, trainingEnemy.transform).GetComponent<ActiveCharacter>();
         activeCharacter.Init();
+        activeCharacter.Skills_Pooling();
 
         return activeCharacter;
     }

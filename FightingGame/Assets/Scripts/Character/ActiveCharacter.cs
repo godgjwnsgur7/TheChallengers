@@ -24,12 +24,6 @@ public partial class ActiveCharacter : Character
 
     public override void Init()
     {
-        if (isInitialized)
-        {
-            Debug.Log("중복으로 캐릭터를 초기화 시도하였습니다.");
-            return;
-        }
-
         base.Init();
 
         if (spriteRenderer == null)
@@ -50,7 +44,7 @@ public partial class ActiveCharacter : Character
       
         isInitialized = true;
 
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.Get_SyncState())
             isControl = PhotonLogicHandler.IsMine(viewID);
         else
             isControl = true;
@@ -64,21 +58,9 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 3);
     }
 
-    [BroadcastMethod]
-    public void Set_Sound()
-    {
-        AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();
-        if (teamType == ENUM_TEAM_TYPE.Blue)
-            Managers.Sound.Set_TeamAudioSource(audioSource, ENUM_SOUND_TYPE.SFX_BLUE);
-        else if (teamType == ENUM_TEAM_TYPE.Red)
-            Managers.Sound.Set_TeamAudioSource(audioSource, ENUM_SOUND_TYPE.SFX_RED);
-        else
-            return;
-    }
-
     public void Set_Character()
     {
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.Get_SyncState())
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
@@ -335,7 +317,7 @@ public partial class ActiveCharacter : Character
         if(_currHP <= 0 && isControl)
             Die();
 
-        if(Managers.Battle.isServerSyncState)
+        if(Managers.Network.Get_SyncState())
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, float>
                 (this, Sync_CurrHP, _currHP, ENUM_RPC_TARGET.All);
@@ -390,7 +372,7 @@ public partial class ActiveCharacter : Character
         if (reverseState == _reverseState)
             return;
 
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.Get_SyncState())
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, bool>
                 (this, Sync_ReverseState, _reverseState);
         else
@@ -399,7 +381,7 @@ public partial class ActiveCharacter : Character
 
     public void TransparentState(float color_a)
     {
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.Get_SyncState())
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, float>
                 (this, Sync_TransparentState, color_a);
         else
@@ -427,7 +409,7 @@ public partial class ActiveCharacter : Character
             return;
         }
 
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.Get_SyncState())
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
                 (this, Sync_EndGame, teamType);
@@ -604,7 +586,7 @@ public partial class ActiveCharacter : Character
         attackObject = null;
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
 
-        bool isServerSyncState = Managers.Battle.isServerSyncState;
+        bool isServerSyncState = Managers.Network.Get_SyncState();
 
         if (isServerSyncState)
             attackObject = Managers.Resource.InstantiateEveryone("AttackObjects/" + attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
@@ -625,7 +607,7 @@ public partial class ActiveCharacter : Character
         }
         else
         {
-            Debug.Log($"ENUM_ATTACKOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_attackTypeNum}");
+            Debug.Log($"ENUM_ATTACKOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {attackObjectName}");
         }
     }
 
@@ -636,7 +618,7 @@ public partial class ActiveCharacter : Character
         attackObject = null;
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
-        bool isServerSyncState = Managers.Battle.isServerSyncState;
+        bool isServerSyncState = Managers.Network.Get_SyncState();
 
         EffectObject effectObject = null;
 
@@ -659,7 +641,7 @@ public partial class ActiveCharacter : Character
         }
         else
         {
-            Debug.Log($"ENUM_EFFECTOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {_effectTypeNum}");
+            Debug.Log($"ENUM_EFFECTOBJECT_NAME에서 해당 번호를 찾을 수 없음 : {effectObjectName}");
         }
 
     }

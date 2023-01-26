@@ -49,39 +49,47 @@ public class PlayerCharacter : MonoBehaviour
             StopCoroutine(debugCoroutine);
     }
 
-    public void Init(ENUM_TEAM_TYPE _teamType, BaseMap _currMap)
+    public void Init(ENUM_CHARACTER_TYPE _summonCharType)
     {
-        teamType = _teamType;
+        BaseMap currMap = Managers.Resource.Instantiate($"Maps{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
-        playerCamera.Set_MapData(_currMap);
+        Vector2 summonPosVec;
+
+        if (!PhotonLogicHandler.IsConnected) // 디버그용
+        {
+            teamType = ENUM_TEAM_TYPE.Red;
+            summonPosVec = currMap.redTeamSpawnPoint.position;
+        }
+        else
+        {
+            if (PhotonLogicHandler.IsMasterClient)
+            {
+                teamType = ENUM_TEAM_TYPE.Red;
+                summonPosVec = currMap.redTeamSpawnPoint.position;
+            }
+            else
+            {
+                teamType = ENUM_TEAM_TYPE.Blue;
+                summonPosVec = currMap.blueTeamSpawnPoint.position;
+            }
+        }
+
+        playerCamera.Init(currMap);
+        Summon_Character(_summonCharType, summonPosVec);
     }
     
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
     {
         activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _summonPosVec).GetComponent<ActiveCharacter>();
         activeCharacter.transform.parent = this.transform;
-
         activeCharacter.Skills_Pooling();
-    }
+        
+        PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
+        PhotonLogicHandler.Instance.TryBroadcastMethod<Character>(activeCharacter, activeCharacter.Set_Sound);
 
-    public ActiveCharacter Init_Character(Vector3 _position, ENUM_CHARACTER_TYPE _charType = ENUM_CHARACTER_TYPE.Knight)
-    {
-        ActiveCharacter activeCharacter;
-
-        if (Managers.Battle.isServerSyncState)
-        {
-            activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _position).GetComponent<ActiveCharacter>();
-
-            Managers.Battle.Set_MyChar(activeCharacter);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
-                (activeCharacter, activeCharacter.Receive_EnemyChar, ENUM_RPC_TARGET.OTHER);
-        }
-        else
-        {
-            activeCharacter = Managers.Resource.Instantiate($"{_charType}", _position).GetComponent<ActiveCharacter>();
-        }
-
-        return activeCharacter;
+        activeCharacter.Set_Character();
+        playerCamera.Following_Target(activeCharacter.transform);
+        Connect_InputController();
     }
 
     public void Set_Character(ActiveCharacter _activeCharacter)
@@ -89,11 +97,9 @@ public class PlayerCharacter : MonoBehaviour
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
 
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.Get_SyncState())
         {
-            PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>(activeCharacter, activeCharacter.Set_Sound);
-            activeCharacter.Set_Character();
+            
         }
         else
         {
@@ -115,7 +121,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        if (!Managers.Battle.isGamePlayingState  )
+        if (!Managers.Battle.isGamePlayingState)
             return;
 
         switch (_inputKeyName)

@@ -54,7 +54,7 @@ public class Character : MonoBehaviourPhoton
         SyncPhysics(rigid2D);
         SyncTransformView(transform);
     }
-
+    
     protected override void OnMineSerializeView(PhotonWriteStream stream)
     {
         stream.Write(currHP);
@@ -158,5 +158,17 @@ public class Character : MonoBehaviourPhoton
     public void Set_TeamType(ENUM_TEAM_TYPE _teamType)
     {
         teamType = _teamType;
+    }
+
+    [BroadcastMethod]
+    public void Set_Sound()
+    {
+        AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();
+        if (teamType == ENUM_TEAM_TYPE.Blue)
+            Managers.Sound.Set_TeamAudioSource(audioSource, ENUM_SOUND_TYPE.SFX_BLUE);
+        else if (teamType == ENUM_TEAM_TYPE.Red)
+            Managers.Sound.Set_TeamAudioSource(audioSource, ENUM_SOUND_TYPE.SFX_RED);
+        else
+            return;
     }
 }
