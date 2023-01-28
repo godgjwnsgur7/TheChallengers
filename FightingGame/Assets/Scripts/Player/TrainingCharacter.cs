@@ -204,6 +204,12 @@ public class TrainingCharacter : MonoBehaviour
             OnPointDownCallBack(ENUM_INPUTKEY_NAME.Jump);
         }
 
+        // 대쉬
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Dash);
+        }
+
         // 이동
         if (Input.GetKeyDown(KeyCode.A))
         {

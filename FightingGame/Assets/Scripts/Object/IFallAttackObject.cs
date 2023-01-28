@@ -11,5 +11,5 @@ public interface IFallAttackObject : IMultiAttackObject
     void Shot_AttackObject();
 
     [BroadcastMethod]
-    void Reverse_Bool(string _parametorName);
+    void Active_Trigger(string _parametorName);
 }

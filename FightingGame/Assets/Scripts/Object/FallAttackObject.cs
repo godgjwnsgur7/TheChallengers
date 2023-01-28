@@ -11,11 +11,11 @@ public class FallAttackObject : AttackObject, IFallAttackObject
     Rigidbody2D rigid2D;
     AttackObject attackObject;
     BoxCollider2D attackCollider;
-    bool isFirstHit = false;
 
     [SerializeField] protected Vector2 shotSpeed;
     [SerializeField] protected Vector3 subPos;
 
+    bool isFirstHit = false;
     Coroutine FollowingObjectCoroutine;
 
     public override void Init()
@@ -51,24 +51,36 @@ public class FallAttackObject : AttackObject, IFallAttackObject
         gameObject.SetActive(true);
 
         isMine = true;
+        isFirstHit = false;
     }
 
     public void Shot_AttackObject() => rigid2D.AddForce(shotSpeed);
 
     [BroadcastMethod]
-    public void Reverse_Bool(string _parametorName)
+    public void Active_Trigger(string _parametorName)
     {
-        anim.SetBool(_parametorName, !anim.GetBool(_parametorName));
+        anim.SetTrigger(_parametorName);
     }
 
     public void Check_GroundHit()
     {
-        Debug.DrawRay(attackObject.transform.position, transform.up * ((-attackCollider.size.y / 2) + attackCollider.offset.y), Color.red);
-        if (Physics2D.Raycast(attackObject.transform.position, Vector2.down, attackCollider.size.y/ 2 + Mathf.Abs(attackCollider.offset.y), LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString())))
+        // AttackObject size와 Offset 값을 이용해 Ray의 위치를 정해야함
+        Vector3 attackObj_HalfWidth = new Vector3(attackCollider.size.x / 2, 0, 0);
+        Vector3 attackObj_HalfHeight = new Vector3(0, attackCollider.size.y / 2, 0);
+        float attackObj_OffsetY = attackCollider.offset.y;
+
+        // AttackObject 양 끝단 Ray 발사
+        Debug.DrawRay(attackObject.transform.position + attackObj_HalfWidth * -1f, Vector2.down * (attackObj_HalfHeight.y + attackObj_OffsetY), Color.red);
+        Debug.DrawRay(attackObject.transform.position + attackObj_HalfWidth, Vector2.down * (attackObj_HalfHeight.y + attackObj_OffsetY), Color.red);
+
+        // 바닥 충돌 검사
+        isFirstHit = Physics2D.Raycast(attackObject.transform.position + attackObj_HalfWidth, Vector2.down, attackObj_HalfHeight.y + Mathf.Abs(attackObj_OffsetY), LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString())) 
+            || Physics2D.Raycast(attackObject.transform.position + attackObj_HalfWidth * -1f, Vector2.down, attackObj_HalfWidth.y + Mathf.Abs(attackObj_OffsetY), LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
+
+        if (isFirstHit)
         {
-            isFirstHit = true;
             rigid2D.velocity = Vector2.zero;
-            Reverse_Bool("Hit");
+            Active_Trigger("Hit");
             Managers.Resource.Destroy(attackObject.gameObject);
         }
     }   
