@@ -44,6 +44,17 @@ namespace FGPlatform
 			{ DB_CATEGORY.PurchaseCoffee, typeof(long) },
 		};
 
+		public bool IsInitialized
+		{
+			get
+			{
+				return Auth.IsAuthPlatform &&
+					DB.IsInitialized &&
+					IAPController.IsInitialized &&
+					AdMob.IsInitialized;
+			}
+		}
+
 		public void Initialize()
 		{
 			Auth.TryConnectAuth();

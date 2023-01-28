@@ -19,6 +19,11 @@ namespace FGPlatform.Advertisement
 {
     public interface IAdMobController
     {
+        public bool IsInitialized
+		{
+            get;
+		}
+
         public void Init(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
         public void LoadBanner(BannerPosition bannerPos = BannerPosition.Bottom, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null);
         public void UnloadBanner();
@@ -37,6 +42,14 @@ namespace FGPlatform.Advertisement
 		private readonly string TestKeyword = "ProjectFG";
 
         private readonly string AppID = "ca-app-pub-3940256099942544~3347511713";
+
+        public bool IsInitialized
+		{
+            get
+			{
+                return isLoaded;
+			}
+		}
 
         private bool isLoaded = false;
         private bool isShow = false;

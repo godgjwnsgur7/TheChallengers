@@ -33,6 +33,11 @@ namespace FGPlatform.Datebase
 
     public interface IPlatformDB
     {
+        public bool IsInitialized
+		{
+            get;
+		}
+
         public void InitDataBase();
         bool UpdateDB<T>(DB_CATEGORY category, string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null);
 
@@ -60,13 +65,36 @@ namespace FGPlatform.Datebase
 
         private DBUserData myUserData = null;
 
+        public bool IsInitialized
+		{
+            get
+            { 
+                return app != null && database != null && dbRootReference != null;
+            }
+		}
+
         public void InitDataBase()
         {
-            app = FirebaseApp.DefaultInstance;
-            app.Options.DatabaseUrl = new Uri(URL);
+            FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+                var dependencyStatus = task.Result;
+                if (dependencyStatus == Firebase.DependencyStatus.Available)
+                {
+                    // Create and hold a reference to your FirebaseApp,
+                    // where app is a Firebase.FirebaseApp property of your application class.
+                    app = Firebase.FirebaseApp.DefaultInstance;
+                    app.Options.DatabaseUrl = new Uri(URL);
 
-            database = FirebaseDatabase.DefaultInstance;
-            dbRootReference = database.RootReference;
+                    database = FirebaseDatabase.DefaultInstance;
+                    dbRootReference = database.RootReference;
+                    // Set a flag here to indicate whether Firebase is ready to use by your app.
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError(System.String.Format(
+                      "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                    // Firebase Unity SDK is not safe to use here.
+                }
+            });
         }
 
         public bool UpdateDB<T>(DB_CATEGORY category, string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)
