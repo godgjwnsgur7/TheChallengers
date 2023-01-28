@@ -24,7 +24,6 @@ namespace FGPlatform.Purchase
 
     public interface CoffeeMachine
     {
-        public bool IsInitialized { get; }
         void Init();
         bool Purchase();
         bool IsPurchased();
@@ -44,7 +43,7 @@ namespace FGPlatform.Purchase
 
         private readonly IAPProduct productInfo = new IAPProduct("커피", "Coffee", ProductType.Consumable, 1000);
 
-        public bool IsInitialized =>
+        public bool IsValid =>
             storeController != null
             && provider != null
             && builder != null
@@ -56,16 +55,16 @@ namespace FGPlatform.Purchase
             builder = ConfigurationBuilder.Instance(module);
 
             builder.AddProduct(productInfo.ID, productInfo.Type, new IDs()
-            {
-                { productInfo.AOS_ID, GooglePlay.Name}
-            });
+        {
+            { productInfo.AOS_ID, GooglePlay.Name}
+        });
 
             UnityPurchasing.Initialize(this, builder);
         }
 
         public bool Purchase()
         {
-            if (!IsInitialized)
+            if (!IsValid)
                 return false;
 
             var product = storeController.products.WithID(productInfo.ID);
@@ -78,7 +77,7 @@ namespace FGPlatform.Purchase
 
         public bool IsPurchased()
         {
-            if (!IsInitialized)
+            if (!IsValid)
                 return false;
 
             var product = storeController.products.WithID(productInfo.ID);
