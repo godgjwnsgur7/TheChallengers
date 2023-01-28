@@ -48,20 +48,8 @@ public class InputMgr
         inputKeyController.Connect_InputArrowKey(_OnPointEnterCallBack);
     }
 
-    public void Destroy_InputKeyController()
-    {
-        if (inputKeyController == null)
-            return;
-
-        Managers.Resource.Destroy(inputKeyController.gameObject);
-    }
-    public void Destroy_InputKeyManagement()
-    {
-        if (inputKeyManagement == null)
-            return;
-
-        Managers.Resource.Destroy(inputKeyManagement.gameObject);
-    }
+    public void Destroy_InputKeyController() => Managers.Resource.Destroy(inputKeyController.gameObject);
+    public void Destroy_InputKeyManagement() => Managers.Resource.Destroy(inputKeyManagement.gameObject);
 
     public void Notify_UseSkill(int skillNum) => inputKeyController.Notify_UseSkill(skillNum);
 

@@ -455,6 +455,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
+  playerCamera: {fileID: 973984477}
+  trainingPlayer: {fileID: 1418530638}
+  trainingEnemy: {fileID: 14942414}
   buttons:
   - {fileID: 117273680}
   - {fileID: 1089046553}
@@ -546,6 +549,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 110583156}
+        m_TargetAssemblyTypeName: ButtonPanel, Assembly-CSharp
+        m_MethodName: OnClick_CallPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Player
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 42189881}
         m_TargetAssemblyTypeName: TrainingCanvas, Source
         m_MethodName: PlaySFX_CallBack
@@ -554,30 +569,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1948010699}
-        m_TargetAssemblyTypeName: TrainingScene, Source
-        m_MethodName: OnClick_CallPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 110583156}
-        m_TargetAssemblyTypeName: ButtonPanel, Source
-        m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1005,6 +996,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 110583156}
+        m_TargetAssemblyTypeName: ButtonPanel, Source
+        m_MethodName: OnClick_DestroyCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Player
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 42189881}
         m_TargetAssemblyTypeName: TrainingCanvas, Source
         m_MethodName: PlaySFX_CallBack
@@ -1013,30 +1016,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1948010699}
-        m_TargetAssemblyTypeName: TrainingScene, Source
-        m_MethodName: OnClick_DestroyCharacter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 110583156}
-        m_TargetAssemblyTypeName: ButtonPanel, Source
-        m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1527,18 +1506,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1948010699}
-        m_TargetAssemblyTypeName: TrainingScene, Source
-        m_MethodName: DestroyCharacter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &517990549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1899,6 +1866,7 @@ MonoBehaviour:
   isUsing: 0
   popupWindow: {fileID: 716483111}
   mapPanel: {fileID: 781807541}
+  buttonPanel: {fileID: 110583156}
 --- !u!1 &781807539
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,6 +2404,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 110583156}
+        m_TargetAssemblyTypeName: ButtonPanel, Source
+        m_MethodName: OnClick_CallEnemy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Player
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 42189881}
         m_TargetAssemblyTypeName: TrainingCanvas, Source
         m_MethodName: PlaySFX_CallBack
@@ -2444,30 +2424,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1948010699}
-        m_TargetAssemblyTypeName: TrainingScene, Source
-        m_MethodName: OnClick_CallEnemy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 110583156}
-        m_TargetAssemblyTypeName: ButtonPanel, Source
-        m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3178,18 +3134,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 110583156}
-        m_TargetAssemblyTypeName: ButtonPanel, Source
-        m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1840456163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3402,9 +3346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509a81fb41204ff45af1d7a16e929a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 973984477}
-  trainingPlayer: {fileID: 1418530638}
-  trainingEnemy: {fileID: 14942414}
 --- !u!4 &1948010700
 Transform:
   m_ObjectHideFlags: 0
