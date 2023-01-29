@@ -4,7 +4,7 @@ using UnityEngine;
 using FGDefine;
 using System;
 
-public class ShotAttackObject : AttackObject, IShotAttackObject
+public class ShotAttackObject : AttackObject
 {
     Skill skillValue;
     Coroutine runTimeCheckCoroutine = null;

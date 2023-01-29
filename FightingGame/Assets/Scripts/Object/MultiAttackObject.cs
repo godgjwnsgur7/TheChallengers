@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 
-public class MultiAttackObject : AttackObject, IMultiAttackObject
+public class MultiAttackObject : AttackObject
 {
     protected AttackObject attackObject;
 

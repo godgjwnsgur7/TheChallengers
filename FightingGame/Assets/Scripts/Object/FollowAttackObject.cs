@@ -4,7 +4,7 @@ using UnityEngine;
 using FGDefine;
 using System;
 
-public class FollowAttackObject : AttackObject, IFollowAttackObject
+public class FollowAttackObject : AttackObject
 {
     Skill skillValue;
     Coroutine runTimeCheckCoroutine = null;

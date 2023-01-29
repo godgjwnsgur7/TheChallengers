@@ -5,7 +5,7 @@ using FGDefine;
 using System;
 
 // 낙하해서 충돌하면 이펙트 발생
-public class FallAttackObject : AttackObject, IFallAttackObject
+public class FallAttackObject : AttackObject
 {
     Animator anim;
     Rigidbody2D rigid2D;
@@ -66,16 +66,16 @@ public class FallAttackObject : AttackObject, IFallAttackObject
     {
         // AttackObject size와 Offset 값을 이용해 Ray의 위치를 정해야함
         Vector3 attackObj_HalfWidth = new Vector3(attackCollider.size.x / 2, 0, 0);
-        Vector3 attackObj_HalfHeight = new Vector3(0, attackCollider.size.y / 2, 0);
+        float attackObj_HalfHeight = attackCollider.size.y;
         float attackObj_OffsetY = attackCollider.offset.y;
 
         // AttackObject 양 끝단 Ray 발사
-        Debug.DrawRay(attackObject.transform.position + attackObj_HalfWidth * -1f, Vector2.down * (attackObj_HalfHeight.y + attackObj_OffsetY), Color.red);
-        Debug.DrawRay(attackObject.transform.position + attackObj_HalfWidth, Vector2.down * (attackObj_HalfHeight.y + attackObj_OffsetY), Color.red);
+        Debug.DrawRay(attackObject.transform.position + attackObj_HalfWidth * -1f, Vector2.down * (attackObj_HalfHeight + attackObj_OffsetY * -1f), Color.red);
+        Debug.DrawRay(attackObject.transform.position + attackObj_HalfWidth, Vector2.down * (attackObj_HalfHeight + attackObj_OffsetY * -1f), Color.red);
 
         // 바닥 충돌 검사
-        isFirstHit = Physics2D.Raycast(attackObject.transform.position + attackObj_HalfWidth, Vector2.down, attackObj_HalfHeight.y + Mathf.Abs(attackObj_OffsetY), LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString())) 
-            || Physics2D.Raycast(attackObject.transform.position + attackObj_HalfWidth * -1f, Vector2.down, attackObj_HalfWidth.y + Mathf.Abs(attackObj_OffsetY), LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
+        isFirstHit = Physics2D.Raycast(attackObject.transform.position + attackObj_HalfWidth, Vector2.down, attackObj_HalfHeight + attackObj_OffsetY * -1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString())) 
+            || Physics2D.Raycast(attackObject.transform.position + attackObj_HalfWidth * -1f, Vector2.down, attackObj_HalfHeight + attackObj_OffsetY * -1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
 
         if (isFirstHit)
         {
