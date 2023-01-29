@@ -29,7 +29,7 @@ public class SyncData
 /// 게임의 전반적인 관리를 할 매니저
 /// 서버접속상태 체크, 네트워크 끊김 등을 판단
 /// </summary>
-public class NetworkMgr : MonoBehaviour, IRoomPostProcess
+public class NetworkMgr : IRoomPostProcess
 {
     UserSyncMediator userSyncMediator = null;
 
@@ -62,6 +62,14 @@ public class NetworkMgr : MonoBehaviour, IRoomPostProcess
         this.RegisterRoomCallback();
     }
 
+    public void Clear()
+    {
+        PhotonLogicHandler.Instance.onEnterRoomPlayer -= OnEnterRoomCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
+
+        this.UnregisterRoomCallback();
+    }
+
     public void Set_UserSyncMediator(UserSyncMediator _userSyncMediator)
     {
         if (userSyncMediator != null && userSyncMediator.gameObject)
@@ -77,9 +85,8 @@ public class NetworkMgr : MonoBehaviour, IRoomPostProcess
 
         if(PhotonLogicHandler.IsMasterClient)
         {
-            Debug.Log("실행시작해 이새꺄");
             slaveClientNickname = enterUserNickname;
-            sequenceExecuteCoroutine = StartCoroutine(INetworkSequenceExecuter());
+            sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }
@@ -93,7 +100,7 @@ public class NetworkMgr : MonoBehaviour, IRoomPostProcess
         if (PhotonLogicHandler.CurrentMyNickname != exitUserNickname)
         {
             if(sequenceExecuteCoroutine != null)
-                StopCoroutine(sequenceExecuteCoroutine);
+                CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
         }
     }
 
@@ -104,17 +111,15 @@ public class NetworkMgr : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        SyncData _syncData = new SyncData(property.isReady, property.isDataSync, property.isSceneSync, property.isCharacterSync, property.characterType);
-    
-        if(property.isMasterClient)
+        SyncData _syncData = new SyncData(property.isDataSync, property.isReady, property.isSceneSync, property.isCharacterSync, property.characterType);
+
+        if (property.isMasterClient)
         {
-            Debug.Log("마스터클라이언트 정보갱신");
             masterSyncData = _syncData;
             myDBData = property.data;
         }
         else
         {
-            Debug.Log("슬레이브클라이언트 정보갱신");
             slaveSyncData = _syncData;
             enemyDBData = property.data;
         }
@@ -128,11 +133,6 @@ public class NetworkMgr : MonoBehaviour, IRoomPostProcess
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
     {
         userSyncMediator.Register_TimerCallBack(_updateTimerCallBack);
-    }
-
-    public void Clear()
-    {
-        this.UnregisterRoomCallback();
     }
 
     protected IEnumerator INetworkSequenceExecuter()

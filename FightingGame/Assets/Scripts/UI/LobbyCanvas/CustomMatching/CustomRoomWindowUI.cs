@@ -28,6 +28,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     [SerializeField] Text mapNameText;
 
     private bool isInit = false;
+
+    private bool readyLock = false;
     public bool isRoomRegisting = false;
     
     ENUM_MAP_TYPE currMap;
@@ -36,6 +38,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         get { return currMap; }
         private set { CurrmapInfoUpdateCallBack(value); }
     }
+
+    Coroutine readyLockCoroutine;
 
     private void OnEnable()
     {
@@ -182,12 +186,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
         MyProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
 
-        Debug.Log("1");
-
         if (!PhotonLogicHandler.IsMasterClient)
         {
-
-            Debug.Log("2");
             masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
@@ -216,6 +216,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void ExitRoom()
     {
+        
         bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(Close);
 
         if(!isLeaveRoom)
@@ -262,18 +263,34 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if(PhotonLogicHandler.IsMasterClient)
         {
-            if(PhotonLogicHandler.IsFullRoom && slaveProfile.IsReady)
+            if(!masterProfile.Get_IsSelectedChar())
             {
-                PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);
+                Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택해주세요.");
+                return;
             }
-            else
+
+            if (!PhotonLogicHandler.IsFullRoom || !slaveProfile.IsReady)
             {
                 Managers.UI.popupCanvas.Open_NotifyPopup("모든 유저가 준비상태가 아닙니다.");
+                return;
             }
+
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);
         }
         else
         {
+            if (readyLock)
+                return;
+
             slaveProfile.Set_ReadyState(!slaveProfile.IsReady);
+            readyLockCoroutine = StartCoroutine(IReadyButtonLock(2.0f));
         }
+    }
+    protected IEnumerator IReadyButtonLock(float waitTime)
+    {
+        readyLock = true;
+        yield return new WaitForSeconds(waitTime);
+        readyLock = false;
+        readyLockCoroutine = null;
     }
 }

@@ -16,4 +16,6 @@ public class MasterProfileUI : BaseProfile
     {
         base.Clear();
     }
+
+    public bool Get_IsSelectedChar() => currCharType != ENUM_CHARACTER_TYPE.Default;
 }

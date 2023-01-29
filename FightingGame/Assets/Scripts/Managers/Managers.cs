@@ -79,6 +79,7 @@ public class Managers : MonoBehaviour
     /// </summary>
     public static void Clear()
     {
+        Network.Clear();
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
