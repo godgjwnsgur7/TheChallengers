@@ -49,11 +49,11 @@ public class PlayerCharacter : MonoBehaviour
             StopCoroutine(debugCoroutine);
     }
 
-    public void Init(ENUM_CHARACTER_TYPE _summonCharType)
+    public void Init(BaseMap currMap, ENUM_CHARACTER_TYPE _summonCharType)
     {
-        BaseMap currMap = Managers.Resource.Instantiate($"Maps{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
-
         Vector2 summonPosVec;
+
+        playerCamera.Init(currMap);
 
         if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
@@ -72,10 +72,11 @@ public class PlayerCharacter : MonoBehaviour
                 teamType = ENUM_TEAM_TYPE.Blue;
                 summonPosVec = currMap.blueTeamSpawnPoint.position;
             }
+
+            Summon_Character(_summonCharType, summonPosVec);
+
         }
 
-        playerCamera.Init(currMap);
-        Summon_Character(_summonCharType, summonPosVec);
     }
     
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
@@ -92,22 +93,16 @@ public class PlayerCharacter : MonoBehaviour
         Connect_InputController();
     }
 
+    // 더미임
     public void Set_Character(ActiveCharacter _activeCharacter)
     {
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
 
-        if (Managers.Network.Get_SyncState())
-        {
-            
-        }
-        else
-        {
-            activeCharacter.teamType = teamType;
-            activeCharacter.Init();
-            activeCharacter.Set_Sound();
-            activeCharacter.Set_Character();
-        }
+        activeCharacter.teamType = teamType;
+        activeCharacter.Init();
+        activeCharacter.Set_Sound();
+        activeCharacter.Set_Character();
 
         playerCamera.Following_Target(activeCharacter.transform);
         Connect_InputController();

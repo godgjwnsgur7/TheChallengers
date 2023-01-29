@@ -17,7 +17,7 @@ public class InputKeyController : MonoBehaviour
             inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack);
         }
 
-        inputPanel.Set_InputSkillKeys(Managers.Battle.Get_MyCharacterType());
+        inputPanel.Set_InputSkillKeys(Managers.Network.Get_MyCharacterType());
     }
     
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)

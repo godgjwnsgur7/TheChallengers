@@ -5,7 +5,7 @@ using FGDefine;
 using System;
 
 /// <summary>
-/// Ready, DataSync, SceneSync, CharacterSync
+/// Ready, DataSync, SceneSync, CharacterSync, characterType
 /// </summary>
 public class SyncData
 {
@@ -29,21 +29,34 @@ public class SyncData
 /// 게임의 전반적인 관리를 할 매니저
 /// 서버접속상태 체크, 네트워크 끊김 등을 판단
 /// </summary>
-public class NetworkMgr : IRoomPostProcess
+public class NetworkMgr : MonoBehaviour, IRoomPostProcess
 {
     UserSyncMediator userSyncMediator = null;
 
-    SyncData masterSyncData = null;
-    SyncData slaveSyncData = null;
+    SyncData masterSyncData = new SyncData(false, false, false, false, ENUM_CHARACTER_TYPE.Default);
+    SyncData slaveSyncData = new SyncData(false, false, false, false, ENUM_CHARACTER_TYPE.Default);
+
+    DBUserData myDBData;
+    DBUserData enemyDBData;
 
     Coroutine sequenceExecuteCoroutine = null;
+
+    string slaveClientNickname = null;
+
+    public bool isServerSyncState
+    {
+        get
+        {
+            return (Get_DataSyncAllState() && userSyncMediator != null);
+        }
+    }
 
     public void Init()
     {
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= OnEnterRoomCallBack;
-        PhotonLogicHandler.Instance.onLeftRoomPlayer += OnExitRoomCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
 
-        PhotonLogicHandler.Instance.onEnterRoomPlayer -= OnEnterRoomCallBack;
+        PhotonLogicHandler.Instance.onEnterRoomPlayer += OnEnterRoomCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer += OnExitRoomCallBack;
 
         this.RegisterRoomCallback();
@@ -60,27 +73,27 @@ public class NetworkMgr : IRoomPostProcess
     public void OnEnterRoomCallBack(string enterUserNickname)
     {
         if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
+            return;
+
+        if(PhotonLogicHandler.IsMasterClient)
         {
+            Debug.Log("실행시작해 이새꺄");
+            slaveClientNickname = enterUserNickname;
+            sequenceExecuteCoroutine = StartCoroutine(INetworkSequenceExecuter());
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-        }
-        else // 상대가 입장
-        {
-            if(PhotonLogicHandler.IsMasterClient)
-            {
-                sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
-            }
         }
     }
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
-        Managers.Resource.Destroy(userSyncMediator.gameObject);
+        if(userSyncMediator != null)
+            Managers.Resource.Destroy(userSyncMediator.gameObject);
 
         // 나간 유저가 내가 아니라면 (내가 원래 마스터클라이언트였다면)
         if (PhotonLogicHandler.CurrentMyNickname != exitUserNickname)
         {
-            CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
-            sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
+            if(sequenceExecuteCoroutine != null)
+                StopCoroutine(sequenceExecuteCoroutine);
         }
     }
 
@@ -94,9 +107,17 @@ public class NetworkMgr : IRoomPostProcess
         SyncData _syncData = new SyncData(property.isReady, property.isDataSync, property.isSceneSync, property.isCharacterSync, property.characterType);
     
         if(property.isMasterClient)
+        {
+            Debug.Log("마스터클라이언트 정보갱신");
             masterSyncData = _syncData;
+            myDBData = property.data;
+        }
         else
+        {
+            Debug.Log("슬레이브클라이언트 정보갱신");
             slaveSyncData = _syncData;
+            enemyDBData = property.data;
+        }
     }
 
     public void Register_GameInfoCallBack(Action _showGameInfoCallBack)
@@ -126,13 +147,12 @@ public class NetworkMgr : IRoomPostProcess
         yield return new WaitUntil(Get_DataSyncAllState);
         // 양쪽 다 연결되면 유저싱크메디에이터를 생성함
         Managers.Resource.InstantiateEveryone("UserSyncMediator");
+        Debug.Log("동기화 완료");
 
         // 2. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
         yield return new WaitUntil(Get_ReadyAllState);
         // 둘다 레디를 확인하면 게임 돌입을 알림
         PhotonLogicHandler.Instance.OnGameStart();
-        // 게임시작정보를 알려줌 (씬 로드는 이쪽에서 처리함)
-        userSyncMediator.Show_GameInfo();
 
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
@@ -153,18 +173,20 @@ public class NetworkMgr : IRoomPostProcess
         
     }
 
-    protected void GameStart_Failed()
+    // Get 계열
+    protected bool Get_DataSyncAllState()
     {
-        CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
-        sequenceExecuteCoroutine = null;
-    }
+        Debug.Log($"masterSyncData.isDataSync : {masterSyncData.isDataSync}");
+        Debug.Log($"slaveSyncData.isDataSync : {slaveSyncData.isDataSync}");
 
-    protected bool Get_DataSyncAllState() => masterSyncData.isDataSync && slaveSyncData.isDataSync;
+        return masterSyncData.isDataSync && slaveSyncData.isDataSync;
+    }
     protected bool Get_ReadyAllState() => masterSyncData.isReady && slaveSyncData.isReady;
     protected bool Get_SceneSyncAllState() => masterSyncData.isSceneSync && slaveSyncData.isCharacterSync;
     protected bool Get_CharacterSyncAllState() => masterSyncData.isCharacterSync && slaveSyncData.isCharacterSync;
 
     public bool Get_SyncState() => userSyncMediator != null;
+    public string Get_SlaveClientNickname() => slaveClientNickname;
     public ENUM_CHARACTER_TYPE Get_MyCharacterType()
     {
         if (PhotonLogicHandler.IsMasterClient)
@@ -172,5 +194,18 @@ public class NetworkMgr : IRoomPostProcess
         else
             return slaveSyncData.characterType;    
     }
-
+    public ENUM_CHARACTER_TYPE Get_EmenyCharType()
+    {
+        if (PhotonLogicHandler.IsMasterClient)
+            return slaveSyncData.characterType;
+        else
+            return masterSyncData.characterType;
+    }
+    public DBUserData Get_DBUserData(bool _isMasterClient)
+    {
+        if (_isMasterClient)
+            return myDBData;
+        else
+            return enemyDBData;
+    }
 }

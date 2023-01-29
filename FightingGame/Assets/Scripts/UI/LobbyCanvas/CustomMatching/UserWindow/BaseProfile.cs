@@ -19,16 +19,8 @@ public class BaseProfile : MonoBehaviour
     
     private bool isInit = false;
     
-    protected bool isReady = false;
-
     public bool isMine = false;
     public ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-
-    public bool IsReady
-    {
-        get { return isReady; }
-        private set { IsReadyInfoUpdateCallBack(value); } 
-    }
 
     public virtual void Init()
     {
@@ -36,11 +28,6 @@ public class BaseProfile : MonoBehaviour
 
         isInit = true;
         isMine = true;
-    }
-
-    public virtual void IsReadyInfoUpdateCallBack(bool _readyState)
-    {
-
     }
 
     public void Set_UserNickname(string userNickname)
@@ -59,23 +46,9 @@ public class BaseProfile : MonoBehaviour
         if(isMine) // 제어권을 가졌다면 서버의 정보를 변경함
         {
             PhotonLogicHandler.Instance.ChangeCharacter(currCharType);
-            Managers.Battle.Set_MyCharacterType(currCharType);
-        }
-        else
-        {
-            Managers.Battle.Set_EnemyCharacterType(currCharType);
         }
 
         charNameText.text = Managers.Data.Get_CharNameDict(currCharType);
-    }
-
-    public virtual void Set_ReadyState(bool readyState)
-    {
-        
-
-        IsReady = readyState;
-
-        
     }
 
     public void OnClick_UserProfile()
@@ -91,7 +64,9 @@ public class BaseProfile : MonoBehaviour
         if (!isMine)
             return;
         
-        Set_ReadyState(false);
+        if(!PhotonLogicHandler.IsMasterClient)
+            this.GetComponent<SlaveProfileUI>().Set_ReadyState(false);
+        
         Managers.UI.popupCanvas.Open_CharSelectPopup(Set_Character);
     }
 

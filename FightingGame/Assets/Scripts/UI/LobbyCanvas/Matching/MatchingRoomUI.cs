@@ -34,7 +34,6 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
     public void Open(Action _matchingCallBack, ENUM_CHARACTER_TYPE _selectCharType)
     {
         PhotonLogicHandler.Instance.ChangeCharacter(_selectCharType);
-        Managers.Battle.Set_MyCharacterType(_selectCharType);
         matchingCallBack = _matchingCallBack;
 
         this.gameObject.SetActive(true);
@@ -84,10 +83,6 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
-            return; // 나의 변경된 정보면 리턴
 
-        Debug.Log("상대에게 정보를 받아 갱신합니다.");
-        Managers.Battle.Set_EnemyCharacterType(property.characterType);
     }
 }

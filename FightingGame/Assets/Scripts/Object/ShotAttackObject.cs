@@ -55,7 +55,7 @@ public class ShotAttackObject : AttackObject
 
         isMine = true;
 
-        if (Managers.Battle.isServerSyncState)
+        if (Managers.Network.isServerSyncState)
         {
             if (PhotonLogicHandler.IsMine(viewID))
                 runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));

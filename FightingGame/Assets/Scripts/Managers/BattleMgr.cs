@@ -10,138 +10,39 @@ using System;
 /// </summary>
 public class BattleMgr
 {
-    NetworkSyncData networkSyncData;
-
-    BattleCanvas battleCanvas = null;
-    ActiveCharacter activeCharacter = null;
-    ActiveCharacter enemyCharacter = null;
-
-    ENUM_CHARACTER_TYPE MyCharType = ENUM_CHARACTER_TYPE.Default;
-    ENUM_CHARACTER_TYPE EnemyCharType = ENUM_CHARACTER_TYPE.Default;
-
-    string slaveNickname = null;
-
-    public DBUserData myDBData
-    {
-        private set;
-        get;
-    }
-
-    public long enemyScore
-    {
-        private set;
-        get;
-    }
-
     public bool isGamePlayingState
     {
         private set;
         get;
     }
 
-    public bool isServerSyncState
-    {
-        private set;
-        get;
-    }
-
-    public bool isCustom
-    {
-        private set;
-        get;
-    }
+    string slaveNickname = null;
 
     public void Init()
     {
-        isCustom = false;
+
     }
 
     public void Clear()
     {
 
     }
-    public void DebugFunction() // 디버그용
-    {
-        isGamePlayingState = true;
-    }
-
-
-    public void Join_CustomRoom() => isCustom = true;
-    public void Leave_CustomRoom() => isCustom = false;
-
-    public void Start_ServerSync() => isServerSyncState = true;
-    
-    public void Set_TimerCallBack(Action<float> _updateTimerCallBack) => networkSyncData.Set_TimerCallBack(_updateTimerCallBack);
-    public void Set_NetworkSyncData(NetworkSyncData _networkSyncData) => networkSyncData = _networkSyncData;
-    public void Set_EnemyChar(ActiveCharacter _enemyCharacter) => enemyCharacter = _enemyCharacter;
-    public void Set_MyChar(ActiveCharacter _activeCharacter) => activeCharacter = _activeCharacter;
-    public void Set_MyDBData(DBUserData _myDBData)
-    {
-        myDBData = _myDBData;
-        if (_myDBData.ratingPoint == 0)
-            myDBData.ratingPoint = 1500;
-    }
-    public void Set_EnemyScore(long _enemyScore) => enemyScore = _enemyScore;
-
-    public void Set_MyCharacterType(ENUM_CHARACTER_TYPE _charType) => MyCharType = _charType;
-    public void Set_EnemyCharacterType(ENUM_CHARACTER_TYPE _charType) => EnemyCharType = _charType;
-    
-    public ENUM_CHARACTER_TYPE Get_MyCharacterType()
-    {
-        return MyCharType;
-    }
-    public ENUM_CHARACTER_TYPE Get_EnemyCharacterType()
-    {
-        return EnemyCharType;
-    }
-
-    public void Sync_CreatNetworkSyncData()
-    {
-        if (!isServerSyncState)
-            return;
-
-        networkSyncData = Managers.Resource.InstantiateEveryone("NetworkSyncData").GetComponent<NetworkSyncData>();
-    }
-
-    public void Sync_GameReady()
-    {
-        PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Ready_Game);
-    }
-
-    public void TimeOver()
-    {
-        float myHpFilling = battleCanvas.Get_StatusWindowUI(activeCharacter.teamType).Get_HpBarFilling();
-        float enemyHpFilling = battleCanvas.Get_StatusWindowUI(enemyCharacter.teamType).Get_HpBarFilling();
-
-        if (myHpFilling > enemyHpFilling)
-            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
-        else if (myHpFilling < enemyHpFilling)
-            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
-        else
-            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
-    }
 
     public void GameStart()
     {
         isGamePlayingState = true;
-
-        if (PhotonLogicHandler.IsMasterClient)
-            PhotonLogicHandler.Instance.TryBroadcastMethod<NetworkSyncData>(networkSyncData, networkSyncData.Start_Game);
+        // 게임 시작도 얘가 알림받고 있어.
+        // 이 시점은, 해당하는 이펙트가 끝났으니 이제 캐릭터의 락을 풀어도 된단 의미가 됨
+        // 하지만, 그건 얘가 브로드캐스트로 수행해야 하는 부분인데 음....?
     }
 
-    public void GameReady()
+    public void EndGame(ENUM_TEAM_TYPE _losingTeam)
     {
-        if (battleCanvas == null)
-            battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        // 게임 종료를 얘가 알림받고 있음 일단...
 
-        battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.GameStartTrigger);
-    }
-
-    public void EndGame(ENUM_TEAM_TYPE losingTeam)
-    {
+        /*
         isGamePlayingState = false;
-        isServerSyncState = false;
-
+        
         if (battleCanvas == null)
             battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
@@ -149,24 +50,22 @@ public class BattleMgr
         bool isDraw = (isWin ? activeCharacter.currState == ENUM_PLAYER_STATE.Die
             : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
 
-        if(isDraw)
+        if (isDraw)
             battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
         else
         {
-            if(isWin)
+            if (isWin)
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
             else
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
         }
+        */
     }
 
-    public void Set_SlaveNickname(string _slaveNickname) => slaveNickname = _slaveNickname;
-
-    public string Get_SlaveNickname()
+    public void Set_SlaveNickname(string _slaveNickname)
     {
-        if(slaveNickname == null)
-            Debug.Log("slaveNickname is Null!");
-
-        return slaveNickname;
+        this.slaveNickname = _slaveNickname;
     }
+
+    public string Get_SlaveNickname() => slaveNickname;
 }

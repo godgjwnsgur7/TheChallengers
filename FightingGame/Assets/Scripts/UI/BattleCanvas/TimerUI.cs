@@ -11,15 +11,15 @@ public class TimerUI : MonoBehaviour
 
     public void Register_TimerCallBack()
     {
-        Managers.Battle.Set_TimerCallBack(Update_Timer);
+        Managers.Network.Register_TimerCallBack(Update_Timer);
     }
 
     /// <summary>
-    /// NetworkSyncData에 등록될 CallBack함수
+    /// UserSyncMediator에 등록될 CallBack함수
     /// </summary>
-    public void Update_Timer(float timeLimit)
+    public void Update_Timer(int timeLimit)
     {
-        int seconds = (int)timeLimit;
+        int seconds = timeLimit;
         int minutes = 0;
 
         while (seconds >= 60.0f)

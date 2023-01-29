@@ -19,16 +19,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 return slaveProfile;
         }
     }
-    BaseProfile YourProfile
-    {
-        get
-        {
-            if (PhotonLogicHandler.IsMasterClient)
-                return slaveProfile;
-            else
-                return masterProfile;
-        }
-    }
 
     [SerializeField] Image currMapIamge;
     [SerializeField] Image nextMapIamge_Left;
@@ -39,11 +29,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     private bool isInit = false;
     public bool isRoomRegisting = false;
-    public bool isStarted = false;
-
-    Coroutine readyLockCoroutine;
-    Coroutine allReadyCheckCoroutine;
-
+    
     ENUM_MAP_TYPE currMap;
     public ENUM_MAP_TYPE CurrMap
     {
@@ -72,7 +58,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         this.UnregisterRoomCallback();
     }
 
-    #region CallBack, OnUpdateProperty 함수 (Server)
     /// <summary>
     /// 슬레이브 클라이언트가 방에 입장하면 불리는 콜백함수
     /// </summary>
@@ -80,7 +65,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
         {
-            YourProfile.Set_UserNickname(nickname);
+            slaveProfile.Set_UserNickname(nickname);
             Managers.Battle.Set_SlaveNickname(nickname);
         }
 
@@ -95,25 +80,22 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         slaveProfile.Clear();
 
-        if(!masterProfile.isMine)
+        if(!masterProfile.isMine) // 마스터클라이언트가 됐다면
         {
+            PhotonLogicHandler.Instance.OnUnReady();
             masterProfile.Clear();
             masterProfile.Init();
             masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
         }
-
-        Debug.Log($"IsFullRoom : {PhotonLogicHandler.IsFullRoom}");
-
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
-        if (PhotonLogicHandler.IsMasterClient || isStarted)
+        if (PhotonLogicHandler.IsMasterClient)
             return; // 나의 변경된 정보이거나 시작중이라면 리턴
 
         if (property.isStarted) // 게임 시작을 알림받음
         {
-            isStarted = true;
             Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
             return;
         }
@@ -125,14 +107,17 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
             return; // 나의 변경된 정보면 리턴
-
-        Debug.Log("상대에게 정보를 받아 갱신합니다.");
-        YourProfile.Set_Character(property.characterType);
-        YourProfile.Set_ReadyState(property.isReady);
-
-        Managers.Battle.Set_EnemyCharacterType(property.characterType);
+        
+        if(property.isMasterClient)
+        {
+            masterProfile.Set_Character(property.characterType);
+        }
+        else
+        {
+            slaveProfile.Set_Character(property.characterType);
+            slaveProfile.Set_ReadyState(property.isReady);
+        }
     }
-    #endregion
 
     private void Init()
     {
@@ -155,7 +140,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             Init();
         }
 
-        Managers.Battle.Join_CustomRoom();
         Set_CurrRoomInfo();
     }
 
@@ -165,7 +149,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         isInit = false;
-        Managers.Battle.Leave_CustomRoom();
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -198,34 +181,37 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
         MyProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
-        
+
+        Debug.Log("1");
+
         if (!PhotonLogicHandler.IsMasterClient)
-            YourProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
-        else if(PhotonLogicHandler.CurrentRoomMemberCount == 2 && YourProfile.Get_UserNickname() == "")
-            YourProfile.Set_UserNickname(Managers.Battle.Get_SlaveNickname());   
+        {
+
+            Debug.Log("2");
+            masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+        }
+        else if (PhotonLogicHandler.IsFullRoom && slaveProfile.Get_UserNickname() == "")
+            slaveProfile.Set_UserNickname(Managers.Battle.Get_SlaveNickname());  
             
         CurrMap = PhotonLogicHandler.CurrentMapType;
     }
 
+    // 얘를 다른 곳으로 옮겨줘야 하고
     public void GoTo_BattleScene()
     {
         if (!PhotonLogicHandler.IsMasterClient)
             return;
 
-        if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.CurrentRoomMemberCount == 2)
+        if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.IsFullRoom)
         {
             PhotonLogicHandler.Instance.OnUnReadyAll(); // 모두 준비해제 시키고
             PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
-            isStarted = true;
+
             Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
         }
         else
-            Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.", UnReadyMyProfile);
-    }
-
-    public void UnReadyMyProfile()
-    {
-        MyProfile.Set_ReadyState(false);
+            Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.");
     }
 
     public void ExitRoom()
@@ -263,55 +249,31 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnClick_ExitRoom()
     {
-        MyProfile.Set_ReadyState(false);
+        if(!PhotonLogicHandler.IsMasterClient)
+            slaveProfile.Set_ReadyState(false);
 
         Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "정말 방에서 나가시겠습니까?");
     }
 
+    /// <summary>
+    /// 마스터에겐 OnClick_Start()라고 보면 되는 상태
+    /// </summary>
     public void OnClick_Ready()
     {
-        if (readyLockCoroutine != null)
-            return;
-
-        readyLockCoroutine = StartCoroutine(IReadyButtonLock(2f));
-
-        MyProfile.Set_ReadyState(!MyProfile.IsReady);
-
-        if(PhotonLogicHandler.IsMasterClient && MyProfile.IsReady)
+        if(PhotonLogicHandler.IsMasterClient)
         {
-            if (allReadyCheckCoroutine != null)
-                allReadyCheckCoroutine = null;
-
-            allReadyCheckCoroutine = StartCoroutine(IAllReadyCheck());
-        }
-    }
-
-    protected IEnumerator IReadyButtonLock(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-
-        readyLockCoroutine = null;
-    }
-
-    protected IEnumerator IAllReadyCheck()
-    {
-        bool allReadyState;
-        int CurrRoomMemberCount;
-
-        while (MyProfile.IsReady && PhotonLogicHandler.IsMasterClient)
-        {
-            allReadyState = PhotonLogicHandler.Instance.IsAllReady();
-            CurrRoomMemberCount = PhotonLogicHandler.CurrentRoomMemberCount;
-
-            if (allReadyState && CurrRoomMemberCount == 2)
+            if(PhotonLogicHandler.IsFullRoom && slaveProfile.IsReady)
             {
-                Managers.UI.popupCanvas.Open_SelectPopup(GoTo_BattleScene, UnReadyMyProfile, "게임을 시작하겠습니까?");
-                
-                break;
+                PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);
             }
-            yield return null;
+            else
+            {
+                Managers.UI.popupCanvas.Open_NotifyPopup("모든 유저가 준비상태가 아닙니다.");
+            }
         }
-
-        allReadyCheckCoroutine = null;
+        else
+        {
+            slaveProfile.Set_ReadyState(!slaveProfile.IsReady);
+        }
     }
 }

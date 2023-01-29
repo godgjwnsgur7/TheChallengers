@@ -45,7 +45,7 @@ public class CustomRoomListWindowUI : MonoBehaviour, ILobbyPostProcess
 
         // 시작하지 않은 룸 정보 중에 커스텀 룸의 정보만 뽑아서 따로 담음
         for (int i = 0; i < roomList.Count; i++)
-            if (roomList[i].IsCustom && roomList[i].IsStarted)
+            if (roomList[i].IsCustom && !roomList[i].IsStarted)
                 customRoomInfoList.Add(roomList[i]);
 
         customRoomList.Update_RoomList(customRoomInfoList);

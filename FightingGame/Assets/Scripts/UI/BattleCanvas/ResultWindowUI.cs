@@ -24,12 +24,14 @@ public class ResultWindowUI : MonoBehaviour
 
     public void Open(bool isDraw, bool isWin = true)
     {
-        myScore = Managers.Battle.myDBData.ratingPoint;
-        enemyScore = Managers.Battle.enemyScore;
+        myScore = Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).ratingPoint;
+        enemyScore = Managers.Network.Get_DBUserData(!PhotonLogicHandler.IsMasterClient).ratingPoint;
 
         countTime = 3;
 
-        if(!Managers.Battle.isCustom)
+        bool isMatching = PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM;
+
+        if (isMatching)
         {
             countTime = 5;
             rankingScore.Open_Score(myScore);
@@ -40,9 +42,9 @@ public class ResultWindowUI : MonoBehaviour
             if(!isDraw)
             {
                 if(isWin)
-                    Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, Managers.Battle.myDBData.victoryPoint + 1);
+                    Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).victoryPoint + 1);
                 else
-                    Managers.Platform.DBUpdate(DB_CATEGORY.DefeatPoint, Managers.Battle.myDBData.defeatPoint + 1);
+                    Managers.Platform.DBUpdate(DB_CATEGORY.DefeatPoint, Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).defeatPoint + 1);
             }
         }
 
@@ -68,7 +70,7 @@ public class ResultWindowUI : MonoBehaviour
         Managers.Input.Destroy_InputKeyController();
         counterCorotine = StartCoroutine(INotifyTextCounter());
         
-        if(!Managers.Battle.isCustom)
+        if(isMatching)
             StartCoroutine(IWaitUpdateScore(0.5f)); // 0.5초 뒤에 업데이트 시작
     }
 

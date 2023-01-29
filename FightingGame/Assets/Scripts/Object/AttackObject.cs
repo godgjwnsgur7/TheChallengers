@@ -27,7 +27,7 @@ public class AttackObject : Poolable
     {
         base.Init();
 
-        isServerSyncState = Managers.Battle.isServerSyncState;
+        isServerSyncState = Managers.Network.isServerSyncState;
 
         if (isServerSyncState)
         {

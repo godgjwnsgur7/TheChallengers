@@ -103,6 +103,6 @@ public class UserSyncMediator : MonoBehaviourPhoton
     [BroadcastMethod]
     public void Sync_SummonCharacter()
     {
-        Managers.Player.Init(Managers.Network.Get_MyCharacterType());
+        // Managers.Player.Init(Managers.Network.Get_MyCharacterType());
     }
 }

@@ -70,7 +70,6 @@ public partial class ActiveCharacter : Character
         {
             isControl = true;
             Connect_MyStatusUI();
-            Managers.Battle.Set_MyCharacterType(characterType);
         }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
@@ -417,8 +416,7 @@ public partial class ActiveCharacter : Character
     }
     
     [BroadcastMethod] public void Sync_EndGame(ENUM_TEAM_TYPE losingTeam) => Managers.Battle.EndGame(losingTeam);    
-    [BroadcastMethod] public void Receive_EnemyChar() => Managers.Battle.Set_EnemyChar(this);
-
+ 
     public void Invincible()
     {
         if(invincibleCoroutine == null)

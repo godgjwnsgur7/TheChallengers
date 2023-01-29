@@ -39,7 +39,7 @@ public class RankingScoreUI : MonoBehaviour
 
     public void Open_Score(long _myRankingScore)
     {
-        if (Managers.Battle.isCustom)
+        if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
             return;
 
         char rank = RankingScoreOperator.Get_RankingEmblemChar(currRankingScore); 
@@ -53,7 +53,7 @@ public class RankingScoreUI : MonoBehaviour
 
     public void Update_Score(long changeRankingScore)
     {
-        if (Managers.Battle.isCustom)
+        if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
             return;
 
         scoreChangeEffectImage.gameObject.SetActive(true);
