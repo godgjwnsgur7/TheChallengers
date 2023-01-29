@@ -66,7 +66,7 @@ public class FallAttackObject : AttackObject
     {
         // AttackObject size와 Offset 값을 이용해 Ray의 위치를 정해야함
         Vector3 attackObj_HalfWidth = new Vector3(attackCollider.size.x / 2, 0, 0);
-        float attackObj_HalfHeight = attackCollider.size.y;
+        float attackObj_HalfHeight = attackCollider.size.y / 2;
         float attackObj_OffsetY = attackCollider.offset.y;
 
         // AttackObject 양 끝단 Ray 발사
@@ -139,11 +139,10 @@ public class FallAttackObject : AttackObject
 
     public IEnumerator Folling_AttackObejct()
     {
-        while (attackObject != null)
+        while (attackObject != null && !isFirstHit)
         {
             attackObject.transform.position = this.transform.position;
-            if(!isFirstHit)
-                Check_GroundHit();
+            Check_GroundHit();
             yield return null;
         }
     }
