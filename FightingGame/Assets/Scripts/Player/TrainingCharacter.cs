@@ -50,9 +50,6 @@ public class TrainingCharacter : MonoBehaviour
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        if (!Managers.Battle.isGamePlayingState)
-            return;
-
         switch (_inputKeyName)
         {
             case ENUM_INPUTKEY_NAME.Direction:
