@@ -64,10 +64,7 @@ public class NetworkMgr : IRoomPostProcess
 
     public void Clear()
     {
-        PhotonLogicHandler.Instance.onEnterRoomPlayer -= OnEnterRoomCallBack;
-        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
 
-        this.UnregisterRoomCallback();
     }
 
     public void Set_UserSyncMediator(UserSyncMediator _userSyncMediator)
@@ -83,7 +80,7 @@ public class NetworkMgr : IRoomPostProcess
         if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
             return;
 
-        if(PhotonLogicHandler.IsMasterClient)
+        if (PhotonLogicHandler.IsMasterClient)
         {
             slaveClientNickname = enterUserNickname;
             sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
@@ -93,13 +90,13 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
-        if(userSyncMediator != null)
+        if (userSyncMediator != null)
             Managers.Resource.Destroy(userSyncMediator.gameObject);
 
         // 나간 유저가 내가 아니라면 (내가 원래 마스터클라이언트였다면)
         if (PhotonLogicHandler.CurrentMyNickname != exitUserNickname)
         {
-            if(sequenceExecuteCoroutine != null)
+            if (sequenceExecuteCoroutine != null)
                 CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
         }
     }
@@ -125,11 +122,6 @@ public class NetworkMgr : IRoomPostProcess
         }
     }
 
-    public void Register_GameInfoCallBack(Action _showGameInfoCallBack)
-    {
-        userSyncMediator.Register_GameInfoCallBack(_showGameInfoCallBack);
-    }
-
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
     {
         userSyncMediator.Register_TimerCallBack(_updateTimerCallBack);
@@ -145,32 +137,33 @@ public class NetworkMgr : IRoomPostProcess
 
         // 1. 연결 확인
         yield return new WaitUntil(Get_DataSyncAllState);
-        // 양쪽 다 연결되면 유저싱크메디에이터를 생성함
-        Managers.Resource.InstantiateEveryone("UserSyncMediator");
+        Managers.Resource.InstantiateEveryone("UserSyncMediator"); // 유저싱크메디에이터 생성
         Debug.Log("동기화 완료");
 
         // 2. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
         yield return new WaitUntil(Get_ReadyAllState);
-        // 둘다 레디를 확인하면 게임 돌입을 알림
-        PhotonLogicHandler.Instance.OnGameStart();
+        Debug.Log("게임 시작");
+        PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
+        PhotonLogicHandler.Instance.OnUnReadyAll(); // 둘다 준비해제 시킴
+        userSyncMediator.Sync_ShowGameInfo();
 
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
         // 배틀 씬으로 둘다 넘어왔으므로 각 플레이어들을 준비해제시키고
         PhotonLogicHandler.Instance.OnUnReadyAll();
-        
+
         // 양측에 캐릭터를 생성
-        
-        
+
+
         // 5. 캐릭터 로드 확인
         yield return new WaitUntil(Get_CharacterSyncAllState);
-        
+
         // 게임 시작 ㅋ
     }
 
     protected void GameStart()
     {
-        
+
     }
 
     // Get 계열
@@ -181,9 +174,28 @@ public class NetworkMgr : IRoomPostProcess
 
         return masterSyncData.isDataSync && slaveSyncData.isDataSync;
     }
-    protected bool Get_ReadyAllState() => masterSyncData.isReady && slaveSyncData.isReady;
-    protected bool Get_SceneSyncAllState() => masterSyncData.isSceneSync && slaveSyncData.isCharacterSync;
-    protected bool Get_CharacterSyncAllState() => masterSyncData.isCharacterSync && slaveSyncData.isCharacterSync;
+    protected bool Get_ReadyAllState()
+    {
+        Debug.Log($"masterSyncData.isReady : {masterSyncData.isReady}");
+        Debug.Log($"slaveSyncData.isReady : {slaveSyncData.isReady}");
+
+        return masterSyncData.isReady && slaveSyncData.isReady;
+    }
+    public bool Get_SceneSyncAllState()
+    {
+        Debug.Log($"masterSyncData.isSceneSync : {masterSyncData.isSceneSync}");
+        Debug.Log($"slaveSyncData.isSceneSync : {slaveSyncData.isSceneSync}");
+
+        return masterSyncData.isSceneSync && slaveSyncData.isSceneSync;
+    }
+
+    protected bool Get_CharacterSyncAllState()
+    {
+        Debug.Log($"masterSyncData.isCharacterSync : {masterSyncData.isCharacterSync}");
+        Debug.Log($"slaveSyncData.isCharacterSync : {slaveSyncData.isCharacterSync}");
+
+        return masterSyncData.isCharacterSync && slaveSyncData.isCharacterSync;
+    }
 
     public bool Get_SyncState() => userSyncMediator != null;
     public string Get_SlaveClientNickname() => slaveClientNickname;

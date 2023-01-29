@@ -15,11 +15,6 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     Coroutine infoSettingCheckCoroutine = null;
     Coroutine waitFadeInEffectCoroutine = null;
 
-    private void Awake()
-    {
-        Managers.Network.Register_GameInfoCallBack(Open);
-    }
-
     private void OnDisable()
     {
         if (infoSettingCheckCoroutine != null)
@@ -88,6 +83,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         yield return new WaitForSeconds(waitTime);
 
+        Managers.Clear();
         Managers.UI.popupCanvas.Play_FadeOutEffect(GoTo_BattleScene);
         waitFadeInEffectCoroutine = null;
     }

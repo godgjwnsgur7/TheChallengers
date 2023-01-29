@@ -205,9 +205,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.IsFullRoom)
         {
-            PhotonLogicHandler.Instance.OnUnReadyAll(); // 모두 준비해제 시키고
-            PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
-
             Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
         }
         else

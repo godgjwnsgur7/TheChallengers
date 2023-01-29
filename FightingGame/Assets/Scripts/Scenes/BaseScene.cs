@@ -10,13 +10,14 @@ public abstract class BaseScene : MonoBehaviour
 
     protected IEnumerator Start()
     {
+        if(PhotonLogicHandler.IsFullRoom) // 매칭상태로 씬이동을 함
+        {
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
+            yield return new WaitUntil(Managers.Network.Get_SceneSyncAllState);
+        }
+
         yield return null;
         Init();
-    }
-
-    private void OnDestroy()
-    {
-        Clear();
     }
 
     public virtual void Init()
@@ -28,7 +29,6 @@ public abstract class BaseScene : MonoBehaviour
     
     public virtual void Clear()
     {
-        Managers.Clear();
     }
 }
  

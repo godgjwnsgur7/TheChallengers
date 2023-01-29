@@ -10,7 +10,6 @@ using FGDefine;
 public class UserSyncMediator : MonoBehaviourPhoton
 {
     Action<int> updateTimerCallBack = null;
-    Action showGameInfoCallBack = null;
     Coroutine timerCoroutine = null;
 
     float gameRunTimeLimit;
@@ -51,11 +50,6 @@ public class UserSyncMediator : MonoBehaviourPhoton
         base.OnOtherSerializeView(stream);
     }
 
-    public void Register_GameInfoCallBack(Action _showGameInfoCallBack)
-    {
-        showGameInfoCallBack = _showGameInfoCallBack;
-    }
-
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
     {
         updateTimerCallBack = _updateTimerCallBack;
@@ -88,16 +82,20 @@ public class UserSyncMediator : MonoBehaviourPhoton
         updateTimerCallBack(_currentTimeLimit);
     }
 
-    public void Show_GameInfo()
+    public void Sync_ShowGameInfo()
     {
-        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, Sync_ShowGameInfo);
+        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, ShowGameInfo);
     }
     
     [BroadcastMethod]
-    public void Sync_ShowGameInfo()
+    public void ShowGameInfo()
     {
-        // FadeIn은 FightingGameInfo에서 정보를 받아온 후에 실행
-        Managers.UI.popupCanvas.Play_FadeOutEffect(showGameInfoCallBack);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Open_FightingGameInfo);
+    }
+
+    public void Open_FightingGameInfo()
+    {
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow();
     }
 
     [BroadcastMethod]

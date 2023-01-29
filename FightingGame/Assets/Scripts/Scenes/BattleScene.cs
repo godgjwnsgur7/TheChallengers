@@ -16,14 +16,13 @@ public class BattleScene : BaseScene
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        base.Init();
-
         if(PhotonLogicHandler.IsConnected)
         {
-            currMap = Managers.Resource.Instantiate($"Maps{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
+            currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
-            // 씬이 로드됐다고 알림
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
+            Vector2 summonPosVec = PhotonLogicHandler.IsMasterClient ? currMap.redTeamSpawnPoint.position : currMap.blueTeamSpawnPoint.position;
+
+            Managers.Player.Summon_Character(Managers.Network.Get_MyCharacterType(), summonPosVec);
         }
         else // 디버그용 ( 아직 미구현 )
         {
@@ -34,6 +33,8 @@ public class BattleScene : BaseScene
                 
 
         }
+
+        base.Init();
     }
 
     public void Init_Player()
