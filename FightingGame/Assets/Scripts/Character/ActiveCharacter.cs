@@ -219,7 +219,6 @@ public partial class ActiveCharacter : Character
         }
     }
 
-    [BroadcastMethod]
     public override void Hit(CharacterParam param)
     {
         if (param == null || invincibility) return;

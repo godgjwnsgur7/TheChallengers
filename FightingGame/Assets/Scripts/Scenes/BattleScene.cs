@@ -34,6 +34,8 @@ public class BattleScene : BaseScene
             currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
             Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
+
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
         }
         else // 디버그용 ( 아직 미구현 )
         {

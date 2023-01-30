@@ -149,16 +149,11 @@ public class NetworkMgr : IRoomPostProcess
 
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
-        // 배틀 씬으로 둘다 넘어왔으므로 각 플레이어들을 준비해제시키고
-        PhotonLogicHandler.Instance.OnUnReadyAll();
-
-        // 양측에 캐릭터를 생성
-
+        PhotonLogicHandler.Instance.OnUnReadyAll(); // 준비해제
 
         // 5. 캐릭터 로드 확인
         yield return new WaitUntil(Get_CharacterSyncAllState);
-
-        // 게임 시작 ㅋ
+        userSyncMediator.GameStartEffect(); // 게임 실행
     }
 
     protected void GameStart()

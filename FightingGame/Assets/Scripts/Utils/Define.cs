@@ -35,6 +35,9 @@ namespace FGDefine
         Ground = 0,
     }
 
+    /// <summary>
+    /// Master : Blue (위, 왼쪽)
+    /// </summary>
     [Serializable]
     public enum ENUM_TEAM_TYPE
     {

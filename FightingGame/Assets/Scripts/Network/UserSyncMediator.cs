@@ -82,25 +82,33 @@ public class UserSyncMediator : MonoBehaviourPhoton
         updateTimerCallBack(_currentTimeLimit);
     }
 
+    /// <summary>
+    ///  게임에 돌입하기 전에 처리되는 함수
+    /// </summary>
     public void Sync_ShowGameInfo()
     {
         PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, ShowGameInfo);
     }
-    
     [BroadcastMethod]
     public void ShowGameInfo()
     {
         Managers.UI.popupCanvas.Play_FadeOutEffect(Open_FightingGameInfo);
     }
-
     public void Open_FightingGameInfo()
     {
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow();
     }
 
-    [BroadcastMethod]
-    public void Sync_SummonCharacter()
+    /// <summary>
+    /// 배틀 씬에 돌입이 끝난 후에 처리되는 함수
+    /// </summary>
+    public void Sync_GameStartEffect()
     {
-        // Managers.Player.Init(Managers.Network.Get_MyCharacterType());
+        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, GameStartEffect);
+    }
+    [BroadcastMethod]
+    public void GameStartEffect()
+    {
+        Managers.UI.currCanvas.GetComponent<BattleCanvas>().Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.GameStartTrigger);
     }
 }

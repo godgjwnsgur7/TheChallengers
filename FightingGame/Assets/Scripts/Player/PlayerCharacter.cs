@@ -57,27 +57,26 @@ public class PlayerCharacter : MonoBehaviour
 
         if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
-            teamType = ENUM_TEAM_TYPE.Red;
-            summonPosVec = currMap.redTeamSpawnPoint.position;
+            teamType = ENUM_TEAM_TYPE.Blue;
+            summonPosVec = currMap.blueTeamSpawnPoint.position;
 
             // 미구현
+
+            return;
+        }
+
+        if (PhotonLogicHandler.IsMasterClient)
+        {
+            teamType = ENUM_TEAM_TYPE.Blue;
+            summonPosVec = currMap.blueTeamSpawnPoint.position;
         }
         else
         {
-            if (PhotonLogicHandler.IsMasterClient)
-            {
-                teamType = ENUM_TEAM_TYPE.Red;
-                summonPosVec = currMap.redTeamSpawnPoint.position;
-            }
-            else
-            {
-                teamType = ENUM_TEAM_TYPE.Blue;
-                summonPosVec = currMap.blueTeamSpawnPoint.position;
-            }
-
-            Summon_Character(_summonCharType, summonPosVec);
+            teamType = ENUM_TEAM_TYPE.Red;
+            summonPosVec = currMap.redTeamSpawnPoint.position;
         }
 
+        Summon_Character(_summonCharType, summonPosVec);
     }
     
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
