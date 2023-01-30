@@ -8,14 +8,8 @@ public abstract class BaseScene : MonoBehaviour
 {
     public ENUM_SCENE_TYPE SceneType { get; protected set; } = ENUM_SCENE_TYPE.Unknown;
 
-    protected IEnumerator Start()
+    protected virtual IEnumerator Start()
     {
-        if(PhotonLogicHandler.IsFullRoom) // 매칭상태로 씬이동을 함
-        {
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
-            yield return new WaitUntil(Managers.Network.Get_SceneSyncAllState);
-        }
-
         yield return null;
         Init();
     }
@@ -29,6 +23,7 @@ public abstract class BaseScene : MonoBehaviour
     
     public virtual void Clear()
     {
+        
     }
 }
  

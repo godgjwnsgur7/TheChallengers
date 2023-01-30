@@ -110,7 +110,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void Connect_InputController()
     {
-        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack);
+        Managers.Input.Connect_InputKeyController(activeCharacter.characterType, OnPointDownCallBack, OnPointUpCallBack);
         Managers.Input.Connect_InputArrowKey(OnPointEnterCallBack);
     }
 

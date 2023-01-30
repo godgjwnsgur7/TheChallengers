@@ -44,7 +44,7 @@ public class TrainingCharacter : MonoBehaviour
         if (inabilityState)
             return;
 
-        Managers.Input.Connect_InputKeyController(OnPointDownCallBack, OnPointUpCallBack);
+        Managers.Input.Connect_InputKeyController(activeCharacter.characterType, OnPointDownCallBack, OnPointUpCallBack);
         Managers.Input.Connect_InputArrowKey(OnPointEnterCallBack);
     }
 

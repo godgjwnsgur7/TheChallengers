@@ -9,7 +9,7 @@ public class InputKeyController : MonoBehaviour
 {
     InputPanel inputPanel = null;
 
-    public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    public void Init(ENUM_CHARACTER_TYPE _charType ,Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (inputPanel == null)
         {
@@ -17,9 +17,7 @@ public class InputKeyController : MonoBehaviour
             inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack);
         }
 
-        // 위저드 테스트를 위한 임시 스킬셋
-        inputPanel.Set_InputSkillKeys(ENUM_CHARACTER_TYPE.Wizard);
-        //inputPanel.Set_InputSkillKeys(Managers.Network.Get_MyCharacterType());
+        inputPanel.Set_InputSkillKeys(_charType);
     }
     
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)

@@ -17,6 +17,11 @@ public class BattleMgr
     }
 
     string slaveNickname = null;
+    
+    public void Connect_StatusWindowUI(Action<float> _OnHit)
+    {
+        
+    }
 
     public void Init()
     {

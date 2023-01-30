@@ -10,8 +10,9 @@ public partial class ActiveCharacter : Character
     protected Animator anim;
     protected SpriteRenderer spriteRenderer;
 
-    public StatusWindowUI statusWindowUI;
+    StatusWindowUI statusWindowUI;
     protected AttackObject attackObject;
+    Action<float> OnHit;
 
     Coroutine stunTimeCoroutine;
     Coroutine landCoroutine;

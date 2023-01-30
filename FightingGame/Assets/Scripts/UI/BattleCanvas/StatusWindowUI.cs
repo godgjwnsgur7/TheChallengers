@@ -15,6 +15,17 @@ public class StatusWindowUI : MonoBehaviour
 
     Coroutine hpBarCoroutine;
 
+    public void Init(ENUM_CHARACTER_TYPE _charType)
+    {
+        Managers.Data.CharInfoDict.TryGetValue((int)_charType, out CharacterInfo characterInfo);
+        maxHP = characterInfo.maxHP;
+        currHP = characterInfo.maxHP;
+
+        Set_CharFrameImage(_charType);
+
+
+    }
+
     public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
     {
         maxHP = _maxHP;

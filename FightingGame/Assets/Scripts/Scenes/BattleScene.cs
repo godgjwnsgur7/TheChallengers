@@ -12,11 +12,24 @@ public class BattleScene : BaseScene
 
     BaseMap currMap;
 
+    protected override IEnumerator Start()
+    {
+        if (PhotonLogicHandler.IsConnected && PhotonLogicHandler.IsFullRoom) // 매칭상태로 씬이동을 함
+        {
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
+            yield return new WaitUntil(Managers.Network.Get_SceneSyncAllState);
+        }
+
+        yield return base.Start();
+    }
+
     public override void Init()
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        if(PhotonLogicHandler.IsConnected)
+        base.Init();
+
+        if (PhotonLogicHandler.IsConnected)
         {
             currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
@@ -33,8 +46,6 @@ public class BattleScene : BaseScene
                 
 
         }
-
-        base.Init();
     }
 
     public void Init_Player()

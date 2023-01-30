@@ -23,7 +23,7 @@ public class InputMgr
         return inputKeyManagement;
     }
 
-    public void Connect_InputKeyController(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    public void Connect_InputKeyController(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (inputKeyManagement != null)
         {
@@ -37,7 +37,7 @@ public class InputMgr
             inputKeyController.transform.SetSiblingIndex(1); // 임시
         }
 
-        inputKeyController.Init(_OnPointDownCallBack, _OnPointUpCallBack);
+        inputKeyController.Init(_charType, _OnPointDownCallBack, _OnPointUpCallBack);
     }
 
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
