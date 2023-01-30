@@ -31,10 +31,15 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
+    public ENUM_TEAM_TYPE teamType
+    {
+        get;
+        protected set;
+    }
+
     protected float inputArrowDir = 0.0f;
 
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
-    public ENUM_TEAM_TYPE teamType;
 
     public bool reverseState = false;
     public bool isControl = false;

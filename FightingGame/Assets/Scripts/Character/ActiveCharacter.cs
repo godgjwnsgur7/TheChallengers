@@ -59,18 +59,20 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 3);
     }
 
-    public void Set_Character()
+    public void Set_Character(ENUM_TEAM_TYPE _teamType)
     {
+        teamType = _teamType;
+
         if (Managers.Network.Get_SyncState())
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
-                (this, Connect_MyStatusUI);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
+                (this, Connect_MyStatusUI, _teamType);
         }
         else
         {
             isControl = true;
-            Connect_MyStatusUI();
+            Connect_MyStatusUI(_teamType);
         }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
@@ -290,25 +292,21 @@ public partial class ActiveCharacter : Character
     }
 
     [BroadcastMethod]
-    public void Connect_MyStatusUI()
+    public void Connect_MyStatusUI(ENUM_TEAM_TYPE _teamType)
     {
         Type canvasType = Managers.UI.currCanvas.GetType();
 
         if (canvasType == typeof(BattleCanvas))
         {
             BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-            
-            statusWindowUI = battleCanvas.Get_StatusWindowUI(teamType);
-            statusWindowUI.Set_StatusWindowUI(characterType, currHP);
+            OnHit = battleCanvas.Get_StatusWindowUI(teamType, characterType);
         }
         else if (canvasType == typeof(TrainingCanvas))
         {
             TrainingCanvas trainingCanvas = Managers.UI.currCanvas.GetComponent<TrainingCanvas>();
-
-            statusWindowUI = trainingCanvas.Get_StatusWindowUI(teamType);
-            statusWindowUI.Set_StatusWindowUI(characterType, currHP);
+            OnHit = trainingCanvas.Get_StatusWindowUI(teamType, characterType);
         }
-    }
+    } 
 
     public void Update_CurrHP(float _damage)
     {
@@ -332,7 +330,7 @@ public partial class ActiveCharacter : Character
     public void Sync_CurrHP(float _currHP)
     {
         currHP = _currHP;
-        statusWindowUI.Update_CurrHP(_currHP);
+        OnHit(currHP);
     }
     
     public override void Die()

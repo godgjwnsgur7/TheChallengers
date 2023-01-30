@@ -33,9 +33,7 @@ public class BattleScene : BaseScene
         {
             currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
-            Vector2 summonPosVec = PhotonLogicHandler.IsMasterClient ? currMap.redTeamSpawnPoint.position : currMap.blueTeamSpawnPoint.position;
-
-            Managers.Player.Summon_Character(Managers.Network.Get_MyCharacterType(), summonPosVec);
+            Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
         }
         else // 디버그용 ( 아직 미구현 )
         {

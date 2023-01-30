@@ -19,9 +19,8 @@ public class EnemyPlayer : MonoBehaviour
     {
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
-        activeCharacter.teamType = teamType;
         activeCharacter.Init();
-        activeCharacter.Set_Character();
+        activeCharacter.Set_Character(teamType);
     }
 
     private void Update()

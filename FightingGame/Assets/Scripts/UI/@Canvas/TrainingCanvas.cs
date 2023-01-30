@@ -8,8 +8,8 @@ using System;
 public class TrainingCanvas : BaseCanvas
 {
     [Header("Set In Editor")]
-    [SerializeField] StatusWindowUI blueTeamStatusWindowUI;
-    [SerializeField] StatusWindowUI redTeamStatusWindowUI;
+    [SerializeField] StatusWindowUI blueTeamStatusWindow;
+    [SerializeField] StatusWindowUI redTeamStatusWindow;
     [SerializeField] ButtonPanel buttonPanel;
 
     public override void Init()
@@ -19,12 +19,12 @@ public class TrainingCanvas : BaseCanvas
         buttonPanel.Init();
     }
 
-    public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
+    public Action<float> Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)
     {
         if (_teamType == ENUM_TEAM_TYPE.Blue)
-            return blueTeamStatusWindowUI;
+            return blueTeamStatusWindow.Connect_Character(_charType);
         else if (_teamType == ENUM_TEAM_TYPE.Red)
-            return redTeamStatusWindowUI;
+            return redTeamStatusWindow.Connect_Character(_charType);
         else
         {
             Debug.Log($"_teamType 오류 : {_teamType}");

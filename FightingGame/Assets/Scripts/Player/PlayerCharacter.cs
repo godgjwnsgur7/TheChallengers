@@ -59,6 +59,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             teamType = ENUM_TEAM_TYPE.Red;
             summonPosVec = currMap.redTeamSpawnPoint.position;
+
+            // 미구현
         }
         else
         {
@@ -74,7 +76,6 @@ public class PlayerCharacter : MonoBehaviour
             }
 
             Summon_Character(_summonCharType, summonPosVec);
-
         }
 
     }
@@ -88,23 +89,9 @@ public class PlayerCharacter : MonoBehaviour
         PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
         PhotonLogicHandler.Instance.TryBroadcastMethod<Character>(activeCharacter, activeCharacter.Set_Sound);
 
-        activeCharacter.Set_Character();
+        activeCharacter.Set_Character(teamType);
         playerCamera.Following_Target(activeCharacter.transform);
-        Connect_InputController();
-    }
 
-    // 더미임
-    public void Set_Character(ActiveCharacter _activeCharacter)
-    {
-        activeCharacter = _activeCharacter;
-        activeCharacter.transform.parent = this.transform;
-
-        activeCharacter.teamType = teamType;
-        activeCharacter.Init();
-        activeCharacter.Set_Sound();
-        activeCharacter.Set_Character();
-
-        playerCamera.Following_Target(activeCharacter.transform);
         Connect_InputController();
     }
 

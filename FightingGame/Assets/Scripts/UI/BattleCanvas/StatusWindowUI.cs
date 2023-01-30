@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class StatusWindowUI : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class StatusWindowUI : MonoBehaviour
 
     Coroutine hpBarCoroutine;
 
-    public void Init(ENUM_CHARACTER_TYPE _charType)
+    public Action<float> Connect_Character(ENUM_CHARACTER_TYPE _charType)
     {
         Managers.Data.CharInfoDict.TryGetValue((int)_charType, out CharacterInfo characterInfo);
         maxHP = characterInfo.maxHP;
@@ -23,16 +24,7 @@ public class StatusWindowUI : MonoBehaviour
 
         Set_CharFrameImage(_charType);
 
-
-    }
-
-    public void Set_StatusWindowUI(ENUM_CHARACTER_TYPE _charType, float _maxHP)
-    {
-        maxHP = _maxHP;
-        currHP = _maxHP;
-        Set_CharFrameImage(_charType);
-
-        Update_CurrHP(maxHP);
+        return Update_CurrHP;
     }
 
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
@@ -49,11 +41,6 @@ public class StatusWindowUI : MonoBehaviour
                 Debug.Log($"{_charType} 를 찾을 수 없음");
                 break;
         }
-    }
-
-    public float Get_HpBarFilling()
-    {
-        return hpFill.fillAmount;
     }
 
     public void Update_CurrHP(float _currHP)

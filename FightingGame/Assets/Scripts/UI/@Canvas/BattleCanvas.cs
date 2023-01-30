@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class BattleCanvas : BaseCanvas
 {
@@ -13,12 +14,12 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
 
-    public StatusWindowUI Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType)
+    public Action<float> Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)
     {
         if (_teamType == ENUM_TEAM_TYPE.Blue)
-            return blueTeamStatusWindow;
+            return blueTeamStatusWindow.Connect_Character(_charType);
         else if (_teamType == ENUM_TEAM_TYPE.Red)
-            return redTeamStatusWindow;
+            return redTeamStatusWindow.Connect_Character(_charType);
         else
         {
             Debug.Log($"_teamType 오류 : {_teamType}");
