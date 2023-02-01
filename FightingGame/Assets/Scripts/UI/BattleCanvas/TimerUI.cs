@@ -12,6 +12,7 @@ public class TimerUI : MonoBehaviour
     public void Register_TimerCallBack()
     {
         Managers.Network.Register_TimerCallBack(Update_Timer);
+        Update_Timer((int)Managers.Data.gameInfo.maxGameRunTime); // 초기세팅
     }
 
     /// <summary>

@@ -51,7 +51,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
     {
         float currentTimerLimit = gameRunTimeLimit;
 
-        while (gameRunTimeLimit >= 0.1f)
+        while (gameRunTimeLimit >= 0.1f && Managers.Battle.isGamePlayingState)
         {
             currentTimerLimit -= Time.deltaTime;
 
@@ -66,9 +66,11 @@ public class UserSyncMediator : MonoBehaviourPhoton
             yield return null;
         }
 
-        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int>
-                    (this, Sync_TimerCallBack, 0);
-        // 타임아웃
+        if(gameRunTimeLimit >= 0.1f)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int>(this, Sync_TimerCallBack, 0);
+            // 타임아웃으로 게임 종료된 것
+        }
     }
 
     [BroadcastMethod]
