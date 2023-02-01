@@ -5,7 +5,7 @@ using FGDefine;
 using System;
 
 /// <summary>
-/// 클라이언트 1개일 때의 테스트 용도
+/// 클라이언트 1개일 때의 테스트용 스크립트
 /// </summary>
 public class EnemyPlayer : MonoBehaviour
 {

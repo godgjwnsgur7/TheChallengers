@@ -9,7 +9,7 @@ public abstract class BaseCanvas : MonoBehaviour
     
     private void Awake()
     {
-        Managers.UI.Init(); // 임시
+        Managers.UI.Init();
         Init();
     }
 

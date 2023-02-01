@@ -21,7 +21,7 @@ public class BattleMgr
 
     public void Init()
     {
-
+        isGamePlayingState = false;
     }
 
     public void Clear()
@@ -32,13 +32,17 @@ public class BattleMgr
     public void GameStart()
     {
         isGamePlayingState = true;
-        // 게임 시작도 얘가 알림받고 있어.
-        // 이 시점은, 해당하는 이펙트가 끝났으니 이제 캐릭터의 락을 풀어도 된단 의미가 됨
-        // 하지만, 그건 얘가 브로드캐스트로 수행해야 하는 부분인데 음....?
+
+        if(PhotonLogicHandler.IsMasterClient)
+        {
+            Managers.Network.Start_Timer();
+        }
     }
 
     public void EndGame(ENUM_TEAM_TYPE _losingTeam)
     {
+        isGamePlayingState = false;
+
         // 게임 종료를 얘가 알림받고 있음 일단...
 
         /*

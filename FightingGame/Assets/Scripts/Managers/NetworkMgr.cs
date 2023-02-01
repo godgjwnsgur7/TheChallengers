@@ -144,21 +144,21 @@ public class NetworkMgr : IRoomPostProcess
         yield return new WaitUntil(Get_ReadyAllState);
         Debug.Log("게임 시작");
         PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
-        PhotonLogicHandler.Instance.OnUnReadyAll(); // 둘다 준비해제 시킴
         userSyncMediator.Sync_ShowGameInfo();
 
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
         PhotonLogicHandler.Instance.OnUnReadyAll(); // 준비해제
+        // 캐릭터 소환은 BattleScene의 Start문에서 SceneSyncState를 받고 실행됨
 
         // 5. 캐릭터 로드 확인
         yield return new WaitUntil(Get_CharacterSyncAllState);
-        userSyncMediator.GameStartEffect(); // 게임 실행
+        userSyncMediator.Sync_GameStartEffect(); // 게임 실행
     }
-
-    protected void GameStart()
+    
+    public void Start_Timer()
     {
-
+        userSyncMediator.Start_Timer();
     }
 
     // Get 계열

@@ -43,14 +43,9 @@ public class BattleScene : BaseScene
             
             player.Init(currMap, testPlayerCharacterType);
 
-                
+            // enemyPlayer.Init(currMap, testEnemyCharacterType);
 
         }
-    }
-
-    public void Init_Player()
-    {
-        // player.Init(currMap, )
     }
 
     public override void Clear()

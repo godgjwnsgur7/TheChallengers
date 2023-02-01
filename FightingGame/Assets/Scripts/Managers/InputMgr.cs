@@ -55,7 +55,16 @@ public class InputMgr
 
     public void Clear()
     {
-        inputKeyController = null;
-        inputKeyManagement = null;
+        if (inputKeyController != null)
+        {
+            Managers.Resource.Destroy(inputKeyController.gameObject);
+            inputKeyController = null;
+        }
+
+        if (inputKeyManagement != null)
+        {
+            Managers.Resource.Destroy(inputKeyManagement.gameObject);
+            inputKeyManagement = null;
+        }
     }
 }

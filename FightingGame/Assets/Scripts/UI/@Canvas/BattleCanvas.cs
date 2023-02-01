@@ -14,7 +14,14 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
 
-    public Action<float> Get_StatusWindowUI(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)
+    public override void Init()
+    {
+        base.Init();
+
+        Register_TimerCallBack();
+    }
+
+    public Action<float> Get_StatusWindowCallBack(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)
     {
         if (_teamType == ENUM_TEAM_TYPE.Blue)
             return blueTeamStatusWindow.Connect_Character(_charType);

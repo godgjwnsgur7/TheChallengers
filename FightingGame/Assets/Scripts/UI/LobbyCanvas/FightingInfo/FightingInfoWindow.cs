@@ -26,6 +26,8 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     public void Open()
     {
+        Managers.Clear();
+
         this.RegisterRoomCallback();
 
         this.gameObject.SetActive(true);
@@ -83,7 +85,6 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     {
         yield return new WaitForSeconds(waitTime);
 
-        Managers.Clear();
         Managers.UI.popupCanvas.Play_FadeOutEffect(GoTo_BattleScene);
         waitFadeInEffectCoroutine = null;
     }

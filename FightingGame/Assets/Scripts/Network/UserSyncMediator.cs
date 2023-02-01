@@ -12,7 +12,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
     Action<int> updateTimerCallBack = null;
     Coroutine timerCoroutine = null;
 
-    float gameRunTimeLimit;
+    int gameRunTimeLimit = 0;
 
     bool isInit = false;
 
@@ -34,20 +34,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
 
         DontDestroyOnLoad(gameObject);        
         Managers.Network.Set_UserSyncMediator(this);
-    }
-
-    protected override void OnMineSerializeView(PhotonWriteStream stream)
-    {
-        // stream.Write(isMasterClearComplete);
-
-        base.OnMineSerializeView(stream);
-    }
-
-    protected override void OnOtherSerializeView(PhotonReadStream stream)
-    {
-        // isMasterClearComplete = stream.Read<bool>();
-
-        base.OnOtherSerializeView(stream);
+        gameRunTimeLimit = (int)Managers.Data.gameInfo.maxGameRunTime;
     }
 
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
@@ -55,25 +42,33 @@ public class UserSyncMediator : MonoBehaviourPhoton
         updateTimerCallBack = _updateTimerCallBack;
     }
 
+    public void Start_Timer()
+    {
+        timerCoroutine = StartCoroutine(IStartTimer());
+    }
+
     protected IEnumerator IStartTimer()
     {
-        gameRunTimeLimit = Managers.Data.gameInfo.maxGameRunTime;
-
-        int currentTimerLimit = (int)gameRunTimeLimit;
+        float currentTimerLimit = gameRunTimeLimit;
 
         while (gameRunTimeLimit >= 0.1f)
         {
-            gameRunTimeLimit -= Time.deltaTime;
+            currentTimerLimit -= Time.deltaTime;
 
-            if(currentTimerLimit != (int)gameRunTimeLimit)
+            if((int)currentTimerLimit != gameRunTimeLimit)
             {
-                currentTimerLimit = (int)gameRunTimeLimit;
+                gameRunTimeLimit = (int)currentTimerLimit;
+
                 PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int>
-                    (this, Sync_TimerCallBack, currentTimerLimit);
+                    (this, Sync_TimerCallBack, gameRunTimeLimit);
             }
 
             yield return null;
         }
+
+        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int>
+                    (this, Sync_TimerCallBack, 0);
+        // 타임아웃
     }
 
     [BroadcastMethod]

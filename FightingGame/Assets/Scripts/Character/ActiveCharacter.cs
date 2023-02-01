@@ -10,7 +10,6 @@ public partial class ActiveCharacter : Character
     protected Animator anim;
     protected SpriteRenderer spriteRenderer;
 
-    StatusWindowUI statusWindowUI;
     protected AttackObject attackObject;
     Action<float> OnHit;
 
@@ -298,12 +297,12 @@ public partial class ActiveCharacter : Character
         if (canvasType == typeof(BattleCanvas))
         {
             BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-            OnHit = battleCanvas.Get_StatusWindowUI(teamType, characterType);
+            OnHit = battleCanvas.Get_StatusWindowCallBack(teamType, characterType);
         }
         else if (canvasType == typeof(TrainingCanvas))
         {
             TrainingCanvas trainingCanvas = Managers.UI.currCanvas.GetComponent<TrainingCanvas>();
-            OnHit = trainingCanvas.Get_StatusWindowUI(teamType, characterType);
+            OnHit = trainingCanvas.Get_StatusWindowCallBack(teamType, characterType);
         }
     } 
 
