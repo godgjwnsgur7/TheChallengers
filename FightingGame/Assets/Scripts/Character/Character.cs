@@ -165,12 +165,6 @@ public class Character : MonoBehaviourPhoton
     public void ValueClear_Rigid() => rigid2D.velocity = Vector2.zero;
 
     [BroadcastMethod]
-    public void Set_TeamType(ENUM_TEAM_TYPE _teamType)
-    {
-        teamType = _teamType;
-    }
-
-    [BroadcastMethod]
     public void Set_Sound()
     {
         AudioSource audioSource = this.transform.Find("Sound").GetComponent<AudioSource>();

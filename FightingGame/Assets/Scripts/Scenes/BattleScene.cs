@@ -14,44 +14,38 @@ public class BattleScene : BaseScene
 
     protected override IEnumerator Start()
     {
-        if (PhotonLogicHandler.IsConnected && PhotonLogicHandler.IsFullRoom) // 매칭상태로 씬이동을 함
+        if(PhotonLogicHandler.IsConnected)
         {
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
             yield return new WaitUntil(Managers.Network.Get_SceneSyncAllState);
         }
 
-        yield return base.Start();
+        yield return base.Start(); // Init 실행
     }
-
     public override void Init()
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
 
         base.Init();
 
-        if (PhotonLogicHandler.IsConnected)
+        if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
-            currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
+            currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
 
-            Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
+            player.Init(currMap, testPlayerCharacterType);
 
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
+            enemyPlayer.gameObject.SetActive(true);
+
+            enemyPlayer.Init(currMap, testEnemyCharacterType);
+
+            return;
         }
-        else // 디버그용
-        {
-            DebugLogic();
-        }
-    }
 
-    public void DebugLogic()
-    {
-        currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
+        currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
-        player.Init(currMap, testPlayerCharacterType);
+        Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
 
-        enemyPlayer.gameObject.SetActive(true);
-
-        enemyPlayer.Init(currMap, testEnemyCharacterType);
+        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
     }
 
     public override void Clear()

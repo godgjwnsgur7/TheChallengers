@@ -18,13 +18,13 @@ public class UserSyncMediator : MonoBehaviourPhoton
 
     public override void OnDisable()
     {
-        if(timerCoroutine != null)
+        if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
     }
 
     public override void Init()
     {
-        if(isInit)
+        if (isInit)
         {
             Debug.LogError("중복으로 UserSyncMediator를 초기화 시도하였습니다.");
             return;
@@ -32,7 +32,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
 
         base.Init();
 
-        DontDestroyOnLoad(gameObject);        
+        DontDestroyOnLoad(gameObject);
         Managers.Network.Set_UserSyncMediator(this);
         gameRunTimeLimit = (int)Managers.Data.gameInfo.maxGameRunTime;
     }
@@ -55,7 +55,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
         {
             currentTimerLimit -= Time.deltaTime;
 
-            if((int)currentTimerLimit != gameRunTimeLimit)
+            if ((int)currentTimerLimit != gameRunTimeLimit)
             {
                 gameRunTimeLimit = (int)currentTimerLimit;
 
@@ -66,7 +66,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
             yield return null;
         }
 
-        if(gameRunTimeLimit >= 0.1f)
+        if (gameRunTimeLimit >= 0.1f)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int>(this, Sync_TimerCallBack, 0);
             // 타임아웃으로 게임 종료된 것
@@ -78,9 +78,9 @@ public class UserSyncMediator : MonoBehaviourPhoton
     {
         updateTimerCallBack(_currentTimeLimit);
     }
-
+    
     /// <summary>
-    ///  게임에 돌입하기 전에 처리되는 함수
+    ///  게임에 돌입하기 전에 처리되는 함수들
     /// </summary>
     public void Sync_ShowGameInfo()
     {
@@ -97,7 +97,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
     }
 
     /// <summary>
-    /// 배틀 씬에 돌입이 끝난 후에 처리되는 함수
+    /// 배틀 씬에 돌입이 끝난 후에 처리되는 함수들
     /// </summary>
     public void Sync_GameStartEffect()
     {

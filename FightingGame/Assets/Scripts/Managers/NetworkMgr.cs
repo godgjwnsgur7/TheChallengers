@@ -90,15 +90,11 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
+        if (sequenceExecuteCoroutine != null)
+            CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
+
         if (userSyncMediator != null)
             Managers.Resource.Destroy(userSyncMediator.gameObject);
-
-        // 나간 유저가 내가 아니라면 (내가 원래 마스터클라이언트였다면)
-        if (PhotonLogicHandler.CurrentMyNickname != exitUserNickname)
-        {
-            if (sequenceExecuteCoroutine != null)
-                CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
-        }
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
@@ -138,9 +134,11 @@ public class NetworkMgr : IRoomPostProcess
         // 1. 연결 확인
         yield return new WaitUntil(Get_DataSyncAllState);
         Managers.Resource.InstantiateEveryone("UserSyncMediator"); // 유저싱크메디에이터 생성
-        Debug.Log("동기화 완료");
+        
+        // 2. 동기화객체 생성 참조 확인
+        yield return new WaitUntil(IsConnect_UserSyncMediator);
 
-        // 2. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
+        // 3. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
         yield return new WaitUntil(Get_ReadyAllState);
         Debug.Log("게임 시작");
         PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
@@ -149,11 +147,16 @@ public class NetworkMgr : IRoomPostProcess
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
         PhotonLogicHandler.Instance.OnUnReadyAll(); // 준비해제
-        // 캐릭터 소환은 BattleScene의 Start문에서 SceneSyncState를 받고 실행됨
+        // BattleScene의 Start문에서 처리
 
         // 5. 캐릭터 로드 확인
         yield return new WaitUntil(Get_CharacterSyncAllState);
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
+    }
+
+    public bool IsConnect_UserSyncMediator()
+    {
+        return (userSyncMediator != null);
     }
     
     public void Start_Timer()

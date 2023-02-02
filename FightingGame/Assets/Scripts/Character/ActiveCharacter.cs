@@ -65,10 +65,7 @@ public partial class ActiveCharacter : Character
         if (Managers.Network.Get_SyncState())
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
-                (this, Connect_MyStatusUI, _teamType);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>
-                (this, Set_TeamType, teamType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>(this, Connect_MyStatusUI, teamType);
         }
         else
         {
@@ -299,12 +296,12 @@ public partial class ActiveCharacter : Character
         if (canvasType == typeof(BattleCanvas))
         {
             BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-            OnHit = battleCanvas.Get_StatusWindowCallBack(teamType, characterType);
+            OnHit = battleCanvas.Get_StatusWindowCallBack(_teamType, characterType);
         }
         else if (canvasType == typeof(TrainingCanvas))
         {
             TrainingCanvas trainingCanvas = Managers.UI.currCanvas.GetComponent<TrainingCanvas>();
-            OnHit = trainingCanvas.Get_StatusWindowCallBack(teamType, characterType);
+            OnHit = trainingCanvas.Get_StatusWindowCallBack(_teamType, characterType);
         }
     } 
 
