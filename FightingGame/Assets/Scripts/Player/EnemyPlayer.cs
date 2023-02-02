@@ -56,24 +56,37 @@ public class EnemyPlayer : MonoBehaviour
         }
 
         // 스킬 1번
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            CharacterSkillParam skillParam = new CharacterSkillParam(0);
+            CharacterSkillParam skillParam = new CharacterSkillParam(1);
             PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
         }
 
         // 스킬 2번
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            CharacterSkillParam skillParam = new CharacterSkillParam(2);
+            PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+        }
+
+        // 스킬 3번
         if (Input.GetKeyDown(KeyCode.K))
         {
-            CharacterSkillParam skillParam = new CharacterSkillParam(1);
+            CharacterSkillParam skillParam = new CharacterSkillParam(3);
             PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
         }
 
         // 스킬 3번
         if (Input.GetKeyDown(KeyCode.L))
         {
-            CharacterSkillParam skillParam = new CharacterSkillParam(2);
+            CharacterSkillParam skillParam = new CharacterSkillParam(4);
             PlayerCommand(ENUM_PLAYER_STATE.Skill, skillParam);
+        }
+
+        // 대쉬
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            PlayerCommand(ENUM_PLAYER_STATE.Dash);
         }
 
         // 점프
@@ -120,7 +133,11 @@ public class EnemyPlayer : MonoBehaviour
 
     public void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
-        if (activeCharacter == null || activeCharacter.currState == ENUM_PLAYER_STATE.Hit)
+        if (activeCharacter == null)
+            return;
+
+        if (activeCharacter.currState == ENUM_PLAYER_STATE.Skill ||
+            (activeCharacter.currState == ENUM_PLAYER_STATE.Hit || activeCharacter.currState == ENUM_PLAYER_STATE.Die))
             return;
 
         switch (nextState)
@@ -130,6 +147,9 @@ public class EnemyPlayer : MonoBehaviour
                 break;
             case ENUM_PLAYER_STATE.Move:
                 activeCharacter.Move(param);
+                break;
+            case ENUM_PLAYER_STATE.Dash:
+                activeCharacter.Dash();
                 break;
             case ENUM_PLAYER_STATE.Jump:
                 activeCharacter.Jump();
@@ -141,7 +161,7 @@ public class EnemyPlayer : MonoBehaviour
                 activeCharacter.Skill(param);
                 break;
             case ENUM_PLAYER_STATE.Hit:
-                activeCharacter.Hit(param);
+                Debug.LogError("주의! PlayerCharacter에 Hit 명령이 들어옴");
                 break;
             case ENUM_PLAYER_STATE.Die:
                 activeCharacter.Die();
