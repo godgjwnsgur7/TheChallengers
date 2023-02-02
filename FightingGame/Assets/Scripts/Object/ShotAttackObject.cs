@@ -124,7 +124,7 @@ public class ShotAttackObject : AttackObject
             StopCoroutine(runTimeCheckCoroutine);
 
         if (isServerSyncState)
-            PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ShotAttackObject>(this, Sync_DestroyMine);
         else
             Managers.Resource.Destroy(gameObject);
     }

@@ -14,11 +14,6 @@ public class MultiAttackObject : AttackObject
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Multi;
 
         base.Init();
-
-        if (isServerSyncState)
-        {
-            SyncTransformView(transform);
-        }
     }
  
 	[BroadcastMethod]
@@ -53,7 +48,7 @@ public class MultiAttackObject : AttackObject
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
 
         if (isServerSyncState)
-            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
+            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<FollowAttackObject>();
         else
             attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
 

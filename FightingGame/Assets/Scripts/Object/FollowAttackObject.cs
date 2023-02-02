@@ -8,11 +8,20 @@ public class FollowAttackObject : AttackObject
 {
     Skill skillValue;
     Coroutine runTimeCheckCoroutine = null;
+    Rigidbody2D rigid2D;
     public override void Init()
     {
         attackObjectType = ENUM_ATTACKOBJECT_TYPE.Follow;
 
+        if (rigid2D == null)
+            rigid2D = this.GetComponent<Rigidbody2D>();
+
         base.Init();
+
+        if (isServerSyncState)
+        {
+            SyncPhysics(rigid2D);
+        }
 
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)Enum.Parse(typeof(ENUM_ATTACKOBJECT_NAME), gameObject.name.ToString());
         if (!Managers.Data.SkillDict.TryGetValue((int)attackObjectName, out skillValue))
@@ -97,7 +106,7 @@ public class FollowAttackObject : AttackObject
             StopCoroutine(runTimeCheckCoroutine);
 
         if (isServerSyncState)
-            PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject>(this, Sync_DestroyMine);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<FollowAttackObject>(this, Sync_DestroyMine);
         else
             Managers.Resource.Destroy(gameObject);
     }

@@ -29,6 +29,13 @@ public class FallAttackObject : AttackObject
             anim = GetComponent<Animator>();
 
         base.Init();
+
+        if(isServerSyncState)
+        {
+            SyncPhysics(rigid2D);
+            var param = MakeSyncAnimParam();
+            SyncAnimator(anim, param);
+        }
     }
 
     public override void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
@@ -80,7 +87,7 @@ public class FallAttackObject : AttackObject
         if (isFirstHit)
         {
             rigid2D.velocity = Vector2.zero;
-            Active_Trigger("Hit");
+            Active_Trigger("BoomTrigger");
             Managers.Resource.Destroy(attackObject.gameObject);
         }
     }   
@@ -98,7 +105,7 @@ public class FallAttackObject : AttackObject
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)_attackTypeNum;
 
         if (isServerSyncState)
-            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<AttackObject>();
+            attackObject = Managers.Resource.InstantiateEveryone(attackObjectName.ToString(), Vector2.zero).GetComponent<FollowAttackObject>();
         else
             attackObject = Managers.Resource.GetAttackObject(attackObjectName.ToString());
 
@@ -145,5 +152,16 @@ public class FallAttackObject : AttackObject
             Check_GroundHit();
             yield return null;
         }
+    }
+
+    private AnimatorSyncParam[] MakeSyncAnimParam()
+    {
+        AnimatorSyncParam[] syncParams = new AnimatorSyncParam[]
+        {
+            new AnimatorSyncParam("FallTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("BoomTrigger", AnimParameterType.Trigger),
+        };
+
+        return syncParams;
     }
 }

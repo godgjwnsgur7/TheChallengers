@@ -15,8 +15,6 @@ public class TrainingCanvas : BaseCanvas
     public override void Init()
     {
         base.Init();
-
-        buttonPanel.Init();
     }
 
     public Action<float> Get_StatusWindowCallBack(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)

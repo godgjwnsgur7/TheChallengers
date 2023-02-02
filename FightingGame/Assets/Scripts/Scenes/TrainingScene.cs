@@ -6,6 +6,8 @@ using System;
 
 public class TrainingScene : BaseScene
 {
+    [SerializeField] ButtonPanel buttonPanel;
+
     public override void Clear()
     {
         base.Clear();
@@ -16,5 +18,7 @@ public class TrainingScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Training;
         
         base.Init();
+
+        buttonPanel.Init();
     }
 }
