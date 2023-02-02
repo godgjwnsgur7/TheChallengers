@@ -67,6 +67,8 @@ public partial class ActiveCharacter : Character
             isControl = PhotonLogicHandler.IsMine(viewID);
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
                 (this, Connect_MyStatusUI, _teamType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>
+                (this, Set_TeamType, teamType);
         }
         else
         {

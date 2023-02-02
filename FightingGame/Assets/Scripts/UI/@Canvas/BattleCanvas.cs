@@ -17,8 +17,9 @@ public class BattleCanvas : BaseCanvas
     public override void Init()
     {
         base.Init();
-
-        Register_TimerCallBack();
+        
+        if(PhotonLogicHandler.IsConnected)
+            Register_TimerCallBack();
     }
 
     public Action<float> Get_StatusWindowCallBack(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)

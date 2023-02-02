@@ -16,6 +16,12 @@ public class StatusWindowUI : MonoBehaviour
 
     Coroutine hpBarCoroutine;
 
+    private void OnDisable()
+    {
+        if(hpBarCoroutine != null)
+            StopCoroutine(hpBarCoroutine);
+    }
+
     public Action<float> Connect_Character(ENUM_CHARACTER_TYPE _charType)
     {
         Managers.Data.CharInfoDict.TryGetValue((int)_charType, out CharacterInfo characterInfo);

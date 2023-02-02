@@ -49,18 +49,28 @@ public class PlayerCharacter : MonoBehaviour
             StopCoroutine(debugCoroutine);
     }
 
-    public void Init(BaseMap currMap, ENUM_CHARACTER_TYPE _summonCharType)
+    public void Init(BaseMap _currMap, ENUM_CHARACTER_TYPE _summonCharType)
     {
         Vector2 summonPosVec;
 
-        playerCamera.Init(currMap);
+        playerCamera.Init(_currMap);
 
         if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
             teamType = ENUM_TEAM_TYPE.Blue;
-            summonPosVec = currMap.blueTeamSpawnPoint.position;
+            summonPosVec = _currMap.blueTeamSpawnPoint.position;
 
-            // 미구현
+            activeCharacter = Managers.Resource.Instantiate($"{_summonCharType}", summonPosVec).GetComponent<ActiveCharacter>();
+            activeCharacter.transform.parent = this.transform;
+            activeCharacter.Init();
+            activeCharacter.Skills_Pooling();
+
+            activeCharacter.Set_Character(teamType);
+            playerCamera.Following_Target(activeCharacter.transform);
+
+            Connect_InputController();
+
+            Managers.Battle.GameStart();
 
             return;
         }
@@ -68,25 +78,25 @@ public class PlayerCharacter : MonoBehaviour
         if (PhotonLogicHandler.IsMasterClient)
         {
             teamType = ENUM_TEAM_TYPE.Blue;
-            summonPosVec = currMap.blueTeamSpawnPoint.position;
+            summonPosVec = _currMap.blueTeamSpawnPoint.position;
         }
         else
         {
             teamType = ENUM_TEAM_TYPE.Red;
-            summonPosVec = currMap.redTeamSpawnPoint.position;
+            summonPosVec = _currMap.redTeamSpawnPoint.position;
         }
 
         Summon_Character(_summonCharType, summonPosVec);
     }
-    
+
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
     {
         activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _summonPosVec).GetComponent<ActiveCharacter>();
         activeCharacter.transform.parent = this.transform;
         activeCharacter.Skills_Pooling();
         
-        PhotonLogicHandler.Instance.TryBroadcastMethod<Character, ENUM_TEAM_TYPE>(activeCharacter, activeCharacter.Set_TeamType, teamType);
-        PhotonLogicHandler.Instance.TryBroadcastMethod<Character>(activeCharacter, activeCharacter.Set_Sound);
+        PhotonLogicHandler.Instance.TryBroadcastMethod<Character>
+            (activeCharacter, activeCharacter.Set_Sound);
 
         activeCharacter.Set_Character(teamType);
         playerCamera.Following_Target(activeCharacter.transform);

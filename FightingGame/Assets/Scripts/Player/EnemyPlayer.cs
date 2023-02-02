@@ -15,18 +15,28 @@ public class EnemyPlayer : MonoBehaviour
     public float moveDir;
     public bool inabilityState = false;
 
-    public void Set_Character(ActiveCharacter _activeCharacter)
-    {
-        activeCharacter = _activeCharacter;
-        activeCharacter.transform.parent = this.transform;
-        activeCharacter.Init();
-        activeCharacter.Set_Character(teamType);
-    }
-
     private void Update()
     {
         if(activeCharacter != null)
             OnKeyboard(); // 디버깅용
+    }
+
+    public void Init(BaseMap currMap, ENUM_CHARACTER_TYPE _summonCharType)
+    {
+        teamType = ENUM_TEAM_TYPE.Red;
+        Vector2 cummonPosVec = currMap.redTeamSpawnPoint.position;
+
+        Summon_Character(_summonCharType, cummonPosVec);
+    }
+
+    public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
+    {
+        activeCharacter = Managers.Resource.Instantiate($"{_charType}", _summonPosVec).GetComponent<ActiveCharacter>();
+        activeCharacter.transform.parent = this.transform;
+
+        activeCharacter.Init();
+        activeCharacter.Skills_Pooling();
+        activeCharacter.Set_Character(teamType);
     }
 
     // 디버깅용이니 쿨하게 다 때려박기

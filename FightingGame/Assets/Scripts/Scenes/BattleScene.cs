@@ -37,15 +37,21 @@ public class BattleScene : BaseScene
 
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
         }
-        else // 디버그용 ( 아직 미구현 )
+        else // 디버그용
         {
-            currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
-            
-            player.Init(currMap, testPlayerCharacterType);
-
-            // enemyPlayer.Init(currMap, testEnemyCharacterType);
-
+            DebugLogic();
         }
+    }
+
+    public void DebugLogic()
+    {
+        currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
+
+        player.Init(currMap, testPlayerCharacterType);
+
+        enemyPlayer.gameObject.SetActive(true);
+
+        enemyPlayer.Init(currMap, testEnemyCharacterType);
     }
 
     public override void Clear()
