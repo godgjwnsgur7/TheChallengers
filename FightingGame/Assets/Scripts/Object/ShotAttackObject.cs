@@ -34,6 +34,7 @@ public class ShotAttackObject : AttackObject
         }
     }
 
+    [BroadcastMethod]
     public override void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
         base.ActivatingAttackObject(_targetTr, _teamType, _reverseState);
@@ -135,6 +136,7 @@ public class ShotAttackObject : AttackObject
         Managers.Resource.Destroy(this.gameObject);
     }
 
+    [BroadcastMethod]
     public void Summon_EffectObject(int _effectTypeNum, Vector2 _targetTr)
     {
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
