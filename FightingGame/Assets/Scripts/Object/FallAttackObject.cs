@@ -38,6 +38,7 @@ public class FallAttackObject : AttackObject
         }
     }
 
+    [BroadcastMethod]
     public override void ActivatingAttackObject(Vector2 _targetTr, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
         base.ActivatingAttackObject(_targetTr, _teamType, _reverseState);
@@ -87,7 +88,15 @@ public class FallAttackObject : AttackObject
         if (isFirstHit)
         {
             rigid2D.velocity = Vector2.zero;
-            Active_Trigger("BoomTrigger");
+
+            if (isServerSyncState)
+            {
+                PhotonLogicHandler.Instance.TryBroadcastMethod<FallAttackObject, string>
+                    (this, Active_Trigger, "BoomTrigger");
+            }
+            else
+                Active_Trigger("BoomTrigger");
+
             Managers.Resource.Destroy(attackObject.gameObject);
         }
     }   
