@@ -51,7 +51,7 @@ public class MatchingRoomUI : MonoBehaviour, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
         {
-            Managers.Battle.Set_SlaveNickname(nickname);
+            Managers.Network.Set_SlaveClientNickname(nickname);
         }
 
         PhotonLogicHandler.Instance.OnGameStart();

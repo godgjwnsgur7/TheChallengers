@@ -70,7 +70,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if (PhotonLogicHandler.IsMasterClient)
         {
             slaveProfile.Set_UserNickname(nickname);
-            Managers.Battle.Set_SlaveNickname(nickname);
+            Managers.Network.Set_SlaveClientNickname(nickname);
         }
 
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
@@ -192,7 +192,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
         else if (PhotonLogicHandler.IsFullRoom && slaveProfile.Get_UserNickname() == "")
-            slaveProfile.Set_UserNickname(Managers.Battle.Get_SlaveNickname());  
+            slaveProfile.Set_UserNickname(Managers.Network.Get_SlaveClientNickname());  
             
         CurrMap = PhotonLogicHandler.CurrentMapType;
     }

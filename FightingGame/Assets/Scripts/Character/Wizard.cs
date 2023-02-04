@@ -33,27 +33,27 @@ public class Wizard : ActiveCharacter
         base.Skills_Pooling();
 
         // Attack
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_Attack2", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowAttackObject", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThrowJumpAttackObject", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_2", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_ThunderSkillObject_3", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_IceSkillObject_1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject_1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Wizard_MeteorSkillObject_2", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_Attack2}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThrowAttackObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThrowJumpAttackObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject_1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject_2}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject_3}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_IceSkillObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_IceSkillObject_1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject_Falling}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject_Explode}", 3);
 
         // Effect
-        Managers.Resource.GenerateInPool("EffectObjects/Wizard_ThunderEffect", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_ThunderEffect}", 3);
 
         // Knight Effect
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Jump}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Landing}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Move}", 3);
     }
 
 }

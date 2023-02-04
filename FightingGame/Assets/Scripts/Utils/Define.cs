@@ -90,6 +90,7 @@ namespace FGDefine
 
     /// <summary>
     /// "Resources/Prefabs/AttackObjects/" 경로 안의 프리팹 이름 리스트
+    /// GenerateObject는 공격에 대한 정보가 없음
     /// </summary>
     [Serializable]
     public enum ENUM_ATTACKOBJECT_NAME
@@ -102,7 +103,7 @@ namespace FGDefine
         Knight_DashSkill_3 = 6,
         Knight_JumpAttack = 7,
         Knight_ThrowSkillObject = 8,
-        Knight_SmashSkillObject = 9,
+        Knight_SmashSkillObject = 9, // GenerateObject
         Knight_SmashSkillObject_1 = 10,
         Knight_SmashSkillObject_2 = 11,
         Knight_SmashSkillObject_3 = 12,
@@ -111,15 +112,15 @@ namespace FGDefine
         Wizard_Attack2 = 22,
         Wizard_ThrowAttackObject = 23,
         Wizard_ThrowJumpAttackObject = 24,
-        Wizard_ThunderSkillObject = 25,
+        Wizard_ThunderSkillObject = 25, // GenerateObject
         Wizard_ThunderSkillObject_1 = 26,
         Wizard_ThunderSkillObject_2 = 27,
         Wizard_ThunderSkillObject_3 = 28,
-        Wizard_IceSkillObject = 29,
+        Wizard_IceSkillObject = 29, // GenerateObject
         Wizard_IceSkillObject_1 = 30,
-        Wizard_MeteorSkillObject = 31,
-        Wizard_MeteorSkillObject_1 = 32,
-        Wizard_MeteorSkillObject_2 = 33,
+        Wizard_MeteorSkillObject = 31, // GenerateObject
+        Wizard_MeteorSkillObject_Falling = 32,
+        Wizard_MeteorSkillObject_Explode = 33,
     }
 
     /// <summary>

@@ -33,22 +33,22 @@ public class Knight : ActiveCharacter
         base.Skills_Pooling();
 
         // Attack
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack2", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_Attack3", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_2", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_DashSkill_3", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_JumpAttack", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_1", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_2", 35);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_SmashSkillObject_3", 3);
-        Managers.Resource.GenerateInPool("AttackObjects/Knight_ThrowSkillObject", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack2}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack3}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkill_1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkill_2}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkill_3}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_JumpAttack}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ThrowSkillObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_2}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_3}", 3);
 
         // Effect
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Jump", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Landing", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Knight_SmokeEffect_Move", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Jump}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Landing}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Move}", 3);
     }
 }

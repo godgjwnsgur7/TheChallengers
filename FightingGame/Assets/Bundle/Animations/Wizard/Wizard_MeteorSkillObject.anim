@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wizard_MeteorObject_Summon
+  m_Name: Wizard_MeteorSkillObject
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -113,14 +113,7 @@ AnimationClip:
     intParameter: 32
     messageOptions: 0
   - time: 1.0833334
-    functionName: Active_Trigger
-    data: FallTrigger
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.0833334
-    functionName: Shot_AttackObject
+    functionName: AnimEvent_Falling
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

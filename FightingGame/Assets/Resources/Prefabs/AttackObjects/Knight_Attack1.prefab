@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 855660758914799968}
   - component: {fileID: 4656794329971346617}
-  - component: {fileID: 1692288587137984787}
-  - component: {fileID: 6961740742981423612}
+  - component: {fileID: 4583778004571442972}
   - component: {fileID: 8400088951582568198}
   m_Layer: 0
   m_Name: Knight_Attack1
@@ -52,11 +51,12 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4583778004571442972}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1692288587137984787
+--- !u!114 &4583778004571442972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,27 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21158bfd2c498e941a8ff6c05c22bf73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &6961740742981423612
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737530830359469766}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  isUsing: 0
 --- !u!61 &8400088951582568198
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -67,14 +67,6 @@ public class NetworkMgr : IRoomPostProcess
 
     }
 
-    public void Set_UserSyncMediator(UserSyncMediator _userSyncMediator)
-    {
-        if (userSyncMediator != null && userSyncMediator.gameObject)
-            Managers.Resource.Destroy(userSyncMediator.gameObject);
-
-        userSyncMediator = _userSyncMediator;
-    }
-
     public void OnEnterRoomCallBack(string enterUserNickname)
     {
         if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
@@ -154,17 +146,27 @@ public class NetworkMgr : IRoomPostProcess
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
     }
 
-    public bool IsConnect_UserSyncMediator()
-    {
-        return (userSyncMediator != null);
-    }
-    
     public void Start_Timer()
     {
         userSyncMediator.Start_Timer();
     }
 
+    // Set 계열
+    public void Set_UserSyncMediator(UserSyncMediator _userSyncMediator)
+    {
+        if (userSyncMediator != null && userSyncMediator.gameObject)
+            Managers.Resource.Destroy(userSyncMediator.gameObject);
+
+        userSyncMediator = _userSyncMediator;
+    }
+    public void Set_SlaveClientNickname(string _slaveClientNickname)
+    {
+        slaveClientNickname = _slaveClientNickname;
+    }
+
+
     // Get 계열
+    public bool IsConnect_UserSyncMediator() => (userSyncMediator != null);
     protected bool Get_DataSyncAllState()
     {
         Debug.Log($"masterSyncData.isDataSync : {masterSyncData.isDataSync}");
@@ -195,7 +197,6 @@ public class NetworkMgr : IRoomPostProcess
         return masterSyncData.isCharacterSync && slaveSyncData.isCharacterSync;
     }
 
-    public bool Get_SyncState() => userSyncMediator != null;
     public string Get_SlaveClientNickname() => slaveClientNickname;
     public ENUM_CHARACTER_TYPE Get_MyCharacterType()
     {

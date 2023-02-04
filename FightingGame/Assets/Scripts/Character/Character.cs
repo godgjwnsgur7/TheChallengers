@@ -37,21 +37,26 @@ public class Character : MonoBehaviourPhoton
         protected set;
     }
 
-    protected float inputArrowDir = 0.0f;
-
     public ENUM_PLAYER_STATE currState = ENUM_PLAYER_STATE.Idle;
 
     public bool reverseState = false;
     public bool isControl = false;
-    public bool isInitialized = false;
 
     public bool jumpState = false;
     public bool invincibility = false;
     public bool superArmour = false;
 
+    protected float inputArrowDir = 0.0f;
+    protected bool isInitialized = false;
+    protected bool isServerSyncState = false;
+
     public override void Init()
     {
         base.Init();
+
+        isInitialized = true;
+
+        isServerSyncState = Managers.Network.isServerSyncState;
 
         Managers.Data.CharInfoDict.TryGetValue((int)characterType, out CharacterInfo characterInfo);
         MyCharInfo = characterInfo;
@@ -61,8 +66,11 @@ public class Character : MonoBehaviourPhoton
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
 
-        SyncPhysics(rigid2D);
-        SyncTransformView(transform);
+        if(isServerSyncState)
+        {
+            SyncPhysics(rigid2D);
+            SyncTransformView(transform);
+        }
     }
     
     protected override void OnMineSerializeView(PhotonWriteStream stream)

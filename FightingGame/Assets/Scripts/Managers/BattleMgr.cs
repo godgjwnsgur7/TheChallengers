@@ -16,9 +16,6 @@ public class BattleMgr
         get;
     }
 
-    string slaveNickname = null;
-   
-
     public void Init()
     {
         isGamePlayingState = false;
@@ -66,11 +63,4 @@ public class BattleMgr
         }
         */
     }
-
-    public void Set_SlaveNickname(string _slaveNickname)
-    {
-        this.slaveNickname = _slaveNickname;
-    }
-
-    public string Get_SlaveNickname() => slaveNickname;
 }
