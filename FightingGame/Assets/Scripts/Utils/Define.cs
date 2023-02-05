@@ -136,6 +136,7 @@ namespace FGDefine
         Knight_SmokeEffect_Landing = 4,
         Knight_SmokeEffect_Move = 5,
         Wizard_ThunderEffect = 6,
+        Wizard_MeteorEffect = 7,
     }
 
     /// <summary>
