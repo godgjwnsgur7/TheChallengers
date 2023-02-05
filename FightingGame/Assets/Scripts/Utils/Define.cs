@@ -121,6 +121,9 @@ namespace FGDefine
         Wizard_MeteorSkillObject = 31, // GenerateObject
         Wizard_MeteorSkillObject_Falling = 32,
         Wizard_MeteorSkillObject_Explode = 33,
+        Wizard_PushSkillObject = 34,
+        Wizard_PushSkillObject_1 = 35,
+        Wizard_PushSkillObject_2 = 36,
     }
 
     /// <summary>
