@@ -30,12 +30,8 @@ public class FollowAttackObject : HitAttackObject
         base.OnDisable();
     }
 
-    public IEnumerator Set_TargetTransform(Transform _targetTr)
+    public void Set_TargetTransform(Transform _targetTr)
     {
-        Debug.Log("이새끼가 아예 실행이 안된단 말잉지? ㅋㅋㅋ");
-
-        yield return new WaitUntil(IsActivate);
-
         followTargetCoroutine = StartCoroutine(IFollowTarget(_targetTr));
     }
 

@@ -33,6 +33,6 @@ public class ShotAttackObject : HitAttackObject
 
         base.Activate_AttackObject(updateSummonPosVec, _teamType, _reverseState);
 
-        rigid2D.AddForce(_reverseState ? shotPower * -1.0f : shotPower);
+        rigid2D.AddForce(new Vector2(_reverseState ? shotPower.x * -1.0f : shotPower.x, shotPower.y));
     }
 }

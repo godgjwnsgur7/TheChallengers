@@ -572,6 +572,17 @@ public partial class ActiveCharacter : Character
         invincibleCoroutine = null;
     }
 
+    protected IEnumerator IWaitActivate_Object(Action activatedCallBack, GameObject g)
+    {
+        yield return new WaitUntil(() => g.activeSelf == true);
+
+        activatedCallBack();
+    }
+    public void Set_TargetTransform()
+    {
+        attackObject.GetComponent<FollowAttackObject>().Set_TargetTransform(this.transform);
+    }
+
     #region Animation Event Function
     protected void Summon_AttackObject(int _attackTypeNum)
     {
@@ -599,7 +610,7 @@ public partial class ActiveCharacter : Character
 
             if (attackObject.ObjType == ENUM_SYNCOBJECT_TYPE.Follow)
             {
-                attackObject.GetComponent<FollowAttackObject>().Set_TargetTransform(transform);
+                StartCoroutine(IWaitActivate_Object(Set_TargetTransform, attackObject.gameObject));
             }
         }
         else

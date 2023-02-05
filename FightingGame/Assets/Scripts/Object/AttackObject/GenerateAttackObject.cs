@@ -25,9 +25,16 @@ public class GenerateAttackObject : AttackObject
     }
 
     // Animation Event
-    public virtual void Summon_AttackObject(int _attackTypeNum)
+    public void Summon_AttackObject(int _attackTypeNum)
     {
         if (!isMine) return;
+
+        if (attackObject != null && attackObject.isUsing)
+        {
+            attackObject.Sync_DestroyMine();
+        }
+
+        attackObject = null;
 
         if (isServerSyncState)
             attackObject = Managers.Resource.InstantiateEveryone(((ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString(), transform.position).GetComponent<AttackObject>();

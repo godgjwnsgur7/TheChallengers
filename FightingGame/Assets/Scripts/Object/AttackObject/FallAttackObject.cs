@@ -21,7 +21,6 @@ public class FallAttackObject : GenerateAttackObject
     ENUM_FALLOBJECTSTATE_TYPE currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
 
     Coroutine groundHitCheckCoroutine = null;
-    AttackObject attackObject = null;
 
     public override void Init()
     {
@@ -70,18 +69,6 @@ public class FallAttackObject : GenerateAttackObject
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
-    }
-
-    public override void Summon_AttackObject(int _attackTypeNum)
-    {
-        if (!isMine) return;
-
-        if(attackObject != null && attackObject.isUsing)
-        {
-            attackObject.Sync_DestroyMine();
-        }
-
-        base.Summon_AttackObject(_attackTypeNum);
     }
 
     private void Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE fallObjectState)

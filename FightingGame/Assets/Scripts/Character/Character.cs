@@ -143,7 +143,6 @@ public class Character : MonoBehaviourPhoton
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
-    [BroadcastMethod]
     public virtual void Hit(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Hit;
