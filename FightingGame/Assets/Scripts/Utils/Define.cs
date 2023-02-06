@@ -95,6 +95,7 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_ATTACKOBJECT_NAME
     {
+        // Knight
         Knight_Attack1 = 1,
         Knight_Attack2 = 2,
         Knight_Attack3 = 3,
@@ -108,6 +109,7 @@ namespace FGDefine
         Knight_SmashSkillObject_2 = 11,
         Knight_SmashSkillObject_3 = 12,
 
+        // Wizard
         Wizard_Attack1 = 21,
         Wizard_Attack2 = 22,
         Wizard_ThrowAttackObject = 23,
@@ -132,14 +134,18 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_EFFECTOBJECT_NAME
     {
+        // Public
         Basic_AttackedEffect1 = 0,
         Basic_AttackedEffect2 = 1,
         Basic_AttackedEffect3 = 2,
+
+        // Knight
         Knight_SmokeEffect_Jump = 3,
         Knight_SmokeEffect_Landing = 4,
         Knight_SmokeEffect_Move = 5,
         Wizard_ThunderEffect = 6,
         Wizard_MeteorEffect = 7,
+        Knight_DashEffect = 8,
     }
 
     /// <summary>

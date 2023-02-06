@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public enum ENUM_SYNCOBJECT_TYPE
 {
@@ -38,7 +39,4 @@ public class SyncObject : Poolable
         // SyncTransformView이 앵글도 동기화 해주는지 확인할 필요가 있다~
         transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
     }
-
-    
-
 }
