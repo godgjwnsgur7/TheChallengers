@@ -13,6 +13,7 @@ public enum ENUM_FALLOBJECTSTATE_TYPE
 }
 
 // 낙하해서 충돌하면 이펙트 발생
+// 변경해서 생성자의 위치를 받고, 해당 위치까지 떨어지고 폭발
 public class FallAttackObject : GenerateAttackObject
 {
     Animator anim;
