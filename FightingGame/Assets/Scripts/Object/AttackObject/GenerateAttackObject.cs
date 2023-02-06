@@ -27,8 +27,6 @@ public class GenerateAttackObject : AttackObject
     // Animation Event
     public void Summon_AttackObject(int _attackTypeNum)
     {
-        if (!isMine) return;
-
         if (attackObject != null && attackObject.isUsing)
         {
             attackObject.Sync_DestroyMine();

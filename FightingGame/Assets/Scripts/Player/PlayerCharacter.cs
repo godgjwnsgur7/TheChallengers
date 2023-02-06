@@ -93,7 +93,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _summonPosVec).GetComponent<ActiveCharacter>();
         activeCharacter.transform.parent = this.transform;
-        activeCharacter.Skills_Pooling();
         
         PhotonLogicHandler.Instance.TryBroadcastMethod<Character>
             (activeCharacter, activeCharacter.Set_Sound);

@@ -45,6 +45,7 @@ public partial class ActiveCharacter : Character
         if (isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
+            Skills_Pooling();
         }
         else
             isControl = true;
@@ -580,7 +581,8 @@ public partial class ActiveCharacter : Character
     }
     public void Set_TargetTransform()
     {
-        attackObject.GetComponent<FollowAttackObject>().Set_TargetTransform(this.transform);
+        if(attackObject.isUsing)
+            attackObject.GetComponent<FollowAttackObject>().Set_TargetTransform(this.transform);
     }
 
     #region Animation Event Function

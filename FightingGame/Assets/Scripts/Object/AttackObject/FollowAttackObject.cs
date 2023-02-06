@@ -35,12 +35,6 @@ public class FollowAttackObject : HitAttackObject
         followTargetCoroutine = StartCoroutine(IFollowTarget(_targetTr));
     }
 
-    private bool IsActivate()
-    {
-        Debug.Log(this.gameObject.activeSelf && isUsing);
-        return this.gameObject.activeSelf && isUsing;
-    }
-
     // 결국에는 FollowAttackObject일 경우에 소환주체의 Transform을 참조해야 함.
     private IEnumerator IFollowTarget(Transform _targetTr)
     {

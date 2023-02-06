@@ -13,11 +13,6 @@ public class HitAttackObject : AttackObject
     {
         base.Init();
 
-        if (isServerSyncState)
-        {
-            isMine = PhotonLogicHandler.IsMine(viewID);
-        }
-
         ENUM_ATTACKOBJECT_NAME attackObjectName = (ENUM_ATTACKOBJECT_NAME)Enum.Parse(typeof(ENUM_ATTACKOBJECT_NAME), gameObject.name.ToString());
         if (!Managers.Data.SkillDict.TryGetValue((int)attackObjectName, out skillValue))
         {
@@ -30,11 +25,13 @@ public class HitAttackObject : AttackObject
     {
         base.Activate_AttackObject(_summonPosVec,_teamType,_reverseState);
 
-        if (isMine)
-        {
-            runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
-        }
+        if (PhotonLogicHandler.IsMine(viewID))
+            Start_RunTimeCheckCoroutine();
+    }
 
+    private void Start_RunTimeCheckCoroutine()
+    {
+        runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
     public override void OnDisable()
@@ -47,7 +44,7 @@ public class HitAttackObject : AttackObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isServerSyncState && isMine) // 맞는 애가 처리하기 위해
+        if (isServerSyncState && PhotonLogicHandler.IsMine(viewID)) // 맞는 애가 처리하기 위해
             return;
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();

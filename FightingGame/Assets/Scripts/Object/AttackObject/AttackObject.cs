@@ -7,7 +7,6 @@ using System;
 public class AttackObject : SyncObject
 {
     protected ENUM_TEAM_TYPE teamType;
-    protected bool isMine = true; // 내가 소환한 객체인가?
 
     public override void Init()
     {
