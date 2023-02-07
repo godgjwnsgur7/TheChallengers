@@ -123,9 +123,8 @@ namespace FGDefine
         Wizard_MeteorSkillObject = 31, // GenerateObject
         Wizard_MeteorSkillObject_Falling = 32,
         Wizard_MeteorSkillObject_Explode = 33,
-        Wizard_PushSkillObject = 34,
+        Wizard_PushSkillObject = 34, // GenerateObject
         Wizard_PushSkillObject_1 = 35,
-        Wizard_PushSkillObject_2 = 36,
     }
 
     /// <summary>
@@ -140,12 +139,13 @@ namespace FGDefine
         Basic_AttackedEffect3 = 2,
 
         // Knight
-        Knight_SmokeEffect_Jump = 3,
-        Knight_SmokeEffect_Landing = 4,
-        Knight_SmokeEffect_Move = 5,
-        Wizard_ThunderEffect = 6,
-        Wizard_MeteorEffect = 7,
-        Knight_DashEffect = 8,
+        Knight_SmokeEffect_Jump = 21,
+        Knight_SmokeEffect_Landing = 22,
+        Knight_SmokeEffect_Move = 23,
+        Knight_DashEffect = 24,
+
+        // Wizard
+        Wizard_ThunderCircleEffect = 41,
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ using System;
 
 public class HitAttackObject : AttackObject
 {
-    Skill skillValue;
+    protected Skill skillValue;
     Coroutine runTimeCheckCoroutine = null;
 
     public override void Init()
@@ -42,7 +42,8 @@ public class HitAttackObject : AttackObject
         base.OnDisable();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    // 수정 시 참조 확인 (재정의해서 사용하고 있음)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (isServerSyncState && PhotonLogicHandler.IsMine(viewID)) // 맞는 애가 처리하기 위해
             return;
