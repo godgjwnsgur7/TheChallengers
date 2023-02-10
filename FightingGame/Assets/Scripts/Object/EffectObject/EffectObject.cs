@@ -23,11 +23,15 @@ public class EffectObject : SyncObject
     }
 
     // 이펙트오브젝트는 따로 사라지는 시점을 동기화처리 하지 않음.
-    // 각 클라이언트에서 애니메이션 이벤트로 처리 (마지막 프레임에 들어갈 것)
-    public void AnimEvent_DestoryMine()
+    public void DestoryMine()
     {
         if (!isUsing) return;
 
         Managers.Resource.Destroy(gameObject);
+    }
+
+    public void AnimEvent_DestoryMine()
+    {
+        DestoryMine();
     }
 }

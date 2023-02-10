@@ -146,6 +146,7 @@ namespace FGDefine
 
         // Wizard
         Wizard_ThunderCircleEffect = 41,
+        Wizard_MoveEffect = 42,
     }
 
     /// <summary>

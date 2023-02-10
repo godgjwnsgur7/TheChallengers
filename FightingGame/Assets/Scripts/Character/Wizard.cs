@@ -51,6 +51,7 @@ public class Wizard : ActiveCharacter
 
         // Effect
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_ThunderCircleEffect}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MoveEffect}", 5);
 
         // Knight Effect
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Jump}", 3);
