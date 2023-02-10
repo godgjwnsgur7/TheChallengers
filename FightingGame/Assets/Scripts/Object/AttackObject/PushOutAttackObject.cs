@@ -5,6 +5,7 @@ using FGDefine;
 
 public class PushOutAttackObject : HitAttackObject
 {
+    // 재정의해서 사용중 ( Base 호출 X )
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (isServerSyncState && PhotonLogicHandler.IsMine(viewID)) // 맞는 애가 처리하기 위해

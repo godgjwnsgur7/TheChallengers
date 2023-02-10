@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MatchingWindowUI : MonoBehaviour
 {
-    [SerializeField] MatchingRoomUI matchingRoom;
+    // [SerializeField] MatchingRoomUI matchingRoom;
 
     [SerializeField] Text stopwatchText;
 
@@ -44,7 +44,14 @@ public class MatchingWindowUI : MonoBehaviour
             Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
     }
 
-    public void Create_MatchingRoom() => matchingRoom.Open(MathingCallBack, selectedCharType);
+    public void Create_MatchingRoom()
+    {
+        PhotonLogicHandler.Instance.ChangeCharacter(selectedCharType);
+        // matchingRoom.Open(MathingCallBack, selectedCharType);
+        if(!PhotonLogicHandler.IsMasterClient)
+            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+    }
+    
     public void MathingFailed() => OnClick_Exit();
 
     public void MathingCallBack()
