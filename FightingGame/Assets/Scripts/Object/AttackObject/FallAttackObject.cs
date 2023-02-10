@@ -21,6 +21,8 @@ public class FallAttackObject : GenerateAttackObject
 
     float masterPosVecY;
 
+    Coroutine explodeCheckCoroutine;
+
     public override void Init()
     {
         base.Init();
@@ -40,6 +42,14 @@ public class FallAttackObject : GenerateAttackObject
         }
     }
 
+    public override void OnDisable()
+    {
+        if(explodeCheckCoroutine != null)
+            StopCoroutine(explodeCheckCoroutine);
+
+        base.OnDisable();
+    }
+
     private AnimatorSyncParam[] MakeSyncAnimParam()
     {
         AnimatorSyncParam[] syncParams = new AnimatorSyncParam[]
@@ -57,10 +67,10 @@ public class FallAttackObject : GenerateAttackObject
     {
         currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
 
-        masterPosVecY = _summonPosVec.y; // 시전자의 y좌표(월드) 저장
-
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
+        // 문제가 지금 여기에 있다 ㅎㅎ;
+        masterPosVecY = _summonPosVec.y; // 시전자의 y좌표(월드) 저장
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
     }
 
@@ -73,21 +83,21 @@ public class FallAttackObject : GenerateAttackObject
         {
             Vector2 updateShotPowerVec = new Vector2(reverseState ? shotPowerVec.x * -1f : shotPowerVec.x, shotPowerVec.y);
             rigid2D.AddForce(updateShotPowerVec);
+            explodeCheckCoroutine = StartCoroutine(IExplodeCheck());
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected IEnumerator IExplodeCheck()
     {
-        // 낙하상태가 아니거나, 시전자의 좌표에 도달하기 전이면 리턴 (임시)
-        if (currMyState != ENUM_FALLOBJECTSTATE_TYPE.Fall 
-            || masterPosVecY < transform.position.y)
-            return;
-
-        if(collision.tag == ENUM_TAG_TYPE.Ground.ToString())
+        if(transform.position.y > masterPosVecY)
         {
-            Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
-            rigid2D.velocity = Vector2.zero;
+            yield return null;
         }
+
+        Debug.Log("실행");
+        explodeCheckCoroutine = null;
+        
+        Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
     }
 
     public void AnimEvent_Falling()
