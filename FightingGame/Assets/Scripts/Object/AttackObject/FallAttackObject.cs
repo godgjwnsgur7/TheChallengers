@@ -79,7 +79,11 @@ public class FallAttackObject : GenerateAttackObject
         SetAnimTrigger(fallObjectState.ToString() + "Trigger");
         currMyState = fallObjectState;
 
-        if(fallObjectState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
+        if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
+        {
+            rigid2D.velocity = Vector2.zero;
+        }
+        else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
         {
             Vector2 updateShotPowerVec = new Vector2(reverseState ? shotPowerVec.x * -1f : shotPowerVec.x, shotPowerVec.y);
             rigid2D.AddForce(updateShotPowerVec);
@@ -89,7 +93,7 @@ public class FallAttackObject : GenerateAttackObject
 
     protected IEnumerator IExplodeCheck()
     {
-        if(transform.position.y > masterPosVecY)
+        while(transform.position.y > masterPosVecY)
         {
             yield return null;
         }
