@@ -6,7 +6,7 @@ using System;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    public ActiveCharacter activeCharacter;
+    ActiveCharacter activeCharacter;
     [SerializeField] PlayerCamera playerCamera;
 
     private ENUM_TEAM_TYPE teamType;
@@ -87,6 +87,8 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         Summon_Character(_summonCharType, summonPosVec);
+
+        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
     }
 
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)
@@ -103,12 +105,15 @@ public class PlayerCharacter : MonoBehaviour
         Connect_InputController();
     }
 
+    public ENUM_PLAYER_STATE Get_PlayerState() => activeCharacter.currState;
+    public ENUM_TEAM_TYPE Get_TeamType() => activeCharacter.teamType;
+
     public void Connect_InputController()
     {
         Managers.Input.Connect_InputKeyController(activeCharacter.characterType, OnPointDownCallBack, OnPointUpCallBack);
         Managers.Input.Connect_InputArrowKey(OnPointEnterCallBack);
     }
-
+    
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
         if (!Managers.Battle.isGamePlayingState)

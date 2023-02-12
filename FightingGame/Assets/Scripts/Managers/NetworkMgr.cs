@@ -36,8 +36,8 @@ public class NetworkMgr : IRoomPostProcess
     SyncData masterSyncData = new SyncData(false, false, false, false, ENUM_CHARACTER_TYPE.Default);
     SyncData slaveSyncData = new SyncData(false, false, false, false, ENUM_CHARACTER_TYPE.Default);
 
-    DBUserData myDBData;
-    DBUserData enemyDBData;
+    DBUserData masterDBData;
+    DBUserData slaveDBData;
 
     Coroutine sequenceExecuteCoroutine = null;
 
@@ -101,12 +101,12 @@ public class NetworkMgr : IRoomPostProcess
         if (property.isMasterClient)
         {
             masterSyncData = _syncData;
-            myDBData = property.data;
+            masterDBData = property.data;
         }
         else
         {
             slaveSyncData = _syncData;
-            enemyDBData = property.data;
+            slaveDBData = property.data;
         }
     }
 
@@ -218,8 +218,8 @@ public class NetworkMgr : IRoomPostProcess
     public DBUserData Get_DBUserData(bool _isMasterClient)
     {
         if (_isMasterClient)
-            return myDBData;
+            return masterDBData;
         else
-            return enemyDBData;
+            return slaveDBData;
     }
 }

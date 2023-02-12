@@ -16,6 +16,8 @@ public class BattleMgr
         get;
     }
 
+    ActiveCharacter enemyCharacter;
+
     public void Init()
     {
         isGamePlayingState = false;
@@ -40,16 +42,11 @@ public class BattleMgr
     {
         isGamePlayingState = false;
 
-        // 게임 종료를 얘가 알림받고 있음 일단...
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
-        /*
-        isGamePlayingState = false;
+        bool isWin = (_losingTeam != Managers.Player.Get_TeamType());
         
-        if (battleCanvas == null)
-            battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
-
-        bool isWin = (losingTeam != activeCharacter.teamType);
-        bool isDraw = (isWin ? activeCharacter.currState == ENUM_PLAYER_STATE.Die
+        bool isDraw = (isWin ? Managers.Player.Get_PlayerState() == ENUM_PLAYER_STATE.Die
             : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
 
         if (isDraw)
@@ -61,6 +58,10 @@ public class BattleMgr
             else
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
         }
-        */
+    }
+
+    public void Char_ReferenceRegistration(ActiveCharacter _enemyCharacter)
+    {
+        enemyCharacter = _enemyCharacter;
     }
 }

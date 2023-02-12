@@ -66,7 +66,10 @@ public partial class ActiveCharacter : Character
         if (isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>(this, Connect_MyStatusUI, teamType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
+                (this, Connect_MyStatusUI, teamType);
+            PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
+                (this, Set_CharacterToEnemyClient, ENUM_RPC_TARGET.OTHER);
         }
         else
         {
@@ -79,6 +82,15 @@ public partial class ActiveCharacter : Character
 
         if (isControl)
             StartCoroutine(IJumpStateCheck());
+    }
+
+    /// <summary>
+    /// 상대 클라이언트에서 수행시킬 함수
+    /// </summary>
+    [BroadcastMethod]
+    public void Set_CharacterToEnemyClient()
+    {
+        Managers.Battle.Char_ReferenceRegistration(this);
     }
 
     /// <summary>
