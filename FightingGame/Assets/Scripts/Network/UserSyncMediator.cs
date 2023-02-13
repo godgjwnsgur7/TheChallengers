@@ -13,7 +13,6 @@ public class UserSyncMediator : MonoBehaviourPhoton
     Coroutine timerCoroutine = null;
 
     int gameRunTimeLimit = 0;
-
     bool isInit = false;
 
     public override void OnDisable()

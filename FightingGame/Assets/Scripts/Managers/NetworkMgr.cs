@@ -75,7 +75,7 @@ public class NetworkMgr : IRoomPostProcess
         if (PhotonLogicHandler.IsMasterClient)
         {
             slaveClientNickname = enterUserNickname;
-            sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
+            Start_SequenceExecuter();
             PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }
@@ -83,10 +83,16 @@ public class NetworkMgr : IRoomPostProcess
     public void OnExitRoomCallBack(string exitUserNickname)
     {
         if (sequenceExecuteCoroutine != null)
+        {
             CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
+            sequenceExecuteCoroutine = null;
+        }
 
         if (userSyncMediator != null)
+        {
             Managers.Resource.Destroy(userSyncMediator.gameObject);
+            userSyncMediator = null;
+        }
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
@@ -115,17 +121,24 @@ public class NetworkMgr : IRoomPostProcess
         userSyncMediator.Register_TimerCallBack(_updateTimerCallBack);
     }
 
+    public void Start_SequenceExecuter()
+    {
+        if (!PhotonLogicHandler.IsMasterClient || sequenceExecuteCoroutine != null)
+            return;
+
+        sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
+    }
+
     protected IEnumerator INetworkSequenceExecuter()
     {
         if (!PhotonLogicHandler.IsMasterClient)
-        {
-            sequenceExecuteCoroutine = null;
             yield break;
-        }
 
         // 1. 연결 확인
         yield return new WaitUntil(Get_DataSyncAllState);
-        Managers.Resource.InstantiateEveryone("UserSyncMediator"); // 유저싱크메디에이터 생성
+
+        if(userSyncMediator == null)
+            Managers.Resource.InstantiateEveryone("UserSyncMediator"); // 유저싱크메디에이터 생성
         
         // 2. 동기화객체 생성 참조 확인
         yield return new WaitUntil(IsConnect_UserSyncMediator);
@@ -135,18 +148,21 @@ public class NetworkMgr : IRoomPostProcess
 
         // 3. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
         yield return new WaitUntil(Get_ReadyAllState);
-        Debug.Log("게임 시작");
         PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
         userSyncMediator.Sync_ShowGameInfo();
-
+        
         // 4. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncAllState);
-        PhotonLogicHandler.Instance.OnUnReadyAll(); // 준비해제
-        // BattleScene의 Start문에서 처리
+        
+        // 캐릭터 소환은 이 시점에 BattleScene의 Start문에서 처리됨
 
         // 5. 캐릭터 로드 확인
         yield return new WaitUntil(Get_CharacterSyncAllState);
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
+
+        // 6. DataSync를 제외한 모든 애들을 초기화
+        PhotonLogicHandler.Instance.OnUnSyncDataAll();
+        sequenceExecuteCoroutine = null;
     }
 
     public void Start_Timer()

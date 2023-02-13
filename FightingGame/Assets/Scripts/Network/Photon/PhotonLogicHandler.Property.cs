@@ -169,6 +169,19 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         RequestEveryPlayerProperty();
     }
 
+    public void OnUnSyncDataAll()
+    {
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC, false);
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.READY, false);
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC, false);
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC, false);
+        }
+
+        RequestEveryPlayerProperty();
+    }
+
     private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
     {
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);

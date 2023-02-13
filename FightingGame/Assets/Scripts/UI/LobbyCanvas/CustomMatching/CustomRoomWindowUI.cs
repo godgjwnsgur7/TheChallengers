@@ -142,9 +142,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         {
             this.gameObject.SetActive(true);
             Init();
+            Set_CurrRoomInfo();
         }
-
-        Set_CurrRoomInfo();
     }
 
     public void Close()
@@ -187,33 +186,16 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         MyProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
 
         if (!PhotonLogicHandler.IsMasterClient)
-        {
             masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-        }
         else if (PhotonLogicHandler.IsFullRoom && slaveProfile.Get_UserNickname() == "")
             slaveProfile.Set_UserNickname(Managers.Network.Get_SlaveClientNickname());  
-            
+        
         CurrMap = PhotonLogicHandler.CurrentMapType;
-    }
-
-    // 얘를 다른 곳으로 옮겨줘야 하고
-    public void GoTo_BattleScene()
-    {
-        if (!PhotonLogicHandler.IsMasterClient)
-            return;
-
-        if (PhotonLogicHandler.Instance.IsAllReady() && PhotonLogicHandler.IsFullRoom)
-        {
-            Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
-        }
-        else
-            Managers.UI.popupCanvas.Open_NotifyPopup("게임 시작에 실패했습니다.");
+        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
 
     public void ExitRoom()
     {
-        
         bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(Close);
 
         if(!isLeaveRoom)

@@ -40,8 +40,8 @@ public class FadeEffectPopup : PopupUI
     /// </summary>
     public void Play_FadeOutEffect(Action _fadeOutCallBack = null)
     {
-        if (fadeOutCoroutine != null)
-            StopCoroutine(fadeOutCoroutine);
+        if (fadeOutInCoroutine != null)
+            StopCoroutine(fadeOutInCoroutine);
         if (fadeInCoroutine != null)
             StopCoroutine(fadeInCoroutine);
 
@@ -56,19 +56,25 @@ public class FadeEffectPopup : PopupUI
 
     public void Play_FadeOutInEffect(Action _fadeOutInCallBack = null)
     {
-        if (fadeOutInCoroutine != null)
-            StopCoroutine(fadeOutInCoroutine);
+        Stop_Coroutine(fadeInCoroutine);
+        Stop_Coroutine(fadeOutInCoroutine);
 
         fadeOutInCallBack = _fadeOutInCallBack;
 
         backgroundImage.color = new Color(0, 0, 0, 1);
+
+        this.gameObject.SetActive(true);
 
         fadeOutInCoroutine = StartCoroutine(IFadeOutInEffect(fadeEffectRunTime));
     }
 
     IEnumerator IFadeOutEffect(float _fadeOutTime)
     {
+        Stop_Coroutine(fadeOutInCoroutine);
+        Stop_Coroutine(fadeInCoroutine);
+
         Color tempColor = backgroundImage.color;
+
         while (tempColor.a < 1f)
         {
             tempColor.a += Time.deltaTime / _fadeOutTime;
@@ -80,8 +86,8 @@ public class FadeEffectPopup : PopupUI
         }
 
         backgroundImage.color = tempColor;
-        if (fadeOutCallBack != null)
-            fadeOutCallBack();
+
+        fadeOutCallBack?.Invoke();
 
         fadeOutCallBack = null;
         fadeOutCoroutine = null;
@@ -89,8 +95,10 @@ public class FadeEffectPopup : PopupUI
 
     IEnumerator IFadeInEffect(float _fadeInTime)
     {
-        if (fadeInCallBack != null)
-            fadeInCallBack();
+        Stop_Coroutine(fadeOutCoroutine);
+        Stop_Coroutine(fadeOutInCoroutine);
+
+        fadeInCallBack?.Invoke();
 
         Color tempColor = backgroundImage.color;
         while (tempColor.a > 0f)
@@ -126,8 +134,7 @@ public class FadeEffectPopup : PopupUI
 
         backgroundImage.color = tempColor;
 
-        if (fadeOutInCallBack != null)
-            fadeOutInCallBack();
+        fadeOutInCallBack?.Invoke();
 
         while (tempColor.a > 0f)
         {
@@ -145,5 +152,11 @@ public class FadeEffectPopup : PopupUI
         fadeOutInCoroutine = null;
 
         gameObject.SetActive(false);
+    }
+
+    private void Stop_Coroutine(Coroutine _coroutine)
+    {
+        if(_coroutine != null)
+            StopCoroutine(_coroutine);
     }
 }
