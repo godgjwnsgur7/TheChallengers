@@ -47,9 +47,9 @@ public class Knight : ActiveCharacter
         Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_3}", 3);
 
         // Effect
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Jump}", 3);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Landing}", 3);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Move}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_JumpEffect}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_LandingEffect}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_MoveEffect}", 3);
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_DashEffect}", 3);
     }
 }

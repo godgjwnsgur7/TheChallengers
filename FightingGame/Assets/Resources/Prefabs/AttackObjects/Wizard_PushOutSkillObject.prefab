@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2014541975340676274
+--- !u!1 &6136380418637157156
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2014541975340676287}
-  - component: {fileID: 4698088602374653494}
-  - component: {fileID: -3927514890972277496}
-  - component: {fileID: 2014541975340676284}
-  - component: {fileID: 2014541975340676285}
+  - component: {fileID: 6136380418637157159}
+  - component: {fileID: -6971917661918708079}
+  - component: {fileID: 6013113037541658564}
+  - component: {fileID: 6136380418637157158}
+  - component: {fileID: 6136380418637157157}
   m_Layer: 0
-  m_Name: Wizard_PushSkillObject
+  m_Name: Wizard_PushOutSkillObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2014541975340676287
+--- !u!4 &6136380418637157159
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014541975340676274}
+  m_GameObject: {fileID: 6136380418637157156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,13 +34,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4698088602374653494
+--- !u!114 &-6971917661918708079
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014541975340676274}
+  m_GameObject: {fileID: 6136380418637157156}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -53,31 +53,31 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: -3927514890972277496}
+  - {fileID: 6013113037541658564}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-3927514890972277496
+--- !u!114 &6013113037541658564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014541975340676274}
+  m_GameObject: {fileID: 6136380418637157156}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5127848ab370f7c45be50a3fa0d1818b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isUsing: 0
-  subPosVec: {x: 0, y: 2}
---- !u!212 &2014541975340676284
+  subPosVec: {x: 0, y: 1.75}
+--- !u!212 &6136380418637157158
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014541975340676274}
+  m_GameObject: {fileID: 6136380418637157156}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -110,29 +110,29 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 30
-  m_Sprite: {fileID: 22379564526391428, guid: f2f065210d26d4141a5bd56f23498f11, type: 3}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 1174204536819403296, guid: ea5d1ca98edb33d4bae4302efa60bd9e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7, y: 7}
+  m_Size: {x: 10, y: 10.001628}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &2014541975340676285
+--- !u!95 &6136380418637157157
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014541975340676274}
+  m_GameObject: {fileID: 6136380418637157156}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 835aba81caa0bc340ae76711581ec675, type: 2}
+  m_Controller: {fileID: 9100000, guid: a1494eae6a6e2984fb464af6f3c9b347, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

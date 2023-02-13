@@ -46,17 +46,16 @@ public class Wizard : ActiveCharacter
         Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject}", 3);
         Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject_Falling}", 3);
         Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject_Explode}", 3);
-        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_PushSkillObject}", 3);
-        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_PushSkillObject_1}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_PushOutSkillObject}", 3);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_PushOutSkillObject_1}", 3);
 
         // Effect
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_ThunderCircleEffect}", 3);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MoveEffect}", 30); // 편-안한 디버깅을 위해 30개 갈겨놈(임시)
-
-        // Knight Effect
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Jump}", 3);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Landing}", 3);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Move}", 3);
+        // 편한 파티클 디버깅을 위해 갯수 30개로 임시조정
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MoveEffect}", 30);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_JumpEffect}", 30);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_LandingEffect}", 30);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_DashEffect}", 30);
     }
 
 }

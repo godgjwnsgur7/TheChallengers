@@ -16,12 +16,14 @@ public class FallAttackObject : GenerateAttackObject
 {
     Animator anim;
     protected Rigidbody2D rigid2D;
+    [SerializeField] Vector2 explodePosVec;
     [SerializeField] Vector2 shotPowerVec;
     ENUM_FALLOBJECTSTATE_TYPE currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
 
-    float masterPosVecY;
-
     Coroutine explodeCheckCoroutine;
+
+    float masterPosVecY;
+    bool isExplodePossible;
 
     public override void Init()
     {
@@ -66,10 +68,10 @@ public class FallAttackObject : GenerateAttackObject
     public override void Activate_AttackObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
         currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
+        isExplodePossible = false;
 
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
-        // 문제가 지금 여기에 있다 ㅎㅎ;
         masterPosVecY = _summonPosVec.y; // 시전자의 y좌표(월드) 저장
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
     }
@@ -78,30 +80,40 @@ public class FallAttackObject : GenerateAttackObject
     {
         SetAnimTrigger(fallObjectState.ToString() + "Trigger");
         currMyState = fallObjectState;
-
-        if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
-        {
-            rigid2D.velocity = Vector2.zero;
-        }
-        else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
+        
+        if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
         {
             Vector2 updateShotPowerVec = new Vector2(reverseState ? shotPowerVec.x * -1f : shotPowerVec.x, shotPowerVec.y);
             rigid2D.AddForce(updateShotPowerVec);
             explodeCheckCoroutine = StartCoroutine(IExplodeCheck());
         }
+        else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
+        {
+            rigid2D.velocity = Vector2.zero;
+            transform.position = new Vector3(transform.position.x + explodePosVec.x, transform.position.y + explodePosVec.y, 0);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!isExplodePossible || collision.tag != ENUM_TAG_TYPE.Ground.ToString())
+            return;
+
+        isExplodePossible = false;
+        Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
     }
 
     protected IEnumerator IExplodeCheck()
     {
-        while(transform.position.y > masterPosVecY)
+        float subPosY = GetComponent<SpriteRenderer>().bounds.size.y / 2;
+
+        while (transform.position.y - subPosY > masterPosVecY)
         {
             yield return null;
         }
 
-        Debug.Log("실행");
+        isExplodePossible = true;
         explodeCheckCoroutine = null;
-        
-        Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
     }
 
     public void AnimEvent_Falling()
