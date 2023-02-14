@@ -80,7 +80,6 @@ public class Managers : MonoBehaviour
     public static void Clear()
     {
         Sound.Clear();
-        Scene.Clear();
         Pool.Clear();
         Battle.Clear();
         Input.Clear();

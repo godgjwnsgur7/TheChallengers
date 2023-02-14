@@ -13,7 +13,9 @@ public class LobbyScene : BaseScene
 
         if (PhotonLogicHandler.IsJoinedRoom)
         {
-            Managers.Network.Start_SequenceExecuter();
+            if(PhotonLogicHandler.IsMasterClient)
+                Managers.Network.Start_SequenceExecuter();
+            
             Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
         }
     }

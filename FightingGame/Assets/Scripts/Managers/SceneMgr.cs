@@ -21,7 +21,6 @@ public class SceneMgr
     public void LoadScene(ENUM_SCENE_TYPE sceneType)
     {
         loadSceneLock = true;
-        Managers.Clear();
         Managers.UI.popupCanvas.Play_FadeOutEffect(Unlocking_loadSceneLock);
 
         CoroutineHelper.StartCoroutine(IDelaySceneLoad(sceneType));
@@ -50,11 +49,6 @@ public class SceneMgr
     public void Unlocking_loadSceneLock()
     {
         loadSceneLock = false;
-    }
-
-    public void Clear()
-    {
-        CurrentScene.Clear();
     }
 
     protected IEnumerator IDelaySceneLoad(ENUM_SCENE_TYPE sceneType)

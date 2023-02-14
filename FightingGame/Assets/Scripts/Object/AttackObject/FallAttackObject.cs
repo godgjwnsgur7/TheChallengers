@@ -16,7 +16,6 @@ public class FallAttackObject : GenerateAttackObject
 {
     Animator anim;
     protected Rigidbody2D rigid2D;
-    [SerializeField] Vector2 explodePosVec;
     [SerializeField] Vector2 shotPowerVec;
     ENUM_FALLOBJECTSTATE_TYPE currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
 
@@ -90,7 +89,6 @@ public class FallAttackObject : GenerateAttackObject
         else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
         {
             rigid2D.velocity = Vector2.zero;
-            transform.position = new Vector3(transform.position.x + explodePosVec.x, transform.position.y + explodePosVec.y, 0);
         }
     }
 

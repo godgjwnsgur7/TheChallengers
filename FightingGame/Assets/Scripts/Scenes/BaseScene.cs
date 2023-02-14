@@ -14,6 +14,12 @@ public abstract class BaseScene : MonoBehaviour
         Init();
     }
 
+    private void OnDisable()
+    {
+        Clear();
+        Managers.Clear();
+    }
+
     public virtual void Init()
     {
         Managers.Sound.Play((ENUM_BGM_TYPE)SceneType, ENUM_SOUND_TYPE.BGM);

@@ -417,8 +417,8 @@ public partial class ActiveCharacter : Character
             return;
         }
 
-        if (isServerSyncState)
-        {
+        if (isServerSyncState && isControl)
+        {   
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter, ENUM_TEAM_TYPE>
                 (this, Sync_EndGame, teamType);
         }

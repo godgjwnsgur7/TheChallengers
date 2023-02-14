@@ -26,8 +26,6 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
     public void Open()
     {
-        Managers.Clear();
-
         this.RegisterRoomCallback();
 
         this.gameObject.SetActive(true);
