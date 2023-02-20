@@ -16,10 +16,18 @@ public class LobbyCanvas : BaseCanvas
 
         if (PhotonLogicHandler.IsJoinedRoom)
         {
-            if (PhotonLogicHandler.IsMasterClient)
-                Managers.Network.Start_SequenceExecuter();
+            if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
+            {
+                PhotonLogicHandler.Instance.TryLeaveRoom();
+            }
+            else
+            {
+                if (PhotonLogicHandler.IsMasterClient)
+                    Managers.Network.Start_SequenceExecuter();
 
-            Set_InTheCustomRoom();
+                Set_InTheCustomRoom();
+            }
+
         }
     }
 

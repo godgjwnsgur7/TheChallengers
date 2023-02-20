@@ -47,7 +47,7 @@ public class NetworkMgr : IRoomPostProcess
     {
         get
         {
-            return (Get_DataSyncStateAll() && userSyncMediator != null);
+            return (userSyncMediator != null);
         }
     }
 
