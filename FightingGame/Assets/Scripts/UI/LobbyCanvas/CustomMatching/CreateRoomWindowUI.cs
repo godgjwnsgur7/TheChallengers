@@ -20,7 +20,7 @@ public class CreateRoomWindowUI : MonoBehaviour
 
     private void Open_CustomRoom()
     {
-        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomRoomWindow();
     }
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {

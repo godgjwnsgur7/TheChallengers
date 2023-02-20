@@ -13,9 +13,18 @@ public class LobbyCanvas : BaseCanvas
     public override void Init()
     {
         base.Init();
+
+        if (PhotonLogicHandler.IsJoinedRoom)
+        {
+            if (PhotonLogicHandler.IsMasterClient)
+                Managers.Network.Start_SequenceExecuter();
+
+            Set_InTheCustomRoom();
+        }
     }
-    public void Open_CustomMatchingWindow() => customMatching.Open();
-    public void Close_CustomMatchingWindow() => customMatching.Close();
+
+    public void Open_CustomRoomWindow() => customMatching.Open();
+    public void Close_CustomRoomWindow() => customMatching.Close();
     public void Open_FightingInfoWindow() => fightingInfoWindow.Open();
 
     public void OnClick_CustomMathing()
@@ -29,9 +38,34 @@ public class LobbyCanvas : BaseCanvas
             Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.");
         }
     }
-    public void OnClick_Mathing() => matchingWindow.OnClick_Matching();
+
+    public void OnClick_Mathing()
+    {
+        if (PhotonLogicHandler.IsConnected)
+        {
+            Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null, "랭킹전(매칭)을 돌리시겠습니까?");
+        }
+        else
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.");
+        }
+    }
+
+    public void MathingStart()
+    {
+        PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, matchingWindow.Open);
+    }
+
     public void OnClick_Training() => Managers.UI.popupCanvas.Open_SelectPopup
         (GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
+
+    /// <summary>
+    /// 커스텀룸 안에 있는 상태로 로비씬으로 넘어왔을 때 호출
+    /// </summary>
+    public void Set_InTheCustomRoom()
+    {
+        customMatching.Set_InTheCustomRoom();
+    }
 
     private void GoTo_TrainingScene()
     {

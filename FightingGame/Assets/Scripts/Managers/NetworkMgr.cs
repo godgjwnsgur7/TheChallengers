@@ -47,7 +47,7 @@ public class NetworkMgr : IRoomPostProcess
     {
         get
         {
-            return (Get_DataSyncAllState() && userSyncMediator != null);
+            return (Get_DataSyncStateAll() && userSyncMediator != null);
         }
     }
 
@@ -135,7 +135,7 @@ public class NetworkMgr : IRoomPostProcess
             yield break;
 
         // 1. 연결 확인
-        yield return new WaitUntil(Get_DataSyncAllState);
+        yield return new WaitUntil(Get_DataSyncStateAll);
 
         if(userSyncMediator == null)
             Managers.Resource.InstantiateEveryone("UserSyncMediator"); // 유저싱크메디에이터 생성
@@ -144,23 +144,28 @@ public class NetworkMgr : IRoomPostProcess
         yield return new WaitUntil(IsConnect_UserSyncMediator);
 
         if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
+        {
             PhotonLogicHandler.Instance.OnReadyAll();
+            
+        }
 
         // 3. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
-        yield return new WaitUntil(Get_ReadyAllState);
+        yield return new WaitUntil(Get_ReadyStateAll);
         PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
         userSyncMediator.Sync_ShowGameInfo();
-        
-        // 4. 씬 로드 확인
-        yield return new WaitUntil(Get_SceneSyncAllState);
-        
+
+        // 4. 캐릭터 선택 확인
+        yield return new WaitUntil(Get_CharacterSelectedStateAll);
+
+        // 5. 씬 로드 확인
+        yield return new WaitUntil(Get_SceneSyncStateAll);
         // 캐릭터 소환은 이 시점에 BattleScene의 Start문에서 처리됨
 
-        // 5. 캐릭터 로드 확인
-        yield return new WaitUntil(Get_CharacterSyncAllState);
+        // 6. 캐릭터 로드 확인
+        yield return new WaitUntil(Get_CharacterSyncStateAll);
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
 
-        // 6. DataSync를 제외한 모든 애들을 초기화
+        // 7. DataSync를 제외한 모든 애들을 초기화
         PhotonLogicHandler.Instance.OnUnSyncDataAll();
 
         sequenceExecuteCoroutine = null;
@@ -187,29 +192,35 @@ public class NetworkMgr : IRoomPostProcess
 
     // Get 계열
     public bool IsConnect_UserSyncMediator() => (userSyncMediator != null);
-    protected bool Get_DataSyncAllState()
+    protected bool Get_DataSyncStateAll()
     {
         Debug.Log($"masterSyncData.isDataSync : {masterSyncData.isDataSync}");
         Debug.Log($"slaveSyncData.isDataSync : {slaveSyncData.isDataSync}");
 
         return masterSyncData.isDataSync && slaveSyncData.isDataSync;
     }
-    protected bool Get_ReadyAllState()
+    protected bool Get_ReadyStateAll()
     {
         Debug.Log($"masterSyncData.isReady : {masterSyncData.isReady}");
         Debug.Log($"slaveSyncData.isReady : {slaveSyncData.isReady}");
 
         return masterSyncData.isReady && slaveSyncData.isReady;
     }
-    public bool Get_SceneSyncAllState()
+    protected bool Get_CharacterSelectedStateAll()
+    {
+        Debug.Log($"masterSyncData.CharSelecctdState : {masterSyncData.characterType != ENUM_CHARACTER_TYPE.Default}");
+        Debug.Log($"slaveSyncData.CharSelecctdState : {slaveSyncData.characterType != ENUM_CHARACTER_TYPE.Default}");
+
+        return masterSyncData.characterType != ENUM_CHARACTER_TYPE.Default && slaveSyncData.characterType != ENUM_CHARACTER_TYPE.Default;
+    }
+    public bool Get_SceneSyncStateAll()
     {
         Debug.Log($"masterSyncData.isSceneSync : {masterSyncData.isSceneSync}");
         Debug.Log($"slaveSyncData.isSceneSync : {slaveSyncData.isSceneSync}");
 
         return masterSyncData.isSceneSync && slaveSyncData.isSceneSync;
     }
-
-    protected bool Get_CharacterSyncAllState()
+    protected bool Get_CharacterSyncStateAll()
     {
         Debug.Log($"masterSyncData.isCharacterSync : {masterSyncData.isCharacterSync}");
         Debug.Log($"slaveSyncData.isCharacterSync : {slaveSyncData.isCharacterSync}");

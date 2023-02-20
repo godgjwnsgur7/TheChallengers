@@ -177,6 +177,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.READY, false);
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC, false);
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC, false);
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
         }
 
         RequestEveryPlayerProperty();

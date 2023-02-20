@@ -14,42 +14,27 @@ public class MatchingWindowUI : MonoBehaviour
 
     bool isStopwatchLock = false;
 
-    ENUM_CHARACTER_TYPE selectedCharType;
-
-    public void OnClick_Matching()
-    {
-        Managers.UI.popupCanvas.Open_CharSelectPopup(CallBack_MathingStart);
-    }
-
-    public void CallBack_MathingStart(ENUM_CHARACTER_TYPE charType)
-    {
-        selectedCharType = charType;
-
-        Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null,
-            $"'{Managers.Data.Get_CharNameDict(charType)}'캐릭터로 랭킹전 매칭을 시작하시겠습니까?");
-    }
-
-    private void MathingStart()
+    public void Open()
     {
         this.gameObject.SetActive(true);
         isStopwatchLock = false;
         timerCoroutine = StartCoroutine(IStopwatch());
 
-        PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, JoinRoomOrCreateRoom);
+        JoinRoomOrCreateRoom();
     }
 
     private void JoinRoomOrCreateRoom()
     {
         PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom(
-            Create_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
+            CreateOrJoin_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
     }
 
-    public void Create_MatchingRoom()
+    public void CreateOrJoin_MatchingRoom()
     {
-        PhotonLogicHandler.Instance.ChangeCharacter(selectedCharType);
-        // matchingRoom.Open(MathingCallBack, selectedCharType);
-        if(!PhotonLogicHandler.IsMasterClient)
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+        // 임시처리
+        PhotonLogicHandler.Instance.ChangeCharacter(ENUM_CHARACTER_TYPE.Knight);
+
+        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
     
     public void MathingFailed() => OnClick_Exit();

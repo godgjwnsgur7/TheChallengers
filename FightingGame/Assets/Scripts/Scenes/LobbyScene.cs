@@ -10,14 +10,6 @@ public class LobbyScene : BaseScene
         SceneType = ENUM_SCENE_TYPE.Lobby;
 
         base.Init();
-
-        if (PhotonLogicHandler.IsJoinedRoom)
-        {
-            if(PhotonLogicHandler.IsMasterClient)
-                Managers.Network.Start_SequenceExecuter();
-            
-            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomMatchingWindow();
-        }
     }
 
     public override void Clear()
