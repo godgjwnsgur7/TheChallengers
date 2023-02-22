@@ -6,6 +6,8 @@ using FGPlatform.Auth;
 using FGPlatform.Datebase;
 using FGPlatform.Advertisement;
 using FGPlatform.Purchase;
+using Firebase;
+using Firebase.Extensions;
 
 [Serializable]
 public class DBUserData
@@ -46,10 +48,23 @@ namespace FGPlatform
 
 		public void Initialize()
 		{
-			Auth.TryConnectAuth();
-			DB.InitDataBase();
 			IAPController.Init();
 			AdMob.Init(BannerPosition.Top);
+
+			FirebaseApp.CheckAndFixDependenciesAsync()
+			   .ContinueWithOnMainThread(task =>
+			   {
+				   if (task.Result == DependencyStatus.Available)
+				   {
+					   Auth.TryConnectAuth();
+					   DB.InitDataBase();
+					   Debug.Log("파이어베이스 인증 성공");
+				   }
+				   else // 호출 시도 아직 안 해봄
+				   {
+					   Debug.LogError("파이어베이스 인증 실패");
+				   }
+			   });
 		}
 
 		public string GetUserID()
