@@ -8,34 +8,27 @@ public class CustomMatchingUI : MonoBehaviour
     [SerializeField] CustomRoomListWindowUI customRoomListWindow;
     [SerializeField] CustomRoomWindowUI customRoomWindow;
 
-    private void OnEnable()
-    {
-        Open_CustomRoom();
-    }
-
     public void Open()
     {
-        if (!this.gameObject.activeSelf)
-            this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
+
+        if(PhotonLogicHandler.IsJoinedRoom)
+        {
+            customRoomWindow.Open();
+
+            if (customRoomListWindow.gameObject.activeSelf)
+                customRoomListWindow.Close();
+        }
         else
         {
-            Open_CustomRoom();
+            customRoomListWindow.Open();
+
+            if (customRoomWindow.gameObject.activeSelf)
+                customRoomWindow.Close();
         }
     }
 
     public void Close()
-    {
-        if(PhotonLogicHandler.IsJoinedRoom)
-        {
-            PhotonLogicHandler.Instance.TryLeaveRoom(Close_CallBack);
-        }
-        else
-        {
-            Close_CallBack();
-        }
-    }
-
-    private void Close_CallBack()
     {
         if (customRoomWindow.gameObject.activeSelf)
             customRoomWindow.Close();
@@ -44,24 +37,12 @@ public class CustomMatchingUI : MonoBehaviour
             customRoomListWindow.Close();
 
         this.gameObject.SetActive(false);
-        
     }
 
-    private void Open_CustomRoom()
+    public void Set_InTheCustomRoom()
     {
-        if (!PhotonLogicHandler.IsJoinedRoom)
-        {
-            customRoomListWindow.Open();
+        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
 
-            if (customRoomWindow.gameObject.activeSelf)
-                customRoomWindow.Close();
-        }
-        else
-        {
-            customRoomWindow.Open();
-
-            if (customRoomListWindow.gameObject.activeSelf)
-                customRoomListWindow.Close();
-        }
+        Open();
     }
 }

@@ -51,10 +51,15 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.onLeftRoomPlayer += SlaveClientExitCallBack;
         
         this.RegisterRoomCallback();
+
+        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
 
     private void OnDisable()
     {
+        if(readyLockCoroutine != null)
+            StopCoroutine(readyLockCoroutine);
+
         // 포톤콜백함수 해제
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
@@ -72,8 +77,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             slaveProfile.Set_UserNickname(nickname);
             Managers.Network.Set_SlaveClientNickname(nickname);
         }
-
-        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
 
     /// <summary>
@@ -100,6 +103,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if (property.isStarted) // 게임 시작을 알림받음
         {
+            Debug.Log("실행확인");
             Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
             return;
         }
@@ -134,16 +138,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void Open()
     {
-        if (this.gameObject.activeSelf)
-        {
-            Debug.Log("커스텀 룸 윈도우가 이미 열려있습니다.");
-        }
-        else
-        {
-            this.gameObject.SetActive(true);
-            Init();
-            Set_CurrRoomInfo();
-        }
+        Init();
+        Set_CurrRoomInfo();
+        this.gameObject.SetActive(true);
     }
 
     public void Close()
@@ -157,7 +154,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         slaveProfile.Clear();
 
         this.gameObject.SetActive(false);
-        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Close_CustomMatchingWindow();
     }
 
     public void CurrmapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
@@ -196,12 +192,17 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void ExitRoom()
     {
-        bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(Close);
+        bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(ExitRoomCallBack);
 
         if(!isLeaveRoom)
         {
             Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 에러\n나가기 실패");
         }
+    }
+
+    private void ExitRoomCallBack()
+    {
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Close_CustomRoomWindow();
     }
 
     public void OnClick_ChangeMap(bool _isRight)

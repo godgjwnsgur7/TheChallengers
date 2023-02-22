@@ -1396,54 +1396,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1 &158189759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 158189760}
-  - component: {fileID: 158189761}
-  m_Layer: 5
-  m_Name: '@MatchingRoom'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &158189760
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158189759}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1403185219}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &158189761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158189759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 918cc6f687e721b409adeda2da9a59bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &166175133
 GameObject:
   m_ObjectHideFlags: 0
@@ -3225,6 +3177,7 @@ MonoBehaviour:
   customMatching: {fileID: 1793376485}
   matchingWindow: {fileID: 1403185220}
   fightingInfoWindow: {fileID: 1693693576}
+  gameStartWindow: {fileID: 2088267611}
 --- !u!224 &445608024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9634,7 +9587,6 @@ RectTransform:
   - {fileID: 87755828}
   - {fileID: 1293818481}
   - {fileID: 943522036}
-  - {fileID: 158189760}
   m_Father: {fileID: 445608024}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14603,8 +14555,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2088267610}
+  - component: {fileID: 2088267611}
   m_Layer: 5
-  m_Name: '@CharacterSelectionWindow'
+  m_Name: '@GameStartWindow'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14629,6 +14582,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2088267611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088267609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a64b458e296c47478a8f59931e5a022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2117967616
 GameObject:
   m_ObjectHideFlags: 0
