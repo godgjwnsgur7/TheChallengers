@@ -103,6 +103,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
         if (property.isStarted) // 게임 시작을 알림받음
         {
+            Debug.Log("실행확인");
             Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
             return;
         }

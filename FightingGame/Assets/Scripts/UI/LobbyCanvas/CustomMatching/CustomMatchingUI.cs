@@ -12,10 +12,20 @@ public class CustomMatchingUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        customRoomListWindow.Open();
+        if(PhotonLogicHandler.IsJoinedRoom)
+        {
+            customRoomWindow.Open();
 
-        if (customRoomWindow.gameObject.activeSelf)
-            customRoomWindow.Close();
+            if (customRoomListWindow.gameObject.activeSelf)
+                customRoomListWindow.Close();
+        }
+        else
+        {
+            customRoomListWindow.Open();
+
+            if (customRoomWindow.gameObject.activeSelf)
+                customRoomWindow.Close();
+        }
     }
 
     public void Close()
@@ -29,20 +39,10 @@ public class CustomMatchingUI : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void Open_CustomRoomWindow()
-    {
-        customRoomListWindow.Open();
-
-        if (customRoomListWindow.gameObject.activeSelf)
-            customRoomListWindow.Close();
-    }
-
     public void Set_InTheCustomRoom()
     {
         PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-        customRoomWindow.Open();
 
-        if (customRoomListWindow.gameObject.activeSelf)
-            customRoomListWindow.Close();
+        Open();
     }
 }
