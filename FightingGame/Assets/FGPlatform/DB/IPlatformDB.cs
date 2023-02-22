@@ -62,17 +62,11 @@ namespace FGPlatform.Datebase
 
         public void InitDataBase()
         {
-            FirebaseApp.CheckDependenciesAsync().ContinueWithOnMainThread((task) =>
-            {
-                if(task.IsCompleted)
-				{
-                    app = FirebaseApp.DefaultInstance;
-                    app.Options.DatabaseUrl = new Uri(URL);
+            app = FirebaseApp.DefaultInstance;
+            app.Options.DatabaseUrl = new Uri(URL);
 
-                    database = FirebaseDatabase.DefaultInstance;
-                    dbRootReference = database.RootReference;
-                }
-            });
+            database = FirebaseDatabase.DefaultInstance;
+            dbRootReference = database.RootReference;
         }
 
         public bool UpdateDB<T>(DB_CATEGORY category, string[] hierachyPath, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)

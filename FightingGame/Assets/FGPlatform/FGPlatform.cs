@@ -58,6 +58,7 @@ namespace FGPlatform
 				   {
 					   Auth.TryConnectAuth();
 					   DB.InitDataBase();
+
 					   Debug.Log("파이어베이스 인증 성공");
 				   }
 				   else // 호출 시도 아직 안 해봄
