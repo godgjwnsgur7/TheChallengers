@@ -22,6 +22,8 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
 
         if(waitFadeInEffectCoroutine != null)
             StopCoroutine(waitFadeInEffectCoroutine);
+
+        this.UnregisterRoomCallback();
     }
 
     public void Open()
