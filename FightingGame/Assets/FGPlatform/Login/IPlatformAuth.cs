@@ -106,24 +106,7 @@ namespace FGPlatform.Auth
             if (IsAuthValid) // 이미 파이어베이스 인증을 끝낸 경우임
                 return false;
 
-            FirebaseApp.CheckAndFixDependenciesAsync()
-                .ContinueWithOnMainThread(task =>
-                {
-                    var result = task.Result;
-
-                    if (result == DependencyStatus.Available)
-                    {
-                        InitAuth();
-                        OnConnectAuthSuccess?.Invoke();
-                        Debug.Log("파이어베이스 인증 성공");
-                    }
-                    else // 호출 시도 아직 안 해봄
-                    {
-                        OnConnectAuthFail?.Invoke();
-                        Debug.LogError("파이어베이스 인증 실패");
-                    }
-                });
-
+            InitAuth();
 
             return true;
         }

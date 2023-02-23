@@ -55,9 +55,9 @@ namespace FGPlatform.Purchase
             builder = ConfigurationBuilder.Instance(module);
 
             builder.AddProduct(productInfo.ID, productInfo.Type, new IDs()
-        {
-            { productInfo.AOS_ID, GooglePlay.Name}
-        });
+            {
+                { productInfo.AOS_ID, GooglePlay.Name}
+            });
 
             UnityPurchasing.Initialize(this, builder);
         }
