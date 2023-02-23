@@ -57,7 +57,7 @@ namespace FGDefine
         Default = 0,
         Knight = 1,
         Wizard = 2,
-        Max
+        Max = 3,
     }
 
     /// <summary>
