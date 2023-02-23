@@ -48,9 +48,10 @@ namespace FGPlatform
 
 		public void Initialize()
 		{
+#if UNITY_ANDROID
 			IAPController.Init();
 			AdMob.Init(BannerPosition.Top);
-
+#endif
 			FirebaseApp.CheckAndFixDependenciesAsync()
 			   .ContinueWithOnMainThread(task =>
 			   {
