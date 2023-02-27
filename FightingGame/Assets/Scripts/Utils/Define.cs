@@ -9,7 +9,7 @@ namespace FGDefine
     public enum ENUM_LAYER_TYPE
     {
         /// <summary>
-        /// 여기는 Built-In 레이어
+        /// Built-In 레이어
         /// </summary>
         Default = 0,
         TransparentFX = 1,
@@ -18,12 +18,10 @@ namespace FGDefine
         UI = 5,
 
         /// <summary>
-        /// 여기부터 User 커스텀 레이어
+        /// User 커스텀 레이어
         /// </summary>
         Player = 6, // 유저
-        Interaction = 7,
-        Wall = 8,
-        Ground = 9,
+        Ground = 7,
     }
 
     /// <summary>
@@ -146,10 +144,9 @@ namespace FGDefine
 
         // Wizard
         Wizard_ThunderCircleEffect = 41,
-        Wizard_MoveEffect = 42,
-        Wizard_LandingEffect = 43,
-        Wizard_JumpEffect = 44,
-        Wizard_DashEffect = 45,
+        Wizard_PublicEffect = 42,
+        // Wizard_LandingEffect = 43,
+        // Wizard_DashEffect = 44,
     }
 
     /// <summary>
@@ -200,6 +197,20 @@ namespace FGDefine
         Die,
 
         Max
+    }
+
+    /// <summary>
+    /// 캐릭터 레이어는 49, 상대방은 48로 고정
+    /// </summary>
+    [Serializable]
+    public enum ENUM_OBJECTLAYERTAG_NAME
+    {
+        Untagged = -1,
+        Back_Effect = 0,
+        Character = 1,
+        Front_Effect = 2,
+        Front_Attack = 3,
+        Max = 4,
     }
 
     /// <summary>

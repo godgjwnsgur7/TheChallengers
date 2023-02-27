@@ -51,11 +51,8 @@ public class Wizard : ActiveCharacter
 
         // Effect
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_ThunderCircleEffect}", 3);
-        // 편한 파티클 디버깅을 위해 갯수 30개로 임시조정
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MoveEffect}", 30);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_JumpEffect}", 30);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_LandingEffect}", 30);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_DashEffect}", 30);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_PublicEffect}", 10); // Particle
+
     }
 
 }

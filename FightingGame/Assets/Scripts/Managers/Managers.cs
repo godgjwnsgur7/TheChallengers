@@ -13,6 +13,7 @@ public class Managers : MonoBehaviour
     private NetworkMgr network = new NetworkMgr();
     private InputMgr input = new InputMgr();
     private ObjectPoolMgr pool = new ObjectPoolMgr();
+    private ObjectOrderLayerMgr orderLayer = new ObjectOrderLayerMgr();
     private ResourceMgr resouce = new ResourceMgr();
     private SceneMgr scene = new SceneMgr();
     private SoundMgr sound = new SoundMgr();
@@ -25,6 +26,7 @@ public class Managers : MonoBehaviour
     public static NetworkMgr Network { get { return Instance.network; } }
     public static InputMgr Input { get { return Instance.input; } }
     public static ObjectPoolMgr Pool { get { return Instance.pool; } }
+    public static ObjectOrderLayerMgr OrderLayer { get { return Instance.orderLayer; } }
     public static ResourceMgr Resource { get { return Instance.resouce; } }
     public static SceneMgr Scene { get { return Instance.scene; } }
     public static SoundMgr Sound { get { return Instance.sound; } }
@@ -71,6 +73,7 @@ public class Managers : MonoBehaviour
             s_Instance.pool.Init();
             s_Instance.sound.Init();
             s_Instance.ui.Init();
+            s_Instance.orderLayer.Init();
         }
     }
 
@@ -83,5 +86,6 @@ public class Managers : MonoBehaviour
         Pool.Clear();
         Battle.Clear();
         Input.Clear();
+        OrderLayer.Clear();
     }
 }

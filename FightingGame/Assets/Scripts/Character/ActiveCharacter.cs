@@ -46,6 +46,7 @@ public partial class ActiveCharacter : Character
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
             Skills_Pooling();
+            spriteRenderer.sortingOrder = Managers.OrderLayer.Get_CharacterOrderLayer();
         }
         else
             isControl = true;
@@ -70,11 +71,15 @@ public partial class ActiveCharacter : Character
                 (this, Connect_MyStatusUI, teamType);
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
                 (this, Set_CharacterToEnemyClient, ENUM_RPC_TARGET.OTHER);
+
+            spriteRenderer.sortingOrder += 1;
         }
         else
         {
             isControl = true;
             Connect_MyStatusUI(_teamType);
+            if(teamType == ENUM_TEAM_TYPE.Blue)
+                spriteRenderer.sortingOrder += 1;
         }
 
         if (teamType == ENUM_TEAM_TYPE.Red)

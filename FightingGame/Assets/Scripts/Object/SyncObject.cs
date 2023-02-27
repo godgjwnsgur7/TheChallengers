@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
+using System;
 
 public enum ENUM_SYNCOBJECT_TYPE
 {
@@ -18,8 +19,22 @@ public class SyncObject : Poolable
         get;
     }
 
+
     protected Vector2 summonPosVec;
     protected bool reverseState = false;
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            ENUM_OBJECTLAYERTAG_NAME objectLayerTagName = (ENUM_OBJECTLAYERTAG_NAME)Enum.Parse(typeof(ENUM_OBJECTLAYERTAG_NAME), gameObject.tag);
+
+            // spriteRenderer.sortingOrder = 
+        }
+    }
 
     public override void Init()
     {
