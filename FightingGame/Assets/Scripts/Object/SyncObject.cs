@@ -19,22 +19,8 @@ public class SyncObject : Poolable
         get;
     }
 
-
     protected Vector2 summonPosVec;
     protected bool reverseState = false;
-
-    public override void OnEnable()
-    {
-        base.OnEnable();
-
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            ENUM_OBJECTLAYERTAG_NAME objectLayerTagName = (ENUM_OBJECTLAYERTAG_NAME)Enum.Parse(typeof(ENUM_OBJECTLAYERTAG_NAME), gameObject.tag);
-
-            // spriteRenderer.sortingOrder = 
-        }
-    }
 
     public override void Init()
     {
@@ -51,7 +37,6 @@ public class SyncObject : Poolable
         transform.position = _summonPosVec;
         reverseState = _reverseState;
 
-        // SyncTransformView이 앵글도 동기화 해주는지 확인할 필요가 있다~
         transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
     }
 }

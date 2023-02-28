@@ -200,17 +200,17 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// 캐릭터 레이어는 49, 상대방은 48로 고정
+    /// 오브젝트 -스프라이트렌더러 우선순위 타입 (높을수록, 위로 올라감)
     /// </summary>
     [Serializable]
-    public enum ENUM_OBJECTLAYERTAG_NAME
+    public enum ENUM_OBJECTLAYERLEVEL_TYPE
     {
-        Untagged = -1,
-        Back_Effect = 0,
-        Character = 1,
-        Front_Effect = 2,
-        Front_Attack = 3,
-        Max = 4,
+        Untagged = 0,
+        Back_Effect = 1,
+        Character = 2,
+        Front_Effect = 3,
+        Front_Attack = 5,
+        Max = 5,
     }
 
     /// <summary>
