@@ -72,7 +72,7 @@ public class FightingInfoWindow : MonoBehaviour, IRoomPostProcess
     protected IEnumerator IInfoSettingCheck()
     {
         // 상대방 정보까지 Init이 됐다면, 보여주기
-        while((mapImage.sprite == null) || masterFightingInfo.isInit || slaveFightingInfo.isInit)
+        while((mapImage.sprite == null) || masterFightingInfo.IsInit || slaveFightingInfo.IsInit)
         {
             yield return null;
         }

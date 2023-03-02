@@ -6,7 +6,6 @@ using FGDefine;
 public class ObjectOrderLayerMgr
 {
     Dictionary<ENUM_OBJECTLAYERLEVEL_TYPE, int> currOrderLayerNumDict = new Dictionary<ENUM_OBJECTLAYERLEVEL_TYPE, int>();
-
     int OrderLayerGroupMaxCount = 20;
 
     public void Init()

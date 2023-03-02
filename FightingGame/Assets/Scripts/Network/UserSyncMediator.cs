@@ -83,7 +83,12 @@ public class UserSyncMediator : MonoBehaviourPhoton
     /// </summary>
     public void Sync_ShowGameInfo()
     {
-        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, ShowGameInfo);
+        if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
+        {
+            PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, Show_GameInfoWindow);
+        }
+        else
+            PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, ShowGameInfo);
     }
     [BroadcastMethod]
     public void ShowGameInfo()
@@ -93,6 +98,22 @@ public class UserSyncMediator : MonoBehaviourPhoton
     public void Open_FightingGameInfo()
     {
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow();
+    }
+
+    [BroadcastMethod]
+    public void Show_GameInfoWindow()
+    {
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
+    }
+    
+    public void Sync_ShowGameStartInfo()
+    {
+        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, ShowGameStartInfo);
+    }
+    [BroadcastMethod]
+    public void ShowGameStartInfo()
+    {
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().GameStart();
     }
 
     /// <summary>

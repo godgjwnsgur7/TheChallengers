@@ -6,7 +6,7 @@ using System;
 
 public class CharacterSelectArea : MonoBehaviour
 {
-    public void Init(Action<ENUM_CHARACTER_TYPE> _charSelectCallBack)
+    public void Init(Action<ENUM_CHARACTER_TYPE> _selectionCharacterCallBack)
     {
         CharacterSelectElementUI characterSelectElementUI;
 
@@ -14,7 +14,12 @@ public class CharacterSelectArea : MonoBehaviour
         {
             characterSelectElementUI = Managers.Resource.Instantiate("UI/CharacterSelectElement", transform).GetComponent<CharacterSelectElementUI>();
 
-            characterSelectElementUI.Init(_charSelectCallBack, (ENUM_CHARACTER_TYPE)i);
+            characterSelectElementUI.Init(_selectionCharacterCallBack, (ENUM_CHARACTER_TYPE)i);
         }
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

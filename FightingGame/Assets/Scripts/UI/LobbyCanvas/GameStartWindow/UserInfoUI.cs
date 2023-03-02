@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class UserInfoUI : MonoBehaviour
 {
@@ -13,13 +14,36 @@ public class UserInfoUI : MonoBehaviour
     [SerializeField] Text ratingPointText;
     [SerializeField] Text battleRecordText;
 
-    Coroutine CharImageChangeCoroutine = null;
+    [SerializeField] Button selectionCompleteBtn;
 
-    ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
+    bool SelectionCharacterLock = false;
+
+    Action<ENUM_CHARACTER_TYPE> selectionCharacterCompleteCallBack;
+
+    public bool IsInit
+    {
+        get;
+        private set;
+    }
+    public ENUM_CHARACTER_TYPE CurrCharacterType
+    {
+        get;
+        private set;
+    }
+
+    private void Awake()
+    {
+        IsInit = false;
+    }
 
     public void Init(DBUserData _userData)
     {
-        if(_userData.victoryPoint == 0 && _userData.defeatPoint == 0)
+        if (IsInit) return;
+        IsInit = true;
+
+        CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
+
+        if (_userData.victoryPoint == 0 && _userData.defeatPoint == 0)
         {
             // ratingEmblemImage를 Unknown으로 셋팅해야 함 (임시)
             ratingPointText.text = "Unknown";
@@ -37,23 +61,35 @@ public class UserInfoUI : MonoBehaviour
         userNicknameText.text = _userData.nickname;
     }
 
-    public void Update_SelectCharacter(ENUM_CHARACTER_TYPE _selectCharType)
+    public void Active_SelectionCompleteBtn(Action<ENUM_CHARACTER_TYPE> _selectionCharacterCompleteCallBack)
     {
-        
+        selectionCharacterCompleteCallBack = _selectionCharacterCompleteCallBack;
+        selectionCompleteBtn.gameObject.SetActive(true);
     }
 
-
-    protected IEnumerator ICharImageChange(ENUM_CHARACTER_TYPE _selectCharType)
+    public void Deactive_SelectionCompleteBtn()
     {
-        if(currCharType != ENUM_CHARACTER_TYPE.Default)
-        {
-            // 기존 캐릭터를 지우는 작업이 필요할 거고요~
+        selectionCompleteBtn.gameObject.SetActive(false);
+    }
 
+    public void Set_SelectionCharacter(ENUM_CHARACTER_TYPE _characterType)
+    {
+        CurrCharacterType = _characterType;
+
+        charImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Characters/{_characterType}");
+    }
+
+    public void OnClick_SelectionCharacterComplete()
+    {
+        if (SelectionCharacterLock) return;
+
+        if (CurrCharacterType == ENUM_CHARACTER_TYPE.Default)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택하지 않았습니다.");
+            return;
         }
 
-        yield return null;
-
-
-        CharImageChangeCoroutine = null;
+        SelectionCharacterLock = true;
+        selectionCharacterCompleteCallBack(CurrCharacterType);
     }
 }

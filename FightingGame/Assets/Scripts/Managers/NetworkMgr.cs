@@ -156,6 +156,7 @@ public class NetworkMgr : IRoomPostProcess
 
         // 4. 캐릭터 선택 확인
         yield return new WaitUntil(Get_CharacterSelectedStateAll);
+        userSyncMediator.Sync_ShowGameStartInfo(); // 배틀씬으로 넘어감
 
         // 5. 씬 로드 확인
         yield return new WaitUntil(Get_SceneSyncStateAll);

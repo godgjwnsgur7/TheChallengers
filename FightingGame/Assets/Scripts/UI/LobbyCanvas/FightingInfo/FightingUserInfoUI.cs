@@ -12,14 +12,23 @@ public class FightingUserInfoUI : MonoBehaviour
     [SerializeField] Text ratingPointText;
     [SerializeField] Text battleRecordText;
 
-    public bool isInit = false;
+    public bool IsInit
+    {
+        get;
+        private set;
+    }
+
+    private void Awake()
+    {
+        IsInit = false;
+    }
 
     public void Set_UserInfo(DBUserData userData)
     {
-        if (isInit)
+        if (IsInit)
             return;
 
-        isInit = true;
+        IsInit = true;
 
         if(userData.victoryPoint == 0 && userData.defeatPoint == 0)
         {

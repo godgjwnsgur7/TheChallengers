@@ -31,9 +31,6 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void CreateOrJoin_MatchingRoom()
     {
-        // 임시처리
-        PhotonLogicHandler.Instance.ChangeCharacter(ENUM_CHARACTER_TYPE.Knight);
-
         PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
     

@@ -11,13 +11,14 @@ public class CharacterSelectElementUI : MonoBehaviour
     [SerializeField] Text charNameText;
 
     Action<ENUM_CHARACTER_TYPE> selectCharCallBack;
-    ENUM_CHARACTER_TYPE characterType;
+    public ENUM_CHARACTER_TYPE characterType;
 
     public void Init(Action<ENUM_CHARACTER_TYPE> _selectCharCallBack, ENUM_CHARACTER_TYPE _characterType)
     {
-        selectCharCallBack = _selectCharCallBack;
+       selectCharCallBack = _selectCharCallBack;
 
        charNameText.text = Managers.Data.Get_CharNameDict(_characterType);
+       characterType = _characterType;
     }
 
     public void OnClick_CharElementUI()

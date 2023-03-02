@@ -33,6 +33,11 @@ public class LobbyCanvas : BaseCanvas
         }
     }
 
+    public void GameStart()
+    {
+        gameStartWindow.GameStart();
+    }
+
     public void Open_CustomRoomWindow() => customMatching.Open();
     public void Close_CustomRoomWindow() => customMatching.Close();
     public void Open_FightingInfoWindow() => fightingInfoWindow.Open();
