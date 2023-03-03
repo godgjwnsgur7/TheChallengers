@@ -98,13 +98,14 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     public void CallBack_SelectionCharacter(ENUM_CHARACTER_TYPE _selectedCharType)
     {
         MyInfoUI.Set_SelectionCharacter(_selectedCharType);
-        MyInfoUI.Deactive_SelectionCompleteBtn();
-        characterSelectArea.Close();
     }
 
     public void CallBack_SelectionCharacterComplete(ENUM_CHARACTER_TYPE _selectedCharacterType)
     {
-        if(PhotonLogicHandler.IsMasterClient)
+        MyInfoUI.Deactive_SelectionCompleteBtn();
+        characterSelectArea.Close();
+
+        if (PhotonLogicHandler.IsMasterClient)
             PhotonLogicHandler.Instance.ChangeCharacter(_selectedCharacterType);
         else // 슬레이브라면, 마스터의 캐릭터 선택을 확인한다.
             waitSelectionCharacterCoroutine = StartCoroutine(IWaitSelectionCharacter(_selectedCharacterType));
