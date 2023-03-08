@@ -25,7 +25,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		this.RegisterLobbyCallback();
 		this.RegisterRoomCallback();
 
-		Managers.UI.SetBlurUI(blurImage, true);
+		blurImage.SetBlur(true);
 	}
 
 	private void OnDestroy()
