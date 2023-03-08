@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class UIMgr
 {
     public BaseCanvas currCanvas;
     public PopupCanvas popupCanvas = null;
+
+    private Material blurMaterial = null;
 
     public void Init()
     {
@@ -34,9 +37,24 @@ public class UIMgr
         else Debug.Log($"범위 벗어남 : {typeof(T)}");
     }
 
-    public T GetUIComponent<T>()
-    {
+    public void SetBlurUI(Image image, bool isBlurOn)
+	{
+        if (image == null)
+		{
+            Debug.LogError("Blur 처리할 이미지 없음");
+            return;
+        }
 
-        return default(T);
+        image.material = isBlurOn ? LoadBlurMaterial() : null;
+    }
+
+    private Material LoadBlurMaterial()
+	{
+        string blurPath = "Materials/Blur";
+
+        if (blurMaterial == null)
+            blurMaterial = Resources.Load<Material>(blurPath);
+
+        return blurMaterial;
     }
 }

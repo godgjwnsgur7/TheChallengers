@@ -12,6 +12,8 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 	[SerializeField] private Text statusPanel = null;
 	[SerializeField] private Text detailStatusPanel = null;
 
+	[SerializeField] private Image blurImage = null;
+
 	public override T GetUIComponent<T>()
 	{
 		return default(T);
@@ -22,6 +24,8 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		Managers.Platform.Initialize();
 		this.RegisterLobbyCallback();
 		this.RegisterRoomCallback();
+
+		Managers.UI.SetBlurUI(blurImage, true);
 	}
 
 	private void OnDestroy()
