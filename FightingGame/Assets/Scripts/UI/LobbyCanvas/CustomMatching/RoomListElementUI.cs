@@ -14,7 +14,6 @@ public class RoomListElementUI : MonoBehaviour
     [SerializeField] Text roomNameText;
     [SerializeField] Text masterNicknameText;
 
-    [SerializeField] Image personnelImage;
     [SerializeField] Text personnelText;
 
     Action OnUpdateRoomList = null;
@@ -100,13 +99,6 @@ public class RoomListElementUI : MonoBehaviour
 
         // Set Image
         CurrMap = myRoomInfo.CurrentMapType;
-
-        if (myRoomInfo.currentPlayerCount == 1)
-            personnelImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/Personnel_NoneSprite");
-        else if (myRoomInfo.currentPlayerCount == 2)
-            personnelImage.sprite = Managers.Resource.Load<Sprite>("Art/Sprites/Personnel_ExistSprite");
-        else
-            Debug.Log($"currentPlayerCount 값 오류 : {myRoomInfo.currentPlayerCount}");
     }
 
     public void OnClick_JoinRoom()
