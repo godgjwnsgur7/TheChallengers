@@ -22,7 +22,7 @@ public class UserInfo_GameStart : MonoBehaviour
         IsInit = false;
     }
 
-    public void Open(DBUserData _userData, ENUM_CHARACTER_TYPE _charType)
+    public void Set_UserData(DBUserData _userData)
     {
         if (_userData.victoryPoint == 0 && _userData.defeatPoint == 0)
         {
@@ -38,7 +38,10 @@ public class UserInfo_GameStart : MonoBehaviour
             battleRecordText.text = $"{_userData.victoryPoint}승 {_userData.defeatPoint}패 ({winningRate}%)";
             ratingPointText.text = $"{_userData.ratingPoint}점";
         }
+    }
 
+    public void Open(ENUM_CHARACTER_TYPE _charType)
+    {
         characterNameText.text = _charType.ToString().ToUpper();
 
         gameObject.SetActive(true);

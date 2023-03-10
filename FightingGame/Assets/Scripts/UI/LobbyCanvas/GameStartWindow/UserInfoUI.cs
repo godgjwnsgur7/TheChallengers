@@ -49,11 +49,19 @@ public class UserInfoUI : MonoBehaviour
 
         charImage.gameObject.gameObject.SetActive(false);
         CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
+
         userNicknameText.text = _userData.nickname;
-        selectCharInfo.Open();
+        gameStartInfo.Set_UserData(_userData);
+        
         gameStartInfo.Close();
+        selectCharInfo.Open();
 
         IsInit = true;
+    }
+
+    public void Open_GameStartInfo(ENUM_CHARACTER_TYPE _charType)
+    {
+        gameStartInfo.Open(_charType);
     }
 
     public void Active_SelectionCompleteBtn(Action<ENUM_CHARACTER_TYPE> _selectionCharacterCompleteCallBack)

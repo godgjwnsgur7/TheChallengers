@@ -69,7 +69,6 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     
     public void GameStart()
     {
-        // 효과는 나중에 생각해
         EnemyInfoUI.Set_SelectionCharacter(enemySelectionCharacterType);
 
         if(PhotonLogicHandler.IsMasterClient)
