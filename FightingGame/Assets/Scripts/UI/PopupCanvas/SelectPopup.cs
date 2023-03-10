@@ -22,17 +22,15 @@ public class SelectPopup : PopupUI
 
     public void OnClick_Yes()
     {
-        if (succeededCallBack != null) 
-            succeededCallBack();
+        succeededCallBack?.Invoke();
 
         Close();
     }
 
     public void OnClick_No()
     {
-        if (failedCallBack != null)
-            failedCallBack();
-    
+        failedCallBack?.Invoke();
+
         Close();
     }
 

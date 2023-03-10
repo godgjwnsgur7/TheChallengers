@@ -20,9 +20,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         }
     }
 
-    [SerializeField] Image currMapIamge;
-    [SerializeField] Image nextMapIamge_Left;
-    [SerializeField] Image nextMapIamge_Right;
+    [SerializeField] Image currMapImage;
+    [SerializeField] Image nextMapImage_Left;
+    [SerializeField] Image nextMapImage_Right;
 
     [SerializeField] Text roomNameText;
     [SerializeField] Text mapNameText;
@@ -162,18 +162,18 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.ChangeMap(_mapType);
 
         currMap = _mapType;
-        currMapIamge.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
+        currMapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
 
         int mapIndex = (int)_mapType - 1;
         if (mapIndex <= 0)
             mapIndex = (int)ENUM_MAP_TYPE.Max - 1;
-        nextMapIamge_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}");
+        nextMapImage_Left.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}");
 
         mapIndex = (int)_mapType + 1;
         if (mapIndex >= (int)ENUM_MAP_TYPE.Max)
             mapIndex = 0;
-        nextMapIamge_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}");
+        nextMapImage_Right.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{(ENUM_MAP_TYPE)mapIndex}");
     }
 
     public void Set_CurrRoomInfo()

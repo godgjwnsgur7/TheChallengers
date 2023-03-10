@@ -5,15 +5,16 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
+/// <summary>
+/// 캐릭터 이미지 변경, 유저 닉네임 초기세팅
+/// </summary>
 public class UserInfoUI : MonoBehaviour
 {
-    [SerializeField] Image charImage;
-    [SerializeField] Image ratingEmblemImage;
+    [SerializeField] UserInfo_SelectChar selectCharInfo;
+    [SerializeField] UserInfo_GameStart gameStartInfo;
 
     [SerializeField] Text userNicknameText;
-    [SerializeField] Text ratingPointText;
-    [SerializeField] Text battleRecordText;
-
+    [SerializeField] Image charImage;
     [SerializeField] Button selectionCompleteBtn;
 
     bool SelectionCharacterLock = false;
@@ -25,6 +26,12 @@ public class UserInfoUI : MonoBehaviour
         get;
         private set;
     }
+    
+    public bool IsGameStartInit
+    {
+        get { return gameStartInfo.IsInit; }
+    }
+
     public ENUM_CHARACTER_TYPE CurrCharacterType
     {
         get;
@@ -39,30 +46,20 @@ public class UserInfoUI : MonoBehaviour
     public void Init(DBUserData _userData)
     {
         if (IsInit) return;
-        IsInit = true;
 
+        charImage.gameObject.gameObject.SetActive(false);
         CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
-
-        if (_userData.victoryPoint == 0 && _userData.defeatPoint == 0)
-        {
-            // ratingEmblemImage를 Unknown으로 셋팅해야 함 (임시)
-            ratingPointText.text = "Unknown";
-        }
-        else
-        {
-            char rank = RankingScoreOperator.Get_RankingEmblemChar(_userData.ratingPoint);
-            ratingEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
-            
-            long winningRate = _userData.victoryPoint / (_userData.victoryPoint + _userData.defeatPoint) * 100;
-            battleRecordText.text = $"{_userData.victoryPoint}승 {_userData.defeatPoint}패 ({winningRate}%)";
-            ratingPointText.text = $"{_userData.ratingPoint}점";
-        }
-        
         userNicknameText.text = _userData.nickname;
+        selectCharInfo.Open();
+        gameStartInfo.Close();
+
+        IsInit = true;
     }
 
     public void Active_SelectionCompleteBtn(Action<ENUM_CHARACTER_TYPE> _selectionCharacterCompleteCallBack)
     {
+        userNicknameText.color = new Color(180, 100, 221);
+
         selectionCharacterCompleteCallBack = _selectionCharacterCompleteCallBack;
         selectionCompleteBtn.gameObject.SetActive(true);
     }
@@ -74,9 +71,15 @@ public class UserInfoUI : MonoBehaviour
 
     public void Set_SelectionCharacter(ENUM_CHARACTER_TYPE _characterType)
     {
-        CurrCharacterType = _characterType;
+        if (_characterType == CurrCharacterType)
+            return;
 
+        CurrCharacterType = _characterType;
         charImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Characters/{_characterType}");
+        selectCharInfo.Set_SelectionCharacter(_characterType);
+
+        if (!charImage.gameObject.activeSelf)
+            charImage.gameObject.SetActive(true);
     }
 
     public void OnClick_SelectionCharacterComplete()

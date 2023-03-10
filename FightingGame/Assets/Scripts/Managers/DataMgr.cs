@@ -19,6 +19,14 @@ public class DataMgr
         {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
     };
 
+    private Dictionary<ENUM_CHARACTER_TYPE, string> charDescriptionDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
+    {
+        {ENUM_CHARACTER_TYPE.Default, "캐릭터가 선택되지 않았습니다." },
+        {ENUM_CHARACTER_TYPE.Knight, "나이트 캐릭터에 대한 설명을 넣어주세요.\n2줄정도?" },
+        {ENUM_CHARACTER_TYPE.Wizard, "위저드 캐릭터에 대한 설명을 넣어주세요.\n2줄정도?" },
+        {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
+    };
+
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
         {ENUM_MAP_TYPE.ForestMap, "잊혀진 숲" },
@@ -68,5 +76,16 @@ public class DataMgr
         }
 
         return charNameDict[charType];
+    }
+
+    public string Get_CharDescriptionDict(ENUM_CHARACTER_TYPE charType)
+    {
+        if (!charDescriptionDict.ContainsKey(charType))
+        {
+            Debug.Log($"해당하는 캐릭터 타입이 캐릭터 설명 사전에 없습니다. : {charType}");
+            return null;
+        }
+
+        return charDescriptionDict[charType];
     }
 }

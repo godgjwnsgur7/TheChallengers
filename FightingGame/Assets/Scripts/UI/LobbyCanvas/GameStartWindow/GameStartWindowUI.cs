@@ -33,7 +33,6 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     [SerializeField] CharacterSelectArea characterSelectArea;
 
     [SerializeField] Text timerText;
-    [SerializeField] Image Image_VS; // VS 이미지
 
     ENUM_CHARACTER_TYPE enemySelectionCharacterType = ENUM_CHARACTER_TYPE.Default;
 
