@@ -54,6 +54,7 @@ public class Wizard : ActiveCharacter
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MagicalJinEffect}", 10); // Particle
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_StarlightEffect}", 10); // Particle
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_DashEffect}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_TestDashEffect}", 3);
 
     }
 

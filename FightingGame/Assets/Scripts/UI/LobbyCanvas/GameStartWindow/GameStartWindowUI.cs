@@ -73,10 +73,7 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
         MyInfoUI.ChangeInfo_GameStart();
         EnemyInfoUI.ChangeInfo_GameStart();
 
-        if (PhotonLogicHandler.IsMasterClient)
-        {
-            waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
-        }
+        waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property) { }
@@ -139,7 +136,15 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     {
         yield return new WaitForSeconds(_delayTime);
 
-        Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Battle);
+        Managers.UI.popupCanvas.Play_FadeOutEffect();
+
+        if(PhotonLogicHandler.IsMasterClient)
+        {
+            yield return new WaitForSeconds(1.0f);
+
+            Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Battle);
+        }
+
         waitGameStartCoroutine = null;
     }
 }

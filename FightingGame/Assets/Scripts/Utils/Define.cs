@@ -147,6 +147,7 @@ namespace FGDefine
         Wizard_StarlightEffect = 42, // Particle
         Wizard_MagicalJinEffect = 43, // Particle
         Wizard_DashEffect = 44,
+        Wizard_TestDashEffect = 45, // Test (삭제예정)
     }
 
     /// <summary>
