@@ -6,7 +6,7 @@ using FGDefine;
 public class ParticleEffectObject : EffectObject
 {
     [SerializeField] ParticleSystem particle;
-    [SerializeField] Renderer[] paricleRenderer = null;
+    [SerializeField] Renderer paricleRenderer;
 
     Coroutine pariclePlayCoroutine;
     
@@ -19,8 +19,7 @@ public class ParticleEffectObject : EffectObject
 
     public override void OnEnable()
     {
-        for(int i = 0; i < paricleRenderer.Length; i++)
-            paricleRenderer[i].sortingOrder = Managers.OrderLayer.Get_SequenceOrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Back_Effect);
+        paricleRenderer.sortingOrder = Managers.OrderLayer.Get_SequenceOrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Back_Effect);
 
         base.OnEnable();
     }
@@ -30,7 +29,7 @@ public class ParticleEffectObject : EffectObject
         if (pariclePlayCoroutine != null)
             StopCoroutine(pariclePlayCoroutine);
 
-        Managers.OrderLayer.Return_OrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Back_Effect, paricleRenderer[0].sortingOrder);
+        Managers.OrderLayer.Return_OrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Back_Effect, paricleRenderer.sortingOrder);
 
         base.OnDisable();
     }

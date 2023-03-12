@@ -16,6 +16,8 @@ public class CharacterSelectArea : MonoBehaviour
 
             characterSelectElementUI.Init(_selectionCharacterCallBack, (ENUM_CHARACTER_TYPE)i);
         }
+
+        gameObject.SetActive(true);
     }
 
     public void Close()

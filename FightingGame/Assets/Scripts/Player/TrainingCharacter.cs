@@ -29,7 +29,6 @@ public class TrainingCharacter : MonoBehaviour
         activeCharacter = _activeCharacter;
         activeCharacter.transform.parent = this.transform;
         activeCharacter.Init();
-        activeCharacter.Set_Sound();
         activeCharacter.Set_Character(teamType);
 
         Connect_InputController();

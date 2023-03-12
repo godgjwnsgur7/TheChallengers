@@ -59,9 +59,10 @@ public class UserInfoUI : MonoBehaviour
         IsInit = true;
     }
 
-    public void Open_GameStartInfo(ENUM_CHARACTER_TYPE _charType)
+    public void ChangeInfo_GameStart()
     {
-        gameStartInfo.Open(_charType);
+        selectCharInfo.Close();
+        gameStartInfo.Open(CurrCharacterType);
     }
 
     public void Active_SelectionCompleteBtn(Action<ENUM_CHARACTER_TYPE> _selectionCharacterCompleteCallBack)

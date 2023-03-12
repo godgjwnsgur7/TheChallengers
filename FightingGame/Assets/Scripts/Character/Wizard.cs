@@ -51,7 +51,9 @@ public class Wizard : ActiveCharacter
 
         // Effect
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_ThunderCircleEffect}", 3);
-        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_PublicEffect}", 10); // Particle
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MagicalJinEffect}", 10); // Particle
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_StarlightEffect}", 10); // Particle
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_DashEffect}", 3);
 
     }
 

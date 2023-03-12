@@ -95,9 +95,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         activeCharacter = Managers.Resource.InstantiateEveryone($"{_charType}", _summonPosVec).GetComponent<ActiveCharacter>();
         activeCharacter.transform.parent = this.transform;
-        
-        PhotonLogicHandler.Instance.TryBroadcastMethod<Character>
-            (activeCharacter, activeCharacter.Set_Sound);
 
         activeCharacter.Set_Character(teamType);
         playerCamera.Following_Target(activeCharacter.transform);

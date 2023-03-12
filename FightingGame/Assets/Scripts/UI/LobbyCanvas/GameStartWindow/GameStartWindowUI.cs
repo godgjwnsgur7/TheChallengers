@@ -70,8 +70,10 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     public void GameStart()
     {
         EnemyInfoUI.Set_SelectionCharacter(enemySelectionCharacterType);
+        MyInfoUI.ChangeInfo_GameStart();
+        EnemyInfoUI.ChangeInfo_GameStart();
 
-        if(PhotonLogicHandler.IsMasterClient)
+        if (PhotonLogicHandler.IsMasterClient)
         {
             waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
         }

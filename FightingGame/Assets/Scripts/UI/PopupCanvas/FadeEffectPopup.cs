@@ -57,11 +57,11 @@ public class FadeEffectPopup : PopupUI
     public void Play_FadeOutInEffect(Action _fadeOutInCallBack = null)
     {
         Stop_Coroutine(fadeInCoroutine);
-        Stop_Coroutine(fadeOutInCoroutine);
+        Stop_Coroutine(fadeOutCoroutine);
 
         fadeOutInCallBack = _fadeOutInCallBack;
 
-        backgroundImage.color = new Color(0, 0, 0, 1);
+        backgroundImage.color = new Color(0, 0, 0, 0);
 
         this.gameObject.SetActive(true);
 

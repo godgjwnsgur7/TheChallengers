@@ -144,9 +144,9 @@ namespace FGDefine
 
         // Wizard
         Wizard_ThunderCircleEffect = 41,
-        Wizard_PublicEffect = 42,
-        // Wizard_LandingEffect = 43,
-        // Wizard_DashEffect = 44,
+        Wizard_StarlightEffect = 42, // Particle
+        Wizard_MagicalJinEffect = 43, // Particle
+        Wizard_DashEffect = 44,
     }
 
     /// <summary>

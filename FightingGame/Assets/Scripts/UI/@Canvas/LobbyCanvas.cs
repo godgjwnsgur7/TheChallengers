@@ -35,7 +35,7 @@ public class LobbyCanvas : BaseCanvas
 
     public void GameStart()
     {
-        gameStartWindow.GameStart();
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(gameStartWindow.GameStart);
     }
 
     public void Open_CustomRoomWindow() => customMatching.Open();
