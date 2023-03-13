@@ -59,6 +59,17 @@ public class UserInfoUI : MonoBehaviour
         IsInit = true;
     }
 
+    public void Forced_SelectionCharacter()
+    {
+        if (CurrCharacterType != ENUM_CHARACTER_TYPE.Default)
+            return;
+
+        ENUM_CHARACTER_TYPE charType = (ENUM_CHARACTER_TYPE)UnityEngine.Random.Range(1, (int)ENUM_CHARACTER_TYPE.Max);
+
+        Set_SelectionCharacter(charType);
+        OnClick_SelectionCharacterComplete();
+    }
+
     public void ChangeInfo_GameStart()
     {
         selectCharInfo.Close();

@@ -10,8 +10,6 @@ public class UserInfo_SelectChar : MonoBehaviour
     [SerializeField] Text characterNameText;
     [SerializeField] Text characterDescriptionText;
 
-    ENUM_CHARACTER_TYPE currCharType = ENUM_CHARACTER_TYPE.Default;
-
     public void Open()
     {
         characterNameText.text = "-";

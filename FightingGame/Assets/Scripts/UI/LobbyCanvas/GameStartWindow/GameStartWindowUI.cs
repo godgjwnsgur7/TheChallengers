@@ -31,11 +31,14 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     }
 
     [SerializeField] CharacterSelectArea characterSelectArea;
-
+    [SerializeField] MapInfoUI mapInfo;
     [SerializeField] Text timerText;
+
+    int selectionCharacterTimer = 15;
 
     ENUM_CHARACTER_TYPE enemySelectionCharacterType = ENUM_CHARACTER_TYPE.Default;
 
+    Coroutine selectCharacterTimerCoroutine = null;
     Coroutine settingInfoCheckCoroutine = null;
     Coroutine waitSelectionCharacterCoroutine = null;
     Coroutine waitGameStartCoroutine = null;
@@ -61,17 +64,24 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
 
         characterSelectArea.Init(CallBack_SelectionCharacter);
         MyInfoUI.Active_SelectionCompleteBtn(CallBack_SelectionCharacterComplete);
+        timerText.text = selectionCharacterTimer.ToString();
 
         this.gameObject.SetActive(true);
 
+        selectCharacterTimerCoroutine = StartCoroutine(ISelectionCharacterTimer(selectionCharacterTimer));
         settingInfoCheckCoroutine = StartCoroutine(ISettingInfoCheck());
     }
     
     public void GameStart()
     {
+        if(selectCharacterTimerCoroutine != null)
+            StopCoroutine(selectCharacterTimerCoroutine);
+
         EnemyInfoUI.Set_SelectionCharacter(enemySelectionCharacterType);
         MyInfoUI.ChangeInfo_GameStart();
         EnemyInfoUI.ChangeInfo_GameStart();
+
+        mapInfo.Open(PhotonLogicHandler.CurrentMapType);
 
         waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
     }
@@ -106,6 +116,31 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.ChangeCharacter(_selectedCharacterType);
         else // 슬레이브라면, 마스터의 캐릭터 선택을 확인한다.
             waitSelectionCharacterCoroutine = StartCoroutine(IWaitSelectionCharacter(_selectedCharacterType));
+    }
+
+    private IEnumerator ISelectionCharacterTimer(int _timelimit)
+    {
+        float updateTime = _timelimit;
+        int currTime = _timelimit;
+        timerText.text = currTime.ToString();
+
+        while(updateTime > 0.1f)
+        {
+            updateTime -= Time.deltaTime;
+            
+            if((int)updateTime != currTime)
+            {
+                currTime = (int)updateTime;
+                timerText.text = currTime.ToString();
+            }
+
+            yield return null;
+        }
+
+        timerText.text = "0";
+        MyInfoUI.Forced_SelectionCharacter();
+
+        selectCharacterTimerCoroutine = null;
     }
 
     private IEnumerator ISettingInfoCheck()
