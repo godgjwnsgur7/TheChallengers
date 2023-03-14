@@ -47,6 +47,8 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     {
         this.UnregisterRoomCallback();
 
+        if(selectCharacterTimerCoroutine != null)
+            StopCoroutine(selectCharacterTimerCoroutine);
         if(settingInfoCheckCoroutine != null)
             StopCoroutine(settingInfoCheckCoroutine);
         if (waitSelectionCharacterCoroutine != null)
