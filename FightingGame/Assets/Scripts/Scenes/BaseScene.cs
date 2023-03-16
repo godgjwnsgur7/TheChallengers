@@ -16,20 +16,24 @@ public abstract class BaseScene : MonoBehaviour
 
     private void OnDisable()
     {
-        Clear();
         Managers.Clear();
     }
 
     public virtual void Init()
     {
-        Managers.Sound.Play((ENUM_BGM_TYPE)SceneType, ENUM_SOUND_TYPE.BGM);
         Managers.UI.popupCanvas.Play_FadeInEffect();
         Managers.Scene.Get_CurrSceneType(SceneType);
+        Play_BGM();
     }
     
     public virtual void Clear()
     {
         
+    }
+
+    public virtual void Play_BGM()
+    {
+        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Unknown);
     }
 }
  

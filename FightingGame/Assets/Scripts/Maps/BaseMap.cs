@@ -16,4 +16,9 @@ public class BaseMap : MonoBehaviour
         minBound = new Vector2(backgroundMapSprite.bounds.min.x, backgroundMapSprite.bounds.min.y);
         maxBound = new Vector2(backgroundMapSprite.bounds.max.x, backgroundMapSprite.bounds.max.y);
     }
+
+    private void Start()
+    {
+        Managers.Sound.Play_BGM(FGDefine.ENUM_BGM_TYPE.Battle); // 임시
+    }
 }

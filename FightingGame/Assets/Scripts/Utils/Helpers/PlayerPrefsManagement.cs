@@ -24,15 +24,15 @@ public class KeySettingData
 
 public class VolumeData
 {
-    public ENUM_SOUND_TYPE key;
-    public float volume;
-    public float pitch;
+    public float wholeVolume;
+    public float bgmVolume;
+    public float sfxVolume;
 
-    public VolumeData(ENUM_SOUND_TYPE _key, float _volume, float _pitch)
+    public VolumeData(float _wholeVolume, float _bgmVolume, float _sfxVolume)
     {
-        key = _key;
-        volume = _volume;
-        pitch = _pitch;
+        wholeVolume = _wholeVolume;
+        bgmVolume = _bgmVolume;
+        sfxVolume = _sfxVolume;
     }
 }
 
@@ -115,52 +115,39 @@ public class PlayerPrefsManagement : MonoBehaviour
      }
     #endregion
 
-    #region SoundData
-    public static bool Save_VolumeData(List<VolumeData> volumeDatas)
+    public static bool Save_VolumeData(VolumeData volumeData)
     {
-        if (volumeDatas == null || volumeDatas.Count != (int)ENUM_SOUND_TYPE.Max)
+        if(volumeData == null)
         {
-            Debug.Log("soundDatas Null이거나 키 전체가 넘어오지 않았습니다.");
+            Debug.Log("soundDatas Null입니다.");
             return false;
         }
 
-        for (int i = 0; i < volumeDatas.Count; i++)
-        {
-            string keyName = Enum.GetName(typeof(ENUM_SOUND_TYPE), volumeDatas[i].key);
-            if (keyName == null)
-            {
-                Debug.Log($"soundDatas {i}번째 인자의 key Name가 없습니다.");
-                return false;
-            }
-
-            Set_Float(volumeDatas[i].volume, keyName, nameof(VolumeData.volume));
-            Set_Float(volumeDatas[i].pitch, keyName, nameof(VolumeData.pitch));
-        }
+        PlayerPrefs.SetFloat("Whole_Volume", volumeData.wholeVolume);
+        PlayerPrefs.SetFloat("BGM_Volume", volumeData.bgmVolume);
+        PlayerPrefs.SetFloat("SFX_Volume", volumeData.sfxVolume);
 
         PlayerPrefs.Save();
+        Managers.Sound.Update_VolumeData(volumeData);
         return true;
     }
 
-    public static List<VolumeData> Load_VolumeData()
+    public static VolumeData Load_VolumeData()
     {
-        List<VolumeData> volumeDatas = new List<VolumeData>();
-
-        for (int i = 0; i < (int)ENUM_SOUND_TYPE.Max; i++)
+        // 만약, 저장된 데이터가 없다면 기본 값으로 저장 후 리턴
+        if(!PlayerPrefs.HasKey("Whole_Volume"))
         {
-            string inputKeyName = Enum.GetName(typeof(ENUM_SOUND_TYPE), i);
-            if (inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(VolumeData.volume)}"))
-            {
-                Debug.Log($"inputKeyName이 NUll이거나 저장된 {i}번째 키가 없습니다.");
-                return null;
-            }
-
-            float _volume = Get_Float(inputKeyName, nameof(VolumeData.volume));
-            float _pitch = Get_Float(inputKeyName, nameof(VolumeData.pitch));
-
-            volumeDatas.Add(new VolumeData((ENUM_SOUND_TYPE)i, _volume, _pitch));
+            VolumeData tempVolumeData = new VolumeData(0.5f, 1.0f, 1.0f); // 기본 값
+            Save_VolumeData(tempVolumeData); 
+            return tempVolumeData;
         }
 
-        return volumeDatas;
+        float _wholeVolume = PlayerPrefs.GetFloat("Whole_Volume");
+        float _bgmVolume = PlayerPrefs.GetFloat("BGM_Volume");
+        float _sfxVolume = PlayerPrefs.GetFloat("SFX_Volume");
+
+        VolumeData volumeData = new VolumeData(_wholeVolume, _bgmVolume, _sfxVolume);
+
+        return volumeData;
     }
-    #endregion
 }

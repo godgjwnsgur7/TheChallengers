@@ -35,8 +35,4 @@ public class TrainingCanvas : BaseCanvas
 
     public void GoTo_LobbyScene() => Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
 
-    public override void PlaySFX_CallBack(int sfxNum) 
-    {
-        Managers.Sound.Play((ENUM_SFX_TYPE)sfxNum, ENUM_SOUND_TYPE.SFX);
-    }
 }

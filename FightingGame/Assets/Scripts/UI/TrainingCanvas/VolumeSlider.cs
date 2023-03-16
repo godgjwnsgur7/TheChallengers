@@ -19,7 +19,7 @@ public class VolumeSlider : MonoBehaviour
     {
         Init();
 
-        volumeDataList = Managers.Sound.Get_VolumeDatas();
+        // volumeDataList = Managers.Sound.Get_VolumeDatas(); // 저장된 사운드 크기 값 가져오기 -> DataMgr
 
         Changed_Volume();
     }
@@ -35,10 +35,10 @@ public class VolumeSlider : MonoBehaviour
         if (isInit)
             return;
 
-        bgmSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_BGMVolume);
+        // bgmSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_BGMVolume);
         bgmSlider.onValueChanged.AddListener(Update_BgmSliderText);
 
-        sfxSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_SFXVolume);
+        // sfxSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_SFXVolume);
         sfxSlider.onValueChanged.AddListener(Update_SfxSliderText);
 
         isInit = true;
@@ -46,8 +46,8 @@ public class VolumeSlider : MonoBehaviour
 
     public void Changed_Volume()
     {
-        bgmSlider.value = volumeDataList[0].volume;
-        sfxSlider.value = volumeDataList[1].volume;
+       // bgmSlider.value = volumeDataList[0].volume;
+       // sfxSlider.value = volumeDataList[1].volume;
 
         Update_BgmSliderText(bgmSlider.value);
         Update_SfxSliderText(sfxSlider.value);
@@ -61,7 +61,7 @@ public class VolumeSlider : MonoBehaviour
 
     public void SaveVolume()
     {
-        Managers.Sound.Save_SoundData();
+        // Managers.Sound.Save_SoundData();
         Set_isChange(false);
     }
 
