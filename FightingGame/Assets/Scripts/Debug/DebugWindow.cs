@@ -260,6 +260,9 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	public void SetStatus(string txt)
 	{
+		if (this == null || gameObject == null)
+			return;
+
 		statusPanel.text = txt;
 		detailStatusPanel.text = PhotonLogicHandler.Instance.Info();
 	}
