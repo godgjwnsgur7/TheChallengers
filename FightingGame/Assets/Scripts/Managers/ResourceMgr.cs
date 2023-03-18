@@ -87,6 +87,12 @@ public class ResourceMgr
         return go;
     }
 
+    /// <summary>
+    /// 자연 풀링됨
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="position"></param>
+    /// <returns></returns>
     public GameObject InstantiateEveryone(string path, Vector2 position = default)
     {
         return PhotonLogicHandler.Instance.TryInstantiate($"Prefabs/{path}", position);

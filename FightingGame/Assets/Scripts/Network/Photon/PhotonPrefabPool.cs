@@ -13,7 +13,7 @@ public class PhotonPrefabPool : IPunPrefabPool
 	public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
 	{
 		var obj = Managers.Resource.Instantiate(prefabId, position, rotation, false);
-		if (obj != null)
+		if (obj == null)
 		{
 			Debug.LogError($"{prefabId} 경로가 잘못되어 프리팹을 불러올 수 없습니다.");
 			return null;

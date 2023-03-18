@@ -24,6 +24,5 @@ public class PlayerConfig
 		PlayerSettings.keyaliasPass = password;
 #endif
 	}
-
-#endif
 }
+#endif
