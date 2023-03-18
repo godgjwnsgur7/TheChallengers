@@ -669,16 +669,6 @@ public partial class ActiveCharacter : Character
 
     }
 
-    protected void SFX_Play(int sfxType)
-    {
-        if (teamType == ENUM_TEAM_TYPE.Blue)
-            Managers.Sound.Play((ENUM_SFX_TYPE)sfxType, ENUM_SOUND_TYPE.SFX_BLUE);
-        else if (teamType == ENUM_TEAM_TYPE.Red)
-            Managers.Sound.Play((ENUM_SFX_TYPE)sfxType, ENUM_SOUND_TYPE.SFX_RED);
-        else
-            return;
-    }
-
     protected void SuperArmourState_On()
     {
         if (!isControl) return;

@@ -31,7 +31,6 @@ public abstract class BaseCanvas : MonoBehaviour
     public virtual void Open<T>(UIParam param = null) { }
     public virtual void Close<T>() { }
 
-    public virtual void PlaySFX_CallBack(int sfxNum) { }
     public virtual T GetUIComponent<T>() { return default(T); }
 }
 
