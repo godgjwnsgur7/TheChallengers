@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
-
-#if UNITY_EDITOR
+using GoogleMobileAds.Editor;
 
 [InitializeOnLoad]
 public class PlayerConfig
@@ -25,4 +23,3 @@ public class PlayerConfig
 #endif
 	}
 }
-#endif

@@ -156,7 +156,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             return false;
         }
 
-        if (!CheckEnableJoinRoom())
+        if (!IsEnableJoin())
             return false;
 
         this._OnConnectedToMaster = _OnConnectedToMaster;
@@ -175,7 +175,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 
-        if (!CheckEnableJoinRoom())
+        if (!IsEnableJoin())
             return false;
 
         this._OnJoinRoom = _OnJoinRoom;
@@ -188,7 +188,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 
-        if (!CheckEnableJoinRoom())
+        if (!IsEnableJoin())
             return false;
 
         this._OnJoinRoom = _OnJoinRoom;
@@ -203,7 +203,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool TryCreateRoom(string roomName, Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, bool isCustomRoom = false, int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.ForestMap)
     {
-        if (!CheckEnableJoinRoom())
+        if (!IsEnableJoin())
             return false;
 
         this._OnCreateRoom = OnCreateRoom;
@@ -238,7 +238,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool TryJoinRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
     {
-        if (!CheckEnableJoinRoom())
+        if (!IsEnableJoin())
             return false;
 
         this._OnJoinRoom = _OnJoinRoom;
@@ -249,19 +249,51 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool TryLeaveRoom(Action _OnLeftRoom = null)
     {
+        if (!IsLoadingScene)
+		{
+            Debug.LogWarning("Scene 이동 중 방 탈출을 시도하였음");
+
+            StartCoroutine(TryCallAfterLoadScene(() =>
+            {
+                TryLeaveRoom(_OnLeftRoom);
+            }));
+
+            return false;
+		}
+
         this._OnLeftRoom = _OnLeftRoom;
         return PhotonNetwork.LeaveRoom();
     }
 
+    private IEnumerator TryCallAfterLoadScene(Action onLoadScene)
+	{
+        while (IsLoadingScene)
+            yield return null;
+
+        onLoadScene?.Invoke();
+    }
+
     public bool TryLeaveLobby(Action _OnLeftLobby = null)
     {
+        if (!IsLoadingScene)
+		{
+            Debug.LogWarning("Scene 이동 중 로비 탈출을 시도하였음");
+
+            StartCoroutine(TryCallAfterLoadScene(() =>
+            {
+                TryLeaveLobby(_OnLeftLobby);
+            }));
+
+            return false;
+        }
+
         this._OnLeftLobby = _OnLeftLobby;
         return PhotonNetwork.LeaveLobby();
     }
 
     public bool TryJoinLobby(ENUM_MATCH_TYPE matchType, Action onSuccess = null, FailedCallBack onfailed = null)
     {
-        if (!CheckEnableJoinRoom())
+        if (!IsLoadingScene)
             return false;
 
         this._OnJoinLobby = onSuccess;
@@ -272,7 +304,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
 	public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> OnProgress = null)
     {
-        if (!CheckEnableJoinRoom())
+        if (!IsEnableJoin())
             return false;
 
         if (!PhotonNetwork.IsMasterClient)
@@ -357,7 +389,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 #endif
         PhotonNetwork.AutomaticallySyncScene = true;
 
-        if(!CheckEnableJoinRoom())
+        if(!IsEnableJoin())
 		{
             TryLeaveRoom(() => 
             { 
@@ -374,12 +406,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         _OnJoinRoomFailed = null;
     }
 
-    private bool CheckEnableJoinRoom()
+    private bool IsEnableJoin()
 	{
         var loginType = Managers.Platform.CurrentLoginType;
         if (loginType == ENUM_LOGIN_TYPE.None)
         {
-            Debug.LogError("로그인 안됐음");
+            Debug.LogError("로그인 안 됐음");
             return false;
         }
 
