@@ -7,7 +7,6 @@ public enum ENUM_SOUND_TYPE
 {
     BGM = 0,
     SFX = 1,
-
     Max = 2,
 }
 
@@ -52,6 +51,25 @@ public class SoundMgr
     public void Update_VolumeData(VolumeData _volumeData)
     {
         volumeData = _volumeData;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = volumeData.wholeVolume * volumeData.bgmVolume;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = volumeData.wholeVolume * volumeData.sfxVolume;
+    }
+
+    public void Update_BGMVolumeData(float _volumeValue)
+    {
+        volumeData.bgmVolume = _volumeValue;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = volumeData.wholeVolume * volumeData.bgmVolume;
+    }
+    public void Update_SFXVolumeData(float _volumeValue)
+    {
+        volumeData.sfxVolume = _volumeValue;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = volumeData.wholeVolume * volumeData.sfxVolume;
+    }
+    public void Update_WholeVolumeData(float _volumeValue)
+    {
+        volumeData.wholeVolume = _volumeValue;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = volumeData.wholeVolume * volumeData.bgmVolume;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = volumeData.wholeVolume * volumeData.sfxVolume;
     }
 
     private AudioClip GetOrAddAudioClip(string path)
@@ -74,7 +92,10 @@ public class SoundMgr
 
     public void Play_BGM(ENUM_BGM_TYPE bgmType)
     {
-        if(fadeOutInBGMCoroutine != null)
+        if (currBGM == bgmType)
+            return;
+
+        if (fadeOutInBGMCoroutine != null)
             CoroutineHelper.StopCoroutine(fadeOutInBGMCoroutine);
 
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
@@ -82,29 +103,25 @@ public class SoundMgr
 
     public void Play_SFX(ENUM_SFX_TYPE sfxType)
     {
-        string path = $"Sounds/SFX/{sfxType}";
+        float currSfxVolume = volumeData.wholeVolume * volumeData.sfxVolume;
 
+        string path = $"Sounds/SFX/{sfxType}";
         AudioClip audioClip = GetOrAddAudioClip(path);
 
-        if (audioClip == null)
+        if (audioClip == null || currSfxVolume == 0)
             return;
 
-        // 플레이원샷 ( 미구현 )
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = currSfxVolume;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
     }
 
     private void Update_BGMAudioSource(float _currVolume)
     {
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = _currVolume;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = volumeData.wholeVolume * _currVolume;
     }
 
     private IEnumerator IFadeOutIn_BGM(ENUM_BGM_TYPE bgmType)
     {
-        if(currBGM == bgmType)
-        {
-            fadeOutInBGMCoroutine = null;
-            yield break;
-        }
-
         string path = $"Sounds/BGM/{bgmType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);

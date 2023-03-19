@@ -170,16 +170,7 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        Win = 0,
-        Lose = 1,
-        Click1 = 2,
-        Click2 = 3,
-        Click3 = 4,
-        Warning1 = 5,
-        Warning2 = 6,
-        Page = 7,
-        Matching_start = 8,
-        Matching_success = 9,
+        UI_Click = 0,
 
     }
     

@@ -90,8 +90,6 @@ public class ResourceMgr
     /// <summary>
     /// 자연 풀링됨
     /// </summary>
-    /// <param name="path"></param>
-    /// <param name="position"></param>
     /// <returns></returns>
     public GameObject InstantiateEveryone(string path, Vector2 position = default)
     {

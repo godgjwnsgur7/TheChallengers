@@ -137,7 +137,7 @@ public class PlayerPrefsManagement : MonoBehaviour
         // 만약, 저장된 데이터가 없다면 기본 값으로 저장 후 리턴
         if(!PlayerPrefs.HasKey("Whole_Volume"))
         {
-            VolumeData tempVolumeData = new VolumeData(0.5f, 1.0f, 1.0f); // 기본 값
+            VolumeData tempVolumeData = new VolumeData(0.5f, 0.5f, 1.0f); // 기본 값
             Save_VolumeData(tempVolumeData); 
             return tempVolumeData;
         }
