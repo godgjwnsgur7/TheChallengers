@@ -147,6 +147,7 @@ namespace FGDefine
         Wizard_StarlightEffect = 42, // Particle
         Wizard_MagicalJinEffect = 43, // Particle
         Wizard_DashEffect = 44,
+        Wizard_FlameEffect = 45,
     }
 
     /// <summary>
