@@ -36,7 +36,7 @@ public class GenerateAttackObject : AttackObject
         attackObject = null;
 
         if (isServerSyncState)
-            attackObject = Managers.Resource.InstantiateEveryone(((ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString(), transform.position).GetComponent<AttackObject>();
+            attackObject = Managers.Resource.InstantiateEveryone(("AttackObjects/"+(ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString(), transform.position).GetComponent<AttackObject>();
         else
         {
             attackObject = Managers.Resource.GetAttackObject(((ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString());

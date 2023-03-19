@@ -77,7 +77,7 @@ public class HitAttackObject : AttackObject
         EffectObject effectObject;
 
         if (isServerSyncState)
-            effectObject = Managers.Resource.InstantiateEveryone(effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
+            effectObject = Managers.Resource.InstantiateEveryone("EffectObjects/"+effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
         else
             effectObject = Managers.Resource.GetEffectObject(effectObjectName.ToString());
 
