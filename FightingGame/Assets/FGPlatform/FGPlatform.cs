@@ -135,7 +135,7 @@ namespace FGPlatform
 			bool isMine = userId == GetUserID() && loginType == CurrentLoginType;
 			if(!isMine)
 			{
-				Debug.LogError("다른 유저의 데이터베이스에 접근합니다. 주의해주세요.");
+				Debug.LogWarning("다른 유저의 데이터베이스에 접근합니다. 주의해주세요.");
 			}
 
 			string token = GetHashToken(loginType, userId);

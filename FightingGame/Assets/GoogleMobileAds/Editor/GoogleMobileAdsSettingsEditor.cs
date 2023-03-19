@@ -3,13 +3,10 @@ using UnityEngine;
 
 namespace GoogleMobileAds.Editor
 {
-
     [InitializeOnLoad]
     [CustomEditor(typeof(GoogleMobileAdsSettings))]
     public class GoogleMobileAdsSettingsEditor : UnityEditor.Editor
     {
-
-        public static string APP_ID = "ca-app-pub-3940256099942544~3347511713";
         [MenuItem("Assets/Google Mobile Ads/Settings...")]
         public static void OpenInspector()
         {
@@ -21,8 +18,9 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
-            GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId =
-                    EditorGUILayout.TextField("Android", APP_ID);
+            //GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId =
+            //        EditorGUILayout.TextField("Android", 
+            //        GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId);
 
             GoogleMobileAdsSettings.Instance.GoogleMobileAdsIOSAppId =
                     EditorGUILayout.TextField("iOS",

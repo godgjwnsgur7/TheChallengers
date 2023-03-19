@@ -146,6 +146,14 @@ public partial class PhotonLogicHandler
         }
     }
 
+    public static bool IsLoadingScene
+	{
+        get
+		{
+            return CurrentLoadingProgress >= Mathf.Epsilon && CurrentLoadingProgress <= 1.0f - Mathf.Epsilon;
+        }
+	}
+
     public static float CurrentLoadingProgress
     {
         get
