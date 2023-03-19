@@ -49,6 +49,8 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnClick_CustomMathing()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click);
+
         if(PhotonLogicHandler.IsConnected)
         {
             PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.CUSTOM, customMatching.Open);

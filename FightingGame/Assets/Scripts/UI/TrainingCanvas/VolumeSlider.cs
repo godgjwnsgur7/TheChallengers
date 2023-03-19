@@ -35,10 +35,14 @@ public class VolumeSlider : MonoBehaviour
         if (isInit)
             return;
 
-        // bgmSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_BGMVolume);
+        VolumeData volumeData = PlayerPrefsManagement.Load_VolumeData();
+        bgmSlider.value = volumeData.bgmVolume;
+        sfxSlider.value = volumeData.sfxVolume;
+
+        bgmSlider.onValueChanged.AddListener(Managers.Sound.Update_BGMVolumeData);
         bgmSlider.onValueChanged.AddListener(Update_BgmSliderText);
 
-        // sfxSlider.onValueChanged.AddListener(Managers.Sound.OnValueChanged_SFXVolume);
+        sfxSlider.onValueChanged.AddListener(Managers.Sound.Update_SFXVolumeData);
         sfxSlider.onValueChanged.AddListener(Update_SfxSliderText);
 
         isInit = true;
