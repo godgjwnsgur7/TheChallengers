@@ -249,7 +249,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool TryLeaveRoom(Action _OnLeftRoom = null)
     {
-        if (!IsLoadingScene)
+        if (IsLoadingScene)
 		{
             Debug.LogWarning("Scene 이동 중 방 탈출을 시도하였음");
 
@@ -275,7 +275,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool TryLeaveLobby(Action _OnLeftLobby = null)
     {
-        if (!IsLoadingScene)
+        if (IsLoadingScene)
 		{
             Debug.LogWarning("Scene 이동 중 로비 탈출을 시도하였음");
 
