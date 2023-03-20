@@ -293,9 +293,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     public bool TryJoinLobby(ENUM_MATCH_TYPE matchType, Action onSuccess = null, FailedCallBack onfailed = null)
     {
-        if (!IsLoadingScene)
-            return false;
-
         this._OnJoinLobby = onSuccess;
         this._OnJoinLobbyFailed = onfailed;
 
