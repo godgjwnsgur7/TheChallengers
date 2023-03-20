@@ -77,6 +77,11 @@ public class LobbyCanvas : BaseCanvas
     {
         PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, matchingWindow.Open);
     }
+    
+    public void MathingSuccess()
+    {
+
+    }
 
     public void OnClick_Training() => Managers.UI.popupCanvas.Open_SelectPopup
         (GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");

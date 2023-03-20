@@ -146,7 +146,6 @@ public class NetworkMgr : IRoomPostProcess
         if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
         {
             PhotonLogicHandler.Instance.OnReadyAll();
-            
         }
 
         // 3. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)

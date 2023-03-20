@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class ErrorPopup : PopupUI
 {
-    [SerializeField] Text titleText;
+    [SerializeField] Text errorCodeText;
     [SerializeField] Text errorMessageText;
 
     public void Open(short _returnCode, string _message)
     {
-        titleText.text = $"코드번호 : {_returnCode}";
+        errorCodeText.text = $"코드번호 : {_returnCode}";
         errorMessageText.text = _message;
 
         this.gameObject.SetActive(true);
@@ -19,7 +19,7 @@ public class ErrorPopup : PopupUI
     public void Close()
     {
         this.gameObject.SetActive(false);
-        titleText.text = null;
+        errorCodeText.text = null;
         errorMessageText.text = null;
     }
 

@@ -6,17 +6,26 @@ using UnityEngine.UI;
 
 public class MatchingWindowUI : MonoBehaviour
 {
-    // [SerializeField] MatchingRoomUI matchingRoom;
-
     [SerializeField] Text stopwatchText;
+    [SerializeField] Image fullLodingImage;
+    [SerializeField] GameObject exitButtonObj;
 
     Coroutine timerCoroutine;
 
     bool isStopwatchLock = false;
 
+    private void OnDisable()
+    {
+        if (timerCoroutine != null)
+            StopCoroutine(timerCoroutine);
+    }
+
     public void Open()
     {
+        fullLodingImage.gameObject.SetActive(false);
+        exitButtonObj.SetActive(true);
         this.gameObject.SetActive(true);
+
         isStopwatchLock = false;
         timerCoroutine = StartCoroutine(IStopwatch());
 
@@ -36,6 +45,9 @@ public class MatchingWindowUI : MonoBehaviour
     
     public void MathingFailed() => OnClick_Exit();
 
+    /// <summary>
+    /// 매칭이 됐을 때 콜백
+    /// </summary>
     public void MathingCallBack()
     {
         StopCoroutine(timerCoroutine);
@@ -48,13 +60,7 @@ public class MatchingWindowUI : MonoBehaviour
     {
         if (PhotonLogicHandler.IsJoinedRoom)
         {
-            bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(LeaveRoom_CallBack);
-            
-            if(!isLeaveRoom)
-            {
-                // 음?
-                Debug.Log("알 수 없는 이유로 방 나가기 실패");
-            }
+            PhotonLogicHandler.Instance.TryLeaveRoom(LeaveRoom_CallBack);
         }
         else
         {
@@ -62,6 +68,9 @@ public class MatchingWindowUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 매칭 취소버튼
+    /// </summary>
     private void LeaveRoom_CallBack()
     {
         StopCoroutine(timerCoroutine);
@@ -84,11 +93,14 @@ public class MatchingWindowUI : MonoBehaviour
                 minutes++;
             }
 
-            stopwatchText.text = string.Format("{0:00}:{1:00}", minutes, (int)seconds);
+            stopwatchText.text = string.Format("{0:00} : {1:00}", minutes, (int)seconds);
 
             yield return null;
         }
 
+        // 매칭
+        exitButtonObj.SetActive(false);
+        fullLodingImage.gameObject.SetActive(true);
         timerCoroutine = null;
     }
 
