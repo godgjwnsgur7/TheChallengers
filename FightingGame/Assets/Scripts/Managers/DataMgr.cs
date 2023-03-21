@@ -29,7 +29,7 @@ public class DataMgr
 
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
-        {ENUM_MAP_TYPE.ForestMap, "잊혀진 숲" },
+        {ENUM_MAP_TYPE.CaveMap, "잊혀진 숲" },
         {ENUM_MAP_TYPE.VolcanicMap, "화산지대" }
     };
 

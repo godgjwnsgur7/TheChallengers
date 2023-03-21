@@ -30,7 +30,7 @@ public class ButtonPanel : UIElement
 
     public void Init()
     {
-        Summon_Map(ENUM_MAP_TYPE.ForestMap);
+        Summon_Map(ENUM_MAP_TYPE.CaveMap);
 
         Reset_PlayerType();
         Reset_EnemyType();

@@ -45,7 +45,7 @@ public class CustomRoomInfo
     public int maxPlayerCount;
 
     public string MasterClientNickname => customProperty != null ? customProperty.masterClientNickname : string.Empty;
-    public ENUM_MAP_TYPE CurrentMapType => customProperty != null ? customProperty.currentMapType : ENUM_MAP_TYPE.ForestMap;
+    public ENUM_MAP_TYPE CurrentMapType => customProperty != null ? customProperty.currentMapType : ENUM_MAP_TYPE.CaveMap;
     public bool IsCustom => customProperty != null ? customProperty.isCustom : false;
     public bool IsStarted => customProperty != null ? customProperty.isStarted : false;
 }
@@ -53,7 +53,7 @@ public class CustomRoomInfo
 public class CustomRoomProperty
 {
     public string masterClientNickname;
-    public ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.ForestMap;
+    public ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.CaveMap;
     public bool isCustom;
     public bool isStarted;
 }

@@ -184,7 +184,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return PhotonNetwork.JoinRandomRoom();
     }
 
-    public bool TryJoinOrCreateRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.ForestMap, int maxPlayerCount = 2,  bool isCustomRoom = false)
+    public bool TryJoinOrCreateRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.CaveMap, int maxPlayerCount = 2,  bool isCustomRoom = false)
     {
         Debug.Log($"랜덤 룸에 접속을 시도합니다.");
 
@@ -201,7 +201,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             roomOptions: roomOptions);
     }
 
-    public bool TryCreateRoom(string roomName, Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, bool isCustomRoom = false, int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.ForestMap)
+    public bool TryCreateRoom(string roomName, Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, bool isCustomRoom = false, int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.CaveMap)
     {
         if (!IsEnableJoin())
             return false;

@@ -13,7 +13,7 @@ public class CreateRoomWindowUI : MonoBehaviour
     [SerializeField] SelectableMapElement[] selectableMapElements = new SelectableMapElement[3];
     [SerializeField] GameObject[] inputFieldEventObject = new GameObject[2];
 
-    ENUM_MAP_TYPE currMap = ENUM_MAP_TYPE.ForestMap;
+    ENUM_MAP_TYPE currMap = ENUM_MAP_TYPE.CaveMap;
 
     private void Open_CustomRoom()
     {
