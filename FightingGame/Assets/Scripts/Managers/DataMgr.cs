@@ -19,7 +19,7 @@ public class DataMgr
         {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
     };
 
-    private Dictionary<ENUM_CHARACTER_TYPE, string> charDescriptionDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
+    private Dictionary<ENUM_CHARACTER_TYPE, string> charExplanationDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
     {
         {ENUM_CHARACTER_TYPE.Default, "캐릭터가 선택되지 않았습니다." },
         {ENUM_CHARACTER_TYPE.Knight, "나이트 캐릭터에 대한 설명을 넣어주세요.\n2줄정도?" },
@@ -29,8 +29,16 @@ public class DataMgr
 
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
-        {ENUM_MAP_TYPE.CaveMap, "잊혀진 숲" },
+        {ENUM_MAP_TYPE.CaveMap, "동굴 맵" },
+        {ENUM_MAP_TYPE.ForestMap, "잊혀진 숲" },
         {ENUM_MAP_TYPE.VolcanicMap, "화산지대" }
+    };
+
+    private Dictionary<ENUM_MAP_TYPE, string> mapExplanationDict = new Dictionary<ENUM_MAP_TYPE, string>()
+    {
+        {ENUM_MAP_TYPE.CaveMap, "동굴 맵에 대한 설명입니다.\n2줄정도?" },
+        {ENUM_MAP_TYPE.ForestMap, "잊혀진 숲 맵에 대한 설명입니다.\n2줄정도?" },
+        {ENUM_MAP_TYPE.VolcanicMap, "화산지대 맵에 대한 설명입니다.\n2줄정도?" }
     };
 
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
@@ -67,6 +75,17 @@ public class DataMgr
         return mapNameDict[mapType];
     }
 
+    public string Get_MapExplanationDict(ENUM_MAP_TYPE mapType)
+    {
+        if (!mapExplanationDict.ContainsKey(mapType))
+        {
+            Debug.Log($"해당하는 맵 타입이 맵 이름 사전에 없습니다. : {mapType}");
+            return null;
+        }
+
+        return mapExplanationDict[mapType];
+    }
+
     public string Get_CharNameDict(ENUM_CHARACTER_TYPE charType)
     {
         if (!charNameDict.ContainsKey(charType))
@@ -78,14 +97,14 @@ public class DataMgr
         return charNameDict[charType];
     }
 
-    public string Get_CharDescriptionDict(ENUM_CHARACTER_TYPE charType)
+    public string Get_CharExplanationDict(ENUM_CHARACTER_TYPE charType)
     {
-        if (!charDescriptionDict.ContainsKey(charType))
+        if (!charExplanationDict.ContainsKey(charType))
         {
             Debug.Log($"해당하는 캐릭터 타입이 캐릭터 설명 사전에 없습니다. : {charType}");
             return null;
         }
 
-        return charDescriptionDict[charType];
+        return charExplanationDict[charType];
     }
 }

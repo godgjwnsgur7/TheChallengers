@@ -7,15 +7,17 @@ public class MasterProfileUI : BaseProfile
 {
     public override void Init()
     {
+        if (isInit)
+            return;
 
         base.Init();
 
+        if(PhotonLogicHandler.IsMasterClient)
+            isMine = true;
     }
-
+    
     public override void Clear()
     {
         base.Clear();
     }
-
-    public bool Get_IsSelectedChar() => currCharType != ENUM_CHARACTER_TYPE.Default;
 }
