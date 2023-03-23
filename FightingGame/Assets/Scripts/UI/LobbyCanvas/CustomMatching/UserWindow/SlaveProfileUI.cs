@@ -13,15 +13,11 @@ public class SlaveProfileUI : BaseProfile
         get;
         private set;
     }
-    public override void Init()
+    public override void Init(Profile_Info _profileInfo)
     {
-        if (isInit)
-            return;
+        IsMine = !PhotonLogicHandler.IsMasterClient;
 
-        base.Init();
-
-        if (!PhotonLogicHandler.IsMasterClient)
-            isMine = true;
+        base.Init(_profileInfo);
     }
 
     public void Set_ReadyState(bool _readyState)
@@ -38,6 +34,18 @@ public class SlaveProfileUI : BaseProfile
         else
         {
             ReadyText.color = new Color(1f, 1f, 1f, 0.4f);
+        }
+
+        if(IsMine)
+        {
+            if(IsReady)
+            {
+                PhotonLogicHandler.Instance.OnReady();
+            }
+            else
+            {
+                PhotonLogicHandler.Instance.OnUnReady();
+            }
         }
     }
 

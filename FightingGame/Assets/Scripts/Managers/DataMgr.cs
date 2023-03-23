@@ -107,4 +107,10 @@ public class DataMgr
 
         return charExplanationDict[charType];
     }
+
+    public Color Get_SelectColor()
+    {
+        ColorUtility.TryParseHtmlString("#BC6DF5", out Color color);
+        return color;
+    }
 }

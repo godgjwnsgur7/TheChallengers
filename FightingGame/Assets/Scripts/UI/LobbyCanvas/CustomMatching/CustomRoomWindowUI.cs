@@ -9,32 +9,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 {
     [SerializeField] MasterProfileUI masterProfile;
     [SerializeField] SlaveProfileUI slaveProfile;
-    BaseProfile MyProfile
-    {
-        get
-        {
-            if (PhotonLogicHandler.IsMasterClient)
-            {
-                readyOrStartText.text = "시작";
-                return masterProfile;
-            }
-            else
-            {
-                readyOrStartText.text = "준비";
-                return slaveProfile;
-            }
-        }
-    }
+
+    [SerializeField] CustormRoom_MapInfo mapInfo;
+
     [SerializeField] Text roomNameText;
     [SerializeField] Text readyOrStartText;
-
-    [SerializeField] Button[] mapImageButtons = new Button[3];
-    [SerializeField] Image currMapImage;
-    [SerializeField] Image selectionEffectImage;
-    [SerializeField] Text mapNameText;
-    [SerializeField] Text mapExplanationText;
-
-    private bool isInit = false;
 
     private bool readyLock = false;
     public bool isRoomRegisting = false;
@@ -43,10 +22,16 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     public ENUM_MAP_TYPE CurrMap
     {
         get { return currMap; }
-        private set { CurrMapInfoUpdateCallBack(value); }
+        private set
+        {
+            if (currMap == value)
+                return;
+            CurrMapInfoUpdateCallBack(value);
+        }
     }
 
     Coroutine readyLockCoroutine;
+    Coroutine waitInfoSettingCoroutine;
 
     private void OnEnable()
     {
@@ -66,6 +51,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if(readyLockCoroutine != null)
             StopCoroutine(readyLockCoroutine);
+
+        if (waitInfoSettingCoroutine != null)
+            StopCoroutine(waitInfoSettingCoroutine);
 
         // 포톤콜백함수 해제
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
@@ -89,27 +77,24 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     /// </summary>
     public void SlaveClientExitCallBack(string nickname)
     {
-        if(!masterProfile.isMine) // 마스터클라이언트가 됐다면
+        if(!masterProfile.IsMine) // 마스터클라이언트가 됐다면
         {
             PhotonLogicHandler.Instance.OnUnReady();
             masterProfile.Clear();
-            masterProfile.Init();
-            masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
-            masterProfile.Set_RankingEmblem(slaveProfile.Get_RankingEmblem());
+            masterProfile.Init(slaveProfile.Get_ProfileInfo());
         }
 
-        slaveProfile.Clear();
+        Init();
     }
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
         if (PhotonLogicHandler.IsMasterClient)
-            return; // 나의 변경된 정보면 리턴
+            return; // 내가 변경한 정보면 리턴
 
         if (property.isStarted) // 게임 시작을 알림받음
         {
-            Debug.Log("실행확인");
-            Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
+            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
             return;
         }
 
@@ -118,23 +103,35 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
-            return; // 나의 변경된 정보면 리턴
-        
-        if(property.isMasterClient)
+        if(property.isMasterClient && !masterProfile.IsInit)
         {
-            masterProfile.Set_RankingEmblem(property.data.ratingPoint);
+            Profile_Info masterProfileInfo = new Profile_Info(property.data.nickname, RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint));
+            masterProfile.Init(masterProfileInfo);
         }
-        else
+        else if(!property.isMasterClient && !slaveProfile.IsInit)
+        {
+            Profile_Info slaveProfileInfo = new Profile_Info(property.data.nickname, RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint));
+            slaveProfile.Init(slaveProfileInfo);
+        }
+
+        // 슬레이브의 정보를 마스터클라이언트가 받았을 때
+        if(!property.isMasterClient && PhotonLogicHandler.IsMasterClient)
         {
             slaveProfile.Set_ReadyState(property.isReady);
-            slaveProfile.Set_RankingEmblem(property.data.ratingPoint);
         }
     }
 
     private void Init()
     {
-        MyProfile.Init();
+        if(PhotonLogicHandler.IsMasterClient)
+        {
+            readyOrStartText.text = "시작";
+            slaveProfile.Clear();
+        }
+        else
+        {
+            readyOrStartText.text = "준비";
+        }
     }
 
     public void Open()
@@ -142,14 +139,14 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         Init();
         Set_CurrRoomInfo();
         this.gameObject.SetActive(true);
+
+        waitInfoSettingCoroutine = StartCoroutine(IWaitInfoSetting());
     }
 
     public void Close()
     {
         if (!this.gameObject.activeSelf)
             return;
-
-        isInit = false;
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -163,24 +160,13 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             PhotonLogicHandler.Instance.ChangeMap(_mapType);
 
         currMap = _mapType;
-        currMapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
-        mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
-        mapExplanationText.text = Managers.Data.Get_MapExplanationDict(_mapType);
-
-        RectTransform selectionEffectImageRectTr = selectionEffectImage.gameObject.GetComponent<RectTransform>();
-        selectionEffectImageRectTr.anchoredPosition = mapImageButtons[(int)_mapType].GetComponent<RectTransform>().anchoredPosition;
+        
+        mapInfo.Set_CurrMapInfo(_mapType);
     }
 
     public void Set_CurrRoomInfo()
     {
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
-        MyProfile.Set_UserNickname(PhotonLogicHandler.CurrentMyNickname);
-
-        if (!PhotonLogicHandler.IsMasterClient)
-            masterProfile.Set_UserNickname(PhotonLogicHandler.CurrentMasterClientNickname);
-        else if (PhotonLogicHandler.IsFullRoom && slaveProfile.Get_UserNickname() == "")
-            slaveProfile.Set_UserNickname(Managers.Network.Get_SlaveClientNickname());  
-        
         CurrMap = PhotonLogicHandler.CurrentMapType;
         PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
@@ -246,5 +232,21 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         yield return new WaitForSeconds(waitTime);
         readyLock = false;
         readyLockCoroutine = null;
+    }
+
+    protected IEnumerator IWaitInfoSetting()
+    {
+        if(PhotonLogicHandler.IsMasterClient)
+        {
+            yield return new WaitUntil(() => masterProfile.IsInit);
+        }
+        else
+        {
+            yield return new WaitUntil(() => masterProfile.IsInit && slaveProfile.IsInit);
+        }
+
+        yield return null;
+
+        Managers.UI.popupCanvas.Play_FadeInEffect();
     }
 }

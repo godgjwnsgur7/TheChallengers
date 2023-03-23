@@ -8,7 +8,6 @@ public class LobbyCanvas : BaseCanvas
 {
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
-    [SerializeField] FightingInfoWindow fightingInfoWindow;
     [SerializeField] GameStartWindowUI gameStartWindow;
 
     public override void Init()
@@ -40,7 +39,6 @@ public class LobbyCanvas : BaseCanvas
 
     public void Open_CustomRoomWindow() => customMatching.Open();
     public void Close_CustomRoomWindow() => customMatching.Close();
-    public void Open_FightingInfoWindow() => fightingInfoWindow.Open();
 
     public void Open_GameStartWindow()
     {

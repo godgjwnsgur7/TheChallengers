@@ -53,7 +53,7 @@ public class MatchingWindowUI : MonoBehaviour
         StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
 
-        Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_FightingInfoWindow);
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
     }
 
     public void OnClick_Exit()

@@ -5,15 +5,11 @@ using FGDefine;
 
 public class MasterProfileUI : BaseProfile
 {
-    public override void Init()
+    public override void Init(Profile_Info _profileInfo)
     {
-        if (isInit)
-            return;
+        IsMine = PhotonLogicHandler.IsMasterClient;
 
-        base.Init();
-
-        if(PhotonLogicHandler.IsMasterClient)
-            isMine = true;
+        base.Init(_profileInfo);
     }
     
     public override void Clear()

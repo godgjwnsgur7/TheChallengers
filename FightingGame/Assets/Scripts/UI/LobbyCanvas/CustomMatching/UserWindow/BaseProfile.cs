@@ -5,6 +5,18 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
+public class Profile_Info
+{
+    public string nickname;
+    public char rankEmblem;
+
+    public Profile_Info(string _nickname, char _rankEmblem)
+    {
+        nickname = _nickname;
+        rankEmblem = _rankEmblem;
+    }
+}
+
 public class BaseProfile : MonoBehaviour
 {
     [SerializeField] UserInfoWindowUI userInfoWindow;
@@ -12,28 +24,50 @@ public class BaseProfile : MonoBehaviour
     [SerializeField] Image rankEmblemImage;
     [SerializeField] Text userNicknameText;
 
-    public bool isMine = false;
-    protected bool isInit = false;
-    protected char myRankEmblem = ' ';
+    Profile_Info profileInfo;
 
-    public virtual void Init()
+    public bool IsInit
     {
-        isInit = true;
+        get;
+        protected set;
+    }
+    public bool isMine = false;
+    public bool IsMine
+    {
+        get { return isMine; }
+        protected set
+        {
+            isMine = value;
+            Set_UserNicknameColor();
+        }
+    }
+
+    public virtual void Init(Profile_Info _profileInfo)
+    {
+        if (IsInit)
+            return;
+
+        IsInit = true;
+        profileInfo = _profileInfo;
+        userNicknameText.text = _profileInfo.nickname;
+        rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{_profileInfo.rankEmblem}");
+        rankEmblemImage.gameObject.SetActive(true);
     }
 
     public virtual void Clear()
     {
-        isInit = false;
-        isMine = false;
-        userNicknameText.text = string.Empty;
+        if (!IsInit)
+            return;
+
+        IsInit = false;
+        IsMine = false;
+        userNicknameText.text = "";
         rankEmblemImage.gameObject.SetActive(false);
     }
 
-    public void Set_RankingEmblem(long _score)
+    public void Set_UserNicknameColor()
     {
-        myRankEmblem = RankingScoreOperator.Get_RankingEmblemChar(_score);
-        rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{myRankEmblem}");
-        rankEmblemImage.gameObject.SetActive(true);
+        userNicknameText.color = IsMine ? Managers.Data.Get_SelectColor() : new Color(1f, 1f, 1f, 1f);
     }
 
     public void Set_UserNickname(string _userNickname)
@@ -41,6 +75,5 @@ public class BaseProfile : MonoBehaviour
         userNicknameText.text = _userNickname;
     }
 
-    public char Get_RankingEmblem() => myRankEmblem;
-    public string Get_UserNickname() => userNicknameText.text;
+    public Profile_Info Get_ProfileInfo() => profileInfo;
 }
