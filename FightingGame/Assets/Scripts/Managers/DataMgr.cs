@@ -113,4 +113,10 @@ public class DataMgr
         ColorUtility.TryParseHtmlString("#BC6DF5", out Color color);
         return color;
     }
+
+    public Color Get_DeselectColor()
+    {
+        ColorUtility.TryParseHtmlString("#655B80", out Color color);
+        return color;
+    }
 }

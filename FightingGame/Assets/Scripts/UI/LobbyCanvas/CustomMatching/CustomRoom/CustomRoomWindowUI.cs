@@ -183,7 +183,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     private void ExitRoomCallBack()
     {
-        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Close_CustomRoomWindow();
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Close_CustomRoomWindow);
     }
 
     public void OnClick_ChangeMap(int _mapTypeNum)

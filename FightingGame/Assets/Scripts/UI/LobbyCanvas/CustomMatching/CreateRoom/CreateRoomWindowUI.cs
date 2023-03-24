@@ -6,12 +6,12 @@ using FGDefine;
 
 public class CreateRoomWindowUI : MonoBehaviour
 {
-    [SerializeField] Image mapImage;
-    [SerializeField] Text mapNameText;
     [SerializeField] InputField userInputField;
+    [SerializeField] Image inputFieldLineImage;
+    [SerializeField] Image inputFieldEditImage;
 
-    [SerializeField] SelectableMapElement[] selectableMapElements = new SelectableMapElement[3];
-    [SerializeField] GameObject[] inputFieldEventObject = new GameObject[2];
+    [SerializeField] CustormRoom_MapInfo mapInfo;
+
 
     ENUM_MAP_TYPE currMap = ENUM_MAP_TYPE.CaveMap;
 
@@ -23,11 +23,6 @@ public class CreateRoomWindowUI : MonoBehaviour
     private void Init()
     {
         userInputField.text = "";
-
-        for(int i = 0; i < selectableMapElements.Length; i++)
-            selectableMapElements[i].Init(CallBack_ChangeMap);
-
-        selectableMapElements[0].OnClick_ChangeMap();
     }
 
     public void Open()
@@ -41,32 +36,12 @@ public class CreateRoomWindowUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void CallBack_ChangeMap(ENUM_MAP_TYPE _mapType)
+    public void OnClick_ChangeMap(int _mapTypeNum)
     {
-        if (currMap == _mapType)
-            return;
-
-        currMap = _mapType;
-        Set_ChangeMapImage();
+        currMap = (ENUM_MAP_TYPE)_mapTypeNum;
+        mapInfo.Set_CurrMapInfo(currMap);
     }
 
-    private void Set_ChangeMapImage()
-    {
-        Sprite _mapImageSprite;
-
-        for(int i = 0; i < selectableMapElements.Length; i++)
-        {
-            _mapImageSprite = selectableMapElements[i].Get_MapImageSprite(currMap);
-
-            if(_mapImageSprite != null)
-            {
-                mapImage.sprite = _mapImageSprite;
-            }
-        }
-
-        mapNameText.text = Managers.Data.Get_MapNameDict(currMap);
-    }
-   
     public void OnClick_CreatRoom()
     {
         userInputField.text = userInputField.text.Trim();
@@ -79,18 +54,23 @@ public class CreateRoomWindowUI : MonoBehaviour
 
         // 금지어 체크해야 함
 
-        PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, Open_CustomRoom, null, true, 2, currMap);
+        PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack, null, true, 2, currMap);
+    }
+
+    private void CreateRoomSuccessCallBack()
+    {
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Open_CustomRoom);
     }
 
     public void InputField_ValueChange()
     {
-        for (int i = 0; i < inputFieldEventObject.Length; i++)
-            inputFieldEventObject[i].SetActive(true);
+        inputFieldLineImage.color = Managers.Data.Get_SelectColor();
+        inputFieldEditImage.color = Managers.Data.Get_SelectColor();
     }
 
     public void InputField_EndEdit()
     {
-        for (int i = 0; i < inputFieldEventObject.Length; i++)
-            inputFieldEventObject[i].SetActive(false);
+        inputFieldLineImage.color = Managers.Data.Get_DeselectColor();
+        inputFieldEditImage.color = Managers.Data.Get_DeselectColor();
     }
 }

@@ -14,7 +14,7 @@ public class CustomMatchingUI : MonoBehaviour
 
         if(PhotonLogicHandler.IsJoinedRoom)
         {
-            Managers.UI.popupCanvas.Play_FadeOutEffect(customRoomWindow.Open);
+            customRoomWindow.Open();
 
             if (customRoomListWindow.gameObject.activeSelf)
                 customRoomListWindow.Close();

@@ -114,7 +114,12 @@ public class RoomListElementUI : MonoBehaviour
 
     public void JoinRoom()
     {
-        if (!PhotonLogicHandler.Instance.TryJoinRoom(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomRoomWindow, null, myRoomInfo.roomName))
+        if (!PhotonLogicHandler.Instance.TryJoinRoom(JoinRoomSuccessCallBack, null, myRoomInfo.roomName))
             Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);
+    }
+
+    public void JoinRoomSuccessCallBack()
+    {
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomRoomWindow);
     }
 }

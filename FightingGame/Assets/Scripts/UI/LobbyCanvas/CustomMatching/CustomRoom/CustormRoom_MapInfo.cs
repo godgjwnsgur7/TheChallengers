@@ -18,11 +18,11 @@ public class CustormRoom_MapInfo : MonoBehaviour
     {
         currMapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
-        mapExplanationText.text = Managers.Data.Get_MapExplanationDict(_mapType);
+        
+        if(mapExplanationText != null)
+            mapExplanationText.text = Managers.Data.Get_MapExplanationDict(_mapType);
 
         RectTransform selectionEffectImageRectTr = selectionEffectImage.gameObject.GetComponent<RectTransform>();
         selectionEffectImageRectTr.anchoredPosition = mapImageRectTrs[(int)_mapType].anchoredPosition;
     }
-
-
 }
