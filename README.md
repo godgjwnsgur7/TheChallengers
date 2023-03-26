@@ -35,13 +35,12 @@ Dev Period : 2020.05.09 ~ ing
 
 ---
 
+> Game Designer (2) : Heo Jun Hyeok, Kwon Young Jun
 
-Game Designer (2) : Heo Jun Hyeok, Kwon Young Jun
+> Game Artists (5) : Lee Gyeong Ju, Kim A Rin, Lee Ga Eun, Lee Jee Young
 
-Game Artists (5) : Lee Gyeong Ju, Kim A Rin, Lee Ga Eun, Lee Jee Young
+> Server Programmer (1) : Park Sol Hwi
 
-Server Programmer (1) : Park Sol Hwi
+> Client Programmers (2) : Heo Jun Hyeok, Kim Woo Jin
 
-Client Programmers (2) : Heo Jun Hyeok, Kim Woo Jin
-
-Sound Designer (1) : Kim Su Min
+> Sound Designer (1) : Kim Su Min
