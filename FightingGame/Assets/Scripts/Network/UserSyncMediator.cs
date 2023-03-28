@@ -89,7 +89,15 @@ public class UserSyncMediator : MonoBehaviourPhoton
     [BroadcastMethod]
     public void Show_GameInfoWindow()
     {
-        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
+        if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
+        {
+            // 매칭을 돌리고 있는 상태일 경우, 로비에 매칭이 됐음을 알림
+            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().MathingCallBack();
+        }
+        else
+        {
+            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
+        }
     }
     
     public void Sync_ShowGameStartInfo()

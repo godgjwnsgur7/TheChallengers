@@ -57,10 +57,14 @@ public class HitAttackObject : AttackObject
 
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
 
-            // 이펙트 생성
+            // 피격된 캐릭터 위치를 기준으로 주어진 범위 내의 랜덤위치로 조정
+            Vector2 randomHitPosVec = collision.transform.position;
+            randomHitPosVec.x += UnityEngine.Random.Range(-0.5f, 0.5f);
+            randomHitPosVec.y += UnityEngine.Random.Range(-0.3f, 1.0f);
+
+            // 이펙트 생성 ( 임시 랜덤 )
             int effectNum = UnityEngine.Random.Range(0, 3);
-            // 임시로 갈기는중
-            Summon_EffectObject(effectNum, collision.transform.position);
+            Summon_EffectObject(effectNum, randomHitPosVec);
             
             Sync_DestroyMine();
         }
@@ -77,22 +81,19 @@ public class HitAttackObject : AttackObject
         EffectObject effectObject;
 
         if (isServerSyncState)
-            effectObject = Managers.Resource.InstantiateEveryone("EffectObjects/"+effectObjectName.ToString(), Vector2.zero).GetComponent<EffectObject>();
+            effectObject = Managers.Resource.InstantiateEveryone("EffectObjects/"+effectObjectName.ToString(), _targetTr).GetComponent<EffectObject>();
         else
             effectObject = Managers.Resource.GetEffectObject(effectObjectName.ToString());
 
         if (effectObject != null)
         {
-            // 임시로 휘갈겨놈
-            Vector2 HitPosition = this.GetComponent<Collider2D>().bounds.ClosestPoint(_targetTr);
-
             if (isServerSyncState)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, bool>
-                    (effectObject, effectObject.Activate_EffectObject, HitPosition, reverseState);
+                    (effectObject, effectObject.Activate_EffectObject, _targetTr, reverseState);
             }
             else
-                effectObject.Activate_EffectObject(transform.position, reverseState);
+                effectObject.Activate_EffectObject(_targetTr, reverseState);
         }
         else
         {
