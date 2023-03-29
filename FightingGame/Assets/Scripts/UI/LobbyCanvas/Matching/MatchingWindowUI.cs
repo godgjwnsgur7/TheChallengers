@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MatchingWindowUI : MonoBehaviour
 {
+    [SerializeField] Text matchingStateText;
     [SerializeField] Text stopwatchText;
     [SerializeField] Image fullLodingImage;
     [SerializeField] GameObject exitButtonObj;
@@ -24,6 +25,7 @@ public class MatchingWindowUI : MonoBehaviour
     {
         fullLodingImage.gameObject.SetActive(false);
         exitButtonObj.SetActive(true);
+        matchingStateText.text = "매칭 중";
         this.gameObject.SetActive(true);
 
         isStopwatchLock = false;
@@ -50,8 +52,10 @@ public class MatchingWindowUI : MonoBehaviour
     /// </summary>
     public void MathingCallBack()
     {
-        StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
+        exitButtonObj.SetActive(false);
+        fullLodingImage.gameObject.SetActive(true);
+        matchingStateText.text = "매칭 완료!";
 
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
     }
@@ -98,9 +102,6 @@ public class MatchingWindowUI : MonoBehaviour
             yield return null;
         }
 
-        // 매칭
-        exitButtonObj.SetActive(false);
-        fullLodingImage.gameObject.SetActive(true);
         timerCoroutine = null;
     }
 
