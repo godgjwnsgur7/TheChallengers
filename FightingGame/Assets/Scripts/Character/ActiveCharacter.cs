@@ -18,6 +18,7 @@ public partial class ActiveCharacter : Character
     Coroutine dropCoroutine;
     Coroutine invincibleCoroutine;
     Coroutine hitImmunityCoroutine;
+    Coroutine dashCoroutine;
 
     public float stunTime;
     public float currStunTime;
@@ -186,13 +187,12 @@ public partial class ActiveCharacter : Character
             currState != ENUM_PLAYER_STATE.Move)
             return;
 
+        if (dashCoroutine != null)
+            return;
+
         base.Dash();
 
-        StartCoroutine(IDashTimeCheck(Managers.Data.gameInfo.dashSkillTime));
-
-        Managers.Input.Notify_UseSkill(0);
-        SetAnimBool("IsDash", true);
-        SetAnimTrigger("DashTrigger");
+        dashCoroutine = StartCoroutine(IDashTimeCheck(Managers.Data.gameInfo.dashSkillTime));
     }
 
     public override void Attack(CharacterParam param)
@@ -568,9 +568,14 @@ public partial class ActiveCharacter : Character
 
     private IEnumerator IDashTimeCheck(float _DashTime)
     {
+        Managers.Input.Notify_UseSkill(0);
+        SetAnimBool("IsDash", true);
+        SetAnimTrigger("DashTrigger");
+
         yield return new WaitForSeconds(_DashTime);
 
         SetAnimBool("IsDash", false);
+        dashCoroutine = null;
     }
 
     protected IEnumerator IInvincibleCheck(float _invincibleTime)

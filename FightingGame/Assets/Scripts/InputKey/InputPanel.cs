@@ -66,31 +66,31 @@ public class InputPanel : MonoBehaviour
 
     public void Notify_UseSkill(int skillNum)
     {
-        InputSkillKey inputSkillKey;
+        InputSkillKey inputSkillKey = null;
 
         switch (skillNum)
         {
             case 0:
                 inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Dash] as InputSkillKey;
-                inputSkillKey.Use_Skill();
                 break;
             case 1:
                 inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
-                inputSkillKey.Use_Skill();
                 break;
             case 2:
                 inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
-                inputSkillKey.Use_Skill();
                 break;
             case 3:
                 inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
-                inputSkillKey.Use_Skill();
                 break;
             case 4:
                 inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
-                inputSkillKey.Use_Skill();
                 break;
         }
+
+        if (inputSkillKey != null)
+            inputSkillKey.Use_Skill();
+        else
+            Debug.Log("inputSkillKey is Null!");
     }
 
     public InputKey[] Get_InputKeys()

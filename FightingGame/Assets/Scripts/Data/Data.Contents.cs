@@ -65,7 +65,7 @@ public class CharacterData : ILoader<int, CharacterInfo>
 public class GameInfo
 {
     public float invincibleTime; // 무적상태에서 기상 후 무적시간
-    public float dashSkillTime; // 대쉬시간
+    public float dashSkillTime; // 대쉬하는 시간
     public float maxComboDamage; // 맥스 콤보 데미지
     public float hitImmunityPower; // 히트보정 시 작용하는 힘의 크기 (밀려나는 힘)
     public float maxGameRunTime; // 게임의 제한시간

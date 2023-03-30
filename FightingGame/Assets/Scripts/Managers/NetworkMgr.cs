@@ -168,6 +168,8 @@ public class NetworkMgr : IRoomPostProcess
         // 7. DataSync를 제외한 모든 애들을 초기화
         PhotonLogicHandler.Instance.OnUnSyncDataAll();
 
+        // 이후에 강제종료, 등 예외처리들이 필요할 것으로 보임
+
         sequenceExecuteCoroutine = null;
     }
 
