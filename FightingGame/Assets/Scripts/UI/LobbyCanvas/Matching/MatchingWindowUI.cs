@@ -42,7 +42,7 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void CreateOrJoin_MatchingRoom()
     {
-        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
     
     public void MathingFailed() => OnClick_Exit();

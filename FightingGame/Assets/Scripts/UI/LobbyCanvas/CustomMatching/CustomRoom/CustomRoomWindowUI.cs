@@ -168,7 +168,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
         CurrMap = PhotonLogicHandler.CurrentMapType;
-        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
 
     public void ExitRoom()
@@ -215,7 +215,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 return;
             }
 
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);
+            PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);
         }
         else
         {

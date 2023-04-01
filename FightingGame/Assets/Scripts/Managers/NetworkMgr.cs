@@ -76,7 +76,7 @@ public class NetworkMgr : IRoomPostProcess
         {
             slaveClientNickname = enterUserNickname;
             Start_SequenceExecuter();
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+            PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }
 
@@ -145,12 +145,12 @@ public class NetworkMgr : IRoomPostProcess
 
         if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
         {
-            PhotonLogicHandler.Instance.OnReadyAll();
+            PhotonLogicHandler.Instance.RequestReadyAll();
         }
 
         // 3. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
         yield return new WaitUntil(Get_ReadyStateAll);
-        PhotonLogicHandler.Instance.OnGameStart(); // 게임 시작을 알림
+        PhotonLogicHandler.Instance.RequestGameStart(); // 게임 시작을 알림
         userSyncMediator.Sync_ShowGameInfo();
 
         // 4. 캐릭터 선택 확인
@@ -166,7 +166,7 @@ public class NetworkMgr : IRoomPostProcess
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
 
         // 7. DataSync를 제외한 모든 애들을 초기화
-        PhotonLogicHandler.Instance.OnUnSyncDataAll();
+        PhotonLogicHandler.Instance.RequestUnSyncDataAll();
 
         // 이후에 강제종료, 등 예외처리들이 필요할 것으로 보임
 

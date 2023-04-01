@@ -88,7 +88,7 @@ public class PlayerCharacter : MonoBehaviour
 
         Summon_Character(_summonCharType, summonPosVec);
 
-        PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
+        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
     }
 
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)

@@ -426,7 +426,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		}
 
         // 여기서 널이 뜨진 않겠지
-        SetUserInfo(Managers.Platform.GetUserID(), Managers.Platform.CurrentLoginType);
+        RequestSetUserInfo(Managers.Platform.GetUserID(), Managers.Platform.CurrentLoginType);
 
         _OnJoinRoom?.Invoke();
         

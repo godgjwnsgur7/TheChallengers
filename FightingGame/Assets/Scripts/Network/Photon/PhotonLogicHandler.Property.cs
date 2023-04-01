@@ -129,27 +129,27 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         return players.All(p => p.CustomProperties.ContainsKey(syncStr) && (bool)p.CustomProperties[syncStr]);
     }
 
-    public void OnSyncData(ENUM_PLAYER_STATE_PROPERTIES playerProperty)
+    public void RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES playerProperty)
     {
         SetCustomPlayerPropertyTable(playerProperty, true, true);
     }
 
-    public void OnUnSyncData(ENUM_PLAYER_STATE_PROPERTIES playerProperty)
+    public void RequestUnSyncData(ENUM_PLAYER_STATE_PROPERTIES playerProperty)
     {
         SetCustomPlayerPropertyTable(playerProperty, false, true);
     }
 
-    public void OnGameStart()
+    public void RequestGameStart()
     {
         SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED, true);
     }
 
-    public void OnGameEnd()
+    public void RequestGameEnd()
     {
         SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED, false);
     }
 
-    public void OnReadyAll()
+    public void RequestReadyAll()
 	{
         foreach (var player in PhotonNetwork.PlayerList)
         {
@@ -159,7 +159,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         RequestEveryPlayerProperty();
     }
 
-    public void OnUnReadyAll()
+    public void RequestUnReadyAll()
 	{
         foreach(var player in PhotonNetwork.PlayerList)
 		{
@@ -169,7 +169,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         RequestEveryPlayerProperty();
     }
 
-    public void OnUnSyncDataAll()
+    public void RequestUnSyncDataAll()
     {
         foreach (var player in PhotonNetwork.PlayerList)
         {
@@ -183,7 +183,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         RequestEveryPlayerProperty();
     }
 
-    private void SetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
+    private void RequestSetUserInfo(string userKey, ENUM_LOGIN_TYPE loginType)
     {
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.USERKEY, userKey, false);
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE, loginType, false);

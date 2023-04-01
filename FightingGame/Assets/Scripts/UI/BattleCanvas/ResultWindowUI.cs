@@ -92,7 +92,7 @@ public class ResultWindowUI : MonoBehaviour
 
         if (PhotonLogicHandler.IsMasterClient)
         {
-            PhotonLogicHandler.Instance.OnGameEnd();
+            PhotonLogicHandler.Instance.RequestGameEnd();
 
             Managers.UI.popupCanvas.Play_FadeOutEffect(GoTo_Lobby);
         }

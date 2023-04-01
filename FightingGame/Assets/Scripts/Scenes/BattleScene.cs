@@ -16,7 +16,7 @@ public class BattleScene : BaseScene
     {
         if(PhotonLogicHandler.IsConnected)
         {
-            PhotonLogicHandler.Instance.OnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
+            PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
             yield return new WaitUntil(Managers.Network.Get_SceneSyncStateAll);
 
             yield return new WaitForSeconds(1.0f); // 씬로드됐어도 1초정도 딜레이
