@@ -150,7 +150,7 @@ public partial class PhotonLogicHandler
 	{
         get
 		{
-            return CurrentLoadingProgress >= Mathf.Epsilon && CurrentLoadingProgress <= 1.0f - Mathf.Epsilon;
+            return CurrentLoadingProgress > Mathf.Epsilon && CurrentLoadingProgress < 1.0f - Mathf.Epsilon;
         }
 	}
 

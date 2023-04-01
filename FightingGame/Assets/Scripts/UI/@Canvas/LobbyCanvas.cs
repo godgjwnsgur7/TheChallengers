@@ -78,9 +78,24 @@ public class LobbyCanvas : BaseCanvas
 
     public void MathingStart()
     {
-        PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, matchingWindow.Open);
+        StartCoroutine(IWaitMatching());
     }
-    
+
+    private IEnumerator IWaitMatching()
+    {
+        int count = 0;
+
+        if (!PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, matchingWindow.Open))
+        {
+            while (!PhotonLogicHandler.Instance.TryLeaveLobby() && count < 5)
+            {
+                yield return null;
+                PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, matchingWindow.Open);
+                count++;
+            }
+        }
+    }
+
     public void MathingSuccess()
     {
 

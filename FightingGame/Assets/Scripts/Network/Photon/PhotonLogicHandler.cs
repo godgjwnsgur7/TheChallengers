@@ -181,7 +181,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        return PhotonNetwork.JoinRandomRoom();
+        bool b = PhotonNetwork.JoinRandomRoom();
+        if (!b)
+            Debug.LogError($"랜덤 룸 접속 실패");
+
+        return b;
     }
 
     public bool TryJoinOrCreateRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.CaveMap, int maxPlayerCount = 2,  bool isCustomRoom = false)
@@ -195,10 +199,15 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
         var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, mapType, isCustomRoom);
-        return PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: roomOptions.CustomRoomProperties,
+        bool b = PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: roomOptions.CustomRoomProperties,
             matchingType: MatchmakingMode.RandomMatching, 
             typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.RANDOM],
             roomOptions: roomOptions);
+
+        if (!b)
+            Debug.LogError($"랜덤 룸 접속 or 생성 실패");
+
+        return b;
     }
 
     public bool TryCreateRoom(string roomName, Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, bool isCustomRoom = false, int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.CaveMap)
@@ -211,7 +220,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
         var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, defaultMapType, isCustomRoom);
 
-        return PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.CUSTOM]);
+        bool b = PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.CUSTOM]);
+        if (!b)
+            Debug.LogError($"룸 생성 실패");
+
+        return b;
     }
 
     private RoomOptions MakeRoomOptions(string nickname, byte maxPlayerCount, ENUM_MAP_TYPE mapType, bool isCustomRoom)
@@ -244,7 +257,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinRoom = _OnJoinRoom;
         this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        return PhotonNetwork.JoinRoom(roomName);
+        bool b = PhotonNetwork.JoinRoom(roomName);
+        if (!b)
+            Debug.LogError($"룸 접속 실패");
+
+        return b;
     }
 
     public bool TryLeaveRoom(Action _OnLeftRoom = null)
@@ -262,7 +279,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 		}
 
         this._OnLeftRoom = _OnLeftRoom;
-        return PhotonNetwork.LeaveRoom();
+
+        bool b = PhotonNetwork.LeaveRoom();
+        if (!b)
+            Debug.LogError($"방을 떠날 수 없습니다.");
+
+        return b;
     }
 
     private IEnumerator TryCallAfterLoadScene(Action onLoadScene)
@@ -288,7 +310,12 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         }
 
         this._OnLeftLobby = _OnLeftLobby;
-        return PhotonNetwork.LeaveLobby();
+
+        bool b = PhotonNetwork.LeaveLobby();
+        if (!b)
+            Debug.LogError($"로비를 떠날 수 없습니다.");
+
+        return b;
     }
 
     public bool TryJoinLobby(ENUM_MATCH_TYPE matchType, Action onSuccess = null, FailedCallBack onfailed = null)
@@ -296,7 +323,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnJoinLobby = onSuccess;
         this._OnJoinLobbyFailed = onfailed;
 
-        return PhotonNetwork.JoinLobby(matchLobbyDictionary[matchType]);
+        bool b = PhotonNetwork.JoinLobby(matchLobbyDictionary[matchType]);
+        if (!b)
+            Debug.LogError($"이미 로비에 있습니다.");
+
+        return b;
     }
 
 	public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> OnProgress = null)
