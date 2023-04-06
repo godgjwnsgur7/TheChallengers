@@ -65,6 +65,9 @@ public class HitAttackObject : AttackObject
             // 이펙트 생성 ( 임시 랜덤 )
             int effectNum = UnityEngine.Random.Range(0, 3);
             Summon_EffectObject(effectNum, randomHitPosVec);
+
+            int effectNum2 = UnityEngine.Random.Range(3, 5);
+            Summon_EffectObject(effectNum2, collision.transform.position);
             
             Sync_DestroyMine();
         }

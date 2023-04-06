@@ -43,11 +43,12 @@ public partial class ActiveCharacter : Character
         var param = MakeSyncAnimParam();
         SyncAnimator(anim, param);
 
+        spriteRenderer.sortingOrder = Managers.OrderLayer.Get_CharacterOrderLayer();
+
         if (isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            Skills_Pooling();
-            spriteRenderer.sortingOrder = Managers.OrderLayer.Get_CharacterOrderLayer();
+            Skills_Pooling();    
         }
         else
             isControl = true;
@@ -56,9 +57,11 @@ public partial class ActiveCharacter : Character
     public virtual void Skills_Pooling()
     {
         // Public Effect
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect1", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect2", 3);
-        Managers.Resource.GenerateInPool("EffectObjects/Basic_AttackedEffect3", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect1}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect2}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect3}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect1}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect2}", 3);
     }
 
     public void Set_Character(ENUM_TEAM_TYPE _teamType)

@@ -136,6 +136,8 @@ namespace FGDefine
         Basic_AttackedEffect1 = 0,
         Basic_AttackedEffect2 = 1,
         Basic_AttackedEffect3 = 2,
+        Basic_SkillAttackedEffect1 = 3,
+        Basic_SkillAttackedEffect2 = 4,
 
         // Knight
         Knight_JumpEffect = 21,
