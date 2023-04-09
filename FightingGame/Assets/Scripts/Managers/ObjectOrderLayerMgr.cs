@@ -37,6 +37,7 @@ public class ObjectOrderLayerMgr
     public void Return_OrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE _layerLevelType, int _orderLayerNum)
     {
         // 만약 해당하는 LayerTag의 가장 상단에 있는 오브젝트가 비활성화됐을 때, 초기화
+        // 요거 전체가 다 리턴됐는지로 로직 변경 예정
         currOrderLayerNumDict.TryGetValue(_layerLevelType, out int currOrderLayerNum);
         if (currOrderLayerNum == _orderLayerNum)
             currOrderLayerNumDict[_layerLevelType] = (int)_layerLevelType * orderLayerGroupMaxCount;
