@@ -650,6 +650,7 @@ public partial class ActiveCharacter : Character
     {
         if (!isControl) return;
 
+        attackObject = null;
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
         EffectObject effectObject = null;

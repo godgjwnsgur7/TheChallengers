@@ -19,7 +19,7 @@ public class ParticleEffectObject : EffectObject
 
     public override void OnEnable()
     {
-        paricleRenderer.sortingOrder = Managers.OrderLayer.Get_SequenceOrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Untagged);
+        paricleRenderer.sortingOrder = Managers.OrderLayer.Get_SequenceOrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Back_Effect);
 
         base.OnEnable();
     }
@@ -29,7 +29,7 @@ public class ParticleEffectObject : EffectObject
         if (pariclePlayCoroutine != null)
             StopCoroutine(pariclePlayCoroutine);
 
-        Managers.OrderLayer.Return_OrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Untagged, paricleRenderer.sortingOrder);
+        Managers.OrderLayer.Return_OrderLayer(ENUM_OBJECTLAYERLEVEL_TYPE.Back_Effect, paricleRenderer.sortingOrder);
 
         base.OnDisable();
     }
