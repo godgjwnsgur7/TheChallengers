@@ -82,6 +82,11 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
+        ExitRoom_CallBack();
+    }
+
+    public void ExitRoom_CallBack()
+    {
         if (sequenceExecuteCoroutine != null)
         {
             CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
@@ -123,8 +128,11 @@ public class NetworkMgr : IRoomPostProcess
 
     public void Start_SequenceExecuter()
     {
-        if (!PhotonLogicHandler.IsMasterClient || sequenceExecuteCoroutine != null)
+        if (!PhotonLogicHandler.IsMasterClient)
             return;
+
+        if(sequenceExecuteCoroutine != null)
+            CoroutineHelper.StopCoroutine(sequenceExecuteCoroutine);
 
         sequenceExecuteCoroutine = CoroutineHelper.StartCoroutine(INetworkSequenceExecuter());
     }
@@ -134,24 +142,29 @@ public class NetworkMgr : IRoomPostProcess
         if (!PhotonLogicHandler.IsMasterClient)
             yield break;
 
+        // 0. 데이터 싱크
+        PhotonLogicHandler.Instance.RequestSyncDataAll();
+
         // 1. 연결 확인
         yield return new WaitUntil(Get_DataSyncStateAll);
-
-        if(userSyncMediator == null)
-            Managers.Resource.InstantiateEveryone("UserSyncMediator"); // 유저싱크메디에이터 생성
-        
-        // 2. 동기화객체 생성 참조 확인
-        yield return new WaitUntil(IsConnect_UserSyncMediator);
 
         if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
         {
             PhotonLogicHandler.Instance.RequestReadyAll();
         }
 
-        // 3. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
+        // 2. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
         yield return new WaitUntil(Get_ReadyStateAll);
-        PhotonLogicHandler.Instance.RequestGameStart(); // 게임 시작을 알림
-        userSyncMediator.Sync_ShowGameInfo();
+        PhotonLogicHandler.Instance.RequestGameStart(); // 게임 시작 상태로 변경
+
+        // 게임 돌입할 때 UserSyncMediator 생성
+        if(userSyncMediator != null)
+            Managers.Resource.Destroy(userSyncMediator.gameObject);
+        Managers.Resource.InstantiateEveryone("UserSyncMediator");
+        
+        // 3. 동기화객체 생성 참조 확인
+        yield return new WaitUntil(IsConnect_UserSyncMediator);
+        userSyncMediator.Sync_ShowGameInfo(); // 캐릭터 선택 창 돌입
 
         // 4. 캐릭터 선택 확인
         yield return new WaitUntil(Get_CharacterSelectedStateAll);
@@ -165,8 +178,8 @@ public class NetworkMgr : IRoomPostProcess
         yield return new WaitUntil(Get_CharacterSyncStateAll);
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
 
-        // 7. DataSync를 제외한 모든 애들을 초기화
-        PhotonLogicHandler.Instance.RequestUnSyncDataAll();
+        // 7. 커스텀 플레이어 프로퍼티 데이터 값 초기화
+        userSyncMediator.Sync_RequestUnSyncDataAll();
 
         // 이후에 강제종료, 등 예외처리들이 필요할 것으로 보임
 
@@ -194,21 +207,21 @@ public class NetworkMgr : IRoomPostProcess
 
     // Get 계열
     public bool IsConnect_UserSyncMediator() => (userSyncMediator != null);
-    protected bool Get_DataSyncStateAll()
+    public bool Get_DataSyncStateAll()
     {
         Debug.Log($"masterSyncData.isDataSync : {masterSyncData.isDataSync}");
         Debug.Log($"slaveSyncData.isDataSync : {slaveSyncData.isDataSync}");
 
         return masterSyncData.isDataSync && slaveSyncData.isDataSync;
     }
-    protected bool Get_ReadyStateAll()
+    public bool Get_ReadyStateAll()
     {
         Debug.Log($"masterSyncData.isReady : {masterSyncData.isReady}");
         Debug.Log($"slaveSyncData.isReady : {slaveSyncData.isReady}");
 
         return masterSyncData.isReady && slaveSyncData.isReady;
     }
-    protected bool Get_CharacterSelectedStateAll()
+    public bool Get_CharacterSelectedStateAll()
     {
         Debug.Log($"masterSyncData.CharSelecctdState : {masterSyncData.characterType != ENUM_CHARACTER_TYPE.Default}");
         Debug.Log($"slaveSyncData.CharSelecctdState : {slaveSyncData.characterType != ENUM_CHARACTER_TYPE.Default}");

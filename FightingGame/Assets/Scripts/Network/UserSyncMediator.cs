@@ -94,10 +94,8 @@ public class UserSyncMediator : MonoBehaviourPhoton
             // 매칭을 돌리고 있는 상태일 경우, 로비에 매칭이 됐음을 알림
             Managers.UI.currCanvas.GetComponent<LobbyCanvas>().MathingCallBack();
         }
-        else
-        {
-            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
-        }
+
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
     }
     
     public void Sync_ShowGameStartInfo()
@@ -108,6 +106,19 @@ public class UserSyncMediator : MonoBehaviourPhoton
     public void ShowGameStartInfo()
     {
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().GameStart();
+    }
+
+    /// <summary>
+    /// Photon의 커스텀 플레이어 프로퍼티 테이블의 데이터 값을 초기 값으로 되돌림
+    /// </summary>
+    public void Sync_RequestUnSyncDataAll()
+    {
+        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, Request_UnSyncDataAll);
+    }
+    [BroadcastMethod]
+    public void Request_UnSyncDataAll()
+    {
+        PhotonLogicHandler.Instance.RequestUnSyncDataAll();
     }
 
     /// <summary>

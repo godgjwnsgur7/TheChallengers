@@ -109,7 +109,7 @@ public class LobbyCanvas : BaseCanvas
     /// </summary>
     public void Set_InTheCustomRoom()
     {
-        customMatching.Set_InTheCustomRoom();
+        customMatching.Open();
     }
 
     private void GoTo_TrainingScene()

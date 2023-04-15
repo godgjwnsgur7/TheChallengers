@@ -149,6 +149,16 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED, false);
     }
 
+    public void RequestSyncDataAll()
+    {
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC, true);
+        }
+
+        RequestEveryPlayerProperty();
+    }
+
     public void RequestReadyAll()
 	{
         foreach (var player in PhotonNetwork.PlayerList)

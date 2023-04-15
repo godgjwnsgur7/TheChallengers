@@ -89,16 +89,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
-        if (PhotonLogicHandler.IsMasterClient)
-            return; // 내가 변경한 정보면 리턴
-
-        if (property.isStarted) // 게임 시작을 알림받음
-        {
-            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
-            return;
-        }
-
-        CurrMap = property.currentMapType;
+        if (!PhotonLogicHandler.IsMasterClient)
+            CurrMap = property.currentMapType;
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
@@ -126,19 +118,21 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if(PhotonLogicHandler.IsMasterClient)
         {
             readyOrStartText.text = "시작";
-            slaveProfile.Clear();
+            if(!PhotonLogicHandler.IsFullRoom)
+                slaveProfile.Clear();
         }
         else
         {
             readyOrStartText.text = "준비";
+            PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }
 
     public void Open()
     {
         Init();
-        Set_CurrRoomInfo();
         this.gameObject.SetActive(true);
+        Set_CurrRoomInfo();
 
         waitInfoSettingCoroutine = StartCoroutine(IWaitInfoSetting());
     }
@@ -147,6 +141,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (!this.gameObject.activeSelf)
             return;
+
+        Managers.Network.ExitRoom_CallBack();
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -168,7 +164,6 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         roomNameText.text = PhotonLogicHandler.CurrentRoomName;
         CurrMap = PhotonLogicHandler.CurrentMapType;
-        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
 
     public void ExitRoom()
@@ -214,6 +209,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 Managers.UI.popupCanvas.Open_NotifyPopup("모든 유저가 준비상태가 아닙니다.");
                 return;
             }
+            
+            if (!Managers.Network.Get_DataSyncStateAll())
+                PhotonLogicHandler.Instance.RequestSyncDataAll();
 
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);
         }

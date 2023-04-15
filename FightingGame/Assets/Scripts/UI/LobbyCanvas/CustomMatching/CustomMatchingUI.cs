@@ -38,11 +38,4 @@ public class CustomMatchingUI : MonoBehaviour
 
         this.gameObject.SetActive(false);
     }
-
-    public void Set_InTheCustomRoom()
-    {
-        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-
-        Open();
-    }
 }

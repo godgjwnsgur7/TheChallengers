@@ -56,8 +56,6 @@ public class MatchingWindowUI : MonoBehaviour
         exitButtonObj.SetActive(false);
         fullLodingImage.gameObject.SetActive(true);
         matchingStateText.text = "매칭 완료!";
-
-        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
     }
 
     public void OnClick_Exit()
