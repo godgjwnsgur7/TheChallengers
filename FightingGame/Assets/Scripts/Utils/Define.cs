@@ -195,20 +195,6 @@ namespace FGDefine
     }
 
     /// <summary>
-    /// 오브젝트 -스프라이트렌더러 우선순위 타입 (높을수록, 위로 올라감)
-    /// </summary>
-    [Serializable]
-    public enum ENUM_OBJECTLAYERLEVEL_TYPE
-    {
-        Untagged = 0,
-        Back_Effect = 1,
-        Character = 2,
-        Front_Effect = 3,
-        Front_Attack = 5,
-        Max = 5,
-    }
-
-    /// <summary>
     /// 씬 이름과 같아야 함
     /// Unknown 제외
     /// </summary>

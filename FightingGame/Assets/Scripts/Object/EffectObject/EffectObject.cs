@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EffectObject : SyncObject
 {
-    [SerializeField] Vector3 subPos;
+    [SerializeField] protected Vector3 subPosVec;
 
     public override void Init()
     {
@@ -17,7 +17,7 @@ public class EffectObject : SyncObject
     {
         Set_PositionAngle(_summonPosVec, _reverseState);
 
-        transform.position += new Vector3(reverseState ? subPos.x * -1 : subPos.x, subPos.y, 0);
+        transform.position += new Vector3(reverseState ? subPosVec.x * -1 : subPosVec.x, subPosVec.y, 0);
         
         gameObject.SetActive(true);
     }
