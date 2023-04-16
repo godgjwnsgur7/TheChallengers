@@ -2075,8 +2075,6 @@ GameObject:
   - component: {fileID: 973984476}
   - component: {fileID: 973984479}
   - component: {fileID: 973984477}
-  - component: {fileID: 973984480}
-  - component: {fileID: 973984478}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -2119,20 +2117,6 @@ MonoBehaviour:
   minBound: {x: 0, y: 0}
   maxBound: {x: 0, y: 0}
   mapCenterPos: {x: 0, y: 0, z: 0}
---- !u!114 &973984478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973984475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a7a47d71b3f7cb4390e1cbb2aebd2fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDefaultListener: 1
-  listenerId: 0
 --- !u!20 &973984479
 Camera:
   m_ObjectHideFlags: 0
@@ -2176,28 +2160,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &973984480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973984475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b11386ac117c7fb44b4c6bd839ab777e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_listeners:
-    initialListenerList: []
-    useDefaultListeners: 1
-  isEnvironmentAware: 0
-  isStaticObject: 0
-  m_positionOffsetData:
-    KeepMe: 0
-    positionOffset: {x: 0, y: 0, z: 0}
-  m_posOffsetData: {fileID: 0}
-  listenerMask: 1
 --- !u!1 &1009031103
 GameObject:
   m_ObjectHideFlags: 0
