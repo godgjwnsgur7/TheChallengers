@@ -9,6 +9,7 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] GameStartWindowUI gameStartWindow;
+    [SerializeField] SettingWindow settingWindow;
 
     public override void Init()
     {
@@ -50,6 +51,24 @@ public class LobbyCanvas : BaseCanvas
         Managers.UI.popupCanvas.Play_FadeOutEffect(gameStartWindow.Open);
     }
 
+    public void MathingStart()
+    {
+        StartCoroutine(IWaitMatching());
+    }
+
+    /// <summary>
+    /// 커스텀룸 안에 있는 상태로 로비씬으로 넘어왔을 때 호출
+    /// </summary>
+    public void Set_InTheCustomRoom()
+    {
+        customMatching.Open();
+    }
+
+    private void GoTo_TrainingScene()
+    {
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
+    }
+
     public void OnClick_CustomMathing()
     {
         Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click);
@@ -75,10 +94,14 @@ public class LobbyCanvas : BaseCanvas
             Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.");
         }
     }
-
-    public void MathingStart()
+    public void OnClick_Training()
     {
-        StartCoroutine(IWaitMatching());
+        Managers.UI.popupCanvas.Open_SelectPopup(GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
+    }
+
+    public void OnClick_Setting()
+    {
+        settingWindow.Open();
     }
 
     private IEnumerator IWaitMatching()
@@ -94,33 +117,5 @@ public class LobbyCanvas : BaseCanvas
                 count++;
             }
         }
-    }
-
-    public void MathingSuccess()
-    {
-
-    }
-
-    public void OnClick_Training() => Managers.UI.popupCanvas.Open_SelectPopup
-        (GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
-
-    /// <summary>
-    /// 커스텀룸 안에 있는 상태로 로비씬으로 넘어왔을 때 호출
-    /// </summary>
-    public void Set_InTheCustomRoom()
-    {
-        customMatching.Open();
-    }
-
-    private void GoTo_TrainingScene()
-    {
-        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
-    }
-
-    public void Open_InputKeyManagement(Transform _transform)
-    {
-        InputKeyManagement go = Managers.Input.Get_InputKeyManagement();
-        go.transform.parent = _transform;
-        go.Init();
     }
 }

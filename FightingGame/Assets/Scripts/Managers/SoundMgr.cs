@@ -7,12 +7,12 @@ public enum ENUM_SOUND_TYPE
 {
     BGM = 0,
     SFX = 1,
-    Max = 2,
+    MASTER = 2,
 }
 
 public class SoundMgr
 {
-    AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max]; // BGM, SFX
+    AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.MASTER]; // BGM, SFX
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>(); // 키 : 파일경로
 
     Coroutine fadeOutInBGMCoroutine;
@@ -179,7 +179,7 @@ public class SoundMgr_Reference
 {
     List<VolumeData> volumeDataList = null;
 
-    AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.Max];
+    AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.MASTER];
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
     Coroutine bgmCoroutine;

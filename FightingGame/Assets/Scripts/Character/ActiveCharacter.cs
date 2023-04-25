@@ -141,6 +141,12 @@ public partial class ActiveCharacter : Character
 
         if (anim.GetBool("IsMove"))
             SetAnimBool("IsMove", false);
+
+        if(jumpState)
+        {
+            SetAnimBool("IsDrop", true);
+            SetAnimTrigger("DropTrigger");
+        }
     }
 
     public override void Move(CharacterParam param)
