@@ -19,6 +19,6 @@ public class BaseMap : MonoBehaviour
 
     private void Start()
     {
-        Managers.Sound.Play_BGM(FGDefine.ENUM_BGM_TYPE.Battle); // 임시
+        Managers.Sound.Play_BGM(FGDefine.ENUM_BGM_TYPE.CaveMap); // 임시
     }
 }

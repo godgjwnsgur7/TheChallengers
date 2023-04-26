@@ -7,8 +7,8 @@ public class SoundTestCanvas : BaseCanvas
 {
     [SerializeField] SettingWindow settingWindow;
 
-    [SerializeField] ENUM_BGM_TYPE BGM_Type;
-    [SerializeField] ENUM_SFX_TYPE SFX_Type;
+    [SerializeField] ENUM_BGM_TYPE BGM_Type = ENUM_BGM_TYPE.Test;
+    [SerializeField] ENUM_SFX_TYPE SFX_Type = ENUM_SFX_TYPE.Test1;
 
     private void Start()
     {

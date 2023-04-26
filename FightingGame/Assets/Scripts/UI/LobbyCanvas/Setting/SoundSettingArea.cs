@@ -40,9 +40,6 @@ public class SoundSettingArea : MonoBehaviour
 
     public void Change_MuteState(bool _isMute)
     {
-        if (isMute == _isMute)
-            return;
-
         isMute = _isMute;
 
         String str = isMute ? "Mute_Button_On" : "Mute_Button_Off";
@@ -56,7 +53,7 @@ public class SoundSettingArea : MonoBehaviour
         if (isMuteLock)
             return;
 
-        muteLockCoroutine = StartCoroutine(IMuteButtonLock(1.0f));
+        muteLockCoroutine = StartCoroutine(IMuteButtonLock(0.5f));
 
         isMute = !isMute;
 

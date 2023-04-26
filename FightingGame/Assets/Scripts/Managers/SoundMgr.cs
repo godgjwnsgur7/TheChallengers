@@ -17,7 +17,7 @@ public class SoundMgr
 
     Coroutine fadeOutInBGMCoroutine;
 
-    VolumeData volumeData;
+    VolumeData volumeData = null;
     float currBgmVolume;
     float currSfxVolume;
 
@@ -52,8 +52,7 @@ public class SoundMgr
 
     public VolumeData Get_CurrVolumeData()
     {
-        if (volumeData == null)
-            volumeData = PlayerPrefsManagement.Load_VolumeData();
+        volumeData = PlayerPrefsManagement.Load_VolumeData();
 
         return volumeData;
     }
@@ -105,6 +104,8 @@ public class SoundMgr
                 audioSources[(int)ENUM_SOUND_TYPE.SFX].mute = _isMute;
                 break;
         }
+
+        PlayerPrefsManagement.Save_VolumeData(volumeData);
     }
 
     private AudioClip GetOrAddAudioClip(string path)
@@ -127,15 +128,14 @@ public class SoundMgr
 
     public void Play_BGM(ENUM_BGM_TYPE bgmType)
     {
-        if (currBGM == bgmType)
-            return;
-
         if (fadeOutInBGMCoroutine != null)
             CoroutineHelper.StopCoroutine(fadeOutInBGMCoroutine);
 
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
 
-        BgmSound bgmSoundData = Managers.Data.BgmSoundDict[(int)bgmType];
+        BgmSound bgmSoundData = null;
+        if (Managers.Data.BgmSoundDict.ContainsKey((int)bgmType))
+            bgmSoundData = Managers.Data.BgmSoundDict[(int)bgmType];
 
         if (bgmSoundData != null)
         {
@@ -172,7 +172,10 @@ public class SoundMgr
         if (audioClip == null || _currSfxVolume == 0)
             return;
 
-        SfxSound sfxSoundData = Managers.Data.SfxSoundDict[(int)sfxType];
+        SfxSound sfxSoundData = null;
+
+        if (Managers.Data.SfxSoundDict.ContainsKey((int)sfxType))
+            sfxSoundData = Managers.Data.SfxSoundDict[(int)sfxType];
 
         if (sfxSoundData != null)
         {

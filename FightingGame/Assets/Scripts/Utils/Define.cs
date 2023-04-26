@@ -161,10 +161,11 @@ namespace FGDefine
     public enum ENUM_BGM_TYPE
     {
         Unknown = 0,
-        Main = 1,
-        Battle = 2,
-        Test = 3,
+        Test = 1,
+        Main = 2,
+        CaveMap = 3,
 
+        MAX,
     }
 
     /// <summary>
@@ -174,7 +175,8 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-
+        Test1 = 1,
+        Test2 = 2,
     }
     
     [Serializable]
