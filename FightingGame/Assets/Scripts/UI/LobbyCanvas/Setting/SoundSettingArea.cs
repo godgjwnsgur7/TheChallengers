@@ -27,19 +27,19 @@ public class SoundSettingArea : MonoBehaviour
     public void Init(Action<ENUM_SOUND_TYPE, float> _updataVolumeDataCallBack
         , Action<ENUM_SOUND_TYPE, bool> _updateMuteStateCallBack, float _volumeValue, bool _isMute)
     {
-        Change_MuteState(false);
-
         updataVolumeDataCallBack = _updataVolumeDataCallBack;
         updateMuteStateCallBack = _updateMuteStateCallBack;
 
         slider.value = _volumeValue;
-        isMute = _isMute;
 
-        Change_MuteState(isMute);
+        Change_MuteState(_isMute);
     }
 
     public void Change_MuteState(bool _isMute)
     {
+        if (isMute == _isMute)
+            return;
+
         isMute = _isMute;
 
         String str = isMute ? "Mute_Button_On" : "Mute_Button_Off";

@@ -104,8 +104,6 @@ public class SoundMgr
                 audioSources[(int)ENUM_SOUND_TYPE.SFX].mute = _isMute;
                 break;
         }
-
-        PlayerPrefsManagement.Save_VolumeData(volumeData);
     }
 
     private AudioClip GetOrAddAudioClip(string path)
