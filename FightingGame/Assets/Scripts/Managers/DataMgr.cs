@@ -42,12 +42,16 @@ public class DataMgr
     };
 
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
+    public Dictionary<int, BgmSound> BgmSoundDict { get; private set; } = new Dictionary<int, BgmSound>();
+    public Dictionary<int, SfxSound> SfxSoundDict { get; private set; } = new Dictionary<int, SfxSound>();
     public Dictionary<int, CharacterInfo> CharInfoDict { get; private set; } = new Dictionary<int, CharacterInfo>();
     public GameInfo gameInfo { get; private set; } = new GameInfo();
 
     public void Init()
     {
         SkillDict = LoadJson<SkillData, int, Skill>("SkillData").MakeDict();
+        BgmSoundDict = LoadJson<BgmSoundData, int, BgmSound>("BgmSoundData").MakeDict();
+        SfxSoundDict = LoadJson<SfxSoundData, int, SfxSound>("SfxSoundData").MakeDict();
         CharInfoDict = LoadJson<CharacterData, int, CharacterInfo>("CharacterData").MakeDict();
         gameInfo = LoadJson<GameInfo>("GameData");
     }

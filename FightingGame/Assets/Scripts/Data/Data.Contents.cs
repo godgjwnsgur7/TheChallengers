@@ -30,6 +30,53 @@ public class SkillData : ILoader<int, Skill>
 }
 #endregion
 
+#region Sounds
+[Serializable]
+public class BgmSound
+{
+    public int bgmSoundType; // ENUM_BGM_TYPE (Key)
+    public int priority;
+    public float volume;
+    public float pitch;
+    public float stereoPan;
+    public float spatialBlend;
+    public float reverbZoneMix;
+}
+
+public class BgmSoundData : ILoader<int, BgmSound>
+{
+    public List<BgmSound> BgmSounds = new List<BgmSound>();
+
+    public Dictionary<int, BgmSound> MakeDict()
+    {
+        Dictionary<int, BgmSound> bgmSoundDict = new Dictionary<int, BgmSound>();
+        foreach (BgmSound bgmSound in BgmSounds)
+            bgmSoundDict.Add(bgmSound.bgmSoundType, bgmSound);
+        return bgmSoundDict;
+    }
+}
+
+[Serializable]
+public class SfxSound
+{
+    public int sfxSoundType; // ENUM_SFX_TYPE (Key)
+    public float volume;
+}
+
+public class SfxSoundData : ILoader<int, SfxSound>
+{
+    public List<SfxSound> SfxSounds = new List<SfxSound>();
+
+    public Dictionary<int, SfxSound> MakeDict()
+    {
+        Dictionary<int, SfxSound> sfxSoundDict = new Dictionary<int, SfxSound>();
+        foreach (SfxSound sfxSound in SfxSounds)
+            sfxSoundDict.Add(sfxSound.sfxSoundType, sfxSound);
+        return sfxSoundDict;
+    }
+}
+#endregion
+
 #region CharacterInfos
 [Serializable]
 public class CharacterInfo
