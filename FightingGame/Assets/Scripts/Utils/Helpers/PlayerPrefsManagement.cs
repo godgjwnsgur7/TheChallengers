@@ -24,15 +24,24 @@ public class KeySettingData
 
 public class VolumeData
 {
-    public float wholeVolume;
+    public float masterVolume;
     public float bgmVolume;
     public float sfxVolume;
 
-    public VolumeData(float _wholeVolume, float _bgmVolume, float _sfxVolume)
+    public bool isBgmMute;
+    public bool isSfxMute;
+
+    public bool isVibration;
+
+    public VolumeData(float _masterVolume, float _bgmVolume, float _sfxVolume
+        , bool _isBgmMute, bool _isSfxMute, bool _isVibration)
     {
-        wholeVolume = _wholeVolume;
+        masterVolume = _masterVolume;
         bgmVolume = _bgmVolume;
         sfxVolume = _sfxVolume;
+        isBgmMute = _isBgmMute;
+        isSfxMute = _isSfxMute;
+        isVibration = _isVibration;
     }
 }
 
@@ -123,9 +132,12 @@ public class PlayerPrefsManagement : MonoBehaviour
             return false;
         }
 
-        PlayerPrefs.SetFloat("Whole_Volume", volumeData.wholeVolume);
+        PlayerPrefs.SetFloat("Master_Volume", volumeData.masterVolume);
         PlayerPrefs.SetFloat("BGM_Volume", volumeData.bgmVolume);
         PlayerPrefs.SetFloat("SFX_Volume", volumeData.sfxVolume);
+        PlayerPrefs.SetInt("BGM_Mute", volumeData.isBgmMute ? 1 : 0);
+        PlayerPrefs.SetInt("SFX_Mute", volumeData.isSfxMute ? 1 : 0);
+        PlayerPrefs.SetInt("Is_Vibration", volumeData.isVibration ? 1 : 0);
 
         PlayerPrefs.Save();
         Managers.Sound.Update_VolumeData(volumeData);
@@ -135,18 +147,21 @@ public class PlayerPrefsManagement : MonoBehaviour
     public static VolumeData Load_VolumeData()
     {
         // 만약, 저장된 데이터가 없다면 기본 값으로 저장 후 리턴
-        if(!PlayerPrefs.HasKey("Whole_Volume"))
+        if(!PlayerPrefs.HasKey("Master_Volume"))
         {
-            VolumeData tempVolumeData = new VolumeData(0.5f, 0.5f, 1.0f); // 기본 값
+            VolumeData tempVolumeData = new VolumeData(0.5f, 0.5f, 1.0f, false, false, true); // 기본 값
             Save_VolumeData(tempVolumeData); 
             return tempVolumeData;
         }
 
-        float _wholeVolume = PlayerPrefs.GetFloat("Whole_Volume");
+        float _wholeVolume = PlayerPrefs.GetFloat("Master_Volume");
         float _bgmVolume = PlayerPrefs.GetFloat("BGM_Volume");
         float _sfxVolume = PlayerPrefs.GetFloat("SFX_Volume");
+        bool _isBgmMute = PlayerPrefs.GetInt("BGM_Mute") == 1;
+        bool _isSfxMute = PlayerPrefs.GetInt("SFX_Mute") == 1;
+        bool _isVibration = PlayerPrefs.GetInt("Is_Vibration") == 1;
 
-        VolumeData volumeData = new VolumeData(_wholeVolume, _bgmVolume, _sfxVolume);
+        VolumeData volumeData = new VolumeData(_wholeVolume, _bgmVolume, _sfxVolume, _isBgmMute, _isSfxMute, _isVibration);
 
         return volumeData;
     }

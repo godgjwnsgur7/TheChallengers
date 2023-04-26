@@ -23,6 +23,13 @@ public class SettingWindow : MonoBehaviour
     public void Close()
     {
         gameObject.SetActive(false);
+
+        if (soundSettingWindow.gameObject.activeSelf)
+            soundSettingWindow.Close();
+        if (controlSettingWindow.activeSelf)
+            controlSettingWindow.SetActive(false);
+        if (accountsInfoWindow.activeSelf)
+            accountsInfoWindow.SetActive(false);
     }
 
     public void OnClick_SoundSetting()
