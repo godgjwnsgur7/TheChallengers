@@ -60,7 +60,12 @@ public class BgmSoundData : ILoader<int, BgmSound>
 public class SfxSound
 {
     public int sfxSoundType; // ENUM_SFX_TYPE (Key)
+    public int priority;
     public float volume;
+    public float pitch;
+    public float stereoPan;
+    public float spatialBlend;
+    public float reverbZoneMix;
 }
 
 public class SfxSoundData : ILoader<int, SfxSound>

@@ -174,7 +174,6 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        UI_Click = 0,
 
     }
     

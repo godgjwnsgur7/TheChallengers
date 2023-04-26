@@ -18,6 +18,8 @@ public class SoundMgr
     Coroutine fadeOutInBGMCoroutine;
 
     VolumeData volumeData;
+    float currBgmVolume;
+    float currSfxVolume;
 
     ENUM_BGM_TYPE currBGM = ENUM_BGM_TYPE.Unknown;
 
@@ -132,19 +134,53 @@ public class SoundMgr
             CoroutineHelper.StopCoroutine(fadeOutInBGMCoroutine);
 
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
+
+        BgmSound bgmSoundData = Managers.Data.BgmSoundDict[(int)bgmType];
+
+        if (bgmSoundData != null)
+        {
+            currBgmVolume *= bgmSoundData.volume;
+            Set_BgmAudioSource(bgmSoundData);
+        }
+    }
+
+    private void Set_BgmAudioSource(BgmSound _bgmSoundData)
+    {
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].priority = _bgmSoundData.priority;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].pitch = _bgmSoundData.pitch;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].panStereo = _bgmSoundData.stereoPan;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].spatialBlend = _bgmSoundData.spatialBlend;
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].reverbZoneMix = _bgmSoundData.reverbZoneMix;
+    }
+
+    private void Set_SfxAudioSource(SfxSound _sfxSoundData)
+    {
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].priority = _sfxSoundData.priority;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].pitch = _sfxSoundData.pitch;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].panStereo = _sfxSoundData.stereoPan;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].spatialBlend = _sfxSoundData.spatialBlend;
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].reverbZoneMix = _sfxSoundData.reverbZoneMix;
     }
 
     public void Play_SFX(ENUM_SFX_TYPE sfxType)
     {
-        float currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
+        float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
 
         string path = $"Sounds/SFX/{sfxType}";
         AudioClip audioClip = GetOrAddAudioClip(path);
 
-        if (audioClip == null || currSfxVolume == 0)
+        if (audioClip == null || _currSfxVolume == 0)
             return;
 
-        audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = currSfxVolume;
+        SfxSound sfxSoundData = Managers.Data.SfxSoundDict[(int)sfxType];
+
+        if (sfxSoundData != null)
+        {
+            _currSfxVolume *= sfxSoundData.volume;
+            Set_SfxAudioSource(sfxSoundData);
+        }
+
+        audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = _currSfxVolume;
         audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
     }
 
