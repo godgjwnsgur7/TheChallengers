@@ -18,8 +18,6 @@ public class SoundMgr
     Coroutine fadeOutInBGMCoroutine;
 
     VolumeData volumeData = null;
-    float currBgmVolume;
-    float currSfxVolume;
 
     ENUM_BGM_TYPE currBGM = ENUM_BGM_TYPE.Unknown;
 
@@ -48,6 +46,11 @@ public class SoundMgr
     public void Clear()
     {
         Play_BGM(ENUM_BGM_TYPE.Unknown);
+    }
+
+    public void Set_Vibration(bool _isVibration)
+    {
+        volumeData.isVibration = _isVibration;
     }
 
     public VolumeData Get_CurrVolumeData()
@@ -129,6 +132,8 @@ public class SoundMgr
         if (fadeOutInBGMCoroutine != null)
             CoroutineHelper.StopCoroutine(fadeOutInBGMCoroutine);
 
+        // BGM 사운드 세팅 관련 Master * BGMSound * BGMSoundData 이렇게 들어가야돼ㅋㅋ
+
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
 
         BgmSound bgmSoundData = null;
@@ -137,7 +142,6 @@ public class SoundMgr
 
         if (bgmSoundData != null)
         {
-            currBgmVolume *= bgmSoundData.volume;
             Set_BgmAudioSource(bgmSoundData);
         }
     }

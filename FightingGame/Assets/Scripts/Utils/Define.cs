@@ -175,8 +175,8 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        Test1 = 1,
-        Test2 = 2,
+        Test1 = 0,
+        Test2 = 1,
     }
     
     [Serializable]

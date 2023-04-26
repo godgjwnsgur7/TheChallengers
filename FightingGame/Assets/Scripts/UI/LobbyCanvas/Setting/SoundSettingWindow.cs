@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class SoundSettingWindow : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class SoundSettingWindow : MonoBehaviour
     [SerializeField] SoundSettingArea sfxSound;
     [SerializeField] Image vibrationSettingImage;
 
-    bool isVibration;
+    bool isVibration = false;
 
     public void Open()
     {
@@ -20,6 +21,7 @@ public class SoundSettingWindow : MonoBehaviour
         masterSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.masterVolume, isMasterMute);
         bgmSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.bgmVolume, volumeData.isBgmMute);
         sfxSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.sfxVolume, volumeData.isSfxMute);
+        Set_IsVibrationBtn(volumeData.isVibration);
 
         gameObject.SetActive(true);
     }
@@ -60,5 +62,22 @@ public class SoundSettingWindow : MonoBehaviour
         {
             masterSound.Change_MuteState(false);
         }
+    }
+
+    public void OnClick_Vibration()
+    {
+        Set_IsVibrationBtn(!isVibration);
+    }
+
+    public void Set_IsVibrationBtn(bool _isVibration)
+    {
+        if (isVibration == _isVibration)
+            return;
+
+        Managers.Sound.Set_Vibration(_isVibration);
+        isVibration = _isVibration;
+
+        String str = isVibration ? "Vibration_Button_On" : "Vibration_Button_Off";
+        vibrationSettingImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/{str}");
     }
 }
