@@ -186,11 +186,9 @@ namespace FGDefine
         Knight_JumpAttack = 34,
         Knight_JumpUp = 35,
         Knight_Landing = 36,
-        Knight_DashSkill = 40,
-        Knight_SmashSkill = 41,
-        Knight_ThrowSkill = 42,
-        
-
+        Knight_DashSkill = 37,
+        Knight_SmashSkill = 38,
+        Knight_ThrowSkill = 39,
     }
 
     [Serializable]

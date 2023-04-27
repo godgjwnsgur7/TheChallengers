@@ -49,7 +49,7 @@ public partial class ActiveCharacter : Character
         // Sound
         if(audioSource == null)
             audioSource = GetComponent<AudioSource>();
-        Managers.Sound.Set_SoundSetting(audioSource);
+        Managers.Sound.Set_SFXSoundSetting(audioSource);
 
         if (isServerSyncState)
         {

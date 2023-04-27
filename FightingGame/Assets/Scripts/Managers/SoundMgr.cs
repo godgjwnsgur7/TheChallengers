@@ -52,7 +52,9 @@ public class SoundMgr
             }
 
             audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true; // BGM은 반복 무한 재생
-            Set_SoundSetting(audioSources[(int)ENUM_SOUND_TYPE.SFX]); // SFX은 3D사운드
+
+            // SFX 3D사운드 기본 값
+            Set_SFXSoundSetting(audioSources[(int)ENUM_SOUND_TYPE.SFX]);
 
             volumeData = PlayerPrefsManagement.Load_VolumeData();
         }
@@ -63,8 +65,11 @@ public class SoundMgr
         Play_BGM(ENUM_BGM_TYPE.Unknown);
     }
 
-    public void Set_SoundSetting(AudioSource audioSource)
+    public void Set_SFXSoundSetting(AudioSource audioSource)
     {
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.spatialBlend = 1.0f;
+
         SoundSettingInfo soundSettingInfo = Managers.Data.soundSettingInfo;
         audioSource.dopplerLevel = soundSettingInfo.dopplerLevel;
         audioSource.spread = soundSettingInfo.spread;
