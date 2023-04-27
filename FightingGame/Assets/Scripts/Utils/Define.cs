@@ -177,8 +177,19 @@ namespace FGDefine
     {
         Test1 = 0,
         Test2 = 1,
+
+
+        // Knight
+        Knight_Attack1 = 31,
+        Knight_Attack2 = 32,
+        Knight_Attack3 = 33,
+        Knight_JumpAttack = 34,
+        Knight_DashSkill = 35,
+        Knight_SmashSkill = 36,
+        Knight_ThrowSkill = 37,
+
     }
-    
+
     [Serializable]
     public enum ENUM_PLAYER_STATE
     {

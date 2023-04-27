@@ -132,18 +132,8 @@ public class SoundMgr
         if (fadeOutInBGMCoroutine != null)
             CoroutineHelper.StopCoroutine(fadeOutInBGMCoroutine);
 
-        // BGM 사운드 세팅 관련 Master * BGMSound * BGMSoundData 이렇게 들어가야돼ㅋㅋ
-
+        // 사운드 관련 구현부는 코루틴 안에서 수행
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
-
-        BgmSound bgmSoundData = null;
-        if (Managers.Data.BgmSoundDict.ContainsKey((int)bgmType))
-            bgmSoundData = Managers.Data.BgmSoundDict[(int)bgmType];
-
-        if (bgmSoundData != null)
-        {
-            Set_BgmAudioSource(bgmSoundData);
-        }
     }
 
     private void Set_BgmAudioSource(BgmSound _bgmSoundData)
@@ -171,7 +161,7 @@ public class SoundMgr
         string path = $"Sounds/SFX/{sfxType}";
         AudioClip audioClip = GetOrAddAudioClip(path);
 
-        if (audioClip == null || _currSfxVolume == 0)
+        if (audioClip == null)
             return;
 
         SfxSound sfxSoundData = null;
@@ -196,11 +186,12 @@ public class SoundMgr
 
     private IEnumerator IFadeOutIn_BGM(ENUM_BGM_TYPE bgmType)
     {
+        float _currBgmVolume = volumeData.masterVolume * volumeData.bgmVolume;
+        float currVolume = audioSources[(int)ENUM_SOUND_TYPE.BGM].volume;
+
         string path = $"Sounds/BGM/{bgmType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);
-
-        float currVolume = audioSources[(int)ENUM_SOUND_TYPE.BGM].volume;
 
         if (audioSources[(int)ENUM_SOUND_TYPE.BGM].isPlaying) // 실행 중일 경우
         {
@@ -223,10 +214,20 @@ public class SoundMgr
 
         if (bgmType != ENUM_BGM_TYPE.Unknown)
         {
+            BgmSound bgmSoundData = null;
+            if (Managers.Data.BgmSoundDict.ContainsKey((int)bgmType))
+                bgmSoundData = Managers.Data.BgmSoundDict[(int)bgmType];
+
+            if (bgmSoundData != null)
+            {
+                _currBgmVolume *= bgmSoundData.volume;
+                Set_BgmAudioSource(bgmSoundData);
+            }
+
             audioSources[(int)ENUM_SOUND_TYPE.BGM].Play();
 
             // FadeIn
-            while (currVolume < 0.9f)
+            while (currVolume < _currBgmVolume)
             {
                 currVolume += Time.deltaTime;
                 Update_BGMAudioSource(currVolume);
@@ -234,9 +235,8 @@ public class SoundMgr
                 yield return null;
             }
 
-            currVolume = 1.0f;
+            currVolume = _currBgmVolume;
             Update_BGMAudioSource(currVolume);
-
         }
         else // BGM을 끌 경우
         {

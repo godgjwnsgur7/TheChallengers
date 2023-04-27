@@ -727,6 +727,11 @@ public partial class ActiveCharacter : Character
             Push_Rigid2D(Vector2.zero);
     }
 
+    protected void AnimEvent_PlaySFX(int SfxTypeNum)
+    {
+        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)SfxTypeNum);
+    }
+
     #endregion
 
     public void Set_inputArrowDir(float _inputArrowDir)
