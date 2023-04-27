@@ -9,6 +9,7 @@ public partial class ActiveCharacter : Character
 {
     protected Animator anim;
     protected SpriteRenderer spriteRenderer;
+    protected AudioSource audioSource;
 
     protected AttackObject attackObject;
     Action<float> OnHit;
@@ -44,6 +45,11 @@ public partial class ActiveCharacter : Character
         SyncAnimator(anim, param);
 
         spriteRenderer.sortingOrder = Managers.OrderLayer.Get_CharacterOrderLayer();
+
+        // Sound
+        if(audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+        Managers.Sound.Set_SoundSetting(audioSource);
 
         if (isServerSyncState)
         {
@@ -727,9 +733,23 @@ public partial class ActiveCharacter : Character
             Push_Rigid2D(Vector2.zero);
     }
 
-    protected void AnimEvent_PlaySFX(int SfxTypeNum)
+    protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
-        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)SfxTypeNum);
+        AudioClipData audioClipData = Managers.Sound.Get_SFXAudioClipData((ENUM_SFX_TYPE)sfxTypeNum);
+
+        if (audioClipData == null)
+            return;
+
+        if(audioClipData.sfxSound != null)
+        {
+            audioSource.priority = audioClipData.sfxSound.priority;
+            audioSource.pitch = audioClipData.sfxSound.pitch;
+            audioSource.panStereo = audioClipData.sfxSound.stereoPan;
+            audioSource.spatialBlend = audioClipData.sfxSound.spatialBlend;
+            audioSource.reverbZoneMix = audioClipData.sfxSound.reverbZoneMix;
+        }
+        audioSource.volume = audioClipData.volume;
+        audioSource.PlayOneShot(audioClipData.audioClip);
     }
 
     #endregion

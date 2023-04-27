@@ -10,6 +10,20 @@ public enum ENUM_SOUND_TYPE
     MASTER = 2,
 }
 
+public class AudioClipData
+{
+    public AudioClip audioClip;
+    public SfxSound sfxSound;
+    public float volume;
+
+    public AudioClipData(AudioClip _audioClip, SfxSound _sfxSound, float _volume)
+    {
+        audioClip = _audioClip;
+        sfxSound = _sfxSound;
+        volume = _volume;
+    }
+}
+
 public class SoundMgr
 {
     AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.MASTER]; // BGM, SFX
@@ -38,6 +52,7 @@ public class SoundMgr
             }
 
             audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true; // BGM은 반복 무한 재생
+            Set_SoundSetting(audioSources[(int)ENUM_SOUND_TYPE.SFX]); // SFX은 3D사운드
 
             volumeData = PlayerPrefsManagement.Load_VolumeData();
         }
@@ -46,6 +61,15 @@ public class SoundMgr
     public void Clear()
     {
         Play_BGM(ENUM_BGM_TYPE.Unknown);
+    }
+
+    public void Set_SoundSetting(AudioSource audioSource)
+    {
+        SoundSettingInfo soundSettingInfo = Managers.Data.soundSettingInfo;
+        audioSource.dopplerLevel = soundSettingInfo.dopplerLevel;
+        audioSource.spread = soundSettingInfo.spread;
+        audioSource.minDistance = soundSettingInfo.minDistance;
+        audioSource.maxDistance = soundSettingInfo.maxDistance;
     }
 
     public void Set_Vibration(bool _isVibration)
@@ -132,7 +156,7 @@ public class SoundMgr
         if (fadeOutInBGMCoroutine != null)
             CoroutineHelper.StopCoroutine(fadeOutInBGMCoroutine);
 
-        // 사운드 관련 구현부는 코루틴 안에서 수행
+        // BGM 사운드 구현부는 코루틴 안에서 수행
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
     }
 
@@ -177,6 +201,31 @@ public class SoundMgr
 
         audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = _currSfxVolume;
         audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
+    }
+
+    public AudioClipData Get_SFXAudioClipData(ENUM_SFX_TYPE sfxType)
+    {
+        float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
+
+        string path = $"Sounds/SFX/{sfxType}";
+        AudioClip audioClip = GetOrAddAudioClip(path);
+
+        if (audioClip == null)
+            return null;
+
+        SfxSound sfxSoundData = null;
+
+        if (Managers.Data.SfxSoundDict.ContainsKey((int)sfxType))
+            sfxSoundData = Managers.Data.SfxSoundDict[(int)sfxType];
+
+        if (sfxSoundData != null)
+        {
+            _currSfxVolume *= sfxSoundData.volume;
+            Set_SfxAudioSource(sfxSoundData);
+        }
+
+        AudioClipData audioClipData = new AudioClipData(audioClip, sfxSoundData, _currSfxVolume);
+        return audioClipData;
     }
 
     private void Update_BGMAudioSource(float _currVolume)

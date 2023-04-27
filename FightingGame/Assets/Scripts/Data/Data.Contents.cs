@@ -123,3 +123,14 @@ public class GameInfo
     public float maxGameRunTime; // 게임의 제한시간
 }
 #endregion
+
+#region SoundSettingInfo
+[Serializable]
+public class SoundSettingInfo
+{
+    public float dopplerLevel; // 도플러 레벨 ( 도플러 효과의 정도 )
+    public int spread; // 오디오 소스의 위치로 부터 3D stereo, 멀티채널 사운드가 퍼지는 각도
+    public float minDistance; // 3D 공간에서 소리가 들리는 최소 거리
+    public float maxDistance; // 3D 공간에서 소리가 들리는 최대 거리
+}
+#endregion
