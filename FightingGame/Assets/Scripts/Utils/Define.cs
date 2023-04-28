@@ -189,6 +189,7 @@ namespace FGDefine
         Knight_DashSkill = 37,
         Knight_SmashSkill = 38,
         Knight_ThrowSkill = 39,
+
     }
 
     [Serializable]

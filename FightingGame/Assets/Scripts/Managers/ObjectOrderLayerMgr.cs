@@ -20,15 +20,8 @@ public enum ENUM_OBJECTLAYERLEVEL_TYPE
     Max = 5,
 }
 
-
-// 1. Back Effect
-// 2. Enemy Effect ( Back Attack Effect, Charater, Front Effect )
-// 3. My Effect ( Back Attack Effect, Charater, Front Effect )
-// 4. Front Attack Effect 
-
 public class ObjectOrderLayerMgr
 {
-    
     Dictionary<ENUM_OBJECTLAYERLEVEL_TYPE, int> currOrderLayerNumDict = new Dictionary<ENUM_OBJECTLAYERLEVEL_TYPE, int>();
     int orderLayerGroupMaxCount = 20;
 

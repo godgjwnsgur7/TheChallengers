@@ -6,6 +6,7 @@ using System;
 
 public class HitAttackObject : AttackObject
 {
+    [SerializeField] bool isSkill;
     protected Skill skillValue;
     Coroutine runTimeCheckCoroutine = null;
 
@@ -63,11 +64,10 @@ public class HitAttackObject : AttackObject
             randomHitPosVec.y += UnityEngine.Random.Range(-0.3f, 1.0f);
 
             // 이펙트 생성 ( 임시 랜덤 )
-            int effectNum = UnityEngine.Random.Range(0, 3);
-            Summon_EffectObject(effectNum, randomHitPosVec);
+            Summon_EffectObject(UnityEngine.Random.Range(0, 3), randomHitPosVec);
 
-            int effectNum2 = UnityEngine.Random.Range(3, 5);
-            Summon_EffectObject(effectNum2, collision.transform.position);
+            if (isSkill)
+               Summon_EffectObject(UnityEngine.Random.Range(3, 5), collision.transform.position);
             
             Sync_DestroyMine();
         }

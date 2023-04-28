@@ -24,16 +24,12 @@ public class PushOutAttackObject : HitAttackObject
 
             // 피격된 캐릭터 위치를 기준으로 주어진 범위 내의 랜덤위치로 조정
             Vector2 randomHitPosVec = collision.transform.position;
-            randomHitPosVec.x += UnityEngine.Random.Range(-0.5f, 0.5f);
-            randomHitPosVec.y += UnityEngine.Random.Range(-0.3f, 1.0f);
+            randomHitPosVec.x += Random.Range(-0.5f, 0.5f);
+            randomHitPosVec.y += Random.Range(-0.3f, 1.0f);
 
             // 이펙트 생성 ( 임시 랜덤 )
-            int effectNum = UnityEngine.Random.Range(0, 3);
-            Summon_EffectObject(effectNum, randomHitPosVec);
-
-            int effectNum2 = UnityEngine.Random.Range(3, 5);
-            Summon_EffectObject(effectNum2, collision.transform.position);
-
+            Summon_EffectObject(Random.Range(0, 3), randomHitPosVec);
+            Summon_EffectObject(Random.Range(3, 5), collision.transform.position);
 
             Sync_DestroyMine();
         }
