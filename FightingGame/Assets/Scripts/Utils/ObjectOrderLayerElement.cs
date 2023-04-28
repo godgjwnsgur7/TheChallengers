@@ -21,7 +21,7 @@ public class ObjectOrderLayerElement : MonoBehaviour
     {
         if(spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
-
+         
         spriteRenderer.sortingOrder = Managers.OrderLayer.Get_SequenceOrderLayer(layerLevelType);
     }
 
