@@ -101,7 +101,10 @@ public class Character : MonoBehaviourPhoton
     {
         rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
 
-        currState = ENUM_PLAYER_STATE.Idle;
+        if(!jumpState)
+            currState = ENUM_PLAYER_STATE.Idle;
+        else if(currState != ENUM_PLAYER_STATE.Jump)
+            currState = ENUM_PLAYER_STATE.Jump;
     }
 
     public virtual void Move(CharacterParam param)
@@ -109,7 +112,8 @@ public class Character : MonoBehaviourPhoton
         if (param == null || param is CharacterMoveParam == false)
             return;
 
-        currState = ENUM_PLAYER_STATE.Move;
+        if(currState != ENUM_PLAYER_STATE.Jump)
+            currState = ENUM_PLAYER_STATE.Move;
 
         var moveParam = param as CharacterMoveParam;
 
@@ -118,6 +122,8 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Jump()
     {
+        currState = ENUM_PLAYER_STATE.Jump;
+
         rigid2D.AddForce(Vector2.up * MyCharInfo.jumpPower, ForceMode2D.Impulse);
     }
 

@@ -46,7 +46,7 @@ public class HitAttackObject : AttackObject
     // 수정 시 참조 확인 (재정의해서 사용하고 있음)
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isServerSyncState && PhotonLogicHandler.IsMine(viewID)) // 맞는 애가 처리하기 위해
+        if (isServerSyncState && PhotonLogicHandler.IsMine(viewID)) // 히트당하는 클라이언트에서 수행할 것
             return;
 
         ActiveCharacter enemyCharacter = collision.GetComponent<ActiveCharacter>();

@@ -223,7 +223,8 @@ public class PlayerCharacter : MonoBehaviour
 
         activeCharacter.Set_inputArrowDir(0.0f);
         activeCharacter.Input_MoveKey(false);
-        if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
+        if (activeCharacter.currState == ENUM_PLAYER_STATE.Move || 
+            activeCharacter.currState == ENUM_PLAYER_STATE.Jump)
             PlayerCommand(ENUM_PLAYER_STATE.Idle);
 
         moveCoroutine = null;

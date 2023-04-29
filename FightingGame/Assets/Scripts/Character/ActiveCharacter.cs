@@ -143,22 +143,23 @@ public partial class ActiveCharacter : Character
 
     public override void Idle()
     {
-        base.Idle();
-
-        if (anim.GetBool("IsMove"))
-            SetAnimBool("IsMove", false);
-
-        if(jumpState)
+        if (jumpState && currState != ENUM_PLAYER_STATE.Jump)
         {
             SetAnimBool("IsDrop", true);
             SetAnimTrigger("DropTrigger");
         }
+
+        base.Idle();
+
+        if (anim.GetBool("IsMove"))
+            SetAnimBool("IsMove", false);
     }
 
     public override void Move(CharacterParam param)
     {
         if (currState != ENUM_PLAYER_STATE.Idle && 
-            currState != ENUM_PLAYER_STATE.Move)
+            currState != ENUM_PLAYER_STATE.Move &&
+            currState != ENUM_PLAYER_STATE.Jump)
             return;
 
         base.Move(param);
