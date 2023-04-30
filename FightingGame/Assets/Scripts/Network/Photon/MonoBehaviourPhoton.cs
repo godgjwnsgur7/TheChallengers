@@ -289,7 +289,8 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
     public virtual void OnDisable()
 	{
-        viewID = PhotonLogicHandler.Unregister(viewID);
+        PhotonNetwork.OpCleanRpcBuffer(photonView);
+		viewID = PhotonLogicHandler.Unregister(viewID);
     }
 
     public override sealed void Start()

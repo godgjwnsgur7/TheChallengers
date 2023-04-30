@@ -246,6 +246,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED.ToString()
         };
 
+        roomOptions.CleanupCacheOnLeave = true;
+
         return roomOptions;
     }
 

@@ -361,7 +361,7 @@ public partial class ActiveCharacter : Character
     public void Sync_CurrHP(float _currHP)
     {
         currHP = _currHP;
-        OnHit(currHP);
+        OnHit?.Invoke(currHP);
     }
     
     public override void Die()
