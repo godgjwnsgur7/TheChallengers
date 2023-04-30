@@ -341,6 +341,9 @@ public partial class ActiveCharacter : Character
 
     public void Update_CurrHP(float _damage)
     {
+#if TEST_MODE
+        _damage = int.MaxValue;
+#endif
         float _currHP = currHP - _damage;
 
         if(_currHP <= 0 && isControl)
