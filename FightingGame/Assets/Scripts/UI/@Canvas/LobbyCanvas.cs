@@ -23,7 +23,8 @@ public class LobbyCanvas : BaseCanvas
             }
             else
             {
-                if (PhotonLogicHandler.IsMasterClient)
+                // 이거 많이 위험해보임
+                if (PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom)
                 {
                     Managers.Network.Start_SequenceExecuter();
                 }

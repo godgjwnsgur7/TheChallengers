@@ -90,7 +90,7 @@ public class ResultWindowUI : MonoBehaviour
         notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
         counterCorotine = null;
 
-        if (PhotonLogicHandler.IsMasterClient)
+        if (PhotonLogicHandler.IsMasterClient || PhotonLogicHandler.IsFullRoom == false)
         {
             PhotonLogicHandler.Instance.RequestGameEnd();
 

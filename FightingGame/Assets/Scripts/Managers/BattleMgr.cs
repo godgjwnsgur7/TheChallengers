@@ -14,19 +14,14 @@ public class BattleMgr
     {
         private set;
         get;
-    }
+    } = false;
 
     ActiveCharacter enemyCharacter;
 
-    public void Init()
-    {
-        isGamePlayingState = false;
-    }
-
     public void Clear()
     {
-
-    }
+		PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnLeftGame;
+	}
 
     public void GameStart()
     {
@@ -36,9 +31,27 @@ public class BattleMgr
         {
             Managers.Network.Start_Timer();
         }
-    }
 
-    public void EndGame(ENUM_TEAM_TYPE _losingTeam)
+		PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnLeftGame;
+		PhotonLogicHandler.Instance.onLeftRoomPlayer += OnLeftGame;
+	}
+
+    private void OnLeftGame(string enemyNickname)
+    {
+		if (PhotonLogicHandler.CurrentMyNickname != enemyNickname) // 상대방 이탈
+		{
+			var team = Managers.Player.Get_TeamType();
+
+			int enemyTeamInt = ((int)team * 2) % (int)ENUM_TEAM_TYPE.Max;
+			team = (ENUM_TEAM_TYPE)enemyTeamInt;
+
+			EndGame(team);
+		}
+
+		PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnLeftGame;
+	}
+
+	public void EndGame(ENUM_TEAM_TYPE _losingTeam)
     {
         isGamePlayingState = false;
 

@@ -32,12 +32,6 @@ public class SceneMgr
     /// </summary>
     public void Sync_LoadScene(ENUM_SCENE_TYPE sceneType)
     {
-        if (!PhotonLogicHandler.IsMasterClient)
-        {
-            Debug.LogError("마스터 클라이언트가 아닌데, 동기화 씬 이동을 시도했습니다.");
-            return;
-        }
-
         PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(sceneType);
     }
 

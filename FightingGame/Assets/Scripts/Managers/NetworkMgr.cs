@@ -64,7 +64,8 @@ public class NetworkMgr : IRoomPostProcess
 
     public void Clear()
     {
-
+        PhotonLogicHandler.Instance.onEnterRoomPlayer -= OnEnterRoomCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
     }
 
     public void OnEnterRoomCallBack(string enterUserNickname)
@@ -83,7 +84,7 @@ public class NetworkMgr : IRoomPostProcess
     public void OnExitRoomCallBack(string exitUserNickname)
     {
         ExitRoom_CallBack();
-    }
+	}
 
     public void ExitRoom_CallBack()
     {
@@ -98,7 +99,7 @@ public class NetworkMgr : IRoomPostProcess
             Managers.Resource.Destroy(userSyncMediator.gameObject);
             userSyncMediator = null;
         }
-    }
+	}
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {

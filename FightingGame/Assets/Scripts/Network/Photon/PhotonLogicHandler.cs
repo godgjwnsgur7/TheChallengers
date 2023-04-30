@@ -337,7 +337,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsEnableJoin())
             return false;
 
-        if (!PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsMasterClient && IsFullRoom)
         {
             Debug.LogError("마스터 클라이언트가 아닌 경우 부를 수 없는 함수입니다.");
             return false;
