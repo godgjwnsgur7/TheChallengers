@@ -580,6 +580,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         var isDataSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         var isSceneSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
         var isCharacterSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC);
+        var isSceneUnSync = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
 
         var isReady = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.READY);
         var userKey = GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
@@ -589,10 +590,10 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         ENUM_LOGIN_TYPE loginType = (ENUM_LOGIN_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE);
         ENUM_CHARACTER_TYPE characterType = (ENUM_CHARACTER_TYPE)GetCustomProperty(targetPlayer, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER);
 
-        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (bool)isDataSync, (bool)isSceneSync, (bool)isCharacterSync, (string)userKey, loginType, characterType);
+        MakePlayerProperty(targetPlayer.IsMasterClient, (bool)isReady, (bool)isDataSync, (bool)isSceneSync, (bool)isSceneUnSync, (bool)isCharacterSync, (string)userKey, loginType, characterType);
     }
 
-    private void MakePlayerProperty(bool isMasterClient, bool isReady, bool isDataSync, bool isSceneSync, bool isCharacterSync, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
+    private void MakePlayerProperty(bool isMasterClient, bool isReady, bool isDataSync, bool isSceneSync, bool isSceneUnSync, bool isCharacterSync, string userKey, ENUM_LOGIN_TYPE loginType, ENUM_CHARACTER_TYPE characterType)
     {
         Managers.Platform.DBSelect(loginType, userKey, OnSuccess: (userData) =>
         {
@@ -603,6 +604,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
                 isDataSync = isDataSync,
                 isCharacterSync = isCharacterSync,
                 isSceneSync = isSceneSync,
+                isSceneUnSync = isSceneUnSync,
                 data = userData,
                 characterType = characterType
             };

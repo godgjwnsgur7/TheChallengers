@@ -34,6 +34,7 @@ public enum ENUM_PLAYER_STATE_PROPERTIES
     DATA_SYNC = 4, // 데이터 싱크 완료
     CHARACTER_SYNC = 5, // 캐릭터 로드 완료
     SCENE_SYNC = 6, // 배틀 씬 로드 완료
+    SCENE_UNLOAD = 7 // 배틀 씬 언로드 준비 완료
 }
 
 public class CustomRoomInfo
@@ -64,6 +65,7 @@ public class CustomPlayerProperty
     public bool isDataSync = false;
     public bool isReady = false;
     public bool isSceneSync = false;
+    public bool isSceneUnSync = false;
     public bool isCharacterSync = false;
     public ENUM_CHARACTER_TYPE characterType = ENUM_CHARACTER_TYPE.Default;
     public DBUserData data = null;
@@ -186,6 +188,7 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC, false);
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.READY, false);
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC, false);
+            SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD, false);
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC, false);
             SetCustomPlayerPropertyTable(player, ENUM_PLAYER_STATE_PROPERTIES.CHARACTER, ENUM_CHARACTER_TYPE.Default);
         }
@@ -200,7 +203,10 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, false, false);
 
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC, false, false);
+
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC, false, false);
+        SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD, false, false);
+
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC, false, false);
 
         // 얘가 맨 마지막이어야

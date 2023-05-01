@@ -236,7 +236,12 @@ public partial class PhotonLogicHandler
         if (photons == null)
             yield break;
 
-        var photonTypes = photons.Select(photon => photon.GetType()).Where(type => ignoreTypes.Contains(type) == false && type != this.GetType());
+        var photonTypes = photons.Select(photon => photon.GetType()).Where(type => type != this.GetType());
+
+        if(ignoreTypes != null)
+        {
+            photonTypes = photonTypes.Where(type => ignoreTypes.Contains(type) == false);
+        }
 
         foreach(var photon in photons)
         {
@@ -253,6 +258,36 @@ public partial class PhotonLogicHandler
             while(FindObjectOfType(type) != null)
             {
                 yield return null;
+            }
+        }
+
+        RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
+
+        while(IsReadyUnloadBattleScene() == false) // 양 쪽 모두 배틀씬을 언로드할 준비가 되었는가?
+        {
+            yield return null;
+        }
+
+        RequestUnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
+    }
+
+    public bool IsReadyUnloadBattleScene()
+    {
+        var propertyValues = GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
+        return propertyValues.Select(value => (bool)value).All(isReady => isReady == true);
+    }
+
+    public IEnumerable<object> GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES propertyType)
+    {
+        var players = PhotonNetwork.PlayerList;
+        if (players == null || players.Length < 2)
+            yield break;
+
+        foreach (var player in players)
+        {
+            if(player.CustomProperties.TryGetValue(propertyType.ToString(), out var value))
+            {
+                yield return value;
             }
         }
     }
