@@ -250,7 +250,7 @@ public partial class PhotonLogicHandler
 
         foreach(var type in photonTypes)
         {
-            if(FindObjectOfType(type) != null)
+            while(FindObjectOfType(type) != null)
             {
                 yield return null;
             }
