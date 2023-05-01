@@ -12,7 +12,7 @@ public class ResultWindowUI : MonoBehaviour
 
     Coroutine counterCorotine;
 
-    int countTime;
+    int timeCount;
     long myScore;
     long enemyScore;
 
@@ -27,13 +27,13 @@ public class ResultWindowUI : MonoBehaviour
         myScore = Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).ratingPoint;
         enemyScore = Managers.Network.Get_DBUserData(!PhotonLogicHandler.IsMasterClient).ratingPoint;
 
-        countTime = 3;
+        timeCount = 3;
 
         bool isMatching = PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM;
 
         if (isMatching)
         {
-            countTime = 5;
+            timeCount = 5;
             rankingScore.Open_Score(myScore);
 
             // 게임 중에 팅기거나 그랬을 때, 등의 예외상황 처리가 아직 안되어있음
@@ -64,7 +64,7 @@ public class ResultWindowUI : MonoBehaviour
             }
         }
 
-        notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
+        notifyCountText.text = $"{timeCount}초 뒤에 로비로 이동합니다.";
         gameObject.SetActive(true);
 
         Managers.Input.Destroy_InputKeyController();
@@ -80,34 +80,17 @@ public class ResultWindowUI : MonoBehaviour
 
     protected IEnumerator INotifyTextCounter()
     {
-        while (countTime != 0)
+        while (timeCount != 0)
         {
-            notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
+            notifyCountText.text = $"{timeCount}초 뒤에 로비로 이동합니다.";
             yield return new WaitForSeconds(1f);
-            countTime--;
+            timeCount--;
         }
         
-        notifyCountText.text = $"{countTime}초 뒤에 로비로 이동합니다.";
+        notifyCountText.text = $"{timeCount}초 뒤에 로비로 이동합니다.";
         counterCorotine = null;
 
-        if (PhotonLogicHandler.IsMasterClient || PhotonLogicHandler.IsFullRoom == false)
-        {
-            PhotonLogicHandler.Instance.RequestGameEnd();
-
-            Managers.UI.popupCanvas.Play_FadeOutEffect(GoTo_Lobby);
-        }
-        else
-        {
-            Managers.UI.popupCanvas.Play_FadeOutEffect();
-        }
-    }
-
-    public void GoTo_Lobby()
-    {
-        if (PhotonLogicHandler.IsMasterClient)
-        {
-            StartCoroutine(IWaitGoToLobby(1.0f));
-        }
+        Managers.Network.EndGame_GoToLobby();
     }
 
     protected IEnumerator IWaitUpdateScore(float delayTime)
@@ -115,12 +98,5 @@ public class ResultWindowUI : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
 
         rankingScore.Update_Score(myScore);
-    }
-
-    protected IEnumerator IWaitGoToLobby(float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-
-        Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
 }

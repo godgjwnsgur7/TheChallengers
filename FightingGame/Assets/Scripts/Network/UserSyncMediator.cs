@@ -5,7 +5,7 @@ using System;
 using FGDefine;
 
 /// <summary>
-/// 네트워크매니저가 브로드캐스트멀티를 사용하기 위해 존재
+/// 네트워크매니저가 브로드캐스트함수를 사용하기 위해 존재
 /// </summary>
 public class UserSyncMediator : MonoBehaviourPhoton
 {

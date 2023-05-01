@@ -237,13 +237,13 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if(PhotonLogicHandler.IsMasterClient)
         {
             yield return new WaitUntil(() => masterProfile.IsInit);
+
+            // if(PhotonLogicHandler.IsFullRoom)
         }
         else
         {
             yield return new WaitUntil(() => masterProfile.IsInit && slaveProfile.IsInit);
         }
-
-        yield return null;
 
         Managers.UI.popupCanvas.Play_FadeInEffect();
     }

@@ -40,6 +40,7 @@ public class NetworkMgr : IRoomPostProcess
     DBUserData slaveDBData;
 
     Coroutine sequenceExecuteCoroutine = null;
+    Coroutine DestroyAllphotonObjectCoroutine = null;
 
     string slaveClientNickname = null;
 
@@ -185,6 +186,33 @@ public class NetworkMgr : IRoomPostProcess
         // 이후에 강제종료, 등 예외처리들이 필요할 것으로 보임
 
         sequenceExecuteCoroutine = null;
+    }
+
+    public void EndGame_GoToLobby()
+    {
+        if (PhotonLogicHandler.IsMasterClient || PhotonLogicHandler.IsFullRoom == false)
+        {
+            PhotonLogicHandler.Instance.RequestGameEnd();
+        }
+
+        Managers.UI.popupCanvas.Play_FadeOutEffect(DestroyAll_PhotonObject);
+    }
+
+    /// <summary>
+    /// 양쪽 클라이언트의 포톤 객체가 사라질 때까지 대기했다가
+    /// 삭제가 완료되면 로비씬으로 이동
+    /// </summary>
+    protected IEnumerator IWaitDestroyAllPhotonObject()
+    {
+        yield return PhotonLogicHandler.Instance.TryDestroyAllPhotonOnScene(false, null);
+
+        if(PhotonLogicHandler.IsMasterClient)
+            Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Lobby);
+    }
+
+    public void DestroyAll_PhotonObject()
+    {
+        DestroyAllphotonObjectCoroutine = CoroutineHelper.StartCoroutine(IWaitDestroyAllPhotonObject());
     }
 
     public void Start_Timer()

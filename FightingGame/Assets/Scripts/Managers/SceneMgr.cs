@@ -26,10 +26,6 @@ public class SceneMgr
         CoroutineHelper.StartCoroutine(IDelaySceneLoad(sceneType));
     }
 
-    /// <summary>
-    /// Managers.UI.PopupCanvas.Play_FadeInEffect(Action CallBack); 
-    /// 콜백함수로 해당 함수를 호출할 것.
-    /// </summary>
     public void Sync_LoadScene(ENUM_SCENE_TYPE sceneType)
     {
         PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(sceneType);
