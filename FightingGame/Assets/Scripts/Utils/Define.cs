@@ -178,7 +178,6 @@ namespace FGDefine
         Test1 = 0,
         Test2 = 1,
 
-
         // Knight
         Knight_Attack1 = 31,
         Knight_Attack2 = 32,

@@ -13,6 +13,11 @@ public class CoroutineHelper : MonoBehaviour
         DontDestroyOnLoad(monoInstance.gameObject);
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public new static Coroutine StartCoroutine(IEnumerator coroutine)
     {
         return monoInstance.StartCoroutine(coroutine);

@@ -82,6 +82,9 @@ public class Managers : MonoBehaviour
     /// </summary>
     public static void Clear()
     {
+        if (s_Instance == null)
+            return;
+
         Sound.Clear();
         Pool.Clear();
         Battle.Clear();
