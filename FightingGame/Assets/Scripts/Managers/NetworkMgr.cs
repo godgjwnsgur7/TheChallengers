@@ -204,7 +204,7 @@ public class NetworkMgr : IRoomPostProcess
     /// </summary>
     protected IEnumerator IWaitDestroyAllPhotonObject()
     {
-        yield return PhotonLogicHandler.Instance.TryDestroyAllPhotonOnScene(false, null);
+        yield return PhotonLogicHandler.Instance.TryDestroyAllPhotonOnScene(null);
 
         if(PhotonLogicHandler.IsMasterClient)
             Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Lobby);
