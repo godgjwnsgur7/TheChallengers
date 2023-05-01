@@ -118,7 +118,8 @@ public class PopupCanvas : MonoBehaviour
         if (fadeEffectPopup.isUsing)
         {
             Debug.Log("fadeEffect is Using!!");
-            return;
+            _fadeOutCallBack?.Invoke();
+			return;
         }
 
         fadeEffectPopup.Play_FadeOutEffect(_fadeOutCallBack);

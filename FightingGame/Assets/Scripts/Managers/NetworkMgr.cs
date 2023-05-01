@@ -190,7 +190,7 @@ public class NetworkMgr : IRoomPostProcess
 
     public void EndGame_GoToLobby()
     {
-        if (PhotonLogicHandler.IsMasterClient || PhotonLogicHandler.IsFullRoom == false)
+        if (PhotonLogicHandler.IsMasterClient)
         {
             PhotonLogicHandler.Instance.RequestGameEnd();
         }
@@ -206,9 +206,21 @@ public class NetworkMgr : IRoomPostProcess
     {
         yield return PhotonLogicHandler.Instance.TryDestroyAllPhotonOnScene(null);
 
-        if(PhotonLogicHandler.IsMasterClient)
-            Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Lobby);
-    }
+        if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
+        {
+			PhotonLogicHandler.Instance.TryLeaveRoom(() =>
+			{
+				Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+			});
+		}
+        else if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
+        {
+			if (PhotonLogicHandler.IsMasterClient)
+            {
+				Managers.Scene.Sync_LoadScene(ENUM_SCENE_TYPE.Lobby);
+			}	
+		}
+	}
 
     public void DestroyAll_PhotonObject()
     {

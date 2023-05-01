@@ -247,11 +247,15 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
 
     private Hashtable GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE type)
     {
-        switch (type)
+		if (!PhotonNetwork.InRoom)
+        {
+            return null;
+        }
+
+		switch (type)
         {
             case ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES:
-                return PhotonNetwork.CurrentRoom.CustomProperties;
-
+					return PhotonNetwork.CurrentRoom.CustomProperties;
             case ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_PLAYER_STATE_PROPERTIES:
                 return PhotonNetwork.LocalPlayer.CustomProperties;
 
