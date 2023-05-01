@@ -228,6 +228,31 @@ public partial class PhotonLogicHandler
         PhotonNetwork.Destroy(obj.gameObject);
     }
 
+    // 기본적으로 PhotonLogicHandler를 제외한 현재 모든 씬의 포톤 객체를 삭제시킨다.
+    // 제외하기 원하는 타입을 매개변수로 넘길 수 있음
+    public IEnumerator TryDestroyAllPhotonOnScene(params Type[] ignoreTypes)
+    {
+        var photons = FindObjectsOfType<MonoBehaviourPhoton>();
+        if (photons == null)
+            yield break;
+
+        var photonTypes = photons.Select(photon => photon.GetType()).Where(type => ignoreTypes.Contains(type) == false && type != this.GetType());
+
+        foreach(var photon in photons)
+        {
+            yield return null;
+            TryDestroy(photon);
+        }
+
+        foreach(var type in photonTypes)
+        {
+            if(FindObjectOfType(type) != null)
+            {
+                yield return null;
+            }
+        }
+    }
+
     /// <summary>
     /// 호출 시 현재 참여 중인 방의 OnUpdateRoomProperty가 불림
     /// </summary>
