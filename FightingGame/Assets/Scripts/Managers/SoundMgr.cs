@@ -57,12 +57,14 @@ public class SoundMgr
             Set_SFXSoundSetting(audioSources[(int)ENUM_SOUND_TYPE.SFX]);
 
             volumeData = PlayerPrefsManagement.Load_VolumeData();
+            audioSources[(int)ENUM_SOUND_TYPE.BGM].mute = volumeData.isBgmMute;
+            audioSources[(int)ENUM_SOUND_TYPE.SFX].mute = volumeData.isSfxMute;
         }
     }
     
     public void Clear()
     {
-        Play_BGM(ENUM_BGM_TYPE.Unknown);
+
     }
 
     public void Set_SFXSoundSetting(AudioSource audioSource)
@@ -292,7 +294,7 @@ public class SoundMgr
             currVolume = _currBgmVolume;
             Update_BGMAudioSource(currVolume);
         }
-        else // BGM을 끌 경우
+        else // ENUM_BGM_TYPE.Unknown가 들어왔을 경우
         {
             currVolume = 0.0f;
             Update_BGMAudioSource(currVolume);

@@ -61,15 +61,12 @@ public class UserInfoUI : MonoBehaviour
 
     public void Forced_SelectionCharacter()
     {
-        if (CurrCharacterType != ENUM_CHARACTER_TYPE.Default)
+        if (CurrCharacterType == ENUM_CHARACTER_TYPE.Default)
         {
-            Set_SelectionCharacter(CurrCharacterType);
-            return;
+            ENUM_CHARACTER_TYPE charType = (ENUM_CHARACTER_TYPE)UnityEngine.Random.Range(1, (int)ENUM_CHARACTER_TYPE.Max);
+            Set_SelectionCharacter(charType);
         }
 
-        ENUM_CHARACTER_TYPE charType = (ENUM_CHARACTER_TYPE)UnityEngine.Random.Range(1, (int)ENUM_CHARACTER_TYPE.Max);
-
-        Set_SelectionCharacter(charType);
         OnClick_SelectionCharacterComplete();
     }
 

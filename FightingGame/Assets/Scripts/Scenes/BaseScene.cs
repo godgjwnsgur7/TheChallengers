@@ -31,6 +31,9 @@ public abstract class BaseScene : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 재정의해서 사용 재정의되지 않았을 경우 BGM을 끔
+    /// </summary>
     public virtual void Play_BGM()
     {
         Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Unknown);
