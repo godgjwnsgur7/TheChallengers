@@ -17,18 +17,8 @@ public class LobbyCanvas : BaseCanvas
 
         if (PhotonLogicHandler.IsJoinedRoom)
         {
-            if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
+            if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
             {
-                PhotonLogicHandler.Instance.TryLeaveRoom();
-            }
-            else
-            {
-                // 이거 많이 위험해보임
-                if (PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom)
-                {
-                    Managers.Network.Start_SequenceExecuter();
-                }
-
                 Set_InTheCustomRoom();
             }
         }

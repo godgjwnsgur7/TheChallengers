@@ -234,11 +234,17 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     protected IEnumerator IWaitInfoSetting()
     {
-        if(PhotonLogicHandler.IsMasterClient)
+        if (PhotonLogicHandler.IsMasterClient)
         {
             yield return new WaitUntil(() => masterProfile.IsInit);
 
-            // if(PhotonLogicHandler.IsFullRoom)
+            // 커스텀 매치를 마치고 돌아온 경우
+            if (PhotonLogicHandler.IsFullRoom)
+            {
+                Managers.Network.Start_SequenceExecuter();
+
+                yield return new WaitUntil(() => slaveProfile.IsInit || PhotonLogicHandler.IsFullRoom == false);
+            }
         }
         else
         {
