@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using FGDefine;
+using System;
 
 public class BattleScene : BaseScene
 {
@@ -28,8 +29,6 @@ public class BattleScene : BaseScene
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
 
-        base.Init();
-
         if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
             currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
@@ -40,16 +39,27 @@ public class BattleScene : BaseScene
 
             enemyPlayer.Init(currMap, testEnemyCharacterType);
 
+            base.Init();
+
             return;
         }
 
         currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
 
         Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
+
+        base.Init();
     }
 
     public override void Clear()
     {
         base.Clear();
+    }
+
+    public override void Play_BGM()
+    {
+        string mapName = currMap.Get_MapType().ToString();
+        ENUM_BGM_TYPE bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapName);
+        Managers.Sound.Play_BGM(bgmType);
     }
 }

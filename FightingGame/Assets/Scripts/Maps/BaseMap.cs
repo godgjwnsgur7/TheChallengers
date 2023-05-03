@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public class BaseMap : MonoBehaviour
 {
+    [SerializeField] ENUM_MAP_TYPE mapType;
+
     public SpriteRenderer backgroundMapSprite;
     public Transform redTeamSpawnPoint;
     public Transform blueTeamSpawnPoint;
@@ -17,8 +20,5 @@ public class BaseMap : MonoBehaviour
         maxBound = new Vector2(backgroundMapSprite.bounds.max.x, backgroundMapSprite.bounds.max.y);
     }
 
-    private void Start()
-    {
-        Managers.Sound.Play_BGM(FGDefine.ENUM_BGM_TYPE.CaveMap); // 임시
-    }
+    public ENUM_MAP_TYPE Get_MapType() => mapType;
 }

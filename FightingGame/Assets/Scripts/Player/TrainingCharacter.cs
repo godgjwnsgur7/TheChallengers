@@ -176,21 +176,27 @@ public class TrainingCharacter : MonoBehaviour
         }
 
         // 스킬 1번
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill1);
         }
 
         // 스킬 2번
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill2);
         }
 
         // 스킬 3번
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill3);
+        }
+
+        // 스킬 4번
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill4);
         }
 
         // 점프
