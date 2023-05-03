@@ -107,6 +107,12 @@ namespace FGDefine
         Knight_SmashSkillObject_1 = 10,
         Knight_SmashSkillObject_2 = 11,
         Knight_SmashSkillObject_3 = 12,
+        Knight_ComboSkill_1 = 13,
+        Knight_ComboSkill_2 = 14,
+        Knight_ComboSkill_3 = 15,
+        Knight_ComboSkill_4 = 16,
+        Knight_ComboSkill_5 = 17,
+
 
         // Wizard
         Wizard_Attack1 = 21,
