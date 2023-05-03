@@ -28,11 +28,22 @@ public class BattleScene : BaseScene
     public override void Init()
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
+        
+        // 임시로 후려갈김
+
+        if(!PhotonLogicHandler.IsConnected)
+        {
+            currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
+        }
+        else
+        {
+            currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
+        }
+
+        base.Init();
 
         if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
-            currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
-
             player.Init(currMap, testPlayerCharacterType);
 
             enemyPlayer.gameObject.SetActive(true);
@@ -44,11 +55,7 @@ public class BattleScene : BaseScene
             return;
         }
 
-        currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
-
         Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
-
-        base.Init();
     }
 
     public override void Clear()
