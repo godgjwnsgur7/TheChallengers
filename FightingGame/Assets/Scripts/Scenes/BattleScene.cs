@@ -28,32 +28,25 @@ public class BattleScene : BaseScene
     public override void Init()
     {
         SceneType = ENUM_SCENE_TYPE.Battle;
-        
-        // 임시로 후려갈김
-
-        if(!PhotonLogicHandler.IsConnected)
-        {
-            currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
-        }
-        else
-        {
-            currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
-        }
-
-        base.Init();
 
         if (!PhotonLogicHandler.IsConnected) // 디버그용
         {
+            currMap = Managers.Resource.Instantiate($"Maps/{testMapType}").GetComponent<BaseMap>();
+
+            base.Init();
+
             player.Init(currMap, testPlayerCharacterType);
 
             enemyPlayer.gameObject.SetActive(true);
 
             enemyPlayer.Init(currMap, testEnemyCharacterType);
 
-            base.Init();
-
             return;
         }
+
+        currMap = Managers.Resource.Instantiate($"Maps/{PhotonLogicHandler.CurrentMapType}").GetComponent<BaseMap>();
+
+        base.Init();
 
         Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
     }
@@ -64,9 +57,10 @@ public class BattleScene : BaseScene
     }
 
     public override void Play_BGM()
-    {
+    {       
         string mapName = currMap.Get_MapType().ToString();
-        ENUM_BGM_TYPE bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapName);
+        ENUM_BGM_TYPE bgmType = ENUM_BGM_TYPE.Unknown;
+        bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapName);
         Managers.Sound.Play_BGM(bgmType);
     }
 }

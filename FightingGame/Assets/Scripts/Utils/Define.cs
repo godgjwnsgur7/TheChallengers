@@ -170,6 +170,8 @@ namespace FGDefine
         Test = 1,
         Main = 2,
         CaveMap = 3,
+        ForestMap = 4,
+        VolcanicMap = 5,
 
         MAX,
     }
