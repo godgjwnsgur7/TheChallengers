@@ -232,36 +232,9 @@ public partial class PhotonLogicHandler
     // 제외하기 원하는 타입을 매개변수로 넘길 수 있음
     public IEnumerator TryDestroyAllPhotonOnScene(params Type[] ignoreTypes)
     {
-        var photons = FindObjectsOfType<MonoBehaviourPhoton>();
-        if (photons == null)
-            yield break;
+        yield return CheckValidRoutine(ignoreTypes);
 
-        var photonTypes = photons.Select(photon => photon.GetType()).Where(type => type != this.GetType());
-
-        if(ignoreTypes != null)
-        {
-            photonTypes = photonTypes.Where(type => ignoreTypes.Contains(type) == false);
-        }
-
-        foreach(var photon in photons)
-        {
-            yield return null;
-
-            if(IsMine(photon.ViewID))
-            {
-                TryDestroy(photon);
-            }
-        }
-
-        foreach(var type in photonTypes)
-        {
-            while(FindObjectOfType(type) != null)
-            {
-                yield return null;
-            }
-        }
-
-        RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
+		RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
 
         while(IsReadyUnloadBattleScene() == false) // 양 쪽 모두 배틀씬을 언로드할 준비가 되었는가?
         {
@@ -271,7 +244,59 @@ public partial class PhotonLogicHandler
         RequestUnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
     }
 
-    public bool IsReadyUnloadBattleScene()
+    private const float TimeOutSec = 3.0f;
+    private IEnumerator CheckValidRoutine(params Type[] ignoreTypes)
+    {
+		var photons = FindObjectsOfType<MonoBehaviourPhoton>();
+		if (photons == null)
+			yield break;
+
+		var photonTypes = photons.Select(photon => photon.GetType()).Where(type => type != this.GetType());
+
+		if (ignoreTypes != null)
+			photonTypes = photonTypes.Where(type => ignoreTypes.Contains(type) == false);
+
+		if (photonTypes.Any())
+            yield break;
+
+		float checkValidTime = TimeOutSec;
+
+		foreach (var photon in photons)
+		{
+			yield return null;
+
+            if (photon == null)
+                continue;
+
+			if (IsMine(photon.ViewID))
+			{
+				TryDestroy(photon);
+			}
+			else if (photon.ViewID == 0)
+			{
+				Destroy(photon.gameObject);
+			}
+		}
+
+		foreach (var type in photonTypes)
+		{
+			while (FindObjectOfType(type) != null)
+			{
+                if (checkValidTime <= 0)
+                {
+                    checkValidTime = TimeOutSec;
+					yield return CheckValidRoutine(ignoreTypes);
+					yield break;
+				}
+
+				checkValidTime -= Time.deltaTime;
+
+				yield return null;
+			}
+		}
+	}
+
+	public bool IsReadyUnloadBattleScene()
     {
         var propertyValues = GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
         return propertyValues.Select(value => (bool)value).All(isReady => isReady == true);
