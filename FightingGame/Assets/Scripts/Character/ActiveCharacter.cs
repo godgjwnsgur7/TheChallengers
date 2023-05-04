@@ -285,7 +285,7 @@ public partial class ActiveCharacter : Character
                 if (jumpState && _skillData.risingPower == 0.0f)
                 {
                     // 추후에 수치 조정 방식 변경이 필요할 듯 (임시)
-                    getPowerDir.y = _skillData.pushingPower * 2;
+                    getPowerDir.y = Math.Abs(_skillData.pushingPower) * 2;
                     getPowerDir.x = getPowerDir.normalized.x;
                 }
 
