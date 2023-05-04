@@ -19,6 +19,8 @@ public class UserSyncMediator : MonoBehaviourPhoton
     {
         if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
+
+        base.OnDisable();
     }
 
     public override void Init()

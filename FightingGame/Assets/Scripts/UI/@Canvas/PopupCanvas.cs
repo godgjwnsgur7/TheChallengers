@@ -36,6 +36,14 @@ public class PopupCanvas : MonoBehaviour
     }
 
     /// <summary>
+    /// True : 완전히 어두워진 상태
+    /// </summary>
+    public bool Get_FadeState()
+    {
+        return fadeEffectPopup.Get_FadeState();
+    }
+
+    /// <summary>
     /// 에러코드와 메세지를 출력하는 Popup Window
     /// </summary>
     public void Open_ErrorPopup(short _returnCode, string _message)

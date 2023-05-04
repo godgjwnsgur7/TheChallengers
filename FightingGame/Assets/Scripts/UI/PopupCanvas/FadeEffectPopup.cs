@@ -18,6 +18,13 @@ public class FadeEffectPopup : PopupUI
 
     float fadeEffectRunTime = 0.5f;
 
+    public bool Get_FadeState()
+    {
+        bool isFadeState = backgroundImage.gameObject.activeSelf && (backgroundImage.color.a == 1f);
+        Debug.Log($"isFadeState : {isFadeState}");
+        return isFadeState;
+    }
+
     /// <summary>
     /// 서서히 검은 화면이 사라짐
     /// </summary>

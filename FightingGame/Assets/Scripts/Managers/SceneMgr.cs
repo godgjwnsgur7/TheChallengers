@@ -15,20 +15,21 @@ public class SceneMgr
         get;
     }
 
-
-    bool loadSceneLock = false;
-
     public void LoadScene(ENUM_SCENE_TYPE sceneType)
     {
-        loadSceneLock = true;
-        Managers.UI.popupCanvas.Play_FadeOutEffect(Unlocking_loadSceneLock);
+        Managers.UI.popupCanvas.Play_FadeOutEffect();
 
         CoroutineHelper.StartCoroutine(IDelaySceneLoad(sceneType));
+
+        Debug.Log($"Start LoadScene : {sceneType}");
     }
 
     public void Sync_LoadScene(ENUM_SCENE_TYPE sceneType)
     {
-        PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(sceneType);
+        bool a = PhotonLogicHandler.Instance.TrySceneLoadWithRoomMember(sceneType);
+    
+        if(!a)
+            Debug.LogError($"TrySceneLoadWithRoomMember Return False : {sceneType}");
     }
 
     public void Get_CurrSceneType(ENUM_SCENE_TYPE sceneType)
@@ -36,14 +37,10 @@ public class SceneMgr
         CurrSceneType = sceneType;
     }
 
-    public void Unlocking_loadSceneLock()
-    {
-        loadSceneLock = false;
-    }
 
     protected IEnumerator IDelaySceneLoad(ENUM_SCENE_TYPE sceneType)
     {
-        yield return new WaitUntil(() => loadSceneLock == false);
+        yield return new WaitUntil(() => Managers.UI.popupCanvas.Get_FadeState());
 
         string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), sceneType);
 
