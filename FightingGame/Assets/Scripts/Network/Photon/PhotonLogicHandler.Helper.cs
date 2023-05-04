@@ -256,7 +256,7 @@ public partial class PhotonLogicHandler
 		if (ignoreTypes != null)
 			photonTypes = photonTypes.Where(type => ignoreTypes.Contains(type) == false);
 
-		if (photonTypes.Any())
+		if (photonTypes.Any() == false)
             yield break;
 
 		float checkValidTime = TimeOutSec;
@@ -285,6 +285,7 @@ public partial class PhotonLogicHandler
                 if (checkValidTime <= 0)
                 {
                     checkValidTime = TimeOutSec;
+                    Debug.LogError("타임 아웃 발생!! 포톤 객체 제거를 다시 시도합니다.");
 					yield return CheckValidRoutine(ignoreTypes);
 					yield break;
 				}
