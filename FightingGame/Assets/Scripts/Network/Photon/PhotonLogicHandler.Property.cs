@@ -362,6 +362,8 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
     private void SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES propertyType, object value)
     {
         var table = GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
+        if (table == null)
+            return;
 
         if (table.ContainsKey(propertyType.ToString()))
         {
