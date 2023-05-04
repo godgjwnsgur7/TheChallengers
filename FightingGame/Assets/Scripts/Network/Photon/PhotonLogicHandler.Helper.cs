@@ -241,7 +241,7 @@ public partial class PhotonLogicHandler
             yield return null;
         }
 
-        RequestUnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
+        // RequestUnSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
     }
 
     private const float TimeOutSec = 3.0f;

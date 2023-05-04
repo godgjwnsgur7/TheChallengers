@@ -133,10 +133,18 @@ public class PopupCanvas : MonoBehaviour
         fadeEffectPopup.Play_FadeOutEffect(_fadeOutCallBack);
     }
 
+    /// <summary>
+    /// 페이드아웃 상태가 아니면, 페이드인 기능은 수행하지 않음.
+    /// 콜백은 실행됨
+    /// </summary>
     public void Play_FadeInEffect(Action _fadeInCallBack = null)
     {
         if(!fadeEffectPopup.gameObject.activeSelf)
+        {
+            Debug.Log("페이드아웃 상태가 아닌데, 페이드인이 들어옴");
+            _fadeInCallBack?.Invoke();
             return;
+        }
 
         fadeEffectPopup.Play_FadeInEffect(_fadeInCallBack);
     }
@@ -149,6 +157,7 @@ public class PopupCanvas : MonoBehaviour
         if (fadeEffectPopup.isUsing)
         {
             Debug.Log("fadeEffect is Using!!");
+            _fadeOutInCallBack?.Invoke();
             return;
         }
 

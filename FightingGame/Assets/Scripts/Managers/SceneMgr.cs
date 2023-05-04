@@ -20,8 +20,6 @@ public class SceneMgr
         Managers.UI.popupCanvas.Play_FadeOutEffect();
 
         CoroutineHelper.StartCoroutine(IDelaySceneLoad(sceneType));
-
-        Debug.Log($"Start LoadScene : {sceneType}");
     }
 
     public void Sync_LoadScene(ENUM_SCENE_TYPE sceneType)

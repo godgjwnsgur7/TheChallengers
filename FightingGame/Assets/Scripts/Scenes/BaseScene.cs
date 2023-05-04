@@ -21,9 +21,8 @@ public abstract class BaseScene : MonoBehaviour
 
     public virtual void Init()
     {
-        Managers.UI.popupCanvas.Play_FadeInEffect();
+        Managers.UI.popupCanvas.Play_FadeInEffect(Play_BGM);
         Managers.Scene.Get_CurrSceneType(SceneType);
-        Play_BGM();
     }
     
     public virtual void Clear()
@@ -32,7 +31,7 @@ public abstract class BaseScene : MonoBehaviour
     }
 
     /// <summary>
-    /// 재정의해서 사용 재정의되지 않았을 경우 BGM을 끔
+    /// 재정의해서 사용. 재정의되지 않았을 경우 BGM을 끔
     /// </summary>
     public virtual void Play_BGM()
     {
