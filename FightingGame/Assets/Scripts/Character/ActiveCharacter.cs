@@ -752,6 +752,11 @@ public partial class ActiveCharacter : Character
             audioSource.spatialBlend = audioClipData.sfxSound.spatialBlend;
             audioSource.reverbZoneMix = audioClipData.sfxSound.reverbZoneMix;
         }
+
+        float listenerPosX = Managers.Sound.Get_AudioListenerWorldPosX();
+        float currDistance = transform.position.x - listenerPosX; // 거리
+        
+        audioSource.panStereo = currDistance / 8.0f;
         audioSource.volume = audioClipData.volume;
         audioSource.PlayOneShot(audioClipData.audioClip);
     }

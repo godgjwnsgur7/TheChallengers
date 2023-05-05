@@ -33,7 +33,7 @@ public class SoundMgr
 
     VolumeData volumeData = null;
 
-    ENUM_BGM_TYPE currBGM = ENUM_BGM_TYPE.Unknown;
+    AudioListener audioListener = null;
 
     public void Init()
     {
@@ -64,7 +64,7 @@ public class SoundMgr
     
     public void Clear()
     {
-
+        audioListener = null;
     }
 
     public void Set_SFXSoundSetting(AudioSource audioSource)
@@ -89,6 +89,14 @@ public class SoundMgr
         volumeData = PlayerPrefsManagement.Load_VolumeData();
 
         return volumeData;
+    }
+
+    public float Get_AudioListenerWorldPosX()
+    {
+        if(audioListener == null)
+            audioListener = MonoBehaviour.FindObjectOfType<AudioListener>();
+
+        return audioListener.gameObject.transform.position.x;
     }
 
     public void Save_CurrVolumeData()
@@ -264,7 +272,6 @@ public class SoundMgr
         currVolume = 0.0f;
         Update_BGMAudioSource(currVolume);
 
-        currBGM = bgmType;
         if(audioClip != null)
             audioSources[(int)ENUM_SOUND_TYPE.BGM].clip = audioClip;
 
@@ -281,7 +288,7 @@ public class SoundMgr
             }
 
             audioSources[(int)ENUM_SOUND_TYPE.BGM].Play();
-
+            
             // FadeIn
             while (currVolume < _currBgmVolume)
             {
