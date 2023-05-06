@@ -35,6 +35,16 @@ public class BattleCanvas : BaseCanvas
         }
     }
 
+    public float Get_CurrHPFillAmount(ENUM_TEAM_TYPE tempType)
+    {
+        if(tempType == ENUM_TEAM_TYPE.Blue)
+            return blueTeamStatusWindow.Get_CurrHPFillAmount();
+        else if(tempType == ENUM_TEAM_TYPE.Red)
+            return redTeamStatusWindow.Get_CurrHPFillAmount();
+
+        return 0;
+    }
+
     public void Register_TimerCallBack()
     {
         timer.Register_TimerCallBack();

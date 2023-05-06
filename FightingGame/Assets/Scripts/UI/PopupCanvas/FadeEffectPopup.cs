@@ -17,7 +17,7 @@ public class FadeEffectPopup : PopupUI
     public bool Get_FadeState()
     {
         bool isFadeState = backgroundImage.gameObject.activeSelf && (backgroundImage.color.a == 1f);
-        Debug.Log($"isFadeState : {isFadeState}");
+        // Debug.Log($"isFadeState : {isFadeState}");
         return isFadeState;
     }
 

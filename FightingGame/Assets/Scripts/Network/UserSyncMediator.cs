@@ -67,11 +67,19 @@ public class UserSyncMediator : MonoBehaviourPhoton
             yield return null;
         }
 
-        if (gameRunTimeLimit >= 0.1f)
+        if (gameRunTimeLimit <= 0.1f)
         {
             PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int>(this, Sync_TimerCallBack, 0);
-            // 타임아웃으로 게임 종료된 것
+
+            // 타임아웃으로 게임 종료 (체력으로 양쪽 게임 판단)
+            PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator>(this, Sync_EndGameTimeOut);
         }
+    }
+
+    [BroadcastMethod]
+    public void Sync_EndGameTimeOut()
+    {
+        Managers.Battle.EndGame_TimeOut();
     }
 
     [BroadcastMethod]

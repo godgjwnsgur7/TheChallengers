@@ -49,6 +49,14 @@ public class StatusWindowUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// HP의 FillAmount 값을 반환함 ( 0 ~ 1 )
+    /// </summary>
+    public float Get_CurrHPFillAmount()
+    {
+        return hpFill.fillAmount;
+    }
+
     public void Update_CurrHP(float _currHP)
     {
         currHP = _currHP;

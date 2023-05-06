@@ -53,11 +53,14 @@ public class BattleMgr
 
 	public void EndGame(ENUM_TEAM_TYPE _losingTeam)
     {
+        if (isGamePlayingState == false)
+            return;
+
         isGamePlayingState = false;
 
         BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
 
-        bool isWin = (_losingTeam != Managers.Player.Get_TeamType());
+        bool isWin = _losingTeam != Managers.Player.Get_TeamType();
         
         bool isDraw = (isWin ? Managers.Player.Get_PlayerState() == ENUM_PLAYER_STATE.Die
             : enemyCharacter.currState == ENUM_PLAYER_STATE.Die);
@@ -71,6 +74,33 @@ public class BattleMgr
             else
                 battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
         }
+    }
+
+    public void EndGame_TimeOut()
+    {
+        if (isGamePlayingState == false)
+            return;
+
+        isGamePlayingState = false;
+
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        float blueTeamHPFillAmount = battleCanvas.Get_CurrHPFillAmount(ENUM_TEAM_TYPE.Blue);
+        float redTeamHPFillAmount = battleCanvas.Get_CurrHPFillAmount(ENUM_TEAM_TYPE.Red);
+
+        // 무승부
+        if (blueTeamHPFillAmount == redTeamHPFillAmount)
+        {
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.DrawTrigger);
+            return;
+        }
+
+        // 이긴 팀 체크
+        ENUM_TEAM_TYPE WinnerTeam = (blueTeamHPFillAmount > redTeamHPFillAmount) ? ENUM_TEAM_TYPE.Blue : ENUM_TEAM_TYPE.Red;
+
+        if (WinnerTeam == Managers.Player.Get_TeamType())
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
+        else
+            battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.LoseTrigger);
     }
 
     public void Char_ReferenceRegistration(ActiveCharacter _enemyCharacter)
