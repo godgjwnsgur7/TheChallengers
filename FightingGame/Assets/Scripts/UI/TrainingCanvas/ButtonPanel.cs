@@ -48,7 +48,6 @@ public class ButtonPanel : UIElement
     { 
         if(map != null)
         {
-            Managers.UI.popupCanvas.Play_FadeOutEffect();
             Managers.Resource.Destroy(map.gameObject);
             map = null;
         }
@@ -59,20 +58,14 @@ public class ButtonPanel : UIElement
         map = Managers.Resource.Instantiate($"Maps/{mapName}").GetComponent<BaseMap>();
         playerCamera.Init(map);
 
-        Managers.UI.popupCanvas.Play_FadeInEffect();
-
         Close();
     }
 
     public void OnClick_OpenSettingPanel()
     {
-        Managers.UI.popupCanvas.Play_FadeOutEffect();
-
         DestroyCharacter();
         Managers.Input.Get_InputKeyManagement().Init();
         this.Close();
-
-        Managers.UI.popupCanvas.Play_FadeInEffect();
     }
 
     public void OnClick_OnOffButtonPanel()
