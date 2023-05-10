@@ -46,18 +46,23 @@ public partial class ActiveCharacter : Character
 
         spriteRenderer.sortingOrder = Managers.OrderLayer.Get_CharacterOrderLayer();
 
-        // Sound
-        if(audioSource == null)
-            audioSource = GetComponent<AudioSource>();
-        Managers.Sound.Set_SFXSoundSetting(audioSource);
-
         if (isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
-            Skills_Pooling();    
+            Skills_Pooling();
+
+            if(isControl)
+                gameObject.AddComponent<AudioListener>();
+
+            if (audioSource == null)
+                audioSource = GetComponent<AudioSource>();
+            Managers.Sound.Set_SFXSoundSetting(audioSource);
         }
         else
+        {
             isControl = true;
+        }
+        
     }
 
     public virtual void Skills_Pooling()
@@ -89,7 +94,14 @@ public partial class ActiveCharacter : Character
             isControl = true;
             Connect_MyStatusUI(_teamType);
             if(teamType == ENUM_TEAM_TYPE.Blue)
+            {
                 spriteRenderer.sortingOrder += 1;
+                gameObject.AddComponent<AudioListener>();
+            }
+
+            if (audioSource == null)
+                audioSource = GetComponent<AudioSource>();
+            Managers.Sound.Set_SFXSoundSetting(audioSource);
         }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
@@ -614,16 +626,15 @@ public partial class ActiveCharacter : Character
         invincibleCoroutine = null;
     }
 
-    protected IEnumerator IWaitActivate_Object(Action activatedCallBack, GameObject g)
+    protected IEnumerator IWaitActivate_FollowAttackObject(Action<FollowAttackObject> activatedCallBack, FollowAttackObject followAttackObject)
     {
-        yield return new WaitUntil(() => g.activeSelf == true);
+        yield return new WaitUntil(() => followAttackObject.gameObject.activeSelf == true);
 
-        activatedCallBack();
+        activatedCallBack(followAttackObject);
     }
-    public void Set_TargetTransform()
+    public void Set_TargetTransform(FollowAttackObject followAttackObject)
     {
-        if(attackObject.isUsing)
-            attackObject.GetComponent<FollowAttackObject>().Set_TargetTransform(this.transform);
+        followAttackObject.Set_TargetTransform(this.transform);
     }
 
     #region Animation Event Function
@@ -653,7 +664,8 @@ public partial class ActiveCharacter : Character
 
             if (attackObject.ObjType == ENUM_SYNCOBJECT_TYPE.Follow)
             {
-                StartCoroutine(IWaitActivate_Object(Set_TargetTransform, attackObject.gameObject));
+                FollowAttackObject followAttackObject = (FollowAttackObject)attackObject;
+                StartCoroutine(IWaitActivate_FollowAttackObject(Set_TargetTransform, followAttackObject));
             }
         }
         else
@@ -739,26 +751,17 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
-        AudioClipData audioClipData = Managers.Sound.Get_SFXAudioClipData((ENUM_SFX_TYPE)sfxTypeNum);
-
-        if (audioClipData == null)
+        if (audioSource == null)
             return;
 
-        if(audioClipData.sfxSound != null)
-        {
-            audioSource.priority = audioClipData.sfxSound.priority;
-            audioSource.pitch = audioClipData.sfxSound.pitch;
-            audioSource.panStereo = audioClipData.sfxSound.stereoPan;
-            audioSource.spatialBlend = audioClipData.sfxSound.spatialBlend;
-            audioSource.reverbZoneMix = audioClipData.sfxSound.reverbZoneMix;
-        }
+        AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume((ENUM_SFX_TYPE)sfxTypeNum);
 
         float listenerPosX = Managers.Sound.Get_AudioListenerWorldPosX();
         float currDistance = transform.position.x - listenerPosX; // 거리
         
         audioSource.panStereo = currDistance / 8.0f;
-        audioSource.volume = audioClipData.volume;
-        audioSource.PlayOneShot(audioClipData.audioClip);
+        audioSource.volume = audioClipVolume.volume;
+        audioSource.PlayOneShot(audioClipVolume.audioClip);
     }
 
     #endregion

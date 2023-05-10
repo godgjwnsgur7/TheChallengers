@@ -40,7 +40,7 @@ public class UserInfo_GameStart : MonoBehaviour
             float winningRate = victoryPoint / (victoryPoint + defeatPoint) * 100;
 
             battleRecordText.text = $"{_userData.victoryPoint}승 {_userData.defeatPoint}패 ({(int)winningRate}%)";
-            ratingPointText.text = $"{_userData.ratingPoint}점";
+            ratingPointText.text = $"{string.Format("{0:#,###}", _userData.ratingPoint)}점";
         }
     }
 

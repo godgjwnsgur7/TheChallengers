@@ -30,58 +30,6 @@ public class SkillData : ILoader<int, Skill>
 }
 #endregion
 
-#region Sounds
-[Serializable]
-public class BgmSound
-{
-    public int bgmSoundType; // ENUM_BGM_TYPE (Key)
-    public int priority;
-    public float volume;
-    public float pitch;
-    public float stereoPan;
-    public float spatialBlend;
-    public float reverbZoneMix;
-}
-
-public class BgmSoundData : ILoader<int, BgmSound>
-{
-    public List<BgmSound> BgmSounds = new List<BgmSound>();
-
-    public Dictionary<int, BgmSound> MakeDict()
-    {
-        Dictionary<int, BgmSound> bgmSoundDict = new Dictionary<int, BgmSound>();
-        foreach (BgmSound bgmSound in BgmSounds)
-            bgmSoundDict.Add(bgmSound.bgmSoundType, bgmSound);
-        return bgmSoundDict;
-    }
-}
-
-[Serializable]
-public class SfxSound
-{
-    public int sfxSoundType; // ENUM_SFX_TYPE (Key)
-    public int priority;
-    public float volume;
-    public float pitch;
-    public float stereoPan;
-    public float spatialBlend;
-    public float reverbZoneMix;
-}
-
-public class SfxSoundData : ILoader<int, SfxSound>
-{
-    public List<SfxSound> SfxSounds = new List<SfxSound>();
-
-    public Dictionary<int, SfxSound> MakeDict()
-    {
-        Dictionary<int, SfxSound> sfxSoundDict = new Dictionary<int, SfxSound>();
-        foreach (SfxSound sfxSound in SfxSounds)
-            sfxSoundDict.Add(sfxSound.sfxSoundType, sfxSound);
-        return sfxSoundDict;
-    }
-}
-#endregion
-
 #region CharacterInfos
 [Serializable]
 public class CharacterInfo
@@ -121,16 +69,7 @@ public class GameInfo
     public float maxComboDamage; // 맥스 콤보 데미지
     public float hitImmunityPower; // 히트보정 시 작용하는 힘의 크기 (밀려나는 힘)
     public float maxGameRunTime; // 게임의 제한시간
-}
-#endregion
-
-#region SoundSettingInfo
-[Serializable]
-public class SoundSettingInfo
-{
-    public float dopplerLevel; // 도플러 레벨 ( 도플러 효과의 정도 )
-    public int spread; // 오디오 소스의 위치로 부터 3D stereo, 멀티채널 사운드가 퍼지는 각도
-    public float minDistance; // 3D 공간에서 소리가 들리는 최소 거리
-    public float maxDistance; // 3D 공간에서 소리가 들리는 최대 거리
+    public float soundMinDistance; // 3D 사운드의 소리가 들리는 최소 거리
+    public float soundMaxDistance; // 3D 사운드의 소리가 들리는 최대 거리
 }
 #endregion

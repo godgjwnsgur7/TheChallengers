@@ -10,16 +10,13 @@ public enum ENUM_SOUND_TYPE
     MASTER = 2,
 }
 
-public class AudioClipData
+public class AudioClipVolume
 {
     public AudioClip audioClip;
-    public SfxSound sfxSound;
     public float volume;
-
-    public AudioClipData(AudioClip _audioClip, SfxSound _sfxSound, float _volume)
+    public AudioClipVolume(AudioClip _audioClip, float _volume)
     {
         audioClip = _audioClip;
-        sfxSound = _sfxSound;
         volume = _volume;
     }
 }
@@ -70,13 +67,11 @@ public class SoundMgr
     public void Set_SFXSoundSetting(AudioSource audioSource)
     {
         audioSource.rolloffMode = AudioRolloffMode.Linear;
-        audioSource.spatialBlend = 1.0f;
 
-        SoundSettingInfo soundSettingInfo = Managers.Data.soundSettingInfo;
-        audioSource.dopplerLevel = soundSettingInfo.dopplerLevel;
-        audioSource.spread = soundSettingInfo.spread;
-        audioSource.minDistance = soundSettingInfo.minDistance;
-        audioSource.maxDistance = soundSettingInfo.maxDistance;
+        GameInfo gameInfo = Managers.Data.gameInfo;
+
+        audioSource.minDistance = gameInfo.soundMinDistance;
+        audioSource.maxDistance = gameInfo.soundMaxDistance;
     }
 
     public void Set_Vibration(bool _isVibration)
@@ -175,24 +170,6 @@ public class SoundMgr
         fadeOutInBGMCoroutine = CoroutineHelper.StartCoroutine(IFadeOutIn_BGM(bgmType));
     }
 
-    private void Set_BgmAudioSource(BgmSound _bgmSoundData)
-    {
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].priority = _bgmSoundData.priority;
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].pitch = _bgmSoundData.pitch;
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].panStereo = _bgmSoundData.stereoPan;
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].spatialBlend = _bgmSoundData.spatialBlend;
-        audioSources[(int)ENUM_SOUND_TYPE.BGM].reverbZoneMix = _bgmSoundData.reverbZoneMix;
-    }
-
-    private void Set_SfxAudioSource(SfxSound _sfxSoundData)
-    {
-        audioSources[(int)ENUM_SOUND_TYPE.SFX].priority = _sfxSoundData.priority;
-        audioSources[(int)ENUM_SOUND_TYPE.SFX].pitch = _sfxSoundData.pitch;
-        audioSources[(int)ENUM_SOUND_TYPE.SFX].panStereo = _sfxSoundData.stereoPan;
-        audioSources[(int)ENUM_SOUND_TYPE.SFX].spatialBlend = _sfxSoundData.spatialBlend;
-        audioSources[(int)ENUM_SOUND_TYPE.SFX].reverbZoneMix = _sfxSoundData.reverbZoneMix;
-    }
-
     public void Play_SFX(ENUM_SFX_TYPE sfxType)
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
@@ -203,22 +180,11 @@ public class SoundMgr
         if (audioClip == null)
             return;
 
-        SfxSound sfxSoundData = null;
-
-        if (Managers.Data.SfxSoundDict.ContainsKey((int)sfxType))
-            sfxSoundData = Managers.Data.SfxSoundDict[(int)sfxType];
-
-        if (sfxSoundData != null)
-        {
-            _currSfxVolume *= sfxSoundData.volume;
-            Set_SfxAudioSource(sfxSoundData);
-        }
-
         audioSources[(int)ENUM_SOUND_TYPE.SFX].volume = _currSfxVolume;
         audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
     }
 
-    public AudioClipData Get_SFXAudioClipData(ENUM_SFX_TYPE sfxType)
+    public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
 
@@ -228,19 +194,9 @@ public class SoundMgr
         if (audioClip == null)
             return null;
 
-        SfxSound sfxSoundData = null;
+        AudioClipVolume audioClipVolume = new AudioClipVolume(audioClip, _currSfxVolume);
 
-        if (Managers.Data.SfxSoundDict.ContainsKey((int)sfxType))
-            sfxSoundData = Managers.Data.SfxSoundDict[(int)sfxType];
-
-        if (sfxSoundData != null)
-        {
-            _currSfxVolume *= sfxSoundData.volume;
-            Set_SfxAudioSource(sfxSoundData);
-        }
-
-        AudioClipData audioClipData = new AudioClipData(audioClip, sfxSoundData, _currSfxVolume);
-        return audioClipData;
+        return audioClipVolume;
     }
 
     private void Update_BGMAudioSource(float _currVolume)
@@ -277,16 +233,6 @@ public class SoundMgr
 
         if (bgmType != ENUM_BGM_TYPE.Unknown)
         {
-            BgmSound bgmSoundData = null;
-            if (Managers.Data.BgmSoundDict.ContainsKey((int)bgmType))
-                bgmSoundData = Managers.Data.BgmSoundDict[(int)bgmType];
-
-            if (bgmSoundData != null)
-            {
-                _currBgmVolume *= bgmSoundData.volume;
-                Set_BgmAudioSource(bgmSoundData);
-            }
-
             audioSources[(int)ENUM_SOUND_TYPE.BGM].Play();
             
             // FadeIn

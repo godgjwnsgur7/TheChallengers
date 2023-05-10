@@ -11,6 +11,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     [SerializeField] SlaveProfileUI slaveProfile;
 
     [SerializeField] CustormRoom_MapInfo mapInfo;
+    [SerializeField] UserInfoWindowUI userInfoWindow;
 
     [SerializeField] Text roomNameText;
     [SerializeField] Text readyOrStartText;
@@ -187,6 +188,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         CurrMap = (ENUM_MAP_TYPE)_mapTypeNum;
+    }
+
+    public void OnClick_UserInfo(bool _isMasterProfile)
+    {
+        userInfoWindow.Open(Managers.Network.Get_DBUserData(_isMasterProfile));
     }
 
     public void OnClick_ExitRoom()
