@@ -254,6 +254,17 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
         OnTriggerParameter?.Invoke(paramName);
     }
 
+    public void ResetAnimTrigger(string paramName)
+    {
+        if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)
+        {
+            syncAnim.ResetTrigger(paramName);
+            return;
+        }
+
+        OnTriggerParameter?.Invoke(paramName);
+    }
+
     public void SetAnimInt(string paramName, int value)
     {
         if (!PhotonLogicHandler.IsConnected || !PhotonLogicHandler.IsFullRoom)

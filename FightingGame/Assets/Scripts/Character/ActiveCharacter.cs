@@ -212,11 +212,17 @@ public partial class ActiveCharacter : Character
             return;
 
         if (currState != ENUM_PLAYER_STATE.Idle &&
-            currState != ENUM_PLAYER_STATE.Move)
+            currState != ENUM_PLAYER_STATE.Move &&
+            currState != ENUM_PLAYER_STATE.Attack)
             return;
 
         if (dashCoroutine != null)
             return;
+
+        if (attackObject != null && attackObject.ObjType == ENUM_SYNCOBJECT_TYPE.Follow)
+            attackObject.Sync_DestroyMine();
+
+        ResetAnimTrigger("AttackTrigger");
 
         base.Dash();
 
@@ -720,7 +726,7 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_Move(float vecX)
     {
-        if (!isControl) return;
+        if (!isControl || currState == ENUM_PLAYER_STATE.Dash) return;
 
         if (reverseState)
             vecX *= -1f;
@@ -730,7 +736,7 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_MoveToInputArrow(float vecX)
     {
-        if (!isControl) return;
+        if (!isControl || currState == ENUM_PLAYER_STATE.Dash) return;
 
         if (reverseState)
             vecX *= -1f;

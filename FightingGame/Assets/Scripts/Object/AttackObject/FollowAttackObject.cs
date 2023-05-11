@@ -25,14 +25,14 @@ public class FollowAttackObject : HitAttackObject
     public override void OnDisable()
     {
         if (followTargetCoroutine != null)
-            StopCoroutine(followTargetCoroutine);
+            CoroutineHelper.StopCoroutine(followTargetCoroutine);
 
         base.OnDisable();
     }
 
     public void Set_TargetTransform(Transform _targetTr)
     {
-        followTargetCoroutine = StartCoroutine(IFollowTarget(_targetTr));
+        followTargetCoroutine = CoroutineHelper.StartCoroutine(IFollowTarget(_targetTr));
     }
 
     // 결국에는 FollowAttackObject일 경우에 소환주체의 Transform을 참조해야 함.
