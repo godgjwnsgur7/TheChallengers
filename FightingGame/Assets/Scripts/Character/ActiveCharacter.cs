@@ -174,9 +174,10 @@ public partial class ActiveCharacter : Character
             currState != ENUM_PLAYER_STATE.Jump)
             return;
 
-        base.Move(param);
+        if (param == null || param is CharacterMoveParam == false)
+            return;
 
-        if (param == null) return;
+        base.Move(param);
 
         var moveParam = param as CharacterMoveParam;
 
@@ -222,9 +223,9 @@ public partial class ActiveCharacter : Character
         if (attackObject != null && attackObject.ObjType == ENUM_SYNCOBJECT_TYPE.Follow)
             attackObject.Sync_DestroyMine();
 
-        ResetAnimTrigger("AttackTrigger");
-
         base.Dash();
+
+        ResetAnimTrigger("AttackTrigger");
 
         dashCoroutine = StartCoroutine(IDashTimeCheck(Managers.Data.gameInfo.dashSkillTime));
     }

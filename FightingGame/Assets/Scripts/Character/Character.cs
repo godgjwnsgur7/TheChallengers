@@ -109,9 +109,6 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Move(CharacterParam param)
     {
-        if (param == null || param is CharacterMoveParam == false)
-            return;
-
         if(currState != ENUM_PLAYER_STATE.Jump)
             currState = ENUM_PLAYER_STATE.Move;
 

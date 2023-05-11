@@ -17,7 +17,7 @@ public class Landing : StateMachineBehaviour
         if (!activeCharacter.isControl) return;
 
         activeCharacter.ValueClear_Rigid();
-        activeCharacter.currState = FGDefine.ENUM_PLAYER_STATE.Idle;
+        activeCharacter.Idle();
     }
 
 }

@@ -95,7 +95,9 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnClick_TestVibration()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
         Vibration.Vibrate(1);
+#endif
     }
 
     private IEnumerator IWaitMatching()

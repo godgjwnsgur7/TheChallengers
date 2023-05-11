@@ -56,8 +56,6 @@ public class MatchingWindowUI : MonoBehaviour
         exitButtonObj.SetActive(false);
         fullLodingImage.gameObject.SetActive(true);
         matchingStateText.text = "매칭 완료!";
-
-        Vibration.Vibrate(1);
     }
 
     public void OnClick_Exit()

@@ -14,6 +14,7 @@ public static class Vibration
     public static AndroidJavaObject vibrator;
 #endif
 
+#if UNITY_ANDROID && !UNITY_EDITOR
     public static void Vibrate()
     {
         if (IsAndroid())
@@ -49,6 +50,7 @@ public static class Vibration
         if (IsAndroid())
             vibrator.Call("cancel");
     }
+#endif
 
     private static bool IsAndroid()
     {
