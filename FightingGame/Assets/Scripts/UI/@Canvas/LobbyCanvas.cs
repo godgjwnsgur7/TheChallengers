@@ -93,6 +93,11 @@ public class LobbyCanvas : BaseCanvas
         settingWindow.Open();
     }
 
+    public void OnClick_TestVibration()
+    {
+        Vibration.Vibrate(1);
+    }
+
     private IEnumerator IWaitMatching()
     {
         int count = 0;

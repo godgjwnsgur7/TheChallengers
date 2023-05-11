@@ -35,7 +35,6 @@ public class FollowAttackObject : HitAttackObject
         followTargetCoroutine = CoroutineHelper.StartCoroutine(IFollowTarget(_targetTr));
     }
 
-    // 결국에는 FollowAttackObject일 경우에 소환주체의 Transform을 참조해야 함.
     private IEnumerator IFollowTarget(Transform _targetTr)
     {
         while(isUsing)
