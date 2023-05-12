@@ -148,6 +148,7 @@ public partial class ActiveCharacter : Character
             new AnimatorSyncParam("SkillTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("DashTrigger", AnimParameterType.Trigger),
             new AnimatorSyncParam("ImmunityTrigger", AnimParameterType.Trigger),
+            new AnimatorSyncParam("TestTrigger", AnimParameterType.Trigger),
         };
 
         return syncParams;
@@ -241,6 +242,8 @@ public partial class ActiveCharacter : Character
 
         base.Attack(param);
 
+        SetAnimTrigger("TestTrigger");
+
         var attackParam = param as CharacterAttackParam;
 
         if (attackParam != null)
@@ -259,6 +262,8 @@ public partial class ActiveCharacter : Character
             attackObject = null;
 
         base.Skill(param);
+
+        ResetAnimTrigger("TestTrigger");
 
         var skillParam = param as CharacterSkillParam;
 
