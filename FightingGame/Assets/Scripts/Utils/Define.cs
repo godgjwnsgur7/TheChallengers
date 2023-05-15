@@ -113,6 +113,7 @@ namespace FGDefine
         Knight_ComboSkill_4 = 16,
         Knight_ComboSkill_5 = 17,
         Knight_DashSkillObject = 18, // GenerateObject
+        Knight_ComboSkillObject = 19, // GenerateObject
 
         // Wizard
         Wizard_Attack1 = 21,
@@ -146,10 +147,17 @@ namespace FGDefine
         Basic_SkillAttackedEffect2 = 4,
 
         // Knight
-        Knight_JumpEffect = 21,
-        Knight_LandingEffect = 22,
-        Knight_MoveEffect = 23,
-        Knight_DashEffect = 24,
+        Knight_SmokeEffect_JumpUp = 21,
+        Knight_SmokeEffect_Landing = 22,
+        Knight_SmokeEffect_Move = 23,
+        Knight_SmokeEffect_Dash = 24,
+        Knight_SmokeEffect_DashSkill = 25,
+        Knight_SmokeEffect_ComboSkill1 = 26,
+        Knight_SmokeEffect_ComboSkill2 = 27,
+        Knight_SmokeEffect_ComboSkill3 = 28,
+        Knight_SmokeEffect_ComboSkill4 = 29,
+        Knight_SmokeEffect_ComboSkill5 = 30,
+        Knight_SmokeEffect_ComboSkill6 = 31,
 
         // Wizard
         Wizard_ThunderCircleEffect = 41,
@@ -197,6 +205,16 @@ namespace FGDefine
         Knight_SmashSkill = 38,
         Knight_ThrowSkill = 39,
 
+        // Wizard
+        Wizard_Attack1 = 61,
+        Wizard_Attack2 = 62,
+        Wizard_Attack3 = 63,
+        Wizard_JumpAttack = 64,
+        Wizard_Landing = 65,
+        Wizard_MeteorSkill_Falling = 66,
+        Wizard_MeteorSkill_Explode = 67,
+        Wizard_PushOutSkill = 68,
+        Wizard_IceSkill = 69,
     }
 
     [Serializable]
