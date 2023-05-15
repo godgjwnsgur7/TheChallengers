@@ -763,15 +763,19 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
-        if (audioSource == null)
+        if (audioSource == null || Managers.Sound.Get_SFXSoundMuteState())
             return;
 
         AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume((ENUM_SFX_TYPE)sfxTypeNum);
 
         float listenerPosX = Managers.Sound.Get_AudioListenerWorldPosX();
         float currDistance = transform.position.x - listenerPosX; // 거리
-        
-        audioSource.panStereo = currDistance / 8.0f;
+
+        if (Math.Abs(currDistance) > 3)
+            audioSource.panStereo = currDistance / 8.0f;
+        else
+            audioSource.panStereo = 0;
+
         audioSource.volume = audioClipVolume.volume;
         audioSource.PlayOneShot(audioClipVolume.audioClip);
     }

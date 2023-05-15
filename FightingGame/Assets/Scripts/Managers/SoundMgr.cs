@@ -66,12 +66,14 @@ public class SoundMgr
 
     public void Set_SFXSoundSetting(AudioSource audioSource)
     {
-        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
 
         GameInfo gameInfo = Managers.Data.gameInfo;
 
         audioSource.minDistance = gameInfo.soundMinDistance;
         audioSource.maxDistance = gameInfo.soundMaxDistance;
+
+        audioSource.spatialBlend = 1.0f;
     }
 
     public void Set_Vibration(bool _isVibration)
@@ -184,6 +186,19 @@ public class SoundMgr
         audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
     }
 
+    public void Play_SFX(ENUM_SFX_TYPE sfxType, Vector3 worldPosVec)
+    {
+        float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
+
+        string path = $"Sounds/SFX/{sfxType}";
+        AudioClip audioClip = GetOrAddAudioClip(path);
+
+        if (audioClip == null)
+            return;
+
+        AudioSource.PlayClipAtPoint(audioClip, worldPosVec, _currSfxVolume);
+    }
+
     public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
@@ -197,6 +212,11 @@ public class SoundMgr
         AudioClipVolume audioClipVolume = new AudioClipVolume(audioClip, _currSfxVolume);
 
         return audioClipVolume;
+    }
+
+    public bool Get_SFXSoundMuteState()
+    {
+        return volumeData.isSfxMute;
     }
 
     private void Update_BGMAudioSource(float _currVolume)

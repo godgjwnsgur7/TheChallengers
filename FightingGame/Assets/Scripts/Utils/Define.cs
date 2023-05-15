@@ -215,6 +215,7 @@ namespace FGDefine
         Wizard_MeteorSkill_Explode = 67,
         Wizard_PushOutSkill = 68,
         Wizard_IceSkill = 69,
+        Wizard_JumpUp = 70,
     }
 
     [Serializable]
