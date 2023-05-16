@@ -36,7 +36,7 @@ public abstract class BaseScene : MonoBehaviour
     public virtual void Play_BGM()
     {
         if(Managers.Scene.CurrSceneType != ENUM_SCENE_TYPE.Battle)
-            Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Unknown);
+            Managers.Sound.Stop_BGM();
     }
 }
  

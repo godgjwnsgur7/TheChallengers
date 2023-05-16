@@ -109,17 +109,11 @@ public class MatchingWindowUI : MonoBehaviour
 
     protected IEnumerator IDelayDataSyncCheck(float second)
     {
-        Debug.Log("실행 확인1");
-
         yield return new WaitUntil(() => PhotonLogicHandler.IsJoinedRoom);
-
-        Debug.Log("실행 확인2");
 
         if (PhotonLogicHandler.IsMasterClient || !PhotonLogicHandler.IsFullRoom)
             yield break;
         
-        Debug.Log("실행 확인3");
-
         yield return new WaitForSeconds(second);
 
         if (!PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom

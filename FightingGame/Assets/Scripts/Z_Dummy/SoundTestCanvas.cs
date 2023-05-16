@@ -7,7 +7,7 @@ public class SoundTestCanvas : BaseCanvas
 {
     [SerializeField] SettingWindow settingWindow;
 
-    [SerializeField] ENUM_BGM_TYPE BGM_Type = ENUM_BGM_TYPE.Test;
+    [SerializeField] ENUM_BGM_TYPE BGM_Type = ENUM_BGM_TYPE.CaveMap;
     [SerializeField] ENUM_SFX_TYPE SFX_Type = ENUM_SFX_TYPE.Test1;
 
     private void Start()
@@ -18,6 +18,11 @@ public class SoundTestCanvas : BaseCanvas
     public void OnClick_StartBGM()
     {
         Managers.Sound.Play_BGM(BGM_Type);
+    }
+    
+    public void OnClick_StopBGM()
+    {
+        Managers.Sound.Stop_BGM();
     }
 
     public void OnClick_StartSFX()

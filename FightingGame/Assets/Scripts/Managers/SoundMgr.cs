@@ -27,6 +27,7 @@ public class SoundMgr
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>(); // 키 : 파일경로
 
     Coroutine fadeOutInBGMCoroutine;
+    Coroutine bgmStopCoroutine;
 
     VolumeData volumeData = null;
 
@@ -162,6 +163,13 @@ public class SoundMgr
         return audioClip;
     }
 
+    public void Stop_BGM()
+    {
+        if (bgmStopCoroutine != null)
+            CoroutineHelper.StopCoroutine(bgmStopCoroutine);
+
+        bgmStopCoroutine = CoroutineHelper.StartCoroutine(IStop_BGM());
+    }
 
     public void Play_BGM(ENUM_BGM_TYPE bgmType)
     {
@@ -211,8 +219,35 @@ public class SoundMgr
         audioSources[(int)ENUM_SOUND_TYPE.BGM].volume = volumeData.masterVolume * _currVolume;
     }
 
+    private IEnumerator IStop_BGM()
+    {
+        yield return new WaitUntil(() => fadeOutInBGMCoroutine == null);
+
+        float currVolume = audioSources[(int)ENUM_SOUND_TYPE.BGM].volume;
+
+        if (audioSources[(int)ENUM_SOUND_TYPE.BGM].isPlaying) // 실행 중일 경우
+        {
+            // FadeOut
+            while (currVolume > 0.05f)
+            {
+                currVolume -= Time.deltaTime * 0.3f;
+                Update_BGMAudioSource(currVolume);
+
+                yield return null;
+            }
+        }
+
+        currVolume = 0.0f;
+        Update_BGMAudioSource(currVolume);
+        audioSources[(int)ENUM_SOUND_TYPE.BGM].Stop();
+
+        bgmStopCoroutine = null;
+    }
+
     private IEnumerator IFadeOutIn_BGM(ENUM_BGM_TYPE bgmType)
     {
+        yield return new WaitUntil(() => bgmStopCoroutine == null);
+
         float _currBgmVolume = volumeData.masterVolume * volumeData.bgmVolume;
         float currVolume = audioSources[(int)ENUM_SOUND_TYPE.BGM].volume;
 
@@ -223,9 +258,9 @@ public class SoundMgr
         if (audioSources[(int)ENUM_SOUND_TYPE.BGM].isPlaying) // 실행 중일 경우
         {
             // FadeOut
-            while (currVolume > 0.1f)
+            while (currVolume > 0.05f)
             {
-                currVolume -= Time.deltaTime;
+                currVolume -= Time.deltaTime * 0.3f;
                 Update_BGMAudioSource(currVolume);
 
                 yield return null;
@@ -245,7 +280,7 @@ public class SoundMgr
             // FadeIn
             while (currVolume < _currBgmVolume)
             {
-                currVolume += Time.deltaTime;
+                currVolume += Time.deltaTime * 0.3f;
                 Update_BGMAudioSource(currVolume);
 
                 yield return null;

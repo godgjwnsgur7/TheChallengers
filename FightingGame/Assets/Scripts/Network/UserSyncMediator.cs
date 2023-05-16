@@ -99,8 +99,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
     [BroadcastMethod]
     public void Show_GameInfoWindow()
     {
-        
-
+        Managers.Sound.Stop_BGM();
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
     }
     

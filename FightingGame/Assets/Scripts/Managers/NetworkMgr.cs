@@ -40,7 +40,6 @@ public class NetworkMgr : IRoomPostProcess
     DBUserData slaveDBData;
 
     Coroutine sequenceExecuteCoroutine = null;
-    Coroutine DestroyAllphotonObjectCoroutine = null;
 
     string slaveClientNickname = null;
 
@@ -104,7 +103,6 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnUpdateRoomProperty(CustomRoomProperty property)
     {
-
     }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
@@ -230,7 +228,7 @@ public class NetworkMgr : IRoomPostProcess
 
     public void DestroyAll_PhotonObject()
     {
-        DestroyAllphotonObjectCoroutine = CoroutineHelper.StartCoroutine(IWaitDestroyAllPhotonObject());
+        CoroutineHelper.StartCoroutine(IWaitDestroyAllPhotonObject());
     }
 
     public void Start_Timer()

@@ -55,5 +55,9 @@ public class BattleCanvas : BaseCanvas
         gameStateEffect.Play_GameStateEffect(effectType);
     }
 
-    public void EndGame(bool isDraw, bool isWin) => resultWindow.Open(isDraw, isWin);
+    public void EndGame(bool isDraw, bool isWin)
+    {
+        Managers.Sound.Stop_BGM();
+        resultWindow.Open(isDraw, isWin);
+    }
 }

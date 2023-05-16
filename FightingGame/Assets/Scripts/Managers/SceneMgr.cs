@@ -17,6 +17,7 @@ public class SceneMgr
 
     public void LoadScene(ENUM_SCENE_TYPE sceneType)
     {
+        Managers.Sound.Stop_BGM();
         Managers.UI.popupCanvas.Play_FadeOutEffect();
 
         CoroutineHelper.StartCoroutine(IDelaySceneLoad(sceneType));
