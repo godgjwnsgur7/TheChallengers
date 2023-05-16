@@ -21,8 +21,8 @@ public abstract class BaseScene : MonoBehaviour
 
     public virtual void Init()
     {
-        Managers.UI.popupCanvas.Play_FadeInEffect(Play_BGM);
         Managers.Scene.Get_CurrSceneType(SceneType);
+        Managers.UI.popupCanvas.Play_FadeInEffect(Play_BGM);
     }
     
     public virtual void Clear()
@@ -35,7 +35,8 @@ public abstract class BaseScene : MonoBehaviour
     /// </summary>
     public virtual void Play_BGM()
     {
-        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Unknown);
+        if(Managers.Scene.CurrSceneType != ENUM_SCENE_TYPE.Battle)
+            Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Unknown);
     }
 }
  

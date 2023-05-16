@@ -186,19 +186,6 @@ public class SoundMgr
         audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
     }
 
-    public void Play_SFX(ENUM_SFX_TYPE sfxType, Vector3 worldPosVec)
-    {
-        float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
-
-        string path = $"Sounds/SFX/{sfxType}";
-        AudioClip audioClip = GetOrAddAudioClip(path);
-
-        if (audioClip == null)
-            return;
-
-        AudioSource.PlayClipAtPoint(audioClip, worldPosVec, _currSfxVolume);
-    }
-
     public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
@@ -246,7 +233,7 @@ public class SoundMgr
         }
 
         currVolume = 0.0f;
-        Update_BGMAudioSource(currVolume);
+        Update_BGMAudioSource(0.0f);
 
         if(audioClip != null)
             audioSources[(int)ENUM_SOUND_TYPE.BGM].clip = audioClip;

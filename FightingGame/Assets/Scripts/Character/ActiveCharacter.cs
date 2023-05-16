@@ -502,6 +502,7 @@ public partial class ActiveCharacter : Character
                 if ((dropCoroutine == null && currState != ENUM_PLAYER_STATE.Attack)&&
                     (currState != ENUM_PLAYER_STATE.Hit && currState != ENUM_PLAYER_STATE.Skill))
                 {
+                    currState = ENUM_PLAYER_STATE.Jump;
                     SetAnimBool("IsDrop", true);
                     SetAnimTrigger("DropTrigger");
                 }
@@ -772,7 +773,7 @@ public partial class ActiveCharacter : Character
         float currDistance = transform.position.x - listenerPosX; // 거리
 
         if (Math.Abs(currDistance) > 3)
-            audioSource.panStereo = currDistance / 8.0f;
+            audioSource.panStereo = currDistance / 10.0f;
         else
             audioSource.panStereo = 0;
 

@@ -21,4 +21,9 @@ public class TrainingScene : BaseScene
 
         buttonPanel.Init();
     }
+
+    public override void Play_BGM()
+    {
+        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Test);
+    }
 }

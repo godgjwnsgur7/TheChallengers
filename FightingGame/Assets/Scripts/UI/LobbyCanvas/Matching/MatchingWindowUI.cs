@@ -41,7 +41,7 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void CreateOrJoin_MatchingRoom()
     {
-        CoroutineHelper.StartCoroutine(IDelayDataSyncCheck(2f));
+        CoroutineHelper.StartCoroutine(IDelayDataSyncCheck(1f));
     }
     
     public void MathingFailed() => OnClick_Exit();
@@ -109,16 +109,25 @@ public class MatchingWindowUI : MonoBehaviour
 
     protected IEnumerator IDelayDataSyncCheck(float second)
     {
+        Debug.Log("실행 확인1");
+
         yield return new WaitUntil(() => PhotonLogicHandler.IsJoinedRoom);
+
+        Debug.Log("실행 확인2");
 
         if (PhotonLogicHandler.IsMasterClient || !PhotonLogicHandler.IsFullRoom)
             yield break;
+        
+        Debug.Log("실행 확인3");
 
         yield return new WaitForSeconds(second);
 
         if (!PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom
             && !Managers.Network.Get_DataSyncStateAll())
+        {
+            Debug.Log("실행 확인4");
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-
+        }
+            
     }
 }

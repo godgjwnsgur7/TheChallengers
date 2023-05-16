@@ -59,8 +59,7 @@ public class BattleScene : BaseScene
     public override void Play_BGM()
     {       
         string mapName = currMap.Get_MapType().ToString();
-        ENUM_BGM_TYPE bgmType = ENUM_BGM_TYPE.Unknown;
-        bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapName);
+        ENUM_BGM_TYPE bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapName);
         Managers.Sound.Play_BGM(bgmType);
     }
 }
