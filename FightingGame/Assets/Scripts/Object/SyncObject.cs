@@ -47,6 +47,9 @@ public class SyncObject : Poolable
 
         AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume((ENUM_SFX_TYPE)sfxTypeNum);
 
+        if (audioClipVolume == null || audioClipVolume.audioClip == null)
+            return;
+
         GameObject gameObject = new GameObject("OneShotAudio");
         gameObject.transform.position = transform.position;
 

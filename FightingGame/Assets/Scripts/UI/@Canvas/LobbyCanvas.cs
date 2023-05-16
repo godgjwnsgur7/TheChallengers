@@ -24,11 +24,6 @@ public class LobbyCanvas : BaseCanvas
         }
     }
 
-    public void MathingCallBack()
-    {
-        matchingWindow.MathingCallBack();
-    }
-
     public void GameStart()
     {
         Managers.UI.popupCanvas.Play_FadeOutInEffect(gameStartWindow.GameStart);

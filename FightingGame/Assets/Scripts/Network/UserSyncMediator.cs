@@ -87,7 +87,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
     {
         updateTimerCallBack(_currentTimeLimit);
     }
-    
+
     /// <summary>
     ///  게임에 돌입하기 전에 처리되는 함수들
     /// </summary>
@@ -99,11 +99,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
     [BroadcastMethod]
     public void Show_GameInfoWindow()
     {
-        if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
-        {
-            // 매칭을 돌리고 있는 상태일 경우, 로비에 매칭이 됐음을 알림
-            Managers.UI.currCanvas.GetComponent<LobbyCanvas>().MathingCallBack();
-        }
+        
 
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_GameStartWindow();
     }

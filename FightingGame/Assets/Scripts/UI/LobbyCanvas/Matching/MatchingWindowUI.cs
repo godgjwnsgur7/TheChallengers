@@ -28,7 +28,6 @@ public class MatchingWindowUI : MonoBehaviour
         matchingStateText.text = "매칭 중";
         this.gameObject.SetActive(true);
 
-        isStopwatchLock = false;
         timerCoroutine = StartCoroutine(IStopwatch());
 
         JoinRoomOrCreateRoom();
@@ -42,7 +41,7 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void CreateOrJoin_MatchingRoom()
     {
-        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+        CoroutineHelper.StartCoroutine(IDelayDataSyncCheck(2f));
     }
     
     public void MathingFailed() => OnClick_Exit();
@@ -82,6 +81,7 @@ public class MatchingWindowUI : MonoBehaviour
 
     protected IEnumerator IStopwatch()
     {
+        isStopwatchLock = false;
         float seconds = 0;
         int minutes = 0;
 
@@ -97,10 +97,28 @@ public class MatchingWindowUI : MonoBehaviour
 
             stopwatchText.text = string.Format("{0:00} : {1:00}", minutes, (int)seconds);
 
+            if (PhotonLogicHandler.IsFullRoom)
+                MathingCallBack();
+
             yield return null;
         }
 
         timerCoroutine = null;
+        isStopwatchLock = true;
     }
 
+    protected IEnumerator IDelayDataSyncCheck(float second)
+    {
+        yield return new WaitUntil(() => PhotonLogicHandler.IsJoinedRoom);
+
+        if (PhotonLogicHandler.IsMasterClient || !PhotonLogicHandler.IsFullRoom)
+            yield break;
+
+        yield return new WaitForSeconds(second);
+
+        if (!PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom
+            && !Managers.Network.Get_DataSyncStateAll())
+            PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
+
+    }
 }

@@ -141,8 +141,13 @@ public class NetworkMgr : IRoomPostProcess
 
     protected IEnumerator INetworkSequenceExecuter()
     {
-        if (!PhotonLogicHandler.IsMasterClient)
+        if (!PhotonLogicHandler.IsMasterClient || !PhotonLogicHandler.IsFullRoom)
+        {
+            Debug.Log($"Stop SequenceExecuter" +
+                $"\nIsMasterClient : {PhotonLogicHandler.IsMasterClient}" +
+                $"\nIsFullRoom : {PhotonLogicHandler.IsFullRoom}");
             yield break;
+        }
 
         // 0. 데이터 싱크
         PhotonLogicHandler.Instance.RequestSyncDataAll();
@@ -152,6 +157,7 @@ public class NetworkMgr : IRoomPostProcess
 
         if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
         {
+            yield return new WaitForSeconds(0.5f);
             PhotonLogicHandler.Instance.RequestReadyAll();
         }
 
