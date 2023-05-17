@@ -194,6 +194,32 @@ public class SoundMgr
         audioSources[(int)ENUM_SOUND_TYPE.SFX].PlayOneShot(audioClip);
     }
 
+    /// <summary>
+    /// 특정 좌표에서 3D SFX 사운드 재생을 위한 함수 (오버로드)
+    /// </summary>
+    public void Play_SFX(ENUM_SFX_TYPE sfxType, Vector3 worldPosVec)
+    {
+        if (Get_SFXSoundMuteState())
+            return;
+
+        AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume(sfxType);
+
+        if (audioClipVolume == null || audioClipVolume.audioClip == null)
+            return;
+
+        GameObject gameObject = new GameObject("OneShotAudio");
+        gameObject.transform.position = worldPosVec;
+
+        AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+        audioSource.clip = audioClipVolume.audioClip;
+        Set_SFXSoundSetting(audioSource);
+
+        audioSource.volume = audioClipVolume.volume;
+        audioSource.Play();
+
+        UnityEngine.Object.Destroy(gameObject, audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
+    }
+
     public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;

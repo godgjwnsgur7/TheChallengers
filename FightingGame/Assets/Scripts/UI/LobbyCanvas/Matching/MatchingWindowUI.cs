@@ -119,9 +119,15 @@ public class MatchingWindowUI : MonoBehaviour
         if (!PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom
             && !Managers.Network.Get_DataSyncStateAll())
         {
-            Debug.Log("실행 확인4");
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-        }
+
+            yield return new WaitForSeconds(second);
             
+            if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom 
+                && !Managers.Network.Get_DataSyncStateAll())
+            {
+                CreateOrJoin_MatchingRoom();
+            }
+        }
     }
 }

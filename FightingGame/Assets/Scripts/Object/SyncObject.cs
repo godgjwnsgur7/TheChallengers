@@ -42,24 +42,6 @@ public class SyncObject : Poolable
 
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
-        if (Managers.Sound.Get_SFXSoundMuteState())
-            return;
-
-        AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume((ENUM_SFX_TYPE)sfxTypeNum);
-
-        if (audioClipVolume == null || audioClipVolume.audioClip == null)
-            return;
-
-        GameObject gameObject = new GameObject("OneShotAudio");
-        gameObject.transform.position = transform.position;
-
-        AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
-        audioSource.clip = audioClipVolume.audioClip;
-        Managers.Sound.Set_SFXSoundSetting(audioSource);
-
-        audioSource.volume = audioClipVolume.volume;
-        audioSource.Play();
-
-        UnityEngine.Object.Destroy(gameObject, audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
+        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, transform.position);
     }
 }
