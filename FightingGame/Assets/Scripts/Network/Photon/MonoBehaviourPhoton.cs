@@ -156,6 +156,8 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 	}
 
 	Dictionary<string, bool> animTriggerDictionary = new Dictionary<string, bool>();
+	Dictionary<string, bool> animUntriggerDictionary = new Dictionary<string, bool>();
+
 	Dictionary<string, bool> animBoolDictionary = new Dictionary<string, bool>();
 	Dictionary<string, int> animIntDictionary = new Dictionary<string, int>();
 	Dictionary<string, float> animFloatDictionary = new Dictionary<string, float>();
@@ -211,7 +213,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
 		OnUnTriggerParameter = (sender) =>
 		{
-			animTriggerDictionary[sender] = false;
+			animUntriggerDictionary[sender] = true;
 		};
 
 		OnBoolParameter = (sender, arg) =>
@@ -377,6 +379,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 				syncAnim.SetInteger(intSet.Key, intSet.Value);
 			}
 		}
+
 		foreach (var floatSet in animFloatDictionary)
 		{
 			if (syncAnim.GetFloat(floatSet.Key) != floatSet.Value)
@@ -384,6 +387,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 				syncAnim.SetFloat(floatSet.Key, floatSet.Value);
 			}
 		}
+
 		List<string> changedKeys = new List<string>();
 		foreach (var triggerSet in animTriggerDictionary)
 		{
@@ -397,6 +401,21 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 		foreach (var key in changedKeys)
 		{
 			animTriggerDictionary[key] = false;
+		}
+
+		changedKeys.Clear();
+		foreach (var triggerSet in animUntriggerDictionary)
+		{
+			if (triggerSet.Value == true)
+			{
+				syncAnim.ResetTrigger(triggerSet.Key);
+				changedKeys.Add(triggerSet.Key);
+			}
+		}
+
+		foreach (var key in changedKeys)
+		{
+			animUntriggerDictionary[key] = false;
 		}
 	}
 
@@ -466,6 +485,11 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 			writeStream.Write(set.Key);
 			writeStream.Write(set.Value);
 		}
+		foreach (var set in animUntriggerDictionary)
+		{
+			writeStream.Write(set.Key);
+			writeStream.Write(set.Value);
+		}
 		foreach (var set in animIntDictionary)
 		{
 			writeStream.Write(set.Key);
@@ -499,6 +523,11 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 		{
 			var key = readStream.Read<string>();
 			animTriggerDictionary[key] = readStream.Read<bool>();
+		}
+		for (int i = 0; i < animUntriggerDictionary.Count; i++)
+		{
+			var key = readStream.Read<string>();
+			animUntriggerDictionary[key] = readStream.Read<bool>();
 		}
 		for (int i = 0; i < animIntDictionary.Count; i++)
 		{
