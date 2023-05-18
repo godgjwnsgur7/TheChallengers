@@ -44,4 +44,9 @@ public class SyncObject : Poolable
     {
         Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, transform.position);
     }
+
+    protected void AnimEvent_PlaySFXFollowingSound(int sfxTypeNum)
+    {
+        Managers.Sound.PlaySFX_FollowingSound((ENUM_SFX_TYPE)sfxTypeNum, transform.position, transform);
+    }
 }

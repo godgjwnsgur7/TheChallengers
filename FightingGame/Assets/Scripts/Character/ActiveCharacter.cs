@@ -9,7 +9,6 @@ public partial class ActiveCharacter : Character
 {
     protected Animator anim;
     protected SpriteRenderer spriteRenderer;
-    protected AudioSource audioSource;
 
     protected AttackObject attackObject;
     Action<float> OnHit;
@@ -53,10 +52,6 @@ public partial class ActiveCharacter : Character
 
             if(isControl)
                 gameObject.AddComponent<AudioListener>();
-
-            if (audioSource == null)
-                audioSource = GetComponent<AudioSource>();
-            Managers.Sound.Set_SFXSoundSetting(audioSource);
         }
         else
         {
@@ -98,10 +93,6 @@ public partial class ActiveCharacter : Character
                 spriteRenderer.sortingOrder += 1;
                 gameObject.AddComponent<AudioListener>();
             }
-
-            if (audioSource == null)
-                audioSource = GetComponent<AudioSource>();
-            Managers.Sound.Set_SFXSoundSetting(audioSource);
         }
 
         if (teamType == ENUM_TEAM_TYPE.Red)
@@ -765,23 +756,14 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
-        if (audioSource == null || Managers.Sound.Get_SFXSoundMuteState())
-            return;
+        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, transform.position);
+        return;
+    }
 
-        AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume((ENUM_SFX_TYPE)sfxTypeNum);
-
-        float listenerPosX = Managers.Sound.Get_AudioListenerWorldPosX();
-        float currDistance = transform.position.x - listenerPosX; // 거리
-
-        if (Math.Abs(currDistance) > 5)
-        {
-            audioSource.panStereo = currDistance / 10.0f;
-        }
-        else
-            audioSource.panStereo = 0;
-
-        audioSource.volume = audioClipVolume.volume;
-        audioSource.PlayOneShot(audioClipVolume.audioClip);
+    protected void AnimEvent_PlaySFX_FollowingSound(int sfxTypeNum)
+    {
+        Managers.Sound.PlaySFX_FollowingSound((ENUM_SFX_TYPE)sfxTypeNum, transform.position, transform);
+        return;
     }
 
     #endregion

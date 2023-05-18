@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
+using System;
 
 public enum ENUM_SOUND_TYPE
 {
@@ -39,7 +40,7 @@ public class SoundMgr
         if (root == null)
         {
             root = new GameObject { name = "@Sound" };
-            Object.DontDestroyOnLoad(root);
+            UnityEngine.Object.DontDestroyOnLoad(root);
 
             string[] soundNames = System.Enum.GetNames(typeof(ENUM_SOUND_TYPE)); // BGM, SFX
             for (int i = 0; i < soundNames.Length - 1; i++)
@@ -202,22 +203,32 @@ public class SoundMgr
         if (Get_SFXSoundMuteState())
             return;
 
-        AudioClipVolume audioClipVolume = Managers.Sound.Get_AudioClipVolume(sfxType);
+        AudioClipVolume audioClipVolume = Get_AudioClipVolume(sfxType);
 
-        if (audioClipVolume == null || audioClipVolume.audioClip == null)
+        if (audioClipVolume == null)
             return;
 
-        GameObject gameObject = new GameObject("OneShotAudio");
-        gameObject.transform.position = worldPosVec;
+        OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
 
-        AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
-        audioSource.clip = audioClipVolume.audioClip;
-        Set_SFXSoundSetting(audioSource);
+        oneShotAudioObject.Play_SFX(sfxType, audioClipVolume, worldPosVec);
+    }
 
-        audioSource.volume = audioClipVolume.volume;
-        audioSource.Play();
+    /// <summary>
+    /// 호출자의 위치를 따라가는 3D SFX 사운드 재생을 위한 함수 (오버로드)
+    /// </summary>
+    public void PlaySFX_FollowingSound(ENUM_SFX_TYPE sfxType, Vector3 worldPosVec, Transform target)
+    {
+        if (Get_SFXSoundMuteState())
+            return;
 
-        UnityEngine.Object.Destroy(gameObject, audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
+        AudioClipVolume audioClipVolume = Get_AudioClipVolume(sfxType);
+
+        if (audioClipVolume == null)
+            return;
+
+        OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
+
+        oneShotAudioObject.PlaySFX_FollowingSound(sfxType, audioClipVolume, target);
     }
 
     public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)
