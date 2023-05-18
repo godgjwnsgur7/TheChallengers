@@ -232,7 +232,7 @@ public partial class PhotonLogicHandler
     // 제외하기 원하는 타입을 매개변수로 넘길 수 있음
     public IEnumerator TryDestroyAllPhotonOnScene(params Type[] ignoreTypes)
     {
-        yield return CheckValidRoutine(ignoreTypes);
+        yield return CheckValidRoutine(1, ignoreTypes);
 
 		RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
 
@@ -245,19 +245,30 @@ public partial class PhotonLogicHandler
     }
 
     private const float TimeOutSec = 3.0f;
-    private IEnumerator CheckValidRoutine(params Type[] ignoreTypes)
+    private const int RetryCount = 3;
+    private IEnumerator CheckValidRoutine(int tryCount, params Type[] ignoreTypes)
     {
-		var photons = FindObjectsOfType<MonoBehaviourPhoton>();
+		var photons = FindObjectsOfType<MonoBehaviourPhoton>().Where(photon => photon.GetType() != this.GetType());
 		if (photons == null)
 			yield break;
 
-		var photonTypes = photons.Select(photon => photon.GetType()).Where(type => type != this.GetType());
+		if (tryCount >= RetryCount) // 최종 시도 횟수가 넘는다면 강제로 전부 파괴
+        {
+            foreach(var photon in photons)
+            {
+                Destroy(photon.gameObject);
+            }
+
+			yield break;
+		}
+
+        var photonTypes = photons.Select(photon => photon.GetType());
 
 		if (ignoreTypes != null)
 			photonTypes = photonTypes.Where(type => ignoreTypes.Contains(type) == false);
 
 		if (photonTypes.Any() == false)
-            yield break;
+			yield break;
 
 		float checkValidTime = TimeOutSec;
 
@@ -285,9 +296,9 @@ public partial class PhotonLogicHandler
                 if (checkValidTime <= 0)
                 {
                     checkValidTime = TimeOutSec;
-                    Debug.LogError("타임 아웃 발생!! 포톤 객체 제거를 다시 시도합니다.");
-					yield return CheckValidRoutine(ignoreTypes);
-					yield break;
+                    Debug.LogError($"타임 아웃 발생!! 포톤 객체 제거를 {tryCount}번 째 시도합니다.");
+					yield return CheckValidRoutine(++tryCount, ignoreTypes);
+                    yield break;
 				}
 
 				checkValidTime -= Time.deltaTime;
