@@ -345,6 +345,7 @@ public class MonoBehaviourPhoton : MonoBehaviourPun, IPunObservable, IPunInstant
 
 				case PhotonAnimatorView.ParameterType.Trigger:
 					animTriggerDictionary.Add(param.parameterName, false);
+					animUntriggerDictionary.Add(param.parameterName, false);
 					break;
 
 				case PhotonAnimatorView.ParameterType.Int:
