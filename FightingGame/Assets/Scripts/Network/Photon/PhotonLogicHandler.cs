@@ -332,6 +332,18 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return b;
     }
 
+    public void LoadScene(ENUM_SCENE_TYPE sceneType)
+    {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.LoadLevel(sceneType.ToString());
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneType.ToString());
+        }
+    }
+
 	public bool TrySceneLoadWithRoomMember(ENUM_SCENE_TYPE sceneType, Action<float> OnProgress = null)
     {
         if (!IsEnableJoin())

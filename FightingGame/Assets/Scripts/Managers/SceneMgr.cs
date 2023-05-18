@@ -43,6 +43,6 @@ public class SceneMgr
 
         string nextScene = System.Enum.GetName(typeof(ENUM_SCENE_TYPE), sceneType);
 
-        SceneManager.LoadScene(nextScene);
+        PhotonLogicHandler.Instance.LoadScene(sceneType);
     }
 }

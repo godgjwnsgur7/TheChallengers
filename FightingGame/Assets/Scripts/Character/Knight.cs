@@ -6,7 +6,9 @@ using System;
 
 public class Knight : ActiveCharacter
 {
-    public override void Init()
+	private bool isInitialized = false;
+
+	public override void Init()
     {
         if (isInitialized)
         {
@@ -14,7 +16,8 @@ public class Knight : ActiveCharacter
             return;
         }
 
-        characterType = ENUM_CHARACTER_TYPE.Knight;
+        isInitialized = true;
+		characterType = ENUM_CHARACTER_TYPE.Knight;
 
         base.Init();
 

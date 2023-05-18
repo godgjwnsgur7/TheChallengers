@@ -47,12 +47,15 @@ public class Character : MonoBehaviourPhoton
     public bool superArmour = false;
 
     protected float inputArrowDir = 0.0f;
-    protected bool isInitialized = false;
+    private bool isInitialized = false;
     protected bool isServerSyncState = false;
 
     public override void Init()
     {
         base.Init();
+
+        if (isInitialized)
+            return;
 
         isInitialized = true;
 

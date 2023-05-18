@@ -6,17 +6,21 @@ using System;
 
 public class Wizard : ActiveCharacter
 {
-    public override void Init()
+	private bool isInitialized = false;
+
+	public override void Init()
     {
-        if (isInitialized)
+		base.Init();
+
+		if (isInitialized)
         {
             Debug.Log("중복으로 캐릭터를 초기화 시도하였습니다."); 
             return;
         }
 
-        characterType = ENUM_CHARACTER_TYPE.Wizard;
+        isInitialized = true;
 
-        base.Init();
+		characterType = ENUM_CHARACTER_TYPE.Wizard;
 
         if (PhotonLogicHandler.IsMine(viewID))
         {

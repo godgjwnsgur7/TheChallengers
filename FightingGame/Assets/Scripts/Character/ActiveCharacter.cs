@@ -23,11 +23,21 @@ public partial class ActiveCharacter : Character
     public float stunTime;
     public float currStunTime;
 
-    public override void Init()
+    private bool isInitialized = false;
+
+	public override void Init()
     {
         base.Init();
 
-        if (spriteRenderer == null)
+		if (isInitialized)
+		{
+			Debug.Log("중복으로 캐릭터를 초기화 시도하였습니다.");
+			return;
+		}
+
+		isInitialized = true;
+
+		if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
         // Animator
