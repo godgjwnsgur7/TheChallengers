@@ -114,6 +114,15 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         return players.All(p => p.CustomProperties.ContainsKey(readyStr) && (bool)p.CustomProperties[readyStr]);
     }
 
+    public bool IsBoolTypeProperty(ENUM_PLAYER_STATE_PROPERTIES property)
+    {
+        return ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD == property ||
+            ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC == property ||
+            ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC == property ||
+            ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC == property ||
+            ENUM_PLAYER_STATE_PROPERTIES.READY == property;
+	}
+
     public void OnReady()
     {
         SetCustomPlayerPropertyTable(ENUM_PLAYER_STATE_PROPERTIES.READY, true, true);

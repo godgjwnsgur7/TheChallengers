@@ -236,7 +236,7 @@ public partial class PhotonLogicHandler
 
 		RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
 
-        while(IsReadyUnloadBattleScene() == false) // 양 쪽 모두 배틀씬을 언로드할 준비가 되었는가?
+        while(CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD) == false) // 양 쪽 모두 배틀씬을 언로드할 준비가 되었는가?
         {
             yield return null;
         }
@@ -308,13 +308,19 @@ public partial class PhotonLogicHandler
 		}
 	}
 
-	public bool IsReadyUnloadBattleScene()
+	public bool CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES property)
     {
-        var propertyValues = GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES.SCENE_UNLOAD);
+        if (IsBoolTypeProperty(property) == false)
+        {
+            Debug.LogError($"{property}가 bool type이 아닙니다.");
+            return false;
+		}
+
+		var propertyValues = GetAllPlayerProperties(property);
         return propertyValues.Select(value => (bool)value).All(isReady => isReady == true);
     }
 
-    public IEnumerable<object> GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES propertyType)
+	public IEnumerable<object> GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES propertyType)
     {
         var players = PhotonNetwork.PlayerList;
         if (players == null || players.Length < 2)
