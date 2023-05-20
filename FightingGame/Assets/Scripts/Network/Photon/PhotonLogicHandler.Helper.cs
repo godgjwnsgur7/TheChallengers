@@ -310,14 +310,19 @@ public partial class PhotonLogicHandler
 
 	public bool CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES property)
     {
-        if (IsBoolTypeProperty(property) == false)
+		var propertyValues = GetAllPlayerProperties(property);
+
+		if (IsBoolTypeProperty(property))
         {
-            Debug.LogError($"{property}가 bool type이 아닙니다.");
-            return false;
+			return propertyValues.Select(value => (bool)value).All(isReady => isReady == true);
+		}
+        else if(property == ENUM_PLAYER_STATE_PROPERTIES.CHARACTER)
+        {
+            return propertyValues.Select(value => (ENUM_CHARACTER_TYPE)value).All(type => type != ENUM_CHARACTER_TYPE.Default);
 		}
 
-		var propertyValues = GetAllPlayerProperties(property);
-        return propertyValues.Select(value => (bool)value).All(isReady => isReady == true);
+        Debug.LogError($"정의되지 않은 {property} 타입을 체크하려 들었음");
+        return false;
     }
 
 	public IEnumerable<object> GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES propertyType)
