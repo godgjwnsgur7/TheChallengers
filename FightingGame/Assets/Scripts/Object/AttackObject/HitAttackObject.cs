@@ -32,6 +32,9 @@ public class HitAttackObject : AttackObject
 
     private void Start_RunTimeCheckCoroutine()
     {
+        if (skillValue == null)
+            return;
+
         runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 

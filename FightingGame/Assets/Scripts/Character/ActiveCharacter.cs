@@ -84,6 +84,11 @@ public partial class ActiveCharacter : Character
     {
         teamType = _teamType;
 
+        Managers.Data.CharInfoDict.TryGetValue((int)characterType, out CharacterInfo characterInfo);
+        MyCharInfo = characterInfo;
+
+        currHP = characterInfo.maxHP;
+
         if (isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);

@@ -36,20 +36,18 @@ public class MatchingWindowUI : MonoBehaviour
     private void JoinRoomOrCreateRoom()
     {
         PhotonLogicHandler.Instance.TryJoinOrCreateRandomRoom(
-            CreateOrJoin_MatchingRoom, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
+            CreateOrJoin_CallBack, null, (ENUM_MAP_TYPE)Random.Range(0, (int)ENUM_MAP_TYPE.Max));
     }
 
-    public void CreateOrJoin_MatchingRoom()
+    public void CreateOrJoin_CallBack()
     {
         CoroutineHelper.StartCoroutine(IDelayDataSyncCheck(1f));
     }
-    
-    public void MathingFailed() => OnClick_Exit();
 
     /// <summary>
     /// 매칭이 됐을 때 콜백
     /// </summary>
-    public void MathingCallBack()
+    public void MatchingCallBack()
     {
         isStopwatchLock = true;
         exitButtonObj.SetActive(false);
@@ -98,7 +96,7 @@ public class MatchingWindowUI : MonoBehaviour
             stopwatchText.text = string.Format("{0:00} : {1:00}", minutes, (int)seconds);
 
             if (PhotonLogicHandler.IsFullRoom)
-                MathingCallBack();
+                MatchingCallBack();
 
             yield return null;
         }
@@ -122,11 +120,11 @@ public class MatchingWindowUI : MonoBehaviour
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
 
             yield return new WaitForSeconds(second);
-            
+
             if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom 
                 && !Managers.Network.Get_DataSyncStateAll())
             {
-                CreateOrJoin_MatchingRoom();
+                CreateOrJoin_CallBack();
             }
         }
     }
