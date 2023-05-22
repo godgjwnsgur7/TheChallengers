@@ -31,7 +31,7 @@ public class TrainingMenuWindowUI : MonoBehaviour
 
     public void OnClick_Setting()
     {
-        // 로비씬에 있는 설정을 팝업캔버스로 빼서 공용으로 묶어 사용할 수 있게 변경
+        Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
     public void OnClick_GoToLobby() => Managers.UI.popupCanvas.Open_SelectPopup

@@ -3204,7 +3204,7 @@ GameObject:
   - component: {fileID: 1418530637}
   - component: {fileID: 1418530638}
   m_Layer: 0
-  m_Name: Player
+  m_Name: TrainingPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3238,6 +3238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 973984477}
+  activeCharacter: {fileID: 0}
+  enemyCharacter: {fileID: 0}
   moveDir: 0
   inabilityState: 0
 --- !u!1 &1517771868
@@ -4173,7 +4175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trainingCharacter: {fileID: 1418530638}
-  enemyCharacter: {fileID: 0}
 --- !u!4 &1948010700
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,6 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] GameStartWindowUI gameStartWindow;
-    [SerializeField] SettingWindow settingWindow;
 
     public override void Init()
     {
@@ -85,7 +84,7 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnClick_Setting()
     {
-        settingWindow.Open();
+        Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
     public void OnClick_TestVibration()

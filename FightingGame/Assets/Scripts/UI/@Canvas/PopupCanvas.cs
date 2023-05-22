@@ -11,6 +11,7 @@ using FGDefine;
 public class PopupCanvas : MonoBehaviour
 {
     [Header("Set In Editor")]
+    [SerializeField] SettingWindow settingWindow;
     [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
@@ -29,10 +30,9 @@ public class PopupCanvas : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void Check_ActivePopup()
+    public void Open_SettingWindow()
     {
-        // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중인데
-        // 나중에 해보던가 하자
+        settingWindow.Open();
     }
 
     /// <summary>

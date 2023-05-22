@@ -20,7 +20,8 @@ public class TrainingScene : BaseScene
 
         base.Init();
 
-        Summon_Map();
+        mapType = ENUM_MAP_TYPE.CaveMap;
+        Summon_MapObject();
     }
 
     public override void Clear()
@@ -31,7 +32,7 @@ public class TrainingScene : BaseScene
     public void Change_CurrMap(ENUM_MAP_TYPE _mapType)
     {
         mapType = _mapType;
-        Managers.UI.popupCanvas.Play_FadeOutInEffect(Summon_Map);
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Summon_MapObject);
     }
 
     public void Change_EnemyCharacter(ENUM_CHARACTER_TYPE _charType)
@@ -44,7 +45,7 @@ public class TrainingScene : BaseScene
         trainingCharacter.Summon_MyCharacter(_charType, currMap.blueTeamSpawnPoint.position);
     }
 
-    private void Summon_Map()
+    private void Summon_MapObject()
     {
         if(currMap != null)
             Managers.Resource.Destroy(currMap.gameObject);

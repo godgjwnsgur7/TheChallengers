@@ -52,9 +52,10 @@ public class TrainingCharacter : MonoBehaviour
     public void Summon_MyCharacter(ENUM_CHARACTER_TYPE _summonCharType, Vector2 _summonPosVec)
     {
         if (activeCharacter != null)
+        {
             Destroy_MyCharacter();
-
-        // 카메라 타겟 변경 go.
+            playerCamera.Camera_Moving();
+        }
 
         _summonPosVec.y += 1f;
         activeCharacter = Managers.Resource.Instantiate($"{_summonCharType}", _summonPosVec).GetComponent<ActiveCharacter>();
