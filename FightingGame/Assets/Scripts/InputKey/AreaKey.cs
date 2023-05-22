@@ -26,7 +26,7 @@ public class AreaKey : MonoBehaviour
         if(collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
             triggerCount++;
 
-        Debug.Log(collision.name);
+        // Debug.Log(collision.name);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

@@ -80,11 +80,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if(!masterProfile.IsMine) // 마스터클라이언트가 됐다면
         {
-            PhotonLogicHandler.Instance.OnUnReady();
             masterProfile.Clear();
             masterProfile.Init(slaveProfile.Get_ProfileInfo());
         }
 
+        PhotonLogicHandler.Instance.RequestUnReadyAll();
         Init();
     }
 

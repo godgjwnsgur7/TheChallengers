@@ -111,8 +111,6 @@ public class PlayerCamera : MonoBehaviour
 
             transform.position = new Vector3(clampedX, clampedY, -10);
 
-            Debug.Log("코루틴 ㅋㅋ");
-
             yield return null;
         }
 

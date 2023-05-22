@@ -54,4 +54,8 @@ public class TrainingScene : BaseScene
         trainingCharacter.Init(currMap);
     }
 
+    public override void Play_BGM()
+    {
+        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.CaveMap);
+    }
 }
