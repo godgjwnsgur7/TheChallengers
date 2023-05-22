@@ -5,49 +5,120 @@ using FGDefine;
 
 public class TrainingCharacter : MonoBehaviour
 {
-    [SerializeField] PlayerCamera playerCamera;
+    Dictionary<ENUM_CHARACTER_TYPE, int> skillPoolingCountDict = new Dictionary<ENUM_CHARACTER_TYPE, int>();
 
-    public ActiveCharacter activeCharacter;
-    public ENUM_TEAM_TYPE teamType;
+    [SerializeField] PlayerCamera playerCamera;
+    public ActiveCharacter activeCharacter = null;
+    public ActiveCharacter enemyCharacter = null;
+
     public float moveDir;
     public bool inabilityState = false;
 
-    bool isMove = false;
     Coroutine moveCoroutine = null;
 
-    private void Update()
+    bool isMove = false;
+
+    private void OnDisable()
+    {
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+    }
+
+    public void Init(BaseMap currMap)
+    {
+        Destroy_MyCharacter();
+        Destroy_EnemyCharacter();
+
+        playerCamera.Init(currMap);
+    }
+
+    private bool SkillsPooling_Check(ENUM_CHARACTER_TYPE _charType)
+    {
+        if (skillPoolingCountDict.ContainsKey(_charType))
+        {
+            if (skillPoolingCountDict[_charType] >= 2)
+                return false;
+            else
+                skillPoolingCountDict[_charType]++;
+        }
+        else
+        {
+            skillPoolingCountDict.Add(_charType, 1);
+        }
+
+        return true;
+    }
+
+    public void Summon_MyCharacter(ENUM_CHARACTER_TYPE _summonCharType, Vector2 _summonPosVec)
+    {
+        if (activeCharacter != null)
+            Destroy_MyCharacter();
+
+        // 카메라 타겟 변경 go.
+
+        _summonPosVec.y += 1f;
+        activeCharacter = Managers.Resource.Instantiate($"{_summonCharType}", _summonPosVec).GetComponent<ActiveCharacter>();
+        Destroy(playerCamera.GetComponent<AudioListener>());
+
+        activeCharacter.Init();
+        activeCharacter.Set_Character(ENUM_TEAM_TYPE.Blue);
+        playerCamera.Following_Target(activeCharacter.transform);
+
+        Connect_InputController();
+
+        playerCamera.Set_Target(activeCharacter.transform);
+
+        if (SkillsPooling_Check(_summonCharType))
+            activeCharacter.Skills_Pooling();
+    }
+
+    public void Summon_EnemyCharacter(ENUM_CHARACTER_TYPE _summonCharType, Vector2 _summonPosVec)
+    {
+        if (enemyCharacter != null)
+            Destroy_EnemyCharacter();
+
+        Vector2 summonPosVec = activeCharacter == null ? _summonPosVec : (Vector2)activeCharacter.transform.position;
+        summonPosVec.y += 1f;
+        enemyCharacter = Managers.Resource.Instantiate($"{_summonCharType}", summonPosVec).GetComponent<ActiveCharacter>();
+
+        enemyCharacter.Init();
+        enemyCharacter.Set_Character(ENUM_TEAM_TYPE.Red);
+
+        if (SkillsPooling_Check(_summonCharType))
+            enemyCharacter.Skills_Pooling();
+
+    }
+
+    public void Destroy_MyCharacter()
     {
         if (activeCharacter == null)
             return;
 
-        if(!inabilityState)
-            OnKeyboard();
+        playerCamera.gameObject.AddComponent<AudioListener>();
+        Managers.Resource.Destroy(activeCharacter.gameObject);
     }
 
-    public virtual void Set_Character(ActiveCharacter _activeCharacter)
+    public void Destroy_EnemyCharacter()
     {
-        activeCharacter = _activeCharacter;
-        activeCharacter.transform.parent = this.transform;
-        activeCharacter.Init();
-        activeCharacter.Set_Character(teamType);
+        if (enemyCharacter == null)
+            return;
 
-        Connect_InputController();
+        Managers.Resource.Destroy(enemyCharacter.gameObject);
 
-        if(!inabilityState && playerCamera != null)
-            playerCamera.Following_Target(activeCharacter.transform);
+        // 카메라 이동
     }
 
     public void Connect_InputController()
     {
-        if (inabilityState)
-            return;
-
         Managers.Input.Connect_InputKeyController(activeCharacter.characterType, OnPointDownCallBack, OnPointUpCallBack);
         Managers.Input.Connect_InputArrowKey(OnPointEnterCallBack);
     }
 
     public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
+        if (activeCharacter == null)
+            return;
+
         switch (_inputKeyName)
         {
             case ENUM_INPUTKEY_NAME.Direction:
@@ -87,6 +158,9 @@ public class TrainingCharacter : MonoBehaviour
 
     public void OnPointUpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
+        if (activeCharacter == null)
+            return;
+
         switch (_inputKeyName)
         {
             case ENUM_INPUTKEY_NAME.Direction:
@@ -155,78 +229,10 @@ public class TrainingCharacter : MonoBehaviour
 
         activeCharacter.Set_inputArrowDir(0.0f);
         activeCharacter.Input_MoveKey(false);
-        if (activeCharacter.currState == ENUM_PLAYER_STATE.Move)
+        if (activeCharacter.currState == ENUM_PLAYER_STATE.Move ||
+            activeCharacter.currState == ENUM_PLAYER_STATE.Jump)
             PlayerCommand(ENUM_PLAYER_STATE.Idle);
 
         moveCoroutine = null;
-    }
-
-    // 디버깅용
-    protected virtual void OnKeyboard() 
-    {
-        // 공격
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Attack);
-        }
-
-        if (Input.GetKeyUp(KeyCode.F))
-        {
-            OnPointUpCallBack(ENUM_INPUTKEY_NAME.Attack);
-        }
-
-        // 스킬 1번
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill1);
-        }
-
-        // 스킬 2번
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill2);
-        }
-
-        // 스킬 3번
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill3);
-        }
-
-        // 스킬 4번
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Skill4);
-        }
-
-        // 점프
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Jump);
-        }
-
-        // 대쉬
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Dash);
-        }
-
-        // 이동
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            moveDir = -1f;
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            moveDir = 1.0f;
-            OnPointDownCallBack(ENUM_INPUTKEY_NAME.Direction);
-        }
-
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-        {
-            if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-                OnPointUpCallBack(ENUM_INPUTKEY_NAME.Direction);
-        }
     }
 }

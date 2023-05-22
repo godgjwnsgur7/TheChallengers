@@ -24,9 +24,9 @@ public class EnemyPlayer : MonoBehaviour
     public void Init(BaseMap currMap, ENUM_CHARACTER_TYPE _summonCharType)
     {
         teamType = ENUM_TEAM_TYPE.Red;
-        Vector2 cummonPosVec = currMap.redTeamSpawnPoint.position;
+        Vector2 summonPosVec = currMap.redTeamSpawnPoint.position;
 
-        Summon_Character(_summonCharType, cummonPosVec);
+        Summon_Character(_summonCharType, summonPosVec);
     }
 
     public void Summon_Character(ENUM_CHARACTER_TYPE _charType, Vector2 _summonPosVec)

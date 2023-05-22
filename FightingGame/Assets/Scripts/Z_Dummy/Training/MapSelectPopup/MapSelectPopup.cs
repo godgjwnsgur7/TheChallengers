@@ -8,7 +8,6 @@ using FGDefine;
 public class MapSelectPopup : PopupUI
 {
     [SerializeField] MapPanel mapPanel;
-    [SerializeField] ButtonPanel buttonPanel;
 
     ENUM_MAP_TYPE selectedMapType = ENUM_MAP_TYPE.CaveMap;
 
@@ -21,7 +20,6 @@ public class MapSelectPopup : PopupUI
 
     public void OnClick_MapElementCallBack(ENUM_MAP_TYPE _mapType)
     {
-        buttonPanel.Summon_Map(_mapType);
         Managers.UI.currCanvas.OnClick_Deactivate(this.gameObject);
     }
 
