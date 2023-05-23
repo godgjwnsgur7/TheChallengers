@@ -71,7 +71,7 @@ public class SettingWindow : MonoBehaviour
     public void Open_InputKeyManagement(Transform _transform)
     {
         InputKeyManagement go = Managers.Input.Get_InputKeyManagement();
-        go.transform.parent = _transform;
+        go.transform.parent = Managers.UI.currCanvas.transform;
         go.Init();
     }
 }

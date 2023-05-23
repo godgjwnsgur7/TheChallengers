@@ -12,6 +12,7 @@ public class MatchingWindowUI : MonoBehaviour
     [SerializeField] GameObject exitButtonObj;
 
     Coroutine timerCoroutine;
+    Coroutine matchingErrorCheckCoroutine;
 
     bool isStopwatchLock = false;
 
@@ -19,6 +20,9 @@ public class MatchingWindowUI : MonoBehaviour
     {
         if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
+
+        if (matchingErrorCheckCoroutine != null)
+            StopCoroutine(matchingErrorCheckCoroutine);
     }
 
     public void Open()
@@ -41,7 +45,7 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void CreateOrJoin_CallBack()
     {
-        CoroutineHelper.StartCoroutine(IDelayDataSyncCheck(1f));
+        PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
     }
 
     /// <summary>
@@ -53,6 +57,8 @@ public class MatchingWindowUI : MonoBehaviour
         exitButtonObj.SetActive(false);
         fullLodingImage.gameObject.SetActive(true);
         matchingStateText.text = "매칭 완료!";
+
+        matchingErrorCheckCoroutine = StartCoroutine(IMatchingErrorCheck());
     }
 
     public void OnClick_Exit()
@@ -95,7 +101,7 @@ public class MatchingWindowUI : MonoBehaviour
 
             stopwatchText.text = string.Format("{0:00} : {1:00}", minutes, (int)seconds);
 
-            if (PhotonLogicHandler.IsFullRoom)
+            if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom)
                 MatchingCallBack();
 
             yield return null;
@@ -105,27 +111,19 @@ public class MatchingWindowUI : MonoBehaviour
         isStopwatchLock = true;
     }
 
-    protected IEnumerator IDelayDataSyncCheck(float second)
+    protected IEnumerator IMatchingErrorCheck()
     {
-        yield return new WaitUntil(() => PhotonLogicHandler.IsJoinedRoom);
+        yield return new WaitForSeconds(4f); // 4초 대기 후 에러상태 체크
 
-        if (PhotonLogicHandler.IsMasterClient || !PhotonLogicHandler.IsFullRoom)
-            yield break;
-        
-        yield return new WaitForSeconds(second);
-
-        if (!PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom
-            && !Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
+        if (!PhotonLogicHandler.IsJoinedRoom || !PhotonLogicHandler.IsFullRoom ||
+            !PhotonLogicHandler.Instance.CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
         {
-            PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
-
-            yield return new WaitForSeconds(second);
-
-            if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom 
-                && !Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
-            {
-                CreateOrJoin_CallBack();
-            }
+            Managers.UI.popupCanvas.Open_TimeNotifyPopup(
+               "매칭에 실패했습니다.\n다시 시도해주세요.", 1.5f, OnClick_Exit);
+            yield break;
         }
+
+        if(!PhotonLogicHandler.Instance.CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES.READY))
+            PhotonLogicHandler.Instance.RequestReadyAll();
     }
 }
