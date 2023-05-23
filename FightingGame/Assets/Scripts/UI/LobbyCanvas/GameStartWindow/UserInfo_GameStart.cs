@@ -55,6 +55,4 @@ public class UserInfo_GameStart : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-
-
 }

@@ -18,7 +18,7 @@ public class BattleScene : BaseScene
         if(PhotonLogicHandler.IsConnected)
         {
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC);
-            yield return new WaitUntil(Managers.Network.Get_SceneSyncStateAll);
+            yield return new WaitUntil(() => Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC));
 
             yield return new WaitForSeconds(1.0f); // 씬로드됐어도 1초정도 딜레이
         }
@@ -48,7 +48,7 @@ public class BattleScene : BaseScene
 
         base.Init();
 
-        Managers.Player.Init(currMap, Managers.Network.Get_MyCharacterType());
+        Managers.Player.Init(currMap, Managers.Network.Get_MyCharType());
     }
 
     public override void Clear()

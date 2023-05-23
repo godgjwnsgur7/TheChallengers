@@ -216,7 +216,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 return;
             }
             
-            if (!Managers.Network.Get_DataSyncStateAll())
+            if (!Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
                 PhotonLogicHandler.Instance.RequestSyncDataAll();
 
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);

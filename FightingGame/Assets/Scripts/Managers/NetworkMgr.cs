@@ -5,36 +5,12 @@ using FGDefine;
 using System;
 
 /// <summary>
-/// Ready, DataSync, SceneSync, CharacterSync, characterType
-/// </summary>
-public class SyncData
-{
-    public bool isDataSync;
-    public bool isReady;
-    public bool isSceneSync;
-    public bool isCharacterSync;
-    public ENUM_CHARACTER_TYPE characterType;
-
-    public SyncData(bool _isDataSync, bool _isReady, bool _isSceneSync, bool _isCharacterSync, ENUM_CHARACTER_TYPE _characterType)
-    {
-        isDataSync = _isDataSync;
-        isReady = _isReady;
-        isSceneSync = _isSceneSync;
-        isCharacterSync = _isCharacterSync;
-        characterType = _characterType;
-    }
-}
-
-/// <summary>
 /// 게임의 전반적인 관리를 할 매니저
 /// 서버접속상태 체크, 네트워크 끊김 등을 판단
 /// </summary>
 public class NetworkMgr : IRoomPostProcess
 {
     UserSyncMediator userSyncMediator = null;
-
-    SyncData masterSyncData = new SyncData(false, false, false, false, ENUM_CHARACTER_TYPE.Default);
-    SyncData slaveSyncData = new SyncData(false, false, false, false, ENUM_CHARACTER_TYPE.Default);
 
     DBUserData masterDBData;
     DBUserData slaveDBData;
@@ -50,6 +26,10 @@ public class NetworkMgr : IRoomPostProcess
             return (userSyncMediator != null);
         }
     }
+
+    ENUM_CHARACTER_TYPE myCharType = ENUM_CHARACTER_TYPE.Default;
+
+    public ENUM_CHARACTER_TYPE Get_MyCharType() => myCharType;
 
     public void Init()
     {
@@ -107,18 +87,13 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        SyncData _syncData = new SyncData(property.isDataSync, property.isReady, property.isSceneSync, property.isCharacterSync, property.characterType);
-
         if (property.isMasterClient)
-        {
-            masterSyncData = _syncData;
             masterDBData = property.data;
-        }
         else
-        {
-            slaveSyncData = _syncData;
             slaveDBData = property.data;
-        }
+
+        if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
+            myCharType = property.characterType;
     }
 
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
@@ -151,7 +126,7 @@ public class NetworkMgr : IRoomPostProcess
         PhotonLogicHandler.Instance.RequestSyncDataAll();
 
         // 1. 연결 확인
-        yield return new WaitUntil(Get_DataSyncStateAll);
+        yield return new WaitUntil(() => Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC));
 
         if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
         {
@@ -160,7 +135,7 @@ public class NetworkMgr : IRoomPostProcess
         }
 
         // 2. 레디 확인 (마스터의 레디 == 시작 : 레디조건이 슬레이브의 준비완료가 될 것)
-        yield return new WaitUntil(Get_ReadyStateAll);
+        yield return new WaitUntil(() => Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.READY));
         PhotonLogicHandler.Instance.RequestGameStart(); // 게임 시작 상태로 변경
 
         // 게임 돌입할 때 UserSyncMediator 생성
@@ -173,15 +148,15 @@ public class NetworkMgr : IRoomPostProcess
         userSyncMediator.Sync_ShowGameInfo(); // 캐릭터 선택 창 돌입
 
         // 4. 캐릭터 선택 확인
-        yield return new WaitUntil(Get_CharacterSelectedStateAll);
+        yield return new WaitUntil(() => Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER));
         userSyncMediator.Sync_ShowGameStartInfo(); // 양 쪽의 정보를 보여주고 배틀씬 이동
 
         // 5. 씬 로드 확인
-        yield return new WaitUntil(Get_SceneSyncStateAll);
+        yield return new WaitUntil(() => Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.SCENE_SYNC));
         // 캐릭터 소환은 이 시점에 BattleScene의 Start문에서 처리됨
 
         // 6. 캐릭터 로드 확인
-        yield return new WaitUntil(Get_CharacterSyncStateAll);
+        yield return new WaitUntil(() => Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.CHARACTER_SYNC));
         userSyncMediator.Sync_GameStartEffect(); // 게임 실행
 
         // 7. 커스텀 플레이어 프로퍼티 데이터 값 초기화
@@ -249,60 +224,16 @@ public class NetworkMgr : IRoomPostProcess
         slaveClientNickname = _slaveClientNickname;
     }
 
-
     // Get 계열
     public bool IsConnect_UserSyncMediator() => (userSyncMediator != null);
-    public bool Get_DataSyncStateAll()
-    {
-        Debug.Log($"masterSyncData.isDataSync : {masterSyncData.isDataSync}");
-        Debug.Log($"slaveSyncData.isDataSync : {slaveSyncData.isDataSync}");
 
-        return masterSyncData.isDataSync && slaveSyncData.isDataSync;
-    }
-    public bool Get_ReadyStateAll()
+    public bool Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES _properties)
     {
-        Debug.Log($"masterSyncData.isReady : {masterSyncData.isReady}");
-        Debug.Log($"slaveSyncData.isReady : {slaveSyncData.isReady}");
-
-        return masterSyncData.isReady && slaveSyncData.isReady;
-    }
-    public bool Get_CharacterSelectedStateAll()
-    {
-        Debug.Log($"masterSyncData.CharSelecctdState : {masterSyncData.characterType != ENUM_CHARACTER_TYPE.Default}");
-        Debug.Log($"slaveSyncData.CharSelecctdState : {slaveSyncData.characterType != ENUM_CHARACTER_TYPE.Default}");
-
-        return masterSyncData.characterType != ENUM_CHARACTER_TYPE.Default && slaveSyncData.characterType != ENUM_CHARACTER_TYPE.Default;
-    }
-    public bool Get_SceneSyncStateAll()
-    {
-        Debug.Log($"masterSyncData.isSceneSync : {masterSyncData.isSceneSync}");
-        Debug.Log($"slaveSyncData.isSceneSync : {slaveSyncData.isSceneSync}");
-
-        return masterSyncData.isSceneSync && slaveSyncData.isSceneSync;
-    }
-    protected bool Get_CharacterSyncStateAll()
-    {
-        Debug.Log($"masterSyncData.isCharacterSync : {masterSyncData.isCharacterSync}");
-        Debug.Log($"slaveSyncData.isCharacterSync : {slaveSyncData.isCharacterSync}");
-
-        return masterSyncData.isCharacterSync && slaveSyncData.isCharacterSync;
+        return PhotonLogicHandler.Instance.CheckAllPlayerProperty(_properties);
     }
 
     public string Get_SlaveClientNickname() => slaveClientNickname;
-    public ENUM_CHARACTER_TYPE Get_MyCharacterType()
-    {
-        if (PhotonLogicHandler.IsMasterClient)
-            return masterSyncData.characterType;
-        else
-            return slaveSyncData.characterType;    
-    }
-    public ENUM_CHARACTER_TYPE Get_EmenyCharType()
-    {
-        if (PhotonLogicHandler.IsMasterClient)
-            return slaveSyncData.characterType;
-        else
-            return masterSyncData.characterType;
-    }
+
     public DBUserData Get_DBUserData(bool _isMasterClient)
     {
         if (_isMasterClient)
