@@ -87,13 +87,6 @@ public class LobbyCanvas : BaseCanvas
         Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
-    public void OnClick_TestVibration()
-    {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        Vibration.Vibrate(1);
-#endif
-    }
-
     private IEnumerator IWaitMatching()
     {
         int count = 0;

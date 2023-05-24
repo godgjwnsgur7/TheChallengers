@@ -50,7 +50,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     private void OnDisable()
     {
-        if(readyLockCoroutine != null)
+        readyLock = false;
+
+        if (readyLockCoroutine != null)
             StopCoroutine(readyLockCoroutine);
 
         if (waitInfoSettingCoroutine != null)

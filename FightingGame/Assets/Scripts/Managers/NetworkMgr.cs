@@ -141,7 +141,10 @@ public class NetworkMgr : IRoomPostProcess
         // 게임 돌입할 때 UserSyncMediator 생성
         if(userSyncMediator != null)
             Managers.Resource.Destroy(userSyncMediator.gameObject);
-        Managers.Resource.InstantiateEveryone("UserSyncMediator");
+        if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom)
+            Managers.Resource.InstantiateEveryone("UserSyncMediator");
+        else
+            yield break;
         
         // 3. 동기화객체 생성 참조 확인
         yield return new WaitUntil(IsConnect_UserSyncMediator);

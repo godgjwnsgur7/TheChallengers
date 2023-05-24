@@ -19,10 +19,19 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] ErrorPopup errorPopup;
     [SerializeField] FadeEffectPopup fadeEffectPopup;
     [SerializeField] TimerNotifyPopup timerNotifyPopup;
+    [SerializeField] GameObject touchProtection;
+
+    Coroutine deactiveCheckCoroutine;
 
     private void Start()
     {
         Init();
+    }
+
+    private void OnDisable()
+    {
+        if (deactiveCheckCoroutine != null)
+            StopCoroutine(deactiveCheckCoroutine);
     }
 
     public void Init()
@@ -188,5 +197,51 @@ public class PopupCanvas : MonoBehaviour
         }
 
         loadingPopup.Close();
+    }
+    
+    /// <summary>
+    /// 화면 전체의 터치를 막는 오브젝트를 활성화함 (최대 2초)
+    /// Func<bool>의 조건이 true가 되면 비활성화
+    /// </summary>
+    /// <param name="deactiveConstraint"></param>
+    public void Active_TouchProtection(Func<bool> deactiveConstraint)
+    {
+        touchProtection.SetActive(true);
+        Debug.Log("실행은 되냐1");
+
+        deactiveCheckCoroutine = StartCoroutine(IDeactiveCheck_TouchProtection(deactiveConstraint));
+    }
+
+    IEnumerator IDeactiveCheck_TouchProtection(Func<bool> deactiveConstraint)
+    {
+        float timer = 0.0f;
+
+        Debug.Log("실행은 되냐2");
+
+        while(timer < 2.0f) // 최대 터치방지 시간 2초
+        {
+            Debug.Log($"{timer} 실행은 되냐6");
+
+            if (deactiveConstraint != null && deactiveConstraint())
+            {
+                Debug.Log("실행은 되냐3");
+                deactiveCheckCoroutine = null;
+                Deactive_TouchProtection();
+                yield break;
+            }
+
+            timer += Time.deltaTime;
+        }
+
+        Debug.Log($"{timer} 실행은 되냐4");
+        deactiveCheckCoroutine = null;
+        Deactive_TouchProtection();
+    }
+
+    private void Deactive_TouchProtection()
+    {
+        touchProtection.SetActive(false);
+        if (deactiveCheckCoroutine != null)
+            StopCoroutine(deactiveCheckCoroutine);
     }
 }

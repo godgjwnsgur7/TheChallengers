@@ -21,7 +21,7 @@ public class SlaveProfileUI : BaseProfile
     }
 
     public override void Clear()
-    {
+    { 
         Set_ReadyState(false);
 
         base.Clear();
