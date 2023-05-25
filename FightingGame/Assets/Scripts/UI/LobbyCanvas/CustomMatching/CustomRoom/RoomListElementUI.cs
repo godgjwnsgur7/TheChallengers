@@ -108,8 +108,8 @@ public class RoomListElementUI : MonoBehaviour
 
     public void JoinRoom()
     {
-        Managers.UI.popupCanvas.Active_TouchProtection(
-            () => PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom);
+        if (PhotonLogicHandler.IsJoinedRoom)
+            return; 
 
         if (!PhotonLogicHandler.Instance.TryJoinRoom(JoinRoomSuccessCallBack, null, myRoomInfo.roomName))
             Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);

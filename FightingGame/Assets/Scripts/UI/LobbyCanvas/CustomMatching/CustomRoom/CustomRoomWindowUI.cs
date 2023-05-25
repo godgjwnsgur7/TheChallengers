@@ -157,6 +157,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
             PhotonLogicHandler.Instance.ChangeMap(_mapType);
+        else
+            slaveProfile.Set_ReadyState(false);
 
         currMap = _mapType;
         
