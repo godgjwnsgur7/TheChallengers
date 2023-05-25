@@ -391,8 +391,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning($"마스터 서버로부터 접속이 끊어졌습니다. 사유 : {cause}");
         
-        Managers.Platform.Logout();
-
         _OnDisconnectedFromMaster?.Invoke(cause.ToString());
         _OnDisconnectedFromMaster = null;
     }
