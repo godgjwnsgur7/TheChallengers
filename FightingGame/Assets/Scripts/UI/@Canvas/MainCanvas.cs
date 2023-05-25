@@ -184,7 +184,7 @@ public class MainCanvas : BaseCanvas
 
     public void OnClick_Start()
     {
-        Managers.UI.popupCanvas.Open_LoadingPopup();
+        Managers.UI.popupCanvas.Open_LoadingPopup("서버에 접속중입니다.");
 
         Try_ConnectMasterServerAndStart();
     }
