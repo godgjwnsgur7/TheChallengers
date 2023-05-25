@@ -15,6 +15,7 @@ public class MatchingWindowUI : MonoBehaviour
     Coroutine matchingErrorCheckCoroutine;
 
     bool isStopwatchLock = false;
+    bool matchingErrorCheckLock = false;
 
     private void OnDisable()
     {
@@ -32,9 +33,16 @@ public class MatchingWindowUI : MonoBehaviour
         matchingStateText.text = "매칭 중";
         this.gameObject.SetActive(true);
 
+        matchingErrorCheckLock = true;
         timerCoroutine = StartCoroutine(IStopwatch());
 
         JoinRoomOrCreateRoom();
+    }
+
+    public void Close()
+    {
+        matchingErrorCheckLock = false;
+        this.gameObject.SetActive(false);
     }
 
     private void JoinRoomOrCreateRoom()
@@ -51,7 +59,7 @@ public class MatchingWindowUI : MonoBehaviour
     /// <summary>
     /// 매칭이 됐을 때 콜백
     /// </summary>
-    public void MatchingCallBack()
+    public void Matching_CallBack()
     {
         isStopwatchLock = true;
         exitButtonObj.SetActive(false);
@@ -78,7 +86,8 @@ public class MatchingWindowUI : MonoBehaviour
     /// </summary>
     private void LeaveRoom_CallBack()
     {
-        StopCoroutine(timerCoroutine);
+        if(timerCoroutine != null)
+            StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
         this.gameObject.SetActive(false);
     }
@@ -102,7 +111,7 @@ public class MatchingWindowUI : MonoBehaviour
             stopwatchText.text = string.Format("{0:00} : {1:00}", minutes, (int)seconds);
 
             if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom)
-                MatchingCallBack();
+                Matching_CallBack();
 
             yield return null;
         }
@@ -115,15 +124,11 @@ public class MatchingWindowUI : MonoBehaviour
     {
         yield return new WaitForSeconds(4f); // 4초 대기 후 에러상태 체크
 
-        if (!PhotonLogicHandler.IsJoinedRoom || !PhotonLogicHandler.IsFullRoom ||
-            !PhotonLogicHandler.Instance.CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
+        if (matchingErrorCheckLock && PhotonLogicHandler.IsJoinedRoom)
         {
-            Managers.UI.popupCanvas.Open_TimeNotifyPopup(
-               "매칭에 실패했습니다.\n다시 시도해주세요.", 1.5f, OnClick_Exit);
+            Managers.UI.popupCanvas.Open_NotifyPopup(
+               "매칭에 실패했습니다.\n다시 시도해주세요.", OnClick_Exit);
             yield break;
         }
-
-        if(!PhotonLogicHandler.Instance.CheckAllPlayerProperty(ENUM_PLAYER_STATE_PROPERTIES.READY))
-            PhotonLogicHandler.Instance.RequestReadyAll();
     }
 }

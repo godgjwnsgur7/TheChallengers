@@ -19,7 +19,7 @@ public class NetworkMgr : IRoomPostProcess
 
     string slaveClientNickname = null;
 
-    public bool isServerSyncState
+    public bool IsServerSyncState
     {
         get
         {
@@ -64,7 +64,7 @@ public class NetworkMgr : IRoomPostProcess
     public void OnExitRoomCallBack(string exitUserNickname)
     {
         ExitRoom_CallBack();
-	}
+    }
 
     public void ExitRoom_CallBack()
     {
@@ -81,9 +81,7 @@ public class NetworkMgr : IRoomPostProcess
         }
 	}
 
-    public void OnUpdateRoomProperty(CustomRoomProperty property)
-    {
-    }
+    public void OnUpdateRoomProperty(CustomRoomProperty property) { }
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {

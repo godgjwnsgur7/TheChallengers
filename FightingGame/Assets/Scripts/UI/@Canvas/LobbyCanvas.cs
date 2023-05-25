@@ -25,7 +25,14 @@ public class LobbyCanvas : BaseCanvas
 
     public void GameStart()
     {
-        Managers.UI.popupCanvas.Play_FadeOutInEffect(gameStartWindow.GameStart);
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(GameStart_CallBack);
+    }
+
+    public void GameStart_CallBack()
+    {
+        gameStartWindow.GameStart();
+
+        matchingWindow.Close();
     }
 
     public void Open_CustomRoomWindow() => customMatching.Open();
@@ -33,7 +40,13 @@ public class LobbyCanvas : BaseCanvas
 
     public void Open_GameStartWindow()
     {
-        Managers.UI.popupCanvas.Play_FadeOutEffect(gameStartWindow.Open);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(CallBack_GameStart);
+    }
+
+    public void CallBack_GameStart()
+    {
+        gameStartWindow.Open();
+        matchingWindow.Close();
     }
 
     public void MathingStart()

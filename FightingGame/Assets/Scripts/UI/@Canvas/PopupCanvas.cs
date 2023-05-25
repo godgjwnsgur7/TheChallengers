@@ -79,6 +79,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if(selectPopup.isUsing)
         {
+            _failedCallBack?.Invoke();
             Debug.Log("이미 선택팝업창이 사용중입니다.");
             return;
         }
@@ -95,6 +96,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if (notifyPopup.isUsing)
         {
+            _checkCallBack?.Invoke();
             notifyPopup.Open_Again(_message, _checkCallBack);
             return;
         }
@@ -110,6 +112,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if (timerNotifyPopup.isUsing)
         {
+            _timeOutCallBack?.Invoke();
             timerNotifyPopup.Open_Again(_message, _runTime);
             return;
         }

@@ -59,7 +59,7 @@ public class Character : MonoBehaviourPhoton
 
         isInitialized = true;
 
-        isServerSyncState = Managers.Network.isServerSyncState;
+        isServerSyncState = Managers.Network.IsServerSyncState;
 
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
