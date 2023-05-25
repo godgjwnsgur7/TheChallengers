@@ -103,17 +103,14 @@ public class RoomListElementUI : MonoBehaviour
 
     public void OnClick_JoinRoom()
     {
-        if(!isUsing)
-        {
-            Debug.LogError("해당 로그가 떴다면, 깊히 반성해야 함");
-            return;
-        }
-
         Managers.UI.popupCanvas.Open_SelectPopup(JoinRoom, Show_MyRoomInfo, "방에 입장하시겠습니까?");
     }
 
     public void JoinRoom()
     {
+        if (PhotonLogicHandler.IsJoinedRoom)
+            return; 
+
         if (!PhotonLogicHandler.Instance.TryJoinRoom(JoinRoomSuccessCallBack, null, myRoomInfo.roomName))
             Managers.UI.popupCanvas.Open_NotifyPopup("방에 입장하지 못했습니다.", OnUpdateRoomList);
     }

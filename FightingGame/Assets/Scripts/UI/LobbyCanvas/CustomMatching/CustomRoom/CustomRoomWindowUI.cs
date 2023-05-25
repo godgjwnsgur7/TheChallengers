@@ -50,7 +50,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     private void OnDisable()
     {
-        if(readyLockCoroutine != null)
+        readyLock = false;
+
+        if (readyLockCoroutine != null)
             StopCoroutine(readyLockCoroutine);
 
         if (waitInfoSettingCoroutine != null)
@@ -80,11 +82,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if(!masterProfile.IsMine) // 마스터클라이언트가 됐다면
         {
-            PhotonLogicHandler.Instance.OnUnReady();
             masterProfile.Clear();
             masterProfile.Init(slaveProfile.Get_ProfileInfo());
         }
 
+        PhotonLogicHandler.Instance.RequestUnReadyAll();
         Init();
     }
 
@@ -155,6 +157,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
             PhotonLogicHandler.Instance.ChangeMap(_mapType);
+        else
+            slaveProfile.Set_ReadyState(false);
 
         currMap = _mapType;
         
@@ -216,7 +220,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 return;
             }
             
-            if (!Managers.Network.Get_DataSyncStateAll())
+            if (!Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
                 PhotonLogicHandler.Instance.RequestSyncDataAll();
 
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);

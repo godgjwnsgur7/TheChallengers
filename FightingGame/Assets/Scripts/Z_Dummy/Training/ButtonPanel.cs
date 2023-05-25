@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
+/*
 public class ButtonPanel : UIElement
 {
     BaseMap map;
@@ -246,3 +247,4 @@ public class ButtonPanel : UIElement
     private void Reset_PlayerType() => Change_PlayerType(ENUM_CHARACTER_TYPE.Default);
     private void Reset_EnemyType() => Change_EnemyType(ENUM_CHARACTER_TYPE.Default);
 }
+*/

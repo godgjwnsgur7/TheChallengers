@@ -35,6 +35,8 @@ public class StatusWindowUI : MonoBehaviour
 
     public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
     {
+        hpFill.fillAmount = 1.0f;
+
         switch (_charType)
         {
             case ENUM_CHARACTER_TYPE.Knight:

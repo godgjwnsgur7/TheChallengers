@@ -9,23 +9,21 @@ public class PlayerCamera : MonoBehaviour
     public Camera cam;
     public Transform target;
 
-    public float halfHeight;
-    public float halfWidth;
-
-    public float clampedX;
-    public float clampedY;
+    float halfHeight, halfWidth, clampedX, clampedY;
 
     public Vector2 minBound;
     public Vector2 maxBound;
-    public Vector3 mapCenterPos;
 
     float mapSize;
-    float playerCamSize;
+    float playerCamSize = 5f;
     float zoomSpeed = 0.1f;
+
+    Coroutine cameraZoomInCoroutine;
+    Coroutine cameraMovingCoroutine;
 
     private void LateUpdate()
     {
-        if (target == null)
+        if (target == null || cameraMovingCoroutine != null)
             return;
 
         FollowingCamera();
@@ -35,14 +33,12 @@ public class PlayerCamera : MonoBehaviour
     {
         cam = Camera.main;
 
-        Set_MapTransform(_map.transform.position);
         Set_CameraBounds(_map.maxBound, _map.minBound);
-        Set_Target(_map.transform);
 
         playerCamSize = 5f;
         mapSize = _map.maxBound.x * Screen.height / Screen.width;
 
-        Set_OrthographicSize(mapSize);
+        cam.orthographicSize = mapSize;
 
         halfHeight = cam.orthographicSize;
         halfWidth = halfHeight * Screen.width / Screen.height;
@@ -51,7 +47,7 @@ public class PlayerCamera : MonoBehaviour
     public void Following_Target(Transform target)
     {
         Set_Target(target);
-        Set_ZoomIn();
+        Camera_ZoomIn();
     }
 
     public void Set_CameraBounds(Vector2 _maxBound, Vector2 _minBound)
@@ -68,23 +64,21 @@ public class PlayerCamera : MonoBehaviour
         transform.position = new Vector3(clampedX, clampedY, -10);
     }
 
-    public void Set_ZoomOut()
+    public void Camera_Moving()
     {
-        if (this.mapSize > cam.orthographicSize)
-            StartCoroutine(ICamera_ZoomOut(zoomSpeed));
+        if (cameraMovingCoroutine != null)
+            StopCoroutine(cameraMovingCoroutine);
+
+        cameraMovingCoroutine = StartCoroutine(ICamera_Moving());
     }
 
-    public void Set_ZoomIn()
+    public void Camera_ZoomIn()
     {
+        if (cameraZoomInCoroutine != null)
+            StopCoroutine(cameraZoomInCoroutine);
+
         if (this.playerCamSize < cam.orthographicSize)
-            StartCoroutine(ICamera_ZoomIn(zoomSpeed * -1f));
-    }
-
-    // 맵의 위치값
-    public void Set_MapTransform(Vector3 _position)
-    {
-        this.mapCenterPos = _position;
-        this.mapCenterPos.z = this.transform.position.z;
+            cameraZoomInCoroutine = StartCoroutine(ICamera_ZoomIn(zoomSpeed * -1f));
     }
 
     public void Set_Target(Transform _transform)
@@ -92,11 +86,6 @@ public class PlayerCamera : MonoBehaviour
         this.target = _transform;
     }
 
-    public void Set_OrthographicSize(float _size)
-    {
-        cam.orthographicSize = _size;
-    }
-    
     IEnumerator ICamera_ZoomIn(float _zoomSpeed)
     {
         while (cam.orthographicSize > playerCamSize)
@@ -105,29 +94,26 @@ public class PlayerCamera : MonoBehaviour
             halfWidth = halfHeight * Screen.width / Screen.height;
 
             cam.orthographicSize += _zoomSpeed;
-            Set_OrthographicSize(cam.orthographicSize);
             yield return new WaitForSeconds(0.01f);
         }
 
-        Set_OrthographicSize(playerCamSize);
+        cam.orthographicSize = playerCamSize;
     }
 
-    IEnumerator ICamera_ZoomOut(float _zoomSpeed)
+    IEnumerator ICamera_Moving()
     {
-        float zoomCount = (mapSize - cam.orthographicSize) / zoomSpeed;
-        float DistinceDelta = Vector3.Distance(transform.position, mapCenterPos) / zoomCount;
+        yield return new WaitUntil(() => target != null);
 
-        while (cam.orthographicSize < mapSize)
+        while(Mathf.Clamp(target.transform.position.x, minBound.x + halfWidth, maxBound.x - halfWidth) != transform.position.x)
         {
-            halfHeight = cam.orthographicSize;
-            halfWidth = halfHeight * Screen.width / Screen.height;
+            clampedX = Mathf.Clamp(Mathf.Lerp(transform.position.x, target.position.x, 0.03f), minBound.x + halfWidth, maxBound.x - halfWidth);
+            clampedY = Mathf.Clamp(Mathf.Lerp(transform.position.y, target.position.y, 0.03f), minBound.y + halfHeight, maxBound.y - halfHeight);
 
-            transform.position = Vector3.MoveTowards(transform.position, mapCenterPos, DistinceDelta);
-            cam.orthographicSize += _zoomSpeed;
-            Set_OrthographicSize(cam.orthographicSize);
-            yield return new WaitForSeconds(0.01f);
+            transform.position = new Vector3(clampedX, clampedY, -10);
+
+            yield return null;
         }
 
-        Set_OrthographicSize(mapSize);
+        cameraMovingCoroutine = null;
     }
 }

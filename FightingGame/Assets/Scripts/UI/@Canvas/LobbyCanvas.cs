@@ -9,7 +9,6 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] GameStartWindowUI gameStartWindow;
-    [SerializeField] SettingWindow settingWindow;
 
     public override void Init()
     {
@@ -26,7 +25,14 @@ public class LobbyCanvas : BaseCanvas
 
     public void GameStart()
     {
-        Managers.UI.popupCanvas.Play_FadeOutInEffect(gameStartWindow.GameStart);
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(GameStart_CallBack);
+    }
+
+    public void GameStart_CallBack()
+    {
+        gameStartWindow.GameStart();
+
+        matchingWindow.Close();
     }
 
     public void Open_CustomRoomWindow() => customMatching.Open();
@@ -34,7 +40,13 @@ public class LobbyCanvas : BaseCanvas
 
     public void Open_GameStartWindow()
     {
-        Managers.UI.popupCanvas.Play_FadeOutEffect(gameStartWindow.Open);
+        Managers.UI.popupCanvas.Play_FadeOutEffect(CallBack_GameStart);
+    }
+
+    public void CallBack_GameStart()
+    {
+        gameStartWindow.Open();
+        matchingWindow.Close();
     }
 
     public void MathingStart()
@@ -85,14 +97,7 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnClick_Setting()
     {
-        settingWindow.Open();
-    }
-
-    public void OnClick_TestVibration()
-    {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        Vibration.Vibrate(1);
-#endif
+        Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
     private IEnumerator IWaitMatching()

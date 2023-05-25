@@ -59,12 +59,7 @@ public class Character : MonoBehaviourPhoton
 
         isInitialized = true;
 
-        isServerSyncState = Managers.Network.isServerSyncState;
-
-        Managers.Data.CharInfoDict.TryGetValue((int)characterType, out CharacterInfo characterInfo);
-        MyCharInfo = characterInfo;
-
-        currHP = MyCharInfo.maxHP;
+        isServerSyncState = Managers.Network.IsServerSyncState;
 
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();

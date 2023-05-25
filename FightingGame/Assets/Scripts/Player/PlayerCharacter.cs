@@ -47,6 +47,9 @@ public class PlayerCharacter : MonoBehaviour
 
         if(debugCoroutine != null)
             StopCoroutine(debugCoroutine);
+
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
     }
 
     public void Init(BaseMap _currMap, ENUM_CHARACTER_TYPE _summonCharType)

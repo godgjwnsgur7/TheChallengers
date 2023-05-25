@@ -56,9 +56,6 @@ public class BaseProfile : MonoBehaviour
 
     public virtual void Clear()
     {
-        if (!IsInit)
-            return;
-
         IsInit = false;
         IsMine = false;
         userNicknameText.text = "";
