@@ -21,8 +21,10 @@ public class MainCanvas : BaseCanvas
 
     private void Start()
     {
-        Managers.Platform.Initialize();
-        Set_LoginEnvironment();
+		Managers.Platform.RegistAuthChanged(null, PhotonLogicHandler.Instance.TryDisconnectToMaster);
+		Managers.Platform.Initialize();
+
+		Set_LoginEnvironment();
     }
 
     public void Set_OverlabLock(bool _value) => overlapLock = _value;
