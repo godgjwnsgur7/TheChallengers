@@ -46,6 +46,8 @@ public class OneShotAudioObject : MonoBehaviour
         else
             audioSource.panStereo = 0;
 
+        audioSource.reverbZoneMix = 0;
+
         audioSource.volume = audioClipVolume.volume;
         audioSource.Play();
 
