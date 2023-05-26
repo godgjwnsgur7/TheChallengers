@@ -194,28 +194,32 @@ namespace FGDefine
         Test1 = 0,
         Test2 = 1,
 
-        // Knight
-        Knight_Attack1 = 31,
-        Knight_Attack2 = 32,
-        Knight_Attack3 = 33,
-        Knight_JumpAttack = 34,
-        Knight_JumpUp = 35,
-        Knight_Landing = 36,
-        Knight_DashSkill = 37,
-        Knight_SmashSkill = 38,
-        Knight_ThrowSkill = 39,
+        // Knight Sound
+        Knight_Attack1 = 101,
+        Knight_Attack2 = 102,
+        Knight_Attack3 = 103,
+        Knight_JumpAttack = 104,
+        Knight_JumpUp = 105,
+        Knight_Landing = 106,
+        Knight_DashSkill = 107,
+        Knight_SmashSkill = 108,
+        Knight_ThrowSkill = 109,
 
-        // Wizard
-        Wizard_Attack1 = 61,
-        Wizard_Attack2 = 62,
-        Wizard_Attack3 = 63,
-        Wizard_JumpAttack = 64,
-        Wizard_Landing = 65,
-        Wizard_MeteorSkill_Falling = 66,
-        Wizard_MeteorSkill_Explode = 67,
-        Wizard_PushOutSkill = 68,
-        Wizard_IceSkill = 69,
-        Wizard_JumpUp = 70,
+        // Wizard Sound
+        Wizard_Attack1 = 201,
+        Wizard_Attack2 = 202,
+        Wizard_Attack3 = 203,
+        Wizard_JumpAttack = 204,
+        Wizard_Landing = 205,
+        Wizard_MeteorSkill_Falling = 206,
+        Wizard_MeteorSkill_Explode = 207,
+        Wizard_PushOutSkill = 208,
+        Wizard_IceSkill = 209,
+        Wizard_JumpUp = 210,
+
+        // Hit Sound
+        Dummy_HitSound = 301,
+        Dummy_HitSound2 = 302,
     }
 
     [Serializable]

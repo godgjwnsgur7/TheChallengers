@@ -5,7 +5,7 @@ using FGDefine;
 
 public class PushOutAttackObject : HitAttackObject
 {
-    // 재정의해서 사용중 ( Base 호출 X )
+    // 수정 시 참조 확인 (재정의해서 사용하고 있음)
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (isServerSyncState && PhotonLogicHandler.IsMine(viewID)) // 맞는 애가 처리하기 위해
@@ -21,6 +21,12 @@ public class PushOutAttackObject : HitAttackObject
             bool _reverseState = collision.transform.position.x < transform.position.x;
             
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, _reverseState));
+
+            if(isServerSyncState)
+                PhotonLogicHandler.Instance.TryBroadcastMethod<HitAttackObject, int, Vector3>
+                    (this, PlaySFX_HitSound, skillValue.hitSoundType, collision.transform.position);
+            else
+                PlaySFX_HitSound(skillValue.hitSoundType, collision.transform.position);
 
             // 피격된 캐릭터 위치를 기준으로 주어진 범위 내의 랜덤위치로 조정
             Vector2 randomHitPosVec = collision.transform.position;
