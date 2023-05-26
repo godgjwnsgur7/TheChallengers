@@ -76,6 +76,9 @@ public class SoundMgr
         audioSource.maxDistance = gameInfo.soundMaxDistance;
 
         audioSource.spatialBlend = 1.0f;
+        audioSource.reverbZoneMix = 0.0f;
+
+        audioSource.dopplerLevel = 0.0f;
     }
 
     public void Set_Vibration(bool _isVibration)
@@ -210,7 +213,7 @@ public class SoundMgr
 
         OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
 
-        oneShotAudioObject.Play_SFX(sfxType, audioClipVolume, worldPosVec);
+        oneShotAudioObject.Play_SFX(audioClipVolume, worldPosVec);
     }
 
     /// <summary>
@@ -228,7 +231,7 @@ public class SoundMgr
 
         OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
 
-        oneShotAudioObject.PlaySFX_FollowingSound(sfxType, audioClipVolume, target);
+        oneShotAudioObject.PlaySFX_FollowingSound(audioClipVolume, target);
     }
 
     public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)

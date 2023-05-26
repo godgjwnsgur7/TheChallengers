@@ -31,7 +31,7 @@ public class OneShotAudioObject : MonoBehaviour
         isFollowing = false;
     }
 
-    public void Play_SFX(ENUM_SFX_TYPE sfxType, AudioClipVolume audioClipVolume, Vector3 worldPosVec)
+    public void Play_SFX(AudioClipVolume audioClipVolume, Vector3 worldPosVec)
     {
         if(!isFollowing)
             gameObject.transform.position = worldPosVec;
@@ -46,26 +46,24 @@ public class OneShotAudioObject : MonoBehaviour
         else
             audioSource.panStereo = 0;
 
-        audioSource.reverbZoneMix = 0;
-
         audioSource.volume = audioClipVolume.volume;
         audioSource.Play();
 
         UnityEngine.Object.Destroy(gameObject, audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
     }
 
-    public void PlaySFX_FollowingSound(ENUM_SFX_TYPE sfxType, AudioClipVolume audioClipVolume, Transform target)
+    public void PlaySFX_FollowingSound(AudioClipVolume audioClipVolume, Transform target)
     {
         isFollowing = true;
 
         followingTargerCoroutine = StartCoroutine(IFollowingTarget(target));
 
-        Play_SFX(sfxType, audioClipVolume, Vector3.zero);
+        Play_SFX(audioClipVolume, Vector3.zero);
     }
 
     protected IEnumerator IFollowingTarget(Transform target)
     {
-        while (isFollowing)
+        while (isFollowing && target != null)
         {
             transform.position = target.position;
             yield return null;
