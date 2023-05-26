@@ -781,6 +781,13 @@ public partial class ActiveCharacter : Character
         return;
     }
 
+    protected void AnimEvent_PlayerSFX_RandomTwo(int sfxTypeNum)
+    {
+        sfxTypeNum += UnityEngine.Random.Range(0, 2);
+
+        AnimEvent_PlaySFX_FollowingSound(sfxTypeNum);
+    }
+
     #endregion
 
     public void Set_inputArrowDir(float _inputArrowDir)

@@ -201,8 +201,8 @@ namespace FGDefine
         Knight_JumpAttack = 104,
         Knight_JumpUp = 105,
         Knight_Landing = 106,
-        Knight_Attack3_Voice = 107,
-        Knight_Dash = 108,
+        Knight_Attack3_Voice1 = 107,
+        Knight_Attack3_Voice2 = 108,
         Knight_ThrowSkill = 109,
         Knight_ThrowSkill_Voice = 110,
         Knight_ThrowSkillObject = 111,
@@ -216,6 +216,7 @@ namespace FGDefine
         Knight_ComboSkill_3 = 119,
         Knight_ComboSkill_4 = 120,
         Knight_ComboSkill_5 = 121,
+        Knight_Dash = 122,
 
         // Wizard Sound
         Wizard_Attack1 = 201,
