@@ -14,7 +14,7 @@ public class Skill
     public float stunTime;
     public float risingPower;
     public float pushingPower;
-    public int hitSoundType;
+    public int hitSoundType; // ENUM_SFX_TYPE (히트사운드)
 }
 
 public class SkillData : ILoader<int, Skill>

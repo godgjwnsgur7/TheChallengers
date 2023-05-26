@@ -168,6 +168,21 @@ public class NetworkMgr : IRoomPostProcess
         sequenceExecuteCoroutine = null;
     }
 
+    /// <summary>
+    /// 마스터 서버 연결 후에 연결이 끊길 경우 호출
+    /// </summary>
+    public void DisconnectMaster_CallBack(string cause)
+    {
+        Time.timeScale = 0;
+        Managers.UI.popupCanvas.Open_NotifyPopup($"{cause} !" +
+            $"\n서버와 연결이 끊어졌습니다.", GoTo_Main);
+    }
+
+    public void GoTo_Main()
+    {
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Main);
+    }
+
     public void EndGame_GoToLobby()
     {
         if (PhotonLogicHandler.IsMasterClient)

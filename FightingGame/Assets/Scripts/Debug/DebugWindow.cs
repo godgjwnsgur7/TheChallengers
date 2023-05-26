@@ -42,7 +42,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 	{
 		bool a = PhotonLogicHandler.Instance.TryConnectToMaster(
 			() => { SetStatus("마스터 서버 접속 완료"); },
-			SetError);
+			Managers.Network.DisconnectMaster_CallBack);
 	}
 
 	public void OnClickDisconnectMasterServer()
