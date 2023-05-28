@@ -228,6 +228,16 @@ public partial class PhotonLogicHandler
         PhotonNetwork.Destroy(obj.gameObject);
     }
 
+    // 강퇴
+    public bool KickSlavePlayer()
+    {
+        if (PhotonNetwork.IsMasterClient == false)
+            return false;
+
+        var slavePlayer = GetSlavePlayer();
+        return PhotonNetwork.CloseConnection(slavePlayer);
+	}
+
     // 기본적으로 PhotonLogicHandler를 제외한 현재 모든 씬의 포톤 객체를 삭제시킨다.
     // 제외하기 원하는 타입을 매개변수로 넘길 수 있음
     public IEnumerator TryDestroyAllPhotonOnScene(params Type[] ignoreTypes)
@@ -324,6 +334,11 @@ public partial class PhotonLogicHandler
         Debug.LogError($"정의되지 않은 {property} 타입을 체크하려 들었음");
         return false;
     }
+    
+    private Player GetSlavePlayer()
+    {
+        return PhotonNetwork.PlayerList.Where(p => p.IsMasterClient == false).FirstOrDefault();
+	}
 
 	public IEnumerable<object> GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES propertyType)
     {

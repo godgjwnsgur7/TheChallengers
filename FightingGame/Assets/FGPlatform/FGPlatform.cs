@@ -8,6 +8,7 @@ using FGPlatform.Advertisement;
 using FGPlatform.Purchase;
 using Firebase;
 using Firebase.Extensions;
+using Firebase.Crashlytics;
 
 [Serializable]
 public class DBUserData
@@ -33,6 +34,7 @@ namespace FGPlatform
 	public class PlatformMgr
 	{
 		private IPlatformAuth Auth = new PlatformAuth();
+		private IPlatformCrashlytics Crashlytics = new PlatformCrashlytics();
 		private IPlatformDB DB = new PlatformDB();
 		private IAdMobController AdMob = new AdMobController();
 		private CoffeeMachine IAPController = new IAPController();
@@ -61,6 +63,7 @@ namespace FGPlatform
 				   {
 					   Auth.TryConnectAuth();
 					   DB.InitDataBase();
+					   Crashlytics.Init();
 
 					   if(onAuthChangedHandler != null)
 					   {
