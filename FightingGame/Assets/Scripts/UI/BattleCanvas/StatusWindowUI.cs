@@ -10,6 +10,8 @@ public class StatusWindowUI : MonoBehaviour
     [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] Image charFrameImage;
     [SerializeField] Image hpFill;
+    [SerializeField] Text characterText;
+    [SerializeField] Text nicknameText;
 
     private float currHP;
     public float maxHP;
@@ -29,7 +31,7 @@ public class StatusWindowUI : MonoBehaviour
         currHP = characterInfo.maxHP;
 
         Set_CharFrameImage(_charType);
-
+        
         return Update_CurrHP;
     }
 
@@ -49,6 +51,9 @@ public class StatusWindowUI : MonoBehaviour
                 Debug.Log($"{_charType} 를 찾을 수 없음");
                 break;
         }
+
+        characterText.text = Managers.Data.Get_CharNameDict(_charType);
+
     }
 
     /// <summary>

@@ -8,8 +8,10 @@ public class MatchingWindowUI : MonoBehaviour
 {
     [SerializeField] Text matchingStateText;
     [SerializeField] Text stopwatchText;
+    [SerializeField] Text statusDescriptionText;
     [SerializeField] Image fullLodingImage;
     [SerializeField] GameObject exitButtonObj;
+    [SerializeField] GameObject deactiveExitButtonObj;
 
     Coroutine timerCoroutine;
     Coroutine matchingErrorCheckCoroutine;
@@ -30,7 +32,9 @@ public class MatchingWindowUI : MonoBehaviour
     {
         fullLodingImage.gameObject.SetActive(false);
         exitButtonObj.SetActive(true);
+        deactiveExitButtonObj.SetActive(false);
         matchingStateText.text = "매칭 중";
+        statusDescriptionText.text = "다른 유저와 매칭 중입니다.";
         this.gameObject.SetActive(true);
 
         matchingErrorCheckLock = true;
@@ -63,7 +67,9 @@ public class MatchingWindowUI : MonoBehaviour
     {
         isStopwatchLock = true;
         exitButtonObj.SetActive(false);
+        deactiveExitButtonObj.SetActive(true);
         fullLodingImage.gameObject.SetActive(true);
+        statusDescriptionText.text = "곧 게임이 시작됩니다.";
         matchingStateText.text = "매칭 완료!";
 
         matchingErrorCheckCoroutine = StartCoroutine(IMatchingErrorCheck());
