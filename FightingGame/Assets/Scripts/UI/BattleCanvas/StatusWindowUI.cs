@@ -9,7 +9,8 @@ public class StatusWindowUI : MonoBehaviour
 {
     [SerializeField] ENUM_TEAM_TYPE teamType;
     [SerializeField] Image charFrameImage;
-    [SerializeField] Image hpFill;
+    [SerializeField] Image charFrameCoverImage;
+    [SerializeField] Slider hpSilder;
     [SerializeField] Text characterText;
     [SerializeField] Text nicknameText;
 
@@ -30,38 +31,39 @@ public class StatusWindowUI : MonoBehaviour
         maxHP = characterInfo.maxHP;
         currHP = characterInfo.maxHP;
 
+        Set_Nickname();
         Set_CharFrameImage(_charType);
         
         return Update_CurrHP;
     }
 
-    public void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
+    private void Set_CharFrameImage(ENUM_CHARACTER_TYPE _charType)
     {
-        hpFill.fillAmount = 1.0f;
+        hpSilder.value = 1.0f;
 
-        switch (_charType)
-        {
-            case ENUM_CHARACTER_TYPE.Knight:
-                // 이미지 아직 없음
-                break;
-            case ENUM_CHARACTER_TYPE.Wizard:
-                // 이미지 아직 없음
-                break;
-            default:
-                Debug.Log($"{_charType} 를 찾을 수 없음");
-                break;
-        }
+        charFrameImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Characters/CharFrame_{_charType}");
+        charFrameImage.gameObject.SetActive(true);
 
         characterText.text = Managers.Data.Get_CharNameDict(_charType);
+    }
 
+    private void Set_Nickname()
+    {
+        if (PhotonLogicHandler.IsMasterClient ==
+            (teamType == ENUM_TEAM_TYPE.Blue))
+        {
+            Color selectColor = Managers.Data.Get_SelectColor();
+            charFrameCoverImage.color = selectColor;
+            nicknameText.color = selectColor;
+        }
     }
 
     /// <summary>
-    /// HP의 FillAmount 값을 반환함 ( 0 ~ 1 )
+    /// HPSilder의 Valuie 값을 반환함 ( 0 ~ 1 )
     /// </summary>
     public float Get_CurrHPFillAmount()
     {
-        return hpFill.fillAmount;
+        return hpSilder.value;
     }
 
     public void Update_CurrHP(float _currHP)
@@ -79,13 +81,13 @@ public class StatusWindowUI : MonoBehaviour
 
     protected IEnumerator IFadeHpBar(float _goalHPValue)
     {
-        while (_goalHPValue < hpFill.fillAmount)
+        while (_goalHPValue < hpSilder.value)
         {
-            hpFill.fillAmount -= 0.01f;
+            hpSilder.value -= 0.01f;
             yield return null;
         }
 
-        hpFill.fillAmount = _goalHPValue;
+        hpSilder.value = _goalHPValue;
         hpBarCoroutine = null;
     }
 }
