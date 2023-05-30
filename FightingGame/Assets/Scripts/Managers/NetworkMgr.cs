@@ -63,6 +63,9 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
+        slaveDBData = null;
+        PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
+
         ExitRoom_CallBack();
     }
 
@@ -92,6 +95,12 @@ public class NetworkMgr : IRoomPostProcess
 
         if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
             myCharType = property.characterType;
+    }
+
+    public void Clear_DBData()
+    {
+        masterDBData = null;
+        slaveDBData = null;
     }
 
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)

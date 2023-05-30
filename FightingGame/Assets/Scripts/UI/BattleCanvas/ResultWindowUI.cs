@@ -24,6 +24,7 @@ public class ResultWindowUI : MonoBehaviour
     long myWinningRate;
     long enemyScore;
 
+    /*
     private void OnEnable()
     {
         Test();
@@ -40,6 +41,7 @@ public class ResultWindowUI : MonoBehaviour
     {
         rankingScore.Update_Score((long)1450, (long)36);
     }
+    */
 
     private void OnDisable()
     {
@@ -51,9 +53,13 @@ public class ResultWindowUI : MonoBehaviour
     {
         // DB 관련 세팅 (점수, 승률, 랭크 등)
         DBUserData myDBData = Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient);
-        myScore = myDBData.ratingPoint;
-        myWinningRate = myDBData.victoryPoint / (myDBData.victoryPoint + myDBData.defeatPoint) * 100;
+        if(myDBData.ratingPoint == 1500 && myDBData.victoryPoint + myDBData.defeatPoint == 0)
+            myWinningRate = 0;
+        else
+            myWinningRate = myDBData.victoryPoint / (myDBData.victoryPoint + myDBData.defeatPoint) * 100;
+
         enemyScore = Managers.Network.Get_DBUserData(!PhotonLogicHandler.IsMasterClient).ratingPoint;
+        myScore = myDBData.ratingPoint;
         rankingScore.Open_Score(myScore, myWinningRate);
 
         // 플레이 타임 세팅

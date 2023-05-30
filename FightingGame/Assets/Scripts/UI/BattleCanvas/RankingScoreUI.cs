@@ -36,13 +36,15 @@ public class RankingScoreUI : MonoBehaviour
         changeRankingScoreText.color = new Color(1, 1, 1, 0);
         changeWinningRateText.color = new Color(1, 1, 1, 0);
 
+        currRankingScore = _myRankingScore;
+        currWinningRate = _myWinningRate;
+
         if (_myRankingScore == 1500 && _myWinningRate == 0)
         {
             rankEmblemImage.gameObject.SetActive(false);
             rank = 'X';
             rankingScoreText.text = "None";
             winningRateText.text = "0%";
-
             return;
         }
 
@@ -50,11 +52,7 @@ public class RankingScoreUI : MonoBehaviour
             rankEmblemImage.gameObject.SetActive(true);
         rank = RankingScoreOperator.Get_RankingEmblemChar(currRankingScore);
         rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
-
-        currRankingScore = _myRankingScore;
         rankingScoreText.text = $"{string.Format("{0:#,###}", _myRankingScore)}";
-        
-        currWinningRate = _myWinningRate;
         winningRateText.text = _myWinningRate.ToString() + "%";
 
         this.gameObject.SetActive(true);

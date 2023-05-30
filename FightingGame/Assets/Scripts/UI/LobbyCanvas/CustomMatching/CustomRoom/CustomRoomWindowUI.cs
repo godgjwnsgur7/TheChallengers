@@ -98,14 +98,20 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        if(property.isMasterClient && !masterProfile.IsInit)
+        Char rankChar;
+        if (property.data.ratingPoint == 1500 && property.data.defeatPoint + property.data.victoryPoint == 0)
+            rankChar = 'X';
+        else
+            rankChar = RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint);
+
+        if (property.isMasterClient && !masterProfile.IsInit)
         {
-            Profile_Info masterProfileInfo = new Profile_Info(property.data.nickname, RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint));
+            Profile_Info masterProfileInfo = new Profile_Info(property.data.nickname, rankChar);
             masterProfile.Init(masterProfileInfo);
         }
         else if(!property.isMasterClient && !slaveProfile.IsInit)
         {
-            Profile_Info slaveProfileInfo = new Profile_Info(property.data.nickname, RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint));
+            Profile_Info slaveProfileInfo = new Profile_Info(property.data.nickname, rankChar);
             slaveProfile.Init(slaveProfileInfo);
         }
 
@@ -146,6 +152,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         Managers.Network.ExitRoom_CallBack();
+        Managers.Network.Clear_DBData();
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -196,7 +203,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnClick_UserInfo(bool _isMasterProfile)
     {
-        userInfoWindow.Open(Managers.Network.Get_DBUserData(_isMasterProfile));
+        DBUserData userData = Managers.Network.Get_DBUserData(_isMasterProfile);
+        if (userData != null)
+            userInfoWindow.Open(userData);
     }
 
     public void OnClick_ExitRoom()

@@ -50,7 +50,15 @@ public class BaseProfile : MonoBehaviour
         IsInit = true;
         profileInfo = _profileInfo;
         userNicknameText.text = _profileInfo.nickname;
-        rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{_profileInfo.rankEmblem}");
+
+        if (_profileInfo.rankEmblem == 'X')
+            rankEmblemImage.gameObject.SetActive(false);
+        else
+        {
+            rankEmblemImage.gameObject.SetActive(true);
+            rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{_profileInfo.rankEmblem}");
+        }
+
         rankEmblemImage.gameObject.SetActive(true);
     }
 

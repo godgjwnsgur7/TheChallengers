@@ -14,29 +14,28 @@ public class UserInfoWindowUI : MonoBehaviour
 
     public void Open(DBUserData userData)
     {
-        if (userData.victoryPoint == 0 && userData.defeatPoint == 0)
+        if (userData.victoryPoint + userData.defeatPoint == 0 && userData.ratingPoint == 1500)
         {
             rankEmblemImage.gameObject.SetActive(false);
             ratingPointText.text = "Unknown";
+            winningRateText.text = "0%";
+
+            return;
         }
         else
         {
             char rank = RankingScoreOperator.Get_RankingEmblemChar(userData.ratingPoint);
             rankEmblemImage.gameObject.SetActive(true);
             rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
+            
+            long winningRate = userData.victoryPoint / (userData.victoryPoint + userData.defeatPoint) * 100;
+            winningRateText.text = $"{string.Format("{0:#,###}", winningRate)}%";
             ratingPointText.text = $"{string.Format("{0:#,###}", userData.ratingPoint)}점";
         }
-
-        float victoryPoint = (float)userData.victoryPoint;
-        float defeatPoint = (float)userData.defeatPoint;
 
         userNicknameText.text = userData.nickname;
         winCountText.text = userData.victoryPoint.ToString();
         loseCountText.text = userData.defeatPoint.ToString();
-
-        float winningRate = victoryPoint / (victoryPoint + defeatPoint) * 100;
-        
-        winningRateText.text = $"{string.Format("{0:#,###}", winningRate)}%";
 
         this.gameObject.SetActive(true);
     }
