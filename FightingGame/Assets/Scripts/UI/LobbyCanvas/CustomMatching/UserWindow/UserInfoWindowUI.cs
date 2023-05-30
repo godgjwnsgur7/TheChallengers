@@ -27,9 +27,10 @@ public class UserInfoWindowUI : MonoBehaviour
             char rank = RankingScoreOperator.Get_RankingEmblemChar(userData.ratingPoint);
             rankEmblemImage.gameObject.SetActive(true);
             rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
-            
-            long winningRate = userData.victoryPoint / (userData.victoryPoint + userData.defeatPoint) * 100;
-            winningRateText.text = $"{string.Format("{0:#,###}", winningRate)}%";
+
+            float victoryPoint = userData.victoryPoint, defeatPoint = userData.defeatPoint;
+            float winningRate = victoryPoint / (victoryPoint + defeatPoint) * 100;
+            winningRateText.text = $"{(int)winningRate}%";
             ratingPointText.text = $"{string.Format("{0:#,###}", userData.ratingPoint)}점";
         }
 

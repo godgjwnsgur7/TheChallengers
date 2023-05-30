@@ -56,7 +56,12 @@ public class ResultWindowUI : MonoBehaviour
         if(myDBData.ratingPoint == 1500 && myDBData.victoryPoint + myDBData.defeatPoint == 0)
             myWinningRate = 0;
         else
-            myWinningRate = myDBData.victoryPoint / (myDBData.victoryPoint + myDBData.defeatPoint) * 100;
+        {
+            float victoryPoint = myDBData.victoryPoint, defeatPoint = myDBData.defeatPoint;
+            float tempMyWinningRate = victoryPoint / (victoryPoint + defeatPoint) * 100;
+            myWinningRate = (long)tempMyWinningRate;
+        }
+            
 
         enemyScore = Managers.Network.Get_DBUserData(!PhotonLogicHandler.IsMasterClient).ratingPoint;
         myScore = myDBData.ratingPoint;
@@ -82,16 +87,21 @@ public class ResultWindowUI : MonoBehaviour
             Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
             if(!isDraw)
             {
-                if(isWin)
+                float victoryPoint = myDBData.victoryPoint, defeatPoint = myDBData.defeatPoint;
+                float tempMyWinningRate;
+
+                if (isWin)
                 {
                     Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).victoryPoint + 1);
-                    myWinningRate = (myDBData.victoryPoint + 1) / (myDBData.victoryPoint + myDBData.defeatPoint + 1) * 100;
+                    tempMyWinningRate = (victoryPoint + 1) / (victoryPoint + defeatPoint + 1) * 100;
                 }
                 else
                 {
                     Managers.Platform.DBUpdate(DB_CATEGORY.DefeatPoint, Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).defeatPoint + 1);
-                    myWinningRate = myDBData.victoryPoint / (myDBData.victoryPoint + myDBData.defeatPoint + 1) * 100;
-                }       
+                    tempMyWinningRate = (victoryPoint) / (victoryPoint + defeatPoint + 1) * 100;
+                }
+
+                myWinningRate = (long)tempMyWinningRate;
             }
         }
 
