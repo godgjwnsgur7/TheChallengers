@@ -34,6 +34,7 @@ namespace FGPlatform
 	{
 		private IPlatformAuth Auth = new PlatformAuth();
 		private IPlatformDB DB = new PlatformDB();
+		private IPlatformCrashlytics Crashlytics = new PlatformCrashlytics();	
 		private IAdMobController AdMob = new AdMobController();
 		private CoffeeMachine IAPController = new IAPController();
 
@@ -61,8 +62,9 @@ namespace FGPlatform
 				   {
 					   Auth.TryConnectAuth();
 					   DB.InitDataBase();
+					   Crashlytics.Init();
 
-					   if(onAuthChangedHandler != null)
+					   if (onAuthChangedHandler != null)
 					   {
 						   Auth.UnregistStateChanged(onAuthChangedHandler);
 						   Auth.RegistStateChanged(onAuthChangedHandler);
