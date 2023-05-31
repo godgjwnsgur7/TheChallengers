@@ -82,7 +82,7 @@ namespace FGDefine
     public enum ENUM_MAP_TYPE
     {
         CaveMap = 0,
-        ForestMap = 1,
+        TempleMap = 1,
         VolcanicMap = 2,
         Max = 3,
     }
@@ -203,32 +203,55 @@ namespace FGDefine
         Knight_Landing = 106,
         Knight_Attack3_Voice1 = 107,
         Knight_Attack3_Voice2 = 108,
+        
         Knight_ThrowSkill = 109,
         Knight_ThrowSkill_Voice = 110,
         Knight_ThrowSkillObject = 111,
+        
         Knight_SmashSkill = 112,
         Knight_SmashSkillObject = 113,
+        
         Knight_DashSkill = 114,
         Knight_DashSkill_Voice = 115,
         Knight_DashSkillObject = 116,
+        
         Knight_ComboSkill_1 = 117,
         Knight_ComboSkill_2 = 118,
         Knight_ComboSkill_3 = 119,
         Knight_ComboSkill_4 = 120,
         Knight_ComboSkill_5 = 121,
+        
         Knight_Dash = 122,
 
         // Wizard Sound
         Wizard_Attack1 = 201,
         Wizard_Attack2 = 202,
-        Wizard_Attack3 = 203,
+        Wizard_Attack3 = 203, // 미사용
         Wizard_JumpAttack = 204,
         Wizard_Landing = 205,
-        Wizard_MeteorSkill_Falling = 206,
-        Wizard_MeteorSkill_Explode = 207,
-        Wizard_PushOutSkill = 208,
-        Wizard_IceSkill = 209,
-        Wizard_JumpUp = 210,
+        Wizard_JumpUp = 206,
+
+        Wizard_Dash = 207,
+        Wizard_Attack3_Object = 208,
+        Wizard_Attack3_Voice = 209,
+        Wizard_JumpAttackObject = 210,
+
+        Wizard_IceSkillObject = 211,
+        Wizard_IceSkillObject_Broken = 212,
+        Wizard_IceSkillObject_Voice = 213,
+        
+        Wizard_ThunderSkill_Voice = 214,
+        Wizard_ThunderSkillObject = 215,
+        Wizard_ThunderSkillObject_1 = 216,
+        Wizard_ThunderSkillObject_2 = 217,
+        Wizard_ThunderSkillObject_3 = 218,
+        
+        Wizard_MeteorSkill_Voice = 219,
+        Wizard_MeteorSkillObject_Falling = 220,
+        Wizard_MeteorSkillObject_Explode = 221,
+        
+        Wizard_PushOutSkillObject = 222,
+        Wizard_PushOutSkill_Voice = 223,
 
         // Hit Sound
         Dummy_HitSound = 301,
