@@ -113,7 +113,7 @@ public class RankingScoreUI : MonoBehaviour
     protected IEnumerator IChange_RankEmblem(char _rank)
     {
         float runTime = 0.0f;
-        float duration = 1.0f;
+        float duration = 0.5f;
 
         Color color = rankEmblemImage.color;
         while (runTime < duration)

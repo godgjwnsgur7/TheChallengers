@@ -63,21 +63,6 @@ public class SoundMgr
         audioListener = null;
     }
 
-    public void Set_SFXSoundSetting(AudioSource audioSource)
-    {
-        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
-
-        GameInfo gameInfo = Managers.Data.gameInfo;
-
-        audioSource.minDistance = gameInfo.soundMinDistance;
-        audioSource.maxDistance = gameInfo.soundMaxDistance;
-
-        audioSource.spatialBlend = 1.0f;
-        audioSource.reverbZoneMix = 0.0f;
-
-        audioSource.dopplerLevel = 0.0f;
-    }
-
     public void Set_Vibration(bool _isVibration)
     {
         volumeData.isVibration = _isVibration;
@@ -90,12 +75,15 @@ public class SoundMgr
         return volumeData;
     }
 
-    public float Get_AudioListenerWorldPosX()
+    public Vector2 Get_AudioListenerWorldPosVec()
     {
         if(audioListener == null)
             audioListener = MonoBehaviour.FindObjectOfType<AudioListener>();
 
-        return audioListener.gameObject.transform.position.x;
+        if (audioListener == null)
+            return Vector2.zero;
+
+        return audioListener.gameObject.transform.position;
     }
 
     public void Save_CurrVolumeData()

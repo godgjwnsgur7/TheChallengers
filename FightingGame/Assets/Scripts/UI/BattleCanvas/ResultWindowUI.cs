@@ -24,7 +24,6 @@ public class ResultWindowUI : MonoBehaviour
     long myWinningRate;
     long enemyScore;
 
-    /*
     private void OnEnable()
     {
         Test();
@@ -41,7 +40,6 @@ public class ResultWindowUI : MonoBehaviour
     {
         rankingScore.Update_Score((long)1450, (long)36);
     }
-    */
 
     private void OnDisable()
     {
