@@ -135,7 +135,7 @@ namespace FGPlatform.Auth
             switch (loginType)
             {
                 case ENUM_LOGIN_TYPE.Guest:
-                    SignInByGuest(email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
+                    // SignInByGuest(email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
                     break;
 
                 case ENUM_LOGIN_TYPE.Google:
@@ -186,32 +186,32 @@ namespace FGPlatform.Auth
 			auth.StateChanged -= handler;
 		}
 
-        private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
-        {
-            // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
-            auth?.SignInWithEmailAndPasswordAsync(email, password)
-                .ContinueWithOnMainThread(task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        OnSignInFailed?.Invoke();
-                        Debug.LogError($"이메일 로그인 실패 : {task.Result.Email}");
-                    }
-                    else if (task.IsCanceled)
-                    {
-                        OnSignCanceled?.Invoke();
-                        Debug.LogWarning($"이메일 로그인 취소 : {task.Result.Email}");
-                    }
-                    else
-                    {
-                        Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
-                        SetFirebaseCurrentUser(task.Result);
-                        currentLoginType = ENUM_LOGIN_TYPE.Guest;
+        //private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+        //{
+        //    // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
+        //    auth?.SignInWithEmailAndPasswordInternalAsync(email, password)
+        //        .ContinueWithOnMainThread(task =>
+        //        {
+        //            if (task.IsFaulted)
+        //            {
+        //                OnSignInFailed?.Invoke();
+        //                Debug.LogError($"이메일 로그인 실패 : {task.Result}");
+        //            }
+        //            else if (task.IsCanceled)
+        //            {
+        //                OnSignCanceled?.Invoke();
+        //                Debug.LogWarning($"이메일 로그인 취소 : {task.Result.Email}");
+        //            }
+        //            else
+        //            {
+        //                Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
+        //                SetFirebaseCurrentUser(task.Result);
+        //                currentLoginType = ENUM_LOGIN_TYPE.Guest;
 
-                        OnSignInSuccess?.Invoke();
-                    }
-                });
-        }
+        //                OnSignInSuccess?.Invoke();
+        //            }
+        //        });
+        //}
 
         private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
         {
