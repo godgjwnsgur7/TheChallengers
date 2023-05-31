@@ -51,7 +51,9 @@ public class OneShotAudioObject : MonoBehaviour
         else
             audioSource.panStereo = 0;
 
-        // Debug.Log($"currDistance : {currDistance}\npanStereo : {audioSource.panStereo}");
+        audioSource.panStereo = 0;
+
+        Debug.Log($"currDistance : {currDistance}\npanStereo : {audioSource.panStereo}");
 
         audioSource.volume = audioClipVolume.volume;
         audioSource.Play();

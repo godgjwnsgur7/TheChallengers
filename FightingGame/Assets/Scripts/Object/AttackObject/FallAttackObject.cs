@@ -105,11 +105,8 @@ public class FallAttackObject : GenerateAttackObject
     {
         float subPosY = GetComponent<SpriteRenderer>().bounds.size.y / 2;
 
-        while (transform.position.y - subPosY > masterPosVecY)
-        {
-            yield return null;
-        }
-
+        yield return new WaitUntil(() => transform.position.y - subPosY > masterPosVecY);
+        
         isExplodePossible = true;
         explodeCheckCoroutine = null;
     }

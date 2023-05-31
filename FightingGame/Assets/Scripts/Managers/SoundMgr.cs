@@ -52,9 +52,6 @@ public class SoundMgr
 
             audioSources[(int)ENUM_SOUND_TYPE.BGM].loop = true; // BGM은 반복 무한 재생
 
-            // SFX 3D사운드 기본 값
-            Set_SFXSoundSetting(audioSources[(int)ENUM_SOUND_TYPE.SFX]);
-
             volumeData = PlayerPrefsManagement.Load_VolumeData();
             audioSources[(int)ENUM_SOUND_TYPE.BGM].mute = volumeData.isBgmMute;
             audioSources[(int)ENUM_SOUND_TYPE.SFX].mute = volumeData.isSfxMute;

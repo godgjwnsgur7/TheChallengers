@@ -27,7 +27,7 @@ public class SoundTestCanvas : BaseCanvas
 
     public void OnClick_StartSFX()
     {
-        Managers.Sound.Play_SFX(SFX_Type);
+       Managers.Sound.Play_SFX(SFX_Type);
     }
 
     public void OnClick_SettingWindow()
