@@ -45,13 +45,13 @@ public class OneShotAudioObject : MonoBehaviour
 
         if (absCurrDistance > 5) // 거리가 5보다 멀면
         {
-            float tempPanStereoValue = (absCurrDistance - 5) / 5f;
+            float tempPanStereoValue = (absCurrDistance - 5) / 7.5f;
             audioSource.panStereo = (currDistance < 0) ? tempPanStereoValue * -1f : tempPanStereoValue;
         }
         else
             audioSource.panStereo = 0;
 
-        Debug.Log($"currDistance : {currDistance}\npanStereo : {audioSource.panStereo}");
+        // Debug.Log($"currDistance : {currDistance}\npanStereo : {audioSource.panStereo}");
 
         audioSource.volume = audioClipVolume.volume;
         audioSource.Play();
