@@ -82,7 +82,7 @@ namespace FGDefine
     public enum ENUM_MAP_TYPE
     {
         CaveMap = 0,
-        ForestMap = 1,
+        TempleMap = 1,
         VolcanicMap = 2,
         Max = 3,
     }

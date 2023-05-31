@@ -37,14 +37,21 @@ public class OneShotAudioObject : MonoBehaviour
             gameObject.transform.position = worldPosVec;
 
         audioSource.clip = audioClipVolume.audioClip;
-
+        
         float listenerPosX = Managers.Sound.Get_AudioListenerWorldPosX();
-        float currDistance = worldPosVec.x - listenerPosX; // 거리
+        float currDistance = this.transform.position.x - listenerPosX; // 리스너와의 거리
 
-        if (Math.Abs(currDistance) > 3)
-            audioSource.panStereo = currDistance / 10.0f;
+        float absCurrDistance = Math.Abs(currDistance);
+
+        if (absCurrDistance > 5) // 거리가 5보다 멀면
+        {
+            float tempPanStereoValue = (absCurrDistance - 5) / 5f;
+            audioSource.panStereo = (currDistance < 0) ? tempPanStereoValue * -1f : tempPanStereoValue;
+        }
         else
             audioSource.panStereo = 0;
+
+        Debug.Log($"currDistance : {currDistance}\npanStereo : {audioSource.panStereo}");
 
         audioSource.volume = audioClipVolume.volume;
         audioSource.Play();
