@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGDefine;
 
 public class EffectObject : SyncObject
 {
@@ -13,8 +14,10 @@ public class EffectObject : SyncObject
     }
 
     [BroadcastMethod]
-    public virtual void Activate_EffectObject(Vector2 _summonPosVec, bool _reverseState)
+    public virtual void Activate_EffectObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType , bool _reverseState)
     {
+        teamType = _teamType;
+
         Set_PositionAngle(_summonPosVec, _reverseState);
 
         transform.position += new Vector3(reverseState ? subPosVec.x * -1 : subPosVec.x, subPosVec.y, 0);

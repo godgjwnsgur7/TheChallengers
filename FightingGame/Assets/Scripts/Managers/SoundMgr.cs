@@ -186,12 +186,12 @@ public class SoundMgr
     /// <summary>
     /// 특정 좌표에서 3D SFX 사운드 재생을 위한 함수 (오버로드)
     /// </summary>
-    public void Play_SFX(ENUM_SFX_TYPE sfxType, Vector3 worldPosVec)
+    public void Play_SFX(ENUM_SFX_TYPE sfxType,ENUM_TEAM_TYPE teamType, Vector3 worldPosVec)
     {
         if (Get_SFXSoundMuteState())
             return;
 
-        AudioClipVolume audioClipVolume = Get_AudioClipVolume(sfxType);
+        AudioClipVolume audioClipVolume = Get_AudioClipVolume(sfxType, teamType);
 
         if (audioClipVolume == null)
             return;
@@ -204,12 +204,12 @@ public class SoundMgr
     /// <summary>
     /// 호출자의 위치를 따라가는 3D SFX 사운드 재생을 위한 함수 (오버로드)
     /// </summary>
-    public void PlaySFX_FollowingSound(ENUM_SFX_TYPE sfxType, Vector3 worldPosVec, Transform target)
+    public void PlaySFX_FollowingSound(ENUM_SFX_TYPE sfxType, ENUM_TEAM_TYPE teamType, Vector3 worldPosVec, Transform target)
     {
         if (Get_SFXSoundMuteState())
             return;
 
-        AudioClipVolume audioClipVolume = Get_AudioClipVolume(sfxType);
+        AudioClipVolume audioClipVolume = Get_AudioClipVolume(sfxType, teamType);
 
         if (audioClipVolume == null)
             return;
@@ -219,9 +219,20 @@ public class SoundMgr
         oneShotAudioObject.PlaySFX_FollowingSound(audioClipVolume, target);
     }
 
-    public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType)
+    public AudioClipVolume Get_AudioClipVolume(ENUM_SFX_TYPE sfxType, ENUM_TEAM_TYPE teamType)
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
+
+        if (Managers.Network.IsServerSyncState)
+        {
+            if (PhotonLogicHandler.IsMasterClient == (teamType == ENUM_TEAM_TYPE.Blue))
+                _currSfxVolume *= 0.6f;
+        }
+        else if (teamType == ENUM_TEAM_TYPE.Red)
+        {
+            _currSfxVolume *= 0.6f;
+        }
+            
 
         string path = $"Sounds/SFX/{sfxType}";
         AudioClip audioClip = GetOrAddAudioClip(path);
