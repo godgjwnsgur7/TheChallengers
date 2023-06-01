@@ -14,8 +14,8 @@ public class DataMgr
     private Dictionary<ENUM_CHARACTER_TYPE, string> charNameDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
     {
         {ENUM_CHARACTER_TYPE.Default, "캐릭터 미선택" },
-        {ENUM_CHARACTER_TYPE.Knight, "나이트" },
-        {ENUM_CHARACTER_TYPE.Wizard, "위저드" },
+        {ENUM_CHARACTER_TYPE.Knight, "KNIGHT" },
+        {ENUM_CHARACTER_TYPE.Wizard, "WIZARD" },
         {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
     };
 
@@ -31,9 +31,9 @@ public class DataMgr
 
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
-        {ENUM_MAP_TYPE.CaveMap, "동굴 맵" },
-        {ENUM_MAP_TYPE.TempleMap, "신전 맵" },
-        {ENUM_MAP_TYPE.VolcanicMap, "화산지대" }
+        {ENUM_MAP_TYPE.CaveMap, "SILENT CAVE" },
+        {ENUM_MAP_TYPE.TempleMap, "ANCIENT TEMPLE" },
+        {ENUM_MAP_TYPE.VolcanicMap, "VOLCANIC REGION" }
     };
 
     private Dictionary<ENUM_MAP_TYPE, string> mapExplanationDict = new Dictionary<ENUM_MAP_TYPE, string>()

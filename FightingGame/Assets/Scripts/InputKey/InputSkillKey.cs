@@ -8,15 +8,9 @@ using System;
 public class InputSkillKey : InputBasicKey
 {
     [SerializeField] Image coolTimeImage;
-    Button skillButton;
-
+    
     Coroutine coolTimeCoroutine;
     float coolTime;
-    
-    void Start()
-    {
-        skillButton = GetComponent<Button>();
-    }
 
     public override void EventTrigger_PointerDown()
     {
