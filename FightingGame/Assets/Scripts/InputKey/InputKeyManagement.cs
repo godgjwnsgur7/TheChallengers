@@ -25,8 +25,6 @@ public class InputKeyManagement : MonoBehaviour
         eventID = EventTriggerType.Drag,
     };
 
-    private ENUM_CHARACTER_TYPE skillIconType = ENUM_CHARACTER_TYPE.Knight;
-
     public void Init()
     {
         dragEntry.callback.AddListener(OnDragListener);
@@ -35,32 +33,28 @@ public class InputKeyManagement : MonoBehaviour
         {
             inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
             inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
-            inputPanel.transform.SetAsFirstSibling();
 
-            inputPanel.Set_InputSkillKeys(skillIconType);
+            inputPanel.Set_InputSkillKeys(ENUM_CHARACTER_TYPE.Knight);
         }
 
         if (areaPanel == null)
         {
             areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
             areaPanel.Init();
-            areaPanel.transform.SetAsFirstSibling();
         }
 
         Set_OnDragCallBack();
-
-        if (!settingPanel.gameObject.activeSelf)
-            Open_SettingPanel();
     }
 
-    public void OnChange_InputSkillIcon()
+    public void OnChange_InputSkillIcon(int charType)
     {
-        skillIconType += 1;
+        if (charType <= (int)ENUM_CHARACTER_TYPE.Default && charType >= (int)ENUM_CHARACTER_TYPE.Max)
+        {
+            Debug.Log($"스킬 아이콘 캐릭터 타입 범위 초과 : {(ENUM_CHARACTER_TYPE)charType}");
+            return;
+        }
 
-        if (skillIconType == ENUM_CHARACTER_TYPE.Max)
-            skillIconType = ENUM_CHARACTER_TYPE.Knight;
-
-        inputPanel.Set_InputSkillKeys(skillIconType);
+        inputPanel.Set_InputSkillKeys((ENUM_CHARACTER_TYPE)charType);
     }
 
     public void Set_OnDragCallBack()
@@ -118,15 +112,18 @@ public class InputKeyManagement : MonoBehaviour
             isSameBtn = true;
 
         if (!isSameBtn)
-        {
-            currInputKey = inputPanel.Get_InputKey(_inputKeyName);
+            Set_CurrInputKey((int)_inputKeyName);
+    }
 
-            if (currAreaKey != null)
-                currAreaKey.Set_isSelect(false);
+    public void Set_CurrInputKey(int inputKeyNum)
+    {
+        currInputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
 
-            currAreaKey = areaPanel.Get_AreaKey(_inputKeyName);
-            currAreaKey.Set_isSelect(true);
-        }
+        if (currAreaKey != null)
+            currAreaKey.Set_isSelect(false);
+
+        currAreaKey = areaPanel.Get_AreaKey((ENUM_INPUTKEY_NAME)inputKeyNum);
+        currAreaKey.Set_isSelect(true);
     }
 
     /// <summary>
@@ -151,6 +148,9 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void Set_InputKeySize(float _sizeValue, ENUM_INPUTKEY_NAME _inputKeyName)
     {
+        if (currInputKey == null)
+            return;
+
         _sizeValue = (50 + _sizeValue) / settingPanel.Get_SizeMaxValue();
         Vector3 changeScale = new Vector3(1, 1, 1) * _sizeValue;
 
@@ -163,9 +163,12 @@ public class InputKeyManagement : MonoBehaviour
     /// <summary>
     /// InputKey 투명도 변경
     /// </summary>
-    public void Set_InputKeyOpacity(float _opacityValue, ENUM_INPUTKEY_NAME _inputKeyName)
+    public void Set_InputKeyTransparency(float _opacityValue, ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        _opacityValue = 0.5f + _opacityValue / (settingPanel.Get_OpacityMaxValue() * 2);
+        if (currInputKey == null)
+            return;
+
+        _opacityValue = 0.3f + _opacityValue / (settingPanel.Get_TransparencyMaxValue() * 7f);
 
         currInputKey.Set_Opacity(_opacityValue);
     }
@@ -221,14 +224,6 @@ public class InputKeyManagement : MonoBehaviour
         return false;
     }
 
-    public void Open_SettingPanel()
-    {
-        settingPanel.gameObject.SetActive(true);
-
-        if(!settingPanel.isInit)
-            settingPanel.Init();
-    }
-
     /// <summary>
     /// 사이즈 실린더값 변경시 실행, InputKey 사이즈 변경
     /// </summary>
@@ -239,22 +234,22 @@ public class InputKeyManagement : MonoBehaviour
 
         ENUM_INPUTKEY_NAME inputKeyName = (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum;
 
-        settingPanel.Set_SizeSliderText($"{(int)_slider.value}%");
+        settingPanel.Set_SizeText($"{(int)_slider.value}%");
         Set_InputKeySize(_slider.value, inputKeyName);
     }
 
     /// <summary>
     /// 투명도 실린더값 변경시 실행, InputKey 투명도 변경
     /// </summary>
-    public void OnValueChanged_OpacitySlider(Slider _slider)
+    public void OnValueChanged_TransparencySlider(Slider _slider)
     {
         if (currInputKey == null)
             return;
 
         ENUM_INPUTKEY_NAME inputKeyName = (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum;
 
-        settingPanel.Set_OpacitySliderText($"{(int)_slider.value}%");
-        Set_InputKeyOpacity(_slider.value, inputKeyName);
+        settingPanel.Set_TransparencyText($"{(int)_slider.value}%");
+        Set_InputKeyTransparency(_slider.value, inputKeyName);
     }
 
     /// <summary>
@@ -293,21 +288,21 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Reset_InputKey()
     {
-        Managers.Resource.Destroy(inputPanel.gameObject);
+        /*Managers.Resource.Destroy(inputPanel.gameObject);
         Managers.Resource.Destroy(areaPanel.gameObject);
 
         inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
         inputPanel.Set_isReset(true);
         inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
-        inputPanel.transform.SetAsFirstSibling();
 
         Set_OnDragCallBack();
 
         areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
         areaPanel.Set_isReset(true);
-        areaPanel.Init();
-        areaPanel.transform.SetAsFirstSibling();
+        areaPanel.Init();*/
 
+        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
+        areaPanel.Init();
         settingPanel.Reset_SettingPanel();
     }
 

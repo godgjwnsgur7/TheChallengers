@@ -18,7 +18,7 @@ public class InputMgr
         }
 
         if (inputKeyManagement == null)
-            inputKeyManagement = Managers.Resource.Instantiate("UI/InputKeyManagement", Managers.UI.currCanvas.transform).GetComponent<InputKeyManagement>();
+            inputKeyManagement = Managers.Resource.Instantiate("UI/@InputKeyManagement", Managers.UI.currCanvas.transform).GetComponent<InputKeyManagement>();
 
         return inputKeyManagement;
     }
