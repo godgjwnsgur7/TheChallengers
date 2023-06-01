@@ -8,7 +8,6 @@ public class AreaKey : MonoBehaviour
 {
     public Image areaImage;
     public RectTransform rectTr;
-    bool isSelect = false;
     bool isInit = false;
     private int triggerCount = 0;
 
@@ -52,22 +51,11 @@ public class AreaKey : MonoBehaviour
             changeColor = new Color(255, 0, 0, 0.5f);
             areaImage.color = changeColor;
         }
-        else if (isSelect && triggerCount < 1)
-        {
-            changeColor = new Color(0, 255, 0, 0.5f);
-            areaImage.color = changeColor;
-        }
-        else if (!isSelect && triggerCount < 1)
+        else if (triggerCount < 1)
         {
             changeColor = new Color(255, 255, 255, 0f);
             areaImage.color = changeColor;
         }
-    }
-
-    public void Set_isSelect(bool _select)
-    {
-        isSelect = _select;
-        Set_AreaColor();
     }
 
     public bool Get_isOverlap()

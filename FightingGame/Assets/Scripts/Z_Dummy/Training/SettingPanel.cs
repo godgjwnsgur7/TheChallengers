@@ -16,7 +16,7 @@ public class SettingPanel : MonoBehaviour
     public void OnClick_SetSliderValue(InputKey _inputKey)
     {
         Set_SIzeSlider(_inputKey.GetComponent<RectTransform>().localScale.x * Get_SizeMaxValue() - 50);
-        Set_TransparencySlider((_inputKey.Get_Opacity() - 0.5f) * (Get_TransparencyMaxValue() * 2));
+        //Set_TransparencySlider((_inputKey.Get_Opacity() - 0.3f) * (Get_TransparencyMaxValue() * 1.429f));
     }
 
     // 세팅패널 실린더 초기화

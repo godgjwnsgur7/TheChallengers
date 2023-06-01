@@ -97,6 +97,10 @@ public class InputKeyManagement : MonoBehaviour
         if(!isSameBtn)
             settingPanel.OnClick_SetSliderValue(currInputKey);
 
+        foreach (InputKey key in inputPanel.Get_InputKeys()) {
+            //key.Set_Opacity(0.4f);
+        }
+
         isSameBtn = false;
     }
 
@@ -118,12 +122,7 @@ public class InputKeyManagement : MonoBehaviour
     public void Set_CurrInputKey(int inputKeyNum)
     {
         currInputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
-
-        if (currAreaKey != null)
-            currAreaKey.Set_isSelect(false);
-
         currAreaKey = areaPanel.Get_AreaKey((ENUM_INPUTKEY_NAME)inputKeyNum);
-        currAreaKey.Set_isSelect(true);
     }
 
     /// <summary>
@@ -168,9 +167,14 @@ public class InputKeyManagement : MonoBehaviour
         if (currInputKey == null)
             return;
 
-        _opacityValue = 0.3f + _opacityValue / (settingPanel.Get_TransparencyMaxValue() * 7f);
+        _opacityValue = 0.3f + _opacityValue / (settingPanel.Get_TransparencyMaxValue() * 1.428f);
 
-        currInputKey.Set_Opacity(_opacityValue);
+        settingPanel.Set_TransparencyText($"{(int)(_opacityValue * 100)}%");
+
+        foreach (InputKey key in inputPanel.Get_InputKeys()) {
+            key.Set_Opacity(_opacityValue);
+            //currInputKey.Set_Opacity(_opacityValue);
+        }
     }
 
     public void Set_ChangeColor(Image _inputKeyImage, float _opacityValue)
@@ -230,11 +234,12 @@ public class InputKeyManagement : MonoBehaviour
     public void OnValueChanged_SizeSlider(Slider _slider)
     {
         if (currInputKey == null)
+        {
+            settingPanel.Set_SizeText($"{(int)_slider.value}%");
             return;
+        }
 
         ENUM_INPUTKEY_NAME inputKeyName = (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum;
-
-        settingPanel.Set_SizeText($"{(int)_slider.value}%");
         Set_InputKeySize(_slider.value, inputKeyName);
     }
 
@@ -244,12 +249,22 @@ public class InputKeyManagement : MonoBehaviour
     public void OnValueChanged_TransparencySlider(Slider _slider)
     {
         if (currInputKey == null)
+        {
+            settingPanel.Set_TransparencyText($"{(int)_slider.value}%");
             return;
+        }
 
         ENUM_INPUTKEY_NAME inputKeyName = (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum;
-
-        settingPanel.Set_TransparencyText($"{(int)_slider.value}%");
         Set_InputKeyTransparency(_slider.value, inputKeyName);
+    }
+
+    public void Empty_CurrInputKey()
+    {
+        if (currInputKey == null && currAreaKey == null)
+            return;
+
+        currInputKey = null;
+        currAreaKey = null;
     }
 
     /// <summary>
@@ -304,6 +319,7 @@ public class InputKeyManagement : MonoBehaviour
         inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
         areaPanel.Init();
         settingPanel.Reset_SettingPanel();
+        Empty_CurrInputKey();
     }
 
     public void Save_InputKey()
