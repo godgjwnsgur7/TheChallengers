@@ -8,6 +8,8 @@ using System;
 public class InputSkillKey : InputBasicKey
 {
     [SerializeField] Image coolTimeImage;
+    [SerializeField] Image coolTimeCoverImage;
+    [SerializeField] Text coolTimeText;
     
     Coroutine coolTimeCoroutine;
     float coolTime;
@@ -38,6 +40,8 @@ public class InputSkillKey : InputBasicKey
     protected IEnumerator ICoolTime()
     {
         float coolTimeFillAmount = 1.0f;
+        int currCoolTime = ((int)coolTime + 1);
+        coolTimeText.text = currCoolTime.ToString();
 
         while (coolTimeFillAmount > 0.01f)
         {
@@ -47,6 +51,7 @@ public class InputSkillKey : InputBasicKey
         }
 
         coolTimeImage.fillAmount = 0.0f;
+        coolTimeText.text = "";
         coolTimeCoroutine = null;
         coolTimeImage.gameObject.SetActive(false);
     }
