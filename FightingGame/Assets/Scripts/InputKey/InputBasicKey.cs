@@ -21,7 +21,7 @@ public class InputBasicKey : InputKey
     public override void Set_Transparency(float _opacity)
     {
         Color changeColor = iconImage.color;
-        changeColor.a = _opacity;
+        changeColor.a = _opacity * 1.3f;
         iconImage.color = changeColor;
 
         base.Set_Transparency(_opacity);
