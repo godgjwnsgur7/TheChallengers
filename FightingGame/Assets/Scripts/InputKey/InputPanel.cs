@@ -33,7 +33,7 @@ public class InputPanel : MonoBehaviour
     {
         inputKey.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
 
-        inputKey.Set_Opacity(keySettingData.opacity);
+        inputKey.Set_Transparency(keySettingData.opacity);
 
         inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
     }

@@ -16,7 +16,9 @@ public class InputKey : MonoBehaviour
     public int inputKeyNum;
 
     bool isInit = false;
-    
+    float beforeTransparency = 0;
+
+
     public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (isInit) return;
@@ -39,7 +41,9 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        //Set_Opacity(0.9f);
+        beforeTransparency = Get_Transparency();
+
+        Set_Transparency(beforeTransparency * 0.7f);
 
         OnPointDownCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
@@ -52,19 +56,19 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        //Set_Opacity(1f);
+        Set_Transparency(beforeTransparency);
 
         OnPointUpCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
 
-    public virtual void Set_Opacity(float _opacity)
+    public virtual void Set_Transparency(float _transparency)
     {
         Color changeColor = slotImage.color;
-        changeColor.a = _opacity;
+        changeColor.a = _transparency;
         slotImage.color = changeColor;
     }
 
-    public float Get_Opacity()
+    public float Get_Transparency()
     {
         return slotImage.color.a;
     }

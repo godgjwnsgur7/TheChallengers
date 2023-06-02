@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 
 public class InputKeyManagement : MonoBehaviour
 {
+    // 인풋키 이동 중 여부, 값 수정 중여부, 같은 인풋키 PointDown 여부
     public bool isMove = false;
     public bool isValueChange = false;
     private bool isSameBtn = false;
@@ -19,6 +20,7 @@ public class InputKeyManagement : MonoBehaviour
     public AreaPanel areaPanel = null;
     public AreaKey currAreaKey = null;
 
+    // EvnetTrigger의 Drag Entry : 여기에 드래그 시 이벤트를 담아서 인풋키에 삽입
     private EventTrigger eventTrigger;
     private EventTrigger.Entry dragEntry = new EventTrigger.Entry
     {
@@ -65,8 +67,10 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void Set_OnDragCallBack()
     {
+        // Direct 인풋키 Drag
         Set_DirectionOnDragTrigger();
 
+        // 그 외 인풋키 Drag
         for (int i = 1; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             eventTrigger = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)i).GetComponent<EventTrigger>();
@@ -103,18 +107,15 @@ public class InputKeyManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 인풋키 PointUp 함수 Down 이벤트 때 작동한 값들을 유지 혹은 초기화
+    /// 인풋키 PointUp 함수
     /// </summary>
     public void OnPoint_UpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
+        // bool 값 초기 화 및 WindowArea Slider 세팅
         isMove = false;
 
         if(!isSameBtn)
             windowArea.OnClick_SetSliderValue(currInputKey);
-
-        foreach (InputKey key in inputPanel.Get_InputKeys()) {
-            //key.Set_Opacity(0.4f);
-        }
 
         isSameBtn = false;
     }
@@ -130,9 +131,11 @@ public class InputKeyManagement : MonoBehaviour
         isValueChange = true;
         isMove = true;
 
+        // 누른 인풋키가 이미 선택되어 있는 인풋키인지 확인
         if (currInputKey != null && currInputKey.inputKeyNum == (int)_inputKeyName)
             isSameBtn = true;
 
+        // 다른 인풋키를 눌렀을 때 curr 값에 저장
         if (!isSameBtn)
             Set_CurrInputKey((int)_inputKeyName);
     }
@@ -200,7 +203,7 @@ public class InputKeyManagement : MonoBehaviour
 
         // InputPanel에서 InputKey들을 전부 가져와 투명도는 전부 변환한다.
         foreach (InputKey key in inputPanel.Get_InputKeys()) {
-            key.Set_Opacity(_opacityValue);
+            key.Set_Transparency(_opacityValue);
         }
     }
 
@@ -223,7 +226,7 @@ public class InputKeyManagement : MonoBehaviour
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             KeySettingData keySettingData = new KeySettingData(i,
-                inputKeys[i].rectTr.localScale.x, inputKeys[i].Get_Opacity(),
+                inputKeys[i].rectTr.localScale.x, inputKeys[i].Get_Transparency(),
                 inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
             
             keySettingDatas.Add(keySettingData);
@@ -291,16 +294,20 @@ public class InputKeyManagement : MonoBehaviour
     }
 
     /// <summary>
-    /// 버튼 설정 종료
+    /// WindowArea 나가기 버튼 클릭시
     /// </summary>
     public void OnClick_CloseBtn()
     {
+        // 저장되지 않은 변경된 값이 있는지 확인
         if (isValueChange)
             Managers.UI.popupCanvas.Open_SelectPopup(Close_SettingPanel, null, "값을 저장하지않고 종료하시겠습니까?");
         else
             Managers.UI.popupCanvas.Open_SelectPopup(Close_SettingPanel, null, "버튼 설정을 종료하시겠습니까?");
     }
 
+    /// <summary>
+    /// WindowArea 닫기 함수
+    /// </summary>
     public void Close_SettingPanel()
     {
         Empty_CurrInputKey();
@@ -311,7 +318,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         currInputKey = null;
 
-        windowArea.Reset_SettingPanel();
+        windowArea.Reset_WindowArea();
         windowArea.gameObject.SetActive(false);
 
         Destroy(this.gameObject);
@@ -346,7 +353,7 @@ public class InputKeyManagement : MonoBehaviour
         Init();
 
         // SettingPanel 실린더 값 리셋
-        windowArea.Reset_SettingPanel();
+        windowArea.Reset_WindowArea();
     }
 
     /// <summary>
