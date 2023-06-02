@@ -55,7 +55,7 @@ public class MainCanvas : BaseCanvas
         if (!guestLoginWindow.Check_InputField())
             return;
 
-        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        Managers.Platform.Login(() =>
         {
             string id = Managers.Platform.GetUserID();
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
@@ -73,12 +73,12 @@ public class MainCanvas : BaseCanvas
             {
                 firstLoginWindow.Open(Set_NickNameCallBack);
             }
-        }, email: guestLoginWindow.Get_EmailText(), password: guestLoginWindow.Get_PasswordText());
+        });
     }
 
     public void Try_GuestLoginA()
     {
-        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        Managers.Platform.Login(() =>
         {
             string id = Managers.Platform.GetUserID();
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
@@ -88,22 +88,22 @@ public class MainCanvas : BaseCanvas
             Set_GameStartEnvironment();
             OnClick_Deactivate(guestLoginWindow.gameObject);
 
-        }, null, null, email: "godgjwnsgur7@gmail.com", password: "123456");
+        }, null, null);
     }
 
     public void Try_GuestLoginB()
     {
-        Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+        Managers.Platform.Login(() =>
         {
             string id = Managers.Platform.GetUserID();
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
 
             PhotonLogicHandler.CurrentMyNickname = "sorikun";
-
+            
             Set_GameStartEnvironment();
             OnClick_Deactivate(guestLoginWindow.gameObject);
 
-        }, null, null, email: "psh50zmfhtm@gmail.com", password: "123456");
+        }, null, null);
     }
 
     public void Set_NickNameCallBack(string nickname)
@@ -118,8 +118,7 @@ public class MainCanvas : BaseCanvas
     {
         string loginID;
 
-        Managers.Platform.Login(ENUM_LOGIN_TYPE.Google,
-        _OnSignInSuccess: () =>
+        Managers.Platform.Login(_OnSignInSuccess: () =>
         {
             loginID = Managers.Platform.GetUserID();
 

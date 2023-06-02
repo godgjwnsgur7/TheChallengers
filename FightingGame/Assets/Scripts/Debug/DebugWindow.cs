@@ -140,7 +140,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	public void OnClickGuestLogin()
 	{
-		Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () => 
+		Managers.Platform.Login(() => 
 		{
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
@@ -148,7 +148,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 			PhotonLogicHandler.CurrentMyNickname = "godgjwnsgur";
 
-		}, null, null, email: "godgjwnsgur7@gmail.com", password:"123456");
+		}, null, null);
 	}
 
 	public void OnClickGuestLogout()
@@ -158,7 +158,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	public void OnClickGuestLogin2()
 	{
-		Managers.Platform.Login(ENUM_LOGIN_TYPE.Guest, () =>
+		Managers.Platform.Login(() =>
 		{
 			string id = Managers.Platform.GetUserID();
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
@@ -166,12 +166,12 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 			PhotonLogicHandler.CurrentMyNickname = "sorikun";
 
-		}, null, null, email: "psh50zmfhtm@gmail.com", password: "123456");
+		}, null, null);
 	}
 
 	public void OnClickGoogleLogin()
 	{
-		Managers.Platform.Login(ENUM_LOGIN_TYPE.Google, 
+		Managers.Platform.Login(
 		_OnSignInSuccess: () =>
 		{
 			string id = Managers.Platform.GetUserID();

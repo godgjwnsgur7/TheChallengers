@@ -8,6 +8,7 @@ using FGPlatform.Advertisement;
 using FGPlatform.Purchase;
 using Firebase;
 using Firebase.Extensions;
+using Codice.CM.Common.Replication;
 
 [Serializable]
 public class DBUserData
@@ -32,7 +33,20 @@ namespace FGPlatform
 {
 	public class PlatformMgr
 	{
-		private IPlatformAuth Auth = new PlatformAuth();
+		private IPlatformAuth Auth
+		{
+			get
+			{
+				if (auth == null)
+				{
+					auth = PlatformAuthFactory.Create();
+                }
+
+				return auth;
+			}
+		}
+		private IPlatformAuth auth = null;
+
 		private IPlatformDB DB = new PlatformDB();
 		private IPlatformCrashlytics Crashlytics = new PlatformCrashlytics();	
 		private IAdMobController AdMob = new AdMobController();
@@ -55,7 +69,8 @@ namespace FGPlatform
 			IAPController.Init();
 			AdMob.Init(BannerPosition.Top);
 #endif
-			FirebaseApp.CheckAndFixDependenciesAsync()
+
+            FirebaseApp.CheckAndFixDependenciesAsync()
 			   .ContinueWithOnMainThread(task =>
 			   {
 				   if (task.Result == DependencyStatus.Available)
@@ -121,10 +136,9 @@ namespace FGPlatform
 			}
 		}
 
-		public void Login(ENUM_LOGIN_TYPE loginType, Action _OnSignInSuccess = null, Action _OnSignInFailed = null, Action _OnSignCanceled = null, Action<bool> _OnCheckFirstUser = null, string email = "", string password = "")
+		public void Login(Action _OnSignInSuccess = null, Action _OnSignInFailed = null, Action _OnSignCanceled = null, Action<bool> _OnCheckFirstUser = null)
 		{
-			Auth.SignIn(loginType, 
-			OnSignInSuccess: () => // 로그인 성공 시 
+			Auth.SignIn(OnSignInSuccess: () => // 로그인 성공 시 
 			{
 				_OnCheckFirstUser += (bool b) => // 체크 및 Initialize 먼저 하고, 
 				{
@@ -133,7 +147,7 @@ namespace FGPlatform
 
 				CheckFirstUserOrInitialize(_OnCheckFirstUser);
 			},
-			_OnSignInFailed, _OnSignCanceled, email, password);
+			_OnSignInFailed, _OnSignCanceled);
 		}
 
 		public void Logout()

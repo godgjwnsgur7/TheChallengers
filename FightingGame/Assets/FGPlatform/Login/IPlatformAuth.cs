@@ -9,6 +9,7 @@ using Firebase.Auth;
 using Firebase.Extensions;
 
 using Google;
+
 public enum ENUM_LOGIN_TYPE
 {
     None = -1,
@@ -18,6 +19,19 @@ public enum ENUM_LOGIN_TYPE
 
 namespace FGPlatform.Auth
 {
+    public class PlatformAuthFactory
+    {
+        public static IPlatformAuth Create()
+        {
+#if UNITY_ANDROID && GOOGLE_LOGIN_MODE
+            return new PlatformGoogleAuth();
+#else
+            return new PlatformGuestAuth();
+#endif
+        }
+    }
+
+
     public interface IPlatformAuth
     {
         public bool IsAuthValid
@@ -41,18 +55,67 @@ namespace FGPlatform.Auth
 		}
 
         public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null);
-        public void SignIn(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "");
+        public void SignIn(Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null);
         public void SignOut();
         public void RegistStateChanged(EventHandler handler);
 		public void UnregistStateChanged(EventHandler handler);
 
 	}
 
+    public class PlatformGuestAuth : IPlatformAuth
+    {
+        public bool IsAuthValid => isAuthValid;
+        private bool isAuthValid = false;
+
+        public bool IsLogin => isLogin;
+        private bool isLogin = false;
+
+        public string UserId
+        {
+            get
+            {
+                string host = System.Net.Dns.GetHostName();
+                Debug.Log(host);
+                return host;
+            }
+        }
+
+        public ENUM_LOGIN_TYPE CurrentLoginType => ENUM_LOGIN_TYPE.Guest;
+
+        public void RegistStateChanged(EventHandler handler)
+        {
+            
+        }
+
+        public void SignIn(Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+        {
+            isLogin = true;
+            OnSignInSuccess?.Invoke();
+        }
+
+        public void SignOut()
+        {
+            isLogin = false;
+        }
+
+        public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
+        {
+            isAuthValid = true;
+            OnConnectAuthSuccess?.Invoke();
+            return true;
+        }
+
+        public void UnregistStateChanged(EventHandler handler)
+        {
+            
+        }
+    }
+
     /// <summary>
     /// 파이어베이스 및 구글 인증을 하는 데에 사용되는 도구
     /// </summary>
 
-    public class PlatformAuth : IPlatformAuth
+    public class PlatformGoogleAuth : IPlatformAuth
     {
         private FirebaseApp app = null;
         private FirebaseAuth auth = null;
@@ -74,14 +137,7 @@ namespace FGPlatform.Auth
             }
         }
 
-        public ENUM_LOGIN_TYPE CurrentLoginType
-        {
-            get
-			{
-                return currentLoginType;
-            }
-        }
-        private ENUM_LOGIN_TYPE currentLoginType = ENUM_LOGIN_TYPE.None;
+        public ENUM_LOGIN_TYPE CurrentLoginType => ENUM_LOGIN_TYPE.Google;
 
         private FirebaseUser user = null;
         public string UserId
@@ -99,7 +155,6 @@ namespace FGPlatform.Auth
                 return false;
 
             InitAuth();
-
             return true;
         }
 
@@ -121,29 +176,19 @@ namespace FGPlatform.Auth
         private void UnsetFirebaseCurrentUser()
 		{
             user = null;
-            UserId = null;
+            UserId = string.Empty;
         }
 
-        public void SignIn(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "")
+        public void SignIn(Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
         {
             if (IsLogin) // 이미 로그인을 완료한 경우
 			{
                 Debug.LogError($"이미 로그인 상태입니다. {UserId}");
                 return;
             }
-                
-            switch (loginType)
-            {
-                case ENUM_LOGIN_TYPE.Guest:
-                    // SignInByGuest(email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
-                    break;
 
-                case ENUM_LOGIN_TYPE.Google:
-                    GoogleAuthenticate(
-                        OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
-                        OnSignInSuccess, OnSignInFailed);
-                    break;
-            }
+            GoogleAuthenticate(OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
+                         OnSignInSuccess, OnSignInFailed);
         }
 
         public void SignOut()
@@ -156,8 +201,6 @@ namespace FGPlatform.Auth
 
             googleModule?.SignOut();
             auth?.SignOut();
-
-            currentLoginType = ENUM_LOGIN_TYPE.None;
 
             Debug.LogError($"{UserId} 유저가 로그아웃하였습니다.");
             UnsetFirebaseCurrentUser();
@@ -185,33 +228,6 @@ namespace FGPlatform.Auth
 
 			auth.StateChanged -= handler;
 		}
-
-        //private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
-        //{
-        //    // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
-        //    auth?.SignInWithEmailAndPasswordInternalAsync(email, password)
-        //        .ContinueWithOnMainThread(task =>
-        //        {
-        //            if (task.IsFaulted)
-        //            {
-        //                OnSignInFailed?.Invoke();
-        //                Debug.LogError($"이메일 로그인 실패 : {task.Result}");
-        //            }
-        //            else if (task.IsCanceled)
-        //            {
-        //                OnSignCanceled?.Invoke();
-        //                Debug.LogWarning($"이메일 로그인 취소 : {task.Result.Email}");
-        //            }
-        //            else
-        //            {
-        //                Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
-        //                SetFirebaseCurrentUser(task.Result);
-        //                currentLoginType = ENUM_LOGIN_TYPE.Guest;
-
-        //                OnSignInSuccess?.Invoke();
-        //            }
-        //        });
-        //}
 
         private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
         {
@@ -275,7 +291,6 @@ namespace FGPlatform.Auth
                     FirebaseUser newUser = task.Result;
                     Debug.LogFormat("이메일 로그인 성공 : {0} ({1})", newUser.DisplayName, newUser.UserId);
 
-                    currentLoginType = ENUM_LOGIN_TYPE.Google;
                     SetFirebaseCurrentUser(newUser);
                 }
             });
