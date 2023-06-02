@@ -201,6 +201,11 @@ namespace FGPlatform.Datebase
 
         private DBUserData ParseStringData(string data)
 		{
+            if(data == null)
+            {
+                return new DBUserData("", 0, 0, 0, 0);
+            }
+
             string[] splitData = data.Split('.');
 
             if (splitData.Length <= (int)DB_CATEGORY.PurchaseCoffee)

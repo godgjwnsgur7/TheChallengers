@@ -146,7 +146,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
 			SetStatus("로그인 성공");
 
-			PhotonLogicHandler.CurrentMyNickname = "godgjwnsgur";
+			PhotonLogicHandler.CurrentMyNickname = id;
 
 		}, null, null);
 	}
@@ -154,19 +154,6 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 	public void OnClickGuestLogout()
 	{
 		Managers.Platform.Logout();
-	}
-
-	public void OnClickGuestLogin2()
-	{
-		Managers.Platform.Login(() =>
-		{
-			string id = Managers.Platform.GetUserID();
-			Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-			SetStatus("로그인 성공");
-
-			PhotonLogicHandler.CurrentMyNickname = "sorikun";
-
-		}, null, null);
 	}
 
 	public void OnClickGoogleLogin()
@@ -181,13 +168,8 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		{
 			if(isFirstLogin)
 			{
-				string host = System.Net.Dns.GetHostName();
-				var entry = System.Net.Dns.GetHostEntry(host);
-				var ipAddr = entry.AddressList;
-				var address = ipAddr.FirstOrDefault();
-
-				PhotonLogicHandler.CurrentMyNickname = address.ToString();
-			}
+				PhotonLogicHandler.CurrentMyNickname = Managers.Platform.GetUserID();
+            }
 		}, _OnSignInFailed: () => { Debug.LogError("로그인 실패함"); });
 	}
 

@@ -9,6 +9,7 @@ using Firebase.Auth;
 using Firebase.Extensions;
 
 using Google;
+using System.Linq;
 
 public enum ENUM_LOGIN_TYPE
 {
@@ -75,8 +76,10 @@ namespace FGPlatform.Auth
             get
             {
                 string host = System.Net.Dns.GetHostName();
-                Debug.Log(host);
-                return host;
+                var entry = System.Net.Dns.GetHostEntry(host);
+                var ipAddr = entry.AddressList;
+                var address = ipAddr.FirstOrDefault();
+                return address.ToString();
             }
         }
 
