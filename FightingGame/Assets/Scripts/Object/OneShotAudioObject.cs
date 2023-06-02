@@ -10,66 +10,96 @@ using System;
 public class OneShotAudioObject : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
+    float maxVolume; // 설정에 따른 최대 볼륨
 
-    Coroutine followingTargerCoroutine = null;
+    Coroutine listenerCheckCoroutine = null;
 
+    Transform targetTr = null;
     bool isFollowing = false;
 
     private void OnEnable()
     {
         if(audioSource == null)
             audioSource = GetComponent<AudioSource>();
-
-        Managers.Sound.Set_SFXSoundSetting(audioSource);
     }
 
     private void OnDisable()
     {
-        if (followingTargerCoroutine != null)
-            StopCoroutine(followingTargerCoroutine);
+        if (listenerCheckCoroutine != null)
+            StopCoroutine(listenerCheckCoroutine);
 
         isFollowing = false;
     }
 
-    public void Play_SFX(ENUM_SFX_TYPE sfxType, AudioClipVolume audioClipVolume, Vector3 worldPosVec)
+    public void Play_SFX(AudioClipVolume audioClipVolume, Vector3 worldPosVec)
     {
         if(!isFollowing)
             gameObject.transform.position = worldPosVec;
 
         audioSource.clip = audioClipVolume.audioClip;
+        maxVolume = audioClipVolume.volume;
 
-        float listenerPosX = Managers.Sound.Get_AudioListenerWorldPosX();
-        float currDistance = worldPosVec.x - listenerPosX; // 거리
-
-        if (Math.Abs(currDistance) > 3)
-            audioSource.panStereo = currDistance / 10.0f;
-        else
-            audioSource.panStereo = 0;
-
-        audioSource.volume = audioClipVolume.volume;
+        audioSource.volume = maxVolume;
         audioSource.Play();
+
+        listenerCheckCoroutine = StartCoroutine(IListenerCheck_FollowingCheck());
 
         UnityEngine.Object.Destroy(gameObject, audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
     }
 
-    public void PlaySFX_FollowingSound(ENUM_SFX_TYPE sfxType, AudioClipVolume audioClipVolume, Transform target)
+    public void PlaySFX_FollowingSound(AudioClipVolume _audioClipVolume, Transform _target)
     {
-        isFollowing = true;
+        targetTr = _target;
+        if(targetTr != null)
+            isFollowing = true;
 
-        followingTargerCoroutine = StartCoroutine(IFollowingTarget(target));
-
-        Play_SFX(sfxType, audioClipVolume, Vector3.zero);
+        Play_SFX(_audioClipVolume, Vector3.zero);
     }
 
-    protected IEnumerator IFollowingTarget(Transform target)
+    protected IEnumerator IListenerCheck_FollowingCheck()
     {
-        while (isFollowing)
+        while (audioSource != null)
         {
-            transform.position = target.position;
+            // 팔로윙 오브젝트인지 체크
+            if (isFollowing && targetTr != null)
+                transform.position = targetTr.position;
+
+            Vector2 listenerPosVec = Managers.Sound.Get_AudioListenerWorldPosVec();
+
+            // 거리에 따른 볼륨 조절
+            float distance = Vector2.Distance(transform.position, listenerPosVec);
+
+            if (distance <= 5.0f)
+                audioSource.volume = maxVolume;
+            else if (distance <= 20.0f)
+            {
+                float subVolume = 1.0f - ((distance - 5f) / 18.75f);
+                audioSource.volume = maxVolume * subVolume;
+            }
+            else
+                audioSource.volume = maxVolume * 0.2f;
+
+            // 거리에 따른 스테레오 조절
+            float distanceX = transform.position.x - listenerPosVec.x;
+            float absDistanceX = Math.Abs(distanceX);
+
+            if (absDistanceX <= 5)
+                audioSource.panStereo = 0;
+            else if (absDistanceX <= 10)
+            {
+                float tempPanStereoValue = (absDistanceX - 5) / 5f / 2f;
+                audioSource.panStereo = (distanceX < 0) ? tempPanStereoValue * -1f : tempPanStereoValue;
+            }
+            else
+            {
+                float tempPanStereoValue = 0.5f + ((absDistanceX - 10) / 10f / 2f);
+                audioSource.panStereo = (distanceX < 0) ? tempPanStereoValue * -1f : tempPanStereoValue;
+            }
+    
             yield return null;
         }
 
         isFollowing = false;
-        followingTargerCoroutine = null;
+        listenerCheckCoroutine = null;
     }
 }

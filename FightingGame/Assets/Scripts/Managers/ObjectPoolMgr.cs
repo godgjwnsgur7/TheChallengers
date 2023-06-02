@@ -121,9 +121,120 @@ public class ObjectPoolMgr
     }
     #endregion
 
-    Dictionary<string, Pool> pools = new Dictionary<string, Pool>();
+    /*
+    #region SoundPool
+    
+    class SoundPool
+    {
+        public Transform Root { get; set; }
 
+        Stack<OneShotAudioObject> soundPoolStack = new Stack<OneShotAudioObject>();
+
+        public void Init(int poolCount)
+        {
+            Root = new GameObject().transform;
+
+            for (int i = 0; i < poolCount; i++)
+                Push(Create());
+        }
+
+        public void Add(int poolCount)
+        {
+            for (int i = 0; i < poolCount; i++)
+                Push(Create());
+        }
+
+        OneShotAudioObject Create()
+        {
+            OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
+            return go.GetOrAddComponent<Poolable>();
+        }
+
+        public void Push(OneShotAudioObject audioObject)
+        {
+            if (audioObject == null) return;
+
+            poolable.transform.parent = Root;
+            poolable.gameObject.SetActive(false);
+            poolable.isUsing = false;
+            poolable.Init();
+
+            soundPoolStack.Push(poolable);
+        }
+
+        public Poolable Pop(Transform parent)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            poolable.gameObject.SetActive(true);
+            poolable.transform.parent = parent;
+            poolable.isUsing = true;
+
+            return poolable;
+        }
+
+        public Poolable Pop(bool active)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            if (active)
+                poolable.gameObject.SetActive(true);
+
+            poolable.isUsing = true;
+
+            return poolable;
+        }
+
+        public Poolable Pop(Vector2 position)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            poolable.gameObject.SetActive(true);
+            poolable.transform.position = position;
+            poolable.isUsing = true;
+
+            return poolable;
+        }
+
+        public Poolable Pop(Vector2 position, Quaternion rotation, bool active = false)
+        {
+            Poolable poolable;
+
+            if (poolStack.Count > 0)
+                poolable = poolStack.Pop();
+            else
+                poolable = Create();
+
+            poolable.gameObject.SetActive(active);
+            poolable.transform.position = position;
+            poolable.transform.rotation = rotation;
+            poolable.isUsing = true;
+
+            return poolable;
+        }
+    }
+    #endregion
+    */
+
+    Dictionary<string, Pool> pools = new Dictionary<string, Pool>();
+   
     Transform root;
+    Transform soundRoot;
 
     int poolCount = 5;
 
@@ -132,6 +243,11 @@ public class ObjectPoolMgr
         if (root == null)
         {
             root = new GameObject { name = "@Pool_Root" }.transform;
+        }
+
+        if (soundRoot == null)
+        {
+            soundRoot = new GameObject { name = "@Pool_SoundRoot" }.transform;
         }
 
         PhotonPrefabPool.Init();

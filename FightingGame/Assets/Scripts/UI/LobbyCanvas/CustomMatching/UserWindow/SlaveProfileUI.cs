@@ -20,6 +20,13 @@ public class SlaveProfileUI : BaseProfile
         base.Init(_profileInfo);
     }
 
+    public override void Clear()
+    { 
+        Set_ReadyState(false);
+
+        base.Clear();
+    }
+
     public void Set_ReadyState(bool _readyState)
     {
         if (IsReady == _readyState)
@@ -28,24 +35,16 @@ public class SlaveProfileUI : BaseProfile
         IsReady = _readyState;
 
         if(IsReady)
-        {
             ReadyText.color = new Color(1f, 1f, 1f, 1f);
-        }
         else
-        {
             ReadyText.color = new Color(1f, 1f, 1f, 0.4f);
-        }
 
         if(IsMine)
         {
             if(IsReady)
-            {
                 PhotonLogicHandler.Instance.OnReady();
-            }
             else
-            {
                 PhotonLogicHandler.Instance.OnUnReady();
-            }
         }
     }
 

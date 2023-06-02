@@ -6,8 +6,6 @@ using System;
 
 public class AttackObject : SyncObject
 {
-    protected ENUM_TEAM_TYPE teamType;
-
     public override void Init()
     {
         base.Init();

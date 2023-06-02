@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System.Security.Cryptography;
+using System.Linq;
 
 public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 {
@@ -21,7 +23,9 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	private void Start()
 	{
+		Managers.Platform.RegistAuthChanged(null, PhotonLogicHandler.Instance.TryDisconnectToMaster);
 		Managers.Platform.Initialize();
+
 		this.RegisterLobbyCallback();
 		this.RegisterRoomCallback();
 
@@ -38,7 +42,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 	{
 		bool a = PhotonLogicHandler.Instance.TryConnectToMaster(
 			() => { SetStatus("마스터 서버 접속 완료"); },
-			SetError);
+			Managers.Network.DisconnectMaster_CallBack);
 	}
 
 	public void OnClickDisconnectMasterServer()
@@ -177,10 +181,14 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		{
 			if(isFirstLogin)
 			{
-				// 최초 로그인이면 창 띄워서 닉네임 받아서 이렇게 세팅을 해줘야 합니다.
-				PhotonLogicHandler.CurrentMyNickname = "sorikun";
+				string host = System.Net.Dns.GetHostName();
+				var entry = System.Net.Dns.GetHostEntry(host);
+				var ipAddr = entry.AddressList;
+				var address = ipAddr.FirstOrDefault();
+
+				PhotonLogicHandler.CurrentMyNickname = address.ToString();
 			}
-		});
+		}, _OnSignInFailed: () => { Debug.LogError("로그인 실패함"); });
 	}
 
 	public void OnClickShowBanner()

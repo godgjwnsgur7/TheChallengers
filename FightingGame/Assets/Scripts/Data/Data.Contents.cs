@@ -14,6 +14,7 @@ public class Skill
     public float stunTime;
     public float risingPower;
     public float pushingPower;
+    public int hitSoundType; // ENUM_SFX_TYPE (히트사운드)
 }
 
 public class SkillData : ILoader<int, Skill>
@@ -69,7 +70,5 @@ public class GameInfo
     public float maxComboDamage; // 맥스 콤보 데미지
     public float hitImmunityPower; // 히트보정 시 작용하는 힘의 크기 (밀려나는 힘)
     public float maxGameRunTime; // 게임의 제한시간
-    public float soundMinDistance; // 3D 사운드의 소리가 들리는 최소 거리
-    public float soundMaxDistance; // 3D 사운드의 소리가 들리는 최대 거리
 }
 #endregion

@@ -37,7 +37,7 @@ public class FollowAttackObject : HitAttackObject
 
     private IEnumerator IFollowTarget(Transform _targetTr)
     {
-        while(isUsing)
+        while(isUsing || _targetTr != null)
         {
             this.transform.position = _targetTr.position;
             yield return null;

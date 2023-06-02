@@ -32,6 +32,9 @@ public class HitAttackObject : AttackObject
 
     private void Start_RunTimeCheckCoroutine()
     {
+        if (skillValue == null)
+            return;
+
         runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
@@ -58,16 +61,22 @@ public class HitAttackObject : AttackObject
 
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
 
+            if (isServerSyncState)
+                PhotonLogicHandler.Instance.TryBroadcastMethod<HitAttackObject, int, Vector3>
+                    (this, PlaySFX_HitSound, skillValue.hitSoundType, collision.transform.position);
+            else
+                PlaySFX_HitSound(skillValue.hitSoundType, collision.transform.position);
+
             // 피격된 캐릭터 위치를 기준으로 주어진 범위 내의 랜덤위치로 조정
             Vector2 randomHitPosVec = collision.transform.position;
             randomHitPosVec.x += UnityEngine.Random.Range(-0.5f, 0.5f);
             randomHitPosVec.y += UnityEngine.Random.Range(-0.3f, 1.0f);
 
             // 이펙트 생성 ( 임시 랜덤 )
-            Summon_EffectObject(UnityEngine.Random.Range(0, 3), randomHitPosVec);
+            Summon_EffectObject(UnityEngine.Random.Range(0, 3), teamType, randomHitPosVec);
 
             if (isSkill)
-               Summon_EffectObject(UnityEngine.Random.Range(3, 5), collision.transform.position);
+               Summon_EffectObject(UnityEngine.Random.Range(3, 5), teamType, collision.transform.position);
             
             Sync_DestroyMine();
         }
@@ -77,7 +86,7 @@ public class HitAttackObject : AttackObject
         }
     }
 
-    public void Summon_EffectObject(int _effectTypeNum, Vector2 _targetTr)
+    public void Summon_EffectObject(int _effectTypeNum, ENUM_TEAM_TYPE _teamType, Vector2 _targetTr)
     {
         ENUM_EFFECTOBJECT_NAME effectObjectName = (ENUM_EFFECTOBJECT_NAME)_effectTypeNum;
 
@@ -92,11 +101,11 @@ public class HitAttackObject : AttackObject
         {
             if (isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, bool>
-                    (effectObject, effectObject.Activate_EffectObject, _targetTr, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, ENUM_TEAM_TYPE, bool>
+                    (effectObject, effectObject.Activate_EffectObject, _targetTr, _teamType, reverseState);
             }
             else
-                effectObject.Activate_EffectObject(_targetTr, reverseState);
+                effectObject.Activate_EffectObject(_targetTr, _teamType, reverseState);
         }
         else
         {

@@ -175,12 +175,12 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.1
-    functionName: AnimEvent_PlaySFX
+  - time: 0.15
+    functionName: AnimEvent_PlaySFX_FollowingSound
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
-    intParameter: 37
+    intParameter: 114
     messageOptions: 0
   - time: 0.5
     functionName: Summon_EffectObject
@@ -188,6 +188,13 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 25
+    messageOptions: 0
+  - time: 0.7
+    functionName: AnimEvent_PlaySFX_FollowingSound
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 115
     messageOptions: 0
   - time: 0.8
     functionName: Summon_AttackObject
@@ -203,6 +210,13 @@ AnimationClip:
     floatParameter: 18
     intParameter: 0
     messageOptions: 0
+  - time: 0.95
+    functionName: AnimEvent_PlaySFX
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 116
+    messageOptions: 0
   - time: 1
     functionName: Summon_AttackObject
     data: 
@@ -211,18 +225,18 @@ AnimationClip:
     intParameter: 5
     messageOptions: 0
   - time: 1.15
-    functionName: Summon_AttackObject
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 18
-    messageOptions: 0
-  - time: 1.15
     functionName: AnimEvent_Move
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 1.15
+    functionName: Summon_AttackObject
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 18
     messageOptions: 0
   - time: 1.7
     functionName: SuperArmourState_Off

@@ -34,8 +34,11 @@ namespace FGPlatform
 	{
 		private IPlatformAuth Auth = new PlatformAuth();
 		private IPlatformDB DB = new PlatformDB();
+		private IPlatformCrashlytics Crashlytics = new PlatformCrashlytics();	
 		private IAdMobController AdMob = new AdMobController();
 		private CoffeeMachine IAPController = new IAPController();
+
+		private EventHandler onAuthChangedHandler = null;
 
 		private static readonly Dictionary<DB_CATEGORY, Type> validCategoryTypeDictionary = new Dictionary<DB_CATEGORY, Type>()
 		{
@@ -59,6 +62,13 @@ namespace FGPlatform
 				   {
 					   Auth.TryConnectAuth();
 					   DB.InitDataBase();
+					   Crashlytics.Init();
+
+					   if (onAuthChangedHandler != null)
+					   {
+						   Auth.UnregistStateChanged(onAuthChangedHandler);
+						   Auth.RegistStateChanged(onAuthChangedHandler);
+					   }
 
 					   Debug.Log("파이어베이스 인증 성공");
 				   }
@@ -88,7 +98,28 @@ namespace FGPlatform
 			}
 		}
 
-		public string CurrentUserNickName;
+		public void RegistAuthChanged(Action onLogin, Action onLogout)
+		{
+			onAuthChangedHandler = new EventHandler((sender, args) =>
+			{
+				Debug.LogWarning($"{sender.ToString()}로부터 {args.ToString()} 인증 상황 변화가 전달되었습니다.");
+
+				if(Auth.IsLogin)
+				{
+					onLogin?.Invoke();
+				}
+				else
+				{
+					onLogout?.Invoke();	
+				}
+			});
+
+			if(Auth.IsAuthValid)
+			{
+				Auth.UnregistStateChanged(onAuthChangedHandler);
+				Auth.RegistStateChanged(onAuthChangedHandler);
+			}
+		}
 
 		public void Login(ENUM_LOGIN_TYPE loginType, Action _OnSignInSuccess = null, Action _OnSignInFailed = null, Action _OnSignCanceled = null, Action<bool> _OnCheckFirstUser = null, string email = "", string password = "")
 		{
@@ -107,7 +138,8 @@ namespace FGPlatform
 
 		public void Logout()
 		{
-			Auth.SignOut();
+			if(Auth.IsLogin)
+				Auth.SignOut();
 		}
 
 		public bool DBUpdate<T>(DB_CATEGORY category, T data, Action<T> OnSuccess = null, Action OnFailed = null, Action OnCanceled = null)

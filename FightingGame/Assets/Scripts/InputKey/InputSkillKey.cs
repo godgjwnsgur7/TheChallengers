@@ -8,15 +8,11 @@ using System;
 public class InputSkillKey : InputBasicKey
 {
     [SerializeField] Image coolTimeImage;
-    Button skillButton;
-
+    [SerializeField] Image coolTimeCoverImage;
+    [SerializeField] Text coolTimeText;
+    
     Coroutine coolTimeCoroutine;
     float coolTime;
-    
-    void Start()
-    {
-        skillButton = GetComponent<Button>();
-    }
 
     public override void EventTrigger_PointerDown()
     {
@@ -24,6 +20,14 @@ public class InputSkillKey : InputBasicKey
             return;
 
         base.EventTrigger_PointerDown();
+    }
+
+    protected override void AlphaArea_TouchRestriction()
+    {
+        base.AlphaArea_TouchRestriction();
+
+        coolTimeImage.alphaHitTestMinimumThreshold = 0.1f;
+        coolTimeCoverImage.alphaHitTestMinimumThreshold = 0.1f;
     }
 
     public void Set_SkillInfo(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
@@ -43,16 +47,20 @@ public class InputSkillKey : InputBasicKey
 
     protected IEnumerator ICoolTime()
     {
-        float coolTimeFillAmount = 1.0f;
+        float currCoolTime = coolTime;
+        coolTimeText.text = ((int)coolTime + 1).ToString();
 
-        while (coolTimeFillAmount > 0.01f)
+        while (0 < currCoolTime)
         {
-            coolTimeFillAmount -= 1.0f * Time.deltaTime / coolTime;
-            coolTimeImage.fillAmount = coolTimeFillAmount;
+            currCoolTime -= Time.deltaTime;
+            coolTimeImage.fillAmount = currCoolTime / coolTime;
+            coolTimeText.text = ((int)currCoolTime + 1).ToString();
+
             yield return null;
         }
 
         coolTimeImage.fillAmount = 0.0f;
+        coolTimeText.text = "";
         coolTimeCoroutine = null;
         coolTimeImage.gameObject.SetActive(false);
     }

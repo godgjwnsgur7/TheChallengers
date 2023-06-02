@@ -13,13 +13,13 @@ public class GenerateEffectObject : EffectObject
     }
 
     [BroadcastMethod]
-    public override void Activate_EffectObject(Vector2 _summonPosVec, bool _reverseState)
+    public override void Activate_EffectObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType , bool _reverseState)
     {
         Vector2 updateSummonPosVec = new Vector2(
             _reverseState ? (_summonPosVec.x - subPosVec.x) : (_summonPosVec.x + subPosVec.x)
             , (_summonPosVec.y + subPosVec.y));
 
-        base.Activate_EffectObject(updateSummonPosVec, _reverseState);
+        base.Activate_EffectObject(updateSummonPosVec, _teamType, _reverseState);
     }
 
     // Animation Event
@@ -38,11 +38,11 @@ public class GenerateEffectObject : EffectObject
         {
             if (isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, bool>
-                    (effectObject, effectObject.Activate_EffectObject, transform.position, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, ENUM_TEAM_TYPE, bool>
+                    (effectObject, effectObject.Activate_EffectObject, transform.position, teamType, reverseState);
             }
             else
-                effectObject.Activate_EffectObject(transform.position, reverseState);
+                effectObject.Activate_EffectObject(transform.position, teamType, reverseState);
         }
         else
         {

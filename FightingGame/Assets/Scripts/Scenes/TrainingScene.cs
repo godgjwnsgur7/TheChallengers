@@ -4,26 +4,58 @@ using UnityEngine;
 using FGDefine;
 using System;
 
+/// <summary>
+/// 캐릭터, 맵 등의 오브젝트들은 여기서 주관
+/// </summary>
 public class TrainingScene : BaseScene
 {
-    [SerializeField] ButtonPanel buttonPanel;
+    [SerializeField] TrainingCharacter trainingCharacter;
+
+    BaseMap currMap;
+    ENUM_MAP_TYPE mapType = ENUM_MAP_TYPE.CaveMap;
+
+    public override void Init()
+    {
+        SceneType = ENUM_SCENE_TYPE.Training;
+
+        base.Init();
+
+        mapType = ENUM_MAP_TYPE.CaveMap;
+        Summon_MapObject();
+    }
 
     public override void Clear()
     {
         base.Clear();
     }
 
-    public override void Init()
+    public void Change_CurrMap(ENUM_MAP_TYPE _mapType)
     {
-        SceneType = ENUM_SCENE_TYPE.Training;
-        
-        base.Init();
+        mapType = _mapType;
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Summon_MapObject);
+    }
 
-        buttonPanel.Init();
+    public void Change_EnemyCharacter(ENUM_CHARACTER_TYPE _charType)
+    {
+        trainingCharacter.Summon_EnemyCharacter(_charType, currMap.redTeamSpawnPoint.position);
+    }
+
+    public void Change_MyCharacter(ENUM_CHARACTER_TYPE _charType)
+    {
+        trainingCharacter.Summon_MyCharacter(_charType, currMap.blueTeamSpawnPoint.position);
+    }
+
+    private void Summon_MapObject()
+    {
+        if(currMap != null)
+            Managers.Resource.Destroy(currMap.gameObject);
+
+        currMap = Managers.Resource.Instantiate($"Maps/{mapType}").GetComponent<BaseMap>();
+        trainingCharacter.Init(currMap);
     }
 
     public override void Play_BGM()
     {
-        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Test);
+        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.CaveMap);
     }
 }

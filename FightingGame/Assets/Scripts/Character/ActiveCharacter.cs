@@ -84,6 +84,11 @@ public partial class ActiveCharacter : Character
     {
         teamType = _teamType;
 
+        Managers.Data.CharInfoDict.TryGetValue((int)characterType, out CharacterInfo characterInfo);
+        MyCharInfo = characterInfo;
+
+        currHP = characterInfo.maxHP;
+
         if (isServerSyncState)
         {
             isControl = PhotonLogicHandler.IsMine(viewID);
@@ -706,11 +711,11 @@ public partial class ActiveCharacter : Character
         {
             if (isServerSyncState)
             {
-                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2, bool>
-                    (effectObject, effectObject.Activate_EffectObject, transform.position, reverseState);
+                PhotonLogicHandler.Instance.TryBroadcastMethod<EffectObject, Vector2,ENUM_TEAM_TYPE, bool>
+                    (effectObject, effectObject.Activate_EffectObject, transform.position, teamType, reverseState);
             }
             else
-                effectObject.Activate_EffectObject(transform.position, reverseState);
+                effectObject.Activate_EffectObject(transform.position, teamType, reverseState);
         }
         else
         {
@@ -766,14 +771,21 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
-        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, transform.position);
+        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, teamType, transform.position);
         return;
     }
 
     protected void AnimEvent_PlaySFX_FollowingSound(int sfxTypeNum)
     {
-        Managers.Sound.PlaySFX_FollowingSound((ENUM_SFX_TYPE)sfxTypeNum, transform.position, transform);
+        Managers.Sound.PlaySFX_FollowingSound((ENUM_SFX_TYPE)sfxTypeNum, teamType, transform.position, transform);
         return;
+    }
+
+    protected void AnimEvent_PlayerSFX_RandomTwo(int sfxTypeNum)
+    {
+        sfxTypeNum += UnityEngine.Random.Range(0, 2);
+
+        AnimEvent_PlaySFX_FollowingSound(sfxTypeNum);
     }
 
     #endregion

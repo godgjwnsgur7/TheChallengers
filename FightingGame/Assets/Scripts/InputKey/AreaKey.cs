@@ -8,8 +8,8 @@ public class AreaKey : MonoBehaviour
 {
     public Image areaImage;
     public RectTransform rectTr;
-    bool isSelect = false;
     bool isInit = false;
+    bool isSelect = false;
     private int triggerCount = 0;
 
     public void Init()
@@ -18,15 +18,12 @@ public class AreaKey : MonoBehaviour
 
         isInit = true;
         rectTr = this.GetComponent<RectTransform>();
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     { 
         if(collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
             triggerCount++;
-
-        Debug.Log(collision.name);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -47,26 +44,29 @@ public class AreaKey : MonoBehaviour
     {
         Color changeColor;
         
-        if(triggerCount > 0)
+        if(triggerCount > 0) // 충돌 있음
         {
             changeColor = new Color(255, 0, 0, 0.5f);
             areaImage.color = changeColor;
         }
-        else if (isSelect && triggerCount < 1)
+        else if (isSelect && triggerCount < 1) // 충돌 없는 선택된 인풋키
         {
-            changeColor = new Color(0, 255, 0, 0.5f);
+            changeColor = new Color(255, 255, 255, 0.5f);
             areaImage.color = changeColor;
         }
-        else if (!isSelect && triggerCount < 1)
+        else if (!isSelect && triggerCount < 1) // 충돌 없는 비선택된 인풋키
         {
             changeColor = new Color(255, 255, 255, 0f);
             areaImage.color = changeColor;
         }
     }
 
-    public void Set_isSelect(bool _select)
+    /// <summary>
+    /// 클릭으로 선택된 인풋키 인지 확인 여부
+    /// </summary>
+    public void Set_isSelect(bool _value)
     {
-        isSelect = _select;
+        isSelect = _value;
         Set_AreaColor();
     }
 

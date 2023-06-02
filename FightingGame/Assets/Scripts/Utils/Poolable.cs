@@ -11,6 +11,6 @@ public class Poolable : MonoBehaviourPhoton
     { 
         base.Init();
 
-        isServerSyncState = Managers.Network.isServerSyncState;
+        isServerSyncState = Managers.Network.IsServerSyncState;
     }
 }

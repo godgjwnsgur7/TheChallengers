@@ -50,7 +50,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     private void OnDisable()
     {
-        if(readyLockCoroutine != null)
+        readyLock = false;
+
+        if (readyLockCoroutine != null)
             StopCoroutine(readyLockCoroutine);
 
         if (waitInfoSettingCoroutine != null)
@@ -80,11 +82,11 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if(!masterProfile.IsMine) // 마스터클라이언트가 됐다면
         {
-            PhotonLogicHandler.Instance.OnUnReady();
             masterProfile.Clear();
             masterProfile.Init(slaveProfile.Get_ProfileInfo());
         }
 
+        PhotonLogicHandler.Instance.RequestUnReadyAll();
         Init();
     }
 
@@ -96,14 +98,20 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        if(property.isMasterClient && !masterProfile.IsInit)
+        Char rankChar;
+        if (property.data.ratingPoint == 1500 && property.data.defeatPoint + property.data.victoryPoint == 0)
+            rankChar = 'X';
+        else
+            rankChar = RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint);
+
+        if (property.isMasterClient && !masterProfile.IsInit)
         {
-            Profile_Info masterProfileInfo = new Profile_Info(property.data.nickname, RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint));
+            Profile_Info masterProfileInfo = new Profile_Info(property.data.nickname, rankChar);
             masterProfile.Init(masterProfileInfo);
         }
         else if(!property.isMasterClient && !slaveProfile.IsInit)
         {
-            Profile_Info slaveProfileInfo = new Profile_Info(property.data.nickname, RankingScoreOperator.Get_RankingEmblemChar(property.data.ratingPoint));
+            Profile_Info slaveProfileInfo = new Profile_Info(property.data.nickname, rankChar);
             slaveProfile.Init(slaveProfileInfo);
         }
 
@@ -144,6 +152,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
             return;
 
         Managers.Network.ExitRoom_CallBack();
+        Managers.Network.Clear_DBData();
 
         masterProfile.Clear();
         slaveProfile.Clear();
@@ -155,6 +164,8 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
             PhotonLogicHandler.Instance.ChangeMap(_mapType);
+        else
+            slaveProfile.Set_ReadyState(false);
 
         currMap = _mapType;
         
@@ -192,7 +203,9 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
 
     public void OnClick_UserInfo(bool _isMasterProfile)
     {
-        userInfoWindow.Open(Managers.Network.Get_DBUserData(_isMasterProfile));
+        DBUserData userData = Managers.Network.Get_DBUserData(_isMasterProfile);
+        if (userData != null)
+            userInfoWindow.Open(userData);
     }
 
     public void OnClick_ExitRoom()
@@ -216,7 +229,7 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
                 return;
             }
             
-            if (!Managers.Network.Get_DataSyncStateAll())
+            if (!Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
                 PhotonLogicHandler.Instance.RequestSyncDataAll();
 
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.READY);

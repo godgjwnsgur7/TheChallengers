@@ -68,10 +68,23 @@ public class SettingWindow : MonoBehaviour
         accountsInfoWindow.SetActive(true);
     }
 
-    public void Open_InputKeyManagement(Transform _transform)
+    public void OnClick_InputKeySetting()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(Open_InputKeyManagement, null,
+            "키 조작 창을 여시겠습니까?");
+    }
+
+    private void Open_InputKeyManagement()
+    {
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Call_InputKeyManagement);
+    }
+
+    private void Call_InputKeyManagement()
     {
         InputKeyManagement go = Managers.Input.Get_InputKeyManagement();
-        go.transform.parent = _transform;
+        go.transform.parent = Managers.UI.currCanvas.transform;
         go.Init();
+
+        Close();
     }
 }

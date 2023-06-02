@@ -10,9 +10,9 @@ public class CustormRoom_MapInfo : MonoBehaviour
     [SerializeField] Text mapExplanationText;
 
     [SerializeField] Image currMapImage;
-    [SerializeField] Image selectionEffectImage;
+    [SerializeField] RectTransform selectionEffectRectTr;
     
-    [SerializeField] RectTransform[] mapImageRectTrs = new RectTransform[3];
+    [SerializeField] GameObject[] mapCoverImageObjects = new GameObject[3];
 
     public void Set_CurrMapInfo(ENUM_MAP_TYPE _mapType)
     {
@@ -22,7 +22,11 @@ public class CustormRoom_MapInfo : MonoBehaviour
         if(mapExplanationText != null)
             mapExplanationText.text = Managers.Data.Get_MapExplanationDict(_mapType);
 
-        RectTransform selectionEffectImageRectTr = selectionEffectImage.gameObject.GetComponent<RectTransform>();
-        selectionEffectImageRectTr.anchoredPosition = mapImageRectTrs[(int)_mapType].anchoredPosition;
+        selectionEffectRectTr.position = mapCoverImageObjects[(int)_mapType].GetComponent<RectTransform>().position;
+
+        foreach (GameObject mapCoverImageObject in mapCoverImageObjects)
+            mapCoverImageObject.SetActive(true);
+
+        mapCoverImageObjects[(int)_mapType].SetActive(false);
     }
 }

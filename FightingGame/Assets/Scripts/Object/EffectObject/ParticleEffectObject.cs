@@ -36,9 +36,9 @@ public class ParticleEffectObject : EffectObject
 
 
     [BroadcastMethod]
-    public override void Activate_EffectObject(Vector2 _summonPosVec, bool _reverseState)
+    public override void Activate_EffectObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        base.Activate_EffectObject(_summonPosVec, _reverseState);
+        base.Activate_EffectObject(_summonPosVec, _teamType, _reverseState);
 
         pariclePlayCoroutine = StartCoroutine(IPlayParicle());
     }

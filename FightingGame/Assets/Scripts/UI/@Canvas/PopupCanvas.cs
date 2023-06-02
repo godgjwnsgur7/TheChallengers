@@ -11,6 +11,7 @@ using FGDefine;
 public class PopupCanvas : MonoBehaviour
 {
     [Header("Set In Editor")]
+    [SerializeField] SettingWindow settingWindow;
     [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
@@ -18,21 +19,20 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] ErrorPopup errorPopup;
     [SerializeField] FadeEffectPopup fadeEffectPopup;
     [SerializeField] TimerNotifyPopup timerNotifyPopup;
+    [SerializeField] GameObject touchProtection;
 
     private void Start()
     {
         Init();
     }
-
     public void Init()
     {
         DontDestroyOnLoad(this);
     }
 
-    public void Check_ActivePopup()
+    public void Open_SettingWindow()
     {
-        // 애들 활성화 상태 확인해서 전체를 끈다던가 이런거 생각중인데
-        // 나중에 해보던가 하자
+        settingWindow.Open();
     }
 
     /// <summary>
@@ -79,6 +79,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if(selectPopup.isUsing)
         {
+            _failedCallBack?.Invoke();
             Debug.Log("이미 선택팝업창이 사용중입니다.");
             return;
         }
@@ -95,6 +96,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if (notifyPopup.isUsing)
         {
+            _checkCallBack?.Invoke();
             notifyPopup.Open_Again(_message, _checkCallBack);
             return;
         }
@@ -110,6 +112,7 @@ public class PopupCanvas : MonoBehaviour
     {
         if (timerNotifyPopup.isUsing)
         {
+            _timeOutCallBack?.Invoke();
             timerNotifyPopup.Open_Again(_message, _runTime);
             return;
         }
@@ -168,7 +171,7 @@ public class PopupCanvas : MonoBehaviour
     /// 로딩 팝업창 Popup Window
     /// 반드시 Close를 따로 호출해주어야 함
     /// </summary>
-    public void Open_LoadingPopup()
+    public void Open_LoadingPopup(string _message, Func<bool> _completionCondition = null)
     {
         if(loadingPopup.isUsing)
         {

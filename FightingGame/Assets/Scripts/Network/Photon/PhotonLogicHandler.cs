@@ -11,6 +11,7 @@ using System.Text;
 using FGDefine;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using FGPlatform;
 
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message);
@@ -162,13 +163,16 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         this._OnConnectedToMaster = _OnConnectedToMaster;
         this._OnDisconnectedFromMaster = _OnDisconnectedFromMaster;
 
-        PhotonNetwork.GameVersion = RandomVersion;
+		PhotonNetwork.GameVersion = RandomVersion;
         return PhotonNetwork.ConnectUsingSettings(); // 마스터 서버 접속 시도
     }
 
     public void TryDisconnectToMaster()
 	{
-        PhotonNetwork.Disconnect();
+        if (PhotonNetwork.IsConnected)
+        {
+			PhotonNetwork.Disconnect();
+		}
     }
 
     public bool TryJoinRandomRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed)
@@ -386,8 +390,8 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarning($"마스터 서버로부터 접속이 끊어졌습니다. 사유 : {cause}");
+        
         _OnDisconnectedFromMaster?.Invoke(cause.ToString());
-
         _OnDisconnectedFromMaster = null;
     }
 

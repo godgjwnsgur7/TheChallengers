@@ -45,11 +45,18 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
 
     private void OnDisable()
     {
-        this.UnregisterRoomCallback();
+        CoroutineStopAll();
 
-        if(selectCharacterTimerCoroutine != null)
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
+
+        this.UnregisterRoomCallback();
+    }
+
+    private void CoroutineStopAll()
+    {
+        if (selectCharacterTimerCoroutine != null)
             StopCoroutine(selectCharacterTimerCoroutine);
-        if(settingInfoCheckCoroutine != null)
+        if (settingInfoCheckCoroutine != null)
             StopCoroutine(settingInfoCheckCoroutine);
         if (waitSelectionCharacterCoroutine != null)
             StopCoroutine(waitSelectionCharacterCoroutine);
@@ -62,6 +69,9 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
         if (this.gameObject.activeSelf)
             return;
 
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer += OnExitRoomCallBack;
+
         this.RegisterRoomCallback();
 
         characterSelectArea.Init(CallBack_SelectionCharacter);
@@ -72,6 +82,19 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
 
         selectCharacterTimerCoroutine = StartCoroutine(ISelectionCharacterTimer(selectionCharacterTimer));
         settingInfoCheckCoroutine = StartCoroutine(ISettingInfoCheck());
+    }
+
+    public void Close()
+    {
+        PhotonLogicHandler.Instance.RequestUnSyncDataAll();
+
+        characterSelectArea.Close();
+        mapInfo.Close();
+
+        masterInfoUI.Clear();
+        slaveInfoUI.Clear();
+
+        this.gameObject.SetActive(false);
     }
     
     public void GameStart()
@@ -88,6 +111,18 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
         waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
     }
 
+    public void OnEnterRoomCallBack(string enterUserNickname) { }
+
+    /// <summary>
+    /// 게임 시작 중에 상대방이 강제종료 한 경우
+    /// </summary>
+    public void OnExitRoomCallBack(string exitUserNickname)
+    {
+        CoroutineStopAll();
+
+        Managers.UI.popupCanvas.Open_NotifyPopup("게임이 취소 되었습니다.", CallBack_ExitUser);
+    }
+
     public void OnUpdateRoomProperty(CustomRoomProperty property) { }
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
@@ -102,6 +137,21 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
         {
             enemySelectionCharacterType = property.characterType;
         }
+    }
+
+    public void CallBack_ExitUser()
+    {
+        bool isLeaveRoom = PhotonLogicHandler.Instance.TryLeaveRoom(CallBack_ExitRoom);
+
+        if (!isLeaveRoom)
+        {
+            Managers.UI.popupCanvas.Open_NotifyPopup("알 수 없는 에러\n나가기 실패");
+        }
+    }
+
+    public void CallBack_ExitRoom()
+    {
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Close);
     }
 
     public void CallBack_SelectionCharacter(ENUM_CHARACTER_TYPE _selectedCharType)

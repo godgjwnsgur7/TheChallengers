@@ -24,10 +24,7 @@ namespace FGPlatform.Auth
         {
             get;
         }
-        public bool IsAuthPlatform
-        {
-            get;
-        }
+
         public bool IsLogin
 		{
             get;
@@ -46,7 +43,10 @@ namespace FGPlatform.Auth
         public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null);
         public void SignIn(ENUM_LOGIN_TYPE loginType, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null, string email = "", string password = "");
         public void SignOut();
-    }
+        public void RegistStateChanged(EventHandler handler);
+		public void UnregistStateChanged(EventHandler handler);
+
+	}
 
     /// <summary>
     /// 파이어베이스 및 구글 인증을 하는 데에 사용되는 도구
@@ -63,14 +63,6 @@ namespace FGPlatform.Auth
             get
             {
                 return app != null && auth != null;
-            }
-        }
-
-        public bool IsAuthPlatform
-        {
-            get
-            {
-                return IsAuthValid && googleModule != null;
             }
         }
 
@@ -143,7 +135,7 @@ namespace FGPlatform.Auth
             switch (loginType)
             {
                 case ENUM_LOGIN_TYPE.Guest:
-                    SignInByGuest(email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
+                    // SignInByGuest(email, password, OnSignInSuccess, OnSignInFailed, OnSignCanceled);
                     break;
 
                 case ENUM_LOGIN_TYPE.Google:
@@ -171,32 +163,55 @@ namespace FGPlatform.Auth
             UnsetFirebaseCurrentUser();
         }
 
-        private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+        public void RegistStateChanged(EventHandler handler)
         {
-            // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
-            auth?.SignInWithEmailAndPasswordAsync(email, password)
-                .ContinueWithOnMainThread(task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        OnSignInFailed?.Invoke();
-                        Debug.LogError($"이메일 로그인 실패 : {task.Result.Email}");
-                    }
-                    else if (task.IsCanceled)
-                    {
-                        OnSignCanceled?.Invoke();
-                        Debug.LogWarning($"이메일 로그인 취소 : {task.Result.Email}");
-                    }
-                    else
-                    {
-                        Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
-                        SetFirebaseCurrentUser(task.Result);
-                        currentLoginType = ENUM_LOGIN_TYPE.Guest;
+            if (auth == null)
+            {
+                Debug.LogError("파이어베이스 인증이 완료되지 않았는데 StateChanged 콜백을 등록합니다.");
+                return;
+            }
 
-                        OnSignInSuccess?.Invoke();
-                    }
-                });
+			auth.StateChanged -= handler;
+			auth.StateChanged += handler;
         }
+
+        public void UnregistStateChanged(EventHandler handler)
+        {
+			if (auth == null)
+			{
+				Debug.LogError("파이어베이스 인증이 완료되지 않았는데 StateChanged 콜백을 등록합니다.");
+				return;
+			}
+
+			auth.StateChanged -= handler;
+		}
+
+        //private void SignInByGuest(string email, string password, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
+        //{
+        //    // 현재 메인 스레드에서 Debug를 부르는 데에도 정상 작동하지 않는 이슈가 있음
+        //    auth?.SignInWithEmailAndPasswordInternalAsync(email, password)
+        //        .ContinueWithOnMainThread(task =>
+        //        {
+        //            if (task.IsFaulted)
+        //            {
+        //                OnSignInFailed?.Invoke();
+        //                Debug.LogError($"이메일 로그인 실패 : {task.Result}");
+        //            }
+        //            else if (task.IsCanceled)
+        //            {
+        //                OnSignCanceled?.Invoke();
+        //                Debug.LogWarning($"이메일 로그인 취소 : {task.Result.Email}");
+        //            }
+        //            else
+        //            {
+        //                Debug.Log($"이메일 로그인 성공 : {task.Result.Email}");
+        //                SetFirebaseCurrentUser(task.Result);
+        //                currentLoginType = ENUM_LOGIN_TYPE.Guest;
+
+        //                OnSignInSuccess?.Invoke();
+        //            }
+        //        });
+        //}
 
         private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
         {
@@ -208,18 +223,21 @@ namespace FGPlatform.Auth
                 googleModule = GoogleSignIn.DefaultInstance;
             }
 
-            googleModule.SignIn()
+			googleModule.SignIn()
                 .ContinueWithOnMainThread((task) =>
                 {
                     if (task.IsFaulted)
                     {
-                        OnFailed?.Invoke();
+						Debug.Log($"이메일 로그인 실패 : {task.Result.UserId}");
+						OnFailed?.Invoke();
                     }
                     else if (task.IsCompleted)
                     {
                         OnSuccess?.Invoke();
 
-                        var credential = GetUserCredential(task.Result.IdToken);
+						Debug.Log($"이메일 로그인 성공 : {task.Result.UserId}");
+
+						var credential = GetUserCredential(task.Result.IdToken);
                         OnGetToken?.Invoke(credential);
                     }
                 });
@@ -239,7 +257,7 @@ namespace FGPlatform.Auth
 
         private void SignInByCredential(Credential credential, Action OnSignInSuccess = null, Action OnSignInFailed = null, Action OnSignCanceled = null)
         {
-            auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+			auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
             {
                 if (task.IsFaulted)
                 {

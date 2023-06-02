@@ -21,8 +21,10 @@ public class MainCanvas : BaseCanvas
 
     private void Start()
     {
-        Managers.Platform.Initialize();
-        Set_LoginEnvironment();
+		Managers.Platform.RegistAuthChanged(null, PhotonLogicHandler.Instance.TryDisconnectToMaster);
+		Managers.Platform.Initialize();
+
+		Set_LoginEnvironment();
     }
 
     public void Set_OverlabLock(bool _value) => overlapLock = _value;
@@ -184,7 +186,7 @@ public class MainCanvas : BaseCanvas
 
     public void OnClick_Start()
     {
-        Managers.UI.popupCanvas.Open_LoadingPopup();
+        Managers.UI.popupCanvas.Open_LoadingPopup("서버에 접속중입니다.");
 
         Try_ConnectMasterServerAndStart();
     }

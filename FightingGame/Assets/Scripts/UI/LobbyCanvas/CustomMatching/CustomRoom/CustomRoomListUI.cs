@@ -6,7 +6,7 @@ using System;
 
 public class CustomRoomListUI : MonoBehaviour
 { 
-    List<RoomListElementUI> roomListElement = new List<RoomListElementUI>();
+    List<RoomListElementUI> roomListElements = new List<RoomListElementUI>();
 
     [SerializeField] GameObject noneRoomTextObject;
     [SerializeField] GameObject content;
@@ -37,13 +37,13 @@ public class CustomRoomListUI : MonoBehaviour
         gameObject.SetActive(false);
 
         // 커스텀룸의 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
-        if (customRoomList.Count > roomListElement.Count)
-            for(int i = 0; i < customRoomList.Count - roomListElement.Count; i++)
-                roomListElement.Add(Managers.Resource.Instantiate("UI/RoomListElement", content.transform).GetComponent<RoomListElementUI>());
+        if (customRoomList.Count > roomListElements.Count)
+            for(int i = 0; i < customRoomList.Count - roomListElements.Count; i++)
+                roomListElements.Add(Managers.Resource.Instantiate("UI/RoomListElement", content.transform).GetComponent<RoomListElementUI>());
 
         // 모든 방을 Close.
-        for (int i = 0; i < roomListElement.Count; i++)
-            roomListElement[i].Close();
+        for (int i = 0; i < roomListElements.Count; i++)
+            roomListElements[i].Close();
 
         if (customRoomList.Count >= 5)
         {
@@ -66,7 +66,7 @@ public class CustomRoomListUI : MonoBehaviour
         // 표시할 방의 갯수만큼 Open.
         for (int i = 0; i < customRoomList.Count; i++)
         {
-            roomListElement[i].Open(customRoomList[i], Request_UpdateRoomList);
+            roomListElements[i].Open(customRoomList[i], Request_UpdateRoomList);
         }
 
         noneRoomTextObject.SetActive(false);

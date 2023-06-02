@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6259364682085717305}
   - component: {fileID: 2542968285825127598}
-  - component: {fileID: 8113848553781788853}
+  - component: {fileID: 6064895033684656120}
   m_Layer: 0
   m_Name: OneShotAudio
   m_TagString: Untagged
@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d713056084feda64ebbe39203ae057d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 8113848553781788853}
---- !u!82 &8113848553781788853
+  audioSource: {fileID: 6064895033684656120}
+--- !u!82 &6064895033684656120
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,8 +65,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 3
-  MaxDistance: 20
+  MinDistance: 1
+  MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -101,7 +101,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0

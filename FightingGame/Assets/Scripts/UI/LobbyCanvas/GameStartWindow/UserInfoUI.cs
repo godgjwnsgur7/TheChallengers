@@ -17,9 +17,9 @@ public class UserInfoUI : MonoBehaviour
     [SerializeField] Image charImage;
     [SerializeField] Button selectionCompleteBtn;
 
-    bool SelectionCharacterLock = false;
-
     Action<ENUM_CHARACTER_TYPE> selectionCharacterCompleteCallBack;
+
+    bool SelectionCharacterLock = false;
 
     public bool IsInit
     {
@@ -45,7 +45,10 @@ public class UserInfoUI : MonoBehaviour
 
     public void Init(DBUserData _userData)
     {
-        if (IsInit) return;
+        if (IsInit) 
+            return;
+
+        IsInit = true;
 
         charImage.gameObject.gameObject.SetActive(false);
         CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
@@ -55,8 +58,12 @@ public class UserInfoUI : MonoBehaviour
         
         gameStartInfo.Close();
         selectCharInfo.Open();
+    }
 
-        IsInit = true;
+    public void Clear()
+    {
+        IsInit = false;
+        SelectionCharacterLock = false;
     }
 
     public void Forced_SelectionCharacter()
@@ -72,6 +79,7 @@ public class UserInfoUI : MonoBehaviour
 
     public void ChangeInfo_GameStart()
     {
+        Deactive_SelectionCompleteBtn();
         selectCharInfo.Close();
         gameStartInfo.Open(CurrCharacterType);
     }

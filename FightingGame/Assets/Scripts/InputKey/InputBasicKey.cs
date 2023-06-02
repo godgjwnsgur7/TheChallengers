@@ -5,14 +5,25 @@ using UnityEngine.UI;
 
 public class InputBasicKey : InputKey
 {
+    private void Start()
+    {
+        AlphaArea_TouchRestriction();
+    }
+
     [SerializeField] protected Image iconImage;
 
-    public override void Set_Opacity(float _opacity)
+    protected virtual void AlphaArea_TouchRestriction()
+    {
+        slotImage.alphaHitTestMinimumThreshold = 0.1f;
+        iconImage.alphaHitTestMinimumThreshold = 0.1f;
+    }
+
+    public override void Set_Transparency(float _opacity)
     {
         Color changeColor = iconImage.color;
-        changeColor.a = _opacity;
+        changeColor.a = _opacity * 1.3f;
         iconImage.color = changeColor;
 
-        base.Set_Opacity(_opacity);
+        base.Set_Transparency(_opacity);
     }
 }

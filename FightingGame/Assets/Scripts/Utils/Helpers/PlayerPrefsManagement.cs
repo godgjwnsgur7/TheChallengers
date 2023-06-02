@@ -6,19 +6,29 @@ using System;
 
 public class KeySettingData
 {
-    public int key; // ENUM_KEYSETTING_NAME의 번호 (키 값)
-    public float size;
+    public List<KeySettingDataElement> keySettingDataList = new List<KeySettingDataElement>();
     public float opacity;
+    
+    public KeySettingData(List<KeySettingDataElement> _keySettingDataList, float _opacity)
+    {
+        keySettingDataList = _keySettingDataList;
+        opacity = _opacity;
+    }
+}
+
+public class KeySettingDataElement
+{
+    public int key; // ENUM_KEYSETTING_NAME의 번호 (키 값)
+    public float scaleSize;
     public float rectTrX;
     public float rectTrY;
 
-    public KeySettingData(int _key, float _size, float _opacity, float _rectTrX, float _rectTrY)
+    public KeySettingDataElement(int _key, float scaleSize, float _rectTrX, float _rectTrY)
     {
-        key = _key;
-        size = _size;
-        opacity = _opacity;
-        rectTrX = _rectTrX;
-        rectTrY = _rectTrY;
+        this.key = _key;
+        this.scaleSize = scaleSize;
+        this.rectTrX = _rectTrX;
+        this.rectTrY = _rectTrY;
     }
 }
 
@@ -69,28 +79,29 @@ public class PlayerPrefsManagement : MonoBehaviour
     /// <summary>
     /// KeySettingData가 null이면 저장하지 않고, false를 리턴
     /// </summary>
-    public static bool Save_KeySettingData(List<KeySettingData> keySettingDatas)
+    public static bool Save_KeySettingData(KeySettingData _keySettingData)
     {
-        if (keySettingDatas == null || keySettingDatas.Count != (int)ENUM_INPUTKEY_NAME.Max)
+        if (_keySettingData == null || _keySettingData.keySettingDataList.Count != (int)ENUM_INPUTKEY_NAME.Max)
         {
             Debug.Log("keySettingDatas가 Null이거나 키 전체가 넘어오지 않았습니다.");
             return false;
         }
 
-        for (int i = 0; i < keySettingDatas.Count; i++)
+        for (int i = 0; i < _keySettingData.keySettingDataList.Count; i++)
         {
-            string keyName = Enum.GetName(typeof(ENUM_INPUTKEY_NAME), keySettingDatas[i].key);
+            string keyName = Enum.GetName(typeof(ENUM_INPUTKEY_NAME), _keySettingData.keySettingDataList[i].key);
             if (keyName == null)
             {
                 Debug.Log($"keySettingDatas의 {i}번째 인자의 key Name가 없습니다.");
                 return false;
             }
 
-            Set_Float(keySettingDatas[i].size, keyName, nameof(KeySettingData.size));
-            Set_Float(keySettingDatas[i].opacity, keyName, nameof(KeySettingData.opacity));
-            Set_Float(keySettingDatas[i].rectTrX, keyName, nameof(KeySettingData.rectTrX));
-            Set_Float(keySettingDatas[i].rectTrY, keyName, nameof(KeySettingData.rectTrY));
+            Set_Float(_keySettingData.keySettingDataList[i].scaleSize, keyName, nameof(KeySettingDataElement.scaleSize));
+            Set_Float(_keySettingData.keySettingDataList[i].rectTrX, keyName, nameof(KeySettingDataElement.rectTrX));
+            Set_Float(_keySettingData.keySettingDataList[i].rectTrY, keyName, nameof(KeySettingDataElement.rectTrY));
         }
+
+        Set_Float(_keySettingData.opacity, "InputKey", "Opacity");
 
         PlayerPrefs.Save();
         return true;
@@ -99,29 +110,50 @@ public class PlayerPrefsManagement : MonoBehaviour
     /// <summary>
     /// 만약 저장된 값이 없다면 null을 리턴
     /// </summary>
-    public static List<KeySettingData> Load_KeySettingData()
+    public static KeySettingData Load_KeySettingData()
     {
-        List<KeySettingData> keySettingDatas = new List<KeySettingData>();
+        List<KeySettingDataElement> keySettingDataList = new List<KeySettingDataElement>();
+        float _opacity = Get_Float("InputKey", "Opacity");
 
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             string inputKeyName = Enum.GetName(typeof(ENUM_INPUTKEY_NAME), i);
-            if(inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(KeySettingData.size)}"))
+            if(inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(KeySettingDataElement.scaleSize)}"))
             {
                 Debug.Log($"inputKeyName이 NUll이거나 저장된 {i}번째 키가 없습니다.");
                 return null;
             }
 
-            float _size = Get_Float(inputKeyName, nameof(KeySettingData.size));
-            float _opacity = Get_Float(inputKeyName, nameof(KeySettingData.opacity));
-            float _rectTrX = Get_Float(inputKeyName, nameof(KeySettingData.rectTrX));
-            float _rectTrY = Get_Float(inputKeyName, nameof(KeySettingData.rectTrY));
+            float _scaleSize = Get_Float(inputKeyName, nameof(KeySettingDataElement.scaleSize));
+            float _rectTrX = Get_Float(inputKeyName, nameof(KeySettingDataElement.rectTrX));
+            float _rectTrY = Get_Float(inputKeyName, nameof(KeySettingDataElement.rectTrY));
 
-            keySettingDatas.Add(new KeySettingData(i, _size, _opacity, _rectTrX, _rectTrY));
+            KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i, _scaleSize, _rectTrX, _rectTrY);
+            keySettingDataList.Add(keySettingDataElement);
         }
 
-        return keySettingDatas;
+        KeySettingData keySettingData = new KeySettingData(keySettingDataList, _opacity); ;
+
+        return keySettingData;
      }
+
+    public static void Delete_KetSettingData()
+    {
+        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        {
+            string inputKeyName = Enum.GetName(typeof(ENUM_INPUTKEY_NAME), i);
+            if (inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(KeySettingDataElement.scaleSize)}"))
+            {
+                Debug.Log($"inputKeyName이 NUll이거나 저장된 {i}번째 키가 없습니다.");
+                return ;
+            }
+
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingDataElement.scaleSize)}");
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingDataElement.rectTrX)}");
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingDataElement.rectTrY)}");
+        }
+        PlayerPrefs.DeleteKey($"InputKey_{nameof(KeySettingData.opacity)}");
+    }
     #endregion
 
     public static bool Save_VolumeData(VolumeData volumeData)
