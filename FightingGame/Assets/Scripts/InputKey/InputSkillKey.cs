@@ -39,14 +39,15 @@ public class InputSkillKey : InputBasicKey
 
     protected IEnumerator ICoolTime()
     {
-        float coolTimeFillAmount = 1.0f;
-        int currCoolTime = ((int)coolTime + 1);
-        coolTimeText.text = currCoolTime.ToString();
+        float currCoolTime = coolTime;
+        coolTimeText.text = ((int)coolTime + 1).ToString();
 
-        while (coolTimeFillAmount > 0.01f)
+        while (0 < currCoolTime)
         {
-            coolTimeFillAmount -= 1.0f * Time.deltaTime / coolTime;
-            coolTimeImage.fillAmount = coolTimeFillAmount;
+            currCoolTime -= Time.deltaTime;
+            coolTimeImage.fillAmount = currCoolTime / coolTime;
+            coolTimeText.text = ((int)currCoolTime + 1).ToString();
+
             yield return null;
         }
 
