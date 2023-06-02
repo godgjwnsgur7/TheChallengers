@@ -9,31 +9,19 @@ public class AreaPanel : MonoBehaviour
     public bool isUpdate;
     AreaKey[] areaKeys = new AreaKey[(int)ENUM_INPUTKEY_NAME.Max];
 
-    public void Init()
+    public void Init(InputKey[] inputKeys)
     {
-        List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
-
         for (int index = 0; index < areaKeys.Length; index++)
         {
-            areaKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<AreaKey>();
-
-            if (areaKeys[index] == null)
-            {
-                Debug.LogError($"{Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)} 를 찾지 못했습니다.");
-                return;
-            }
-
             areaKeys[index].Init();
-
-            if (keySettingDatas != null)
-                Set_AreaKey(areaKeys[index], keySettingDatas[index]);
+            Set_AreaKey(areaKeys[index], inputKeys[index]);
         }
     }
 
-    private void Set_AreaKey(AreaKey keyArea, KeySettingData keySettingData)
+    private void Set_AreaKey(AreaKey keyArea, InputKey inputkey)
     {
-        keyArea.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
-        keyArea.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
+        keyArea.rectTr.localScale = inputkey.GetComponent<RectTransform>().localScale;
+        keyArea.rectTr.position = inputkey.GetComponent<RectTransform>().transform.position;
     }
 
     public AreaKey Get_AreaKey(ENUM_INPUTKEY_NAME keyName)

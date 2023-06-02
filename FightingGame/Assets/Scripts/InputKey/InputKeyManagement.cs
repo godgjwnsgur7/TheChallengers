@@ -42,7 +42,7 @@ public class InputKeyManagement : MonoBehaviour
         if (areaPanel == null)
         {
             areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
-            areaPanel.Init();
+            areaPanel.Init(inputPanel.Get_InputKeys());
         }
 
         Set_OnDragCallBack();
