@@ -45,6 +45,7 @@ public class InputKeyManagement : MonoBehaviour
             areaPanel.Init(inputPanel.Get_InputKeys());
         }
 
+        windowArea.Set_TransparencySlider(inputPanel.Get_InputKey(ENUM_INPUTKEY_NAME.Jump).Get_Transparency() * 100);
         Set_OnDragCallBack();
     }
 
