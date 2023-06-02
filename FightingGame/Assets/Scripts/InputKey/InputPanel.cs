@@ -10,7 +10,7 @@ public class InputPanel : MonoBehaviour
 
     public void Init(Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack)
     {
-        List<KeySettingData> keySettingDatas = PlayerPrefsManagement.Load_KeySettingData();
+        KeySettingData keySettingData = PlayerPrefsManagement.Load_KeySettingData();
 
         for (int index = 0; index < inputKeys.Length; index++)
         {
@@ -24,18 +24,18 @@ public class InputPanel : MonoBehaviour
 
             inputKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack);
 
-            if (keySettingDatas != null)
-                Set_InputKey(inputKeys[index], keySettingDatas[index]);
+            if (keySettingData != null)
+                Set_InputKey(inputKeys[index], keySettingData.keySettingDataList[index], keySettingData.opacity);
         }
     }
 
-    private void Set_InputKey(InputKey inputKey, KeySettingData keySettingData)
+    private void Set_InputKey(InputKey inputKey, KeySettingDataElement keySettingDataElement, float _opacity)
     {
-        inputKey.rectTr.localScale = new Vector3(keySettingData.size, keySettingData.size, 1f);
+        inputKey.rectTr.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);
 
-        inputKey.Set_Transparency(keySettingData.opacity);
+        inputKey.Set_Transparency(_opacity);
 
-        inputKey.rectTr.position = new Vector2(keySettingData.rectTrX, keySettingData.rectTrY);
+        inputKey.rectTr.position = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
     }
     
     public void Set_InputSkillKeys(ENUM_CHARACTER_TYPE charType)

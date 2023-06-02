@@ -229,18 +229,21 @@ public class InputKeyManagement : MonoBehaviour
             return false;
         }
 
-        List<KeySettingData> keySettingDatas = new List<KeySettingData>();
+        List<KeySettingDataElement> keySettingDataList = new List<KeySettingDataElement>();
+        float opacity = inputKeys[0].Get_Transparency();
 
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
-            KeySettingData keySettingData = new KeySettingData(i,
-                inputKeys[i].rectTr.localScale.x, inputKeys[i].Get_Transparency(),
+            KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i,
+                inputKeys[i].rectTr.localScale.x,
                 inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
-            
-            keySettingDatas.Add(keySettingData);
+
+            keySettingDataList.Add(keySettingDataElement);
         }
 
-        PlayerPrefsManagement.Save_KeySettingData(keySettingDatas);
+        KeySettingData keySettingData = new KeySettingData(keySettingDataList, opacity);
+
+        PlayerPrefsManagement.Save_KeySettingData(keySettingData);
 
         return true;
     }
