@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class SettingPanel : MonoBehaviour
+public class WindowArea : MonoBehaviour
 {
     [SerializeField] Slider sizeSlider;
     [SerializeField] Slider TransparencySlider;

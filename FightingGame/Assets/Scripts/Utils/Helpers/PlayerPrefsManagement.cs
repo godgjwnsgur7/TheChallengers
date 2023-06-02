@@ -122,6 +122,24 @@ public class PlayerPrefsManagement : MonoBehaviour
 
         return keySettingDatas;
      }
+
+    public static void Delete_KetSettingData()
+    {
+        for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
+        {
+            string inputKeyName = Enum.GetName(typeof(ENUM_INPUTKEY_NAME), i);
+            if (inputKeyName == null || !PlayerPrefs.HasKey($"{inputKeyName}_{nameof(KeySettingData.size)}"))
+            {
+                Debug.Log($"inputKeyName이 NUll이거나 저장된 {i}번째 키가 없습니다.");
+                return ;
+            }
+
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingData.size)}");
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingData.opacity)}");
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingData.rectTrX)}");
+            PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingData.rectTrY)}");
+        }
+    }
     #endregion
 
     public static bool Save_VolumeData(VolumeData volumeData)

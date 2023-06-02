@@ -12,7 +12,7 @@ public class InputKeyManagement : MonoBehaviour
     public bool isValueChange = false;
     private bool isSameBtn = false;
 
-    [SerializeField] SettingPanel settingPanel;
+    [SerializeField] WindowArea windowArea;
 
     public InputPanel inputPanel = null;
     public InputKey currInputKey = null;
@@ -110,7 +110,7 @@ public class InputKeyManagement : MonoBehaviour
         isMove = false;
 
         if(!isSameBtn)
-            settingPanel.OnClick_SetSliderValue(currInputKey);
+            windowArea.OnClick_SetSliderValue(currInputKey);
 
         foreach (InputKey key in inputPanel.Get_InputKeys()) {
             //key.Set_Opacity(0.4f);
@@ -153,11 +153,13 @@ public class InputKeyManagement : MonoBehaviour
     {
         RectTransform panelRectTr = inputPanel.GetComponent<RectTransform>();
 
+        // 선택된 인풋키 반지름 값
         float scaleSizeX = (currInputKey.rectTr.sizeDelta.x / 2) * currInputKey.rectTr.localScale.x;
         float scaleSizeY = (currInputKey.rectTr.sizeDelta.y / 2) * currInputKey.rectTr.localScale.y;
 
-        float vecRangeX = Mathf.Clamp(_movePos.x, 0 + scaleSizeX, panelRectTr.sizeDelta.x - scaleSizeX);
-        float vecRangeY = Mathf.Clamp(_movePos.y, 0 + scaleSizeY, (panelRectTr.sizeDelta.y * 0.75f) - scaleSizeY);
+        // 인풋키 위치 범위
+        float vecRangeX = Mathf.Clamp(_movePos.x, 40 + scaleSizeX, panelRectTr.sizeDelta.x - scaleSizeX - 40);
+        float vecRangeY = Mathf.Clamp(_movePos.y, 40 + scaleSizeY, (panelRectTr.sizeDelta.y * 0.5f + 80) - scaleSizeY);
 
         currInputKey.transform.position = new Vector2(vecRangeX, vecRangeY);
         currAreaKey.transform.position = new Vector2(vecRangeX, vecRangeY);
@@ -178,7 +180,7 @@ public class InputKeyManagement : MonoBehaviour
         currInputKey.rectTr.localScale = changeScale;
         currAreaKey.rectTr.localScale = changeScale;
 
-        settingPanel.Set_SizeText($"{(int)(_sizeValue * 100)}%");
+        windowArea.Set_SizeText($"{(int)(_sizeValue * 100)}%");
 
         Set_InputKeyTransForm(currInputKey.transform.position, _inputKeyName);
     }
@@ -194,7 +196,7 @@ public class InputKeyManagement : MonoBehaviour
         // 실린더 범위 30~100, 기본 값 0.3 + 수식값 0~0.7002~ = 투명도 범위 0.3 ~ 10.002
         _opacityValue = 0.3f + _opacityValue / (100 * 1.428f);
 
-        settingPanel.Set_TransparencyText($"{(int)(_opacityValue * 100)}%");
+        windowArea.Set_TransparencyText($"{(int)(_opacityValue * 100)}%");
 
         // InputPanel에서 InputKey들을 전부 가져와 투명도는 전부 변환한다.
         foreach (InputKey key in inputPanel.Get_InputKeys()) {
@@ -253,7 +255,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         if (currInputKey == null)
         {
-            settingPanel.Set_SizeText($"{(int)_slider.value}%");
+            windowArea.Set_SizeText($"{(int)_slider.value}%");
             return;
         }
 
@@ -268,7 +270,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         if (currInputKey == null)
         {
-            settingPanel.Set_TransparencyText($"{(int)_slider.value}%");
+            windowArea.Set_TransparencyText($"{(int)_slider.value}%");
             return;
         }
 
@@ -309,8 +311,8 @@ public class InputKeyManagement : MonoBehaviour
     {
         currInputKey = null;
 
-        settingPanel.Reset_SettingPanel();
-        settingPanel.gameObject.SetActive(false);
+        windowArea.Reset_SettingPanel();
+        windowArea.gameObject.SetActive(false);
 
         Destroy(this.gameObject);
     }
@@ -319,7 +321,7 @@ public class InputKeyManagement : MonoBehaviour
     /// 버튼 설정 리셋, 저장
     /// </summary>
     public void OnClick_ResetBtn()
-        => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKey, null, "버튼 설정을 초기화하시겠습니까?");
+        => Managers.UI.popupCanvas.Open_SelectPopup(Reset_InputKey, null, "이전 값으로 되돌릴 수 없습니다.\n버튼 설정을 초기화하시겠습니까?");
     public void OnClick_SaveBtn()
         => Managers.UI.popupCanvas.Open_SelectPopup(Save_InputKey, null, "버튼 설정을 저장하시겠습니까?");
 
@@ -328,26 +330,28 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void Reset_InputKey()
     {
-        /*Managers.Resource.Destroy(inputPanel.gameObject);
+        // 인풋키 세팅 값 삭제
+        PlayerPrefsManagement.Delete_KetSettingData();
+
+        // Curr값 비우기
+        Empty_CurrInputKey();
+
+        // 인풋키 패널들 재생성
+        Managers.Resource.Destroy(inputPanel.gameObject);
         Managers.Resource.Destroy(areaPanel.gameObject);
 
-        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-        inputPanel.Set_isReset(true);
-        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
+        inputPanel = null;
+        areaPanel = null;
 
-        Set_OnDragCallBack();
+        Init();
 
-        areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
-        areaPanel.Set_isReset(true);
-        areaPanel.Init();*/
-
-        Empty_CurrInputKey();
-        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
-        OnClick_InputSkillIcon(1);
-        areaPanel.Init();
-        settingPanel.Reset_SettingPanel();
+        // SettingPanel 실린더 값 리셋
+        windowArea.Reset_SettingPanel();
     }
 
+    /// <summary>
+    /// 인풋키 KeySettingData 저장
+    /// </summary>
     public void Save_InputKey()
     {
         Save_InputKeyDatas();
