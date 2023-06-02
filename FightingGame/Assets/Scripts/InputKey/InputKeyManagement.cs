@@ -359,7 +359,9 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void Save_InputKey()
     {
-        currAreaKey.Set_isSelect(false);
+        if(currAreaKey != null)
+            currAreaKey.Set_isSelect(false);
+
         Save_InputKeyDatas();
         Empty_CurrInputKey();
     }
