@@ -13,7 +13,9 @@ public class AreaPanel : MonoBehaviour
     {
         for (int index = 0; index < areaKeys.Length; index++)
         {
+            areaKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<AreaKey>();
             areaKeys[index].Init();
+            
             Set_AreaKey(areaKeys[index], inputKeys[index]);
         }
     }
