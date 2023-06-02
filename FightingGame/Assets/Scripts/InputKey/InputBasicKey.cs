@@ -7,10 +7,16 @@ public class InputBasicKey : InputKey
 {
     private void Start()
     {
-        iconImage.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+        AlphaArea_TouchRestriction();
     }
 
     [SerializeField] protected Image iconImage;
+
+    protected virtual void AlphaArea_TouchRestriction()
+    {
+        slotImage.alphaHitTestMinimumThreshold = 0.1f;
+        iconImage.alphaHitTestMinimumThreshold = 0.1f;
+    }
 
     public override void Set_Transparency(float _opacity)
     {

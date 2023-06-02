@@ -22,6 +22,14 @@ public class InputSkillKey : InputBasicKey
         base.EventTrigger_PointerDown();
     }
 
+    protected override void AlphaArea_TouchRestriction()
+    {
+        base.AlphaArea_TouchRestriction();
+
+        coolTimeImage.alphaHitTestMinimumThreshold = 0.1f;
+        coolTimeCoverImage.alphaHitTestMinimumThreshold = 0.1f;
+    }
+
     public void Set_SkillInfo(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
     {
         coolTime = _coolTime;
