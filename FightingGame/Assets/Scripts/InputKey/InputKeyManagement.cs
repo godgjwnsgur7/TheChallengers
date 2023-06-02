@@ -111,12 +111,7 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void OnPoint_UpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        // bool 값 초기 화 및 WindowArea Slider 세팅
         isMove = false;
-
-        if(!isSameBtn)
-            windowArea.OnClick_SetSliderValue(currInputKey);
-
         isSameBtn = false;
     }
 
@@ -143,6 +138,8 @@ public class InputKeyManagement : MonoBehaviour
                 currAreaKey.Set_isSelect(false);
 
             Set_CurrInputKey((int)_inputKeyName);
+
+            windowArea.OnClick_SetSliderValue(currInputKey);
         }
     }
 
@@ -199,13 +196,10 @@ public class InputKeyManagement : MonoBehaviour
     /// <summary>
     /// InputKey 투명도 변경
     /// </summary>
-    public void Set_InputKeyTransparency(float _opacityValue, ENUM_INPUTKEY_NAME _inputKeyName)
+    public void Set_InputKeyTransparency(float _opacityValue)
     {
-        if (currInputKey == null)
-            return;
-
-        // 실린더 범위 30~100, 기본 값 0.3 + 수식값 0~0.7002~ = 투명도 범위 0.3 ~ 10.002
-        _opacityValue = 0.3f + _opacityValue / (100 * 1.428f);
+        // 실린더 범위 30~100, 수식값 0.3~1.0
+        _opacityValue = _opacityValue / 100;
 
         windowArea.Set_TransparencyText($"{(int)(_opacityValue * 100)}%");
 
@@ -282,14 +276,7 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void OnValueChanged_TransparencySlider(Slider _slider)
     {
-        if (currInputKey == null)
-        {
-            windowArea.Set_TransparencyText($"{(int)_slider.value}%");
-            return;
-        }
-
-        ENUM_INPUTKEY_NAME inputKeyName = (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum;
-        Set_InputKeyTransparency(_slider.value, inputKeyName);
+        Set_InputKeyTransparency(_slider.value);
     }
 
     /// <summary>
@@ -372,6 +359,7 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void Save_InputKey()
     {
+        currAreaKey.Set_isSelect(false);
         Save_InputKeyDatas();
         Empty_CurrInputKey();
     }
