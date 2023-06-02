@@ -7,7 +7,6 @@ using FGDefine;
 public class AreaPanel : MonoBehaviour
 {
     public bool isUpdate;
-    bool isReset = false;
     AreaKey[] areaKeys = new AreaKey[(int)ENUM_INPUTKEY_NAME.Max];
 
     public void Init()
@@ -26,12 +25,9 @@ public class AreaPanel : MonoBehaviour
 
             areaKeys[index].Init();
 
-            if (keySettingDatas != null && !isReset)
+            if (keySettingDatas != null)
                 Set_AreaKey(areaKeys[index], keySettingDatas[index]);
         }
-
-        if (isReset)
-            Set_isReset(!isReset);
     }
 
     private void Set_AreaKey(AreaKey keyArea, KeySettingData keySettingData)
@@ -49,6 +45,4 @@ public class AreaPanel : MonoBehaviour
     {
         return areaKeys;
     }
-
-    public void Set_isReset(bool _isReset) => isReset = _isReset;
 }

@@ -7,7 +7,6 @@ using FGDefine;
 public class InputPanel : MonoBehaviour
 {
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
-    bool isReset = false;
 
     public void Init(Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack)
     {
@@ -25,12 +24,9 @@ public class InputPanel : MonoBehaviour
 
             inputKeys[index].Init(OnPointDownCallBack, OnPointUpCallBack);
 
-            if (keySettingDatas != null && !isReset)
+            if (keySettingDatas != null)
                 Set_InputKey(inputKeys[index], keySettingDatas[index]);
         }
-
-        if (isReset)
-            Set_isReset(!isReset);
     }
 
     private void Set_InputKey(InputKey inputKey, KeySettingData keySettingData)
@@ -102,6 +98,4 @@ public class InputPanel : MonoBehaviour
     {
         return inputKeys[(int)inputKeyName];
     }
-
-    public void Set_isReset(bool _isReset) => isReset = _isReset;
 }

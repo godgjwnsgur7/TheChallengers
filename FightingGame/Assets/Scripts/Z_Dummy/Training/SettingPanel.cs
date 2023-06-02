@@ -15,15 +15,15 @@ public class SettingPanel : MonoBehaviour
     // 클릭 InputKey, Slider 세팅
     public void OnClick_SetSliderValue(InputKey _inputKey)
     {
-        Set_SIzeSlider(_inputKey.GetComponent<RectTransform>().localScale.x * Get_SizeMaxValue() - 50);
+        Set_SIzeSlider(_inputKey.GetComponent<RectTransform>().localScale.x * 100f);
         //Set_TransparencySlider((_inputKey.Get_Opacity() - 0.3f) * (Get_TransparencyMaxValue() * 1.429f));
     }
 
     // 세팅패널 실린더 초기화
     public void Reset_SettingPanel()
     {
-        Set_SIzeSlider(50f);
-        Set_TransparencySlider(50f);
+        Set_SIzeSlider(100f);
+        Set_TransparencySlider(100f);
     }
 
     public void Set_SIzeSlider(float _value) {
@@ -39,6 +39,6 @@ public class SettingPanel : MonoBehaviour
     public void Set_SizeText(string _text) => sizeText.text = _text;
     public void Set_TransparencyText(string _text) => TransparencyText.text = _text;
 
-    public float Get_SizeMaxValue() => sizeSlider.maxValue;
-    public float Get_TransparencyMaxValue() => TransparencySlider.maxValue;
+    // public float Get_SizeMaxValue() => sizeSlider.maxValue;
+    //public float Get_TransparencyMaxValue() => TransparencySlider.maxValue;
 }

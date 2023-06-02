@@ -17,15 +17,12 @@ public class AreaKey : MonoBehaviour
 
         isInit = true;
         rectTr = this.GetComponent<RectTransform>();
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     { 
         if(collision.gameObject.layer == (int)ENUM_LAYER_TYPE.UI)
             triggerCount++;
-
-        // Debug.Log(collision.name);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

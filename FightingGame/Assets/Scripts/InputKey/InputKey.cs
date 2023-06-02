@@ -39,7 +39,7 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        Set_Opacity(0.9f);
+        //Set_Opacity(0.9f);
 
         OnPointDownCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
@@ -52,7 +52,7 @@ public class InputKey : MonoBehaviour
             return;
         }
 
-        Set_Opacity(1f);
+        //Set_Opacity(1f);
 
         OnPointUpCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
