@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class InputBasicKey : InputKey
 {
+    private void Start()
+    {
+        iconImage.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.1f;
+    }
+
     [SerializeField] protected Image iconImage;
 
     public override void Set_Transparency(float _opacity)
