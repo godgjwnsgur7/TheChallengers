@@ -9,6 +9,7 @@ public class AreaKey : MonoBehaviour
     public Image areaImage;
     public RectTransform rectTr;
     bool isInit = false;
+    bool isSelect = false;
     private int triggerCount = 0;
 
     public void Init()
@@ -43,16 +44,30 @@ public class AreaKey : MonoBehaviour
     {
         Color changeColor;
         
-        if(triggerCount > 0)
+        if(triggerCount > 0) // 충돌 있음
         {
             changeColor = new Color(255, 0, 0, 0.5f);
             areaImage.color = changeColor;
         }
-        else if (triggerCount < 1)
+        else if (isSelect && triggerCount < 1) // 충돌 없는 선택된 인풋키
+        {
+            changeColor = new Color(255, 255, 255, 0.5f);
+            areaImage.color = changeColor;
+        }
+        else if (!isSelect && triggerCount < 1) // 충돌 없는 비선택된 인풋키
         {
             changeColor = new Color(255, 255, 255, 0f);
             areaImage.color = changeColor;
         }
+    }
+
+    /// <summary>
+    /// 클릭으로 선택된 인풋키 인지 확인 여부
+    /// </summary>
+    public void Set_isSelect(bool _value)
+    {
+        isSelect = _value;
+        Set_AreaColor();
     }
 
     public bool Get_isOverlap()

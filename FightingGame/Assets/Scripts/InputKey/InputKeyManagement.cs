@@ -137,7 +137,13 @@ public class InputKeyManagement : MonoBehaviour
 
         // 다른 인풋키를 눌렀을 때 curr 값에 저장
         if (!isSameBtn)
+        {
+            // 기존 AreaKey 선택여부 False 처리
+            if(currAreaKey != null)
+                currAreaKey.Set_isSelect(false);
+
             Set_CurrInputKey((int)_inputKeyName);
+        }
     }
 
     /// <summary>
@@ -147,6 +153,8 @@ public class InputKeyManagement : MonoBehaviour
     {
         currInputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
         currAreaKey = areaPanel.Get_AreaKey((ENUM_INPUTKEY_NAME)inputKeyNum);
+
+        currAreaKey.Set_isSelect(true);
     }
 
     /// <summary>
