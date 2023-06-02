@@ -101,6 +101,8 @@ public class PlayerPrefsManagement : MonoBehaviour
             Set_Float(_keySettingData.keySettingDataList[i].rectTrY, keyName, nameof(KeySettingDataElement.rectTrY));
         }
 
+        Set_Float(_keySettingData.opacity, "InputKey", "Opacity");
+
         PlayerPrefs.Save();
         return true;
     }
@@ -150,6 +152,7 @@ public class PlayerPrefsManagement : MonoBehaviour
             PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingDataElement.rectTrX)}");
             PlayerPrefs.DeleteKey($"{inputKeyName}_{nameof(KeySettingDataElement.rectTrY)}");
         }
+        PlayerPrefs.DeleteKey($"InputKey_{nameof(KeySettingData.opacity)}");
     }
     #endregion
 
