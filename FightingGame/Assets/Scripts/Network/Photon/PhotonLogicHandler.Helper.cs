@@ -70,6 +70,21 @@ public partial class PhotonLogicHandler
         }
     }
 
+    public static long CurrentMasterClientRatingPoint
+    {
+        get
+        {
+            var table = Instance.GetCustomPropertyTable(ENUM_CUSTOM_PROPERTIES_TYPE.ENUM_CUSTOM_ROOM_PROPERTIES);
+            if (table == null)
+                return 0L;
+
+            if (!table.TryGetValue(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_POINT.ToString(), out object value))
+                return 0L;
+
+            return (long)value;
+        }
+    }
+
     public static string CurrentMasterClientNickname
     {
         get
@@ -207,12 +222,6 @@ public partial class PhotonLogicHandler
 	{
         var list = Instance.customRoomList;
         return list?.Find(roomInfo => roomInfo.IsCustom == isCustom);
-    }
-
-    public static CustomRoomInfo GetRoomInfo(int masterClientId)
-	{
-        var list = Instance.customRoomList;
-        return list?.Find(roomInfo => roomInfo.masterClientId == masterClientId);
     }
 
     public GameObject TryInstantiate(string prefabPath, Vector3 pos = default, Quaternion quaternion = default)

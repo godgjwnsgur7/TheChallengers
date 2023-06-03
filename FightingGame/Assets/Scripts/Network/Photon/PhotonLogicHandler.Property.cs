@@ -21,8 +21,9 @@ public enum ENUM_CUSTOM_ROOM_PROPERTIES
 {
     MAP_TYPE = 0,
     MASTER_CLIENT_NICKNAME = 1,
-    IS_CUSTOM = 2,
-    IS_STARTED = 3,
+    MASTER_CLIENT_POINT = 2,
+    IS_CUSTOM = 3,
+    IS_STARTED = 4,
 }
 
 public enum ENUM_PLAYER_STATE_PROPERTIES
@@ -40,7 +41,6 @@ public enum ENUM_PLAYER_STATE_PROPERTIES
 public class CustomRoomInfo
 {
     public string roomName;
-    public int masterClientId;
     public CustomRoomProperty customProperty;
     public int currentPlayerCount;
     public int maxPlayerCount;
@@ -57,6 +57,7 @@ public class CustomRoomProperty
     public ENUM_MAP_TYPE currentMapType = ENUM_MAP_TYPE.CaveMap;
     public bool isCustom;
     public bool isStarted;
+    public long masterClientRatingPoint;
 }
 
 public class CustomPlayerProperty
@@ -95,12 +96,22 @@ public partial class PhotonLogicHandler : ILobbyCallbacks, IInRoomCallbacks
         SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE, mapType);
     }
 
-    private void OnChangeRoomMasterClient(string nickname)
+    private void OnChangeRoomMasterClient(Player masterPlayer)
     {
-        SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME, nickname);
-        onChangeMasterClientNickname?.Invoke(nickname);
-    }
+        var userKeyObj = GetCustomProperty(masterPlayer, ENUM_PLAYER_STATE_PROPERTIES.USERKEY);
+        var userLoginType = GetCustomProperty(masterPlayer, ENUM_PLAYER_STATE_PROPERTIES.LOGINTYPE);
 
+        string userKey = (string)userKeyObj;
+        ENUM_LOGIN_TYPE loginType = (ENUM_LOGIN_TYPE)userLoginType;
+
+        Managers.Platform.DBSelect(loginType, userKey, (userData) =>
+        {
+            SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME, masterPlayer.NickName);
+            SetCustomRoomPropertyTable(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_POINT, userData.ratingPoint);
+
+            onChangeMasterClientNickname?.Invoke(masterPlayer?.NickName);
+        });
+    }
 
     public void ChangeCharacter(ENUM_CHARACTER_TYPE characterType)
     {

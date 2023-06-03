@@ -12,6 +12,7 @@ using FGDefine;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using FGPlatform;
+using System.Runtime.InteropServices;
 
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message);
@@ -199,19 +200,20 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsEnableJoin())
             return false;
 
-        this._OnJoinRoom = _OnJoinRoom;
-        this._OnJoinRoomFailed = _OnJoinRoomFailed;
+        return Managers.Platform.DBSelect(Managers.Platform.CurrentLoginType, Managers.Platform.GetUserID(), (userData) =>
+        {
+            this._OnJoinRoom = _OnJoinRoom;
+            this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
-        var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, mapType, isCustomRoom);
-        bool b = PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: roomOptions.CustomRoomProperties,
-            matchingType: MatchmakingMode.RandomMatching, 
-            typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.RANDOM],
-            roomOptions: roomOptions);
+            var roomOptions = MakeRoomOptions(CurrentMyNickname, userData.ratingPoint, (byte)maxPlayerCount, mapType, isCustomRoom);
+            bool b = PhotonNetwork.JoinRandomOrCreateRoom(expectedCustomRoomProperties: roomOptions.CustomRoomProperties,
+                matchingType: MatchmakingMode.RandomMatching,
+                typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.RANDOM],
+                roomOptions: roomOptions);
 
-        if (!b)
-            Debug.LogError($"랜덤 룸 접속 or 생성 실패");
-
-        return b;
+            if (!b)
+                Debug.LogError($"랜덤 룸 접속 or 생성 실패");
+        });
     }
 
     public bool TryCreateRoom(string roomName, Action OnCreateRoom = null, FailedCallBack OnCreateRoomFailed = null, bool isCustomRoom = false, int maxPlayerCount = 2, ENUM_MAP_TYPE defaultMapType = ENUM_MAP_TYPE.CaveMap)
@@ -219,19 +221,20 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         if (!IsEnableJoin())
             return false;
 
-        this._OnCreateRoom = OnCreateRoom;
-        this._OnCreateRoomFailed = OnCreateRoomFailed;
+        return Managers.Platform.DBSelect(Managers.Platform.CurrentLoginType, Managers.Platform.GetUserID(), (userData) =>
+        {
+            this._OnCreateRoom = OnCreateRoom;
+            this._OnCreateRoomFailed = OnCreateRoomFailed;
 
-        var roomOptions = MakeRoomOptions(CurrentMyNickname, (byte)maxPlayerCount, defaultMapType, isCustomRoom);
+            var roomOptions = MakeRoomOptions(CurrentMyNickname, userData.ratingPoint, (byte)maxPlayerCount, defaultMapType, isCustomRoom);
 
-        bool b = PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.CUSTOM]);
-        if (!b)
-            Debug.LogError($"룸 생성 실패");
-
-        return b;
+            bool b = PhotonNetwork.CreateRoom(roomName, roomOptions, typedLobby: matchLobbyDictionary[ENUM_MATCH_TYPE.CUSTOM]);
+            if (!b)
+                Debug.LogError($"룸 생성 실패");
+        });
     }
 
-    private RoomOptions MakeRoomOptions(string nickname, byte maxPlayerCount, ENUM_MAP_TYPE mapType, bool isCustomRoom)
+    private RoomOptions MakeRoomOptions(string nickname, long ratingPoint, byte maxPlayerCount, ENUM_MAP_TYPE mapType, bool isCustomRoom)
 	{
         RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)maxPlayerCount };
 
@@ -239,13 +242,15 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         roomOptions.CustomRoomProperties.Add(ROOM_PROP_KEY, "");
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), mapType);
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), nickname);
-		roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(), isCustomRoom);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_POINT.ToString(), ratingPoint);
+        roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(), isCustomRoom);
         roomOptions.CustomRoomProperties.Add(ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED.ToString(), false);
 
 		roomOptions.CustomRoomPropertiesForLobby = new string[] { 
             ROOM_PROP_KEY, 
             ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE.ToString(), 
             ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME.ToString(), 
+            ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_POINT.ToString(),
             ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM.ToString(),
             ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED.ToString()
         };
@@ -454,13 +459,6 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
     private bool IsEnableJoin()
 	{
-        var loginType = Managers.Platform.CurrentLoginType;
-        if (loginType == ENUM_LOGIN_TYPE.None)
-        {
-            Debug.LogError("로그인 안 됐음");
-            return false;
-        }
-
         var userID = Managers.Platform.GetUserID();
         if (userID == null || userID == string.Empty)
         {
@@ -503,6 +501,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         foreach (var room in roomList)
 		{
             var nickname = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
+            var point = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_POINT);
             var mapType = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
             var isCustom = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM);
             var isStarted = GetCustomProperty(room, ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED);
@@ -513,11 +512,11 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
             CustomRoomInfo info = new CustomRoomInfo()
             {
                 roomName = room.Name,
-                masterClientId = room.masterClientId,
 
                 customProperty = new CustomRoomProperty()
                 {
                     masterClientNickname = (string)nickname,
+                    masterClientRatingPoint = (long)point,
                     currentMapType = (ENUM_MAP_TYPE)mapType,
                     isCustom = (bool)isCustom,
                     isStarted = (bool)isStarted,
@@ -538,11 +537,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 
 	public override void OnMasterClientSwitched(Player newMasterClient)
 	{
-        OnChangeRoomMasterClient(newMasterClient?.NickName);
-
+        OnChangeRoomMasterClient(newMasterClient);
         Debug.LogWarning($"{newMasterClient.NickName} 으로 방장이 바뀌었습니다.");
     }
-
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
@@ -563,6 +560,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         CustomRoomProperty property = new CustomRoomProperty();
 
         var nickname = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_NICKNAME);
+        var ratingPoint = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MASTER_CLIENT_POINT);
         var mapType = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.MAP_TYPE);
         var isCustom = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.IS_CUSTOM);
         var isStarted = GetCustomProperty(propertiesThatChanged, ENUM_CUSTOM_ROOM_PROPERTIES.IS_STARTED);
@@ -574,6 +572,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         property.currentMapType = (ENUM_MAP_TYPE)mapType;
         property.isCustom = (bool)isCustom;
         property.isStarted = (bool)isStarted;
+        property.masterClientRatingPoint = (long)ratingPoint;
 
         return property;
     }

@@ -94,7 +94,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 	{
 		foreach(var roomInfo in PhotonLogicHandler.AllRoomInfos)
 		{
-			Debug.Log($"룸 아이디 : {roomInfo.masterClientId}, " +
+			Debug.Log(
 				$"룸 이름 : {roomInfo.roomName}, " +
 				$"방장 이름 : {roomInfo.MasterClientNickname} " +
 				$"현재 맵 : {roomInfo.CurrentMapType}");
@@ -262,7 +262,6 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		foreach(var room in roomList)
 		{
 			Debug.Log($"현재 맵 : {room.CurrentMapType}");
-			Debug.Log($"방장 고유 ID : {room.masterClientId}");
 			Debug.Log($"방장 닉네임 : {room.MasterClientNickname}");
 			Debug.Log($"현재 방 인원 : {room.currentPlayerCount}");
 			Debug.Log($"방 최대 인원 : {room.maxPlayerCount}");
