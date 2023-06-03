@@ -8,7 +8,6 @@ using FGPlatform.Advertisement;
 using FGPlatform.Purchase;
 using Firebase;
 using Firebase.Extensions;
-using Codice.CM.Common.Replication;
 
 [Serializable]
 public class DBUserData
