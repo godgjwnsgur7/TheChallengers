@@ -218,10 +218,10 @@ public partial class PhotonLogicHandler
         return list?.Find(roomInfo => roomInfo.roomName == roomName);
     }
 
-    public static CustomRoomInfo GetRoomInfoList(bool isCustom)
+    public static List<CustomRoomInfo> GetRoomInfoList(bool isCustom)
 	{
         var list = Instance.customRoomList;
-        return list?.Find(roomInfo => roomInfo.IsCustom == isCustom);
+        return list.Where(room => room.IsCustom == isCustom).ToList();
     }
 
     public GameObject TryInstantiate(string prefabPath, Vector3 pos = default, Quaternion quaternion = default)
