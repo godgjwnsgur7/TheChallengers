@@ -405,8 +405,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         while (isMove)
         {
-            _movePos.y += _moveSpeed;
-            _moveSpeed *= (1 + Time.deltaTime);
+            _movePos.y += _moveSpeed * Time.deltaTime;
 
             Set_InputKeyTransForm(_movePos, (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum);
             yield return null;
@@ -417,8 +416,7 @@ public class InputKeyManagement : MonoBehaviour
     {
         while (isMove)
         {
-            _movePos.x += _moveSpeed;
-            _moveSpeed *= (1 + Time.deltaTime);
+            _movePos.x += _moveSpeed * Time.deltaTime;
 
             Set_InputKeyTransForm(_movePos, (ENUM_INPUTKEY_NAME)currInputKey.inputKeyNum);
             yield return null;
