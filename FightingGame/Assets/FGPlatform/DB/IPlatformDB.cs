@@ -203,7 +203,7 @@ namespace FGPlatform.Datebase
 		{
             if(data == null)
             {
-                return new DBUserData("", 0, 0, 0, 0);
+                return null;
             }
 
             string[] splitData = data.Split('.');

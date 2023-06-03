@@ -79,7 +79,8 @@ namespace FGPlatform.Auth
                 var entry = System.Net.Dns.GetHostEntry(host);
                 var ipAddr = entry.AddressList;
                 var address = ipAddr.FirstOrDefault();
-                return address.ToString();
+
+				return address.ToString().Replace(".", "").Replace(":", "");
             }
         }
 

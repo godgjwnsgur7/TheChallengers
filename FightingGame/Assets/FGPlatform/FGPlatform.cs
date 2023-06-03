@@ -215,12 +215,10 @@ namespace FGPlatform
 			{
 				if (data == null)
 				{
-					DB.InsertDB(hierachyPath, "", OnCompleted);
+					DB.InsertDB(hierachyPath, userId);
 				}
-				else
-				{
-					OnCompleted?.Invoke(null);
-				}
+
+				OnCompleted?.Invoke(data);
 			});
 		}
 
