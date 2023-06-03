@@ -25,6 +25,8 @@ public class InputArrowKey : InputKey
             return;
         }
 
+        GetComponent<Image>().sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/DirectionKey/move_key_selected_total");
+        
         OnPointDownCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
 
