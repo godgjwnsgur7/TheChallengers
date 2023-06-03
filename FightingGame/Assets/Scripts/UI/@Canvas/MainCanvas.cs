@@ -83,7 +83,7 @@ public class MainCanvas : BaseCanvas
             string id = Managers.Platform.GetUserID();
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
 
-            PhotonLogicHandler.CurrentMyNickname = "godgjwnsgur";
+            PhotonLogicHandler.CurrentMyNickname = id;
 
             Set_GameStartEnvironment();
             OnClick_Deactivate(guestLoginWindow.gameObject);
@@ -98,7 +98,7 @@ public class MainCanvas : BaseCanvas
             string id = Managers.Platform.GetUserID();
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
 
-            PhotonLogicHandler.CurrentMyNickname = "sorikun";
+            PhotonLogicHandler.CurrentMyNickname = id;
             
             Set_GameStartEnvironment();
             OnClick_Deactivate(guestLoginWindow.gameObject);
