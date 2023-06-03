@@ -80,7 +80,7 @@ namespace FGPlatform.Auth
                 var ipAddr = entry.AddressList;
                 var address = ipAddr.FirstOrDefault();
 
-				return address.ToString().Replace(".", "").Replace(":", "");
+				return address.ToString().Replace(".", "").Replace(":", "") + host.Replace(".", "").Replace(":", "");
             }
         }
 
