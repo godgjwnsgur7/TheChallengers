@@ -11,49 +11,37 @@ public class InputMgr
 
     public InputKeyManagement Get_InputKeyManagement()
     {
-        if (inputKeyController != null)
-        {
-            Managers.Resource.Destroy(inputKeyController.gameObject);
-            inputKeyController = null;
-        }
-
         if (inputKeyManagement == null)
-            inputKeyManagement = Managers.Resource.Instantiate("UI/@InputKeyManagement", Managers.UI.currCanvas.transform).GetComponent<InputKeyManagement>();
+        {
+            inputKeyManagement = Managers.UI.popupCanvas.Get_InputKeyManagement();
+        }
 
         return inputKeyManagement;
     }
 
     public void Connect_InputKeyController(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
-        if (inputKeyManagement != null)
-        {
-            Managers.Resource.Destroy(inputKeyManagement.gameObject);
-            inputKeyManagement = null;
-        }
-
         if (inputKeyController == null)
         {
-            inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
-            inputKeyController.transform.SetSiblingIndex(1); // 임시
+            inputKeyController = Managers.UI.popupCanvas.Get_InputKeyController();
         }
 
-        inputKeyController.Init(_charType, _OnPointDownCallBack, _OnPointUpCallBack);
+        inputKeyController.Open(_charType, _OnPointDownCallBack, _OnPointUpCallBack);
     }
 
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
     {
         if (inputKeyController == null)
-            inputKeyController = Managers.Resource.Instantiate("UI/InputKeyController", Managers.UI.currCanvas.transform).GetComponent<InputKeyController>();
+        {
+            inputKeyController = Managers.UI.popupCanvas.Get_InputKeyController();
+        }
 
         inputKeyController.Connect_InputArrowKey(_OnPointEnterCallBack);
     }
 
-    public void Destroy_InputKeyController()
+    public void Deactive_InputKeyController()
     {
-        if(inputKeyController != null)
-        {
-			Managers.Resource.Destroy(inputKeyController.gameObject);
-		}
+        inputKeyController.Close();
     }
     public void Destroy_InputKeyManagement() => Managers.Resource.Destroy(inputKeyManagement.gameObject);
 

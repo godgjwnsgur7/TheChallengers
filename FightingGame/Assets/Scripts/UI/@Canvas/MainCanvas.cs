@@ -3,228 +3,108 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
+using System;
 
 public class MainCanvas : BaseCanvas
 {
     [SerializeField] GuestLoginWindow guestLoginWindow;
     [SerializeField] FirstLoginWindowUI firstLoginWindow;
-    [SerializeField] Button mainButton;
 
-    [SerializeField] Text loginText;
-    [SerializeField] Text gameStartText;
+    [SerializeField] Text blinkText;
 
     Coroutine textEffectCoroutine = null;
-
-    float fadeEffectSpeed = 0.5f;
     bool textEffectLock = false;
     bool overlapLock = false;
-
+    
     private void Start()
     {
 		Managers.Platform.RegistAuthChanged(null, PhotonLogicHandler.Instance.TryDisconnectToMaster);
 		Managers.Platform.Initialize();
 
-		Set_LoginEnvironment();
+        textEffectCoroutine = StartCoroutine(IBlinkEffectToText());
     }
 
-    public void Set_OverlabLock(bool _value) => overlapLock = _value;
-
-    private void Set_LoginEnvironment()
+    private void OnEnable()
     {
-        textEffectCoroutine = StartCoroutine(ITextEffect_FadeOut(loginText));
-        mainButton.onClick.AddListener(OnClick_Login);
+        overlapLock = false;
     }
 
-    private void Set_GameStartEnvironment()
+    private void OnDisable()
     {
-        // Remove Login
-        textEffectLock = true;
-        StopCoroutine(textEffectCoroutine);
-        loginText.gameObject.SetActive(false);
-        mainButton.onClick.RemoveListener(OnClick_Login);
-
-        // Add GameStart
-        textEffectLock = false;
-        gameStartText.gameObject.SetActive(true);
-        mainButton.onClick.AddListener(OnClick_Start);
-        textEffectCoroutine = StartCoroutine(ITextEffect_FadeOut(gameStartText));
+        if (textEffectCoroutine != null)
+            StopCoroutine(textEffectCoroutine);
     }
 
-    public void Try_GuestLogin()
-    {
-        if (!guestLoginWindow.Check_InputField())
-            return;
-
-        Managers.Platform.Login(() =>
-        {
-            string id = Managers.Platform.GetUserID();
-            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-
-            if (string.IsNullOrEmpty(PhotonLogicHandler.CurrentMyNickname))
-                firstLoginWindow.Open(Set_NickNameCallBack);
-            else
-                Set_GameStartEnvironment();
-
-            OnClick_Deactivate(guestLoginWindow.gameObject);
-        },
-        _OnCheckFirstUser: (bool isFirstLogin) =>
-        {
-            if (isFirstLogin)
-            {
-                firstLoginWindow.Open(Set_NickNameCallBack);
-            }
-        });
-    }
-
-    public void Try_GuestLoginA()
-    {
-        Managers.Platform.Login(() =>
-        {
-            string id = Managers.Platform.GetUserID();
-            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-
-            PhotonLogicHandler.CurrentMyNickname = id;
-
-            Set_GameStartEnvironment();
-            OnClick_Deactivate(guestLoginWindow.gameObject);
-
-        }, null, null);
-    }
-
-    public void Try_GuestLoginB()
-    {
-        Managers.Platform.Login(() =>
-        {
-            string id = Managers.Platform.GetUserID();
-            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-
-            PhotonLogicHandler.CurrentMyNickname = id;
-            
-            Set_GameStartEnvironment();
-            OnClick_Deactivate(guestLoginWindow.gameObject);
-
-        }, null, null);
-    }
-
-    public void Set_NickNameCallBack(string nickname)
-    {
-        PhotonLogicHandler.CurrentMyNickname = nickname;
-        Set_GameStartEnvironment();
-
-        firstLoginWindow.Close();
-    }
-
-    private void Try_GoogleLogin()
-    {
-        string loginID;
-
-        Managers.Platform.Login(_OnSignInSuccess: () =>
-        {
-            loginID = Managers.Platform.GetUserID();
-
-            if (loginID == string.Empty)
-            {
-                Managers.UI.popupCanvas.Close_LoadingPopup();
-                Managers.UI.popupCanvas.Open_NotifyPopup("로그인에 실패했습니다. 다시 시도해주세요.");
-                return;
-            }
-
-            Debug.Log($"회원번호 : {loginID} 으로 로그인 완료");
-            Set_GameStartEnvironment();
-        },
-        _OnCheckFirstUser: (bool isFirstLogin) =>
-        {
-            if (isFirstLogin)
-            {
-                firstLoginWindow.Open(Set_NickNameCallBack);
-            }
-        });   
-    }
-
-    private void Try_ConnectMasterServerAndStart()
-    {
-        bool isSuccess = PhotonLogicHandler.Instance.TryConnectToMaster(
-            () => Try_JoinLobby(), null);
-
-        if(!isSuccess)
-        {
-            Managers.UI.popupCanvas.Close_LoadingPopup();
-            Managers.UI.popupCanvas.Open_NotifyPopup("서버 접속에 실패했습니다. 다시 시도해주세요.");
-        }
-            
-    }
-
-    private void Try_JoinLobby()
-    {
-        bool isSuccess = PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.RANDOM, GoTo_LobbyScene);
-
-        if (!isSuccess)
-        {
-            Managers.UI.popupCanvas.Close_LoadingPopup();
-            Managers.UI.popupCanvas.Open_NotifyPopup("서버 접속에 실패했습니다. 다시 시도해주세요.");
-        }
-    }
-
-    private void GoTo_LobbyScene()
-    {
-        Managers.UI.popupCanvas.Close_LoadingPopup();
-        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
-    }
-
-    public void OnClick_Login()
+    public void OnClick_LoginAndMasterServer()
     {
         if (overlapLock)
             return;
 
         overlapLock = true;
 
-        //Try_GoogleLogin();
-
-        OnClick_Activate(guestLoginWindow.gameObject);
-    }
-
-    public void OnClick_Start()
-    {
-        Managers.UI.popupCanvas.Open_LoadingPopup("서버에 접속중입니다.");
-
-        Try_ConnectMasterServerAndStart();
-    }
-
-    protected IEnumerator ITextEffect_FadeOut(Text effectTarget)
-    {
-        effectTarget.color = new Color(1f, 1f, 1f, 1f);
-
-        Color tempColor = effectTarget.color;
-
-        while (tempColor.a > 0.5f && !textEffectLock)
+        Managers.UI.popupCanvas.Open_LoadingPopup("로그인 중...");
+        Managers.Platform.Login(() =>
         {
-            tempColor.a -= Time.deltaTime * fadeEffectSpeed;
-            effectTarget.color = tempColor;
+            string id = Managers.Platform.GetUserID();
+            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+            Try_MasterServer();
+            PhotonLogicHandler.CurrentMyNickname = id;
+        },Login_Failed, null);
+    }
 
-            yield return null;
+    private void Try_MasterServer()
+    {
+        Managers.UI.popupCanvas.Open_LoadingPopup("마스터 서버에 접속 중...");
+        PhotonLogicHandler.Instance.TryConnectToMaster(
+            GoTo_Lobby, Managers.Network.DisconnectMaster_CallBack);
+    }
+
+    private void GoTo_Lobby()
+    {
+        Managers.UI.popupCanvas.Close_LoadingPopup();
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
+    }
+
+    private void Login_Failed()
+    {
+        overlapLock = false;
+        Managers.UI.popupCanvas.Open_NotifyPopup("로그인에 실패했습니다.\n다시 시도해주세요");
+        Managers.UI.popupCanvas.Close_LoadingPopup();
+    }
+
+    protected IEnumerator IBlinkEffectToText()
+    {
+        textEffectLock = true;
+        Color color = new Color(1, 1, 1, 1);
+        float runTIme;
+        float duration = 1.0f;
+
+        while (textEffectLock)
+        {
+            runTIme = 0.0f;
+            color.a = 1.0f;
+            blinkText.color = color;
+            while (runTIme < duration)
+            {
+                runTIme += Time.deltaTime;
+                color.a = Mathf.Lerp(1.0f, 0.5f, runTIme / duration);
+                blinkText.color = color;
+                yield return null;
+            }
+
+            runTIme = 0.0f;
+            color.a = 0.5f;
+            blinkText.color = color;
+            while (runTIme < duration)
+            {
+                runTIme += Time.deltaTime;
+                color.a = Mathf.Lerp(0.5f, 1.0f, runTIme / duration);
+                blinkText.color = color;
+                yield return null;
+            }
         }
 
+        textEffectLock = false;
         textEffectCoroutine = null;
-        if(!textEffectLock)
-            textEffectCoroutine = StartCoroutine(ITextEffect_FadeIn(effectTarget));
-    }
-
-    protected IEnumerator ITextEffect_FadeIn(Text effectTarget)
-    {
-        effectTarget.color = new Color(1f, 1f, 1f, 0.5f);
-
-        Color tempColor = effectTarget.color;
-
-        while (tempColor.a < 0.95f && !textEffectLock)
-        {
-            tempColor.a += Time.deltaTime * fadeEffectSpeed;
-            effectTarget.color = tempColor;
-
-            yield return null;
-        }
-
-        textEffectCoroutine = null;
-        if (!textEffectLock)
-            textEffectCoroutine = StartCoroutine(ITextEffect_FadeOut(effectTarget));
     }
 }

@@ -6,11 +6,13 @@ using System;
 using FGDefine;
 
 /// <summary>
-/// 최초 한번만 생성되고, 게임 종료까지 파괴되지 않는 캔버스?
+/// 최초 한번만 생성되고, 게임 종료까지 파괴되지 않는 캔버스
 /// </summary>
 public class PopupCanvas : MonoBehaviour
 {
     [Header("Set In Editor")]
+    [SerializeField] InputKeyController inputKeyController;
+    [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] SettingWindow settingWindow;
     [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
@@ -28,6 +30,16 @@ public class PopupCanvas : MonoBehaviour
     public void Init()
     {
         DontDestroyOnLoad(this);
+    }
+
+    public InputKeyManagement Get_InputKeyManagement()
+    {
+        return inputKeyManagement;
+    }
+
+    public InputKeyController Get_InputKeyController()
+    {
+        return inputKeyController;
     }
 
     public void Open_SettingWindow()
@@ -171,15 +183,9 @@ public class PopupCanvas : MonoBehaviour
     /// 로딩 팝업창 Popup Window
     /// 반드시 Close를 따로 호출해주어야 함
     /// </summary>
-    public void Open_LoadingPopup(string _message, Func<bool> _completionCondition = null)
+    public void Open_LoadingPopup(string _message)
     {
-        if(loadingPopup.isUsing)
-        {
-            Debug.Log("이미 선택팝업창이 사용중입니다.");
-            return;
-        }
-
-        loadingPopup.Open();
+        loadingPopup.Open(_message);
     }
 
     public void Close_LoadingPopup()

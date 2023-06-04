@@ -7,8 +7,9 @@ public class LoadingPopup : PopupUI
 {
     [SerializeField] Text popupText;
 
-    public void Open()
+    public void Open(string _message)
     {
+        popupText.text = _message;
         this.gameObject.SetActive(true);
     }
 

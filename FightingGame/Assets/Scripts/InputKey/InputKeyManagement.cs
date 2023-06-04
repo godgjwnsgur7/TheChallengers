@@ -14,11 +14,11 @@ public class InputKeyManagement : MonoBehaviour
     private bool isSameBtn = false;
 
     [SerializeField] WindowArea windowArea;
+    [SerializeField] InputPanel inputPanel;
+    [SerializeField] AreaPanel areaPanel;
 
-    private InputPanel inputPanel = null;
-    private InputKey currInputKey = null;
-    private AreaPanel areaPanel = null;
-    private AreaKey currAreaKey = null;
+    InputKey currInputKey = null;
+    AreaKey currAreaKey = null;
 
     // EvnetTrigger의 Drag Entry : 여기에 드래그 시 이벤트를 담아서 인풋키에 삽입
     private EventTrigger eventTrigger;
@@ -27,23 +27,29 @@ public class InputKeyManagement : MonoBehaviour
         eventID = EventTriggerType.Drag,
     };
 
+    public void Open()
+    {
+        Init();
+        this.gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        dragEntry.callback.RemoveListener(OnDragListener);
+        Empty_CurrInputKey();
+        windowArea.Reset_WindowArea();
+
+        this.gameObject.SetActive(false);
+    }
+
     public void Init()
     {
         dragEntry.callback.AddListener(OnDragListener);
 
-        if (inputPanel == null)
-        {
-            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
+        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
+        inputPanel.Set_InputSkillKeys(ENUM_CHARACTER_TYPE.Knight);
 
-            inputPanel.Set_InputSkillKeys(ENUM_CHARACTER_TYPE.Knight);
-        }
-
-        if (areaPanel == null)
-        {
-            areaPanel = Managers.Resource.Instantiate("UI/AreaPanel", this.transform).GetComponent<AreaPanel>();
-            areaPanel.Init(inputPanel.Get_InputKeys());
-        }
+        areaPanel.Init(inputPanel.Get_InputKeys());
 
         windowArea.Set_TransparencySlider(inputPanel.Get_InputKey(ENUM_INPUTKEY_NAME.Jump).Get_Transparency() * 100);
         Set_OnDragCallBack();
@@ -277,7 +283,8 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public void OnValueChanged_TransparencySlider(Slider _slider)
     {
-        Set_InputKeyTransparency(_slider.value);
+        if(this.gameObject.activeSelf)
+            Set_InputKeyTransparency(_slider.value);
     }
 
     /// <summary>
@@ -311,14 +318,6 @@ public class InputKeyManagement : MonoBehaviour
     {
         Empty_CurrInputKey();
         Managers.UI.popupCanvas.Play_FadeOutInEffect(Close);
-    }
-
-    public void Close()
-    {
-        Empty_CurrInputKey();
-        windowArea.Reset_WindowArea();
-
-        Destroy(this.gameObject);
     }
 
     /// <summary>

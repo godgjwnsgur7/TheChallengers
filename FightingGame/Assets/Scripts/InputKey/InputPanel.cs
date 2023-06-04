@@ -7,9 +7,14 @@ using FGDefine;
 public class InputPanel : MonoBehaviour
 {
     InputKey[] inputKeys = new InputKey[(int)ENUM_INPUTKEY_NAME.Max];
+    bool isInit = false;
 
     public void Init(Action<ENUM_INPUTKEY_NAME> OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> OnPointUpCallBack)
     {
+        if (isInit)
+            return;
+        isInit = true;
+
         KeySettingData keySettingData = PlayerPrefsManagement.Load_KeySettingData();
 
         for (int index = 0; index < inputKeys.Length; index++)

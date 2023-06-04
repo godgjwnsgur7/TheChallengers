@@ -7,24 +7,27 @@ using System;
 
 public class InputKeyController : MonoBehaviour
 {
-    InputPanel inputPanel = null;
+    [SerializeField] InputPanel inputPanel;
+
+    public void Open(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
+    {
+        Init(_charType, _OnPointDownCallBack, _OnPointUpCallBack);
+        gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
 
     public void Init(ENUM_CHARACTER_TYPE _charType ,Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
-        if (inputPanel == null)
-        {
-            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-            inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack);
-        }
-
+        inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack);
         inputPanel.Set_InputSkillKeys(_charType);
     }
     
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
     {
-        if(inputPanel == null)
-            inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
-
         InputArrowKey inputArrowKey = inputPanel.transform.Find(ENUM_INPUTKEY_NAME.Direction.ToString()).GetComponent<InputArrowKey>();
         
         if(inputArrowKey == null)

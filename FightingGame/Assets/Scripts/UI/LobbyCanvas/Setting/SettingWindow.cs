@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Setting Window
-/// 팝업캔버스로 옮겨질 수도 있읍니다.!
-/// </summary>
 public class SettingWindow : MonoBehaviour
 {
     [SerializeField] SoundSettingWindow soundSettingWindow;
@@ -81,9 +77,7 @@ public class SettingWindow : MonoBehaviour
 
     private void Call_InputKeyManagement()
     {
-        InputKeyManagement go = Managers.Input.Get_InputKeyManagement();
-        go.transform.parent = Managers.UI.currCanvas.transform;
-        go.Init();
+        Managers.Input.Get_InputKeyManagement().Open();
 
         Close();
     }
