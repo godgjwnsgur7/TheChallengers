@@ -50,9 +50,8 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnEnterRoomCallBack(string enterUserNickname)
     {
-        // 임시 주석처리
-        //if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
-        //    return;
+        if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
+            return;
 
         if (PhotonLogicHandler.IsMasterClient)
         {

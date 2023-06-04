@@ -61,6 +61,7 @@ public class MainCanvas : BaseCanvas
 
     private void GoTo_Lobby()
     {
+        Managers.Platform.HideBanner();
         Managers.UI.popupCanvas.Close_LoadingPopup();
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
