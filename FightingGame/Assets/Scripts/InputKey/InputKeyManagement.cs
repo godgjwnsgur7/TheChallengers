@@ -315,10 +315,8 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Close()
     {
-        currInputKey = null;
-
+        Empty_CurrInputKey();
         windowArea.Reset_WindowArea();
-        windowArea.gameObject.SetActive(false);
 
         Destroy(this.gameObject);
     }
