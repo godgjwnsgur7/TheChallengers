@@ -15,7 +15,7 @@ public class DBUserData
 	public string nickname = string.Empty;
 	public long victoryPoint = 0L;
 	public long defeatPoint = 0L;
-	public long ratingPoint = 0L;
+	public long ratingPoint = 1500L;
 	public long purchaseCoffeeCount = 0L;
 
 	public DBUserData(string nickname, long victoryPoint, long defeatPoint, long ratingPoint, long purchaseCoffeeCount)
