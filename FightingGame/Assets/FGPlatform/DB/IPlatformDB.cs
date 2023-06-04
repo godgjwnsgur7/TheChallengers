@@ -177,7 +177,7 @@ namespace FGPlatform.Datebase
                 reference = reference.Child(path);
             }
 
-            myUserData = new DBUserData(nickname, 0L, 0L, 0L, 0L);
+            myUserData = new DBUserData(nickname, 0L, 0L, 1500L, 0L);
             string jsonData = ParseUserData(myUserData);
 
             reference.SetValueAsync(jsonData).ContinueWithOnMainThread(task =>
@@ -249,20 +249,20 @@ namespace FGPlatform.Datebase
             }
             else if(category == DB_CATEGORY.VictoryPoint)
             {
-                data.victoryPoint = (long)value;
-            }
+                data.victoryPoint = Math.Max(0L, (long)value);
+			}
             else if(category == DB_CATEGORY.DefeatPoint)
 			{
-                data.defeatPoint = (long)value;
-            }
+                data.defeatPoint = Math.Max(0L, (long)value);
+			}
             else if(category == DB_CATEGORY.RatingPoint)
 			{
-                data.ratingPoint = (long)value;
-            }
+                data.ratingPoint = Math.Max(0L, (long)value);
+			}
             else if(category == DB_CATEGORY.PurchaseCoffee)
 			{
-                data.purchaseCoffeeCount = (long)value;
-            }
+                data.purchaseCoffeeCount = Math.Max(0L, (long)value);
+			}
 		}
 	}
 

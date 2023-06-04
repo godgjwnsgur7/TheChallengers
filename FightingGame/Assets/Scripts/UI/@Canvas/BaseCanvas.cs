@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public abstract class BaseCanvas : MonoBehaviour
 {
     CanvasScaler scaler = null;
-    
-    private void Awake()
+
+	private void Awake()
     {
         Managers.UI.Init();
     }
@@ -22,7 +22,8 @@ public abstract class BaseCanvas : MonoBehaviour
     {
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
-        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        scaler.matchWidthOrHeight = 1.0f;
     }
 
     public void OnClick_Activate(GameObject g) => g.SetActive(true);
