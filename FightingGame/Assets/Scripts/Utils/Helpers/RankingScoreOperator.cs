@@ -31,7 +31,11 @@ public class RankingScoreOperator : MonoBehaviour
             return myScore;
         }
 
-        double expectedWinningRate = 1 / (1 + Math.Pow(10, (enemyScore - myScore) / 400));
+        long differenceValue = enemyScore - myScore;
+        if (differenceValue == 0)
+            differenceValue = 1;
+
+        double expectedWinningRate = 1 / (1 + Math.Pow(10, differenceValue / 400));
 
         double changedMyScore = myScore + criteriaScore * ((isWin ? 1.0f : 0.0f) - expectedWinningRate);
 
