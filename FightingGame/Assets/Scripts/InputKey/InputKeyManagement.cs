@@ -14,9 +14,8 @@ public class InputKeyManagement : MonoBehaviour
     private bool isSameBtn = false;
 
     [SerializeField] WindowArea windowArea;
-    [SerializeField] InputPanel inputPanel;
     [SerializeField] AreaPanel areaPanel;
-
+    InputPanel inputPanel = null;
     InputKey currInputKey = null;
     AreaKey currAreaKey = null;
 
@@ -46,6 +45,11 @@ public class InputKeyManagement : MonoBehaviour
     {
         dragEntry.callback.AddListener(OnDragListener);
 
+        if (inputPanel != null)
+            Managers.Resource.Destroy(inputPanel.gameObject);
+
+        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        inputPanel.transform.SetSiblingIndex(4);
         inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
         inputPanel.Set_InputSkillKeys(ENUM_CHARACTER_TYPE.Knight);
 

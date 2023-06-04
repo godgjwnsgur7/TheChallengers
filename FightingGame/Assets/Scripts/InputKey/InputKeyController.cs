@@ -7,7 +7,7 @@ using System;
 
 public class InputKeyController : MonoBehaviour
 {
-    [SerializeField] InputPanel inputPanel;
+    InputPanel inputPanel = null;
 
     public void Open(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
@@ -22,6 +22,11 @@ public class InputKeyController : MonoBehaviour
 
     public void Init(ENUM_CHARACTER_TYPE _charType ,Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
+        if (inputPanel != null)
+            Managers.Resource.Destroy(inputPanel.gameObject);
+            
+        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        
         inputPanel.Init(_OnPointDownCallBack, _OnPointUpCallBack);
         inputPanel.Set_InputSkillKeys(_charType);
     }
