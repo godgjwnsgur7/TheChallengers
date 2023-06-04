@@ -28,6 +28,7 @@ public class TrainingCharacter : MonoBehaviour
     {
         Destroy_MyCharacter();
         Destroy_EnemyCharacter();
+        Managers.Input.Deactive_InputKeyController();
 
         playerCamera.Init(currMap);
     }

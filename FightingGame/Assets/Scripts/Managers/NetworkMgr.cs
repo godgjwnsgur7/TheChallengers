@@ -50,8 +50,9 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnEnterRoomCallBack(string enterUserNickname)
     {
-        if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
-            return;
+        // 임시 주석처리
+        //if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
+        //    return;
 
         if (PhotonLogicHandler.IsMasterClient)
         {
@@ -146,13 +147,13 @@ public class NetworkMgr : IRoomPostProcess
         PhotonLogicHandler.Instance.RequestGameStart(); // 게임 시작 상태로 변경
 
         // 게임 돌입할 때 UserSyncMediator 생성
-        if(userSyncMediator != null)
+        if (userSyncMediator != null)
             Managers.Resource.Destroy(userSyncMediator.gameObject);
         if (PhotonLogicHandler.IsJoinedRoom && PhotonLogicHandler.IsFullRoom)
             Managers.Resource.InstantiateEveryone("UserSyncMediator");
         else
             yield break;
-        
+
         // 3. 동기화객체 생성 참조 확인
         yield return new WaitUntil(IsConnect_UserSyncMediator);
         userSyncMediator.Sync_ShowGameInfo(); // 캐릭터 선택 창 돌입

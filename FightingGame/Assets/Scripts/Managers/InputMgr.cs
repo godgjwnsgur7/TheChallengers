@@ -41,6 +41,11 @@ public class InputMgr
 
     public void Deactive_InputKeyController()
     {
+        if (inputKeyController == null)
+        {
+            inputKeyController = Managers.UI.popupCanvas.Get_InputKeyController();
+        }
+
         inputKeyController.Close();
     }
     public void Destroy_InputKeyManagement() => Managers.Resource.Destroy(inputKeyManagement.gameObject);
@@ -49,16 +54,10 @@ public class InputMgr
 
     public void Clear()
     {
-        if (inputKeyController != null)
-        {
-            Managers.Resource.Destroy(inputKeyController.gameObject);
-            inputKeyController = null;
-        }
+        if(inputKeyController != null && inputKeyController.gameObject.activeSelf)
+            inputKeyController.Close();
 
-        if (inputKeyManagement != null)
-        {
-            Managers.Resource.Destroy(inputKeyManagement.gameObject);
-            inputKeyManagement = null;
-        }
+        if(inputKeyManagement != null && inputKeyManagement.gameObject.activeSelf)
+            inputKeyManagement.Close();
     }
 }
