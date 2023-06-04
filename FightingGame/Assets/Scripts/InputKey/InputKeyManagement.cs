@@ -9,16 +9,16 @@ using UnityEngine.EventSystems;
 public class InputKeyManagement : MonoBehaviour
 {
     // 인풋키 이동 중 여부, 값 수정 중여부, 같은 인풋키 PointDown 여부
-    public bool isMove = false;
-    public bool isValueChange = false;
+    private bool isMove = false;
+    private bool isValueChange = false;
     private bool isSameBtn = false;
 
     [SerializeField] WindowArea windowArea;
 
-    public InputPanel inputPanel = null;
-    public InputKey currInputKey = null;
-    public AreaPanel areaPanel = null;
-    public AreaKey currAreaKey = null;
+    private InputPanel inputPanel = null;
+    private InputKey currInputKey = null;
+    private AreaPanel areaPanel = null;
+    private AreaKey currAreaKey = null;
 
     // EvnetTrigger의 Drag Entry : 여기에 드래그 시 이벤트를 담아서 인풋키에 삽입
     private EventTrigger eventTrigger;
