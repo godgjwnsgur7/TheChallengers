@@ -7,6 +7,7 @@ public abstract class BaseCanvas : MonoBehaviour
 {
 	Canvas canvas = null;
     CanvasScaler scaler = null;
+	bool isInit = false;
 
 	private void Awake()
     {
@@ -15,7 +16,12 @@ public abstract class BaseCanvas : MonoBehaviour
 
     public virtual void Init()
     {
-        scaler = GetComponent<CanvasScaler>();
+		if (isInit)
+			return;
+
+		isInit = true;
+
+		scaler = GetComponent<CanvasScaler>();
 		canvas = GetComponent<Canvas>();
 
 		SetCanvas();
@@ -27,7 +33,7 @@ public abstract class BaseCanvas : MonoBehaviour
 	{
 		canvas.renderMode = RenderMode.ScreenSpaceCamera;
 		canvas.worldCamera = Camera.main;
-		canvas.sortingOrder = 100;
+		canvas.sortingOrder = 1000;
 	}
 
     private void SetCanvasScaler()

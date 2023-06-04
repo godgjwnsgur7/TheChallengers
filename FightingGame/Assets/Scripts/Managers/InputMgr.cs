@@ -12,9 +12,7 @@ public class InputMgr
     public InputKeyManagement Get_InputKeyManagement()
     {
         if (inputKeyManagement == null)
-        {
             inputKeyManagement = Managers.UI.popupCanvas.Get_InputKeyManagement();
-        }
 
         return inputKeyManagement;
     }
@@ -22,9 +20,7 @@ public class InputMgr
     public void Connect_InputKeyController(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (inputKeyController == null)
-        {
             inputKeyController = Managers.UI.popupCanvas.Get_InputKeyController();
-        }
 
         inputKeyController.Open(_charType, _OnPointDownCallBack, _OnPointUpCallBack);
     }
@@ -32,9 +28,7 @@ public class InputMgr
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
     {
         if (inputKeyController == null)
-        {
             inputKeyController = Managers.UI.popupCanvas.Get_InputKeyController();
-        }
 
         inputKeyController.Connect_InputArrowKey(_OnPointEnterCallBack);
     }
@@ -42,9 +36,7 @@ public class InputMgr
     public void Deactive_InputKeyController()
     {
         if (inputKeyController == null)
-        {
             inputKeyController = Managers.UI.popupCanvas.Get_InputKeyController();
-        }
 
         inputKeyController.Close();
     }

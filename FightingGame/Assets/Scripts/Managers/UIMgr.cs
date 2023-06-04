@@ -9,18 +9,15 @@ public class UIMgr
     public BaseCanvas currCanvas;
     public PopupCanvas popupCanvas = null;
 
-
     public void Init()
     {
+        popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
+        if (popupCanvas == null)
+            popupCanvas = Managers.Resource.Instantiate("UI/PopupCanvas").GetComponent<PopupCanvas>();
+        popupCanvas.Init();
+
         currCanvas = GameObject.FindObjectOfType<BaseCanvas>();
         currCanvas.Init();
-
-        if(popupCanvas == null)
-            popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
-
-        GameObject go = GameObject.Find("PopupCanvas");
-        if (go == null)
-            go = Managers.Resource.Instantiate("UI/PopupCanvas");
     }
     
     public void OpenUI<T>()

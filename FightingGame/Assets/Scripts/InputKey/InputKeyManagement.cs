@@ -339,12 +339,14 @@ public class InputKeyManagement : MonoBehaviour
         // Curr값 비우기
         Empty_CurrInputKey();
 
-        // 인풋키 패널들 재생성
         Managers.Resource.Destroy(inputPanel.gameObject);
-        Managers.Resource.Destroy(areaPanel.gameObject);
 
-        inputPanel = null;
-        areaPanel = null;
+        inputPanel = Managers.Resource.Instantiate("UI/InputPanel", this.transform).GetComponent<InputPanel>();
+        inputPanel.transform.SetSiblingIndex(4);
+        inputPanel.Init(OnPoint_DownCallBack, OnPoint_UpCallBack);
+        inputPanel.Set_InputSkillKeys(ENUM_CHARACTER_TYPE.Knight);
+
+        areaPanel.Init(inputPanel.Get_InputKeys());
 
         Init();
 
