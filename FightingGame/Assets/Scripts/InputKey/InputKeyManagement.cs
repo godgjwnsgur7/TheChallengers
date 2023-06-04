@@ -367,10 +367,6 @@ public class InputKeyManagement : MonoBehaviour
         if(currAreaKey != null)
             currAreaKey.Set_isSelect(false);
 
-        if (currInputKey != null && currInputKey.inputKeyNum == 0)
-            currInputKey.GetComponent<Image>().sprite =
-                Managers.Resource.Load<Sprite>($"Art/Sprites/DirectionKey/move_key");
-
         Save_InputKeyDatas();
         Empty_CurrInputKey();
     }
