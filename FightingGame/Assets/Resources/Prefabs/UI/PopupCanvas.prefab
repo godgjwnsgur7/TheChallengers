@@ -7661,8 +7661,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InputKeyManagement, Source
+      - m_Target: {fileID: 74021029783746675}
+        m_TargetAssemblyTypeName: KeySettingWindow, Source
         m_MethodName: OnValueChanged_SizeSlider
         m_Mode: 2
         m_Arguments:
@@ -7871,9 +7871,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4492695041097935075}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5562628283817265977}
+        m_TargetAssemblyTypeName: InputKeyManagement, Source
+        m_MethodName: OnClick_CharSelectArea
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8172,9 +8172,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4492695041097935075}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5562628283817265977}
+        m_TargetAssemblyTypeName: InputKeyManagement, Source
+        m_MethodName: OnClick_CharSelectArea
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8872,7 +8872,7 @@ GameObject:
   - component: {fileID: 4492695041510154400}
   - component: {fileID: 4492695041510154463}
   m_Layer: 5
-  m_Name: TransparencySlider
+  m_Name: OpacitySlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8951,8 +8951,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InputKeyManagement, Source
+      - m_Target: {fileID: 74021029783746675}
+        m_TargetAssemblyTypeName: KeySettingWindow, Source
         m_MethodName: OnValueChanged_TransparencySlider
         m_Mode: 2
         m_Arguments:
@@ -9432,9 +9432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keySettingWindow: {fileID: 74021029783746675}
   inputKeyAreaPanel: {fileID: 8915743547639835340}
-  selectedKeyArea: {fileID: 0}
-  moveX: 0
-  moveY: 0
+  selectCharDropDownAreaObject: {fileID: 4492695041097935075}
 --- !u!1 &4492695041758130278
 GameObject:
   m_ObjectHideFlags: 0
@@ -9577,6 +9575,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c628066edf497904490f53fb6dc75779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeSlider: {fileID: 4492695040772301527}
+  opacitySlider: {fileID: 4492695041510154463}
+  sizeText: {fileID: 4492695041833925481}
+  opacityText: {fileID: 4492695040510781045}
+  currentCharText: {fileID: 4492695040462752955}
 --- !u!114 &4492695041820306787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10355,38 +10358,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5562628283817265977}
         m_TargetAssemblyTypeName: InputKeyManagement, Source
-        m_MethodName: OnClick_InputSkillIcon
+        m_MethodName: OnClick_ChangeCharacter
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4492695040462752955}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
-        m_MethodName: set_text
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: WIZARD
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4492695041097935075}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -10401,7 +10380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4492695042182637022}
   m_Layer: 5
-  m_Name: TransparencySettingArea
+  m_Name: OpacitySettingArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10441,7 +10420,7 @@ GameObject:
   - component: {fileID: 4492695042252117043}
   - component: {fileID: 4492695042252117044}
   m_Layer: 5
-  m_Name: TransparencyText
+  m_Name: OpacityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11060,38 +11039,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5562628283817265977}
         m_TargetAssemblyTypeName: InputKeyManagement, Source
-        m_MethodName: OnClick_InputSkillIcon
+        m_MethodName: OnClick_ChangeCharacter
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4492695040462752955}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
-        m_MethodName: set_text
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: KNIGHT
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4492695041097935075}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

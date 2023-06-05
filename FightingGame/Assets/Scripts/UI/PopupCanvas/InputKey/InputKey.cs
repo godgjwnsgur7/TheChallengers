@@ -12,7 +12,7 @@ public class InputKey : MonoBehaviour
 
     [SerializeField] protected Image slotImage;
 
-    public RectTransform rectTr;
+    public RectTransform rectTr; // 외부에서 너무 가지고 놈. 언젠간 고쳐줄게...
     public int inputKeyNum;
 
     bool isInit = false;

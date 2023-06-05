@@ -45,6 +45,8 @@ public class InputPanel : MonoBehaviour
     
     public void Set_InputSkillKeys(ENUM_CHARACTER_TYPE charType)
     {
+        // 수정요망 ㅋㅋ (임시)
+        
         Managers.Data.CharInfoDict.TryGetValue((int)charType, out CharacterInfo charInfo);
 
         InputSkillKey inputSkillKey;

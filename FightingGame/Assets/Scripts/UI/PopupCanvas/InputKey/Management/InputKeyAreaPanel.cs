@@ -44,12 +44,18 @@ public class InputKeyAreaPanel : MonoBehaviour
         inputKeyArea.rectTr.position = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
     }
 
-    public void Set_InputSkillKeys(ENUM_CHARACTER_TYPE charType)
+    public void Set_ChangeIcon(ENUM_CHARACTER_TYPE charType)
     {
-        
+        inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill1].ChangeSet_IconImage($"Icon_{charType}Skill1");
+        inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill2].ChangeSet_IconImage($"Icon_{charType}Skill2");
+        inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill3].ChangeSet_IconImage($"Icon_{charType}Skill3");
+        inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill4].ChangeSet_IconImage($"Icon_{charType}Skill4");
+    }
 
-        
-
+    public void Set_OpacityValueAll(float _value)
+    {
+        for(int i = 0; i < inputKeyAreas.Length; i++)
+            inputKeyAreas[i].Set_Transparency(_value);
     }
 
     public void Reset_InputKeyData()
@@ -62,7 +68,15 @@ public class InputKeyAreaPanel : MonoBehaviour
 
     public void Save_InputKeyData()
     {
-        // 겹치는 영역 체크해야 함
+        // 겹치는 영역 체크
+        for(int i = 0; i < inputKeyAreas.Length; i++)
+        {
+            if(!inputKeyAreas[i].Get_CollisionCheck())
+            {
+                Managers.UI.popupCanvas.Open_NotifyPopup("저장에 실패했습니다.\n( 겹치는 영역 존재 )");
+                return;
+            }            
+        }
 
         List<KeySettingDataElement> keySettingDataList = new List<KeySettingDataElement>();
         float opacity = inputKeyAreas[0].Get_Transparency();
