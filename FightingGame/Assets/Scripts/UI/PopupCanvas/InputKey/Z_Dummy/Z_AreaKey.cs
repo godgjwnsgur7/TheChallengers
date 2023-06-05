@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class AreaKey : MonoBehaviour
+public class Z_AreaKey : MonoBehaviour
 {
     public Image areaImage;
     public RectTransform rectTr;

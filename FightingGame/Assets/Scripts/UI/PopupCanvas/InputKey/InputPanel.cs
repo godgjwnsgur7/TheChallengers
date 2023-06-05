@@ -50,19 +50,23 @@ public class InputPanel : MonoBehaviour
         InputSkillKey inputSkillKey;
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Dash] as InputSkillKey;
-        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_Dash, charType, 0);
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_Dash);
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill1] as InputSkillKey;
-        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_1, charType, 1);
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_1);
+        inputSkillKey.ChangeSet_IconImage($"Icon_{charType}Skill1");
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill2] as InputSkillKey;
-        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_2, charType, 2);
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_2);
+        inputSkillKey.ChangeSet_IconImage($"Icon_{charType}Skill2");
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill3] as InputSkillKey;
-        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_3, charType, 3);
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_3);
+        inputSkillKey.ChangeSet_IconImage($"Icon_{charType}Skill3");
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
-        inputSkillKey.Set_SkillInfo(charInfo.skillCoolTime_4, charType, 4);
+        inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_4);
+        inputSkillKey.ChangeSet_IconImage($"Icon_{charType}Skill4");
     }
 
     public void Notify_UseSkill(int skillNum)

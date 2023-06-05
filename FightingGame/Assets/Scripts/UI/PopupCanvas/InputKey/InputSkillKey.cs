@@ -30,12 +30,9 @@ public class InputSkillKey : InputBasicKey
         coolTimeCoverImage.alphaHitTestMinimumThreshold = 0.1f;
     }
 
-    public void Set_SkillInfo(float _coolTime, ENUM_CHARACTER_TYPE _charType, int _num)
+    public void Set_SkillCoolTime(float _coolTime)
     {
         coolTime = _coolTime;
-        
-        if(_num != 0) // 대쉬스킬 예외처리
-            iconImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/SkillKey/Icon_{_charType}Skill{_num}");
     }
 
     public void Use_Skill()

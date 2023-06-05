@@ -6,7 +6,7 @@ using FGDefine;
 using System;
 using UnityEngine.EventSystems;
 
-public class InputKeyManagement : MonoBehaviour
+public class Z_InputKeyManagement : MonoBehaviour
 {
     // 인풋키 이동 중 여부, 값 수정 중여부, 같은 인풋키 PointDown 여부
     private bool isMove = false;
@@ -14,10 +14,10 @@ public class InputKeyManagement : MonoBehaviour
     private bool isSameBtn = false;
 
     [SerializeField] WindowArea windowArea;
-    [SerializeField] AreaPanel areaPanel;
+    [SerializeField] Z_AreaPanel areaPanel;
     InputPanel inputPanel = null;
     InputKey currInputKey = null;
-    AreaKey currAreaKey = null;
+    Z_AreaKey currAreaKey = null;
 
     // EvnetTrigger의 Drag Entry : 여기에 드래그 시 이벤트를 담아서 인풋키에 삽입
     private EventTrigger eventTrigger;
@@ -160,7 +160,7 @@ public class InputKeyManagement : MonoBehaviour
     public void Set_CurrInputKey(int inputKeyNum)
     {
         currInputKey = inputPanel.Get_InputKey((ENUM_INPUTKEY_NAME)inputKeyNum);
-        currAreaKey = areaPanel.Get_AreaKey((ENUM_INPUTKEY_NAME)inputKeyNum);
+        currAreaKey = areaPanel.Get_Z_AreaKey((ENUM_INPUTKEY_NAME)inputKeyNum);
 
         currAreaKey.Set_isSelect(true);
     }
@@ -223,7 +223,7 @@ public class InputKeyManagement : MonoBehaviour
     /// <summary>
     /// 저장 성공 시 true, 실패 시 false
     /// </summary>
-    public bool Save_InputKeyDatas()
+    public bool Save_InputKeyDatas() 
     {
         InputKey[] inputKeys = inputPanel.Get_InputKeys();
 
@@ -258,7 +258,7 @@ public class InputKeyManagement : MonoBehaviour
     /// </summary>
     public bool InputKey_OverlapCheckAll()
     {
-        AreaKey[] areaKeys = areaPanel.Get_AreaKeys();
+        Z_AreaKey[] areaKeys = areaPanel.Get_Z_AreaKeys();
 
         for (int i = 0; i < areaKeys.Length; i++)
             if (areaKeys[i].Get_isOverlap())

@@ -24,10 +24,8 @@ public class TestCanvas : BaseCanvas
 
     public void A()
     {
-        expectedWinningRate = 1 / (1 + Math.Pow(10, (enemyScore - myScore) / 400));
+        Vector2 movePos = Input.mousePosition;
 
-        changedMyScore = myScore + criteriaScore * ((isWin ? 1.0f : 0.0f) - expectedWinningRate);
-
-        myScore = (float)changedMyScore;
+        Debug.Log($"x : {movePos.x} / y ; {movePos.y}");
     }
 }
