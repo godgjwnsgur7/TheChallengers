@@ -9,7 +9,9 @@ public class PlayerCamera : MonoBehaviour
     public Camera cam;
     public Transform target;
 
-    float halfHeight, halfWidth, clampedX, clampedY;
+    public float halfHeight;
+    public float halfWidth;
+    float clampedX, clampedY;
 
     public Vector2 minBound;
     public Vector2 maxBound;
@@ -36,12 +38,12 @@ public class PlayerCamera : MonoBehaviour
         Set_CameraBounds(_map.maxBound, _map.minBound);
 
         playerCamSize = 5f;
-        mapSize = _map.maxBound.x * Screen.height / Screen.width;
+        mapSize = _map.maxBound.x * 1080 / 1920;
 
         cam.orthographicSize = mapSize;
 
         halfHeight = cam.orthographicSize;
-        halfWidth = halfHeight * Screen.width / Screen.height;
+        halfWidth = halfHeight * 1080 / 1920;
     }
 
     public void Following_Target(Transform target)
