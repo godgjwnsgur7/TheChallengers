@@ -3,6 +3,7 @@ using GoogleMobileAds.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum BannerPosition
@@ -41,8 +42,7 @@ namespace FGPlatform.Advertisement
     {
         private readonly string AppID = "ca-app-pub-3940256099942544~3347511713";
 
-        private FGPlatformAd bannerAd = null;
-		private FGPlatformAd interstitialAd = null;
+        private Dictionary<AdvertisementType, FGPlatformAd> banners = new Dictionary<AdvertisementType, FGPlatformAd>();
 
 		public void Init(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)
 		{
@@ -73,52 +73,41 @@ namespace FGPlatform.Advertisement
         private void LoadAd(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<AdFailedToLoadEventArgs> OnLoadFailed = null)
         {
 			var adPos = (AdPosition)Enum.Parse(typeof(AdPosition), bannerPos.ToString());
-			bannerAd = AdFactory.Create(AdvertisementType.Banner, adPos);
+			var bannerAd = AdFactory.Create(AdvertisementType.Banner, adPos);
             if(bannerAd != null)
             {
 				bannerAd.OnAdLoaded += OnLoaded;
 				bannerAd.OnAdFailedToLoad += OnLoadFailed;
 			}
 
-			interstitialAd = AdFactory.Create(AdvertisementType.Interstitial);
+            banners[AdvertisementType.Banner] = bannerAd;
+
+			var interstitialAd = AdFactory.Create(AdvertisementType.Interstitial);
             if(interstitialAd != null)
             {
 				interstitialAd.OnAdLoaded += OnLoaded;
 				interstitialAd.OnAdFailedToLoad += OnLoadFailed;
 			}
+
+			banners[AdvertisementType.Interstitial] = interstitialAd;
 		}
 
         public void UnloadAd()
         {
-            bannerAd?.Unload();
-			interstitialAd?.Unload();
+            foreach(var banner in banners.Select(p => p.Value))
+            {
+				banner?.Unload();
+            }
 		}
 
         public void ShowAd(AdvertisementType type, Action<EventArgs> OnOpening = null, Action<EventArgs> OnClosed = null)
         {
-            switch(type)
-            {
-                case AdvertisementType.Banner:
-				    bannerAd?.Show();
-                    break;
-
-                case AdvertisementType.Interstitial:
-					interstitialAd?.Show();
-					break;
-			}
+            banners[type]?.Show();
 		}
 
         public void HideAd(AdvertisementType type)
         {
-			switch (type)
-			{
-				case AdvertisementType.Banner:
-					bannerAd?.Hide();
-					break;
-
-				case AdvertisementType.Interstitial:
-					break;
-			}
+			banners[type]?.Hide();
 		}
     }
 

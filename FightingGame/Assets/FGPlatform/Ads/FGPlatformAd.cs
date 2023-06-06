@@ -37,8 +37,6 @@ public abstract class FGPlatformAd
 			Debug.LogError($"이미 {this.GetType()} 타입 광고가 떠 있습니다.");
 			return;
 		}
-
-		isShow = true;
 	}
 
 	public virtual void Hide()
@@ -48,8 +46,6 @@ public abstract class FGPlatformAd
 			Debug.LogError($"이미 {this.GetType()} 타입 광고가 꺼져 있습니다.");
 			return;
 		}
-
-		isShow = false;
 	}
 
 	public virtual void Unload()
@@ -84,12 +80,16 @@ public abstract class FGPlatformAd
 	{
 		OnAdOpening?.Invoke(e);
 		OnAdOpening = null;
+
+		isShow = true;
 	}
 
 	protected void BannerView_OnAdClosed(object sender, EventArgs e)
 	{
 		OnAdClosed?.Invoke(e);
 		OnAdClosed = null;
+
+		isShow = false;
 	}
 
 	protected void BannerView_OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
