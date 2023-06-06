@@ -12,6 +12,8 @@ public class InputKeyAreaPanel : MonoBehaviour
 
     public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
+        Set_ChangeIcon(ENUM_CHARACTER_TYPE.Knight);
+
         if (isInit)
             return;
         isInit = true;
@@ -35,6 +37,14 @@ public class InputKeyAreaPanel : MonoBehaviour
         }
     }
 
+    public void Clear()
+    {
+        for(int i = 0; i < inputKeyAreas.Length; i++)
+        {
+            inputKeyAreas[i].Deselect_AreaImage();
+        }
+    }
+
     private void Set_InputKeyArea(InputKeyArea inputKeyArea, KeySettingDataElement keySettingDataElement, float _opacity)
     {
         inputKeyArea.rectTr.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);
@@ -55,7 +65,7 @@ public class InputKeyAreaPanel : MonoBehaviour
     public void Set_OpacityValueAll(float _value)
     {
         for(int i = 0; i < inputKeyAreas.Length; i++)
-            inputKeyAreas[i].Set_Transparency(_value);
+            inputKeyAreas[i].Set_Transparency(_value / 100f);
     }
 
     public void Reset_InputKeyData()
@@ -64,17 +74,18 @@ public class InputKeyAreaPanel : MonoBehaviour
         KeySettingData keySettingData = Load_InputKeyData();
         for(int i = 0; i < inputKeyAreas.Length; i++)
             Set_InputKeyArea(inputKeyAreas[i], keySettingData.keySettingDataList[i], keySettingData.opacity);
+        Set_ChangeIcon(ENUM_CHARACTER_TYPE.Knight);
     }
 
-    public void Save_InputKeyData()
+    public bool Save_InputKeyData()
     {
         // 겹치는 영역 체크
         for(int i = 0; i < inputKeyAreas.Length; i++)
         {
-            if(!inputKeyAreas[i].Get_CollisionCheck())
+            if(inputKeyAreas[i].Get_CollisionCheck())
             {
                 Managers.UI.popupCanvas.Open_NotifyPopup("저장에 실패했습니다.\n( 겹치는 영역 존재 )");
-                return;
+                return false;
             }            
         }
 
@@ -93,6 +104,8 @@ public class InputKeyAreaPanel : MonoBehaviour
         KeySettingData keySettingData = new KeySettingData(keySettingDataList, opacity);
 
         PlayerPrefsManagement.Save_KeySettingData(keySettingData);
+
+        return true;
     }
 
     public KeySettingData Load_InputKeyData()
@@ -113,7 +126,7 @@ public class InputKeyAreaPanel : MonoBehaviour
             {
                 KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i,
                     inputKeys[i].rectTr.localScale.x,
-                    inputKeys[i].rectTr.position.x, inputKeyAreas[i].rectTr.position.y);
+                    inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
 
                 keySettingDataList.Add(keySettingDataElement);
             }

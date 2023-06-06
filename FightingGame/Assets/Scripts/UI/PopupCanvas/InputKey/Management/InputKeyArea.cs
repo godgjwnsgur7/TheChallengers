@@ -10,7 +10,7 @@ public class InputKeyArea : InputBasicKey
 
     int collisionCount = 0;
     bool isSelect = false;
-
+    
     public override void EventTrigger_PointerDown()
     {
         isSelect = true;
@@ -48,7 +48,8 @@ public class InputKeyArea : InputBasicKey
 
     public void Set_ScaleSize(float _value)
     {
-        Vector2 tempVec = new Vector2(_value, _value);
+        float scaleSizeValue = _value / 100f;
+        Vector2 tempVec = new Vector2(scaleSizeValue, scaleSizeValue);
         rectTr.localScale = tempVec;
     }
 
@@ -58,7 +59,7 @@ public class InputKeyArea : InputBasicKey
 
         if (collisionCount > 0) // 충돌
         {
-            changeColor = Color.red;
+            changeColor = isSelect? Color.magenta : Color.red;
             changeColor.a = 1.0f;
             areaImage.color = changeColor;
         }

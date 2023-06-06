@@ -17,6 +17,9 @@ public class DeadLanding : StateMachineBehaviour
 
     private IEnumerator IDeadEffect()
     {
+        if (activeCharacter == null)
+            yield break;
+
         SpriteRenderer charSpriteRenderer = activeCharacter.GetComponent<SpriteRenderer>();
         Color color = charSpriteRenderer.color;
 

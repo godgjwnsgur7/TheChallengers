@@ -7,9 +7,9 @@ using FGDefine;
 
 public class KeySettingWindow : MonoBehaviour
 {
-    [SerializeField] Slider sizeSlider;
+    [SerializeField] Slider scaleSizeSlider;
     [SerializeField] Slider opacitySlider;
-    [SerializeField] Text sizeText;
+    [SerializeField] Text scaleSizeText;
     [SerializeField] Text opacityText;
 
     [SerializeField] Text currentCharText;
@@ -19,28 +19,37 @@ public class KeySettingWindow : MonoBehaviour
 
     public void Init(Action<float> _onChangeSizeSliderCallBack, Action<float> _onChageOpacitySliderCallBack, float _opacity)
     {
-        sizeSlider.interactable = false;
+        scaleSizeSlider.interactable = false;
 
         onChangeSizeSliderCallBack = _onChangeSizeSliderCallBack;
         onChageOpacitySliderCallBack = _onChageOpacitySliderCallBack;
 
-        opacitySlider.value = _opacity;
+        scaleSizeSlider.value = 100;
+        opacitySlider.value = _opacity * 100;
+
+        currentCharText.text = Managers.Data.Get_CharNameDict(ENUM_CHARACTER_TYPE.Knight);
     }
 
-    public void OnValueChanged_SizeSlider(Slider _slider)
+    public void Set_SizeSliderValue(float _value)
     {
-        float value = _slider.value;
-
-        onChangeSizeSliderCallBack?.Invoke(value);
-        sizeText.text = $"{(int)value}%";
+        scaleSizeSlider.value = _value;
     }
 
-    public void OnValueChanged_TransparencySlider(Slider _slider)
+    public void Set_OpacitySliderValue(float _value)
     {
-        float value = _slider.value;
+        opacitySlider.value = _value;
+    }
 
-        onChageOpacitySliderCallBack?.Invoke(value);
-        opacityText.text = $"{(int)value}%";
+    public void OnValueChanged_SizeSlider()
+    {
+        onChangeSizeSliderCallBack?.Invoke(scaleSizeSlider.value);
+        scaleSizeText.text = $"{(int)scaleSizeSlider.value}%";
+    }
+
+    public void OnValueChanged_OpacitySlider()
+    {
+        onChageOpacitySliderCallBack?.Invoke(opacitySlider.value);
+        opacityText.text = $"{(int)opacitySlider.value}%";
     }
 
     public void ChangeCharacterText(ENUM_CHARACTER_TYPE _charType)
@@ -50,6 +59,6 @@ public class KeySettingWindow : MonoBehaviour
 
     public void Set_SizeliderInteractable()
     {
-        sizeSlider.interactable = true;
+        scaleSizeSlider.interactable = true;
     }
 }

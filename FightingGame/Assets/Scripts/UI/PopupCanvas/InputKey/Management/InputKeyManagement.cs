@@ -1,8 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using FGDefine;
 using System;
+
+enum ENUM_DIRECTION_TYPE
+{
+    Left = 1, Right = 2, Up = 3, Down = 4,
+}
 
 public class InputKeyManagement : MonoBehaviour
 {
@@ -11,17 +17,11 @@ public class InputKeyManagement : MonoBehaviour
     [SerializeField] GameObject selectCharDropDownAreaObject;
 
     InputKeyArea selectedKeyArea = null;
-    Coroutine moveKeyPosCoroutine = null;
+    Coroutine moveKeyToMousePosCoroutine = null;
+    Coroutine moveKeyFineAdjustmentCoroutine = null;
 
     bool isInit = false;
     bool isChangeValue = false;
-
-    /*
-    private void Start()
-    {
-        Init();
-    }
-    */
 
     private void OnEnable()
     {
@@ -37,9 +37,7 @@ public class InputKeyManagement : MonoBehaviour
 
     public void Close()
     {
-        isInit = false;
-        selectedKeyArea = null;
-
+        Clear();
         gameObject.SetActive(false);
     }
 
@@ -50,11 +48,29 @@ public class InputKeyManagement : MonoBehaviour
 
         isInit = true;
 
-        inputKeyAreaPanel.Init(OnPointDownCallBack, OnPointUpCallBack);
+        inputKeyAreaPanel.Init(OnPointDownCallBack_InputKeyArea, OnPointUpCallBack_InputKeyArea);
         keySettingWindow.Init(OnChangeSizeSliderCallBack, OnChageOpacitySliderCallBack, inputKeyAreaPanel.Get_InputKeyArea(0).Get_Transparency());
+
+        selectCharDropDownAreaObject.SetActive(false);
     }
 
-    public void OnPointDownCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
+    private void Reset_ManagementSetting()
+    {
+        Close();
+        Open();
+        inputKeyAreaPanel.Reset_InputKeyData();
+        keySettingWindow.Set_OpacitySliderValue(100f);
+    }
+
+    private void Clear()
+    {
+        isInit = false;
+        selectedKeyArea = null;
+
+        inputKeyAreaPanel.Clear();
+    }
+
+    public void OnPointDownCallBack_InputKeyArea(ENUM_INPUTKEY_NAME _inputKeyName)
     {
         isChangeValue = true;
         keySettingWindow.Set_SizeliderInteractable();
@@ -66,13 +82,44 @@ public class InputKeyManagement : MonoBehaviour
         }
 
         selectedKeyArea = inputKeyAreaPanel.Get_InputKeyArea((int)_inputKeyName);
-        moveKeyPosCoroutine = StartCoroutine(IMoveInputKeyPosition());
+        keySettingWindow.Set_SizeSliderValue(selectedKeyArea.rectTr.localScale.x * 100);
+
+        moveKeyToMousePosCoroutine = StartCoroutine(IMoveInputKeyToMousePos());
     }
 
-    public void OnPointUpCallBack(ENUM_INPUTKEY_NAME _inputKeyName)
+    public void OnPointUpCallBack_InputKeyArea(ENUM_INPUTKEY_NAME _inputKeyName)
     {
-        if (moveKeyPosCoroutine != null)
-            StopCoroutine(moveKeyPosCoroutine);
+        if (moveKeyToMousePosCoroutine != null)
+            StopCoroutine(moveKeyToMousePosCoroutine);
+    }
+
+    /// <summary>
+    /// directionType : ENUM_DIRECTION_TYPE
+    /// </summary>
+    public void OnPointDownCallBack_FineAdjustment(int _directionType)
+    {
+        if (selectedKeyArea == null)
+            return;
+
+        ENUM_DIRECTION_TYPE directionType = (ENUM_DIRECTION_TYPE)_directionType;
+
+        Vector2 vec = Vector2.zero;
+        switch(directionType)
+        {
+            case ENUM_DIRECTION_TYPE.Left: vec = new Vector2(-0.5f, 0); break;
+            case ENUM_DIRECTION_TYPE.Right: vec = new Vector2(0.5f, 0); break;
+            case ENUM_DIRECTION_TYPE.Up: vec = new Vector2(0, 0.5f); break;
+            case ENUM_DIRECTION_TYPE.Down: vec = new Vector2(0, -0.5f); break;
+        }
+
+        if(vec != Vector2.zero)
+            moveKeyFineAdjustmentCoroutine = StartCoroutine(IMoveInputKeyFineAdjustment(vec));
+    }
+
+    public void OnPointUpCallBack_FineAdjustment()
+    {
+        if (moveKeyFineAdjustmentCoroutine != null)
+            StopCoroutine(moveKeyFineAdjustmentCoroutine);
     }
 
     public void OnChangeSizeSliderCallBack(float _value)
@@ -88,8 +135,26 @@ public class InputKeyManagement : MonoBehaviour
         inputKeyAreaPanel.Set_OpacityValueAll(_value);
     }
 
-    protected IEnumerator IMoveInputKeyPosition()
+    private void Set_selectedKeyAreaPos(Vector2 _movePosVec)
     {
+        // 선택된 인풋키 반지름 값
+        float scaleSizeX = (selectedKeyArea.rectTr.sizeDelta.x / 2) * selectedKeyArea.rectTr.localScale.x;
+        float scaleSizeY = (selectedKeyArea.rectTr.sizeDelta.y / 2) * selectedKeyArea.rectTr.localScale.y;
+
+        // 인풋키 위치 범위
+        float vecRangeX = Mathf.Clamp(_movePosVec.x, -920f + scaleSizeX, 920f - scaleSizeX);
+        float vecRangeY = Mathf.Clamp(_movePosVec.y, -500f + scaleSizeY, 80f - scaleSizeY);
+
+        Vector2 moveToPosVec = new Vector2(vecRangeX, vecRangeY);
+
+        selectedKeyArea.transform.localPosition = moveToPosVec;
+    }
+
+    protected IEnumerator IMoveInputKeyToMousePos()
+    {
+        if(moveKeyFineAdjustmentCoroutine != null)
+            StopCoroutine (moveKeyFineAdjustmentCoroutine);
+
         Vector2 touchPosVec = Input.mousePosition;
         float moveX, moveY;
 
@@ -98,16 +163,37 @@ public class InputKeyManagement : MonoBehaviour
             moveX = Input.mousePosition.x - touchPosVec.x;
             moveY = Input.mousePosition.y - touchPosVec.y;
 
-            selectedKeyArea.transform.localPosition = new Vector2(
+            Vector2 movePosVec = new Vector2(
                 selectedKeyArea.transform.localPosition.x + moveX,
                 selectedKeyArea.transform.localPosition.y + moveY);
+
+            Set_selectedKeyAreaPos(movePosVec);
 
             touchPosVec = new Vector2(touchPosVec.x + moveX, touchPosVec.y + moveY);
 
             yield return null;
         }
 
-        moveKeyPosCoroutine = null;
+        moveKeyToMousePosCoroutine = null;
+    }
+    
+    protected IEnumerator IMoveInputKeyFineAdjustment(Vector2 vec)
+    {
+        if (moveKeyToMousePosCoroutine != null)
+            StopCoroutine(moveKeyToMousePosCoroutine);
+
+        while (selectedKeyArea != null)
+        {
+            Vector2 movePosVec = new Vector2(
+                selectedKeyArea.transform.localPosition.x + vec.x,
+                selectedKeyArea.transform.localPosition.y + vec.y);
+
+            Set_selectedKeyAreaPos(movePosVec);
+
+            yield return null;
+        }
+
+        moveKeyFineAdjustmentCoroutine = null;
     }
 
     public void OnClick_CharSelectArea(bool active)
@@ -142,7 +228,7 @@ public class InputKeyManagement : MonoBehaviour
     }
     private void Init_InputKeySetting()
     {
-        inputKeyAreaPanel.Reset_InputKeyData();
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Reset_ManagementSetting);
     }
 
     public void OnClick_Save()
@@ -151,6 +237,7 @@ public class InputKeyManagement : MonoBehaviour
     }
     private void Save_InputKeyData()
     {
-        inputKeyAreaPanel.Save_InputKeyData();
+        if (inputKeyAreaPanel.Save_InputKeyData())
+            isChangeValue = false;
     }
 }

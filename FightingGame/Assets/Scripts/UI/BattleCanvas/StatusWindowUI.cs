@@ -49,7 +49,16 @@ public class StatusWindowUI : MonoBehaviour
 
     private void Set_Nickname()
     {
-        if (PhotonLogicHandler.IsMasterClient ==
+        if(!Managers.Network.IsServerSyncState)
+        {
+            if (teamType != ENUM_TEAM_TYPE.Blue)
+                return;
+
+            Color selectColor = Managers.Data.Get_SelectColor();
+            charFrameCoverImage.color = selectColor;
+            nicknameText.color = selectColor;
+        }
+        else if (PhotonLogicHandler.IsMasterClient ==
             (teamType == ENUM_TEAM_TYPE.Blue))
         {
             Color selectColor = Managers.Data.Get_SelectColor();
