@@ -189,6 +189,7 @@ public class NetworkMgr : IRoomPostProcess
 
     public void GoTo_Main()
     {
+        Time.timeScale = 1;
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Main);
     }
 

@@ -106,10 +106,10 @@ public class InputKeyManagement : MonoBehaviour
         Vector2 vec = Vector2.zero;
         switch(directionType)
         {
-            case ENUM_DIRECTION_TYPE.Left: vec = new Vector2(-0.1f, 0); break;
-            case ENUM_DIRECTION_TYPE.Right: vec = new Vector2(0.1f, 0); break;
-            case ENUM_DIRECTION_TYPE.Up: vec = new Vector2(0, 0.1f); break;
-            case ENUM_DIRECTION_TYPE.Down: vec = new Vector2(0, -0.1f); break;
+            case ENUM_DIRECTION_TYPE.Left: vec = new Vector2(-0.5f, 0); break;
+            case ENUM_DIRECTION_TYPE.Right: vec = new Vector2(0.5f, 0); break;
+            case ENUM_DIRECTION_TYPE.Up: vec = new Vector2(0, 0.5f); break;
+            case ENUM_DIRECTION_TYPE.Down: vec = new Vector2(0, -0.5f); break;
         }
 
         if(vec != Vector2.zero)

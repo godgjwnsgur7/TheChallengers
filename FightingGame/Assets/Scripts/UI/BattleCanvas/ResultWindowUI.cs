@@ -24,23 +24,6 @@ public class ResultWindowUI : MonoBehaviour
     long myWinningRate;
     long enemyScore;
 
-    private void OnEnable()
-    {
-        Test();
-    }
-
-    private void Test()
-    {
-        rankingScore.Open_Score((long)1500, (long)58);
-
-        Invoke("Test2", 1f);
-    }
-
-    private void Test2()
-    {
-        rankingScore.Update_Score((long)1450, (long)36);
-    }
-
     private void OnDisable()
     {
         if (counterCorotine != null)

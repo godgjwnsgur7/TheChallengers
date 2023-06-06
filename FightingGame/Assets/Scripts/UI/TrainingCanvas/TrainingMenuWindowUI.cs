@@ -13,10 +13,9 @@ public class TrainingMenuWindowUI : MonoBehaviour
         trainingScene = Managers.Scene.CurrentScene.GetComponent<TrainingScene>();
     }
     
-    public void OnClick_ChangeMap()
+    public void OnClick_ChangeMap(int mapTypeNum)
     {
-        // 테스트용임
-        trainingScene.Change_CurrMap(ENUM_MAP_TYPE.VolcanicMap);
+        trainingScene.Change_CurrMap((ENUM_MAP_TYPE)mapTypeNum);
     }
 
     public void OnClick_ChangeEnemyCharacter()

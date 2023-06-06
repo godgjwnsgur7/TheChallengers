@@ -12,6 +12,8 @@ public class InputKeyAreaPanel : MonoBehaviour
 
     public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
+        Set_ChangeIcon(ENUM_CHARACTER_TYPE.Knight);
+
         if (isInit)
             return;
         isInit = true;
@@ -33,8 +35,6 @@ public class InputKeyAreaPanel : MonoBehaviour
             if (keySettingData != null)
                 Set_InputKeyArea(inputKeyAreas[i], keySettingData.keySettingDataList[i], keySettingData.opacity);
         }
-
-        Set_ChangeIcon(ENUM_CHARACTER_TYPE.Knight);
     }
 
     public void Clear()
