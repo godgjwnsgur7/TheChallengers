@@ -224,12 +224,12 @@ namespace FGPlatform
 
 		public void ShowBanner()
 		{
-			AdMob.ShowBanner();
+			AdMob.ShowAd(AdvertisementType.Banner);
 		}
 
 		public void HideBanner()
 		{
-			AdMob.HideBanner();
+			AdMob.HideAd(AdvertisementType.Banner);
 		}
 
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)
