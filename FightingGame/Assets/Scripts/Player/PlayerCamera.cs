@@ -34,16 +34,17 @@ public class PlayerCamera : MonoBehaviour
     public void Init(BaseMap _map)
     {
         cam = Camera.main;
+        cam.transform.position = new Vector3(0, 0, -10);
 
         Set_CameraBounds(_map.maxBound, _map.minBound);
 
         playerCamSize = 5f;
-        mapSize = _map.maxBound.x * 1080 / 1920;
+        mapSize = _map.maxBound.x / cam.aspect;
 
         cam.orthographicSize = mapSize;
 
         halfHeight = cam.orthographicSize;
-        halfWidth = halfHeight * 1080 / 1920;
+        halfWidth = halfHeight * cam.aspect;
     }
 
     public void Following_Target(Transform target)
@@ -92,14 +93,15 @@ public class PlayerCamera : MonoBehaviour
     {
         while (cam.orthographicSize > playerCamSize)
         {
-            halfHeight = cam.orthographicSize;
-            halfWidth = halfHeight * Screen.width / Screen.height;
-
             cam.orthographicSize += _zoomSpeed;
+            halfHeight = cam.orthographicSize;
+            halfWidth = halfHeight * cam.aspect;
             yield return new WaitForSeconds(0.01f);
         }
 
         cam.orthographicSize = playerCamSize;
+        halfHeight = cam.orthographicSize;
+        halfWidth = halfHeight * cam.aspect;
     }
 
     IEnumerator ICamera_Moving()

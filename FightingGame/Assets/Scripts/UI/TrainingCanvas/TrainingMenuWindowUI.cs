@@ -16,7 +16,7 @@ public class TrainingMenuWindowUI : MonoBehaviour
     public void OnClick_ChangeMap()
     {
         // 테스트용임
-        trainingScene.Change_CurrMap(ENUM_MAP_TYPE.CaveMap);
+        trainingScene.Change_CurrMap(ENUM_MAP_TYPE.VolcanicMap);
     }
 
     public void OnClick_ChangeEnemyCharacter()
