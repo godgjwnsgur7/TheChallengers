@@ -32,6 +32,7 @@ public class TrainingScene : BaseScene
     public void Change_CurrMap(ENUM_MAP_TYPE _mapType)
     {
         mapType = _mapType;
+        Managers.Sound.Stop_BGM();
         Managers.UI.popupCanvas.Play_FadeOutInEffect(Summon_MapObject);
     }
 
@@ -52,6 +53,9 @@ public class TrainingScene : BaseScene
 
         currMap = Managers.Resource.Instantiate($"Maps/{mapType}").GetComponent<BaseMap>();
         trainingCharacter.Init(currMap);
+
+        ENUM_BGM_TYPE bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapType.ToString());
+        Managers.Sound.Play_BGM(bgmType);
     }
 
     public override void Play_BGM()
