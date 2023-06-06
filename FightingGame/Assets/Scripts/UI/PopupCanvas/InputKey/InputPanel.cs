@@ -45,8 +45,6 @@ public class InputPanel : MonoBehaviour
     
     public void Set_InputSkillKeys(ENUM_CHARACTER_TYPE charType)
     {
-        // 수정요망 ㅋㅋ (임시)
-        
         Managers.Data.CharInfoDict.TryGetValue((int)charType, out CharacterInfo charInfo);
 
         InputSkillKey inputSkillKey;
@@ -68,7 +66,7 @@ public class InputPanel : MonoBehaviour
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
         inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_4);
-        inputSkillKey.ChangeSet_IconImage($"Icon_{charType}Skill4");
+        
     }
 
     public void Notify_UseSkill(int skillNum)
