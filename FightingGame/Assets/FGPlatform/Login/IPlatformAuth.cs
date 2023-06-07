@@ -151,8 +151,8 @@ namespace FGPlatform.Auth
         } = string.Empty;
 
         private GoogleSignIn googleModule = null;
-        private readonly string ClientID = "834296008969-ha5c3bfbqjqfh21jo08nggjho53s9tt0.apps.googleusercontent.com";
-
+        private readonly string AndroidClientID = "834296008969-ha5c3bfbqjqfh21jo08nggjho53s9tt0.apps.googleusercontent.com";
+        private readonly string WebClientID = "834296008969-3jm5utarunoinuhm5tc8f2ulus81v91j.apps.googleusercontent.com";
         public bool TryConnectAuth(Action OnConnectAuthSuccess = null, Action OnConnectAuthFail = null)
         {
             if (IsAuthValid) // 이미 파이어베이스 인증을 끝낸 경우임
@@ -192,7 +192,7 @@ namespace FGPlatform.Auth
             }
 
             GoogleAuthenticate(OnGetToken: (Credential c) => { SignInByCredential(c, OnSignInSuccess, OnSignInFailed, OnSignCanceled); },
-                         OnSignInSuccess, OnSignInFailed);
+                          OnSignInFailed);
         }
 
         public void SignOut()
@@ -233,11 +233,11 @@ namespace FGPlatform.Auth
 			auth.StateChanged -= handler;
 		}
 
-        private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnSuccess, Action OnFailed = null)
+        private void GoogleAuthenticate(Action<Credential> OnGetToken, Action OnFailed = null)
         {
             if (googleModule == null)
             {
-                GoogleSignIn.Configuration = new GoogleSignInConfiguration { WebClientId = ClientID, RequestEmail = true, RequestIdToken = true };
+                GoogleSignIn.Configuration = new GoogleSignInConfiguration { WebClientId = WebClientID, RequestEmail = true, RequestIdToken = true };
                 GoogleSignIn.Configuration.UseGameSignIn = false;
                 GoogleSignIn.Configuration.RequestIdToken = true;
                 googleModule = GoogleSignIn.DefaultInstance;
@@ -253,8 +253,6 @@ namespace FGPlatform.Auth
                     }
                     else if (task.IsCompleted)
                     {
-                        OnSuccess?.Invoke();
-
 						Debug.Log($"이메일 로그인 성공 : {task.Result.UserId}");
 
 						var credential = GetUserCredential(task.Result.IdToken);
@@ -291,11 +289,12 @@ namespace FGPlatform.Auth
                 }
                 else
                 {
-                    OnSignInSuccess?.Invoke();
                     FirebaseUser newUser = task.Result;
                     Debug.LogFormat("이메일 로그인 성공 : {0} ({1})", newUser.DisplayName, newUser.UserId);
 
                     SetFirebaseCurrentUser(newUser);
+
+                    OnSignInSuccess?.Invoke();
                 }
             });
         }

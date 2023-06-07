@@ -12,7 +12,6 @@ using FGDefine;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using FGPlatform;
-using System.Runtime.InteropServices;
 
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message);

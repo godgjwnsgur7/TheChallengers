@@ -202,7 +202,7 @@ namespace FGPlatform
 			var loginType = Auth.CurrentLoginType;
 			var userId = GetUserID();
 
-			if (loginType == ENUM_LOGIN_TYPE.None || userId.Equals(string.Empty))
+			if (Auth.IsLogin == false)
 			{
 				Debug.LogError("로그인 상태가 아닙니다.");
 				return;
