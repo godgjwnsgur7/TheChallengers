@@ -27,10 +27,10 @@ public class SoundSettingArea : MonoBehaviour
     public void Init(Action<ENUM_SOUND_TYPE, float> _updataVolumeDataCallBack
         , Action<ENUM_SOUND_TYPE, bool> _updateMuteStateCallBack, float _volumeValue, bool _isMute)
     {
+        slider.value = _volumeValue;
+
         updataVolumeDataCallBack = _updataVolumeDataCallBack;
         updateMuteStateCallBack = _updateMuteStateCallBack;
-
-        slider.value = _volumeValue;
 
         Change_MuteState(_isMute);
     }
@@ -60,7 +60,7 @@ public class SoundSettingArea : MonoBehaviour
         String str = isMute ? "Mute_Button_On" : "Mute_Button_Off";
         muteImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/{str}");
 
-        updateMuteStateCallBack(soundType, isMute);
+        updateMuteStateCallBack?.Invoke(soundType, isMute);
     }
 
     public void OnValueChanged_UpdateVolumeData()
@@ -74,7 +74,7 @@ public class SoundSettingArea : MonoBehaviour
             OnClick_Mute();
         }
 
-        updataVolumeDataCallBack(soundType, slider.value);
+        updataVolumeDataCallBack?.Invoke(soundType, slider.value);
     }
 
     protected IEnumerator IMuteButtonLock(float _time)

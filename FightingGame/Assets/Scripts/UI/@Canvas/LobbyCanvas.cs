@@ -100,6 +100,11 @@ public class LobbyCanvas : BaseCanvas
         Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
+    public void OnClick_Exit()
+    {
+        Managers.UI.popupCanvas.Open_NotifyPopup("베타 테스트 버전에서는 로그아웃이 불가능합니다.");
+    }
+
     private IEnumerator IWaitMatching()
     {
         int count = 0;

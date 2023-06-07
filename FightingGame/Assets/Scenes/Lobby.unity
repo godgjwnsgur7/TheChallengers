@@ -3387,8 +3387,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.3
-  m_Text: "1\uB300 1 \uB9E4\uCE58\uC785\uB2C8\uB2E4.\n\uC5B4\uCA4C\uAD6C\uC800\uCA4C\uAD6C
-    \uBE14\uB77C\uBE14\uB77C\n\uC774\uB807\uAC8C \uC800\uB807\uAC8C \uC694\uB7EC\uCF00"
+  m_Text: "'\uCEE4\uC2A4\uD140 \uB9E4\uCE58' \uC785\uB2C8\uB2E4.\n\uBC29\uC744 \uC0DD\uC131,
+    ,\uCC38\uAC00 \uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n\uB7AD\uD0B9 \uC810\uC218\uC5D4
+    \uC601\uD5A5\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
 --- !u!222 &491990386
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6519,7 +6520,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 899204181}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 445608023}
+        m_TargetAssemblyTypeName: LobbyCanvas, Source
+        m_MethodName: OnClick_Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &899204181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7028,8 +7041,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.3
-  m_Text: "\uD6C8\uB828\uC7A5\uC785\uB2C8\uB2E4.\n\uD6C8\uB828\uAC00\uB2A5 \u3147\u314B?\n\uC774\uB807\uAC8C
-    \uC694\uB807\uAC8C \u314E\u3147\u314B\u314B"
+  m_Text: "'\uD6C8\uB828 \uBAA8\uB4DC' \uC785\uB2C8\uB2E4.\n\uB9F5\uACFC \uCE90\uB9AD\uD130\uB97C
+    \uC120\uD0DD \uAC00\uB2A5\uD569\uB2C8\uB2E4.\n\uC9C0\uD615\uC5D0 \uB530\uB978
+    \uC804\uB7B5\uC744 \uC138\uC6CC\uBCF4\uC138\uC694."
 --- !u!222 &970180552
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9942,9 +9956,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.3
-  m_Text: "\uB79C\uB364 \uB9E4\uCE58\uC785\uB2C8\uB2E4.\n\uB7AD\uD0B9\uC804\uC774\uB77C\uACE0
-    \uD560 \uC218 \uC788\uCC0C\uC694\u314B\n\uC774\uB807\uAC8C \uC800\uB807\uAC8C
-    \uC694\uB7EC\uCF00"
+  m_Text: "'\uB7AD\uD0B9\uC804 \uB9E4\uCE58' \uC785\uB2C8\uB2E4.\n\uB79C\uB364\uD55C
+    \uC0C1\uB300\uC640 \uB9E4\uCE6D\uC744 \uC2DC\uB3C4\uD569\uB2C8\uB2E4.\n\uB7AD\uD0B9
+    \uC810\uC218\uC640 \uB4F1\uAE09\uC744 \uC62C\uB824\uBCF4\uC138\uC694!"
 --- !u!222 &1377572926
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -63,11 +63,6 @@ public class SoundMgr
         audioListener = null;
     }
 
-    public void Set_Vibration(bool _isVibration)
-    {
-        volumeData.isVibration = _isVibration;
-    }
-
     public VolumeData Get_CurrVolumeData()
     {
         volumeData = PlayerPrefsManagement.Load_VolumeData();

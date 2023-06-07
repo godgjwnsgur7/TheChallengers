@@ -15,9 +15,9 @@ public class SoundSettingWindow : MonoBehaviour
         VolumeData volumeData = Managers.Sound.Get_CurrVolumeData();
 
         bool isMasterMute = volumeData.isBgmMute && volumeData.isSfxMute;
-        masterSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.masterVolume, isMasterMute);
         bgmSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.bgmVolume, volumeData.isBgmMute);
         sfxSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.sfxVolume, volumeData.isSfxMute);
+        masterSound.Init(Update_VolumeData, Update_SoundMuteData, volumeData.masterVolume, isMasterMute);
 
         gameObject.SetActive(true);
     }

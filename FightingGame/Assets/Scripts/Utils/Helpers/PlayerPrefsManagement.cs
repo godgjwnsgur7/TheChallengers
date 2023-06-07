@@ -41,17 +41,14 @@ public class VolumeData
     public bool isBgmMute;
     public bool isSfxMute;
 
-    public bool isVibration;
-
     public VolumeData(float _masterVolume, float _bgmVolume, float _sfxVolume
-        , bool _isBgmMute, bool _isSfxMute, bool _isVibration)
+        , bool _isBgmMute, bool _isSfxMute)
     {
         masterVolume = _masterVolume;
         bgmVolume = _bgmVolume;
         sfxVolume = _sfxVolume;
         isBgmMute = _isBgmMute;
         isSfxMute = _isSfxMute;
-        isVibration = _isVibration;
     }
 }
 
@@ -169,7 +166,6 @@ public class PlayerPrefsManagement : MonoBehaviour
         PlayerPrefs.SetFloat("SFX_Volume", volumeData.sfxVolume);
         PlayerPrefs.SetInt("BGM_Mute", volumeData.isBgmMute ? 1 : 0);
         PlayerPrefs.SetInt("SFX_Mute", volumeData.isSfxMute ? 1 : 0);
-        PlayerPrefs.SetInt("Is_Vibration", volumeData.isVibration ? 1 : 0);
 
         PlayerPrefs.Save();
         Managers.Sound.Update_VolumeData(volumeData);
@@ -181,7 +177,7 @@ public class PlayerPrefsManagement : MonoBehaviour
         // 만약, 저장된 데이터가 없다면 기본 값으로 저장 후 리턴
         if(!PlayerPrefs.HasKey("Master_Volume"))
         {
-            VolumeData tempVolumeData = new VolumeData(0.5f, 0.5f, 1.0f, false, false, true); // 기본 값
+            VolumeData tempVolumeData = new VolumeData(1.0f, 0.5f, 1.0f, false, false); // 기본 값
             Save_VolumeData(tempVolumeData); 
             return tempVolumeData;
         }
@@ -191,9 +187,8 @@ public class PlayerPrefsManagement : MonoBehaviour
         float _sfxVolume = PlayerPrefs.GetFloat("SFX_Volume");
         bool _isBgmMute = PlayerPrefs.GetInt("BGM_Mute") == 1;
         bool _isSfxMute = PlayerPrefs.GetInt("SFX_Mute") == 1;
-        bool _isVibration = PlayerPrefs.GetInt("Is_Vibration") == 1;
 
-        VolumeData volumeData = new VolumeData(_wholeVolume, _bgmVolume, _sfxVolume, _isBgmMute, _isSfxMute, _isVibration);
+        VolumeData volumeData = new VolumeData(_wholeVolume, _bgmVolume, _sfxVolume, _isBgmMute, _isSfxMute);
 
         return volumeData;
     }
