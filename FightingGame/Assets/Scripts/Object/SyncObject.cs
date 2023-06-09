@@ -42,12 +42,6 @@ public class SyncObject : Poolable
         transform.localEulerAngles = reverseState ? new Vector3(0, 180, 0) : Vector3.zero;
     }
 
-    [BroadcastMethod]
-    protected void PlaySFX_HitSound(int sfxTypeNum, Vector3 hitPosVec)
-    {
-        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, teamType, hitPosVec);
-    }
-
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
         Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, teamType, transform.position);

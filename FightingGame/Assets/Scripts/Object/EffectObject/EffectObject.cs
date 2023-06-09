@@ -10,7 +10,6 @@ public class EffectObject : SyncObject
     public override void Init()
     {
         base.Init();
-
     }
 
     [BroadcastMethod]
