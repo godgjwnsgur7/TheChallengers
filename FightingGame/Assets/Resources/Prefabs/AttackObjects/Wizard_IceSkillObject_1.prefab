@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9005354377699007428
+--- !u!1 &4115546679637484028
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4568443729100028707}
-  - component: {fileID: 2417862947842913289}
-  - component: {fileID: 5042524898003012448}
-  - component: {fileID: 9005354377699007431}
+  - component: {fileID: 8827748664438456603}
+  - component: {fileID: 7235543473365438001}
+  - component: {fileID: 8598541096120664}
+  - component: {fileID: 4115546679637484031}
   m_Layer: 0
   m_Name: Wizard_IceSkillObject_1
   m_TagString: Untagged
@@ -19,13 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4568443729100028707
+--- !u!4 &8827748664438456603
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9005354377699007428}
+  m_GameObject: {fileID: 4115546679637484028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,13 +33,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2417862947842913289
+--- !u!114 &7235543473365438001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9005354377699007428}
+  m_GameObject: {fileID: 4115546679637484028}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -52,17 +52,17 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 5042524898003012448}
+  - {fileID: 8598541096120664}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &5042524898003012448
+--- !u!114 &8598541096120664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9005354377699007428}
+  m_GameObject: {fileID: 4115546679637484028}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b947318cb726cc64e84578bb7b62a96d, type: 3}
@@ -70,13 +70,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isUsing: 0
   isSkill: 1
---- !u!60 &9005354377699007431
+--- !u!60 &4115546679637484031
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9005354377699007428}
+  m_GameObject: {fileID: 4115546679637484028}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -95,7 +95,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.2, y: -0.25}
-      - {x: -2.25, y: -3.1}
-      - {x: 1.7, y: -3.1}
+    - - {x: -3.100733, y: -2.3511717}
+      - {x: -2.8078337, y: -3.3231335}
+      - {x: 2.4623718, y: -3.3231325}
+      - {x: 3.012022, y: 0.026803613}
       - {x: 2, y: 1.8}

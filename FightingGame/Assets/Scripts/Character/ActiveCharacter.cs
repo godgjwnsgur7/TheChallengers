@@ -162,6 +162,9 @@ public partial class ActiveCharacter : Character
 
     public override void Idle()
     {
+        if (currState == ENUM_PLAYER_STATE.Die)
+            return;
+
         if (jumpState && currState != ENUM_PLAYER_STATE.Jump)
         {
             SetAnimBool("IsDrop", true);
@@ -199,7 +202,7 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
-        if (jumpState)
+        if (jumpState || currState == ENUM_PLAYER_STATE.Die)
             return;
 
         if (currState != ENUM_PLAYER_STATE.Idle &&
@@ -240,15 +243,13 @@ public partial class ActiveCharacter : Character
     public override void Attack(CharacterParam param)
     {
         if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill
-            || currState == ENUM_PLAYER_STATE.Dash)
+            || currState == ENUM_PLAYER_STATE.Dash || currState == ENUM_PLAYER_STATE.Die)
             return;
 
         if (attackObject != null)
             attackObject = null;
 
         base.Attack(param);
-
-        SetAnimTrigger("TestTrigger");
 
         var attackParam = param as CharacterAttackParam;
 
@@ -261,15 +262,13 @@ public partial class ActiveCharacter : Character
     public override void Skill(CharacterParam param)
     {  
         if (jumpState || currState == ENUM_PLAYER_STATE.Skill
-            || currState == ENUM_PLAYER_STATE.Dash)
+            || currState == ENUM_PLAYER_STATE.Dash || currState == ENUM_PLAYER_STATE.Die)
             return;
 
         if (attackObject != null)
             attackObject = null;
 
         base.Skill(param);
-
-        ResetAnimTrigger("TestTrigger");
 
         var skillParam = param as CharacterSkillParam;
 
@@ -283,6 +282,9 @@ public partial class ActiveCharacter : Character
 
     public override void Hit(CharacterParam param)
     {
+        if (currState == ENUM_PLAYER_STATE.Die)
+            return;
+
         if (param == null || invincibility) return;
 
         var attackParam = param as CharacterAttackParam;

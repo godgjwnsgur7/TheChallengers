@@ -18,6 +18,7 @@ public class PlayerCharacter : MonoBehaviour
 
     bool isMove = false;
     bool isDebugState = false;
+    bool isDead = false;
 
     private void Update()
     {
@@ -179,8 +180,9 @@ public class PlayerCharacter : MonoBehaviour
         if (activeCharacter == null)
             return;
 
-        if ( activeCharacter.currState == ENUM_PLAYER_STATE.Skill ||
-            (activeCharacter.currState == ENUM_PLAYER_STATE.Hit || activeCharacter.currState == ENUM_PLAYER_STATE.Die))
+        if (activeCharacter.currState == ENUM_PLAYER_STATE.Skill ||
+            activeCharacter.currState == ENUM_PLAYER_STATE.Hit ||
+            isDead)
             return;
 
         switch (nextState)
@@ -207,6 +209,7 @@ public class PlayerCharacter : MonoBehaviour
                 Debug.LogError("주의! PlayerCharacter에 Hit 명령이 들어옴");
                 break;
             case ENUM_PLAYER_STATE.Die:
+                isDead = true;
                 activeCharacter.Die();
                 break;
         }
