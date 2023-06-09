@@ -32,8 +32,11 @@ public class HitAttackObject : AttackObject
 
     private void Start_RunTimeCheckCoroutine()
     {
-        if (skillValue == null)
+        if(skillValue == null)
+        {
+            Sync_DestroyMine();
             return;
+        }
 
         runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }

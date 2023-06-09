@@ -108,6 +108,7 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
 
         mapInfo.Open(PhotonLogicHandler.CurrentMapType);
 
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_GameStartInfo);
         waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
     }
 

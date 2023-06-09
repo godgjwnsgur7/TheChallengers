@@ -88,12 +88,23 @@ public class ResultWindowUI : MonoBehaviour
 
         // UI 이미지 세팅
         if (isDraw)
+        {
             resultLogoImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result_Draw");
+            Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Result_Draw);
+        } 
         else
+        {
             if (isWin)
+            {
                 resultLogoImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result_Victory");
+                Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Result_Victory);
+            }
             else
+            {
                 resultLogoImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Result_Defeat");
+                Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Result_Defeat);
+            }
+        }
 
         notifyCountText.text = $"{timeCount}초 뒤에 로비로 이동합니다.";
         gameObject.SetActive(true);

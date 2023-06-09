@@ -30,6 +30,7 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void Open()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_MacthingStart);
         fullLodingImage.gameObject.SetActive(false);
         exitButtonObj.SetActive(true);
         deactiveExitButtonObj.SetActive(false);
@@ -65,6 +66,7 @@ public class MatchingWindowUI : MonoBehaviour
     /// </summary>
     public void Matching_CallBack()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_MacthingCompleted);
         isStopwatchLock = true;
         exitButtonObj.SetActive(false);
         deactiveExitButtonObj.SetActive(true);

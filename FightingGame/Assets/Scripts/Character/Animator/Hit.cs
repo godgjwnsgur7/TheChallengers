@@ -11,7 +11,7 @@ public class Hit : StateMachineBehaviour
         if (activeCharacter == null)
             activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
 
-        if (!activeCharacter.isControl) return;
+        if (activeCharacter == null || !activeCharacter.isControl) return;
 
         activeCharacter.SetAnimBool("HitState", true);
     }
@@ -21,7 +21,7 @@ public class Hit : StateMachineBehaviour
         if (activeCharacter == null)
             activeCharacter = animator.transform.gameObject.GetComponent<ActiveCharacter>();
 
-        if (!activeCharacter.isControl) return;
+        if (activeCharacter == null || !activeCharacter.isControl) return;
 
         activeCharacter.SetAnimBool("HitState", false);
     }

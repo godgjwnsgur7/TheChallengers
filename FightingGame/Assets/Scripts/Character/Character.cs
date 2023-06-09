@@ -46,6 +46,8 @@ public class Character : MonoBehaviourPhoton
     public bool invincibility = false;
     public bool superArmour = false;
 
+    public bool isDead = false;
+
     protected float inputArrowDir = 0.0f;
     private bool isInitialized = false;
     protected bool isServerSyncState = false;
@@ -153,6 +155,8 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Die()
     {
+        isDead = true;
+
         currState = ENUM_PLAYER_STATE.Die;
 
         invincibility = true;
