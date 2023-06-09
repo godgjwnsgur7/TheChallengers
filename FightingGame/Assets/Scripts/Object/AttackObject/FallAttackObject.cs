@@ -89,6 +89,7 @@ public class FallAttackObject : GenerateAttackObject
         else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
         {
             rigid2D.velocity = Vector2.zero;
+            ResetAnimTrigger("FallTrigger");
         }
     }
 

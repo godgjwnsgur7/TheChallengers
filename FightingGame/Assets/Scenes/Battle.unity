@@ -1886,6 +1886,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   target: {fileID: 0}
+  halfHeight: 0
+  halfWidth: 0
   minBound: {x: 0, y: 0}
   maxBound: {x: 0, y: 0}
 --- !u!20 &740280951
@@ -2814,8 +2816,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1184255467}
   enemyPlayer: {fileID: 341150607}
-  testPlayerCharacterType: 1
-  testEnemyCharacterType: 2
+  testPlayerCharacterType: 2
+  testEnemyCharacterType: 1
   testMapType: 0
 --- !u!1 &1238407731
 GameObject:
@@ -3916,7 +3918,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -175}
+  m_AnchoredPosition: {x: 75, y: -200}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1653958714

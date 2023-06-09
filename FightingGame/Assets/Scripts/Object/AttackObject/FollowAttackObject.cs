@@ -15,19 +15,18 @@ public class FollowAttackObject : HitAttackObject
         base.Init();
     }
 
-    [BroadcastMethod]
-    public override void Activate_AttackObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType, bool _reverseState)
-    {
-        base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
-        
-    }
-
     public override void OnDisable()
     {
         if (followTargetCoroutine != null)
             CoroutineHelper.StopCoroutine(followTargetCoroutine);
 
         base.OnDisable();
+    }
+
+    [BroadcastMethod]
+    public override void Activate_AttackObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType, bool _reverseState)
+    {
+        base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
     }
 
     public void Set_TargetTransform(Transform _targetTr)
@@ -37,7 +36,7 @@ public class FollowAttackObject : HitAttackObject
 
     private IEnumerator IFollowTarget(Transform _targetTr)
     {
-        while(isUsing || _targetTr != null)
+        while(isUsing && _targetTr != null)
         {
             this.transform.position = _targetTr.position;
             yield return null;

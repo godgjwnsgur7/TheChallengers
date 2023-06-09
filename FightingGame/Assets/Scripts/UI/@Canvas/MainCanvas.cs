@@ -49,7 +49,7 @@ public class MainCanvas : BaseCanvas
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
             Try_MasterServer();
             PhotonLogicHandler.CurrentMyNickname = id;
-        },Login_Failed, null);
+        },Login_Failed);
     }
 
     private void Try_MasterServer()
