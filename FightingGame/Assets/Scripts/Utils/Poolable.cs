@@ -7,13 +7,6 @@ public class Poolable : MonoBehaviourPhoton
     public bool isUsing;
     protected bool isServerSyncState = false;
 
-    public override void OnDisable()
-    {
-        base.OnDisable();
-
-        isUsing = false;
-    }
-
     public override void Init() 
     { 
         base.Init();

@@ -17,6 +17,9 @@ public class InputKeyController : MonoBehaviour
 
     public void Close()
     {
+        if (inputPanel != null)
+            Managers.Resource.Destroy(inputPanel.gameObject);
+
         gameObject.SetActive(false);
     }
 
