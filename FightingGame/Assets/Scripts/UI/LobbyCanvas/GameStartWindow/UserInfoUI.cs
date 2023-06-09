@@ -43,7 +43,7 @@ public class UserInfoUI : MonoBehaviour
         IsInit = false;
     }
 
-    public void Init(DBUserData _userData)
+    public void Init(DBUserData _userData, bool _isUserMasterClient)
     {
         if (IsInit) 
             return;
@@ -52,6 +52,11 @@ public class UserInfoUI : MonoBehaviour
 
         charImage.gameObject.gameObject.SetActive(false);
         CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
+
+        if (PhotonLogicHandler.IsMasterClient == _isUserMasterClient)
+            userNicknameText.color = Managers.Data.Get_SelectColor();
+        else
+            userNicknameText.color = new Color(1, 1, 1, 1);
 
         userNicknameText.text = _userData.nickname;
         gameStartInfo.Set_UserData(_userData);
@@ -86,8 +91,6 @@ public class UserInfoUI : MonoBehaviour
 
     public void Active_SelectionCompleteBtn(Action<ENUM_CHARACTER_TYPE> _selectionCharacterCompleteCallBack)
     {
-        userNicknameText.color = new Color(180, 100, 221);
-
         selectionCharacterCompleteCallBack = _selectionCharacterCompleteCallBack;
         selectionCompleteBtn.gameObject.SetActive(true);
     }

@@ -128,9 +128,9 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
         if (property.isMasterClient)
-            masterInfoUI.Init(property.data);
+            masterInfoUI.Init(property.data, property.isMasterClient);
         else
-            slaveInfoUI.Init(property.data);
+            slaveInfoUI.Init(property.data, property.isMasterClient);
 
         // 상대방의 캐릭터 선택 완료됨을 변수화해서 담음
         if (property.characterType != ENUM_CHARACTER_TYPE.Default
