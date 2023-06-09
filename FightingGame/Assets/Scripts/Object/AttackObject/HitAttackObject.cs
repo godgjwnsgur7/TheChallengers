@@ -66,7 +66,8 @@ public class HitAttackObject : AttackObject
 
             if (isServerSyncState)
                 PhotonLogicHandler.Instance.TryBroadcastMethod<HitAttackObject, int, Vector3>
-                    (this, PlaySFX_HitSound, skillValue.hitSoundType, collision.transform.position);
+                    (this, PlaySFX_HitSound, skillValue.hitSoundType, collision.transform.position
+                    , ENUM_RPC_TARGET.All);
             else
                 PlaySFX_HitSound(skillValue.hitSoundType, collision.transform.position);
 

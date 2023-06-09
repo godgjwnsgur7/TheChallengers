@@ -259,7 +259,6 @@ namespace FGDefine
 
         // Hit Sound
         Dummy_HitSound = 301,
-        Dummy_HitSound2 = 302,
     }
 
     [Serializable]

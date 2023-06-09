@@ -9,24 +9,31 @@ using System;
 /// </summary>
 public class OneShotAudioObject : MonoBehaviour
 {
+    public bool isUsing = false;
+
     [SerializeField] AudioSource audioSource;
     float maxVolume; // 설정에 따른 최대 볼륨
 
     Coroutine listenerCheckCoroutine = null;
+    Coroutine pushSoundPoolTimeCheckCoroutine = null;
 
     Transform targetTr = null;
     bool isFollowing = false;
 
-    private void OnEnable()
+    public void Init()
     {
-        if(audioSource == null)
+        if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+
     }
 
     private void OnDisable()
     {
         if (listenerCheckCoroutine != null)
             StopCoroutine(listenerCheckCoroutine);
+
+        if (pushSoundPoolTimeCheckCoroutine != null)
+            StopCoroutine(pushSoundPoolTimeCheckCoroutine);
 
         isFollowing = false;
     }
@@ -43,8 +50,7 @@ public class OneShotAudioObject : MonoBehaviour
         audioSource.Play();
 
         listenerCheckCoroutine = StartCoroutine(IListenerCheck_FollowingCheck());
-
-        UnityEngine.Object.Destroy(gameObject, audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale));
+        pushSoundPoolTimeCheckCoroutine = StartCoroutine(IPushTimeCheck(audioClipVolume.audioClip.length * ((Time.timeScale < 0.01f) ? 0.01f : Time.timeScale)));
     }
 
     public void PlaySFX_FollowingSound(AudioClipVolume _audioClipVolume, Transform _target)
@@ -56,9 +62,16 @@ public class OneShotAudioObject : MonoBehaviour
         Play_SFX(_audioClipVolume, Vector3.zero);
     }
 
+    protected IEnumerator IPushTimeCheck(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+
+        Managers.Sound.Push_SoundPool(this);
+    }
+
     protected IEnumerator IListenerCheck_FollowingCheck()
     {
-        while (audioSource != null)
+        while (audioSource != null && isUsing)
         {
             // 팔로윙 오브젝트인지 체크
             if (isFollowing && targetTr != null)

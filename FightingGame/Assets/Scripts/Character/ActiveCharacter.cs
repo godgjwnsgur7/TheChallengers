@@ -507,9 +507,9 @@ public partial class ActiveCharacter : Character
             {
                 jumpState = !jumpState;
                 
-                if (dropCoroutine == null && 
-                    currState != ENUM_PLAYER_STATE.Attack && currState != ENUM_PLAYER_STATE.Hit &&
-                    currState != ENUM_PLAYER_STATE.Skill && currState != ENUM_PLAYER_STATE.Dash)
+                if (dropCoroutine == null &&
+                    (currState == ENUM_PLAYER_STATE.Idle || currState == ENUM_PLAYER_STATE.Jump
+                    || currState == ENUM_PLAYER_STATE.Move))
                 {
                     currState = ENUM_PLAYER_STATE.Jump;
                     SetAnimBool("IsDrop", true);

@@ -24,6 +24,59 @@ public class AudioClipVolume
 
 public class SoundMgr
 {
+    #region soundPool
+    class SoundPool
+    {
+        public Transform Root { get; set; }
+        Stack<OneShotAudioObject> soundPoolStack = new Stack<OneShotAudioObject>();
+
+        public void Init(Transform root, int poolCount)
+        {
+            Root = root;
+
+            for (int i = 0; i < poolCount; i++)
+                Push(Create());
+        }
+
+        OneShotAudioObject Create()
+        {
+            OneShotAudioObject obj = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
+            if(obj.gameObject.activeSelf)
+                obj.gameObject.SetActive(false);
+            return obj;
+        }
+
+        public void Push(OneShotAudioObject oneShotAudioObject)
+        {
+            if (oneShotAudioObject == null) return;
+
+            oneShotAudioObject.transform.parent = Root;
+            oneShotAudioObject.gameObject.SetActive(false);
+            oneShotAudioObject.isUsing = false;
+            oneShotAudioObject.Init();
+
+            soundPoolStack.Push(oneShotAudioObject);
+        }
+
+        public OneShotAudioObject Pop()
+        {
+            OneShotAudioObject oneShotAudioObject;
+
+            if (soundPoolStack.Count > 0)
+                oneShotAudioObject = soundPoolStack.Pop();
+            else
+                oneShotAudioObject = Create();
+
+            oneShotAudioObject.gameObject.SetActive(true);
+            oneShotAudioObject.isUsing = true;
+
+            return oneShotAudioObject;
+        }
+    }
+    #endregion
+
+    SoundPool soundPool = new SoundPool();
+
     AudioSource[] audioSources = new AudioSource[(int)ENUM_SOUND_TYPE.MASTER]; // BGM, SFX
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>(); // 키 : 파일경로
 
@@ -55,12 +108,19 @@ public class SoundMgr
             volumeData = PlayerPrefsManagement.Load_VolumeData();
             audioSources[(int)ENUM_SOUND_TYPE.BGM].mute = volumeData.isBgmMute;
             audioSources[(int)ENUM_SOUND_TYPE.SFX].mute = volumeData.isSfxMute;
+
+            soundPool.Init(root.transform, 20);
         }
     }
     
     public void Clear()
     {
         audioListener = null;
+    }
+
+    public void Push_SoundPool(OneShotAudioObject oneShotAudioObject)
+    {
+        soundPool.Push(oneShotAudioObject);
     }
 
     public VolumeData Get_CurrVolumeData()
@@ -191,7 +251,7 @@ public class SoundMgr
         if (audioClipVolume == null)
             return;
 
-        OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
+        OneShotAudioObject oneShotAudioObject = soundPool.Pop();
 
         oneShotAudioObject.Play_SFX(audioClipVolume, worldPosVec);
     }
@@ -209,7 +269,7 @@ public class SoundMgr
         if (audioClipVolume == null)
             return;
 
-        OneShotAudioObject oneShotAudioObject = Managers.Resource.Instantiate($"PublicObjects/OneShotAudio").GetComponent<OneShotAudioObject>();
+        OneShotAudioObject oneShotAudioObject = soundPool.Pop();
 
         oneShotAudioObject.PlaySFX_FollowingSound(audioClipVolume, target);
     }
@@ -220,7 +280,7 @@ public class SoundMgr
 
         if (Managers.Network.IsServerSyncState)
         {
-            if (PhotonLogicHandler.IsMasterClient == (teamType == ENUM_TEAM_TYPE.Blue))
+            if (PhotonLogicHandler.IsMasterClient != (teamType == ENUM_TEAM_TYPE.Blue))
                 _currSfxVolume *= 0.6f;
         }
         else if (teamType == ENUM_TEAM_TYPE.Red)
