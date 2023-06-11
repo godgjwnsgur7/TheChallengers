@@ -35,6 +35,9 @@ public class GenerateAttackObject : AttackObject
 
         attackObject = null;
 
+        if (!PhotonLogicHandler.IsMine(viewID))
+            return;
+
         if (isServerSyncState)
             attackObject = Managers.Resource.InstantiateEveryone(("AttackObjects/"+(ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString(), transform.position).GetComponent<AttackObject>();
         else

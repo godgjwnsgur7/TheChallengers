@@ -43,8 +43,9 @@ public class SyncObject : Poolable
     }
 
     [BroadcastMethod]
-    protected void PlaySFX_HitSound(int sfxTypeNum, Vector3 hitPosVec)
+    public void PlaySFX_HitSound(int sfxTypeNum, Vector3 hitPosVec)
     {
+        Debug.Log($"{sfxTypeNum} : {this.gameObject.name} 이 히트 ㅇㅇ");
         Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, teamType, hitPosVec);
     }
 
