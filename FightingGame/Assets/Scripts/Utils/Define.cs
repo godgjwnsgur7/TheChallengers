@@ -258,7 +258,27 @@ namespace FGDefine
         Wizard_PushOutSkill_Voice = 223,
 
         // Hit Sound
-        Dummy_HitSound = 301,
+        Dummy_HitSound = 300,
+        Hit_Knight_Attack1 = 301,
+        Hit_Knight_Attack2 = 302,
+        Hit_Knight_Attack3 = 303,
+        Hit_Knight_JumpAttack = 304,
+        
+        Hit_Knight_ComboSkill1 = 305,
+        Hit_Knight_ComboSkill2 = 306,
+        Hit_Knight_ComboSkill3 = 307,
+        Hit_Knight_ComboSkill4 = 308,
+        Hit_Knight_ComboSkill5 = 309,
+        
+        Hit_Knight_DashSkill1 = 310,
+        Hit_Knight_DashSkill2 = 311,
+        Hit_Knight_DashSkill3 = 312,
+
+        Hit_Knight_SmashSkill1 = 313,
+        Hit_Knight_SmashSkill2 = 314,
+        Hit_Knight_SmashSkill3 = 315,
+
+        Hit_Knight_ThrowSkill = 316,
     }
 
     [Serializable]
