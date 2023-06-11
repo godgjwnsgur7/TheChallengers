@@ -63,13 +63,11 @@ public class HitAttackObject : AttackObject
                 return;
 
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
-            
-            if (isServerSyncState)
-                PhotonLogicHandler.Instance.TryBroadcastMethod<HitAttackObject, int, Vector3>
-                    (this, PlaySFX_HitSound, skillValue.hitSoundType, collision.transform.position
-                    , ENUM_RPC_TARGET.All);
-            else
-                PlaySFX_HitSound(skillValue.hitSoundType, collision.transform.position);
+
+            Vector3 hitPosVec = collision.transform.position;
+            hitPosVec.z = 0;
+
+            Managers.Network.SyncPlaySFX_HitSound(skillValue.hitSoundType, teamType, hitPosVec);
 
             // 피격된 캐릭터 위치를 기준으로 주어진 범위 내의 랜덤위치로 조정
             Vector2 randomHitPosVec = collision.transform.position;

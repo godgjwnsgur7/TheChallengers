@@ -237,6 +237,14 @@ public class NetworkMgr : IRoomPostProcess
         userSyncMediator.Start_Timer();
     }
 
+    public void SyncPlaySFX_HitSound(int hitSoundTypeNum, ENUM_TEAM_TYPE teamType, Vector2 hitPosVec)
+    {
+        if(IsServerSyncState)
+            userSyncMediator.SyncPlaySFX_HitSound(hitSoundTypeNum, teamType, hitPosVec);
+        else
+            Managers.Sound.Play_SFX((ENUM_SFX_TYPE)hitSoundTypeNum, teamType, hitPosVec);
+    }
+
     // Set 계열
     public void Set_UserSyncMediator(UserSyncMediator _userSyncMediator)
     {

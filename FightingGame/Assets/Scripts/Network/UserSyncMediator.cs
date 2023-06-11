@@ -88,6 +88,18 @@ public class UserSyncMediator : MonoBehaviourPhoton
         updateTimerCallBack(_currentTimeLimit);
     }
 
+    public void SyncPlaySFX_HitSound(int hitSoundTypeNum, ENUM_TEAM_TYPE teamType, Vector3 hitPosVec)
+    {
+        PhotonLogicHandler.Instance.TryBroadcastMethod<UserSyncMediator, int, ENUM_TEAM_TYPE, Vector3>
+                   (this, PlaySFX_HitSound, hitSoundTypeNum, teamType, hitPosVec);
+    }
+
+    [BroadcastMethod]
+    public void PlaySFX_HitSound(int hitSoundTypeNum, ENUM_TEAM_TYPE teamType, Vector3 hitPosVec)
+    {
+        Managers.Sound.Play_SFX((ENUM_SFX_TYPE)hitSoundTypeNum, teamType, hitPosVec);
+    }
+
     /// <summary>
     ///  게임에 돌입하기 전에 처리되는 함수들
     /// </summary>
