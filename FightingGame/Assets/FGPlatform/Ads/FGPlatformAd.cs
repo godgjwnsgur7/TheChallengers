@@ -25,11 +25,6 @@ public abstract class FGPlatformAd
 	public event Action<EventArgs> OnAdClosed = null;
 	public event Action<AdValueEventArgs> OnPaidEvent = null;
 
-	public FGPlatformAd()
-	{
-		RegisterEvent();
-	}
-
 	public virtual void Show()
 	{
 		if (isShow)

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class FGPlatformInterstitial : FGPlatformAd
 {
-	private readonly string TestInterstitialID_AOS = "";
+	private readonly string TestInterstitialID_AOS = "ca-app-pub-3940256099942544/1033173712";
 
 	private InterstitialAd ad;
 
@@ -15,6 +15,8 @@ public class FGPlatformInterstitial : FGPlatformAd
 	{
 		ad = new InterstitialAd(TestInterstitialID_AOS);
 		ad.LoadAd(adRequest);
+
+		RegisterEvent();
 	}
 
 	public override void Show()

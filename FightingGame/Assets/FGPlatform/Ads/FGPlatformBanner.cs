@@ -14,6 +14,8 @@ public class FGPlatformBanner : FGPlatformAd
 	{
 		bannerView = new BannerView(TestBannerID_AOS, AdSize.SmartBanner, adPos);
 		bannerView.LoadAd(adRequest);
+
+		RegisterEvent();
 	}
 
 	public override void Show()
