@@ -17,7 +17,7 @@ public class PlayerCamera : MonoBehaviour
     public Vector2 maxBound;
 
     float mapSize;
-    float playerCamSize = 5f;
+    float playerCamSize = 5.5f;
     float zoomSpeed = 0.1f;
 
     Coroutine cameraZoomInCoroutine;
@@ -38,7 +38,7 @@ public class PlayerCamera : MonoBehaviour
 
         Set_CameraBounds(_map.maxBound, _map.minBound);
 
-        playerCamSize = 5f;
+        playerCamSize = 5.5f;
         mapSize = _map.maxBound.x / cam.aspect;
 
         cam.orthographicSize = mapSize;
