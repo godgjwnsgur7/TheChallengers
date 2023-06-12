@@ -51,7 +51,7 @@ public class InputKeyAreaPanel : MonoBehaviour
 
         inputKeyArea.Set_Transparency(_opacity);
 
-        inputKeyArea.rectTr.position = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
+        inputKeyArea.rectTr.localPosition = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
     }
 
     public void Set_ChangeIcon(ENUM_CHARACTER_TYPE charType)
@@ -96,7 +96,7 @@ public class InputKeyAreaPanel : MonoBehaviour
         {
             KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i,
                 inputKeyAreas[i].rectTr.localScale.x,
-                inputKeyAreas[i].rectTr.position.x, inputKeyAreas[i].rectTr.position.y);
+                inputKeyAreas[i].rectTr.localPosition.x, inputKeyAreas[i].rectTr.localPosition.y);
 
             keySettingDataList.Add(keySettingDataElement);
         }
@@ -126,7 +126,7 @@ public class InputKeyAreaPanel : MonoBehaviour
             {
                 KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i,
                     inputKeys[i].rectTr.localScale.x,
-                    inputKeys[i].rectTr.position.x, inputKeys[i].rectTr.position.y);
+                    inputKeys[i].rectTr.localPosition.x, inputKeys[i].rectTr.localPosition.y);
 
                 keySettingDataList.Add(keySettingDataElement);
             }
