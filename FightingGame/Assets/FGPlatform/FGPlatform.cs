@@ -242,6 +242,16 @@ namespace FGPlatform
 			AdMob.HideAd(AdvertisementType.Interstitial);
 		}
 
+		public void ShowRewardedAd()
+		{
+			AdMob.ShowAd(AdvertisementType.Rewarded);
+		}
+
+		public void HideRewardedAd()
+		{
+			AdMob.HideAd(AdvertisementType.Rewarded);
+		}
+
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)
 		{
 			return type.ToString() + id;

@@ -20,7 +20,8 @@ public enum BannerPosition
 public enum AdvertisementType
 {
 	Banner, // 배너
-	Interstitial // 전면 광고
+	Interstitial, // 전면 광고
+    Rewarded // 보상형 광고
 }
 
 namespace FGPlatform.Advertisement
@@ -90,6 +91,15 @@ namespace FGPlatform.Advertisement
 			}
 
 			banners[AdvertisementType.Interstitial] = interstitialAd;
+
+			var rewardedAd = AdFactory.Create(AdvertisementType.Rewarded);
+			if (rewardedAd != null)
+			{
+				rewardedAd.OnAdLoaded += OnLoaded;
+				rewardedAd.OnAdFailedToLoad += OnLoadFailed;
+			}
+
+			banners[AdvertisementType.Rewarded] = rewardedAd;
 		}
 
         public void UnloadAd()

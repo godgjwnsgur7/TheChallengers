@@ -13,11 +13,13 @@ public class DefineController : AssetPostprocessor
     private static DefineSetter googleLoginDefineSetter = new GoogleLoginDefineSetter(GoggleLoginMenuName, "GOOGLE_LOGIN_MODE");
 	private static DefineSetter bannerDefineSetter = new DefineSetter(BannerLoginMenuName, "ENABLE_BANNER");
 	private static DefineSetter interstitialDefineSetter = new DefineSetter(InterstitialMenuName, "ENABLE_INTERSTITIAL");
+    private static DefineSetter rewardedDefineSetter = new DefineSetter(RewardedMenuName, "ENABLE_REWARDED");
 
 	private const string GoggleLoginMenuName = "Debug/구글 로그인 활성화";
     private const string CharacterDamageMenuName = "Debug/캐릭터 데미지 치트";
 	private const string BannerLoginMenuName = "Debug/배너 활성화";
 	private const string InterstitialMenuName = "Debug/전면 광고 활성화";
+    private const string RewardedMenuName = "Debug/보상형 광고 활성화";
 
 	private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
@@ -25,6 +27,7 @@ public class DefineController : AssetPostprocessor
         characterDefineSetter.SetDefine();
         bannerDefineSetter.SetDefine();
         interstitialDefineSetter.SetDefine();
+        rewardedDefineSetter.SetDefine();
 	}
 
     [MenuItem(GoggleLoginMenuName)]
@@ -49,6 +52,12 @@ public class DefineController : AssetPostprocessor
 	public static void SetInterstitialMode()
 	{
 		interstitialDefineSetter.SetTestMode();
+	}
+
+	[MenuItem(RewardedMenuName)]
+	public static void SetRewardedMode()
+	{
+		rewardedDefineSetter.SetTestMode();
 	}
 }
 

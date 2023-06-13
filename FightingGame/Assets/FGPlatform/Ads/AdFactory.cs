@@ -42,6 +42,15 @@ public class AdFactory
 					Debug.LogError("ENABLE_INTERSTITIAL 디파인이 없는 상태에서 전면 광고 생성을 시도합니다.");
 					break;
 #endif
+
+			case AdvertisementType.Rewarded:
+#if ENABLE_REWARDED
+				return new FGPlatformRewarded(Request);
+#else
+					Debug.LogError("ENABLE_REWARDED 디파인이 없는 상태에서 보상형 광고 생성을 시도합니다.");
+					break;
+#endif
+
 		}
 
 		return null;

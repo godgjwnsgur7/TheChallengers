@@ -193,6 +193,16 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		Managers.Platform.HideInterstitial();
 	}
 
+	public void OnClickShowRewardedAd()
+	{
+		Managers.Platform.ShowRewardedAd();
+	}
+
+	public void OnClickHideRewardedAd()
+	{
+		Managers.Platform.HideRewardedAd();
+	}
+
 	public void OnClickMoveScene(string scenename)
 	{
 		var sceneType = (ENUM_SCENE_TYPE)Enum.Parse(typeof(ENUM_SCENE_TYPE), scenename);
