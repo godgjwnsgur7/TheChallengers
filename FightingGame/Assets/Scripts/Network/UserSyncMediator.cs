@@ -15,6 +15,11 @@ public class UserSyncMediator : MonoBehaviourPhoton
     int gameRunTimeLimit = 0;
     bool isInit = false;
 
+    private void Awake()
+    {
+        Managers.Network.Set_UserSyncMediator(this);
+    }
+
     public override void OnDisable()
     {
         if (timerCoroutine != null)
@@ -34,7 +39,6 @@ public class UserSyncMediator : MonoBehaviourPhoton
         base.Init();
 
         DontDestroyOnLoad(gameObject);
-        Managers.Network.Set_UserSyncMediator(this);
         gameRunTimeLimit = (int)Managers.Data.gameInfo.maxGameRunTime;
     }
 

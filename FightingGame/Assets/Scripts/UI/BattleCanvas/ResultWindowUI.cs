@@ -43,7 +43,6 @@ public class ResultWindowUI : MonoBehaviour
             myWinningRate = (long)tempMyWinningRate;
         }
             
-
         enemyScore = Managers.Network.Get_DBUserData(!PhotonLogicHandler.IsMasterClient).ratingPoint;
         myScore = myDBData.ratingPoint;
         rankingScore.Open_Score(myScore, myWinningRate);

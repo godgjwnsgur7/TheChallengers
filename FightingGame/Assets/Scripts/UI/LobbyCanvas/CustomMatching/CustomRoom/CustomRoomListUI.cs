@@ -32,41 +32,50 @@ public class CustomRoomListUI : MonoBehaviour
 
     }
 
-	public void Update_RoomList(List<CustomRoomInfo> customRoomList)
+    public void Update_RoomList(List<CustomRoomInfo> customRoomList)
     {
         gameObject.SetActive(false);
 
-        // 커스텀룸의 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
-        if (customRoomList.Count > roomListElements.Count)
-            for(int i = 0; i < customRoomList.Count - roomListElements.Count; i++)
-                roomListElements.Add(Managers.Resource.Instantiate("UI/RoomListElement", content.transform).GetComponent<RoomListElementUI>());
-
-        // 모든 방을 Close.
-        for (int i = 0; i < roomListElements.Count; i++)
-            roomListElements[i].Close();
-
         if (customRoomList.Count >= 5)
-        {
             contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-        }
-        else if (customRoomList.Count <= 0) 
-        {
-            contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
-            contentRectTransform.sizeDelta = this.GetComponent<RectTransform>().sizeDelta;
-            noneRoomTextObject.SetActive(true);
-            gameObject.SetActive(true);
-            return;
-        }
         else
         {
             contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
             contentRectTransform.sizeDelta = this.GetComponent<RectTransform>().sizeDelta;
         }
 
-        // 표시할 방의 갯수만큼 Open.
-        for (int i = 0; i < customRoomList.Count; i++)
+        if (customRoomList.Count <= 0)
         {
-            roomListElements[i].Open(customRoomList[i], Request_UpdateRoomList);
+            noneRoomTextObject.SetActive(true);
+            gameObject.SetActive(true);
+            return;
+        }
+
+        // 룸리스트 널체크
+        for(int i = roomListElements.Count - 1; i >= 0; i--)
+            if(roomListElements[i] == null)
+                roomListElements.RemoveAt(i);
+
+        // 커스텀룸의 정보 갯수보다 생성되어 있는 룸 갯수가 적을 때 차이만큼 생성
+        if (customRoomList.Count > roomListElements.Count)
+            for (int i = 0; i < customRoomList.Count - roomListElements.Count; i++)
+                roomListElements.Add(Managers.Resource.Instantiate("UI/RoomListElement", content.transform).GetComponent<RoomListElementUI>());
+
+        int roomIndex = customRoomList.Count;
+
+        // 표시할 방의 갯수만큼 Open.
+        for (int i = 0; i < roomListElements.Count; i++)
+        {
+            int customRoomIndex = 0;
+
+            if (roomIndex > 0)
+            {
+                roomListElements[i].Open(customRoomList[customRoomIndex], Request_UpdateRoomList);
+                customRoomIndex++;
+                roomIndex--;
+            }
+            else
+                roomListElements[i].Close();
         }
 
         noneRoomTextObject.SetActive(false);
