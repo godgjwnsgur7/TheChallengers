@@ -35,7 +35,7 @@ public class FGPlatformInterstitial : FGPlatformAd
 
 	public override bool Hide()
 	{
-		// 전면 광고는 숨기기가 없음
+		Debug.LogError("전면 광고는 숨기기 기능이 없습니다.");
 		return false;
 	}
 
