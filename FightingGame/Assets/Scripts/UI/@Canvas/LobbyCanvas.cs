@@ -21,6 +21,10 @@ public class LobbyCanvas : BaseCanvas
                 Set_InTheCustomRoom();
             }
         }
+        else
+        {
+            Managers.Network.Clear_DBData();
+        }
     }
 
     public void GameStart()

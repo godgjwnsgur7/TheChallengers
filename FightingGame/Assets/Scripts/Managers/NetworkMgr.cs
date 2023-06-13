@@ -63,7 +63,9 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
-        slaveDBData = null;
+        if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Lobby)
+            slaveDBData = null;
+
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
 
         ExitRoom_CallBack();
