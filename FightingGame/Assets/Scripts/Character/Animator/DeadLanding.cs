@@ -21,11 +21,15 @@ public class DeadLanding : StateMachineBehaviour
             yield break;
 
         SpriteRenderer charSpriteRenderer = activeCharacter.GetComponent<SpriteRenderer>();
+        
+        if (charSpriteRenderer == null)
+            yield break;
+        
         Color color = charSpriteRenderer.color;
 
         yield return new WaitForSeconds(1.5f);
 
-        while (color.a > 0.1f)
+        while (color.a > 0.1f && charSpriteRenderer != null)
         {
             color.a -= 0.01f;
             charSpriteRenderer.color = color;
@@ -34,7 +38,8 @@ public class DeadLanding : StateMachineBehaviour
         }
 
         color.a = 0f;
-        charSpriteRenderer.color = color;
+        if(charSpriteRenderer != null)
+            charSpriteRenderer.color = color;
         activeCharacter.EndGame();
     }
 }

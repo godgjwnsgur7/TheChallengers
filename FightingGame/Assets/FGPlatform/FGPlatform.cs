@@ -66,7 +66,7 @@ namespace FGPlatform
 		{
 #if UNITY_ANDROID
 			IAPController.Init();
-			AdMob.Init(BannerPosition.Top);
+			AdMob.Init(BannerPosition.Bottom);
 #endif
 
             FirebaseApp.CheckAndFixDependenciesAsync()
