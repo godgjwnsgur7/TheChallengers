@@ -145,7 +145,7 @@ public class InputKeyManagement : MonoBehaviour
         float vecRangeX = Mathf.Clamp(_movePosVec.x, -920f + scaleSizeX, 920f - scaleSizeX);
         float vecRangeY = Mathf.Clamp(_movePosVec.y, -500f + scaleSizeY, 80f - scaleSizeY);
 
-        Vector2 moveToPosVec = new Vector2(vecRangeX, vecRangeY);
+        Vector3 moveToPosVec = new Vector3(vecRangeX, vecRangeY, 0);
 
         selectedKeyArea.transform.localPosition = moveToPosVec;
     }
@@ -155,7 +155,7 @@ public class InputKeyManagement : MonoBehaviour
         if(moveKeyFineAdjustmentCoroutine != null)
             StopCoroutine (moveKeyFineAdjustmentCoroutine);
 
-        Vector2 touchPosVec = Input.mousePosition;
+        Vector3 touchPosVec = Input.mousePosition;
         float moveX, moveY;
 
         while(selectedKeyArea != null)
@@ -163,13 +163,13 @@ public class InputKeyManagement : MonoBehaviour
             moveX = Input.mousePosition.x - touchPosVec.x;
             moveY = Input.mousePosition.y - touchPosVec.y;
 
-            Vector2 movePosVec = new Vector2(
+            Vector3 movePosVec = new Vector3(
                 selectedKeyArea.transform.localPosition.x + moveX,
-                selectedKeyArea.transform.localPosition.y + moveY);
+                selectedKeyArea.transform.localPosition.y + moveY, 0);
 
             Set_selectedKeyAreaPos(movePosVec);
 
-            touchPosVec = new Vector2(touchPosVec.x + moveX, touchPosVec.y + moveY);
+            touchPosVec = new Vector3(touchPosVec.x + moveX, touchPosVec.y + moveY, 0);
 
             yield return null;
         }

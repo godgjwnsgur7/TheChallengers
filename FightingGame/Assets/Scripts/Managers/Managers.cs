@@ -90,5 +90,6 @@ public class Managers : MonoBehaviour
         Battle.Clear();
         Input.Clear();
         OrderLayer.Clear();
+        UI.Clear();
     }
 }

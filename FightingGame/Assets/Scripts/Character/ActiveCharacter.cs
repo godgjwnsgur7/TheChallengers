@@ -462,6 +462,8 @@ public partial class ActiveCharacter : Character
     [BroadcastMethod]
     public void Sync_TransparentState(float color_a)
     {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = new Color(1f, 1f, 1f, color_a);
     }
 

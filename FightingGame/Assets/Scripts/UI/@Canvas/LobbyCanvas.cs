@@ -67,6 +67,11 @@ public class LobbyCanvas : BaseCanvas
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
     }
 
+    private void GoTo_MainScene()
+    {
+        Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Main);
+    }
+
     public void OnClick_CustomMathing()
     {
         if(PhotonLogicHandler.IsConnected)
@@ -75,7 +80,7 @@ public class LobbyCanvas : BaseCanvas
         }
         else
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.");
+            Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.\n로그인을 위해 메인화면으로 이동합니다.", GoTo_MainScene);
         }
     }
 

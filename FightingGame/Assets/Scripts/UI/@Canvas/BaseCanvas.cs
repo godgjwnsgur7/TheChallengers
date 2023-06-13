@@ -9,7 +9,7 @@ public abstract class BaseCanvas : MonoBehaviour
     CanvasScaler scaler = null;
 	bool isInit = false;
 
-	private void Awake()
+	private void Start()
     {
         Managers.UI.Init();
     }

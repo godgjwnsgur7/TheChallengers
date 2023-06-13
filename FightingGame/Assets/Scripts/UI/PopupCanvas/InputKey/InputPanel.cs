@@ -36,11 +36,11 @@ public class InputPanel : MonoBehaviour
 
     private void Set_InputKey(InputKey inputKey, KeySettingDataElement keySettingDataElement, float _opacity)
     {
-        inputKey.rectTr.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);
+        inputKey.transform.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);
 
         inputKey.Set_Transparency(_opacity);
 
-        inputKey.rectTr.position = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
+        inputKey.transform.localPosition = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
     }
     
     public void Set_InputSkillKeys(ENUM_CHARACTER_TYPE charType)

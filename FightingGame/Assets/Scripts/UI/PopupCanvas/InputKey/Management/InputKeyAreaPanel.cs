@@ -47,11 +47,11 @@ public class InputKeyAreaPanel : MonoBehaviour
 
     private void Set_InputKeyArea(InputKeyArea inputKeyArea, KeySettingDataElement keySettingDataElement, float _opacity)
     {
-        inputKeyArea.rectTr.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);
+        inputKeyArea.transform.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);
 
         inputKeyArea.Set_Transparency(_opacity);
 
-        inputKeyArea.rectTr.localPosition = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
+        inputKeyArea.transform.localPosition = new Vector2(keySettingDataElement.rectTrX, keySettingDataElement.rectTrY);
     }
 
     public void Set_ChangeIcon(ENUM_CHARACTER_TYPE charType)
@@ -95,8 +95,8 @@ public class InputKeyAreaPanel : MonoBehaviour
         for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
         {
             KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i,
-                inputKeyAreas[i].rectTr.localScale.x,
-                inputKeyAreas[i].rectTr.localPosition.x, inputKeyAreas[i].rectTr.localPosition.y);
+                inputKeyAreas[i].transform.localScale.x,
+                inputKeyAreas[i].transform.localPosition.x, inputKeyAreas[i].transform.localPosition.y);
 
             keySettingDataList.Add(keySettingDataElement);
         }
@@ -125,8 +125,8 @@ public class InputKeyAreaPanel : MonoBehaviour
             for (int i = 0; i < (int)ENUM_INPUTKEY_NAME.Max; i++)
             {
                 KeySettingDataElement keySettingDataElement = new KeySettingDataElement(i,
-                    inputKeys[i].rectTr.localScale.x,
-                    inputKeys[i].rectTr.localPosition.x, inputKeys[i].rectTr.localPosition.y);
+                    inputKeys[i].transform.localScale.x,
+                    inputKeys[i].transform.localPosition.x, inputKeys[i].transform.localPosition.y);
 
                 keySettingDataList.Add(keySettingDataElement);
             }

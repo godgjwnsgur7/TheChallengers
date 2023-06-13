@@ -6,18 +6,37 @@ using System;
 
 public class UIMgr
 {
-    public BaseCanvas currCanvas;
+    BaseCanvas s_CurrCanvas; 
+
+    public BaseCanvas currCanvas
+    {
+        get
+        {
+            if(s_CurrCanvas == null)
+                s_CurrCanvas = GameObject.FindObjectOfType<BaseCanvas>();
+
+            return s_CurrCanvas;
+        }
+        set { s_CurrCanvas = value; }
+    }
     public PopupCanvas popupCanvas = null;
 
     public void Init()
     {
         popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
         if (popupCanvas == null)
+        {
             popupCanvas = Managers.Resource.Instantiate("UI/PopupCanvas").GetComponent<PopupCanvas>();
-        popupCanvas.Init();
-
+            popupCanvas.Init();
+        }
+            
         currCanvas = GameObject.FindObjectOfType<BaseCanvas>();
         currCanvas.Init();
+    }
+
+    public void Clear()
+    {
+        currCanvas = null;
     }
     
     public void OpenUI<T>()
