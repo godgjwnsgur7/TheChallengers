@@ -11,19 +11,32 @@ public class FGPlatformInterstitial : FGPlatformAd
 
 	private InterstitialAd ad;
 
-	public FGPlatformInterstitial(AdRequest adRequest)
+	public FGPlatformInterstitial(AdRequest adRequest) : base(adRequest)
 	{
 		ad = new InterstitialAd(TestInterstitialID_AOS);
-		ad.LoadAd(adRequest);
+		ad.LoadAd(request);
 
 		RegisterEvent();
 	}
 
-	public override void Show()
+	public override bool Show()
 	{
-		base.Show();
+		if(base.Show())
+		{
+			if (!ad.IsLoaded())
+				ad.LoadAd(request);
 
-		ad.Show();
+			ad.Show();
+			return true;
+		}
+
+		return false;
+	}
+
+	public override bool Hide()
+	{
+		// 전면 광고는 숨기기가 없음
+		return false;
 	}
 
 	public override void Unload()

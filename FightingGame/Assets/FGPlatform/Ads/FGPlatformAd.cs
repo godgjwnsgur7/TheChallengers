@@ -19,28 +19,41 @@ public abstract class FGPlatformAd
 		private set;
 	}
 
+	protected AdRequest request = null;
+
 	public event Action<EventArgs> OnAdLoaded = null;
 	public event Action<AdFailedToLoadEventArgs> OnAdFailedToLoad = null;
 	public event Action<EventArgs> OnAdOpening = null;
 	public event Action<EventArgs> OnAdClosed = null;
 	public event Action<AdValueEventArgs> OnPaidEvent = null;
 
-	public virtual void Show()
+	public FGPlatformAd(AdRequest request)
+	{
+		this.request = request;
+	}
+
+	public virtual bool Show()
 	{
 		if (isShow)
 		{
 			Debug.LogError($"이미 {this.GetType()} 타입 광고가 떠 있습니다.");
-			return;
+			return false;
 		}
+
+		isShow = true;
+		return true;
 	}
 
-	public virtual void Hide()
+	public virtual bool Hide()
 	{
 		if (!isShow)
 		{
 			Debug.LogError($"이미 {this.GetType()} 타입 광고가 꺼져 있습니다.");
-			return;
+			return false;
 		}
+
+		isShow = false;
+		return true;
 	}
 
 	public virtual void Unload()

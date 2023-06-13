@@ -224,10 +224,20 @@ namespace FGPlatform
 
 		public void ShowBanner()
 		{
-			AdMob.ShowAd(AdvertisementType.Interstitial);
+			AdMob.ShowAd(AdvertisementType.Banner);
 		}
 
 		public void HideBanner()
+		{
+			AdMob.HideAd(AdvertisementType.Banner);
+		}
+
+		public void ShowInterstitial()
+		{
+			AdMob.ShowAd(AdvertisementType.Interstitial);
+		}
+
+		public void HideInterstitial()
 		{
 			AdMob.HideAd(AdvertisementType.Interstitial);
 		}

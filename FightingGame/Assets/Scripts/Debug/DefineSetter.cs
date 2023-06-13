@@ -23,7 +23,9 @@ public class DefineController : AssetPostprocessor
     {
         googleLoginDefineSetter.SetDefine();
         characterDefineSetter.SetDefine();
-    }
+        bannerDefineSetter.SetDefine();
+        interstitialDefineSetter.SetDefine();
+	}
 
     [MenuItem(GoggleLoginMenuName)]
     public static void SetGoggleLoginMode()

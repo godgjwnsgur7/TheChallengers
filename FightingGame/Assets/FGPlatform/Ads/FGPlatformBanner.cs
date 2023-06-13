@@ -10,26 +10,35 @@ public class FGPlatformBanner : FGPlatformAd
 	private readonly string TestBannerID_AOS = "ca-app-pub-3940256099942544/6300978111";
 	BannerView bannerView = null;
 
-	public FGPlatformBanner(AdRequest adRequest, AdPosition adPos)
+	public FGPlatformBanner(AdRequest adRequest, AdPosition adPos) : base(adRequest)
 	{
 		bannerView = new BannerView(TestBannerID_AOS, AdSize.SmartBanner, adPos);
-		bannerView.LoadAd(adRequest);
+		bannerView.LoadAd(request);
+		bannerView.Hide();
 
 		RegisterEvent();
 	}
 
-	public override void Show()
+	public override bool Show()
 	{
-		base.Show();
+		if (base.Show())
+		{
+			bannerView.Show();
+			return true;
+		}
 
-		bannerView.Show();
+		return false;
 	}
 
-	public override void Hide()
+	public override bool Hide()
 	{
-		base.Hide();
+		if (base.Hide())
+		{
+			bannerView.Hide();
+			return true;
+		}
 
-		bannerView.Hide();
+		return false;
 	}
 
 	public override void Unload()
