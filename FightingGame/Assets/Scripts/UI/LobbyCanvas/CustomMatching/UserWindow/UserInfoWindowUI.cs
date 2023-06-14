@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UserInfoWindowUI : MonoBehaviour
+public class UserInfoWindowUI : UIElement
 {
     [SerializeField] Image rankEmblemImage;
     [SerializeField] Text userNicknameText;
@@ -52,4 +52,11 @@ public class UserInfoWindowUI : MonoBehaviour
     }
 
     public void OnClick_Close() => Close();
+
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        Close();
+    }
 }

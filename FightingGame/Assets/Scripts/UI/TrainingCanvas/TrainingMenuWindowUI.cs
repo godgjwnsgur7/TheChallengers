@@ -4,7 +4,7 @@ using UnityEngine;
 using FGDefine;
 using System;
 
-public class TrainingMenuWindowUI : MonoBehaviour
+public class TrainingMenuWindowUI : UIElement
 {
     TrainingScene trainingScene;
 
@@ -33,8 +33,15 @@ public class TrainingMenuWindowUI : MonoBehaviour
         Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        OnClick_GoToLobby();       
+    }
+
     public void OnClick_GoToLobby() => Managers.UI.popupCanvas.Open_SelectPopup
-        (GoTo_LobbyScene, null, "로비에 돌아가시겠습니까?");
+        (GoTo_LobbyScene, null, "로비로 돌아가시겠습니까?");
 
     private void GoTo_LobbyScene() => Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
 }

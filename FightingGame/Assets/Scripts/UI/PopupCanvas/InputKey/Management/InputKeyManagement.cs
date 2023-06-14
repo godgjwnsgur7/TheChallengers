@@ -10,7 +10,7 @@ enum ENUM_DIRECTION_TYPE
     Left = 1, Right = 2, Up = 3, Down = 4,
 }
 
-public class InputKeyManagement : MonoBehaviour
+public class InputKeyManagement : UIElement
 {
     [SerializeField] KeySettingWindow keySettingWindow;
     [SerializeField] InputKeyAreaPanel inputKeyAreaPanel;
@@ -23,8 +23,10 @@ public class InputKeyManagement : MonoBehaviour
     bool isInit = false;
     bool isChangeValue = false;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         isChangeValue = false;
     }
 
@@ -211,11 +213,15 @@ public class InputKeyManagement : MonoBehaviour
         OnClick_CharSelectArea(false);
     }
 
-    public void OnClick_Exit()
+    public override void OnClick_Exit()
     {
-        string massage = isChangeValue ? "변경된 값이 있습니다.\n저장하지 않고 종료하시겠습니까?" :
-            "키 설정 창을 종료하시겠습니까?";
-        Managers.UI.popupCanvas.Open_SelectPopup(Exit_Management, null, massage);
+        base.OnClick_Exit();
+
+        if(isChangeValue)
+            Managers.UI.popupCanvas.Open_SelectPopup(Exit_Management, null
+                , "변경된 값이 있습니다.\n저장하지 않고 종료하시겠습니까?");
+        else
+            Exit_Management();
     }
     private void Exit_Management()
     {

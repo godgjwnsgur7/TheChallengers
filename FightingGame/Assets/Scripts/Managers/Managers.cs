@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FGPlatform;
+using System;
 
 public class Managers : MonoBehaviour
 {
@@ -48,10 +49,17 @@ public class Managers : MonoBehaviour
             return Instance.player; 
         }
     }
-    
+
     private void Start()
     {
         Init();
+    }
+
+    private void Update()
+    {
+#if UNITY_ANDROID
+        UI.Update_InputBackKeyCheck();
+#endif
     }
 
     private static void Init()

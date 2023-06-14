@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using FGDefine;
 using System;
 
-public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
+public class CustomRoomWindowUI : UIElement, IRoomPostProcess
 {
     [SerializeField] MasterProfileUI masterProfile;
     [SerializeField] SlaveProfileUI slaveProfile;
@@ -34,8 +34,10 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
     Coroutine readyLockCoroutine;
     Coroutine waitInfoSettingCoroutine;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         // 포톤콜백함수 등록
         PhotonLogicHandler.Instance.onEnterRoomPlayer -= SlaveClientEnterCallBack;
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= SlaveClientExitCallBack;
@@ -48,8 +50,10 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         readyLock = false;
 
         if (readyLockCoroutine != null)
@@ -213,7 +217,14 @@ public class CustomRoomWindowUI : MonoBehaviour, IRoomPostProcess
         if(!PhotonLogicHandler.IsMasterClient)
             slaveProfile.Set_ReadyState(false);
 
-        Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "정말 방에서 나가시겠습니까?");
+        Managers.UI.popupCanvas.Open_SelectPopup(ExitRoom, null, "방에서 나가시겠습니까?");
+    }
+
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        OnClick_ExitRoom();
     }
 
     /// <summary>

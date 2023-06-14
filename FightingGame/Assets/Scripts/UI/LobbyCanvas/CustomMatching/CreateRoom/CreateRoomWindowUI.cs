@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using FGDefine;
 
-public class CreateRoomWindowUI : MonoBehaviour
+public class CreateRoomWindowUI : UIElement
 {
     [SerializeField] InputField userInputField;
     [SerializeField] Image inputFieldLineImage;
@@ -13,8 +13,9 @@ public class CreateRoomWindowUI : MonoBehaviour
 
     [SerializeField] CustormRoom_MapInfo mapInfo;
 
-
     ENUM_MAP_TYPE currMap = ENUM_MAP_TYPE.CaveMap;
+
+    bool isLock = false;
 
     private void Open_CustomRoom()
     {
@@ -23,6 +24,8 @@ public class CreateRoomWindowUI : MonoBehaviour
 
     private void Init()
     {
+        isLock = false;
+
         userInputField.text = "";
         userInputField.characterLimit = Managers.Data.nameTextLimit;
         
@@ -42,6 +45,12 @@ public class CreateRoomWindowUI : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        Close();
+    }
 
     public void OnClick_ChangeMap(int _mapTypeNum)
     {
@@ -51,11 +60,9 @@ public class CreateRoomWindowUI : MonoBehaviour
 
     public void OnClick_CreatRoom()
     {
-        userInputField.text = userInputField.text.Trim();
-
-        if (userInputField.text == "")
+        if (userInputField.text.Trim() == "")
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
+            Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");       
             return;
         }
         else if(Managers.Data.BadWord_Discriminator(userInputField.text))
@@ -65,7 +72,9 @@ public class CreateRoomWindowUI : MonoBehaviour
             return;
         }
 
-        PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack, null, true, 2, currMap);
+        isLock = true;
+        PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack
+            ,null , true, 2, currMap);
     }
 
     private void CreateRoomSuccessCallBack()

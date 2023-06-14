@@ -41,4 +41,11 @@ public class SelectPopup : PopupUI
         succeededCallBack = null;
         failedCallBack = null;
     }
+
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        OnClick_No();
+    }
 }

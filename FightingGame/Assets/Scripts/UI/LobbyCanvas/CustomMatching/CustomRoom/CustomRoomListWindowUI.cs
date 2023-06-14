@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomRoomListWindowUI : MonoBehaviour, ILobbyPostProcess
+public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
 {
     [SerializeField] CustomRoomListUI customRoomList;
     [SerializeField] CreateRoomWindowUI createRoomWindow;
@@ -13,15 +13,19 @@ public class CustomRoomListWindowUI : MonoBehaviour, ILobbyPostProcess
 
     readonly float roomUpdateCoolTime = 1.0f;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         this.RegisterLobbyCallback();
 
         Request_UpdateRoomList();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         this.UnregisterLobbyCallback();
     }
 
@@ -74,8 +78,10 @@ public class CustomRoomListWindowUI : MonoBehaviour, ILobbyPostProcess
         createRoomWindow.Open();
     }
 
-    public void OnClick_Exit()
+    public override void OnClick_Exit()
     {
-        createRoomWindow.Close();
+        base.OnClick_Exit();
+
+        Close();
     }
 }

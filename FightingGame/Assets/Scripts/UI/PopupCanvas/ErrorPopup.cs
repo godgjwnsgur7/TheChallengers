@@ -25,7 +25,14 @@ public class ErrorPopup : PopupUI
 
     public void OnClick_Check()
     {
+        // 로그인씬으로 이동?
         Close();
-        Debug.Log("로그인 씬으로 이동?");
+    }
+
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        OnClick_Check();
     }
 }

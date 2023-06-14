@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginWindow : UIElement
+public class LoginWindow : MonoBehaviour
 {
     [SerializeField] private InputField emailInputField = null;
     [SerializeField] private InputField passwordInputField = null;
@@ -25,6 +25,5 @@ public class LoginWindow : UIElement
         // 로그인 성공했을 때 저장할 필요가 있는데...
         PlayerPrefs.SetString("LoginUser", currEmail);
 
-        Close();
     }
 }

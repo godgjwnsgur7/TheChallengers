@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 해당하는 씬에서만 존재할 UI 속성들
+/// 뒤로가기 버튼 작동 위한 클래스
 /// </summary>
 public class UIElement : MonoBehaviour
 {
     public bool isOpen = false;
 
-    public virtual void Open(UIParam param = null)
+    protected virtual void OnEnable()
     {
-        gameObject.SetActive(true);
         isOpen = true;
+        Managers.UI.Push_WindowExitStack(OnClick_Exit);
     }
-    public virtual void Close()
+
+    protected virtual void OnDisable()
     {
-        gameObject.SetActive(false);
         isOpen = false;
+        Managers.UI.Pop_WindowExitStack();
     }
+
+    public virtual void OnClick_Exit() { }
 }

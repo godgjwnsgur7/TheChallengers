@@ -97,7 +97,12 @@ public class DataMgr
     /// </summary>
     public bool BadWord_Discriminator(string str)
     {
-        Debug.Log(badWordStrArray == null);
+        if (badWordStrArray == null)
+        {
+            Debug.LogError("badWordStrArray is Null!");
+            return false;
+        }
+
         for(int i = 0; i < badWordStrArray.Length; i++)
         {
             if (str.Contains(badWordStrArray[i]))

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FGDefine;
 
-public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
+public class GameStartWindowUI : UIElement, IRoomPostProcess
 {
     [SerializeField] UserInfoUI masterInfoUI;
     [SerializeField] UserInfoUI slaveInfoUI;
@@ -43,8 +43,10 @@ public class GameStartWindowUI : MonoBehaviour, IRoomPostProcess
     Coroutine waitSelectionCharacterCoroutine = null;
     Coroutine waitGameStartCoroutine = null;
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         CoroutineStopAll();
 
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;

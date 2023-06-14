@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingWindow : MonoBehaviour
+public class SettingWindow : UIElement
 {
     [SerializeField] SoundSettingWindow soundSettingWindow;
     [SerializeField] GameObject controlSettingWindow;
@@ -26,6 +26,13 @@ public class SettingWindow : MonoBehaviour
             controlSettingWindow.SetActive(false);
         if (accountsInfoWindow.activeSelf)
             accountsInfoWindow.SetActive(false);
+    }
+
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        Close();
     }
 
     public void OnClick_SoundSetting()

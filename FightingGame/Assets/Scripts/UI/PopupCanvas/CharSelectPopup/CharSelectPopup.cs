@@ -50,8 +50,9 @@ public class CharSelectPopup : PopupUI
         OnClick_Exit();
     }
 
-    public void OnClick_Exit()
+    public override void OnClick_Exit()
     {
+        base.OnClick_Exit();
         this.gameObject.SetActive(false);
 
         charTypeCallBack = null;
