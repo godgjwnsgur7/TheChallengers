@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 using FGDefine;
 
 public class CreateRoomWindowUI : MonoBehaviour
@@ -23,6 +24,12 @@ public class CreateRoomWindowUI : MonoBehaviour
     private void Init()
     {
         userInputField.text = "";
+        userInputField.characterLimit = Managers.Data.RoomNameTextLimit;
+        
+        userInputField.onValueChanged.RemoveAllListeners(); 
+        userInputField.onValueChanged.AddListener(
+            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Z가-힣\!\?\~)]", "")
+        );
     }
 
     public void Open()
@@ -51,8 +58,12 @@ public class CreateRoomWindowUI : MonoBehaviour
             Managers.UI.popupCanvas.Open_NotifyPopup("방 제목을 입력하지 않았습니다.");
             return;
         }
-
-        // 금지어 체크해야 함
+        else if(Managers.Data.BadWord_Discriminator(userInputField.text))
+        {
+            userInputField.text = "";
+            Managers.UI.popupCanvas.Open_NotifyPopup("올바르지 않은 방 제목입니다.");
+            return;
+        }
 
         PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack, null, true, 2, currMap);
     }

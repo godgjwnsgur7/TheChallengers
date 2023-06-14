@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.UI;
+using System.IO;
+using System.Text.RegularExpressions;
 using FGDefine;
 
 public interface ILoader<Key, Value>
@@ -51,15 +53,32 @@ public class DataMgr
             "성격 급한 불의 여신이 그들을 왜 해치지 않았는지 아직도 의문이 가득합니다." }
     };
 
+    public int RoomNameTextLimit { private set; get; } = 8;
+    public int nickNameTextLimit { private set; get; } = 7;
+
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
     public Dictionary<int, CharacterInfo> CharInfoDict { get; private set; } = new Dictionary<int, CharacterInfo>();
     public GameInfo gameInfo { get; private set; } = new GameInfo();
+
+    private string[] badWordStrArray;
 
     public void Init()
     {
         SkillDict = LoadJson<SkillData, int, Skill>("SkillData").MakeDict();
         CharInfoDict = LoadJson<CharacterData, int, CharacterInfo>("CharacterData").MakeDict();
         gameInfo = LoadJson<GameInfo>("GameData");
+
+        string path = Application.dataPath + @"/Resources/Data/BadWordList.txt";
+        if (File.Exists(path))
+        {
+            StreamReader word = new StreamReader(path);
+            string source = word.ReadToEnd();
+            word.Close();
+
+            badWordStrArray = Regex.Split(source, @"\r\n|\n\r|\n|\r");
+        }
+        else
+            Debug.LogError($"경로 오류 : {path}");
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
@@ -72,6 +91,21 @@ public class DataMgr
     {
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
         return JsonUtility.FromJson<Loader>(textAsset.text);
+    }
+    
+    /// <summary>
+    /// 사용 불가능한 문자가 포함되어 있는 경우 true
+    /// </summary>
+    public bool BadWord_Discriminator(string str)
+    {
+        Debug.Log(badWordStrArray == null);
+        for(int i = 0; i < badWordStrArray.Length; i++)
+        {
+            if (str.Contains(badWordStrArray[i]))
+                return true;
+        }
+
+        return false;
     }
     
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
