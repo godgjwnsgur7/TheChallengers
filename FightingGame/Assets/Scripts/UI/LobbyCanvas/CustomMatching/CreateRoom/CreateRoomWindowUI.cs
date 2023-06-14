@@ -28,7 +28,7 @@ public class CreateRoomWindowUI : MonoBehaviour
         
         userInputField.onValueChanged.RemoveAllListeners(); 
         userInputField.onValueChanged.AddListener(
-            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Z가-힣\!\?\~)]", "")
+            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\s)]", "")
         );
     }
 
