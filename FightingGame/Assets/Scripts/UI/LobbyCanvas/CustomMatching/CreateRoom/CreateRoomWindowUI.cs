@@ -24,11 +24,11 @@ public class CreateRoomWindowUI : MonoBehaviour
     private void Init()
     {
         userInputField.text = "";
-        userInputField.characterLimit = Managers.Data.RoomNameTextLimit;
+        userInputField.characterLimit = Managers.Data.nameTextLimit;
         
         userInputField.onValueChanged.RemoveAllListeners(); 
         userInputField.onValueChanged.AddListener(
-            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\s)]", "")
+            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\.\,\s)]", "")
         );
     }
 

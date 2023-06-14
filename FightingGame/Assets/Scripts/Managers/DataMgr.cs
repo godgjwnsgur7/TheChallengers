@@ -53,8 +53,7 @@ public class DataMgr
             "성격 급한 불의 여신이 그들을 왜 해치지 않았는지 아직도 의문이 가득합니다." }
     };
 
-    public int RoomNameTextLimit { private set; get; } = 8;
-    public int nickNameTextLimit { private set; get; } = 7;
+    public int nameTextLimit { private set; get; } = 10; // 방제목, 닉네임
 
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
     public Dictionary<int, CharacterInfo> CharInfoDict { get; private set; } = new Dictionary<int, CharacterInfo>();
