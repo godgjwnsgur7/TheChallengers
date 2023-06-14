@@ -72,12 +72,13 @@ public class FallAttackObject : GenerateAttackObject
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
         masterPosVecY = _summonPosVec.y; // 시전자의 y좌표(월드) 저장
+        ResetAnimTrigger("FallTrigger");
+        ResetAnimTrigger("ExplodeTrigger");
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
     }
 
     private void Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE fallObjectState)
     {
-        SetAnimTrigger(fallObjectState.ToString() + "Trigger");
         currMyState = fallObjectState;
         
         if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
@@ -91,15 +92,16 @@ public class FallAttackObject : GenerateAttackObject
             rigid2D.velocity = Vector2.zero;
             ResetAnimTrigger("FallTrigger");
         }
+
+        SetAnimTrigger(fallObjectState.ToString() + "Trigger");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isExplodePossible || collision.tag != ENUM_TAG_TYPE.Ground.ToString())
-            return;
-
-        isExplodePossible = false;
-        Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
+        if (isExplodePossible && collision.tag == ENUM_TAG_TYPE.Ground.ToString())
+        {
+            Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
+        }
     }
 
     protected IEnumerator IExplodeCheck()

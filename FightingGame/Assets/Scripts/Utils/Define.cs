@@ -191,12 +191,20 @@ namespace FGDefine
     [Serializable]
     public enum ENUM_SFX_TYPE
     {
-        UI_MacthingCompleted = 0,
-        UI_MacthingStart = 1,
-        UI_Result_Defeat = 2,
-        UI_Result_Victory = 3,
-        UI_Result_Draw = 4,
-        UI_GameStartInfo = 5,
+        // UI Sound
+        UI_MacthingCompleted = 1,
+        UI_MacthingStart = 2,
+        UI_Result_Defeat = 3,
+        UI_Result_Victory = 4,
+        UI_Result_Draw = 5,
+        UI_GameStartInfo = 6,
+        UI_JoinGameLobby = 7,
+        UI_TimeLimit = 8,
+
+        // UI ClickSound
+        UI_OnClick_Basic = 90,
+        UI_OnClick_Cancel = 91,
+        UI_OnClick_Select = 92,
 
         // Knight Sound
         Knight_Attack1 = 101,

@@ -9,8 +9,12 @@ public class TimerUI : MonoBehaviour
     [SerializeField] Text timerText;
     [SerializeField] Text pingText;
 
+    bool isTimeLimitSound = false;
+
     public void Register_TimerCallBack()
     {
+        isTimeLimitSound = false;
+
         Update_Timer((int)Managers.Data.gameInfo.maxGameRunTime); // 초기세팅
 
         Managers.Network.Register_TimerCallBack(Update_Timer);
@@ -28,6 +32,12 @@ public class TimerUI : MonoBehaviour
         {
             seconds -= 60;
             minutes++;
+        }
+
+        if(isTimeLimitSound == false && timeLimit <= 30)
+        {
+            isTimeLimitSound = true;
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_TimeLimit);
         }
 
         Set_TimerText(minutes, seconds);

@@ -43,6 +43,7 @@ public class MainCanvas : BaseCanvas
         overlapLock = true;
 
         Managers.UI.popupCanvas.Open_LoadingPopup("로그인 중...");
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
         Managers.Platform.Login(() =>
         {
             string id = Managers.Platform.GetUserID();
