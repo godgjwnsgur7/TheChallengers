@@ -51,6 +51,7 @@ public class UserInfoUI : MonoBehaviour
         IsInit = true;
 
         charImage.gameObject.gameObject.SetActive(false);
+
         CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
 
         if (PhotonLogicHandler.IsMasterClient == _isUserMasterClient)
@@ -69,6 +70,7 @@ public class UserInfoUI : MonoBehaviour
     {
         IsInit = false;
         SelectionCharacterLock = false;
+        CurrCharacterType = ENUM_CHARACTER_TYPE.Default;
     }
 
     public void Forced_SelectionCharacter()
@@ -102,8 +104,7 @@ public class UserInfoUI : MonoBehaviour
 
     public void Set_SelectionCharacter(ENUM_CHARACTER_TYPE _characterType)
     {
-        if (_characterType == CurrCharacterType || _characterType == ENUM_CHARACTER_TYPE.Default
-            || _characterType == ENUM_CHARACTER_TYPE.Max)
+        if (_characterType == CurrCharacterType)
             return;
 
         CurrCharacterType = _characterType;

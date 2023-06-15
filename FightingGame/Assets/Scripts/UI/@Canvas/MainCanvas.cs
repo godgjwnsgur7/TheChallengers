@@ -9,6 +9,7 @@ public class MainCanvas : BaseCanvas
 {
     [SerializeField] GuestLoginWindow guestLoginWindow;
     [SerializeField] FirstLoginWindowUI firstLoginWindow;
+    [SerializeField] CreditScreen creditScreen;
 
     [SerializeField] Text blinkText;
 
@@ -35,24 +36,6 @@ public class MainCanvas : BaseCanvas
             StopCoroutine(textEffectCoroutine);
     }
 
-    public void OnClick_LoginAndMasterServer()
-    {
-        if (overlapLock)
-            return;
-
-        overlapLock = true;
-
-        Managers.UI.popupCanvas.Open_LoadingPopup("로그인 중...");
-        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
-        Managers.Platform.Login(() =>
-        {
-            string id = Managers.Platform.GetUserID();
-            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-            Try_MasterServer();
-            PhotonLogicHandler.CurrentMyNickname = id;
-        },Login_Failed);
-    }
-
     private void Try_MasterServer()
     {
         Managers.UI.popupCanvas.Open_LoadingPopup("마스터 서버에 접속 중...");
@@ -72,6 +55,29 @@ public class MainCanvas : BaseCanvas
         overlapLock = false;
         Managers.UI.popupCanvas.Open_NotifyPopup("로그인에 실패했습니다.\n다시 시도해주세요");
         Managers.UI.popupCanvas.Close_LoadingPopup();
+    }
+
+    public void OnClick_LoginAndMasterServer()
+    {
+        if (overlapLock)
+            return;
+
+        overlapLock = true;
+
+        Managers.UI.popupCanvas.Open_LoadingPopup("로그인 중...");
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
+        Managers.Platform.Login(() =>
+        {
+            string id = Managers.Platform.GetUserID();
+            Debug.Log($"회원번호 : {id} 으로 로그인 완료");
+            Try_MasterServer();
+            PhotonLogicHandler.CurrentMyNickname = id;
+        },Login_Failed);
+    }
+
+    public void OnClick_Credit()
+    {
+        creditScreen.Open();
     }
 
     protected IEnumerator IBlinkEffectToText()

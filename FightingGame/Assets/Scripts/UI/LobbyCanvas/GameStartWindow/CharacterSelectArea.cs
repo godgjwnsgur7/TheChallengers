@@ -22,6 +22,7 @@ public class CharacterSelectArea : MonoBehaviour
     public void Close()
     {
         gameObject.SetActive(false);
+        selectionEffectRectTr.gameObject.SetActive(false);
     }
 
     public void OnClick_CharacterSelectImage(int _charTypeNum)

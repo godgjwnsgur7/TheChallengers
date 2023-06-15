@@ -108,6 +108,12 @@ public class LobbyCanvas : BaseCanvas
     {
         Managers.UI.popupCanvas.Open_SettingWindow();
     }
+    
+    public void OnClick_Exit()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
+        , null, "게임을 종료하시겠습니까?");
+    }
 
     private IEnumerator IWaitMatching()
     {

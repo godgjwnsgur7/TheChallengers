@@ -319,7 +319,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2241}
+  m_AnchoredPosition: {x: 0, y: -2124}
   m_SizeDelta: {x: 960, y: 2980}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &280557917
@@ -651,7 +651,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 448284868}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1820440530}
+        m_TargetAssemblyTypeName: MainCanvas, Source
+        m_MethodName: OnClick_Credit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &448284868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,7 +944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 910, y: -2241}
+  m_AnchoredPosition: {x: 910, y: -2124}
   m_SizeDelta: {x: 850, y: 2980}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &571033677
@@ -1717,6 +1729,8 @@ GameObject:
   - component: {fileID: 808009939}
   - component: {fileID: 808009941}
   - component: {fileID: 808009940}
+  - component: {fileID: 808009943}
+  - component: {fileID: 808009942}
   m_Layer: 5
   m_Name: '@CreditScreen'
   m_TagString: Untagged
@@ -1782,6 +1796,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 808009938}
   m_CullTransparentMesh: 1
+--- !u!95 &808009942
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808009938}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0cbdbc020c2dff74a90e0b9d394429dc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &808009943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808009938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e514416ee04e30c409c19ad66a783e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOpen: 0
 --- !u!1 &928097908
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,6 +3754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guestLoginWindow: {fileID: 1160410885}
   firstLoginWindow: {fileID: 793919986}
+  creditScreen: {fileID: 808009943}
   blinkText: {fileID: 1770990626}
 --- !u!224 &1820440531
 RectTransform:
@@ -3746,12 +3793,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1905443462}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: CreditArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1905443462
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3808,7 +3855,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -910, y: -2241}
+  m_AnchoredPosition: {x: -910, y: -2124}
   m_SizeDelta: {x: 1000, y: 2980}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1948975553

@@ -14,6 +14,16 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
 
+    private void OnEnable()
+    {
+        Managers.UI.Push_WindowExitStack(OnClick_Exit);
+    }
+
+    private void OnDisable()
+    {
+        Managers.UI.Pop_WindowExitStack();
+    }
+
     public override void Init()
     {
         base.Init();
@@ -59,5 +69,11 @@ public class BattleCanvas : BaseCanvas
     {
         Managers.Sound.Stop_BGM();
         resultWindow.Open(isDraw, isWin);
+    }
+
+    public void OnClick_Exit()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
+        , null, "게임을 종료하시겠습니까?\n진행중인 게임은 패배처리 됩니다.");
     }
 }
