@@ -53,10 +53,10 @@ public class DataMgr
             "성격 급한 불의 여신이 그들을 왜 해치지 않았는지 아직도 의문이 가득합니다." }
     };
 
-    private string[] TipDescriptionStrArray= new string[]
+    private string[] tipDescriptionStrArray= new string[]
     {
         "기본공격과 특정스킬은 방향키 입력 값에 영향을 받습니다.",
-
+        "이어폰을 끼면 더 생동감있는 게임을 즐길 수 있습니다.",
     };
 
     public int nameTextLimit { private set; get; } = 10; // 방제목, 닉네임
@@ -120,7 +120,7 @@ public class DataMgr
     
     public string Get_TipDescription()
     {
-        return TipDescriptionStrArray[Random.Range(0, TipDescriptionStrArray.Length)];
+        return tipDescriptionStrArray[Random.Range(0, tipDescriptionStrArray.Length)];
     }
 
     public string Get_MapNameDict(ENUM_MAP_TYPE mapType)
