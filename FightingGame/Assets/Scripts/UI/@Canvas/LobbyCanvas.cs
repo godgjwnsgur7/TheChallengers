@@ -115,17 +115,6 @@ public class LobbyCanvas : BaseCanvas
         Managers.UI.popupCanvas.Open_SelectPopup(GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
     }
 
-    public void OnClick_Setting()
-    {
-        Managers.UI.popupCanvas.Open_SettingWindow();
-    }
-    
-    public void OnClick_Exit()
-    {
-        Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
-        , null, "게임을 종료하시겠습니까?");
-    }
-
     private IEnumerator IWaitMatching()
     {
         int count = 0;
