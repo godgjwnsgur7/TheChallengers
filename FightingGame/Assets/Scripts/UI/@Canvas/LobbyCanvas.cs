@@ -10,9 +10,14 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] GameStartWindowUI gameStartWindow;
 
+    [SerializeField] Image[] images = new Image[3];
+
     public override void Init()
     {
         base.Init();
+
+        for (int i = 0; i < images.Length; i++)
+            images[i].alphaHitTestMinimumThreshold = 0.1f;
 
         if (PhotonLogicHandler.IsJoinedRoom)
         {
