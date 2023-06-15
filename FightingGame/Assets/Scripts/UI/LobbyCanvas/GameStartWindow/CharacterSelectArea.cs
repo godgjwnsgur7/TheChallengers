@@ -32,6 +32,9 @@ public class CharacterSelectArea : MonoBehaviour
         if (!selectionEffectRectTr.gameObject.activeSelf)
             selectionEffectRectTr.gameObject.SetActive(true);
 
-        selectionCharacterCallBack?.Invoke((ENUM_CHARACTER_TYPE)_charTypeNum);
+        if (selectionCharacterCallBack == null)
+            Debug.LogError("selectionCharacterCallBack is Null");
+        else
+            selectionCharacterCallBack((ENUM_CHARACTER_TYPE)_charTypeNum);
     }
 }
