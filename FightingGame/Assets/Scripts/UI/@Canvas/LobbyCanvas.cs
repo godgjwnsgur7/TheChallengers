@@ -83,9 +83,6 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnClick_CustomMathing()
     {
-        if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
-            return;
-
         if(PhotonLogicHandler.IsConnected)
         {
             PhotonLogicHandler.Instance.TryJoinLobby(ENUM_MATCH_TYPE.CUSTOM, customMatching.Open);
@@ -98,9 +95,6 @@ public class LobbyCanvas : BaseCanvas
 
     public void OnClick_Mathing()
     {
-        if (PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
-            return;
-
         if (PhotonLogicHandler.IsConnected)
         {
             Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null, "랭킹전(매칭)을 돌리시겠습니까?");
