@@ -38,7 +38,7 @@ public class MainCanvas : BaseCanvas
 
     private void Try_MasterServer()
     {
-        Managers.UI.popupCanvas.Open_LoadingPopup("마스터 서버에 접속 중...");
+        Managers.UI.popupCanvas.Open_LoadingPopup("마스터 서버에 접속 중");
         PhotonLogicHandler.Instance.TryConnectToMaster(
             GoTo_Lobby, Managers.Network.DisconnectMaster_CallBack);
     }
@@ -64,7 +64,7 @@ public class MainCanvas : BaseCanvas
 
         overlapLock = true;
 
-        Managers.UI.popupCanvas.Open_LoadingPopup("로그인 중...");
+        Managers.UI.popupCanvas.Open_LoadingPopup("로그인 중");
         Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
         Managers.Platform.Login(() =>
         {

@@ -73,12 +73,14 @@ public class CreateRoomWindowUI : UIElement
         }
 
         isLock = true;
+        Managers.UI.popupCanvas.Open_LoadingPopup("방 생성 중");
         PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack
-            ,null , true, 2, currMap);
+            , null, true, 2, currMap);
     }
 
     private void CreateRoomSuccessCallBack()
     {
+        Managers.UI.popupCanvas.Close_LoadingPopup();
         Managers.UI.popupCanvas.Play_FadeOutEffect(Open_CustomRoom);
     }
 
