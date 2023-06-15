@@ -84,8 +84,8 @@ public class SettingWindow : UIElement
 
     private void Call_InputKeyManagement()
     {
-        Managers.Input.Get_InputKeyManagement().Open();
-
         Close();
+
+        Managers.Input.Get_InputKeyManagement().Open();
     }
 }

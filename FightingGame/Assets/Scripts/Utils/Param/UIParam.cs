@@ -1,26 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using FGDefine;
 
 public class UIParam { }
 
-public class PopupUIParam : UIParam
+public class WindowExitUIParam : UIParam
 {
-    public Vector2 pos;
+    public Action onWindowExit;
+    public GameObject windowObject;
+    public string windowNameStr;
 
-    public PopupUIParam(Vector2 _pos)
+    public WindowExitUIParam(Action _onWindowExit, GameObject _windowObject)
     {
-        pos = _pos;
-    }
-}
-
-public class BattleCanvasUIParam : UIParam
-{
-
-
-    public BattleCanvasUIParam()
-    {
-
+        onWindowExit = _onWindowExit;
+        windowObject = _windowObject;
+        windowNameStr = _windowObject.name;
     }
 }

@@ -23,6 +23,8 @@ public class UIMgr
 
     Stack<Action> onWindowExitStack = new Stack<Action>();
 
+    bool isExitKeyLock = false;
+
     public void Init()
     {
         popupCanvas = GameObject.FindObjectOfType<PopupCanvas>();
@@ -42,8 +44,13 @@ public class UIMgr
         onWindowExitStack.Clear();
     }
 
+    public void IsExitKeyLock(bool isLockState) => isExitKeyLock = isLockState;
+
     public void Update_InputBackKeyCheck()
     {
+        if (isExitKeyLock)
+            return;
+
         if (UnityEngine.Input.GetKey(KeyCode.Escape))
         {
             if (onWindowExitStack.Count <= 0)

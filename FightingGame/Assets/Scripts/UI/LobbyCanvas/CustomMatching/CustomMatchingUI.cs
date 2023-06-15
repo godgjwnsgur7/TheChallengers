@@ -14,17 +14,17 @@ public class CustomMatchingUI : MonoBehaviour
 
         if(PhotonLogicHandler.IsJoinedRoom)
         {
-            customRoomWindow.Open();
-
             if (customRoomListWindow.gameObject.activeSelf)
                 customRoomListWindow.Close();
+
+            customRoomWindow.Open();
         }
         else
         {
-            customRoomListWindow.Open();
-
             if (customRoomWindow.gameObject.activeSelf)
                 customRoomWindow.Close();
+
+            customRoomListWindow.Open();
         }
     }
 

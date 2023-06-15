@@ -36,7 +36,7 @@ public class UserInfoUI : MonoBehaviour
     {
         get;
         private set;
-    }
+    } = ENUM_CHARACTER_TYPE.Default;
 
     private void Awake()
     {
@@ -102,7 +102,8 @@ public class UserInfoUI : MonoBehaviour
 
     public void Set_SelectionCharacter(ENUM_CHARACTER_TYPE _characterType)
     {
-        if (_characterType == CurrCharacterType)
+        if (_characterType == CurrCharacterType || _characterType == ENUM_CHARACTER_TYPE.Default
+            || _characterType == ENUM_CHARACTER_TYPE.Max)
             return;
 
         CurrCharacterType = _characterType;

@@ -14,6 +14,16 @@ public class FadeEffectPopup : PopupUI
 
     float fadeEffectRunTime = 0.5f;
 
+    protected override void OnEnable()
+    {
+        Managers.UI.IsExitKeyLock(true);
+    }
+
+    protected override void OnDisable()
+    {
+        Managers.UI.IsExitKeyLock(false);
+    }
+
     public bool Get_FadeState()
     {
         bool isFadeState = backgroundImage.gameObject.activeSelf && (backgroundImage.color.a == 1f);

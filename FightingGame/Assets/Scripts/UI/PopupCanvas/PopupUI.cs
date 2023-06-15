@@ -9,13 +9,13 @@ public abstract class PopupUI : MonoBehaviour
 
     [SerializeField] GameObject popupWindow;
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         isUsing = true;
         Managers.UI.Push_WindowExitStack(OnClick_Exit);
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         isUsing = false;
         Managers.UI.Pop_WindowExitStack();
