@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class LoadingPopup : PopupUI
 {
-    [SerializeField] Text popupText;
+    [SerializeField] Text loadingText;
+    [SerializeField] Text tipDescriptionText;
 
     Coroutine messageEffectCoroutine;
-    string message = string.Empty;
+    string message = "LOADING ";
 
-    public void Open(string _message)
+    public void Open()
     {
         if (messageEffectCoroutine != null)
             StopCoroutine(messageEffectCoroutine);
 
-        message = _message;
-        popupText.text = _message;
+        tipDescriptionText.text = "TIP. " + Managers.Data.Get_TipDescription();
+
         this.gameObject.SetActive(true);
 
         messageEffectCoroutine = StartCoroutine(IMessageTextEffect());
@@ -24,13 +25,14 @@ public class LoadingPopup : PopupUI
 
     public void Close()
     {
-        message = string.Empty;
+        message = "LOADING ";
+        loadingText.text = message;
         this.gameObject.SetActive(false);
     }
 
     protected IEnumerator IMessageTextEffect()
     {
-        int count = 1;
+        int count = 0;
         string _message;
 
         while(isUsing)
@@ -42,9 +44,9 @@ public class LoadingPopup : PopupUI
             for (int i = 0; i < count; i++)
                 _message += ".";
 
-            popupText.text = _message;
+            loadingText.text = _message;
 
-            if (count == 4)
+            if (count == 3)
             {
                 count = 0;
                 yield return new WaitForSeconds(0.5f);

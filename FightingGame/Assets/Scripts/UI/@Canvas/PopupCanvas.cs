@@ -238,9 +238,9 @@ public class PopupCanvas : MonoBehaviour
     /// 로딩 팝업창 Popup Window
     /// 반드시 Close를 따로 호출해주어야 함
     /// </summary>
-    public void Open_LoadingPopup(string _message)
+    public void Open_LoadingPopup()
     {
-        loadingPopup.Open(_message);
+        loadingPopup.Open();
     }
 
     public void Close_LoadingPopup()
