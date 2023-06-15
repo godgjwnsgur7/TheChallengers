@@ -73,6 +73,7 @@ public class BattleCanvas : BaseCanvas
 
     public void OnClick_Exit()
     {
+        // (점수깎아)
         Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
         , null, "게임을 종료하시겠습니까?\n진행중인 게임은 패배처리 됩니다.");
     }

@@ -175,6 +175,15 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
             waitSelectionCharacterCoroutine = StartCoroutine(IWaitSelectionCharacter(_selectedCharacterType));
     }
 
+    public override void OnClick_Exit()
+    {
+        base.OnClick_Exit();
+
+        // (점수깎아)
+        Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
+        , null, "게임을 종료하시겠습니까?\n매칭된 게임은 패배처리 됩니다.");
+    }
+
     private IEnumerator ISelectionCharacterTimer(int _timelimit)
     {
         float updateTime = _timelimit;
