@@ -203,6 +203,11 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 		Managers.Platform.HideRewardedAd();
 	}
 
+	public void Purchase()
+	{
+		Managers.Platform.Purchase();
+	}
+
 	public void OnClickMoveScene(string scenename)
 	{
 		var sceneType = (ENUM_SCENE_TYPE)Enum.Parse(typeof(ENUM_SCENE_TYPE), scenename);

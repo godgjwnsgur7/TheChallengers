@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace FGPlatform.Purchase
     public interface CoffeeMachine
     {
         void Init();
-        bool Purchase();
+        bool Purchase(Action<long> priceCallback);
         bool IsPurchased();
     }
 
@@ -41,8 +42,8 @@ namespace FGPlatform.Purchase
         private ConfigurationBuilder builder = null;
         private StandardPurchasingModule module = null;
 
-        private readonly IAPProduct productInfo = new IAPProduct("커피", "Coffee", ProductType.Consumable, 1000);
-
+        private readonly IAPProduct productInfo = new IAPProduct("Coffee", "Coffee", ProductType.Consumable, 1000);
+        private Action<long> priceCallback = null;
         public bool IsValid =>
             storeController != null
             && provider != null
@@ -62,12 +63,14 @@ namespace FGPlatform.Purchase
             UnityPurchasing.Initialize(this, builder);
         }
 
-        public bool Purchase()
+        public bool Purchase(Action<long> priceCallback)
         {
             if (!IsValid)
                 return false;
 
-            var product = storeController.products.WithID(productInfo.ID);
+            this.priceCallback = priceCallback;
+
+			var product = storeController.products.WithID(productInfo.ID);
             if (product == null || !product.availableToPurchase)
                 return false;
 
@@ -106,10 +109,15 @@ namespace FGPlatform.Purchase
                 purchaseEvent.purchasedProduct.definition.storeSpecificId == productInfo.AOS_ID)
             {
                 Debug.Log($"[{purchaseEvent.purchasedProduct.definition.id}] 구매 성공");
-            }
+                
+                priceCallback?.Invoke(productInfo.Price);
+                priceCallback = null;
 
-            return PurchaseProcessingResult.Complete;
-        }
+				return PurchaseProcessingResult.Complete;
+			}
+
+            return PurchaseProcessingResult.Pending;
+		}
 
         void IStoreListener.OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {

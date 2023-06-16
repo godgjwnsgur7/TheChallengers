@@ -51,6 +51,12 @@ namespace FGPlatform
 		private IAdMobController AdMob = new AdMobController();
 		private CoffeeMachine IAPController = new IAPController();
 
+		public long MyCashPoint
+		{
+			get;
+			private set;
+		} = 0L;
+
 		private EventHandler onAuthChangedHandler = null;
 
 		private static readonly Dictionary<DB_CATEGORY, Type> validCategoryTypeDictionary = new Dictionary<DB_CATEGORY, Type>()
@@ -91,6 +97,15 @@ namespace FGPlatform
 					   Debug.LogError("파이어베이스 인증 실패");
 				   }
 			   });
+		}
+
+		public void Clear()
+		{
+			auth = null;
+			DB = null;
+			Crashlytics = null;
+			AdMob = null;
+			IAPController = null;
 		}
 
 		public string GetUserID()
@@ -194,6 +209,11 @@ namespace FGPlatform
 			InitializeCurrentUserDB(OnCompleted: (data) =>
 			{
 				checkRoutine?.Invoke(data == null);
+
+				if(data != null)
+				{
+					MyCashPoint = data.purchaseCoffeeCount;
+				}
 			});
 		}
 
@@ -250,6 +270,25 @@ namespace FGPlatform
 		public void HideRewardedAd()
 		{
 			AdMob.HideAd(AdvertisementType.Rewarded);
+		}
+
+		public void Purchase()
+		{
+			if (!Auth.IsLogin)
+				return;
+
+			IAPController.Purchase((price) =>
+			{
+				DBUpdate(DB_CATEGORY.PurchaseCoffee, MyCashPoint + price, (totalCash) =>
+				{
+					Debug.Log($"현재 캐쉬 잔액은 {totalCash} 입니다.");
+					MyCashPoint = totalCash;
+
+				}, () =>
+				{
+					Debug.LogError($"캐쉬 결제에 실패하였습니다. 데이터베이스 서버에 문제가 있거나, 로그인이 되어있지 않습니다.");
+				});
+			}); 
 		}
 
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)

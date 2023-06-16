@@ -62,7 +62,12 @@ public class Managers : MonoBehaviour
 #endif
     }
 
-    private static void Init()
+	private void OnApplicationQuit()
+	{
+        Platform.Clear();
+	}
+
+	private static void Init()
     {
         if (s_Instance == null)
         {
