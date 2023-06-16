@@ -19,6 +19,7 @@ public class CreateRoomWindowUI : UIElement
 
     private void Open_CustomRoom()
     {
+        Managers.UI.popupCanvas.Close_LoadingPopup();
         Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Open_CustomRoomWindow();
     }
 
@@ -80,7 +81,6 @@ public class CreateRoomWindowUI : UIElement
 
     private void CreateRoomSuccessCallBack()
     {
-        Managers.UI.popupCanvas.Close_LoadingPopup();
         Managers.UI.popupCanvas.Play_FadeOutEffect(Open_CustomRoom);
     }
 
