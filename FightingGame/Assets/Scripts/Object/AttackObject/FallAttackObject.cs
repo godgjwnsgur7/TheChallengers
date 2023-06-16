@@ -24,6 +24,14 @@ public class FallAttackObject : GenerateAttackObject
     float masterPosVecY;
     bool isExplodePossible;
 
+    public override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (explodeCheckCoroutine != null)
+            StopCoroutine(explodeCheckCoroutine);
+    }
+
     public override void Init()
     {
         base.Init();
@@ -41,14 +49,6 @@ public class FallAttackObject : GenerateAttackObject
         {
             SyncPhysics(rigid2D);
         }
-    }
-
-    public override void OnDisable()
-    {
-        if(explodeCheckCoroutine != null)
-            StopCoroutine(explodeCheckCoroutine);
-
-        base.OnDisable();
     }
 
     private AnimatorSyncParam[] MakeSyncAnimParam()
@@ -72,8 +72,6 @@ public class FallAttackObject : GenerateAttackObject
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
         masterPosVecY = _summonPosVec.y; // 시전자의 y좌표(월드) 저장
-        ResetAnimTrigger("FallTrigger");
-        ResetAnimTrigger("ExplodeTrigger");
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
     }
 
@@ -90,7 +88,6 @@ public class FallAttackObject : GenerateAttackObject
         else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
         {
             rigid2D.velocity = Vector2.zero;
-            ResetAnimTrigger("FallTrigger");
         }
 
         SetAnimTrigger(fallObjectState.ToString() + "Trigger");
@@ -98,6 +95,9 @@ public class FallAttackObject : GenerateAttackObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!PhotonLogicHandler.IsMine(viewID))
+            return;
+
         if (isExplodePossible && collision.tag == ENUM_TAG_TYPE.Ground.ToString())
         {
             Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
