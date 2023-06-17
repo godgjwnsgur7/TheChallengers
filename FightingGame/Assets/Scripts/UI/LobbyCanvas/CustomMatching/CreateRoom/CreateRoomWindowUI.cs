@@ -46,7 +46,7 @@ public class CreateRoomWindowUI : UIElement
 
         userInputField.onValueChanged.RemoveAllListeners(); 
         userInputField.onValueChanged.AddListener(
-            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\.\,\s)]", "")
+            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\.\,)]", "")
         );
     }
 
@@ -81,7 +81,7 @@ public class CreateRoomWindowUI : UIElement
             ErrorTextShakeEffect("방이름을 입력해주세요.");
             return;
         }
-        if (userInputField.text.Length <= 4)
+        if (userInputField.text.Length < 4)
         {
             ErrorTextShakeEffect("방이름은 4글자 이상이여야 합니다.");
             return;
