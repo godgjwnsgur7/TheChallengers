@@ -7,35 +7,43 @@ using FGDefine;
 
 public class CharSelectPopup : PopupUI
 {
-    [SerializeField] CharPanel charPanel;
+    [SerializeField] Image[] characterImages;
+    [SerializeField] RectTransform selectionEffectRectTr;
+    [SerializeField] Text charDescriptionText;
 
-    Action<ENUM_CHARACTER_TYPE> charTypeCallBack = null;
+    Action<ENUM_CHARACTER_TYPE> onSelectionCharacter;
+
     ENUM_CHARACTER_TYPE selectedCharType = ENUM_CHARACTER_TYPE.Default;
 
-    bool isInit = false;
-
-    public void Open(Action<ENUM_CHARACTER_TYPE> _charTypeCallBack)
+    public void Open(Action<ENUM_CHARACTER_TYPE> _onSelectionCharacter)
     {
-        if(_charTypeCallBack == null)
+        if (_onSelectionCharacter == null)
         {
-            Debug.LogError("charCallBack is Null!");
+            Debug.LogError("SelectionCharacterCallBack is Null!");
             return;
         }
 
-        if(!isInit)
-        {
-            isInit = true;
-            charPanel.Init(Set_SelectedCharTypeCallBack);
-        }
+        onSelectionCharacter = _onSelectionCharacter;
+        selectedCharType = ENUM_CHARACTER_TYPE.Default;
+        charDescriptionText.text = "캐릭터를 선택해주세요.";
 
-        charTypeCallBack = _charTypeCallBack;
-        this.gameObject.SetActive(true);
+        if (selectionEffectRectTr.gameObject.activeSelf)
+            selectionEffectRectTr.gameObject.SetActive(false);
+
+        gameObject.SetActive(true);
     }
 
-    public void Set_SelectedCharTypeCallBack(ENUM_CHARACTER_TYPE _selectedCharType)
+    public void OnClick_CharacterSelectImage(int _charTypeNum)
     {
-        selectedCharType = _selectedCharType;
-        charPanel.Update_SelectCharState(selectedCharType);
+        selectedCharType = (ENUM_CHARACTER_TYPE)_charTypeNum;
+
+        RectTransform rectTr = characterImages[_charTypeNum - 1].GetComponent<RectTransform>();
+        selectionEffectRectTr.position = rectTr.position;
+
+        charDescriptionText.text = Managers.Data.Get_CharExplanationDict(selectedCharType);
+
+        if (!selectionEffectRectTr.gameObject.activeSelf)
+            selectionEffectRectTr.gameObject.SetActive(true);
     }
 
     public void OnClick_SelectCompletion()
@@ -46,17 +54,16 @@ public class CharSelectPopup : PopupUI
             return;
         }
 
-        charTypeCallBack(selectedCharType);
+        onSelectionCharacter?.Invoke(selectedCharType);
         OnClick_Exit();
     }
 
     public override void OnClick_Exit()
     {
         base.OnClick_Exit();
-        this.gameObject.SetActive(false);
 
-        charTypeCallBack = null;
+        onSelectionCharacter = null;
         selectedCharType = ENUM_CHARACTER_TYPE.Default;
-        charPanel.Update_SelectCharState(selectedCharType);
+        gameObject.SetActive(false);
     }
 }

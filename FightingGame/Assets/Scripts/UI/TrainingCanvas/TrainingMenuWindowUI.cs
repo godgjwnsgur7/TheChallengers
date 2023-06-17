@@ -13,9 +13,9 @@ public class TrainingMenuWindowUI : UIElement
         trainingScene = Managers.Scene.CurrentScene.GetComponent<TrainingScene>();
     }
     
-    public void OnClick_ChangeMap(int mapTypeNum)
+    public void OnClick_ChangeMap()
     {
-        trainingScene.Change_CurrMap((ENUM_MAP_TYPE)mapTypeNum);
+        Managers.UI.popupCanvas.Open_MapSelectPopup(trainingScene.Change_CurrMap);
     }
 
     public void OnClick_ChangeEnemyCharacter()

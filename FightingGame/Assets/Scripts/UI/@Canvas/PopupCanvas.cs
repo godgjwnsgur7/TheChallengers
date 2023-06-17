@@ -18,6 +18,7 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] InputKeyController inputKeyController;
     [SerializeField] InputKeyManagement inputKeyManagement;
     [SerializeField] SettingWindow settingWindow;
+    [SerializeField] MapSelectPopup mapSelectPopup;
     [SerializeField] CharSelectPopup charSelectPopup;
     [SerializeField] SelectPopup selectPopup;
     [SerializeField] NotifyPopup notifyPopup;
@@ -122,6 +123,17 @@ public class PopupCanvas : MonoBehaviour
         }
 
         errorPopup.Open(_returnCode, _message);
+    }
+
+    public void Open_MapSelectPopup(Action<ENUM_MAP_TYPE> _mapCallBack)
+    {
+        if (mapSelectPopup.isUsing)
+        {
+            Debug.Log("이미 맵 선택창이 사용중입니다.");
+            return;
+        }
+
+        mapSelectPopup.Open(_mapCallBack);
     }
 
     /// <summary>
