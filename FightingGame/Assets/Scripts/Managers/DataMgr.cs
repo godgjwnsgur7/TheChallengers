@@ -113,6 +113,9 @@ public class DataMgr
 
         for(int i = 0; i < badWordStrArray.Length; i++)
         {
+            if (str.Length < badWordStrArray[i].Length)
+                continue;
+
             if (str.Contains(badWordStrArray[i]))
                 return true;
         }
