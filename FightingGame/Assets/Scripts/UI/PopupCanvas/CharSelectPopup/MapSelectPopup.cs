@@ -7,15 +7,8 @@ using FGDefine;
 
 public class MapSelectPopup : PopupUI
 {
-    [SerializeField] Image selectMapImage;
-    [SerializeField] Image[] mapImages;
-    [SerializeField] RectTransform selectionEffectRectTr;
-
-    [SerializeField] Text mapNameText;
-    [SerializeField] Text mapDescriptionText;
-
+    [SerializeField] CustormRoom_MapInfo mapInfo;
     Action<ENUM_MAP_TYPE> onSelectionMap;
-
     ENUM_MAP_TYPE selectedMapType = ENUM_MAP_TYPE.CaveMap;
 
     public void Open(Action<ENUM_MAP_TYPE> _onSelectionMap)
@@ -27,35 +20,18 @@ public class MapSelectPopup : PopupUI
         }
 
         onSelectionMap = _onSelectionMap;
-        Set_MapInfo(ENUM_MAP_TYPE.CaveMap);
+        mapInfo.Set_CurrMapInfo(ENUM_MAP_TYPE.CaveMap);
         
-        RectTransform rectTr = mapImages[0].GetComponent<RectTransform>();
-        selectionEffectRectTr.position = rectTr.position;
-
-        if (!selectionEffectRectTr.gameObject.activeSelf)
-            selectionEffectRectTr.gameObject.SetActive(true);
-
         gameObject.SetActive(true);
-    }
-
-    private void Set_MapInfo(ENUM_MAP_TYPE _mapType)
-    {
-        selectedMapType = _mapType;
-        mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
-        mapDescriptionText.text = Managers.Data.Get_MapExplanationDict(_mapType);
-        selectMapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
     }
 
     public void OnClick_MapSelectImage(int _mapTypeNum)
     {
-        Set_MapInfo((ENUM_MAP_TYPE)_mapTypeNum);
-        RectTransform rectTr = mapImages[_mapTypeNum].GetComponent<RectTransform>();
-        selectionEffectRectTr.position = rectTr.position;
+        if ((int)selectedMapType == _mapTypeNum)
+            return;
 
-        mapDescriptionText.text = Managers.Data.Get_MapExplanationDict(selectedMapType);
-
-        if (!selectionEffectRectTr.gameObject.activeSelf)
-            selectionEffectRectTr.gameObject.SetActive(true);
+        selectedMapType = (ENUM_MAP_TYPE)_mapTypeNum;
+        mapInfo.Set_CurrMapInfo((ENUM_MAP_TYPE)_mapTypeNum);
     }
 
     public void OnClick_SelectCompletion()
