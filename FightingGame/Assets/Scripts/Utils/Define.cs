@@ -202,9 +202,12 @@ namespace FGDefine
         UI_TimeLimit = 8,
 
         // UI ClickSound
-        UI_OnClick_Basic = 90,
-        UI_OnClick_Cancel = 91,
-        UI_OnClick_Select = 92,
+        UI_Click_Light = 91,
+        UI_Cilck_Heavy = 92,
+        UI_Click_Notify = 93,
+        UI_Click_Cancel = 94,
+        UI_Click_Error = 95,
+        UI_Click_Select = 96, // 미사용
 
         // Knight Sound
         Knight_Attack1 = 101,
