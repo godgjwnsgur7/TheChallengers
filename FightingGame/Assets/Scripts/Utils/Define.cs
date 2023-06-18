@@ -287,6 +287,18 @@ namespace FGDefine
         Hit_Knight_SmashSkill3 = 315,
 
         Hit_Knight_ThrowSkill = 316,
+
+        Hit_Wizard_Attack1 = 320,
+        Hit_Wizard_Attack2 = 321,
+        Hit_Wizard_Attack3 = 322,
+        Hit_Wizard_JumpAttack = 323,
+        Hit_Wizard_IceSkill = 324,
+        Hit_Wizard_MeteorSkill1 = 325,
+        Hit_Wizard_MeteorSkill2 = 326,
+        Hit_Wizard_PushOutSkill = 327,
+        Hit_Wizard_ThunderSkill1 = 328,
+        Hit_Wizard_ThunderSkill2 = 329,
+        Hit_Wizard_ThunderSkill3 = 330,
     }
 
     [Serializable]
