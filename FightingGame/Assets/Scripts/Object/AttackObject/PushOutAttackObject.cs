@@ -22,6 +22,11 @@ public class PushOutAttackObject : HitAttackObject
             
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, _reverseState));
 
+            Vector3 hitPosVec = collision.transform.position;
+            hitPosVec.z = 0;
+
+            Managers.Network.SyncPlaySFX_HitSound(skillValue.hitSoundType, teamType, hitPosVec);
+
             // 피격된 캐릭터 위치를 기준으로 주어진 범위 내의 랜덤위치로 조정
             Vector2 randomHitPosVec = collision.transform.position;
             randomHitPosVec.x += Random.Range(-0.5f, 0.5f);
