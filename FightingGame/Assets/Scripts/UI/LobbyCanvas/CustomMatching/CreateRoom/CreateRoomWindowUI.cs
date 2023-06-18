@@ -141,7 +141,7 @@ public class CreateRoomWindowUI : UIElement
     protected IEnumerator IErrorTextShakeEffect()
     {
         float shakeTime = 0.5f;
-        float shakePower = 0.05f;
+        float shakePower = 0.04f;
         Vector2 originVec = errorText.gameObject.transform.position;
 
         float realTime = 0f;
@@ -151,6 +151,7 @@ public class CreateRoomWindowUI : UIElement
             realTime += Time.deltaTime;
             
             errorText.gameObject.transform.position = originVec + (Vector2)Random.insideUnitCircle * shakePower;
+            // errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
 
             yield return null;
         }
