@@ -202,11 +202,8 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
-        if (jumpState || currState == ENUM_PLAYER_STATE.Die)
-            return;
-
         if (currState != ENUM_PLAYER_STATE.Idle &&
-            currState != ENUM_PLAYER_STATE.Move)
+            currState != ENUM_PLAYER_STATE.Move && jumpState)
             return;
 
         base.Jump();
@@ -219,12 +216,9 @@ public partial class ActiveCharacter : Character
 
     public override void Dash()
     {
-        if (jumpState || currState == ENUM_PLAYER_STATE.Dash)
-            return;
-
         if (currState != ENUM_PLAYER_STATE.Idle &&
             currState != ENUM_PLAYER_STATE.Move &&
-            currState != ENUM_PLAYER_STATE.Attack)
+            currState != ENUM_PLAYER_STATE.Attack && !jumpState)
             return;
 
         if (dashCoroutine != null)
@@ -242,8 +236,9 @@ public partial class ActiveCharacter : Character
 
     public override void Attack(CharacterParam param)
     {
-        if (currState == ENUM_PLAYER_STATE.Attack || currState == ENUM_PLAYER_STATE.Skill
-            || currState == ENUM_PLAYER_STATE.Dash || currState == ENUM_PLAYER_STATE.Die)
+        if (currState != ENUM_PLAYER_STATE.Idle &&
+            currState != ENUM_PLAYER_STATE.Move &&
+            currState != ENUM_PLAYER_STATE.Jump)
             return;
 
         if (attackObject != null)
@@ -261,8 +256,8 @@ public partial class ActiveCharacter : Character
 
     public override void Skill(CharacterParam param)
     {  
-        if (jumpState || currState == ENUM_PLAYER_STATE.Skill
-            || currState == ENUM_PLAYER_STATE.Dash || currState == ENUM_PLAYER_STATE.Die)
+        if (currState != ENUM_PLAYER_STATE.Idle &&
+            currState != ENUM_PLAYER_STATE.Move && jumpState)
             return;
 
         if (attackObject != null)
@@ -282,11 +277,6 @@ public partial class ActiveCharacter : Character
 
     public override void Hit(CharacterParam param)
     {
-        if (currState == ENUM_PLAYER_STATE.Die)
-            return;
-
-        if (param == null || invincibility) return;
-
         var attackParam = param as CharacterAttackParam;
 
         if (attackParam != null)
@@ -316,9 +306,11 @@ public partial class ActiveCharacter : Character
 
                 if (jumpState && _skillData.risingPower == 0.0f)
                 {
-                    // 추후에 수치 조정 방식 변경이 필요할 듯 (임시)
                     getPowerDir.y = Math.Abs(_skillData.pushingPower) * 2;
                     getPowerDir.x = getPowerDir.normalized.x;
+
+                    if (getPowerDir.y < 6) getPowerDir.y = 6;
+                    else if (getPowerDir.y > 14) getPowerDir.y = 14;
                 }
 
                 Push_Rigid2D(getPowerDir);

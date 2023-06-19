@@ -16,7 +16,8 @@ public class LoadingPopup : PopupUI
         if (messageEffectCoroutine != null)
             StopCoroutine(messageEffectCoroutine);
 
-        tipDescriptionText.text = "TIP. " + Managers.Data.Get_TipDescription();
+        if(this.gameObject.activeSelf == false)
+            tipDescriptionText.text = "TIP. " + Managers.Data.Get_TipDescription();
 
         this.gameObject.SetActive(true);
 

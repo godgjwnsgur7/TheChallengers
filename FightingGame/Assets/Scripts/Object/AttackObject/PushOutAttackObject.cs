@@ -15,7 +15,8 @@ public class PushOutAttackObject : HitAttackObject
 
         if (enemyCharacter != null && skillValue != null)
         {
-            if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
+            if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility
+                || enemyCharacter.currState == ENUM_PLAYER_STATE.Die)
                 return;
 
             bool _reverseState = collision.transform.position.x < transform.position.x;

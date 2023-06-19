@@ -59,7 +59,8 @@ public class HitAttackObject : AttackObject
 
         if (enemyCharacter != null && skillValue != null)
         {
-            if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility)
+            if (enemyCharacter.teamType == teamType || enemyCharacter.invincibility
+                || enemyCharacter.currState == ENUM_PLAYER_STATE.Die)
                 return;
 
             enemyCharacter.Hit(new CharacterAttackParam((ENUM_ATTACKOBJECT_NAME)skillValue.skillType, reverseState));
