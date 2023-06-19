@@ -177,7 +177,7 @@ public class PlayerCharacter : MonoBehaviour
     
     public void PlayerCommand(ENUM_PLAYER_STATE nextState, CharacterParam param = null)
     {
-        if (activeCharacter == null)
+        if (activeCharacter == null && !activeCharacter.isControl)
             return;
 
         if (activeCharacter.currState == ENUM_PLAYER_STATE.Skill ||
