@@ -113,6 +113,8 @@ public class FadeEffectPopup : PopupUI
         backgroundImage.color = new Color(0, 0, 0, 1);
         Color tempColor = backgroundImage.color;
 
+        Managers.UI.popupCanvas.Close_LoadingPopup();
+
         while (tempColor.a > 0f)
         {
             tempColor.a -= Time.deltaTime / _fadeInTime;
@@ -149,6 +151,8 @@ public class FadeEffectPopup : PopupUI
         backgroundImage.color = tempColor;
 
         _fadeOutInCallBack?.Invoke();
+
+        Managers.UI.popupCanvas.Close_LoadingPopup();
 
         while (tempColor.a > 0f)
         {

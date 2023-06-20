@@ -68,9 +68,6 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
     
     public void Open()
     {
-        if (this.gameObject.activeSelf)
-            return;
-
         EnemyInfoUI.Clear();
 
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;

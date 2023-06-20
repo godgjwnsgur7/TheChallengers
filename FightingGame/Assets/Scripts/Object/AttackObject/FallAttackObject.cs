@@ -24,8 +24,6 @@ public class FallAttackObject : GenerateAttackObject
 
     Coroutine explodeCheckCoroutine;
 
-    float masterPosVecY;
-
     public override void OnDisable()
     {
         base.OnDisable();
@@ -78,7 +76,6 @@ public class FallAttackObject : GenerateAttackObject
 
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
-        masterPosVecY = _summonPosVec.y; // 시전자의 y좌표(월드) 저장
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
     }
 
@@ -117,7 +114,7 @@ public class FallAttackObject : GenerateAttackObject
         float currPosY = this.transform.position.y;
 
         yield return new WaitUntil(() =>
-        (currPosY - 1.5f > transform.position.y) ||
+        (currPosY - 1.75f > transform.position.y) ||
         currMyState != ENUM_FALLOBJECTSTATE_TYPE.Fall);
 
         if(currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
