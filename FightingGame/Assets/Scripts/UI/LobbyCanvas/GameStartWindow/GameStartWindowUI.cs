@@ -234,7 +234,7 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
     {
         yield return new WaitForSeconds(_delayTime);
 
-        Managers.UI.popupCanvas.Play_FadeOutEffect();
+        Managers.UI.popupCanvas.Play_FadeOutEffect(Managers.UI.popupCanvas.Open_LoadingPopup);
 
         if(PhotonLogicHandler.IsMasterClient)
         {
