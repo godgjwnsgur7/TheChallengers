@@ -39,9 +39,8 @@ public class LobbyCanvas : BaseCanvas
 
     public void GameStart_CallBack()
     {
+        matchingWindow.Close();   
         gameStartWindow.GameStart();
-
-        matchingWindow.Close();
     }
 
     public void Open_CustomRoomWindow() => customMatching.Open();
@@ -61,6 +60,11 @@ public class LobbyCanvas : BaseCanvas
     public void MathingStart()
     {
         StartCoroutine(IWaitMatching());
+    }
+
+    public void MathingStop()
+    {
+        matchingWindow.Close();
     }
 
     /// <summary>

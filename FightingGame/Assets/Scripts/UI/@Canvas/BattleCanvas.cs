@@ -71,7 +71,7 @@ public class BattleCanvas : BaseCanvas
         resultWindow.Open(isDraw, isWin);
     }
 
-    public void OnClick_Exit()
+    public override void OnClick_Exit()
     {
         // (점수깎아)
         Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }

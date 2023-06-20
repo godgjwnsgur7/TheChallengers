@@ -76,7 +76,7 @@ public abstract class BaseCanvas : MonoBehaviour
 	public void OnClick_Activate(GameObject g) => g.SetActive(true);
     public void OnClick_Deactivate(GameObject g) => g.SetActive(false);
 
-	public void OnClick_Exit()
+	public virtual void OnClick_Exit()
 	{
 		Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
 		, null, "게임을 종료하시겠습니까?");

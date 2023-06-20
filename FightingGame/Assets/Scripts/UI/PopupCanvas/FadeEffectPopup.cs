@@ -76,7 +76,14 @@ public class FadeEffectPopup : PopupUI
 
     IEnumerator IFadeOutEffect(Action _fadeOutCallBack, float _fadeOutTime)
     {
-        yield return new WaitUntil(() => (fadeOutInCoroutine == null) && (fadeOutInCoroutine == null));
+        if(gameObject.activeSelf)
+        {
+            _fadeOutCallBack?.Invoke();
+            fadeOutCoroutine = null;
+            yield break;
+        }
+
+        yield return new WaitUntil(() => (fadeOutInCoroutine == null) && (fadeOutCoroutine == null));
 
         backgroundImage.color = new Color(0, 0, 0, 0);
         gameObject.SetActive(true);

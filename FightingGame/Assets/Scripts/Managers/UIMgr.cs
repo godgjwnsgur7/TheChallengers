@@ -70,7 +70,7 @@ public class UIMgr
 
     public void Pop_WindowExitStack()
     {
-        if(onWindowExitStack.Count > 0)
+        if (onWindowExitStack.Count > 0)
             onWindowExitStack.Pop();
     }
 

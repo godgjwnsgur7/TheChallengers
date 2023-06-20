@@ -16,13 +16,15 @@ public class FallAttackObject : GenerateAttackObject
 {
     Animator anim;
     protected Rigidbody2D rigid2D;
+
+    [SerializeField] BoxCollider2D boxCollider;
     [SerializeField] Vector2 shotPowerVec;
+    
     ENUM_FALLOBJECTSTATE_TYPE currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
 
     Coroutine explodeCheckCoroutine;
 
     float masterPosVecY;
-    bool isExplodePossible;
 
     public override void OnDisable()
     {
@@ -30,6 +32,8 @@ public class FallAttackObject : GenerateAttackObject
 
         if (explodeCheckCoroutine != null)
             StopCoroutine(explodeCheckCoroutine);
+
+        boxCollider.enabled = false;
     }
 
     public override void Init()
@@ -38,6 +42,9 @@ public class FallAttackObject : GenerateAttackObject
 
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
+
+        if(boxCollider == null)
+            boxCollider = GetComponent<BoxCollider2D>();
 
         if (anim == null)
             anim = GetComponent<Animator>();
@@ -66,8 +73,8 @@ public class FallAttackObject : GenerateAttackObject
     [BroadcastMethod]
     public override void Activate_AttackObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
+        boxCollider.enabled = false;
         currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
-        isExplodePossible = false;
 
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
@@ -88,6 +95,7 @@ public class FallAttackObject : GenerateAttackObject
         else if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Explode)
         {
             rigid2D.velocity = Vector2.zero;
+            boxCollider.enabled = false;
         }
 
         SetAnimTrigger(fallObjectState.ToString() + "Trigger");
@@ -98,7 +106,7 @@ public class FallAttackObject : GenerateAttackObject
         if (!PhotonLogicHandler.IsMine(viewID))
             return;
 
-        if (isExplodePossible && collision.tag == ENUM_TAG_TYPE.Ground.ToString())
+        if (collision.tag == ENUM_TAG_TYPE.Ground.ToString())
         {
             Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
         }
@@ -106,16 +114,22 @@ public class FallAttackObject : GenerateAttackObject
 
     protected IEnumerator IExplodeCheck()
     {
-        float subPosY = GetComponent<SpriteRenderer>().bounds.size.y / 2;
+        float currPosY = this.transform.position.y;
 
-        yield return new WaitUntil(() => transform.position.y - subPosY > masterPosVecY);
-        
-        isExplodePossible = true;
+        yield return new WaitUntil(() =>
+        (currPosY - 1.5f > transform.position.y) ||
+        currMyState != ENUM_FALLOBJECTSTATE_TYPE.Fall);
+
+        if(currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
+            boxCollider.enabled = true;
         explodeCheckCoroutine = null;
     }
 
     public void AnimEvent_Falling()
     {
+        if (!PhotonLogicHandler.IsMine(viewID))
+            return;
+
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Fall);
     }
 }

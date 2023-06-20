@@ -4,7 +4,7 @@ using UnityEngine;
 using FGDefine;
 using UnityEngine.UI;
 
-public class MatchingWindowUI : UIElement
+public class MatchingWindowUI : MonoBehaviour
 {
     [SerializeField] Text matchingStateText;
     [SerializeField] Text stopwatchText;
@@ -19,10 +19,8 @@ public class MatchingWindowUI : UIElement
     bool isStopwatchLock = false;
     bool matchingErrorCheckLock = false;
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
-
         if (timerCoroutine != null)
             StopCoroutine(timerCoroutine);
 
@@ -79,10 +77,8 @@ public class MatchingWindowUI : UIElement
         matchingErrorCheckCoroutine = StartCoroutine(IMatchingErrorCheck());
     }
 
-    public override void OnClick_Exit()
+    public void OnClick_Exit()
     {
-        base.OnClick_Exit();
-
         if (PhotonLogicHandler.IsJoinedRoom)
         {
             PhotonLogicHandler.Instance.TryLeaveRoom(LeaveRoom_CallBack);

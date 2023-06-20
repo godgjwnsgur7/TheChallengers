@@ -205,6 +205,8 @@ public class PopupCanvas : MonoBehaviour
     /// </summary>
     public void Play_FadeOutEffect(Action _fadeOutCallBack = null)
     {
+        Close_LoadingPopup();
+
         if (fadeEffectPopup.isUsing)
         {
             Debug.Log("fadeEffect is Using!!");
@@ -236,6 +238,8 @@ public class PopupCanvas : MonoBehaviour
     /// </summary>
     public void Play_FadeOutInEffect(Action _fadeOutInCallBack)
     {
+        Close_LoadingPopup();
+
         if (fadeEffectPopup.isUsing)
         {
             Debug.Log("fadeEffect is Using!!");

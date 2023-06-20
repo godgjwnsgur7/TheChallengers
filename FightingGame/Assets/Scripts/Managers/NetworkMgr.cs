@@ -211,6 +211,8 @@ public class NetworkMgr : IRoomPostProcess
     /// </summary>
     protected IEnumerator IWaitDestroyAllPhotonObject()
     {
+        Managers.UI.popupCanvas.Open_LoadingPopup();
+
         yield return PhotonLogicHandler.Instance.TryDestroyAllPhotonOnScene(null);
 
         if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM)
