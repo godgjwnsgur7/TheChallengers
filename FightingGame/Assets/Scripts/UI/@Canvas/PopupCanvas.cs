@@ -98,6 +98,24 @@ public class PopupCanvas : MonoBehaviour
         return inputKeyController;
     }
 
+    /// <summary>
+    /// 떠 있는 팝업을 모두 종료 // 페이드 효과, 로딩 제외
+    /// </summary>
+    public void DeactivePopupAll()
+    {
+        if (inputKeyController.gameObject.activeSelf) inputKeyController.Close();
+        if (inputKeyManagement.gameObject.activeSelf) inputKeyManagement.Close();
+        if (settingWindow.gameObject.activeSelf) settingWindow.Close();
+
+        if (mapSelectPopup.isUsing) mapSelectPopup.OnClick_Exit();
+        if (charSelectPopup.isUsing) charSelectPopup.OnClick_Exit();
+        if (selectPopup.isUsing) selectPopup.OnClick_Exit();
+        if (notifyPopup.isUsing) notifyPopup.OnClick_Exit();
+        if (loadingPopup.isUsing) loadingPopup.OnClick_Exit();
+        if (errorPopup.isUsing) errorPopup.OnClick_Exit();
+        if (timerNotifyPopup.isUsing) timerNotifyPopup.OnClick_Exit();        
+    }
+
     public void Open_SettingWindow()
     {
         settingWindow.Open();
