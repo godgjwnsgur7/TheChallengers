@@ -199,7 +199,7 @@ namespace FGDefine
         UI_Result_Draw = 5,
         UI_GameStartInfo = 6,
         UI_JoinGameLobby = 7,
-        UI_TimeLimit = 8,
+        UI_TimerLimit = 8,
 
         // UI ClickSound
         UI_Click_Light = 91,

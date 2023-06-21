@@ -51,6 +51,8 @@ public class TrainingScene : BaseScene
         if(currMap != null)
             Managers.Resource.Destroy(currMap.gameObject);
 
+        Managers.UI.currCanvas.GetComponent<TrainingCanvas>()?.Clear_Status();
+
         currMap = Managers.Resource.Instantiate($"Maps/{mapType}").GetComponent<BaseMap>();
         trainingCharacter.Init(currMap);
 

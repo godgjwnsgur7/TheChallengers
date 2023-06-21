@@ -29,7 +29,6 @@ public class CustomRoomListUI : MonoBehaviour
 
         isRoomUpdateLock = true;
         PhotonLogicHandler.Instance.RequestRoomList();
-
     }
 
     public void Update_RoomList(List<CustomRoomInfo> customRoomList)

@@ -25,6 +25,14 @@ public class StatusWindowUI : MonoBehaviour
             StopCoroutine(hpBarCoroutine);
     }
 
+    public void Clear()
+    {
+        charFrameImage.gameObject.SetActive(false);
+        hpSilder.value = 1f;
+        characterText.text = String.Empty;
+        nicknameText.text = String.Empty;
+    }
+
     public Action<float> Connect_Character(ENUM_CHARACTER_TYPE _charType)
     {
         Managers.Data.CharInfoDict.TryGetValue((int)_charType, out CharacterInfo characterInfo);
@@ -42,25 +50,42 @@ public class StatusWindowUI : MonoBehaviour
         hpSilder.value = 1.0f;
 
         charFrameImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Characters/CharFrame_{_charType}");
-        charFrameImage.gameObject.SetActive(true);
+        if(charFrameImage.gameObject.activeSelf == false)
+            charFrameImage.gameObject.SetActive(true);
 
         characterText.text = Managers.Data.Get_CharNameDict(_charType);
     }
 
     private void Set_Nickname()
     {
-        if(!Managers.Network.IsServerSyncState)
+        if(Managers.Network.IsServerSyncState)
+        {
+            if (PhotonLogicHandler.IsMasterClient == (teamType == ENUM_TEAM_TYPE.Blue))
+            {
+                nicknameText.text = PhotonLogicHandler.CurrentMyNickname;
+
+                Color selectColor = Managers.Data.Get_SelectColor();
+                charFrameCoverImage.color = selectColor;
+                nicknameText.color = selectColor;
+            }
+            else
+            {
+                nicknameText.text = Managers.Network.Get_SlaveClientNickname();
+            }
+        }
+        else
         {
             if (teamType != ENUM_TEAM_TYPE.Blue)
+            {
+                nicknameText.text = "Enemy";
                 return;
+            }
 
-            Color selectColor = Managers.Data.Get_SelectColor();
-            charFrameCoverImage.color = selectColor;
-            nicknameText.color = selectColor;
-        }
-        else if (PhotonLogicHandler.IsMasterClient ==
-            (teamType == ENUM_TEAM_TYPE.Blue))
-        {
+            if (PhotonLogicHandler.IsConnected)
+                nicknameText.text = PhotonLogicHandler.CurrentMyNickname;
+            else
+                nicknameText.text = "None";
+
             Color selectColor = Managers.Data.Get_SelectColor();
             charFrameCoverImage.color = selectColor;
             nicknameText.color = selectColor;

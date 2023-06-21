@@ -223,6 +223,7 @@ public partial class ActiveCharacter : Character
     {
         if (currState != ENUM_PLAYER_STATE.Idle &&
             currState != ENUM_PLAYER_STATE.Move &&
+            currState != ENUM_PLAYER_STATE.Jump &&
             currState != ENUM_PLAYER_STATE.Attack)
             return;
 

@@ -20,6 +20,12 @@ public class TrainingCanvas : BaseCanvas
         trainingMenuWindow.Init();
     }
 
+    public void Clear_Status()
+    {
+        blueTeamStatusWindow.Clear();
+        redTeamStatusWindow.Clear();
+    }
+
     public Action<float> Get_StatusWindowCallBack(ENUM_TEAM_TYPE _teamType, ENUM_CHARACTER_TYPE _charType)
     {
         if (_teamType == ENUM_TEAM_TYPE.Blue)

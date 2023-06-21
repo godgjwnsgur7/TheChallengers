@@ -37,7 +37,7 @@ public class TimerUI : MonoBehaviour
         if(isTimeLimitSound == false && timeLimit <= 30)
         {
             isTimeLimitSound = true;
-            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_TimeLimit);
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_TimerLimit);
         }
 
         Set_TimerText(minutes, seconds);
