@@ -22,4 +22,8 @@ public abstract class PopupUI : MonoBehaviour
     }
 
     public virtual void OnClick_Exit() { }
+    public void OnClick_SoundSFX(int sfxTypeNum)
+    {
+        Managers.Sound.Play_SFX((FGDefine.ENUM_SFX_TYPE)sfxTypeNum);
+    }
 }

@@ -86,7 +86,10 @@ public abstract class BaseCanvas : MonoBehaviour
 	{
 		Managers.UI.popupCanvas.Open_SettingWindow();
 	}
-
+	public void OnClick_SoundSFX(int sfxTypeNum)
+	{
+		Managers.Sound.Play_SFX((FGDefine.ENUM_SFX_TYPE)sfxTypeNum);
+	}
 	public virtual void Open<T>(UIParam param = null) { }
     public virtual void Close<T>() { }
 
