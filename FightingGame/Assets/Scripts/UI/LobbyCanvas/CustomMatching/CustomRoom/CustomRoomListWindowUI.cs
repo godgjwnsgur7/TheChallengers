@@ -10,8 +10,9 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
     List<CustomRoomInfo> customRoomInfoList = new List<CustomRoomInfo>();
 
     bool isRoomUpdateLock = false;
-
     readonly float roomUpdateCoolTime = 1.0f;
+
+    Coroutine roomUpdateLockCoroutine;
 
     protected override void OnEnable()
     {
@@ -30,6 +31,13 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
             OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
 
         base.OnDisable();
+
+        if(roomUpdateLockCoroutine != null)
+        {
+            StopCoroutine(roomUpdateLockCoroutine);
+            isRoomUpdateLock = false;
+            roomUpdateLockCoroutine = null;
+        }
 
         this.UnregisterLobbyCallback();
     }
@@ -71,7 +79,7 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
         isRoomUpdateLock = true;
         PhotonLogicHandler.Instance.RequestRoomList();
 
-        StartCoroutine(IUpdateLockTime());
+        roomUpdateLockCoroutine = StartCoroutine(IUpdateLockTime());
     }
 
     protected IEnumerator IUpdateLockTime()
@@ -79,6 +87,7 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
         yield return new WaitForSeconds(roomUpdateCoolTime);
 
         isRoomUpdateLock = false;
+        roomUpdateLockCoroutine = null;
     }
 
     public void OnClick_CreatRoom()
