@@ -62,7 +62,6 @@ public class ResultWindowUI : MonoBehaviour
         {
             timeCount = 5;
             
-            // 게임 중에 팅기거나 그랬을 때, 등의 예외상황 처리가 아직 안되어있음
             myScore = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
             Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
             if(!isDraw)

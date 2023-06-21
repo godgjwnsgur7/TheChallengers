@@ -588,7 +588,7 @@ public partial class ActiveCharacter : Character
                 Invincible();
                 if (!jumpState)
                 {
-                    Push_Rigid2D(new Vector2(Managers.Data.gameInfo.hitImmunityPower * -1.0f, 0));
+                    Push_Rigid2D(new Vector2(Managers.Data.gameInfo.hitImmunityPower * (reverseState? 1.0f : -1.0f), 0)) ;
                     SetAnimTrigger("ImmunityTrigger");
                 }
                 hitImmunityCoroutine = null;
@@ -645,7 +645,7 @@ public partial class ActiveCharacter : Character
     protected IEnumerator IInvincibleCheck(float _invincibleTime)
     {
         invincibility = true;
-        TransparentState(0.8f);
+        TransparentState(0.5f);
 
         while (currState == ENUM_PLAYER_STATE.Hit)
             yield return null;
