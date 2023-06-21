@@ -202,11 +202,16 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
+        if (jumpState) return;
+
         if (currState != ENUM_PLAYER_STATE.Idle &&
-            currState != ENUM_PLAYER_STATE.Move && jumpState)
+            currState != ENUM_PLAYER_STATE.Move)
             return;
 
         base.Jump();
+
+        if (dropCoroutine != null)
+            StopCoroutine(dropCoroutine);
 
         dropCoroutine = StartCoroutine(ICharDropStateCheck());
 
@@ -218,7 +223,7 @@ public partial class ActiveCharacter : Character
     {
         if (currState != ENUM_PLAYER_STATE.Idle &&
             currState != ENUM_PLAYER_STATE.Move &&
-            currState != ENUM_PLAYER_STATE.Attack && !jumpState)
+            currState != ENUM_PLAYER_STATE.Attack)
             return;
 
         if (dashCoroutine != null)
@@ -255,9 +260,11 @@ public partial class ActiveCharacter : Character
     }
 
     public override void Skill(CharacterParam param)
-    {  
+    {
+        if (jumpState) return;
         if (currState != ENUM_PLAYER_STATE.Idle &&
-            currState != ENUM_PLAYER_STATE.Move && jumpState)
+            currState != ENUM_PLAYER_STATE.Move &&
+            currState != ENUM_PLAYER_STATE.Attack)
             return;
 
         if (attackObject != null)
@@ -609,8 +616,17 @@ public partial class ActiveCharacter : Character
             yield return null;
         }
 
+        yield return new WaitUntil(() => currState != ENUM_PLAYER_STATE.Attack);
+        
         dropCoroutine = null;
+
+        if (jumpState == false ||
+            currState == ENUM_PLAYER_STATE.Hit || 
+            currState == ENUM_PLAYER_STATE.Die)
+            yield break;
+
         SetAnimBool("IsDrop", true);
+        SetAnimTrigger("DropTrigger");
     }
 
     private IEnumerator IDashTimeCheck(float _DashTime)
@@ -736,7 +752,8 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_Move(float vecX)
     {
-        if (!isControl || currState == ENUM_PLAYER_STATE.Dash) return;
+        if (!isControl || currState == ENUM_PLAYER_STATE.Dash)
+            return;
 
         if (reverseState)
             vecX *= -1f;
@@ -746,7 +763,8 @@ public partial class ActiveCharacter : Character
 
     protected void AnimEvent_MoveToInputArrow(float vecX)
     {
-        if (!isControl || currState == ENUM_PLAYER_STATE.Dash) return;
+        if (!isControl || currState == ENUM_PLAYER_STATE.Dash)
+            return;
 
         if (reverseState)
             vecX *= -1f;

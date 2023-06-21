@@ -16,8 +16,8 @@ public class InputKey : MonoBehaviour
     public int inputKeyNum;
 
     bool isInit = false;
-    float beforeTransparency = 0;
-
+    bool isClickState = false;
+    float existingcolor_a = 0; 
 
     public void Init(Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
@@ -35,28 +35,34 @@ public class InputKey : MonoBehaviour
 
     public virtual void EventTrigger_PointerDown()
     {
+        if (isClickState) return;
+        isClickState = true;
+
         if (OnPointDownCallBack == null)
         {
             Debug.Log("OnPointDownCallBack is Null");
             return;
         }
 
-        beforeTransparency = Get_Transparency();
-
-        Set_Transparency(beforeTransparency * 0.7f);
+        existingcolor_a = Get_Transparency();
+        Set_Transparency(existingcolor_a * 0.7f);
 
         OnPointDownCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }
 
     public virtual void EventTrigger_PointerUp()
     {
+        if (!isClickState) return;
+        isClickState = false;
+
         if (OnPointDownCallBack == null)
         {
             Debug.Log("OnPointUpCallBack is Null");
             return;
         }
 
-        Set_Transparency(beforeTransparency);
+        if (existingcolor_a != 0)
+            Set_Transparency(existingcolor_a);
 
         OnPointUpCallBack((ENUM_INPUTKEY_NAME)inputKeyNum);
     }

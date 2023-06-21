@@ -38,14 +38,14 @@ public class FallAttackObject : GenerateAttackObject
     {
         base.Init();
 
+        if (anim == null)
+            anim = GetComponent<Animator>();
+
         if (rigid2D == null)
             rigid2D = GetComponent<Rigidbody2D>();
 
         if(boxCollider == null)
             boxCollider = GetComponent<BoxCollider2D>();
-
-        if (anim == null)
-            anim = GetComponent<Animator>();
 
         var param = MakeSyncAnimParam();
         SyncAnimator(anim, param);
@@ -71,16 +71,20 @@ public class FallAttackObject : GenerateAttackObject
     [BroadcastMethod]
     public override void Activate_AttackObject(Vector2 _summonPosVec, ENUM_TEAM_TYPE _teamType, bool _reverseState)
     {
-        boxCollider.enabled = false;
-        currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
-
         base.Activate_AttackObject(_summonPosVec, _teamType, _reverseState);
 
-        Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
+        if(PhotonLogicHandler.IsMine(ViewID))
+        {
+            boxCollider.enabled = false;
+            Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Generate);
+        }
     }
 
     private void Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE fallObjectState)
     {
+        if (!PhotonLogicHandler.IsMine(viewID))
+            return;
+
         currMyState = fallObjectState;
         
         if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
@@ -100,9 +104,6 @@ public class FallAttackObject : GenerateAttackObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!PhotonLogicHandler.IsMine(viewID))
-            return;
-
         if (collision.tag == ENUM_TAG_TYPE.Ground.ToString())
         {
             Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Explode);
@@ -114,7 +115,7 @@ public class FallAttackObject : GenerateAttackObject
         float currPosY = this.transform.position.y;
 
         yield return new WaitUntil(() =>
-        (currPosY - 1.75f > transform.position.y) ||
+        (currPosY - 2f > transform.position.y) ||
         currMyState != ENUM_FALLOBJECTSTATE_TYPE.Fall);
 
         if(currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
@@ -124,9 +125,6 @@ public class FallAttackObject : GenerateAttackObject
 
     public void AnimEvent_Falling()
     {
-        if (!PhotonLogicHandler.IsMine(viewID))
-            return;
-
         Set_AnimTrigger(ENUM_FALLOBJECTSTATE_TYPE.Fall);
     }
 }
