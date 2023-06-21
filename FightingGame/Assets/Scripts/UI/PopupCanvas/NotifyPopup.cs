@@ -12,6 +12,8 @@ public class NotifyPopup : PopupUI
 
     public void Open(string _message, Action _callBack = null)
     {
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
         popupText.text = _message;
 
         callBack = _callBack;
@@ -28,7 +30,10 @@ public class NotifyPopup : PopupUI
 
     public void OnClick_Check()
     {
-        if(callBack != null) callBack();
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+
+        if (callBack != null) callBack();
 
         this.gameObject.SetActive(false);
         callBack = null;

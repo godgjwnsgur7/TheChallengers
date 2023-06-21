@@ -13,6 +13,8 @@ public class SelectPopup : PopupUI
 
     public void Open(Action _succeededCallBack, Action _failedCallBack, string _message)
     {
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
         popupText.text = _message;
         succeededCallBack = _succeededCallBack;
         failedCallBack = _failedCallBack;
@@ -22,6 +24,8 @@ public class SelectPopup : PopupUI
 
     public void OnClick_Yes()
     {
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy);
+
         succeededCallBack?.Invoke();
 
         Close();
@@ -29,6 +33,9 @@ public class SelectPopup : PopupUI
 
     public void OnClick_No()
     {
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+
         failedCallBack?.Invoke();
 
         Close();

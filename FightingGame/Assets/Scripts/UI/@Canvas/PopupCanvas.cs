@@ -28,6 +28,11 @@ public class PopupCanvas : MonoBehaviour
     [SerializeField] TimerNotifyPopup timerNotifyPopup;
     [SerializeField] GameObject touchProtection;
 
+    public bool isFadeObjActiveState
+    {
+        get { return fadeEffectPopup.gameObject.activeSelf; }
+    }
+
     public void Init()
     {
         scaler = GetComponent<CanvasScaler>();

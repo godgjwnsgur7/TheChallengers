@@ -48,6 +48,8 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         this.RegisterRoomCallback();
 
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
+
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
     }
 
     protected override void OnDisable()
@@ -74,6 +76,8 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     /// </summary>
     public void SlaveClientEnterCallBack(string nickname)
     {
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
+
         if (PhotonLogicHandler.IsMasterClient)
             Managers.Network.Set_SlaveClientNickname(nickname);
     }

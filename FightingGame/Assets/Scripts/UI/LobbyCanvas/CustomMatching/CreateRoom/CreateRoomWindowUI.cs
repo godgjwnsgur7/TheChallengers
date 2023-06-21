@@ -19,8 +19,18 @@ public class CreateRoomWindowUI : UIElement
     Coroutine errorTextShakeEffectCoroutine;
     bool isLock = false;
 
+    protected override void OnEnable()
+    {
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
+
+        base.OnEnable();
+    }
+
     protected override void OnDisable()
     {
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+
         base.OnDisable();
 
         if (errorTextShakeEffectCoroutine != null)
@@ -92,6 +102,8 @@ public class CreateRoomWindowUI : UIElement
             return;
         }
 
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy);
+
         isLock = true;
         Managers.UI.popupCanvas.Open_LoadingPopup();
         PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack
@@ -105,6 +117,8 @@ public class CreateRoomWindowUI : UIElement
 
     private void ErrorTextShakeEffect(string _errorMessage = "")
     {
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Error);
+
         if (errorTextShakeEffectCoroutine != null)
             StopCoroutine(errorTextShakeEffectCoroutine);
 

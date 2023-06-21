@@ -10,6 +10,8 @@ public class ErrorPopup : PopupUI
 
     public void Open(short _returnCode, string _message)
     {
+        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
         errorCodeText.text = $"코드번호 : {_returnCode}";
         errorMessageText.text = _message;
 
