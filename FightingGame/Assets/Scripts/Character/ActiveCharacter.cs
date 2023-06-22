@@ -511,7 +511,7 @@ public partial class ActiveCharacter : Character
             {
                 jumpState = !jumpState;
                 
-                if ((dropCoroutine == null && superArmour) &&
+                if ((dropCoroutine == null && !superArmour) &&
                     (currState == ENUM_PLAYER_STATE.Idle || currState == ENUM_PLAYER_STATE.Jump
                     || currState == ENUM_PLAYER_STATE.Move))
                 {
