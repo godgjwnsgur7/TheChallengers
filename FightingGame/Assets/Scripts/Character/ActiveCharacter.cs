@@ -179,6 +179,8 @@ public partial class ActiveCharacter : Character
 
     public override void Move(CharacterParam param)
     {
+        if (superArmour) return;
+
         if (currState != ENUM_PLAYER_STATE.Idle && 
             currState != ENUM_PLAYER_STATE.Move &&
             currState != ENUM_PLAYER_STATE.Jump)
@@ -202,7 +204,7 @@ public partial class ActiveCharacter : Character
 
     public override void Jump()
     {
-        if (jumpState) return;
+        if (jumpState || superArmour) return;
 
         if (currState != ENUM_PLAYER_STATE.Idle &&
             currState != ENUM_PLAYER_STATE.Move)
@@ -509,7 +511,7 @@ public partial class ActiveCharacter : Character
             {
                 jumpState = !jumpState;
                 
-                if (dropCoroutine == null &&
+                if ((dropCoroutine == null && superArmour) &&
                     (currState == ENUM_PLAYER_STATE.Idle || currState == ENUM_PLAYER_STATE.Jump
                     || currState == ENUM_PLAYER_STATE.Move))
                 {
@@ -621,7 +623,7 @@ public partial class ActiveCharacter : Character
         
         dropCoroutine = null;
 
-        if (jumpState == false ||
+        if (!jumpState || superArmour ||
             currState == ENUM_PLAYER_STATE.Hit || 
             currState == ENUM_PLAYER_STATE.Die)
             yield break;
@@ -787,13 +789,11 @@ public partial class ActiveCharacter : Character
     protected void AnimEvent_PlaySFX(int sfxTypeNum)
     {
         Managers.Sound.Play_SFX((ENUM_SFX_TYPE)sfxTypeNum, teamType, transform.position);
-        return;
     }
 
     protected void AnimEvent_PlaySFX_FollowingSound(int sfxTypeNum)
     {
         Managers.Sound.PlaySFX_FollowingSound((ENUM_SFX_TYPE)sfxTypeNum, teamType, transform.position, transform);
-        return;
     }
 
     protected void AnimEvent_PlayerSFX_RandomTwo(int sfxTypeNum)

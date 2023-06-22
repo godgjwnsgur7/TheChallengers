@@ -26,7 +26,7 @@ public class HitAttackObject : AttackObject
     {
         base.Activate_AttackObject(_summonPosVec,_teamType,_reverseState);
 
-        if (PhotonLogicHandler.IsMine(viewID))
+        if (!isServerSyncState || PhotonLogicHandler.IsMine(viewID))
             Start_RunTimeCheckCoroutine();
     }
 
@@ -38,7 +38,7 @@ public class HitAttackObject : AttackObject
             return;
         }
 
-        runTimeCheckCoroutine = CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
+        runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
     public override void OnDisable()
@@ -121,8 +121,6 @@ public class HitAttackObject : AttackObject
         yield return new WaitForSeconds(_runTime);
 
         runTimeCheckCoroutine = null;
-    
-        if(!isUsing)
-            Sync_DestroyMine();
+        Sync_DestroyMine();
     }
 }
