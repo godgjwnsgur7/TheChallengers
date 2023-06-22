@@ -12,8 +12,8 @@ public class NetworkMgr : IRoomPostProcess
 {
     UserSyncMediator userSyncMediator = null;
 
-    DBUserData masterDBData;
-    DBUserData slaveDBData;
+    DBUserData myDBData;
+    DBUserData enemyDBData;
 
     Coroutine sequenceExecuteCoroutine = null;
 
@@ -28,7 +28,6 @@ public class NetworkMgr : IRoomPostProcess
     }
 
     ENUM_CHARACTER_TYPE myCharType = ENUM_CHARACTER_TYPE.Default;
-
     public ENUM_CHARACTER_TYPE Get_MyCharType() => myCharType;
 
     public void Init()
@@ -64,7 +63,7 @@ public class NetworkMgr : IRoomPostProcess
     public void OnExitRoomCallBack(string exitUserNickname)
     {
         if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Lobby)
-            slaveDBData = null;
+            enemyDBData = null;
 
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
 
@@ -90,19 +89,38 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnUpdateRoomPlayerProperty(CustomPlayerProperty property)
     {
-        if (property.isMasterClient)
-            masterDBData = property.data;
-        else
-            slaveDBData = property.data;
-
         if (property.isMasterClient == PhotonLogicHandler.IsMasterClient)
+        {
+            myDBData = property.data;
             myCharType = property.characterType;
+        }
+        else
+            enemyDBData = property.data;      
+    }
+
+    public long Update_DBUserData(bool isVictory)
+    {
+        long myScore = RankingScoreOperator.Operator_RankingScore(isVictory, myDBData.ratingPoint
+            , (enemyDBData != null) ? enemyDBData.ratingPoint : 1500);
+
+        Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
+
+        if (isVictory)
+        {
+            Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, myDBData.victoryPoint + 1);
+        }
+        else
+        {
+            Managers.Platform.DBUpdate(DB_CATEGORY.DefeatPoint, myDBData.defeatPoint + 1);
+        }
+
+        return myScore;
     }
 
     public void Clear_DBData()
     {
-        masterDBData = null;
-        slaveDBData = null;
+        myDBData = null;
+        enemyDBData = null;
     }
 
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
@@ -272,11 +290,13 @@ public class NetworkMgr : IRoomPostProcess
 
     public string Get_SlaveClientNickname() => slaveClientNickname;
 
-    public DBUserData Get_DBUserData(bool _isMasterClient)
+    public DBUserData Get_MyDBUserData()
     {
-        if (_isMasterClient)
-            return masterDBData;
-        else
-            return slaveDBData;
+        return myDBData;
+    }
+
+    public DBUserData Get_EnemyDBUserData()
+    {
+        return enemyDBData;
     }
 }

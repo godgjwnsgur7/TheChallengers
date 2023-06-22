@@ -38,7 +38,7 @@ public class HitAttackObject : AttackObject
             return;
         }
 
-        runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(skillValue.runTime));
+        runTimeCheckCoroutine = CoroutineHelper.StartCoroutine(IRunTimeCheck(skillValue.runTime));
     }
 
     public override void OnDisable()
@@ -118,16 +118,11 @@ public class HitAttackObject : AttackObject
 
     private IEnumerator IRunTimeCheck(float _runTime)
     {
-        float realTime = 0.0f;
-
-        while (realTime < _runTime && isUsing)
-        {
-            realTime += Time.deltaTime;
-
-            yield return null;
-        }
+        yield return new WaitForSeconds(_runTime);
 
         runTimeCheckCoroutine = null;
-        Sync_DestroyMine();
+    
+        if(!isUsing)
+            Sync_DestroyMine();
     }
 }

@@ -24,13 +24,8 @@ public class RankingScoreOperator : MonoBehaviour
         return emblemChar;
     }
 
-    public static long Operator_RankingScore(bool isDraw, bool isWin, long myScore, long enemyScore)
+    public static long Operator_RankingScore(bool isWin, long myScore, long enemyScore)
     {
-        if (isDraw)
-        {
-            return myScore;
-        }
-
         long differenceValue = enemyScore - myScore;
         if (differenceValue == 0)
             differenceValue = 1;

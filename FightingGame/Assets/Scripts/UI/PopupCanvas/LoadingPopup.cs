@@ -11,6 +11,20 @@ public class LoadingPopup : PopupUI
     Coroutine messageEffectCoroutine;
     string message = "LOADING ";
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (messageEffectCoroutine != null)
+            StopCoroutine(messageEffectCoroutine);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Home))
+            Application.Quit();
+    }
+
     public void Open()
     {
         if (messageEffectCoroutine != null)

@@ -211,7 +211,8 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
 
     public void OnClick_UserInfo(bool _isMasterProfile)
     {
-        DBUserData userData = Managers.Network.Get_DBUserData(_isMasterProfile);
+        DBUserData userData = _isMasterProfile == PhotonLogicHandler.IsMasterClient ?
+            Managers.Network.Get_MyDBUserData() : Managers.Network.Get_EnemyDBUserData();
         if (userData != null)
             userInfoWindow.Open(userData);
     }

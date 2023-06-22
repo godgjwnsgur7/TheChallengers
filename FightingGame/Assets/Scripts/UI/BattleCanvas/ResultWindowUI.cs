@@ -33,7 +33,7 @@ public class ResultWindowUI : MonoBehaviour
     public void Open(bool isDraw, bool isWin = true)
     {
         // DB 관련 세팅 (점수, 승률, 랭크 등)
-        DBUserData myDBData = Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient);
+        DBUserData myDBData = Managers.Network.Get_MyDBUserData();
         if(myDBData.ratingPoint == 1500 && myDBData.victoryPoint + myDBData.defeatPoint == 0)
             myWinningRate = 0;
         else
@@ -43,7 +43,7 @@ public class ResultWindowUI : MonoBehaviour
             myWinningRate = (long)tempMyWinningRate;
         }
             
-        enemyScore = Managers.Network.Get_DBUserData(!PhotonLogicHandler.IsMasterClient).ratingPoint;
+        enemyScore = Managers.Network.Get_EnemyDBUserData().ratingPoint;
         myScore = myDBData.ratingPoint;
         rankingScore.Open_Score(myScore, myWinningRate);
 
@@ -57,26 +57,24 @@ public class ResultWindowUI : MonoBehaviour
 
         // 매치 타입에 따른 세팅
         bool isMatching = PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.RANDOM;
-        matchTypeText.text = isMatching ? "RANDOM MATCH" : "1 ON 1 MATCH";
+        matchTypeText.text = isMatching ? "RANKING MATCH" : "CUSTOM MATCH";
         if (isMatching)
         {
             timeCount = 5;
             
-            myScore = RankingScoreOperator.Operator_RankingScore(isDraw, isWin, myScore, enemyScore);
-            Managers.Platform.DBUpdate(DB_CATEGORY.RatingPoint, myScore);
             if(!isDraw)
             {
+                myScore = Managers.Network.Update_DBUserData(isWin);
+
                 float victoryPoint = myDBData.victoryPoint, defeatPoint = myDBData.defeatPoint;
                 float tempMyWinningRate;
 
                 if (isWin)
                 {
-                    Managers.Platform.DBUpdate(DB_CATEGORY.VictoryPoint, Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).victoryPoint + 1);
                     tempMyWinningRate = (victoryPoint + 1) / (victoryPoint + defeatPoint + 1) * 100;
                 }
                 else
                 {
-                    Managers.Platform.DBUpdate(DB_CATEGORY.DefeatPoint, Managers.Network.Get_DBUserData(PhotonLogicHandler.IsMasterClient).defeatPoint + 1);
                     tempMyWinningRate = (victoryPoint) / (victoryPoint + defeatPoint + 1) * 100;
                 }
 

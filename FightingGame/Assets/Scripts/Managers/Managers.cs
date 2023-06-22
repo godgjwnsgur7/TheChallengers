@@ -63,7 +63,10 @@ public class Managers : MonoBehaviour
     }
 
 	private void OnApplicationQuit()
-	{
+    {
+        if (network.IsServerSyncState)
+            network.Update_DBUserData(false);
+
         Platform.Clear();
 	}
 
