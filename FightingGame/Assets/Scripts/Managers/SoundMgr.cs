@@ -87,6 +87,8 @@ public class SoundMgr
 
     AudioListener audioListener = null;
 
+    readonly float fadeSoundTime = 0.75f;
+
     public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
@@ -314,15 +316,18 @@ public class SoundMgr
     {
         yield return new WaitUntil(() => fadeOutInBGMCoroutine == null);
 
+        float time = 0f;
         float currVolume = audioSources[(int)ENUM_SOUND_TYPE.BGM].volume;
 
         if (audioSources[(int)ENUM_SOUND_TYPE.BGM].isPlaying) // 실행 중일 경우
         {
+            float volume = currVolume;
             // FadeOut
-            while (currVolume > 0.05f)
+            while (volume > 0f)
             {
-                currVolume -= Time.deltaTime * 0.3f;
-                Update_BGMAudioSource(currVolume);
+                time += Time.deltaTime / fadeSoundTime;
+                volume = Mathf.Lerp(currVolume, 0, time);
+                Update_BGMAudioSource(volume);
 
                 yield return null;
             }
@@ -339,6 +344,7 @@ public class SoundMgr
     {
         yield return new WaitUntil(() => bgmStopCoroutine == null);
 
+        float time = 0f;
         float _currBgmVolume = volumeData.masterVolume * volumeData.bgmVolume;
         float currVolume = audioSources[(int)ENUM_SOUND_TYPE.BGM].volume;
 
@@ -348,16 +354,19 @@ public class SoundMgr
 
         if (audioSources[(int)ENUM_SOUND_TYPE.BGM].isPlaying) // 실행 중일 경우
         {
+            float volume = currVolume;
             // FadeOut
-            while (currVolume > 0.05f)
+            while (volume > 0)
             {
-                currVolume -= Time.deltaTime * 0.3f;
-                Update_BGMAudioSource(currVolume);
+                time += Time.deltaTime / fadeSoundTime;
+                volume = Mathf.Lerp(currVolume, 0, time);
+                Update_BGMAudioSource(volume);
 
                 yield return null;
             }
         }
 
+        time = 0f;
         currVolume = 0.0f;
         Update_BGMAudioSource(0.0f);
 
@@ -367,11 +376,12 @@ public class SoundMgr
         if (bgmType != ENUM_BGM_TYPE.Unknown)
         {
             audioSources[(int)ENUM_SOUND_TYPE.BGM].Play();
-            
+
             // FadeIn
             while (currVolume < _currBgmVolume)
             {
-                currVolume += Time.deltaTime * 0.3f;
+                time += Time.deltaTime / fadeSoundTime;
+                currVolume = Mathf.Lerp(0, _currBgmVolume, time);
                 Update_BGMAudioSource(currVolume);
 
                 yield return null;

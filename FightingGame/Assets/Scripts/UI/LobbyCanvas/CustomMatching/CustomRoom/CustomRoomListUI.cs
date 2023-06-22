@@ -35,6 +35,9 @@ public class CustomRoomListUI : MonoBehaviour
     {
         gameObject.SetActive(false);
 
+        for(int i = 0; i < roomListElements.Count; i++)
+            roomListElements[i].Close();
+
         if (customRoomList.Count >= 5)
             contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         else

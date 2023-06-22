@@ -20,7 +20,6 @@ public class MapSelectPopup : PopupUI
         }
 
         onSelectionMap = _onSelectionMap;
-        mapInfo.Set_CurrMapInfo(ENUM_MAP_TYPE.CaveMap);
         
         gameObject.SetActive(true);
     }

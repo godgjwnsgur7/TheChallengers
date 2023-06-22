@@ -54,7 +54,6 @@ public class RoomListElementUI : MonoBehaviour
     
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
     {
-        if (currMap == _mapType) return;
         currMap = _mapType;
         mapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
     }

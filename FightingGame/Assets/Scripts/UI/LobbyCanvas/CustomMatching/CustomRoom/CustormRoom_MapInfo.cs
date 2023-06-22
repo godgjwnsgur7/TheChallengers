@@ -6,7 +6,7 @@ using FGDefine;
 
 public class CustormRoom_MapInfo : MonoBehaviour
 {
-    ENUM_MAP_TYPE currMapType = ENUM_MAP_TYPE.Max;
+    ENUM_MAP_TYPE currMapType = ENUM_MAP_TYPE.CaveMap;
 
     [SerializeField] Text mapNameText;
     [SerializeField] Text mapExplanationText;
@@ -16,9 +16,21 @@ public class CustormRoom_MapInfo : MonoBehaviour
     
     [SerializeField] GameObject[] mapCoverImageObjects = new GameObject[3];
 
-    private void OnDisable()
+    private void OnEnable()
     {
-        currMapType = ENUM_MAP_TYPE.Max;
+        currMapType = ENUM_MAP_TYPE.CaveMap;
+        currMapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{currMapType}");
+        mapNameText.text = Managers.Data.Get_MapNameDict(currMapType);
+
+        if (mapExplanationText != null)
+            mapExplanationText.text = Managers.Data.Get_MapExplanationDict(currMapType);
+
+        selectionEffectRectTr.position = mapCoverImageObjects[(int)currMapType].GetComponent<RectTransform>().position;
+
+        foreach (GameObject mapCoverImageObject in mapCoverImageObjects)
+            mapCoverImageObject.SetActive(true);
+
+        mapCoverImageObjects[(int)currMapType].SetActive(false);
     }
 
     public void Set_CurrMapInfo(ENUM_MAP_TYPE _mapType)
