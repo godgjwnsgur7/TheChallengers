@@ -76,8 +76,12 @@ public class UIMgr
 
     private void Exit_Application()
     {
-        popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
-        , null, "게임을 종료하시겠습니까?");
+        string str = "게임을 종료하시겠습니까?";
+        if (Managers.Network.IsServerSyncState)
+            str = "게임을 종료하시겠습니까?\n진행 중인 게임은 패배처리 됩니다.";
+
+        popupCanvas.Open_SelectPopup(
+            () => { Application.Quit(); }, null, str);
     }
 
     public void OpenUI<T>()

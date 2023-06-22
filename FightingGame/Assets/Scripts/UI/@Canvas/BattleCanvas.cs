@@ -14,16 +14,6 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
 
-    private void OnEnable()
-    {
-        Managers.UI.Push_WindowExitStack(OnClick_Exit);
-    }
-
-    private void OnDisable()
-    {
-        Managers.UI.Pop_WindowExitStack();
-    }
-
     public override void Init()
     {
         base.Init();

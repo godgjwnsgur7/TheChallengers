@@ -176,7 +176,6 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
     {
         base.OnClick_Exit();
 
-        // (점수깎아)
         Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
         , null, "게임을 종료하시겠습니까?\n매칭된 게임은 패배처리 됩니다.");
     }
