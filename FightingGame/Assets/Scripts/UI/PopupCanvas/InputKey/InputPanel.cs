@@ -47,7 +47,11 @@ public class InputPanel : MonoBehaviour
     {
         Managers.Data.CharInfoDict.TryGetValue((int)charType, out CharacterInfo charInfo);
 
+        InputBasicKey inputBasicKey;
         InputSkillKey inputSkillKey;
+
+        inputBasicKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Attack] as InputBasicKey;
+        inputBasicKey.ChangeSet_IconImage($"Icon_{charType}Weapon");
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Dash] as InputSkillKey;
         inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_Dash);
@@ -66,7 +70,8 @@ public class InputPanel : MonoBehaviour
 
         inputSkillKey = inputKeys[(int)ENUM_INPUTKEY_NAME.Skill4] as InputSkillKey;
         inputSkillKey.Set_SkillCoolTime(charInfo.skillCoolTime_4);
-        
+        inputSkillKey.ChangeSet_IconImage($"Icon_{charType}Skill4");
+
     }
 
     public void Notify_UseSkill(int skillNum)

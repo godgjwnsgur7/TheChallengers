@@ -13,6 +13,7 @@ public class Move : StateMachineBehaviour
 
         if (!activeCharacter.isControl) return;
 
-        activeCharacter.currState = FGDefine.ENUM_PLAYER_STATE.Move;
+        if (activeCharacter.currState != FGDefine.ENUM_PLAYER_STATE.Move)
+            activeCharacter.currState = FGDefine.ENUM_PLAYER_STATE.Move;
     }
 }
