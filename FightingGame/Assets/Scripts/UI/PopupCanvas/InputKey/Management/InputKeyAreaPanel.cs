@@ -56,6 +56,7 @@ public class InputKeyAreaPanel : MonoBehaviour
 
     public void Set_ChangeIcon(ENUM_CHARACTER_TYPE charType)
     {
+        inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Attack].ChangeSet_IconImage($"Icon_{charType}Weapon");
         inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill1].ChangeSet_IconImage($"Icon_{charType}Skill1");
         inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill2].ChangeSet_IconImage($"Icon_{charType}Skill2");
         inputKeyAreas[(int)ENUM_INPUTKEY_NAME.Skill3].ChangeSet_IconImage($"Icon_{charType}Skill3");
