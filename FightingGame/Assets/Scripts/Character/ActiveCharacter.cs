@@ -97,7 +97,11 @@ public partial class ActiveCharacter : Character
             PhotonLogicHandler.Instance.TryBroadcastMethod<ActiveCharacter>
                 (this, Set_CharacterToEnemyClient, ENUM_RPC_TARGET.OTHER);
 
-            spriteRenderer.sortingOrder += 1;
+            if(isControl)
+            {
+                Managers.Resource.Instantiate("PublicObjects/FocusObject", this.transform);
+                spriteRenderer.sortingOrder += 1;
+            }
         }
         else
         {
@@ -105,6 +109,7 @@ public partial class ActiveCharacter : Character
             Connect_MyStatusUI(_teamType);
             if(teamType == ENUM_TEAM_TYPE.Blue)
             {
+                Managers.Resource.Instantiate("PublicObjects/FocusObject", this.transform);
                 spriteRenderer.sortingOrder += 1;
                 gameObject.AddComponent<AudioListener>();
             }
