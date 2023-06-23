@@ -14,6 +14,16 @@ public class DonationWindow : UIElement
         gameObject.SetActive(false);
     }
 
+    public void OnClick_Payment()
+    {
+
+    }
+
+    public void OnClick_Advertising()
+    {
+
+    }
+
     public override void OnClick_Exit()
     {
         base.OnClick_Exit();
