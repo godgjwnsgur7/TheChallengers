@@ -6,6 +6,10 @@ using System;
 
 public class TrainingMenuWindowUI : UIElement
 {
+    [SerializeField] GameObject moveCriteriaGroupObject;
+    [SerializeField] GameObject menuOutStateObject;
+    [SerializeField] GameObject menuInStateObject;
+
     TrainingScene trainingScene;
 
     float originalPosX;
@@ -16,8 +20,8 @@ public class TrainingMenuWindowUI : UIElement
     public void Init()
     {
         trainingScene = Managers.Scene.CurrentScene.GetComponent<TrainingScene>();
-        originalPosX = this.transform.localPosition.x;
-        isHideState = false;
+        originalPosX = moveCriteriaGroupObject.transform.localPosition.x;
+        Set_HideMenuState(false);
     }
 
     public void OnClick_ChangeMap()
@@ -52,6 +56,13 @@ public class TrainingMenuWindowUI : UIElement
 
     private void GoTo_LobbyScene() => Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
 
+    private void Set_HideMenuState(bool ishideState)
+    {
+        this.isHideState = ishideState;
+        menuOutStateObject.SetActive(!ishideState);
+        menuInStateObject.SetActive(ishideState);
+    }
+
     public void OnClick_PushOut()
     {
         if (moveToWindowCoroutine != null)
@@ -59,12 +70,12 @@ public class TrainingMenuWindowUI : UIElement
 
         if(!isHideState)
         {
-            isHideState = true;
+            Set_HideMenuState(true);
             moveToWindowCoroutine = StartCoroutine(IMoveToWindow(originalPosX - 500f));
         }
         else
         {
-            isHideState = false;
+            Set_HideMenuState(false);
             moveToWindowCoroutine = StartCoroutine(IMoveToWindow(originalPosX));
         }
     }
@@ -72,15 +83,15 @@ public class TrainingMenuWindowUI : UIElement
     protected IEnumerator IMoveToWindow(float movePosX)
     {
         float time = 0;
-        float currPosX = this.transform.localPosition.x;
+        float currPosX = moveCriteriaGroupObject.transform.localPosition.x;
 
-        while(movePosX != this.transform.localPosition.x)
+        while(movePosX != moveCriteriaGroupObject.transform.localPosition.x)
         {
             time += Time.deltaTime * 5f;
 
-            this.transform.localPosition = new Vector2(
+            moveCriteriaGroupObject.transform.localPosition = new Vector2(
                 Mathf.Lerp(currPosX, movePosX, time)
-                , this.transform.localPosition.y);
+                , moveCriteriaGroupObject.transform.localPosition.y);
 
             yield return null;
         }
