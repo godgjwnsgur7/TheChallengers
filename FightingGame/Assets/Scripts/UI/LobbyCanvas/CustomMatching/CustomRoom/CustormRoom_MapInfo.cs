@@ -37,7 +37,8 @@ public class CustormRoom_MapInfo : MonoBehaviour
     {
         if (currMapType == _mapType) return;
         currMapType = _mapType;
-        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Light);
+
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy2);
 
         currMapImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/Maps/{_mapType}");
         mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);

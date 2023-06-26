@@ -46,6 +46,9 @@ public class MatchingWindowUI : MonoBehaviour
 
     public void Close()
     {
+        if(!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Cancel);
+
         matchingErrorCheckLock = false;
         this.gameObject.SetActive(false);
     }

@@ -47,6 +47,8 @@ public class SoundSettingWindow : MonoBehaviour
     
     public void Update_SoundMuteData(ENUM_SOUND_TYPE _soundType, bool _isMute)
     {
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Mute);
+        
         Managers.Sound.Update_SoundMuteData(_soundType, _isMute);
 
         if(_soundType == ENUM_SOUND_TYPE.MASTER)

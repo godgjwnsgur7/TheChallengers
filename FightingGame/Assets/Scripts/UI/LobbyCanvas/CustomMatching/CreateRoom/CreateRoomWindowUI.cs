@@ -21,7 +21,8 @@ public class CreateRoomWindowUI : UIElement
 
     protected override void OnEnable()
     {
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
+        if(!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
 
         base.OnEnable();
     }
@@ -29,7 +30,7 @@ public class CreateRoomWindowUI : UIElement
     protected override void OnDisable()
     {
         if (!Managers.UI.popupCanvas.isFadeObjActiveState)
-            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
 
         base.OnDisable();
 
@@ -102,9 +103,8 @@ public class CreateRoomWindowUI : UIElement
             return;
         }
 
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy);
-
         isLock = true;
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
         Managers.UI.popupCanvas.Open_LoadingPopup();
         PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack
             , null, true, 2, currMap);
@@ -117,7 +117,7 @@ public class CreateRoomWindowUI : UIElement
 
     private void ErrorTextShakeEffect(string _errorMessage = "")
     {
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Error);
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Error);
 
         if (errorTextShakeEffectCoroutine != null)
             StopCoroutine(errorTextShakeEffectCoroutine);

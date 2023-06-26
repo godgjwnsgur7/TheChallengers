@@ -45,6 +45,7 @@ public class MainCanvas : BaseCanvas
 
     private void GoTo_Lobby()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
         Managers.Platform.HideBanner();
         Managers.UI.popupCanvas.Close_LoadingPopup();
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
@@ -65,7 +66,6 @@ public class MainCanvas : BaseCanvas
         overlapLock = true;
 
         Managers.UI.popupCanvas.Open_LoadingPopup();
-        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
         Managers.Platform.Login(() =>
         {
             string id = Managers.Platform.GetUserID();
@@ -77,6 +77,7 @@ public class MainCanvas : BaseCanvas
 
     public void OnClick_Credit()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
         creditScreen.Open();
     }
 

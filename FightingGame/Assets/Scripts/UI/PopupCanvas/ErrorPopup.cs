@@ -10,8 +10,6 @@ public class ErrorPopup : PopupUI
 
     public void Open(short _returnCode, string _message)
     {
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
-
         errorCodeText.text = $"코드번호 : {_returnCode}";
         errorMessageText.text = _message;
 
@@ -27,6 +25,9 @@ public class ErrorPopup : PopupUI
 
     public void OnClick_Check()
     {
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+
         // 로그인씬으로 이동?
         Close();
     }

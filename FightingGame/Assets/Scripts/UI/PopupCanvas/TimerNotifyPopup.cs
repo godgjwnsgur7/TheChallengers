@@ -14,8 +14,6 @@ public class TimerNotifyPopup : PopupUI
 
     public void Open(string _message, float _runTime = 2.0f, Action _timeOutCallBack = null)
     {
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
-
         popupText.text = _message;
         timeOutCallBack = _timeOutCallBack;
 
@@ -32,9 +30,6 @@ public class TimerNotifyPopup : PopupUI
 
     private void Close()
     {
-        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
-            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
-
         this.gameObject.SetActive(false);
 
         popupText.text = null;

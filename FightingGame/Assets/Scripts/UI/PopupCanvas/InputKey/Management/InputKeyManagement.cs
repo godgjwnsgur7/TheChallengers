@@ -215,9 +215,9 @@ public class InputKeyManagement : UIElement
 
     public override void OnClick_Exit()
     {
-        base.OnClick_Exit();
-
-        if(isChangeValue)
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Cancel);
+        
+        if (isChangeValue)
             Managers.UI.popupCanvas.Open_SelectPopup(Exit_Management, null
                 , "변경된 값이 있습니다.\n저장하지 않고 종료하시겠습니까?");
         else
@@ -230,6 +230,7 @@ public class InputKeyManagement : UIElement
 
     public void OnClick_Initialize()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Cancel);
         Managers.UI.popupCanvas.Open_SelectPopup(Init_InputKeySetting, null, "키 설정을 초기화하시겠습니까?\n초기화 후엔 되돌릴 수 없습니다.");
     }
     private void Init_InputKeySetting()
@@ -239,6 +240,7 @@ public class InputKeyManagement : UIElement
 
     public void OnClick_Save()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Enter);
         Managers.UI.popupCanvas.Open_SelectPopup(Save_InputKeyData, null, "저장하시겠습니까?");
     }
     private void Save_InputKeyData()

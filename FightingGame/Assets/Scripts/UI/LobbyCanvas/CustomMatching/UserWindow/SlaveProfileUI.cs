@@ -35,9 +35,14 @@ public class SlaveProfileUI : BaseProfile
         IsReady = _readyState;
 
         if(IsReady)
+        {
             ReadyText.color = new Color(1f, 1f, 1f, 1f);
+        }
         else
+        {
             ReadyText.color = new Color(1f, 1f, 1f, 0.4f);
+        }
+
 
         if(IsMine)
         {

@@ -26,21 +26,25 @@ public class TrainingMenuWindowUI : UIElement
 
     public void OnClick_ChangeMap()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
         Managers.UI.popupCanvas.Open_MapSelectPopup(trainingScene.Change_CurrMap);
     }
 
     public void OnClick_ChangeEnemyCharacter()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
         Managers.UI.popupCanvas.Open_CharSelectPopup(trainingScene.Change_EnemyCharacter);
     }
 
     public void OnClick_ChangeMyCharacter()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
         Managers.UI.popupCanvas.Open_CharSelectPopup(trainingScene.Change_MyCharacter);
     }
 
     public void OnClick_Setting()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
         Managers.UI.popupCanvas.Open_SettingWindow();
     }
 
@@ -51,8 +55,12 @@ public class TrainingMenuWindowUI : UIElement
         OnClick_GoToLobby();       
     }
 
-    public void OnClick_GoToLobby() => Managers.UI.popupCanvas.Open_SelectPopup
+    public void OnClick_GoToLobby()
+    {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Notify);
+        Managers.UI.popupCanvas.Open_SelectPopup
         (GoTo_LobbyScene, null, "로비로 돌아가시겠습니까?");
+    }
 
     private void GoTo_LobbyScene() => Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
 

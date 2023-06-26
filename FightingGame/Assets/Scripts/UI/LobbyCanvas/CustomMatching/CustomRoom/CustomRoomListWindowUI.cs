@@ -16,7 +16,8 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
 
     protected override void OnEnable()
     {
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
 
         base.OnEnable();
 
@@ -28,7 +29,7 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
     protected override void OnDisable()
     {
         if (!Managers.UI.popupCanvas.isFadeObjActiveState)
-            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
 
         base.OnDisable();
 
@@ -73,13 +74,20 @@ public class CustomRoomListWindowUI : UIElement, ILobbyPostProcess
         if (isRoomUpdateLock)
             return;
 
-        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
-            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
-
         isRoomUpdateLock = true;
         PhotonLogicHandler.Instance.RequestRoomList();
 
         roomUpdateLockCoroutine = StartCoroutine(IUpdateLockTime());
+    }
+
+    public void OnClick_UpdateRoomList()
+    {
+        if (isRoomUpdateLock)
+            return;
+
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Light);
+
+        Request_UpdateRoomList();
     }
 
     protected IEnumerator IUpdateLockTime()

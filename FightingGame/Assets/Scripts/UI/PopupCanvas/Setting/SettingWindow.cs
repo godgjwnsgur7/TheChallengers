@@ -11,7 +11,12 @@ public class SettingWindow : UIElement
 
     public void Open()
     {
-        OnClick_SoundSetting();
+        soundSettingWindow.Open();
+        
+        if (controlSettingWindow.activeSelf)
+            controlSettingWindow.SetActive(false);
+        if (accountsInfoWindow.activeSelf)
+            accountsInfoWindow.SetActive(false);
 
         gameObject.SetActive(true);
     }
@@ -30,15 +35,21 @@ public class SettingWindow : UIElement
 
     public override void OnClick_Exit()
     {
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+
         base.OnClick_Exit();
 
         Close();
     }
 
     public void OnClick_SoundSetting()
-    {
+    {  
         if (soundSettingWindow.gameObject.activeSelf)
             return;
+
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy2);
 
         if (controlSettingWindow.activeSelf)
             controlSettingWindow.SetActive(false);
@@ -52,6 +63,9 @@ public class SettingWindow : UIElement
         if (controlSettingWindow.activeSelf)
             return;
 
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy2);
+
         if (soundSettingWindow.gameObject.activeSelf)
             soundSettingWindow.Close();
         if(accountsInfoWindow.activeSelf)
@@ -64,6 +78,9 @@ public class SettingWindow : UIElement
         if (accountsInfoWindow.activeSelf)
             return;
 
+        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy2);
+
         if (soundSettingWindow.gameObject.activeSelf)
             soundSettingWindow.Close();
         if (controlSettingWindow.activeSelf)
@@ -73,6 +90,8 @@ public class SettingWindow : UIElement
 
     public void OnClick_InputKeySetting()
     {
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+        
         Managers.UI.popupCanvas.Open_SelectPopup(Open_InputKeyManagement, null,
             "키 조작 창을 여시겠습니까?");
     }

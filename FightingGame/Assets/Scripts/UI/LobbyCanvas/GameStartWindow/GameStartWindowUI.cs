@@ -43,6 +43,16 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
     Coroutine waitSelectionCharacterCoroutine = null;
     Coroutine waitGameStartCoroutine = null;
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        this.RegisterRoomCallback();
+
+        PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
+        PhotonLogicHandler.Instance.onLeftRoomPlayer += OnExitRoomCallBack;
+    }
+
     protected override void OnDisable()
     {
         base.OnDisable();
@@ -109,7 +119,7 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
 
         mapInfo.Open(PhotonLogicHandler.CurrentMapType);
 
-        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_GameStartInfo);
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Cilck_Transition);
         waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
     }
 

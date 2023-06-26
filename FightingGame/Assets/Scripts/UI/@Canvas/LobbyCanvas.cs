@@ -49,6 +49,9 @@ public class LobbyCanvas : BaseCanvas
 
     public void Open_GameStartWindow()
     {
+        if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_MacthingCompleted);
+
         Managers.UI.popupCanvas.Play_FadeOutEffect(CallBack_GameStart);
     }
 
@@ -90,10 +93,14 @@ public class LobbyCanvas : BaseCanvas
     {
         if (PhotonLogicHandler.IsConnected)
         {
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Light);
+            
             donationWindow.Open();
         }
         else
         {
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+            
             Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.\n로그인을 위해 메인화면으로 이동합니다.", GoTo_MainScene);
         }
     }
@@ -106,12 +113,16 @@ public class LobbyCanvas : BaseCanvas
         }
         else
         {
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
             Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.\n로그인을 위해 메인화면으로 이동합니다.", GoTo_MainScene);
         }
     }
 
     public void OnClick_Mathing()
     {
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
         if (PhotonLogicHandler.IsConnected)
         {
             Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null, "랭킹전(매칭)을 돌리시겠습니까?");
@@ -123,6 +134,8 @@ public class LobbyCanvas : BaseCanvas
     }
     public void OnClick_Training()
     {
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
         Managers.UI.popupCanvas.Open_SelectPopup(GoTo_TrainingScene, null, "훈련장에 입장하시겠습니까?");
     }
 

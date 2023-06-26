@@ -76,6 +76,8 @@ public class UIMgr
 
     private void Exit_Application()
     {
+        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
         string str = "게임을 종료하시겠습니까?";
         if (Managers.Network.IsServerSyncState)
             str = "게임을 종료하시겠습니까?\n진행 중인 게임은 패배처리 됩니다.";

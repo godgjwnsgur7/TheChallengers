@@ -33,8 +33,19 @@ public class CharSelectPopup : PopupUI
         gameObject.SetActive(true);
     }
 
+    public void Close()
+    {
+        onSelectionCharacter = null;
+        selectedCharType = ENUM_CHARACTER_TYPE.Default;
+        gameObject.SetActive(false);
+    }
+
     public void OnClick_CharacterSelectImage(int _charTypeNum)
     {
+        if (selectedCharType == (ENUM_CHARACTER_TYPE)_charTypeNum)
+            return;
+
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Cilck_Heavy2);
         selectedCharType = (ENUM_CHARACTER_TYPE)_charTypeNum;
 
         RectTransform rectTr = characterImages[_charTypeNum - 1].GetComponent<RectTransform>();
@@ -50,20 +61,21 @@ public class CharSelectPopup : PopupUI
     {
         if (selectedCharType == ENUM_CHARACTER_TYPE.Default || selectedCharType == ENUM_CHARACTER_TYPE.Max)
         {
-            Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택하지 않았습니다.");
+            Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Error);
             return;
         }
 
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Enter);
         onSelectionCharacter?.Invoke(selectedCharType);
-        OnClick_Exit();
+        Close();
     }
 
     public override void OnClick_Exit()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Cancel);
+
         base.OnClick_Exit();
 
-        onSelectionCharacter = null;
-        selectedCharType = ENUM_CHARACTER_TYPE.Default;
-        gameObject.SetActive(false);
+        Close();
     }
 }

@@ -78,12 +78,15 @@ public abstract class BaseCanvas : MonoBehaviour
 
 	public virtual void OnClick_Exit()
 	{
+		Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
+
 		Managers.UI.popupCanvas.Open_SelectPopup(() => { Application.Quit(); }
 		, null, "게임을 종료하시겠습니까?");
 	}
 
 	public void OnClick_Setting()
 	{
+		Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Light);
 		Managers.UI.popupCanvas.Open_SettingWindow();
 	}
 	public void OnClick_SoundSFX(int sfxTypeNum)

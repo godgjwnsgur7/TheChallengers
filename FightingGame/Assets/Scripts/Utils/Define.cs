@@ -197,17 +197,19 @@ namespace FGDefine
         UI_Result_Defeat = 3,
         UI_Result_Victory = 4,
         UI_Result_Draw = 5,
-        UI_GameStartInfo = 6,
         UI_JoinGameLobby = 7,
         UI_TimerLimit = 8,
 
-        // UI ClickSound
-        UI_Click_Light = 91,
-        UI_Cilck_Heavy = 92,
-        UI_Click_Notify = 93,
-        UI_Click_Cancel = 94,
-        UI_Click_Error = 95,
-        UI_Click_Enter = 96,
+        UI_Cilck_Heavy1 = 9,
+        UI_Cilck_Heavy2 = 10,
+        UI_Cilck_Mute = 11,
+        UI_Cilck_Transition = 12,
+        UI_Click_Cancel = 13,
+        UI_Click_Enter = 14,
+        UI_Click_Error = 15,
+        UI_Click_Light = 16,
+        UI_Click_Notify = 17,
+        UI_Click_Notify2 = 18,
 
         // Knight Sound
         Knight_Attack1 = 101,

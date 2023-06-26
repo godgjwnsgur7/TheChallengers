@@ -121,10 +121,12 @@ public class UserInfoUI : MonoBehaviour
 
         if (CurrCharacterType == ENUM_CHARACTER_TYPE.Default)
         {
+            Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Notify);
             Managers.UI.popupCanvas.Open_NotifyPopup("캐릭터를 선택하지 않았습니다.");
             return;
         }
 
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Enter);
         SelectionCharacterLock = true;
         selectionCharacterCompleteCallBack(CurrCharacterType);
     }

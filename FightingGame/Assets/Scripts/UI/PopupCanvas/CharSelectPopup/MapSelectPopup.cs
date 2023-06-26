@@ -23,6 +23,13 @@ public class MapSelectPopup : PopupUI
         
         gameObject.SetActive(true);
     }
+    
+    public void Close()
+    {
+        onSelectionMap = null;
+        selectedMapType = ENUM_MAP_TYPE.CaveMap;
+        gameObject.SetActive(false);
+    }
 
     public void OnClick_MapSelectImage(int _mapTypeNum)
     {
@@ -35,16 +42,16 @@ public class MapSelectPopup : PopupUI
 
     public void OnClick_SelectCompletion()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Enter);
+
         onSelectionMap?.Invoke(selectedMapType);
-        OnClick_Exit();
+        Close();
     }
 
     public override void OnClick_Exit()
     {
-        base.OnClick_Exit();
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Cancel);
 
-        onSelectionMap = null;
-        selectedMapType = ENUM_MAP_TYPE.CaveMap;
-        gameObject.SetActive(false);
+        Close();
     }
 }

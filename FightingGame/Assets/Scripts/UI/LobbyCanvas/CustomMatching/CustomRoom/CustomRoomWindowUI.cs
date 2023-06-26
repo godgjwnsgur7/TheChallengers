@@ -48,8 +48,6 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         this.RegisterRoomCallback();
 
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
-
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
     }
 
     protected override void OnDisable()
@@ -76,8 +74,6 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     /// </summary>
     public void SlaveClientEnterCallBack(string nickname)
     {
-        Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
-
         if (PhotonLogicHandler.IsMasterClient)
             Managers.Network.Set_SlaveClientNickname(nickname);
     }
@@ -214,7 +210,12 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         DBUserData userData = _isMasterProfile == PhotonLogicHandler.IsMasterClient ?
             Managers.Network.Get_MyDBUserData() : Managers.Network.Get_EnemyDBUserData();
         if (userData != null)
+        {
+            if (!Managers.UI.popupCanvas.isFadeObjActiveState)
+                Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Light);
+
             userInfoWindow.Open(userData);
+        }
     }
 
     public void OnClick_ExitRoom()
@@ -244,7 +245,7 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
                 Managers.UI.popupCanvas.Open_NotifyPopup("모든 유저가 준비상태가 아닙니다.");
                 return;
             }
-            
+
             if (!Managers.Network.Get_PhotonCheck(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC))
                 PhotonLogicHandler.Instance.RequestSyncDataAll();
 
@@ -254,6 +255,11 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         {
             if (readyLock)
                 return;
+
+            if(!slaveProfile.IsReady) // 레디를 누름
+                Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
+            else // 레디를 취소
+                Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy1);
 
             slaveProfile.Set_ReadyState(!slaveProfile.IsReady);
             readyLockCoroutine = StartCoroutine(IReadyButtonLock(2.0f));

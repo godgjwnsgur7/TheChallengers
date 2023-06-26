@@ -12,10 +12,16 @@ public class UserInfoWindowUI : UIElement
     [SerializeField] Text loseCountText;
     [SerializeField] Text winningRateText;
 
+    protected override void OnDisable()
+    {
+        if(!Managers.UI.popupCanvas.isFadeObjActiveState)
+            Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
+
+        base.OnDisable();
+    }
+
     public void Open(DBUserData userData)
     {
-        OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
-
         Debug.Log($"userData.ratingPoint : {userData.ratingPoint}");
 
         if (userData.victoryPoint + userData.defeatPoint == 0 && userData.ratingPoint == 1500)
@@ -49,9 +55,6 @@ public class UserInfoWindowUI : UIElement
     {
         if (!this.gameObject.activeSelf)
             return;
-
-        if (!Managers.UI.popupCanvas.isFadeObjActiveState)
-            OnClick_SoundSFX((int)FGDefine.ENUM_SFX_TYPE.UI_Click_Cancel);
 
         gameObject.SetActive(false);
     }
