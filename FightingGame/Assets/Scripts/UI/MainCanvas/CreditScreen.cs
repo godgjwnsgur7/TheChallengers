@@ -7,6 +7,7 @@ public class CreditScreen : UIElement
 {
     [SerializeField] GameObject CreditAreaObject;
     [SerializeField] Image backgroundImage;
+    [SerializeField] Rigidbody2D rigid2D;
 
     Coroutine creditEffectCoroutine = null;
 
@@ -28,6 +29,9 @@ public class CreditScreen : UIElement
 
     public void Open()
     {
+        if(rigid2D == null)
+            rigid2D = CreditAreaObject.GetComponent<Rigidbody2D>();
+
         CreditAreaObject.transform.localPosition = new Vector3(0, startPosVecY, 0);
         backgroundImage.color = new Color(0, 0, 0, 0);
         this.gameObject.SetActive(true);
@@ -53,8 +57,6 @@ public class CreditScreen : UIElement
         // 페이드 아웃
         while (tempColor.a < 1f)
         {
-            Debug.Log("1");
-
             tempColor.a += Time.deltaTime / fadeTime;
             backgroundImage.color = tempColor;
 
@@ -65,22 +67,10 @@ public class CreditScreen : UIElement
         backgroundImage.color = tempColor;
         Managers.UI.popupCanvas.DeactivePopupAll();
 
-        float effectTime = 60;
-        float runTime = 0f;
-        float currCreditPosY;
-
         // 크레딧 실행
-        while (CreditAreaObject.transform.localPosition.y != endPosVecY)
-        {
-            Debug.Log("2");
-
-            runTime += Time.deltaTime;
-            
-            currCreditPosY = Mathf.Lerp(startPosVecY, endPosVecY, runTime / effectTime);
-            CreditAreaObject.transform.localPosition = new Vector3(0, currCreditPosY, 0);
-
-            yield return null;
-        }
+        rigid2D.AddForce(new Vector2(0, 1f), ForceMode2D.Impulse);
+        yield return new WaitUntil(() => CreditAreaObject.transform.localPosition.y > endPosVecY);
+        rigid2D.velocity = Vector2.zero;
 
         // 페이드 인
         backgroundImage.color = new Color(0, 0, 0, 1);
@@ -88,8 +78,6 @@ public class CreditScreen : UIElement
 
         while (tempColor.a > 0f)
         {
-            Debug.Log("3");
-
             tempColor.a -= Time.deltaTime / fadeTime;
             backgroundImage.color = tempColor;
 
