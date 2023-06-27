@@ -20,6 +20,14 @@ public class LobbyCanvas : BaseCanvas
         for (int i = 0; i < images.Length; i++)
             images[i].alphaHitTestMinimumThreshold = 0.1f;
 
+        Managers.Platform.ShowBanner();
+
+        if(Managers.Data.isInterstitial == false)
+        {
+            Managers.Platform.ShowInterstitial();
+            Managers.Data.isInterstitial = true;
+        }
+
         if (PhotonLogicHandler.IsJoinedRoom)
         {
             if(PhotonLogicHandler.Instance.CurrentLobbyType == ENUM_MATCH_TYPE.CUSTOM)
@@ -32,6 +40,8 @@ public class LobbyCanvas : BaseCanvas
             Managers.Network.Clear_DBData();
         }
     }
+
+    // 임시용
 
     public void GameStart()
     {
@@ -81,6 +91,7 @@ public class LobbyCanvas : BaseCanvas
 
     private void GoTo_TrainingScene()
     {
+        Managers.Platform.HideBanner();
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
     }
 

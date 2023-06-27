@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System;
 
+/// <summary>
+/// 최초 로그인 시에만
+/// </summary>
 public class FirstLoginWindowUI : UIElement
 {
     [SerializeField] InputField userNicknameInputField;
@@ -15,11 +18,6 @@ public class FirstLoginWindowUI : UIElement
     Action<string> nickNameCallBack = null;
 
     Coroutine errorTextShakeEffectCoroutine;
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
 
     private void Init()
     {
@@ -34,6 +32,8 @@ public class FirstLoginWindowUI : UIElement
         userNicknameInputField.onValueChanged.AddListener(
             (word) => userNicknameInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣]", "")
         );
+
+        PlayerPrefs.DeleteAll();
     }
 
     public void Open(Action<string> _nickNameCallBack)

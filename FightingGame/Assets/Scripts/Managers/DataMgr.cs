@@ -58,7 +58,14 @@ public class DataMgr
     private string[] tipDescriptionStrArray= new string[]
     {
         "기본공격과 특정스킬은 방향키 입력 값에 영향을 받습니다.",
+        "환경설정 조작에서 모든 키의 투명도를 낮출 수 있습니다.",
         "이어폰을 끼면 더 생동감있는 게임을 즐길 수 있습니다.",
+        "환경설정 조작에서 각 키의 위치, 크기를 조정할 수 있습니다.",
+        "위저드 캐릭터는 지형을 잘 이용하며 운영할수록 강력합니다.",
+        "나이트 캐릭터의 슈퍼아머 스킬을 잘 활용해보세요.!",
+        "메인 화면 상단 메뉴에서 개발진 크레딧을 볼 수 있습니다.",
+        "환경설정 사운드에서 배경음과 효과음 크기를 조절할 수 있습니다.",
+        "게임이 끝났을 때, 두 플레이어의 HP비율이 같다면 무승부가 됩니다.",
     };
 
     public int nameTextLimit { private set; get; } = 10; // 방제목, 닉네임
@@ -68,6 +75,8 @@ public class DataMgr
     public GameInfo gameInfo { get; private set; } = new GameInfo();
 
     private string[] badWordStrArray;
+
+    public bool isInterstitial = false;
 
     public void Init()
     {

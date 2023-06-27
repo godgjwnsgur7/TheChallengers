@@ -57,6 +57,7 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
     {
         base.OnDisable();
 
+        Managers.Platform.HideBanner();
         CoroutineStopAll();
 
         PhotonLogicHandler.Instance.onLeftRoomPlayer -= OnExitRoomCallBack;
