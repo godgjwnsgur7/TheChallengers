@@ -366,13 +366,13 @@ public partial class PhotonLogicHandler
         }
     }
 
-    public void KickOut()
+    public bool KickOut()
     {
         if (!PhotonNetwork.IsMasterClient)
-            return;
+            return false;
 
         var otherPlayer = GetOtherPlayer();
-        PhotonNetwork.CloseConnection(otherPlayer);
+        return PhotonNetwork.CloseConnection(otherPlayer);
     }
 
     /// <summary>
