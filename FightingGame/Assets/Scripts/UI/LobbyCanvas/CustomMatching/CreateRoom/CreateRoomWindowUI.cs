@@ -165,7 +165,7 @@ public class CreateRoomWindowUI : UIElement
             realTime += Time.deltaTime;
             
             errorText.gameObject.transform.position = originVec + (Vector2)UnityEngine.Random.insideUnitCircle * shakePower;
-            // errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
+            errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
 
             yield return null;
         }

@@ -16,6 +16,11 @@ public class FirstLoginWindowUI : UIElement
 
     Coroutine errorTextShakeEffectCoroutine;
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
     private void Init()
     {
         userNicknameInputField.text = "";
@@ -111,7 +116,7 @@ public class FirstLoginWindowUI : UIElement
             realTime += Time.deltaTime;
 
             errorText.gameObject.transform.position = originVec + (Vector2)UnityEngine.Random.insideUnitCircle * shakePower;
-            // errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
+            errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
 
             yield return null;
         }
