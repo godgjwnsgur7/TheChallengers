@@ -22,7 +22,7 @@ public class BaseProfile : MonoBehaviour
     [SerializeField] UserInfoWindowUI userInfoWindow;
 
     [SerializeField] Image rankEmblemImage;
-    [SerializeField] Text userNicknameText;
+    [SerializeField] protected Text userNicknameText;
 
     Profile_Info profileInfo;
 
