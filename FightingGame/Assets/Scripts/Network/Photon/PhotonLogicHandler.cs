@@ -439,6 +439,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         Info();
 #endif
         PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.EnableCloseConnection = true;
 
         if(!IsEnableJoin())
 		{
@@ -481,7 +482,9 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
 	public override void OnLeftRoom()
 	{
         PhotonNetwork.AutomaticallySyncScene = false;
-        Debug.LogWarning($"유저가 방을 떠났습니다.");
+		PhotonNetwork.EnableCloseConnection = false;
+
+		Debug.LogWarning($"유저가 방을 떠났습니다.");
 
         _OnLeftRoom?.Invoke();
         _OnLeftRoom = null;
