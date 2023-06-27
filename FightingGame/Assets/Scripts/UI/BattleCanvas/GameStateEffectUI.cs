@@ -16,7 +16,7 @@ public enum ENUM_GAMESTATEEFFECT_TYPE
 public class GameStateEffectUI : MonoBehaviour
 {
     [SerializeField] Animator gameStateEffectAnim;
-    public BattleCanvas battleCanvas = null;
+    [SerializeField] BattleCanvas battleCanvas = null;
 
     ENUM_GAMESTATEEFFECT_TYPE currEffectType;
 

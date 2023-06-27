@@ -68,7 +68,7 @@ public class FirstLoginWindowUI : UIElement
         }
 
         // 중복 닉네임 체크해야 함
-
+         
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
 
         nickNameCallBack(userNicknameInputField.text);

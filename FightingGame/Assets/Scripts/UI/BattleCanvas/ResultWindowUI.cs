@@ -22,7 +22,6 @@ public class ResultWindowUI : MonoBehaviour
     int timeCount;
     long myScore;
     long myWinningRate;
-    long enemyScore;
 
     private void OnDisable()
     {
@@ -43,7 +42,6 @@ public class ResultWindowUI : MonoBehaviour
             myWinningRate = (long)tempMyWinningRate;
         }
             
-        enemyScore = Managers.Network.Get_EnemyDBUserData().ratingPoint;
         myScore = myDBData.ratingPoint;
         rankingScore.Open_Score(myScore, myWinningRate);
 
