@@ -205,6 +205,17 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         CurrMap = (ENUM_MAP_TYPE)_mapTypeNum;
     }
 
+    public void OnClick_KickOut()
+    {
+        Managers.UI.popupCanvas.Open_SelectPopup(KickOutToSlave, null, $"'{slaveProfile.Get_UserNickname()}'님을 강퇴하시겠습니까?");
+    }
+
+    private void KickOutToSlave()
+    {
+        if (!PhotonLogicHandler.Instance.KickOut())
+            Managers.UI.popupCanvas.Open_NotifyPopup("오류 : 강퇴에 실패했습니다.");        
+    }
+
     public void OnClick_UserInfo(bool _isMasterProfile)
     {
         DBUserData userData = _isMasterProfile == PhotonLogicHandler.IsMasterClient ?

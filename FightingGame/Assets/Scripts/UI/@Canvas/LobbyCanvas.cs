@@ -24,8 +24,7 @@ public class LobbyCanvas : BaseCanvas
 
         if(Managers.Data.isInterstitial == false)
         {
-            // 일단 주석 - 레이어 이슈 (임시)
-            // Managers.Platform.ShowInterstitial();
+            Managers.Platform.ShowInterstitial();
             Managers.Data.isInterstitial = true;
         }
 
@@ -65,6 +64,8 @@ public class LobbyCanvas : BaseCanvas
 
         Managers.UI.popupCanvas.Play_FadeOutEffect(CallBack_GameStart);
     }
+
+   
 
     public void CallBack_GameStart()
     {

@@ -53,4 +53,8 @@ public class SlaveProfileUI : BaseProfile
         }
     }
 
+    public string Get_UserNickname()
+    {
+        return userNicknameText.text.ToString();
+    }
 }
