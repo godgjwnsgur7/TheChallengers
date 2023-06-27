@@ -60,7 +60,7 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 	public void OnClickJoinRoom()
 	{
 		PhotonLogicHandler.Instance.TryJoinRoom(
-		() => { SetStatus("매칭 성공"); },
+		() => { SetStatus("매칭 성공"); }, null,
 		SetError, roomNameInput.text);
 	}
 

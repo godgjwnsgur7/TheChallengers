@@ -260,13 +260,15 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
         return roomOptions;
     }
 
-    public bool TryJoinRoom(Action _OnJoinRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
+    public bool TryJoinRoom(Action _OnJoinRoom, Action _OnLeftRoom, FailedCallBack _OnJoinRoomFailed, string roomName)
     {
         if (!IsEnableJoin())
             return false;
 
         this._OnJoinRoom = _OnJoinRoom;
-        this._OnJoinRoomFailed = _OnJoinRoomFailed;
+        this._OnLeftRoom = _OnLeftRoom;
+
+		this._OnJoinRoomFailed = _OnJoinRoomFailed;
 
         bool b = PhotonNetwork.JoinRoom(roomName);
         if (!b)
