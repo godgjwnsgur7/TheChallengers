@@ -12,6 +12,7 @@ using FGDefine;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using FGPlatform;
+using WebSocketSharp;
 
 public delegate void DisconnectCallBack(string cause);
 public delegate void FailedCallBack(short returnCode, string message);
@@ -459,7 +460,7 @@ public partial class PhotonLogicHandler : MonoBehaviourPunCallbacks
     private bool IsEnableJoin()
 	{
         var userID = Managers.Platform.GetUserID();
-        if (userID == null || userID == string.Empty)
+        if (userID.IsNullOrEmpty())
         {
             Debug.LogError("로그인이 유효하지 않음");
             return false;

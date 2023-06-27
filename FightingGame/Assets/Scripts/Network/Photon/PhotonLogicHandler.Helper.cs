@@ -334,6 +334,23 @@ public partial class PhotonLogicHandler
         return false;
     }
 
+    public Player GetOtherPlayer()
+    {
+		var players = PhotonNetwork.PlayerList;
+        if (players == null || players.Length < 2)
+            return null;
+
+		foreach (var player in players)
+		{
+			if(player != PhotonNetwork.LocalPlayer)
+            {
+                return player;
+            }
+		}
+
+        return null;
+	}
+
 	public IEnumerable<object> GetAllPlayerProperties(ENUM_PLAYER_STATE_PROPERTIES propertyType)
     {
         var players = PhotonNetwork.PlayerList;
@@ -347,6 +364,15 @@ public partial class PhotonLogicHandler
                 yield return value;
             }
         }
+    }
+
+    public void KickOut()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        var otherPlayer = GetOtherPlayer();
+        PhotonNetwork.CloseConnection(otherPlayer);
     }
 
     /// <summary>
