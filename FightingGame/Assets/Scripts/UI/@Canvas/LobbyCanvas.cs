@@ -22,7 +22,7 @@ public class LobbyCanvas : BaseCanvas
 
         Managers.Platform.ShowBanner();
 
-        if(Managers.Data.isInterstitial == false)
+        if (!Managers.Data.isInterstitial)
         {
             Managers.Platform.ShowInterstitial();
             Managers.Data.isInterstitial = true;
@@ -41,8 +41,6 @@ public class LobbyCanvas : BaseCanvas
         }
     }
 
-    // 임시용
-
     public void GameStart()
     {
         Managers.UI.popupCanvas.Play_FadeOutInEffect(GameStart_CallBack);
@@ -56,6 +54,7 @@ public class LobbyCanvas : BaseCanvas
 
     public void Open_CustomRoomWindow() => customMatching.Open();
     public void Close_CustomRoomWindow() => customMatching.Close();
+    public void CustomRoomLeftCallBack() => customMatching.CustomRoomLeftCallBack();
 
     public void Open_GameStartWindow()
     {
@@ -64,8 +63,6 @@ public class LobbyCanvas : BaseCanvas
 
         Managers.UI.popupCanvas.Play_FadeOutEffect(CallBack_GameStart);
     }
-
-   
 
     public void CallBack_GameStart()
     {

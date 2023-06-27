@@ -16,6 +16,8 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     [SerializeField] Text roomNameText;
     [SerializeField] Text readyOrStartText;
 
+    [SerializeField] GameObject kickOutButtonObject;
+
     private bool readyLock = false;
     public bool isRoomRegisting = false;
     
@@ -131,12 +133,14 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         if(PhotonLogicHandler.IsMasterClient)
         {
             readyOrStartText.text = "시작";
-            if(!PhotonLogicHandler.IsFullRoom)
+            kickOutButtonObject.SetActive(true);
+            if (!PhotonLogicHandler.IsFullRoom)
                 slaveProfile.Clear();
         }
         else
         {
             readyOrStartText.text = "준비";
+            kickOutButtonObject.SetActive(false);
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }
@@ -161,7 +165,15 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
         masterProfile.Clear();
         slaveProfile.Clear();
 
+        userInfoWindow.Close();
         this.gameObject.SetActive(false);
+    }
+
+    public void CustomRoomLeftCallBack()
+    {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Notify);
+        Managers.UI.popupCanvas.DeactivePopupAll();
+        Managers.UI.popupCanvas.Open_NotifyPopup("추방되었습니다.", ExitRoomCallBack);
     }
 
     public void CurrMapInfoUpdateCallBack(ENUM_MAP_TYPE _mapType)
@@ -207,7 +219,8 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
 
     public void OnClick_KickOut()
     {
-        Managers.UI.popupCanvas.Open_SelectPopup(KickOutToSlave, null, $"'{slaveProfile.Get_UserNickname()}'님을 강퇴하시겠습니까?");
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Notify);
+        Managers.UI.popupCanvas.Open_SelectPopup(KickOutToSlave, null, $"'{slaveProfile.Get_UserNickname()}' 님을 추방시키겠습니까?");
     }
 
     private void KickOutToSlave()

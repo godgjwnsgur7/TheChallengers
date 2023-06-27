@@ -38,4 +38,6 @@ public class CustomMatchingUI : MonoBehaviour
 
         this.gameObject.SetActive(false);
     }
+
+    public void CustomRoomLeftCallBack() => customRoomWindow.CustomRoomLeftCallBack();
 }

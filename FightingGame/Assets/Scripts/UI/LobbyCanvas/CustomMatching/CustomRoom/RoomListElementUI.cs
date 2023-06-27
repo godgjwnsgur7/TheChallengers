@@ -116,7 +116,7 @@ public class RoomListElementUI : MonoBehaviour
 
     public void CustomRoomLeftCallBack()
     {
-        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().Close_CustomRoomWindow();
+        Managers.UI.currCanvas.GetComponent<LobbyCanvas>().CustomRoomLeftCallBack();
     }
 
     public void JoinRoomSuccessCallBack()

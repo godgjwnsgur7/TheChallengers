@@ -68,7 +68,8 @@ public class DataMgr
         "게임이 끝났을 때, 두 플레이어의 HP비율이 같다면 무승부가 됩니다.",
     };
 
-    public int nameTextLimit { private set; get; } = 10; // 방제목, 닉네임
+    // 방제목 10, 닉네임 8 (-2)
+    public int nameTextLimit { private set; get; } = 10;
 
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
     public Dictionary<int, CharacterInfo> CharInfoDict { get; private set; } = new Dictionary<int, CharacterInfo>();

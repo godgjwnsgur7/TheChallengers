@@ -51,7 +51,7 @@ public class UserInfoWindowUI : UIElement
         this.gameObject.SetActive(true);
     }
 
-    private void Close()
+    public void Close()
     {
         if (!this.gameObject.activeSelf)
             return;

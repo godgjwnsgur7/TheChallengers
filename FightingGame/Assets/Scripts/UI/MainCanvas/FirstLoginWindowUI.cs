@@ -22,7 +22,7 @@ public class FirstLoginWindowUI : UIElement
     private void Init()
     {
         userNicknameInputField.text = "";
-        userNicknameInputField.characterLimit = Managers.Data.nameTextLimit;
+        userNicknameInputField.characterLimit = Managers.Data.nameTextLimit - 2;
         inputFieldBorderImage.color = Managers.Data.Get_DeselectColor();
 
         if (errorText.gameObject.activeSelf)
