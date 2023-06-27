@@ -24,7 +24,8 @@ public class LobbyCanvas : BaseCanvas
 
         if(Managers.Data.isInterstitial == false)
         {
-            Managers.Platform.ShowInterstitial();
+            // 일단 주석 - 레이어 이슈 (임시)
+            // Managers.Platform.ShowInterstitial();
             Managers.Data.isInterstitial = true;
         }
 
