@@ -209,7 +209,7 @@ namespace FGPlatform
 		{
 			InitializeCurrentUserDB(OnCompleted: (data) =>
 			{
-				checkRoutine?.Invoke(data.nickname.IsNullOrEmpty());
+				checkRoutine?.Invoke(data == null || data.nickname.IsNullOrEmpty());
 
 				if(data != null)
 				{
