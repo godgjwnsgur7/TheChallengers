@@ -84,6 +84,25 @@ public class FirstLoginWindowUI : UIElement
         Close();
     }
 
+    public void InputField_ValueChange()
+    {
+        if (errorTextShakeEffectCoroutine != null)
+            StopCoroutine(errorTextShakeEffectCoroutine);
+
+        inputFieldBorderImage.color = Managers.Data.Get_SelectColor();
+
+        if (errorText.gameObject.activeSelf)
+            errorText.gameObject.SetActive(false);
+    }
+
+    public void InputField_EndEdit()
+    {
+        if (errorTextShakeEffectCoroutine != null)
+            StopCoroutine(errorTextShakeEffectCoroutine);
+
+        inputFieldBorderImage.color = Managers.Data.Get_DeselectColor();
+    }
+
     private void ErrorTextShakeEffect(string _errorMessage = "")
     {
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Error);
@@ -117,7 +136,7 @@ public class FirstLoginWindowUI : UIElement
             errorText.gameObject.transform.position = originVec + (Vector2)UnityEngine.Random.insideUnitCircle * shakePower;
             errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
 
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
 
         errorText.gameObject.transform.position = originVec;
