@@ -135,7 +135,7 @@ public class LobbyCanvas : BaseCanvas
 
         if (PhotonLogicHandler.IsConnected)
         {
-            Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null, "랭킹전(매칭)을 돌리시겠습니까?");
+            Managers.UI.popupCanvas.Open_SelectPopup(MathingStart, null, "랭킹전 매치를 시작하시겠습니까?");
         }
         else
         {

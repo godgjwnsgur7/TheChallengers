@@ -89,17 +89,17 @@ public class CreateRoomWindowUI : UIElement
     {
         if(userInputField.text.Trim() == "")
         {
-            ErrorTextShakeEffect("방이름을 입력해주세요.");
+            ErrorTextShakeEffect("방 이름을 입력해주세요.");
             return;
         }
         else if (userInputField.text.Length < 4)
         {
-            ErrorTextShakeEffect("방이름은 4글자 이상이여야 합니다.");
+            ErrorTextShakeEffect("방 이름은 4글자 이상이여야 합니다.");
             return;
         }
         else if(Managers.Data.BadWord_Discriminator(userInputField.text))
         {
-            ErrorTextShakeEffect("사용할 수 없는 방이름입니다.");
+            ErrorTextShakeEffect("사용할 수 없는 방 이름입니다.");
             return;
         }
 

@@ -162,7 +162,7 @@ public class PopupCanvas : MonoBehaviour
     /// <summary>
     /// 캐릭터 선택창 Popup Window
     /// </summary>
-    public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack)
+    public void Open_CharSelectPopup(Action<ENUM_CHARACTER_TYPE> _charCallBack, bool isMine)
     {
         if(charSelectPopup.isUsing)
         {
@@ -170,7 +170,7 @@ public class PopupCanvas : MonoBehaviour
             return;
         }
 
-        charSelectPopup.Open(_charCallBack);
+        charSelectPopup.Open(_charCallBack, isMine);
     }
 
     /// <summary>
