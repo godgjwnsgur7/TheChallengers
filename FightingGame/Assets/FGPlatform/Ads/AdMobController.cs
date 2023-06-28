@@ -41,8 +41,6 @@ namespace FGPlatform.Advertisement
 
 	public class AdMobController : IAdMobController
     {
-        private readonly string AppID = "ca-app-pub-3940256099942544~3347511713";
-
         private Dictionary<AdvertisementType, FGPlatformAd> banners = new Dictionary<AdvertisementType, FGPlatformAd>();
 
 		public void Init(BannerPosition bannerPos, Action<EventArgs> OnLoaded = null, Action<string> OnLoadFailed = null)

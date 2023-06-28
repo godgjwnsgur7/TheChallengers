@@ -7,7 +7,11 @@ using UnityEngine;
 
 public class FGPlatformInterstitial : FGPlatformAd
 {
+#if UNITY_EDITOR || !RELEASE
 	private readonly string TestInterstitialID_AOS = "ca-app-pub-3940256099942544/1033173712";
+#else
+	private readonly string TestInterstitialID_AOS = "ca-app-pub-8487169308959261/7749885828";
+#endif
 
 	private InterstitialAd ad;
 

@@ -27,7 +27,7 @@ namespace GoogleMobileAds.Editor
                             GoogleMobileAdsSettings.Instance.GoogleMobileAdsIOSAppId);
 
             EditorGUILayout.HelpBox(
-                    "Google Mobile  Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
+					"Google Mobile  Ads App ID will look similar to this sample ID: ca-app-pub-8487169308959261~3956845000",
                     MessageType.Info);
 
             EditorGUI.indentLevel--;

@@ -15,7 +15,7 @@ namespace GoogleMobileAds.Editor
 
         private static GoogleMobileAdsSettings instance;
 
-        public static string APP_ID = "ca-app-pub-3940256099942544~3347511713";
+        public static string APP_ID = "ca-app-pub-8487169308959261~3956845000";
 
         private string adMobAndroidAppId = APP_ID;
 
