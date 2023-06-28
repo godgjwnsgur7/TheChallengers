@@ -8,6 +8,7 @@ using FGPlatform.Advertisement;
 using FGPlatform.Purchase;
 using Firebase;
 using Firebase.Extensions;
+using WebSocketSharp;
 
 [Serializable]
 public class DBUserData
@@ -208,7 +209,7 @@ namespace FGPlatform
 		{
 			InitializeCurrentUserDB(OnCompleted: (data) =>
 			{
-				checkRoutine?.Invoke(data == null);
+				checkRoutine?.Invoke(data.nickname.IsNullOrEmpty());
 
 				if(data != null)
 				{
