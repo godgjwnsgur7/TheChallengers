@@ -38,6 +38,7 @@ public class FirstLoginWindowUI : UIElement
 
     public void Open(Action<string> _nickNameCallBack)
     {
+        Managers.UI.popupCanvas.Close_LoadingPopup();
         Init();
         nickNameCallBack = _nickNameCallBack;
         this.gameObject.SetActive(true);
