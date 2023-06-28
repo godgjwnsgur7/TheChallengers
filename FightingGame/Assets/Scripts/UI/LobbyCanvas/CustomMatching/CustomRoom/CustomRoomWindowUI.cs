@@ -77,7 +77,10 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     public void SlaveClientEnterCallBack(string nickname)
     {
         if (PhotonLogicHandler.IsMasterClient)
+        {
             Managers.Network.Set_SlaveClientNickname(nickname);
+            kickOutButtonObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -92,6 +95,7 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
             masterProfile.Init(slaveProfile.Get_ProfileInfo());
         }
 
+        kickOutButtonObject.SetActive(false);
         PhotonLogicHandler.Instance.RequestUnReadyAll();
         Init();
     }
@@ -130,17 +134,17 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
 
     private void Init()
     {
-        if(PhotonLogicHandler.IsMasterClient)
+        kickOutButtonObject.SetActive(false);
+
+        if (PhotonLogicHandler.IsMasterClient)
         {
             readyOrStartText.text = "시작";
-            kickOutButtonObject.SetActive(true);
             if (!PhotonLogicHandler.IsFullRoom)
                 slaveProfile.Clear();
         }
         else
         {
-            readyOrStartText.text = "준비";
-            kickOutButtonObject.SetActive(false);
+            readyOrStartText.text = "준비";    
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }

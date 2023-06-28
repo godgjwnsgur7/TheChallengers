@@ -22,8 +22,6 @@ public class UserInfoWindowUI : UIElement
 
     public void Open(DBUserData userData)
     {
-        Debug.Log($"userData.ratingPoint : {userData.ratingPoint}");
-
         if (userData.victoryPoint + userData.defeatPoint == 0 && userData.ratingPoint == 1500)
         {
             rankEmblemImage.gameObject.SetActive(false);
