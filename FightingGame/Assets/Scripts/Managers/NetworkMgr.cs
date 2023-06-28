@@ -49,9 +49,6 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnEnterRoomCallBack(string enterUserNickname)
     {
-        if (PhotonLogicHandler.CurrentMyNickname == enterUserNickname)
-            return;
-
         if (PhotonLogicHandler.IsMasterClient)
         {
             slaveClientNickname = enterUserNickname;

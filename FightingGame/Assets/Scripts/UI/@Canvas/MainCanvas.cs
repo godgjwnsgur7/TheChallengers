@@ -53,8 +53,15 @@ public class MainCanvas : BaseCanvas
     private void Login_Failed()
     {
         overlapLock = false;
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Notify);
         Managers.UI.popupCanvas.Open_NotifyPopup("로그인에 실패했습니다.\n다시 시도해주세요");
         Managers.UI.popupCanvas.Close_LoadingPopup();
+    }
+
+    public void Set_MyNickname(string myNickName)
+    {
+        PhotonLogicHandler.CurrentMyNickname = myNickName;
+        Try_MasterServer();
     }
 
     public void OnClick_LoginAndMasterServer()
@@ -65,13 +72,23 @@ public class MainCanvas : BaseCanvas
         overlapLock = true;
 
         Managers.UI.popupCanvas.Open_LoadingPopup();
-        Managers.Platform.Login(() =>
+        Managers.Platform.Login(
+        _OnSignInSuccess: () =>
         {
             string id = Managers.Platform.GetUserID();
             Debug.Log($"회원번호 : {id} 으로 로그인 완료");
-            Try_MasterServer();
-            PhotonLogicHandler.CurrentMyNickname = id;
-        },Login_Failed);
+        },
+        _OnCheckFirstUser: (bool isFirstLogin) =>
+        {
+            if (isFirstLogin)
+            {
+                firstLoginWindow.Open(Set_MyNickname);
+            }
+            else
+            {
+                Try_MasterServer();
+            }
+        }, _OnSignInFailed: () => { Login_Failed(); });
     }
 
     public void OnClick_Credit()

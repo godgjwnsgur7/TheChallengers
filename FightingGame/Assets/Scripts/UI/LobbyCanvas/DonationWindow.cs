@@ -16,12 +16,12 @@ public class DonationWindow : UIElement
 
     public void OnClick_Payment()
     {
-
+        Managers.Platform.Purchase();
     }
 
     public void OnClick_Advertising()
     {
-
+        Managers.Platform.ShowRewardedAd();
     }
 
     public override void OnClick_Exit()
