@@ -78,7 +78,6 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
         {
-            Managers.Network.Set_SlaveClientNickname(nickname);
             kickOutButtonObject.SetActive(true);
         }
     }
