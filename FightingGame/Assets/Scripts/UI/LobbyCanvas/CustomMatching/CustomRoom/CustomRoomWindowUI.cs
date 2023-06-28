@@ -77,7 +77,9 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     public void SlaveClientEnterCallBack(string nickname)
     {
         if (PhotonLogicHandler.IsMasterClient)
-            Managers.Network.Set_SlaveClientNickname(nickname);
+        {
+            kickOutButtonObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -92,6 +94,7 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
             masterProfile.Init(slaveProfile.Get_ProfileInfo());
         }
 
+        kickOutButtonObject.SetActive(false);
         PhotonLogicHandler.Instance.RequestUnReadyAll();
         Init();
     }
@@ -130,17 +133,17 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
 
     private void Init()
     {
-        if(PhotonLogicHandler.IsMasterClient)
+        kickOutButtonObject.SetActive(false);
+
+        if (PhotonLogicHandler.IsMasterClient)
         {
             readyOrStartText.text = "시작";
-            kickOutButtonObject.SetActive(true);
             if (!PhotonLogicHandler.IsFullRoom)
                 slaveProfile.Clear();
         }
         else
         {
-            readyOrStartText.text = "준비";
-            kickOutButtonObject.SetActive(false);
+            readyOrStartText.text = "준비";    
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }
     }
@@ -264,9 +267,14 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
     {
         if(PhotonLogicHandler.IsMasterClient)
         {
-            if (!PhotonLogicHandler.IsFullRoom || !slaveProfile.IsReady)
+            if (!PhotonLogicHandler.IsFullRoom)
             {
-                Managers.UI.popupCanvas.Open_NotifyPopup("모든 유저가 준비상태가 아닙니다.");
+                Managers.UI.popupCanvas.Open_NotifyPopup("상대방이 없습니다.");
+                return;
+            }
+            else if(!slaveProfile.IsReady)
+            {
+                Managers.UI.popupCanvas.Open_NotifyPopup("상대방이 준비상태가 아닙니다.");
                 return;
             }
 
@@ -281,10 +289,16 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
                 return;
 
             if(!slaveProfile.IsReady) // 레디를 누름
+            {
                 Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
+                readyOrStartText.text = "준비 해제";
+            }
             else // 레디를 취소
+            {
                 Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Cilck_Heavy1);
-
+                readyOrStartText.text = "준비";
+            }
+            
             slaveProfile.Set_ReadyState(!slaveProfile.IsReady);
             readyLockCoroutine = StartCoroutine(IReadyButtonLock(2.0f));
         }

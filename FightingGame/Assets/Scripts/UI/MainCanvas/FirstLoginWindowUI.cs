@@ -68,8 +68,6 @@ public class FirstLoginWindowUI : UIElement
             return;
         }
 
-        // 중복 닉네임 체크해야 함
-         
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
 
         nickNameCallBack(userNicknameInputField.text);
@@ -119,7 +117,7 @@ public class FirstLoginWindowUI : UIElement
             errorText.gameObject.transform.position = originVec + (Vector2)UnityEngine.Random.insideUnitCircle * shakePower;
             errorText.gameObject.transform.position = new Vector2(errorText.gameObject.transform.position.x, originVec.y);
 
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
         }
 
         errorText.gameObject.transform.position = originVec;

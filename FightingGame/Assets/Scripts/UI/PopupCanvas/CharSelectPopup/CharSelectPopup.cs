@@ -9,19 +9,23 @@ public class CharSelectPopup : PopupUI
 {
     [SerializeField] Image[] characterImages;
     [SerializeField] RectTransform selectionEffectRectTr;
+    [SerializeField] Text titleText;
     [SerializeField] Text charDescriptionText;
 
     Action<ENUM_CHARACTER_TYPE> onSelectionCharacter;
 
     ENUM_CHARACTER_TYPE selectedCharType = ENUM_CHARACTER_TYPE.Default;
 
-    public void Open(Action<ENUM_CHARACTER_TYPE> _onSelectionCharacter)
+    public void Open(Action<ENUM_CHARACTER_TYPE> _onSelectionCharacter, bool isMine)
     {
         if (_onSelectionCharacter == null)
         {
             Debug.LogError("SelectionCharacterCallBack is Null!");
             return;
         }
+
+        if (isMine) titleText.text = "내 캐릭터 소환";
+        else titleText.text = "상대 캐릭터 소환";
 
         onSelectionCharacter = _onSelectionCharacter;
         selectedCharType = ENUM_CHARACTER_TYPE.Default;

@@ -33,13 +33,13 @@ public class TrainingMenuWindowUI : UIElement
     public void OnClick_ChangeEnemyCharacter()
     {
         Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
-        Managers.UI.popupCanvas.Open_CharSelectPopup(trainingScene.Change_EnemyCharacter);
+        Managers.UI.popupCanvas.Open_CharSelectPopup(trainingScene.Change_EnemyCharacter, false);
     }
 
     public void OnClick_ChangeMyCharacter()
     {
         Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Light);
-        Managers.UI.popupCanvas.Open_CharSelectPopup(trainingScene.Change_MyCharacter);
+        Managers.UI.popupCanvas.Open_CharSelectPopup(trainingScene.Change_MyCharacter, true);
     }
 
     public void OnClick_Setting()

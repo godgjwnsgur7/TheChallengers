@@ -273,10 +273,6 @@ public class NetworkMgr : IRoomPostProcess
 
         userSyncMediator = _userSyncMediator;
     }
-    public void Set_SlaveClientNickname(string _slaveClientNickname)
-    {
-        slaveClientNickname = _slaveClientNickname;
-    }
 
     // Get 계열
     public bool IsConnect_UserSyncMediator() => (userSyncMediator != null);
@@ -286,7 +282,7 @@ public class NetworkMgr : IRoomPostProcess
         return PhotonLogicHandler.Instance.CheckAllPlayerProperty(_properties);
     }
 
-    public string Get_SlaveClientNickname() => slaveClientNickname;
+    public string Get_SlaveClientNickname() => enemyDBData.nickname;
 
     public DBUserData Get_MyDBUserData()
     {

@@ -43,8 +43,7 @@ public class SlaveProfileUI : BaseProfile
             ReadyText.color = new Color(1f, 1f, 1f, 0.4f);
         }
 
-
-        if(IsMine)
+        if(IsMine && PhotonLogicHandler.IsJoinedRoom)
         {
             if(IsReady)
                 PhotonLogicHandler.Instance.OnReady();
