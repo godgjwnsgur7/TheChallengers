@@ -110,12 +110,18 @@ namespace FGPlatform.Advertisement
 
         public void ShowAd(AdvertisementType type, Action<EventArgs> OnOpening = null, Action<EventArgs> OnClosed = null)
         {
-            banners[type]?.Show();
+            if (banners.ContainsKey(type))
+            {
+				banners[type]?.Show();
+			}
 		}
 
         public void HideAd(AdvertisementType type)
         {
-			banners[type]?.Hide();
+			if (banners.ContainsKey(type))
+			{
+				banners[type]?.Hide();
+			}
 		}
     }
 

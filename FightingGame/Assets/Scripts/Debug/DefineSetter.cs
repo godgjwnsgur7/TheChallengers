@@ -10,31 +10,35 @@ using UnityEditor;
 public class DefineController : AssetPostprocessor
 {
     private static DefineSetter characterDefineSetter = new DefineSetter(CharacterDamageMenuName, "TEST_MODE");
-    private static DefineSetter googleLoginDefineSetter = new GoogleLoginDefineSetter(GoggleLoginMenuName, "GOOGLE_LOGIN_MODE");
-	private static DefineSetter bannerDefineSetter = new DefineSetter(BannerLoginMenuName, "ENABLE_BANNER");
-	private static DefineSetter interstitialDefineSetter = new DefineSetter(InterstitialMenuName, "ENABLE_INTERSTITIAL");
-    private static DefineSetter rewardedDefineSetter = new DefineSetter(RewardedMenuName, "ENABLE_REWARDED");
+    //private static DefineSetter googleLoginDefineSetter = new GoogleLoginDefineSetter(GoggleLoginMenuName, "GOOGLE_LOGIN_MODE");
+	//private static DefineSetter bannerDefineSetter = new DefineSetter(BannerLoginMenuName, "ENABLE_BANNER");
+	//private static DefineSetter interstitialDefineSetter = new DefineSetter(InterstitialMenuName, "ENABLE_INTERSTITIAL");
+    //private static DefineSetter rewardedDefineSetter = new DefineSetter(RewardedMenuName, "ENABLE_REWARDED");
 
-	private const string GoggleLoginMenuName = "Debug/구글 로그인 활성화";
+	private static DefineSetter buildDefineSetter = new DefineSetter(BuildSettingMenuName, "RELEASE", "GOOGLE_LOGIN_MODE", "ENABLE_BANNER", "ENABLE_INTERSTITIAL", "ENABLE_REWARDED");
+
+	// private const string GoggleLoginMenuName = "Debug/구글 로그인 활성화";
     private const string CharacterDamageMenuName = "Debug/캐릭터 데미지 치트";
-	private const string BannerLoginMenuName = "Debug/배너 활성화";
-	private const string InterstitialMenuName = "Debug/전면 광고 활성화";
-    private const string RewardedMenuName = "Debug/보상형 광고 활성화";
+	// private const string BannerLoginMenuName = "Debug/배너 활성화";
+	// private const string InterstitialMenuName = "Debug/전면 광고 활성화";
+    // private const string RewardedMenuName = "Debug/보상형 광고 활성화";
+    private const string BuildSettingMenuName = "Build/빌드 모드"; 
 
 	private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
     {
-        googleLoginDefineSetter.SetDefine();
+        // googleLoginDefineSetter.SetDefine();
         characterDefineSetter.SetDefine();
-        bannerDefineSetter.SetDefine();
-        interstitialDefineSetter.SetDefine();
-        rewardedDefineSetter.SetDefine();
+        // bannerDefineSetter.SetDefine();
+        // interstitialDefineSetter.SetDefine();
+        // rewardedDefineSetter.SetDefine();
+		buildDefineSetter.SetDefine();
 	}
 
-    [MenuItem(GoggleLoginMenuName)]
-    public static void SetGoggleLoginMode()
-    {
-        googleLoginDefineSetter.SetTestMode();
-    }
+    //[MenuItem(GoggleLoginMenuName)]
+    //public static void SetGoggleLoginMode()
+    //{
+    //    googleLoginDefineSetter.SetTestMode();
+    //}
 
     [MenuItem(CharacterDamageMenuName)]
     public static void SetCharacterDamageMode()
@@ -42,22 +46,28 @@ public class DefineController : AssetPostprocessor
         characterDefineSetter.SetTestMode();
     }
 
-	[MenuItem(BannerLoginMenuName)]
-	public static void SetBannerMode()
-	{
-		bannerDefineSetter.SetTestMode();
-	}
+	//[MenuItem(BannerLoginMenuName)]
+	//public static void SetBannerMode()
+	//{
+	//	bannerDefineSetter.SetTestMode();
+	//}
 
-	[MenuItem(InterstitialMenuName)]
-	public static void SetInterstitialMode()
-	{
-		interstitialDefineSetter.SetTestMode();
-	}
+	//[MenuItem(InterstitialMenuName)]
+	//public static void SetInterstitialMode()
+	//{
+	//	interstitialDefineSetter.SetTestMode();
+	//}
 
-	[MenuItem(RewardedMenuName)]
-	public static void SetRewardedMode()
+	//[MenuItem(RewardedMenuName)]
+	//public static void SetRewardedMode()
+	//{
+	//	rewardedDefineSetter.SetTestMode();
+	//}
+
+	[MenuItem(BuildSettingMenuName)]
+	public static void SetBuildMode()
 	{
-		rewardedDefineSetter.SetTestMode();
+		buildDefineSetter.SetTestMode();
 	}
 }
 
