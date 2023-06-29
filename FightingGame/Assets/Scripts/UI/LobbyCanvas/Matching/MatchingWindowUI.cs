@@ -97,6 +97,8 @@ public class MatchingWindowUI : MonoBehaviour
     /// </summary>
     private void LeaveRoom_CallBack()
     {
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Click_Cancel);
+
         if(timerCoroutine != null)
             StopCoroutine(timerCoroutine);
         isStopwatchLock = true;
