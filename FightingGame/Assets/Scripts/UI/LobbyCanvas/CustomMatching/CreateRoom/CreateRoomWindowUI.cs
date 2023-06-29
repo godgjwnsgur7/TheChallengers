@@ -17,7 +17,6 @@ public class CreateRoomWindowUI : UIElement
     ENUM_MAP_TYPE currMap = ENUM_MAP_TYPE.CaveMap;
 
     Coroutine errorTextShakeEffectCoroutine;
-    bool isLock = false;
 
     protected override void OnEnable()
     {
@@ -46,8 +45,6 @@ public class CreateRoomWindowUI : UIElement
 
     private void Init()
     {
-        isLock = false;
-
         userInputField.text = "";
         userInputField.characterLimit = Managers.Data.nameTextLimit;
         inputFieldBorderImage.color = Managers.Data.Get_DeselectColor();
@@ -92,18 +89,17 @@ public class CreateRoomWindowUI : UIElement
             ErrorTextShakeEffect("방 이름을 입력해주세요.");
             return;
         }
-        else if (userInputField.text.Length < 4)
+        else if (userInputField.text.Trim().Length < 4)
         {
             ErrorTextShakeEffect("방 이름은 4글자 이상이여야 합니다.");
             return;
         }
-        else if(Managers.Data.BadWord_Discriminator(userInputField.text))
+        else if(Managers.Data.BadWord_Discriminator(userInputField.text.Trim()))
         {
             ErrorTextShakeEffect("사용할 수 없는 방 이름입니다.");
             return;
         }
 
-        isLock = true;
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
         Managers.UI.popupCanvas.Open_LoadingPopup();
         PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack

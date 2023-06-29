@@ -57,12 +57,12 @@ public class FirstLoginWindowUI : UIElement
             ErrorTextShakeEffect("닉네임을 입력해주세요.");
             return;
         }
-        else if (userNicknameInputField.text.Length < 2)
+        else if (userNicknameInputField.text.Trim().Length < 2)
         {
             ErrorTextShakeEffect("닉네임은 2글자 이상이여야 합니다.");
             return;
         }
-        else if (Managers.Data.BadWord_Discriminator(userNicknameInputField.text))
+        else if (Managers.Data.BadWord_Discriminator(userNicknameInputField.text.Trim()))
         {
             ErrorTextShakeEffect("사용할 수 없는 닉네임입니다.");
             return;

@@ -108,7 +108,6 @@ public class PopupCanvas : MonoBehaviour
     /// </summary>
     public void DeactivePopupAll()
     {
-        if (inputKeyController.gameObject.activeSelf) inputKeyController.Close();
         if (inputKeyManagement.gameObject.activeSelf) inputKeyManagement.Close();
         if (settingWindow.gameObject.activeSelf) settingWindow.Close();
 
