@@ -58,8 +58,6 @@ public class BaseProfile : MonoBehaviour
             rankEmblemImage.gameObject.SetActive(true);
             rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{_profileInfo.rankEmblem}");
         }
-
-        rankEmblemImage.gameObject.SetActive(true);
     }
 
     public virtual void Clear()

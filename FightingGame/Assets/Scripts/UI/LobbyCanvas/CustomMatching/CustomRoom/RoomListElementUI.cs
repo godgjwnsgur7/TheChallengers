@@ -95,6 +95,8 @@ public class RoomListElementUI : MonoBehaviour
         personnelText.text = $"{myRoomInfo.currentPlayerCount} / 2";
         roomNameText.text = myRoomInfo.roomName;
         masterNicknameText.text = myRoomInfo.MasterClientNickname;
+        if (masterNicknameText.text == "")
+            masterNicknameText.text = "알수없음";
 
         // Set Image
         CurrMap = myRoomInfo.CurrentMapType;

@@ -27,8 +27,6 @@ public class UserInfoWindowUI : UIElement
             rankEmblemImage.gameObject.SetActive(false);
             ratingPointText.text = "Unknown";
             winningRateText.text = "0%";
-
-            return;
         }
         else
         {
