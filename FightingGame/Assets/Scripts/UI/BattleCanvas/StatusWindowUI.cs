@@ -62,7 +62,9 @@ public class StatusWindowUI : MonoBehaviour
         {
             if (PhotonLogicHandler.IsMasterClient == (teamType == ENUM_TEAM_TYPE.Blue))
             {
-                nicknameText.text = PhotonLogicHandler.CurrentMyNickname;
+                nicknameText.text = Managers.Network.Get_MyNickname();
+                if(nicknameText.text == "")
+                    nicknameText.text = PhotonLogicHandler.CurrentMyNickname;
 
                 Color selectColor = Managers.Data.Get_SelectColor();
                 charFrameCoverImage.color = selectColor;
@@ -70,7 +72,7 @@ public class StatusWindowUI : MonoBehaviour
             }
             else
             {
-                nicknameText.text = Managers.Network.Get_SlaveClientNickname();
+                nicknameText.text = Managers.Network.Get_EnemyNickname();
             }
         }
         else

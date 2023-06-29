@@ -163,7 +163,6 @@ public class CustomRoomWindowUI : UIElement, IRoomPostProcess
             return;
 
         Managers.Network.ExitRoom_CallBack();
-        Managers.Network.Clear_DBData();
 
         masterProfile.Clear();
         slaveProfile.Clear();

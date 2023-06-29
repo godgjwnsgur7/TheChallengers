@@ -114,12 +114,6 @@ public class NetworkMgr : IRoomPostProcess
         return myScore;
     }
 
-    public void Clear_DBData()
-    {
-        myDBData = null;
-        enemyDBData = null;
-    }
-
     public void Register_TimerCallBack(Action<int> _updateTimerCallBack)
     {
         userSyncMediator.Register_TimerCallBack(_updateTimerCallBack);
@@ -282,7 +276,8 @@ public class NetworkMgr : IRoomPostProcess
         return PhotonLogicHandler.Instance.CheckAllPlayerProperty(_properties);
     }
 
-    public string Get_SlaveClientNickname() => enemyDBData.nickname;
+    public string Get_MyNickname() => myDBData.nickname;
+    public string Get_EnemyNickname() => enemyDBData.nickname;
 
     public DBUserData Get_MyDBUserData()
     {
@@ -291,6 +286,9 @@ public class NetworkMgr : IRoomPostProcess
 
     public DBUserData Get_EnemyDBUserData()
     {
-        return enemyDBData;
+        if (PhotonLogicHandler.IsFullRoom)
+            return enemyDBData;
+        else
+            return null;
     }
 }
