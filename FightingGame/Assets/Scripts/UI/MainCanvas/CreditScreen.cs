@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CreditScreen : UIElement
 {
     [SerializeField] GameObject CreditAreaObject;
+    [SerializeField] Text skipText;
     [SerializeField] Image backgroundImage;
     [SerializeField] Rigidbody2D rigid2D;
 
@@ -34,6 +35,7 @@ public class CreditScreen : UIElement
 
         CreditAreaObject.transform.localPosition = new Vector3(0, startPosVecY, 0);
         backgroundImage.color = new Color(0, 0, 0, 0);
+        skipText.color = new Color(skipText.color.r, skipText.color.g, skipText.color.b, 0);
         this.gameObject.SetActive(true);
 
         creditEffectCoroutine = StartCoroutine(ICreditMoveEffect());
@@ -69,6 +71,22 @@ public class CreditScreen : UIElement
 
         // 크레딧 실행
         rigid2D.AddForce(new Vector2(0, 1f), ForceMode2D.Impulse);
+
+        tempColor = skipText.color;
+        
+        // skip 버튼 On.
+        while (tempColor.a < 1f)
+        {
+            tempColor.a += Time.deltaTime / fadeTime;
+            skipText.color = tempColor;
+
+            yield return null;
+        }
+
+        tempColor.a = 1f;
+        skipText.color = tempColor;
+
+        // 크레딧 종료 대기
         yield return new WaitUntil(() => CreditAreaObject.transform.localPosition.y > endPosVecY);
         rigid2D.velocity = Vector2.zero;
 
