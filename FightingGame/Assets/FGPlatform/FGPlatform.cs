@@ -292,6 +292,11 @@ namespace FGPlatform
 			}); 
 		}
 
+		public bool IsShowAd(AdvertisementType type = AdvertisementType.Banner)
+		{
+			return AdMob.IsShowAd(type);
+		}
+
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)
 		{
 			return type.ToString() + id;

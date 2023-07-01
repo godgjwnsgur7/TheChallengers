@@ -62,7 +62,7 @@ public class Managers : MonoBehaviour
 #endif
     }
 
-	private void OnApplicationQuit()
+	private void OnApplicationPause()
     {
         if (network.IsServerSyncState)
             network.Update_DBUserData(false);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 using UnityEngine.UI;
 
 namespace FGPlatform.Purchase
@@ -27,14 +28,13 @@ namespace FGPlatform.Purchase
     {
         void Init();
         bool Purchase(Action<long> priceCallback);
-        bool IsPurchased();
     }
 
     /// <summary>
     /// 우선 안드로이드만 지원하기로 함
     /// </summary>
 
-    public class IAPController : IStoreListener, CoffeeMachine
+    public class IAPController : IDetailedStoreListener, CoffeeMachine
     {
         private IStoreController storeController = null;
         private IExtensionProvider provider = null;
@@ -68,22 +68,21 @@ namespace FGPlatform.Purchase
             if (!IsValid)
                 return false;
 
-            this.priceCallback = priceCallback;
-
-			var product = storeController.products.WithID(productInfo.ID);
-            if (product == null || !product.availableToPurchase)
+            if (!CanPurchased())
                 return false;
 
-            storeController.InitiatePurchase(product);
+            this.priceCallback = priceCallback;
+
+            this.storeController.InitiatePurchase(productInfo.ID);
             return true;
         }
 
-        public bool IsPurchased()
+        private bool CanPurchased()
         {
             if (!IsValid)
                 return false;
 
-            var product = storeController.products.WithID(productInfo.ID);
+            var product = storeController?.products?.WithID(productInfo.ID);
             if (product == null)
                 return false;
 
@@ -121,7 +120,17 @@ namespace FGPlatform.Purchase
 
         void IStoreListener.OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            Debug.LogError($"[{product.definition.id}] 구매 실패 [{failureReason}]");
+            Debug.LogError($"[{product?.definition?.id}] 구매 실패 [{failureReason}]");
+        }
+
+        public void OnInitializeFailed(InitializationFailureReason error, string message)
+        {
+            Debug.LogError($"[{error}] 구매 실패 [{message}]");
+        }
+
+        public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
+        {
+            Debug.LogError($"[{product?.definition?.id}] 구매 실패 [{failureDescription?.message}]");
         }
     }
 }

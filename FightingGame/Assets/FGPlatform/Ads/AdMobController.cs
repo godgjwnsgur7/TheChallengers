@@ -33,6 +33,7 @@ namespace FGPlatform.Advertisement
         public void UnloadAd();
         public void ShowAd(AdvertisementType type, Action<EventArgs> OnOpening = null, Action<EventArgs> OnClosed = null);
         public void HideAd(AdvertisementType type);
+        public bool IsShowAd(AdvertisementType type);
     }
 
 	/// <summary>
@@ -123,6 +124,16 @@ namespace FGPlatform.Advertisement
 				banners[type]?.Hide();
 			}
 		}
+
+        public bool IsShowAd(AdvertisementType type)
+        {
+            if (banners.ContainsKey(type))
+            {
+                return banners[type].isShow;
+            }
+
+            return false;
+        }
     }
 
 }
