@@ -66,8 +66,6 @@ public class Managers : MonoBehaviour
     {
         if (network.IsServerSyncState)
             network.Update_DBUserData(false);
-
-        Platform.Clear();
 	}
 
 	private static void Init()
