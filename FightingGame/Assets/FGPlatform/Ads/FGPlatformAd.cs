@@ -88,16 +88,12 @@ public abstract class FGPlatformAd
 	{
 		OnAdOpening?.Invoke(e);
 		OnAdOpening = null;
-
-		isShow = true;
 	}
 
 	protected void BannerView_OnAdClosed(object sender, EventArgs e)
 	{
 		OnAdClosed?.Invoke(e);
 		OnAdClosed = null;
-
-		isShow = false;
 	}
 
 	protected void BannerView_OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
@@ -106,7 +102,6 @@ public abstract class FGPlatformAd
 		OnAdFailedToLoad = null;
 
 		isLoaded = false;
-		isShow = false;
 	}
 
 	protected void BannerView_OnAdLoaded(object sender, EventArgs e)
@@ -115,7 +110,6 @@ public abstract class FGPlatformAd
 		OnAdLoaded = null;
 
 		isLoaded = true;
-		isShow = true;
 	}
 
 }

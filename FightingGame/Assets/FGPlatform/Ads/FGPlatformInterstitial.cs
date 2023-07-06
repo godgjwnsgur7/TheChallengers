@@ -25,16 +25,11 @@ public class FGPlatformInterstitial : FGPlatformAd
 
 	public override bool Show()
 	{
-		if(base.Show())
-		{
-			if (!ad.IsLoaded())
-				ad.LoadAd(request);
+		if (!ad.IsLoaded())
+			ad.LoadAd(request);
 
-			ad.Show();
-			return true;
-		}
-
-		return false;
+		ad.Show();
+		return true;
 	}
 
 	public override bool Hide()
