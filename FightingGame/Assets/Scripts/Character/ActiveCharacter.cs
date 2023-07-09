@@ -506,7 +506,7 @@ public partial class ActiveCharacter : Character
         
         while(true)
         {
-            Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
+            UnityEngine.Debug.DrawRay(rigid2D.position, Vector2.down * 1.1f, Color.green);
             LandingState = Physics2D.Raycast(rigid2D.position, Vector2.down, 1.1f, LayerMask.GetMask(ENUM_LAYER_TYPE.Ground.ToString()));
 
             if (LandingState)
