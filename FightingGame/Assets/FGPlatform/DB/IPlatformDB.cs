@@ -98,7 +98,7 @@ namespace FGPlatform.Datebase
                     UpdateDB(category, hierachyPath, data, OnSuccess, OnFailed, OnCanceled);
                 });
 
-                Debug.LogError("Update 메소드 최초 실행 때 시간이 오래 걸릴 수 있습니다. \n 로그인 후에 미리 한번 수행해주세요.");
+                Debug.LogWarning("Update 메소드 최초 실행 때 시간이 오래 걸릴 수 있습니다. \n 로그인 후에 미리 한번 수행해주세요.");
                 return false;
             }
 
