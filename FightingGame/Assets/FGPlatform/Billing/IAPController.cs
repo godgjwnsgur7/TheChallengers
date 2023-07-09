@@ -86,7 +86,7 @@ namespace FGPlatform.Purchase
             if (product == null)
                 return false;
 
-            return product.hasReceipt;
+            return true;
         }
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
