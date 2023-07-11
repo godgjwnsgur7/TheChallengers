@@ -13,6 +13,16 @@ public class BattleScene : BaseScene
 
     BaseMap currMap;
 
+    Coroutine waitPoolingCoroutine;
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (waitPoolingCoroutine != null)
+            StopCoroutine(waitPoolingCoroutine);
+    }
+
     protected override IEnumerator Start()
     {
         if(PhotonLogicHandler.IsConnected)
@@ -49,6 +59,7 @@ public class BattleScene : BaseScene
         base.Init();
 
         Managers.Player.Init(currMap, Managers.Network.Get_MyCharType());
+        Managers.UI.popupCanvas.Play_FadeInEffect(Play_BGM);
     }
 
     public override void Clear()
@@ -57,7 +68,7 @@ public class BattleScene : BaseScene
     }
 
     public override void Play_BGM()
-    {       
+    {
         string mapName = currMap.Get_MapType().ToString();
         ENUM_BGM_TYPE bgmType = (ENUM_BGM_TYPE)Enum.Parse(typeof(ENUM_BGM_TYPE), mapName);
         Managers.Sound.Play_BGM(bgmType);

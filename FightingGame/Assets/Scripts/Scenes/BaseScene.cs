@@ -14,7 +14,7 @@ public abstract class BaseScene : MonoBehaviour
         Init();
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         Managers.Clear();
     }
@@ -22,7 +22,8 @@ public abstract class BaseScene : MonoBehaviour
     public virtual void Init()
     {
         Managers.Scene.Get_CurrSceneType(SceneType);
-        Managers.UI.popupCanvas.Play_FadeInEffect(Play_BGM);
+        if(SceneType != ENUM_SCENE_TYPE.Battle)
+            Managers.UI.popupCanvas.Play_FadeInEffect(Play_BGM);
     }
     
     public virtual void Clear()

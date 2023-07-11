@@ -54,7 +54,7 @@ public class VolumeData
 
 public class PlayerPrefsManagement : MonoBehaviour
 {
-    #region PlayerPrefs_SetGet (가급적 건들지 마시오!)
+    #region PlayerPrefs_SetGet
     // PlayerPrefs Set 계열 함수들. keyName_keyType 을 키값으로 저장함
     private static void Set_Float(float value, string keyName, string keyType)
         => PlayerPrefs.SetFloat($"{keyName}_{keyType}", value);
@@ -65,11 +65,11 @@ public class PlayerPrefsManagement : MonoBehaviour
 
     // PlayerPrefs Get 계열 함수들. keyName_keyType 을 키값으로 불러옴
     private static float Get_Float(string keyName, string keyType)
-    { return PlayerPrefs.GetFloat($"{keyName}_{keyType}"); }
+        => PlayerPrefs.GetFloat($"{keyName}_{keyType}");
     private static string Get_String(string keyName, string keyType)
-    { return PlayerPrefs.GetString($"{keyName}_{keyType}"); }
+        => PlayerPrefs.GetString($"{keyName}_{keyType}");
     private static int Get_Int(string keyName, string keyType)
-    { return PlayerPrefs.GetInt($"{keyName}_{keyType}"); }
+        => PlayerPrefs.GetInt($"{keyName}_{keyType}");
     #endregion
 
     #region KeySettingData

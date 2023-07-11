@@ -12,12 +12,14 @@ public abstract class PopupUI : MonoBehaviour
     protected virtual void OnEnable()
     {
         isUsing = true;
+        Managers.Platform.ShowBanner();
         Managers.UI.Push_WindowExitStack(OnClick_Exit);
     }
 
     protected virtual void OnDisable()
     {
         isUsing = false;
+        Managers.Platform.HideBanner();
         Managers.UI.Pop_WindowExitStack();
     }
 

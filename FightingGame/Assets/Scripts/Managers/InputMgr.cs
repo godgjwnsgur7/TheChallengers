@@ -13,7 +13,7 @@ public class InputMgr
     {
         if (inputKeyManagement == null)
             inputKeyManagement = Managers.UI.popupCanvas.Get_InputKeyManagement();
-
+    
         return inputKeyManagement;
     }
 

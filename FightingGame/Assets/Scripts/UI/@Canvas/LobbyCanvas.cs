@@ -20,8 +20,6 @@ public class LobbyCanvas : BaseCanvas
         for (int i = 0; i < images.Length; i++)
             images[i].alphaHitTestMinimumThreshold = 0.1f;
 
-        Managers.Platform.ShowBanner();
-
         if (!Managers.Data.isInterstitial)
         {
             Managers.Platform.ShowInterstitial();
