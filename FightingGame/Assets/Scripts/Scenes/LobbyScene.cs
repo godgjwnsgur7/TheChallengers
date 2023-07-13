@@ -19,6 +19,6 @@ public class LobbyScene : BaseScene
 
     public override void Play_BGM()
     {
-        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Main);
+        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Lobby);
     }
 }

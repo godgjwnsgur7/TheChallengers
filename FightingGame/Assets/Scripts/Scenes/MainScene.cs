@@ -16,4 +16,9 @@ public class MainScene : BaseScene
     {
         base.Clear();
     }
+
+    public override void Play_BGM()
+    {
+        Managers.Sound.Play_BGM(ENUM_BGM_TYPE.Main);
+    }
 }

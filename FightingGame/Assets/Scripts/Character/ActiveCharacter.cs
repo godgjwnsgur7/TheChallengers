@@ -410,6 +410,7 @@ public partial class ActiveCharacter : Character
     {
         base.Die();
 
+        isDead = true;
         SetAnimBool("IsHit", false);
 
         SetAnimTrigger("DieTrigger");

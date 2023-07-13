@@ -175,8 +175,8 @@ namespace FGDefine
     public enum ENUM_BGM_TYPE
     {
         Unknown = 0,
-        Test = 1,
-        Main = 2,
+        Main = 1,
+        Lobby = 2,
         CaveMap = 3,
         TempleMap = 4,
         VolcanicMap = 5,
@@ -239,6 +239,8 @@ namespace FGDefine
         Knight_ComboSkill_5 = 121,
         
         Knight_Dash = 122,
+        Knight_Die1 = 123,
+        Knight_Die2 = 124,
 
         // Wizard Sound
         Wizard_Attack1 = 201,
@@ -269,6 +271,9 @@ namespace FGDefine
         
         Wizard_PushOutSkillObject = 222,
         Wizard_PushOutSkill_Voice = 223,
+
+        Wizard_Die1 = 224,
+        Wizard_Die2 = 225,
 
         // Hit Sound
         Dummy_HitSound = 300,
