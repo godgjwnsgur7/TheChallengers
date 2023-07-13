@@ -42,11 +42,11 @@ public class DataMgr
 
     private Dictionary<ENUM_MAP_TYPE, string> mapExplanationDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
-        {ENUM_MAP_TYPE.CaveMap, 
+        {ENUM_MAP_TYPE.CaveMap,
             "소문으로는 동굴 가장 깊은 곳에 리치의 레어가 있다고 합니다." +
             " 하지만 그 소문을 직접 확인한 자는 없습니다." +
             " 안으로 들어간 사람 중 살아 나온 사람은 아무도 없기 때문이죠." },
-        {ENUM_MAP_TYPE.TempleMap, 
+        {ENUM_MAP_TYPE.TempleMap,
             "고대 신전 유적은 아직 조사된 부분이 많지 않은 미지의 공간입니다." +
             " 언제 지어졌는지, 어느 신을 섬기는지 밝혀진 부분은 없습니다." +
             " 신전 안의 섬뜩한 기운이 밖으로 새 나가지 않기만을 바랄 뿐이죠." },
@@ -55,7 +55,7 @@ public class DataMgr
             " 성격 급한 불의 여신이 그들을 왜 해치지 않았는지 아직도 의문이 가득합니다." }
     };
 
-    private string[] tipDescriptionStrArray= new string[]
+    private string[] tipDescriptionStrArray = new string[]
     {
         "기본공격과 특정스킬은 방향키 입력 값에 영향을 받습니다.",
         "환경설정 조작에서 모든 키의 투명도를 낮출 수 있습니다.",
@@ -70,14 +70,14 @@ public class DataMgr
         "커스텀매치 방 안에서 상대 프로필영역을 누르면 정보를 볼 수 있습니다.",
     };
 
-    // 방제목 10, 닉네임 8 (-2)
-    public int nameTextLimit { private set; get; } = 10;
-
     public Dictionary<int, Skill> SkillDict { get; private set; } = new Dictionary<int, Skill>();
     public Dictionary<int, CharacterInfo> CharInfoDict { get; private set; } = new Dictionary<int, CharacterInfo>();
     public GameInfo gameInfo { get; private set; } = new GameInfo();
 
     private string[] badWordStrArray;
+
+    // 방제목 10, 닉네임 8 (-2)
+    public int nameTextLimit { private set; get; } = 10;
 
     public bool isInterstitial = false;
 
