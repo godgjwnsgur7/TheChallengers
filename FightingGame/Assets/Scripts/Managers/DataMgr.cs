@@ -20,7 +20,6 @@ public class DataMgr
         {ENUM_CHARACTER_TYPE.Wizard, "WIZARD" },
         {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
     };
-
     private Dictionary<ENUM_CHARACTER_TYPE, string> charExplanationDict = new Dictionary<ENUM_CHARACTER_TYPE, string>
     {
         {ENUM_CHARACTER_TYPE.Default, "캐릭터가 선택되지 않았습니다." },
@@ -32,14 +31,12 @@ public class DataMgr
             "넓은 범위 공격을 이용해 원거리에서 안전하게 공격합니다." },
         {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
     };
-
     private Dictionary<ENUM_MAP_TYPE, string> mapNameDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
         {ENUM_MAP_TYPE.CaveMap, "SILENT CAVE" },
         {ENUM_MAP_TYPE.TempleMap, "ANCIENT TEMPLE" },
         {ENUM_MAP_TYPE.VolcanicMap, "VOLCANIC REGION" }
     };
-
     private Dictionary<ENUM_MAP_TYPE, string> mapExplanationDict = new Dictionary<ENUM_MAP_TYPE, string>()
     {
         {ENUM_MAP_TYPE.CaveMap,
@@ -54,7 +51,6 @@ public class DataMgr
             " 고대의 사람들은 거대한 여신의 무릎 위를 통과하며 화산을 건넜다고 하는데" +
             " 성격 급한 불의 여신이 그들을 왜 해치지 않았는지 아직도 의문이 가득합니다." }
     };
-
     private string[] tipDescriptionStrArray = new string[]
     {
         "기본공격과 특정스킬은 방향키 입력 값에 영향을 받습니다.",
@@ -101,7 +97,7 @@ public class DataMgr
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
-    {
+    { 
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
         return JsonUtility.FromJson<Loader>(textAsset.text);
     }

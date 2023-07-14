@@ -17,8 +17,6 @@ public class NetworkMgr : IRoomPostProcess
 
     Coroutine sequenceExecuteCoroutine = null;
 
-    string slaveClientNickname = null;
-
     public bool IsServerSyncState
     {
         get
@@ -51,7 +49,6 @@ public class NetworkMgr : IRoomPostProcess
     {
         if (PhotonLogicHandler.IsMasterClient)
         {
-            slaveClientNickname = enterUserNickname;
             Start_SequenceExecuter();
             PhotonLogicHandler.Instance.RequestSyncData(ENUM_PLAYER_STATE_PROPERTIES.DATA_SYNC);
         }

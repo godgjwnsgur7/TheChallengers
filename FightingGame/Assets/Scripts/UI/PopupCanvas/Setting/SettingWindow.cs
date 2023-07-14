@@ -105,6 +105,6 @@ public class SettingWindow : UIElement
     {
         Close();
 
-        Managers.Input.Get_InputKeyManagement().Open();
+        Managers.Input.Open_InputKeyManagement();
     }
 }

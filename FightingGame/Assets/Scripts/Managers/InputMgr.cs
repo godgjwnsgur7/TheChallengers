@@ -9,12 +9,12 @@ public class InputMgr
     InputKeyController inputKeyController = null;
     InputKeyManagement inputKeyManagement = null;
 
-    public InputKeyManagement Get_InputKeyManagement()
+    public void Open_InputKeyManagement()
     {
         if (inputKeyManagement == null)
             inputKeyManagement = Managers.UI.popupCanvas.Get_InputKeyManagement();
     
-        return inputKeyManagement;
+        inputKeyManagement.Open();
     }
 
     public void Connect_InputKeyController(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)

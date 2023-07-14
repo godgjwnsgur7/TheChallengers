@@ -84,7 +84,6 @@ public class LobbyCanvas : BaseCanvas
 
     private void GoTo_TrainingScene()
     {
-        Managers.Platform.HideBanner();
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Training);
     }
 

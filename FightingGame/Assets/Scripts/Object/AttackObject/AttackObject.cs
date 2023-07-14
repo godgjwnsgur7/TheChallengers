@@ -9,7 +9,6 @@ public class AttackObject : SyncObject
     public override void Init()
     {
         base.Init();
-
     }
 
     [BroadcastMethod]

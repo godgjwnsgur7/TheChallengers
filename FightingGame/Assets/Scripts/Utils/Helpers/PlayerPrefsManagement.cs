@@ -4,6 +4,7 @@ using UnityEngine;
 using FGDefine;
 using System;
 
+[Serializable]
 public class KeySettingData
 {
     public List<KeySettingDataElement> keySettingDataList = new List<KeySettingDataElement>();
@@ -16,6 +17,7 @@ public class KeySettingData
     }
 }
 
+[Serializable]
 public class KeySettingDataElement
 {
     public int key; // ENUM_KEYSETTING_NAME의 번호 (키 값)
@@ -32,6 +34,7 @@ public class KeySettingDataElement
     }
 }
 
+[Serializable]
 public class VolumeData
 {
     public float masterVolume;
