@@ -18,6 +18,8 @@ public class CreditScreen : UIElement
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        Managers.Platform.ShowBanner();
     }
 
     protected override void OnDisable()
@@ -26,6 +28,8 @@ public class CreditScreen : UIElement
             StopCoroutine(creditEffectCoroutine);
 
         base.OnDisable();
+
+        Managers.Platform.HideBanner();
     }
 
     public void Open()
