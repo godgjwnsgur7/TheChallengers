@@ -71,6 +71,8 @@ namespace FGPlatform
 
 		public void Initialize()
 		{
+			Clear();
+
 #if UNITY_ANDROID
 			IAPController.Init();
 			AdMob.Init(BannerPosition.Bottom);
@@ -102,11 +104,11 @@ namespace FGPlatform
 
 		public void Clear()
 		{
-			auth = null;
-			DB = null;
-			Crashlytics = null;
-			AdMob = null;
-			IAPController = null;
+			auth = PlatformAuthFactory.Create();
+			DB = new PlatformDB();
+			Crashlytics = new PlatformCrashlytics();
+			AdMob = new AdMobController();
+			IAPController = new IAPController();
 		}
 
 		public string GetUserID()

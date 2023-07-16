@@ -21,16 +21,11 @@ public class FGPlatformRewarded : FGPlatformAd
 
 	public override bool Show()
 	{
-		if (base.Show())
-		{
-			if (!rewardedAd.IsLoaded())
-				rewardedAd.LoadAd(request);
+		if (!rewardedAd.IsLoaded())
+			rewardedAd.LoadAd(request);
 
-			rewardedAd.Show();
-			return true;
-		}
-
-		return false;
+		rewardedAd.Show();
+		return true;
 	}
 
 	public override bool Hide()
