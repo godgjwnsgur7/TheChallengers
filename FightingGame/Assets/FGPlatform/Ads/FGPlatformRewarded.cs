@@ -11,12 +11,22 @@ public class FGPlatformRewarded : FGPlatformAd
 	private readonly string TestRewardedID_AOS = "ca-app-pub-8487169308959261/6129276840";
 #endif
 
+	public override bool IsShow
+	{
+		get
+		{
+			return rewardedAd?.IsLoaded() ?? false;
+		}
+	}
+
 	private RewardedAd rewardedAd = null;
 
 	public FGPlatformRewarded(AdRequest request) : base(request)
 	{
 		rewardedAd = new RewardedAd(TestRewardedID_AOS);
 		rewardedAd.LoadAd(request);
+
+		RegisterEvent();
 	}
 
 	public override bool Show()
@@ -42,21 +52,25 @@ public class FGPlatformRewarded : FGPlatformAd
 
 	protected override void RegisterEvent()
 	{
-		rewardedAd.OnAdLoaded += BannerView_OnAdLoaded;
-		rewardedAd.OnAdFailedToLoad += BannerView_OnAdFailedToLoad;
-		rewardedAd.OnAdClosed += BannerView_OnAdClosed;
-		rewardedAd.OnAdOpening += BannerView_OnAdOpening;
-		rewardedAd.OnPaidEvent += BannerView_OnPaidEvent;
+		base.RegisterEvent();
+
+		rewardedAd.OnAdLoaded += OnAdLoadedView;
+		rewardedAd.OnAdFailedToLoad += OnAdFailedToLoadView;
+		rewardedAd.OnAdClosed += OnAdClosedView;
+		rewardedAd.OnAdOpening += OnAdOpeningView;
+		rewardedAd.OnPaidEvent += OnPaidEventView;
+		rewardedAd.OnUserEarnedReward += OnUserEarnedRewardView;
 	}
 
 	protected override void UnregisterEvent()
 	{
 		base.UnregisterEvent();
 
-		rewardedAd.OnAdLoaded -= BannerView_OnAdLoaded;
-		rewardedAd.OnAdFailedToLoad -= BannerView_OnAdFailedToLoad;
-		rewardedAd.OnAdClosed -= BannerView_OnAdClosed;
-		rewardedAd.OnAdOpening -= BannerView_OnAdOpening;
-		rewardedAd.OnPaidEvent -= BannerView_OnPaidEvent;
+		rewardedAd.OnAdLoaded -= OnAdLoadedView;
+		rewardedAd.OnAdFailedToLoad -= OnAdFailedToLoadView;
+		rewardedAd.OnAdClosed -= OnAdClosedView;
+		rewardedAd.OnAdOpening -= OnAdOpeningView;
+		rewardedAd.OnPaidEvent -= OnPaidEventView;
+		rewardedAd.OnUserEarnedReward -= OnUserEarnedRewardView;
 	}
 }

@@ -13,7 +13,7 @@ public abstract class FGPlatformAd
 		private set;
 	}
 
-	public bool isShow
+	public virtual bool IsShow
 	{
 		get;
 		private set;
@@ -26,6 +26,7 @@ public abstract class FGPlatformAd
 	public event Action<EventArgs> OnAdOpening = null;
 	public event Action<EventArgs> OnAdClosed = null;
 	public event Action<AdValueEventArgs> OnPaidEvent = null;
+	public event Action<Reward> OnUserEarnedReward = null;
 
 	public FGPlatformAd(AdRequest request)
 	{
@@ -34,25 +35,25 @@ public abstract class FGPlatformAd
 
 	public virtual bool Show()
 	{
-		if (isShow)
+		if (IsShow)
 		{
 			Debug.LogError($"이미 {this.GetType()} 타입 광고가 떠 있습니다.");
 			return false;
 		}
 
-		isShow = true;
+		IsShow = true;
 		return true;
 	}
 
 	public virtual bool Hide()
 	{
-		if (!isShow)
+		if (!IsShow)
 		{
 			Debug.LogError($"이미 {this.GetType()} 타입 광고가 꺼져 있습니다.");
 			return false;
 		}
 
-		isShow = false;
+		IsShow = false;
 		return true;
 	}
 
@@ -65,38 +66,44 @@ public abstract class FGPlatformAd
 	// 정의만
 	protected virtual void RegisterEvent()
 	{
-
+		ClearEvent();
 	}
 
 	// 정의만
 	protected virtual void UnregisterEvent()
+	{
+		ClearEvent();
+	}
+
+	public void ClearEvent()
 	{
 		OnAdLoaded = null;
 		OnAdFailedToLoad = null;
 		OnAdOpening = null;
 		OnAdClosed = null;
 		OnPaidEvent = null;
+		OnUserEarnedReward = null;
 	}
 
-	protected void BannerView_OnPaidEvent(object sender, AdValueEventArgs e)
+	protected void OnPaidEventView(object sender, AdValueEventArgs e)
 	{
 		OnPaidEvent?.Invoke(e);
 		OnPaidEvent = null;
 	}
 
-	protected void BannerView_OnAdOpening(object sender, EventArgs e)
+	protected void OnAdOpeningView(object sender, EventArgs e)
 	{
 		OnAdOpening?.Invoke(e);
 		OnAdOpening = null;
 	}
 
-	protected void BannerView_OnAdClosed(object sender, EventArgs e)
+	protected void OnAdClosedView(object sender, EventArgs e)
 	{
 		OnAdClosed?.Invoke(e);
 		OnAdClosed = null;
 	}
 
-	protected void BannerView_OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e)
+	protected void OnAdFailedToLoadView(object sender, AdFailedToLoadEventArgs e)
 	{
 		OnAdFailedToLoad?.Invoke(e);
 		OnAdFailedToLoad = null;
@@ -104,12 +111,18 @@ public abstract class FGPlatformAd
 		isLoaded = false;
 	}
 
-	protected void BannerView_OnAdLoaded(object sender, EventArgs e)
+	protected void OnAdLoadedView(object sender, EventArgs e)
 	{
 		OnAdLoaded?.Invoke(e);
 		OnAdLoaded = null;
 
 		isLoaded = true;
+	}
+
+	protected void OnUserEarnedRewardView(object sender, Reward r)
+	{
+		OnUserEarnedReward?.Invoke(r);
+		OnUserEarnedReward = null;
 	}
 
 }

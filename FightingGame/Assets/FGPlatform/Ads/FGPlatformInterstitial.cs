@@ -13,6 +13,14 @@ public class FGPlatformInterstitial : FGPlatformAd
 	private readonly string TestInterstitialID_AOS = "ca-app-pub-8487169308959261/7749885828";
 #endif
 
+	public override bool IsShow
+	{
+		get
+		{
+			return ad?.IsLoaded() ?? false;
+		}
+	}
+
 	private InterstitialAd ad;
 
 	public FGPlatformInterstitial(AdRequest adRequest) : base(adRequest)
@@ -46,22 +54,24 @@ public class FGPlatformInterstitial : FGPlatformAd
 
 	protected override void RegisterEvent()
 	{
-		ad.OnAdLoaded += BannerView_OnAdLoaded;
-		ad.OnAdFailedToLoad += BannerView_OnAdFailedToLoad;
-		ad.OnAdClosed += BannerView_OnAdClosed;
-		ad.OnAdOpening += BannerView_OnAdOpening;
-		ad.OnPaidEvent += BannerView_OnPaidEvent;
+		base.RegisterEvent();
+
+		ad.OnAdLoaded += OnAdLoadedView;
+		ad.OnAdFailedToLoad += OnAdFailedToLoadView;
+		ad.OnAdClosed += OnAdClosedView;
+		ad.OnAdOpening += OnAdOpeningView;
+		ad.OnPaidEvent += OnPaidEventView;
 	}
 
 	protected override void UnregisterEvent()
 	{
 		base.UnregisterEvent();
 
-		ad.OnAdLoaded -= BannerView_OnAdLoaded;
-		ad.OnAdFailedToLoad -= BannerView_OnAdFailedToLoad;
-		ad.OnAdClosed -= BannerView_OnAdClosed;
-		ad.OnAdOpening -= BannerView_OnAdOpening;
-		ad.OnPaidEvent -= BannerView_OnPaidEvent;
+		ad.OnAdLoaded -= OnAdLoadedView;
+		ad.OnAdFailedToLoad -= OnAdFailedToLoadView;
+		ad.OnAdClosed -= OnAdClosedView;
+		ad.OnAdOpening -= OnAdOpeningView;
+		ad.OnPaidEvent -= OnPaidEventView;
 	}
 }
 

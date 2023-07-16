@@ -305,7 +305,7 @@ public partial class PhotonLogicHandler
                 if (checkValidTime <= 0)
                 {
                     checkValidTime = TimeOutSec;
-                    Debug.LogError($"타임 아웃 발생!! 포톤 객체 제거를 {tryCount}번 째 시도합니다.");
+                    Debug.LogWarning($"타임 아웃 발생!! 포톤 객체 제거를 {tryCount}번 째 시도합니다.");
 					yield return CheckValidRoutine(++tryCount, ignoreTypes);
                     yield break;
 				}

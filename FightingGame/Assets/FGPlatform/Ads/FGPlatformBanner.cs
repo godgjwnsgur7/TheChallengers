@@ -54,21 +54,23 @@ public class FGPlatformBanner : FGPlatformAd
 
 	protected override void RegisterEvent()
 	{
-		bannerView.OnAdLoaded += BannerView_OnAdLoaded;
-		bannerView.OnAdFailedToLoad += BannerView_OnAdFailedToLoad;
-		bannerView.OnAdClosed += BannerView_OnAdClosed;
-		bannerView.OnAdOpening += BannerView_OnAdOpening;
-		bannerView.OnPaidEvent += BannerView_OnPaidEvent;
+		base.RegisterEvent();
+
+		bannerView.OnAdLoaded += OnAdLoadedView;
+		bannerView.OnAdFailedToLoad += OnAdFailedToLoadView;
+		bannerView.OnAdClosed += OnAdClosedView;
+		bannerView.OnAdOpening += OnAdOpeningView;
+		bannerView.OnPaidEvent += OnPaidEventView;
 	}
 
 	protected override void UnregisterEvent()
 	{
 		base.UnregisterEvent();
 
-		bannerView.OnAdLoaded -= BannerView_OnAdLoaded;
-		bannerView.OnAdFailedToLoad -= BannerView_OnAdFailedToLoad;
-		bannerView.OnAdClosed -= BannerView_OnAdClosed;
-		bannerView.OnAdOpening -= BannerView_OnAdOpening;
-		bannerView.OnPaidEvent -= BannerView_OnPaidEvent;
+		bannerView.OnAdLoaded -= OnAdLoadedView;
+		bannerView.OnAdFailedToLoad -= OnAdFailedToLoadView;
+		bannerView.OnAdClosed -= OnAdClosedView;
+		bannerView.OnAdOpening -= OnAdOpeningView;
+		bannerView.OnPaidEvent -= OnPaidEventView;
 	}
 }

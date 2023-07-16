@@ -265,14 +265,22 @@ namespace FGPlatform
 			AdMob.HideAd(AdvertisementType.Interstitial);
 		}
 
-		public void ShowRewardedAd()
+		public void ShowRewardedAd(Action onRewarded = null)
 		{
-			AdMob.ShowAd(AdvertisementType.Rewarded);
+			AdMob.ShowAd(AdvertisementType.Rewarded, null, (arg) =>
+			{
+				onRewarded?.Invoke();
+			});
 		}
 
 		public void HideRewardedAd()
 		{
 			AdMob.HideAd(AdvertisementType.Rewarded);
+		}
+
+		public long GetCoffeePrice()
+		{
+			return IAPController.GetCoffeePrice();
 		}
 
 		public void Purchase()

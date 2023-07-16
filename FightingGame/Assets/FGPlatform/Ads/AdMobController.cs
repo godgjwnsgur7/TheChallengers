@@ -111,15 +111,27 @@ namespace FGPlatform.Advertisement
 
         public void ShowAd(AdvertisementType type, Action<EventArgs> OnOpening = null, Action<EventArgs> OnClosed = null)
         {
-            if (banners.ContainsKey(type))
+            if (banners.ContainsKey(type) && banners[type] != null)
             {
-				banners[type]?.Show();
+                banners[type].ClearEvent();
+				banners[type].OnAdOpening += OnOpening;
+
+                if (type == AdvertisementType.Rewarded)
+                {
+					banners[type].OnUserEarnedReward += OnClosed;
+				}
+				else
+                {
+					banners[type].OnAdClosed += OnClosed;
+				}
+
+				banners[type].Show();
 			}
 		}
 
         public void HideAd(AdvertisementType type)
         {
-			if (banners.ContainsKey(type))
+			if (banners.ContainsKey(type) && banners[type] != null)
 			{
 				banners[type]?.Hide();
 			}
@@ -129,7 +141,7 @@ namespace FGPlatform.Advertisement
         {
             if (banners.ContainsKey(type))
             {
-                return banners[type].isShow;
+                return banners[type].IsShow;
             }
 
             return false;
