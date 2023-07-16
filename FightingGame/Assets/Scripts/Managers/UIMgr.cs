@@ -34,6 +34,9 @@ public class UIMgr
         }
             
         currCanvas = GameObject.FindObjectOfType<BaseCanvas>();
+        if (currCanvas == null)
+            return;
+
         currCanvas.Init();
     }
 
