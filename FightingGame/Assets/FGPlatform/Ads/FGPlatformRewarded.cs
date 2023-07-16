@@ -8,7 +8,7 @@ public class FGPlatformRewarded : FGPlatformAd
 #if UNITY_EDITOR || !RELEASE
 	private readonly string TestRewardedID_AOS = "ca-app-pub-3940256099942544/5224354917";
 #else
-	private readonly string TestRewardedID_AOS = "ca-app-pub-8487169308959261/1184477478";
+	private readonly string TestRewardedID_AOS = "ca-app-pub-8487169308959261/6129276840";
 #endif
 
 	private RewardedAd rewardedAd = null;
