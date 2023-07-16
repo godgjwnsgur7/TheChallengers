@@ -45,14 +45,16 @@ public class CreditScreen : UIElement
         creditEffectCoroutine = StartCoroutine(ICreditMoveEffect());
     }
 
+    public void Close()
+    {
+        this.gameObject.SetActive(false);
+    }
+
     public override void OnClick_Exit()
     {
         base.OnClick_Exit();
 
-        if (creditEffectCoroutine != null)
-            StopCoroutine(creditEffectCoroutine);
-
-        this.gameObject.SetActive(false);
+        Managers.UI.popupCanvas.Play_FadeOutInEffect(Close);
     }
 
     IEnumerator ICreditMoveEffect()
