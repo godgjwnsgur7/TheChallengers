@@ -28,6 +28,7 @@ namespace FGPlatform.Purchase
     {
         void Init();
         bool Purchase(Action<long> priceCallback);
+        long GetCoffeePrice();
     }
 
     /// <summary>
@@ -42,7 +43,7 @@ namespace FGPlatform.Purchase
         private ConfigurationBuilder builder = null;
         private StandardPurchasingModule module = null;
 
-        private readonly IAPProduct productInfo = new IAPProduct("coffee", "coffee", ProductType.Consumable, 1000);
+        private readonly IAPProduct productInfo = new IAPProduct("coffee", "coffee", ProductType.Consumable, 1500);
         private Action<long> priceCallback = null;
         public bool IsValid =>
             storeController != null
@@ -132,7 +133,12 @@ namespace FGPlatform.Purchase
         {
             Debug.LogError($"[{product?.definition?.id}] 구매 실패 [{failureDescription?.message}]");
         }
-    }
+
+		public long GetCoffeePrice()
+		{
+            return productInfo?.Price ?? 0L;
+		}
+	}
 }
 
 
