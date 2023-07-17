@@ -54,7 +54,7 @@ public class CreateRoomWindowUI : UIElement
 
         userInputField.onValueChanged.RemoveAllListeners(); 
         userInputField.onValueChanged.AddListener(
-            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\.\,]", "")
+            (word) => userInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣\!\?\~\.\,ㆍᆢ]", "")
         );
     }
 

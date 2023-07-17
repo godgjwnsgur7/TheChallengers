@@ -11,6 +11,18 @@ public class MapSelectPopup : PopupUI
     Action<ENUM_MAP_TYPE> onSelectionMap;
     ENUM_MAP_TYPE selectedMapType = ENUM_MAP_TYPE.CaveMap;
 
+    protected override void OnEnable()
+    {
+        isUsing = true;
+        Managers.UI.Push_WindowExitStack(OnClick_Exit);
+    }
+
+    protected override void OnDisable()
+    {
+        isUsing = false;
+        Managers.UI.Pop_WindowExitStack();
+    }
+
     public void Open(Action<ENUM_MAP_TYPE> _onSelectionMap)
     {
         if (_onSelectionMap == null)
