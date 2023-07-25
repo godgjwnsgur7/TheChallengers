@@ -462,6 +462,9 @@ public partial class ActiveCharacter : Character
     [BroadcastMethod]
     public void Sync_ReverseState(bool _reverseState)
     {
+        if (spriteRenderer == null)
+            return;
+
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
     }
@@ -470,7 +473,8 @@ public partial class ActiveCharacter : Character
     public void Sync_TransparentState(float color_a)
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            return;
+
         spriteRenderer.color = new Color(1f, 1f, 1f, color_a);
     }
 
