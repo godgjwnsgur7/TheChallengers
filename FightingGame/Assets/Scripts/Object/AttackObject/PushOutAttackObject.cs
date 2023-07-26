@@ -35,7 +35,7 @@ public class PushOutAttackObject : HitAttackObject
 
             // 이펙트 생성 ( 임시 랜덤 )
             Summon_EffectObject(Random.Range(0, 3), teamType, randomHitPosVec);
-            Summon_EffectObject(Random.Range(3, 5), teamType, collision.transform.position);
+            Summon_EffectObject(Random.Range(3, 8), teamType, collision.transform.position);
 
             Sync_DestroyMine();
         }

@@ -79,7 +79,7 @@ public class HitAttackObject : AttackObject
             Summon_EffectObject(UnityEngine.Random.Range(0, 3), teamType, randomHitPosVec);
 
             if (isSkill)
-               Summon_EffectObject(UnityEngine.Random.Range(3, 5), teamType, collision.transform.position);
+               Summon_EffectObject(UnityEngine.Random.Range(3, 8), teamType, collision.transform.position);
             
             Sync_DestroyMine();
         }
