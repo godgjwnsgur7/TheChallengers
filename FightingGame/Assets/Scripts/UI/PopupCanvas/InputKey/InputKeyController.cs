@@ -34,6 +34,11 @@ public class InputKeyController : MonoBehaviour
         inputPanel.Set_InputSkillKeys(_charType);
     }
     
+    public void Set_InputKeyPos()
+    {
+        inputPanel.Set_InputKeyPos();
+    }
+
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
     {
         InputArrowKey inputArrowKey = inputPanel.transform.Find(ENUM_INPUTKEY_NAME.Direction.ToString()).GetComponent<InputArrowKey>();

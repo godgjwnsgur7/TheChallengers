@@ -70,6 +70,7 @@ public class InputKeyManagement : UIElement
         selectedKeyArea = null;
 
         inputKeyAreaPanel.Clear();
+        Managers.Input.Set_InputKeyControllerPos();
     }
 
     public void OnPointDownCallBack_InputKeyArea(ENUM_INPUTKEY_NAME _inputKeyName)

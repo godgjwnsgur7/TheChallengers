@@ -17,6 +17,12 @@ public class InputMgr
         inputKeyManagement.Open();
     }
 
+    public void Set_InputKeyControllerPos()
+    {
+        if(inputKeyController != null)
+            inputKeyController.Set_InputKeyPos();
+    }
+
     public void Connect_InputKeyController(ENUM_CHARACTER_TYPE _charType, Action<ENUM_INPUTKEY_NAME> _OnPointDownCallBack, Action<ENUM_INPUTKEY_NAME> _OnPointUpCallBack)
     {
         if (inputKeyController == null)
