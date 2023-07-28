@@ -15,21 +15,12 @@ public class CreditScreen : UIElement
     readonly float startPosVecY = -1000f;
     readonly float endPosVecY = 5100f;
 
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-
-        Managers.Platform.ShowBanner();
-    }
-
     protected override void OnDisable()
     {
         if (creditEffectCoroutine != null)
             StopCoroutine(creditEffectCoroutine);
 
         base.OnDisable();
-
-        Managers.Platform.HideBanner();
     }
 
     public void Open()
