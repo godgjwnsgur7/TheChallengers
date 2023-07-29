@@ -27,7 +27,7 @@ public class BattleMgr
     {
         isGamePlayingState = true;
 
-        if(PhotonLogicHandler.IsMasterClient)
+        if(PhotonLogicHandler.IsMasterClient && PhotonLogicHandler.IsFullRoom)
         {
             Managers.Network.Start_Timer();
         }
@@ -38,7 +38,9 @@ public class BattleMgr
 
     private void OnLeftGame(string enemyNickname)
     {
-		if (PhotonLogicHandler.CurrentMyNickname != enemyNickname) // 상대방 이탈
+        isGamePlayingState = false;
+
+        if (PhotonLogicHandler.CurrentMyNickname != enemyNickname) // 상대방 이탈
 		{
 			var team = Managers.Player.Get_TeamType();
 
