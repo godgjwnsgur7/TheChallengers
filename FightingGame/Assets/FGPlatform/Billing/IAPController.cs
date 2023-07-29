@@ -43,7 +43,7 @@ namespace FGPlatform.Purchase
         private ConfigurationBuilder builder = null;
         private StandardPurchasingModule module = null;
 
-        private readonly IAPProduct productInfo = new IAPProduct("coffee", "coffee", ProductType.Consumable, 1500);
+        private readonly IAPProduct productInfo = new IAPProduct("latte", "latte", ProductType.Consumable, 1500);
         private Action<long> priceCallback = null;
         public bool IsValid =>
             storeController != null
