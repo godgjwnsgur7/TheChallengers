@@ -34,6 +34,28 @@ public class InputPanel : MonoBehaviour
         }
     }
 
+    public void Set_InputKeyPos()
+    {
+        if (inputKeys == null)
+            return;
+
+        KeySettingData keySettingData = PlayerPrefsManagement.Load_KeySettingData();
+
+        for (int index = 0; index < inputKeys.Length; index++)
+        {
+            inputKeys[index] = gameObject.transform.Find(Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)).GetComponent<InputKey>();
+
+            if (inputKeys[index] == null)
+            {
+                Debug.LogError($"{Enum.GetName(typeof(ENUM_INPUTKEY_NAME), index)} 를 찾지 못했습니다.");
+                return;
+            }
+
+            if (keySettingData != null)
+                Set_InputKey(inputKeys[index], keySettingData.keySettingDataList[index], keySettingData.opacity);
+        }
+    }
+
     private void Set_InputKey(InputKey inputKey, KeySettingDataElement keySettingDataElement, float _opacity)
     {
         inputKey.transform.localScale = new Vector3(keySettingDataElement.scaleSize, keySettingDataElement.scaleSize, 1f);

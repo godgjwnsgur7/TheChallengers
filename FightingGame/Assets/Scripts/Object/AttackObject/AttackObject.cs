@@ -34,7 +34,7 @@ public class AttackObject : SyncObject
     [BroadcastMethod]
     public void DestroyMine()
     {
-        if (!isUsing) return;
+        if (!isUsing || !gameObject.activeSelf) return;
 
         Managers.Resource.Destroy(this.gameObject);
     }

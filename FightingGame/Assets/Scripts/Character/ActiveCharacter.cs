@@ -77,6 +77,9 @@ public partial class ActiveCharacter : Character
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect3}", 3);
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect1}", 3);
         Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect2}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect3}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect4}", 3);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect5}", 3);
     }
 
     public void Set_Character(ENUM_TEAM_TYPE _teamType)
@@ -462,6 +465,9 @@ public partial class ActiveCharacter : Character
     [BroadcastMethod]
     public void Sync_ReverseState(bool _reverseState)
     {
+        if (spriteRenderer == null)
+            return;
+
         spriteRenderer.flipX = _reverseState;
         reverseState = _reverseState;
     }
@@ -470,7 +476,8 @@ public partial class ActiveCharacter : Character
     public void Sync_TransparentState(float color_a)
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            return;
+
         spriteRenderer.color = new Color(1f, 1f, 1f, color_a);
     }
 

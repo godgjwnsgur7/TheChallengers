@@ -42,6 +42,7 @@ public class FollowAttackObject : HitAttackObject
             yield return null;
         }
 
+        DestroyMine();
         followTargetCoroutine = null;
     }
 }

@@ -16,6 +16,18 @@ public class CharSelectPopup : PopupUI
 
     ENUM_CHARACTER_TYPE selectedCharType = ENUM_CHARACTER_TYPE.Default;
 
+    protected override void OnEnable()
+    {
+        isUsing = true;
+        Managers.UI.Push_WindowExitStack(OnClick_Exit);
+    }
+
+    protected override void OnDisable()
+    {
+        isUsing = false;
+        Managers.UI.Pop_WindowExitStack();
+
+    }
     public void Open(Action<ENUM_CHARACTER_TYPE> _onSelectionCharacter, bool isMine)
     {
         if (_onSelectionCharacter == null)

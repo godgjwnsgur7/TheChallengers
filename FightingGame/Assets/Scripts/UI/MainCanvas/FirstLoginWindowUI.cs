@@ -30,7 +30,7 @@ public class FirstLoginWindowUI : UIElement
 
         userNicknameInputField.onValueChanged.RemoveAllListeners();
         userNicknameInputField.onValueChanged.AddListener(
-            (word) => userNicknameInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣]", "")
+            (word) => userNicknameInputField.text = Regex.Replace(word, @"[^0-9a-zA-Zㄱ-ㅎ가-힣ㆍᆢ]", "")
         );
 
         PlayerPrefs.DeleteAll();

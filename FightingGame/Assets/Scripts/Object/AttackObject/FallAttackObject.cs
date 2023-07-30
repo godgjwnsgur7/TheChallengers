@@ -86,6 +86,12 @@ public class FallAttackObject : GenerateAttackObject
             return;
 
         currMyState = fallObjectState;
+
+        if(rigid2D == null)
+        {
+            Managers.Resource.Destroy(this.gameObject);
+            return;
+        }
         
         if (currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
         {

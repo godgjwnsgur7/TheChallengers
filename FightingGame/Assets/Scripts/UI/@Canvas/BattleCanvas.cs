@@ -14,11 +14,13 @@ public class BattleCanvas : BaseCanvas
     [SerializeField] GameStateEffectUI gameStateEffect;
     [SerializeField] TimerUI timer;
 
+    ENUM_GAMESTATEEFFECT_TYPE currGameStateTriggerType = ENUM_GAMESTATEEFFECT_TYPE.Max;
+
     public override void Init()
     {
         base.Init();
-        
-        if(PhotonLogicHandler.IsConnected)
+
+        if (PhotonLogicHandler.IsConnected)
             Register_TimerCallBack();
     }
 
@@ -52,6 +54,9 @@ public class BattleCanvas : BaseCanvas
 
     public void Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE effectType)
     {
+        if (currGameStateTriggerType == effectType)
+            return;
+
         gameStateEffect.Play_GameStateEffect(effectType);
     }
 

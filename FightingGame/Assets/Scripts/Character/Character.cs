@@ -99,7 +99,8 @@ public class Character : MonoBehaviourPhoton
 
     public virtual void Idle()
     {
-        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
+        if (rigid2D != null)
+            rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
 
         if(!jumpState)
             currState = ENUM_PLAYER_STATE.Idle;
@@ -114,43 +115,51 @@ public class Character : MonoBehaviourPhoton
 
         var moveParam = param as CharacterMoveParam;
 
-        rigid2D.velocity = new Vector2(moveParam.moveDir * MyCharInfo.moveSpeed, rigid2D.velocity.y);
+        if (rigid2D != null)
+            rigid2D.velocity = new Vector2(moveParam.moveDir * MyCharInfo.moveSpeed, rigid2D.velocity.y);
     }
 
     public virtual void Jump()
     {
         currState = ENUM_PLAYER_STATE.Jump;
 
-        rigid2D.AddForce(Vector2.up * MyCharInfo.jumpPower, ForceMode2D.Impulse);
+        if (rigid2D != null)
+            rigid2D.AddForce(Vector2.up * MyCharInfo.jumpPower, ForceMode2D.Impulse);
     }
 
     public virtual void Dash()
     {
         currState = ENUM_PLAYER_STATE.Dash;
 
-        rigid2D.velocity = Vector2.zero;
-        rigid2D.AddForce(Vector2.right * MyCharInfo.jumpPower * (reverseState? -1.0f : 1.0f), ForceMode2D.Impulse);
+        if (rigid2D != null)
+        {
+            rigid2D.velocity = Vector2.zero;
+            rigid2D.AddForce(Vector2.right * MyCharInfo.jumpPower * (reverseState ? -1.0f : 1.0f), ForceMode2D.Impulse);
+        }
     }
 
     public virtual void Attack(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Attack;
 
-        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
+        if (rigid2D != null)
+               rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
     }
 
     public virtual void Skill(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Skill;
 
-        rigid2D.velocity = new Vector2(0f, rigid2D.velocity.y);
+        if (rigid2D != null)
+            rigid2D.velocity = Vector2.zero;
     }
 
     public virtual void Hit(CharacterParam param)
     {
         currState = ENUM_PLAYER_STATE.Hit;
-
-        rigid2D.velocity = Vector2.zero;
+        
+        if(rigid2D != null)
+            rigid2D.velocity = Vector2.zero;
     }
 
     public virtual void Die()

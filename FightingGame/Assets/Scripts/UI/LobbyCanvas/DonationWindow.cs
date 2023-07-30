@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DonationWindow : UIElement
 {
+    [SerializeField] CompanionAnimalWindow companionAnimalWindow;
     [SerializeField] private Text coffeeText = null;
     [SerializeField] private Text adText = null;
     public void Open()
@@ -19,6 +20,11 @@ public class DonationWindow : UIElement
         gameObject.SetActive(false);
     }
 
+    public void ShowRewardedAdCallBack()
+    {
+        companionAnimalWindow.Open();
+    }
+
     public void OnClick_Payment()
     {
         Managers.Platform.Purchase();
@@ -26,7 +32,7 @@ public class DonationWindow : UIElement
 
     public void OnClick_Advertising()
     {
-        Managers.Platform.ShowRewardedAd();
+        Managers.Platform.ShowRewardedAd(ShowRewardedAdCallBack);
     }
 
     public override void OnClick_Exit()

@@ -11,6 +11,7 @@ public enum ENUM_GAMESTATEEFFECT_TYPE
     WinTrigger = 1,
     LoseTrigger = 2,
     DrawTrigger = 3,
+    Max = 4,
 }
 
 public class GameStateEffectUI : MonoBehaviour

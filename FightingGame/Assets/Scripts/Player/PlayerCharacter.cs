@@ -20,18 +20,6 @@ public class PlayerCharacter : MonoBehaviour
     bool isDebugState = false;
     bool isDead = false;
 
-    private void Update()
-    {
-        if (activeCharacter == null)
-            return;
-
-        if (!PhotonLogicHandler.IsMine(activeCharacter.ViewID))
-            return;
-
-        OnKeyboard(); // 디버깅용
-    }
-
-    /* APK 뽑으면 활성화하고 Update문 삭제
     private void OnEnable()
     {
         if(!PhotonLogicHandler.IsConnected) // 디버깅용
@@ -40,7 +28,6 @@ public class PlayerCharacter : MonoBehaviour
             debugCoroutine = StartCoroutine(IOnKeyboard());
         }
     }
-    */
 
     private void OnDisable()
     {
@@ -242,7 +229,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         while(isDebugState)
         {
-            OnKeyboard();
+            OnKeyboard(); 
             yield return null;
         }
 
