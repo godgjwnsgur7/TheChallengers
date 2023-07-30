@@ -118,7 +118,10 @@ namespace FGPlatform.Advertisement
 
                 if (type == AdvertisementType.Rewarded)
                 {
-					banners[type].OnUserEarnedReward += OnClosed;
+					banners[type].OnUserEarnedReward += (r) =>
+                    {
+                        OnClosed?.Invoke(r);
+					};
 				}
 				else
                 {
