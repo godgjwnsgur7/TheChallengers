@@ -86,7 +86,7 @@ public class CreateRoomWindowUI : UIElement
     {
         string roomNameStr = userInputField.text.Trim();
 
-        if(roomNameStr == "")
+        if(roomNameStr == null || roomNameStr == "")
         {
             ErrorTextShakeEffect("방 이름을 입력해주세요.");
             return;

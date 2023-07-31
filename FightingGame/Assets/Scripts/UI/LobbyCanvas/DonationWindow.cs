@@ -32,9 +32,7 @@ public class DonationWindow : UIElement
 
     public void OnClick_Advertising()
     {
-        // Managers.Platform.ShowRewardedAd(ShowRewardedAdCallBack);
-
-        ShowRewardedAdCallBack();
+        Managers.Platform.ShowRewardedAd(ShowRewardedAdCallBack);
     }
 
     public override void OnClick_Exit()

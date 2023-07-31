@@ -52,18 +52,18 @@ public class FirstLoginWindowUI : UIElement
 
     public void OnClick_Check()
     {
-        string roomNameStr = userNicknameInputField.text.Trim();
-        if (roomNameStr == "")
+        string nicknameStr = userNicknameInputField.text.Trim();
+        if (nicknameStr == null || nicknameStr == "")
         {
             ErrorTextShakeEffect("닉네임을 입력해주세요.");
             return;
         }
-        else if (roomNameStr.Length < 2)
+        else if (nicknameStr.Length < 2)
         {
             ErrorTextShakeEffect("닉네임은 2글자 이상이여야 합니다.");
             return;
         }
-        else if (Managers.Data.BadWord_Discriminator(roomNameStr))
+        else if (Managers.Data.BadWord_Discriminator(nicknameStr))
         {
             ErrorTextShakeEffect("사용할 수 없는 닉네임입니다.");
             return;
@@ -71,7 +71,7 @@ public class FirstLoginWindowUI : UIElement
 
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
 
-        nickNameCallBack(roomNameStr);
+        nickNameCallBack(nicknameStr);
 
         Close();
     }
