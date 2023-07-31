@@ -186,7 +186,7 @@ public partial class ActiveCharacter : Character
 
     public override void Move(CharacterParam param)
     {
-        if (superArmour) return;
+        if (superArmour || MyCharInfo == null) return;
 
         if (currState != ENUM_PLAYER_STATE.Idle && 
             currState != ENUM_PLAYER_STATE.Move &&

@@ -83,17 +83,8 @@ public class DataMgr
         CharInfoDict = LoadJson<CharacterData, int, CharacterInfo>("CharacterData").MakeDict();
         gameInfo = LoadJson<GameInfo>("GameData");
 
-        string path = Application.dataPath + @"/Resources/Data/BadWordList.txt";
-        if (File.Exists(path))
-        {
-            StreamReader word = new StreamReader(path);
-            string source = word.ReadToEnd();
-            word.Close();
-
-            badWordStrArray = Regex.Split(source, @"\r\n|\n\r|\n|\r");
-        }
-        else
-            Debug.LogError($"경로 오류 : {path}");
+        TextAsset textFile = Managers.Resource.Load<TextAsset>("Data/BadWordList");
+        badWordStrArray = Regex.Split(textFile.text, @"\r\n|\n\r|\n|\r");
     }
 
     Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
@@ -115,17 +106,8 @@ public class DataMgr
     {
         if (badWordStrArray == null)
         {
-            string path = Application.dataPath + @"/Resources/Data/BadWordList.txt";
-            if (File.Exists(path))
-            {
-                StreamReader word = new StreamReader(path);
-                string source = word.ReadToEnd();
-                word.Close();
-
-                badWordStrArray = Regex.Split(source, @"\r\n|\n\r|\n|\r");
-            }
-            else
-                Debug.LogError($"경로 오류 : {path}");
+            TextAsset textFile = Managers.Resource.Load<TextAsset>("Data/BadWordList");
+            badWordStrArray = Regex.Split(textFile.text, @"\r\n|\n\r|\n|\r");
         }
 
         for(int i = 0; i < badWordStrArray.Length; i++)

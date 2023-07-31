@@ -115,7 +115,7 @@ public class Character : MonoBehaviourPhoton
 
         var moveParam = param as CharacterMoveParam;
 
-        if (rigid2D != null)
+        if (rigid2D != null && MyCharInfo != null)
             rigid2D.velocity = new Vector2(moveParam.moveDir * MyCharInfo.moveSpeed, rigid2D.velocity.y);
     }
 
@@ -123,7 +123,7 @@ public class Character : MonoBehaviourPhoton
     {
         currState = ENUM_PLAYER_STATE.Jump;
 
-        if (rigid2D != null)
+        if (rigid2D != null && MyCharInfo != null)
             rigid2D.AddForce(Vector2.up * MyCharInfo.jumpPower, ForceMode2D.Impulse);
     }
 
@@ -131,7 +131,7 @@ public class Character : MonoBehaviourPhoton
     {
         currState = ENUM_PLAYER_STATE.Dash;
 
-        if (rigid2D != null)
+        if (rigid2D != null && MyCharInfo != null)
         {
             rigid2D.velocity = Vector2.zero;
             rigid2D.AddForce(Vector2.right * MyCharInfo.jumpPower * (reverseState ? -1.0f : 1.0f), ForceMode2D.Impulse);

@@ -170,7 +170,7 @@ public class PlayerCharacter : MonoBehaviour
         if (activeCharacter.currState == ENUM_PLAYER_STATE.Skill ||
             activeCharacter.currState == ENUM_PLAYER_STATE.Hit ||
             activeCharacter.currState == ENUM_PLAYER_STATE.Die ||
-            isDead || activeCharacter.isDead)
+            isDead || activeCharacter.isDead || activeCharacter.MyCharInfo == null)
             return;
 
         switch (nextState)
