@@ -82,11 +82,18 @@ public class UIMgr
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
 
         string str = "게임을 종료하시겠습니까?";
-        if (Managers.Network.IsServerSyncState)
+        if (Managers.Network.IsServerSyncState || Managers.Battle.isGamePlayingState)
             str = "게임을 종료하시겠습니까?\n진행 중인 게임은 패배처리 됩니다.";
 
-        popupCanvas.Open_SelectPopup(
-            () => { Application.Quit(); }, null, str);
+        popupCanvas.Open_SelectPopup(Quit_Application, null, str);
+    }
+
+    private void Quit_Application()
+    {
+        if(Managers.Network.IsServerSyncState || Managers.Battle.isGamePlayingState)
+            Managers.Network.Update_DBUserData(false);
+
+        Application.Quit();
     }
 
     public void OpenUI<T>()

@@ -23,6 +23,14 @@ public class FallAttackObject : GenerateAttackObject
     ENUM_FALLOBJECTSTATE_TYPE currMyState = ENUM_FALLOBJECTSTATE_TYPE.Generate;
 
     Coroutine explodeCheckCoroutine;
+    Coroutine runTimeCheckCoroutine;
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+
+        runTimeCheckCoroutine = StartCoroutine(IRunTimeCheck(10f));
+    }
 
     public override void OnDisable()
     {
@@ -30,6 +38,9 @@ public class FallAttackObject : GenerateAttackObject
 
         if (explodeCheckCoroutine != null)
             StopCoroutine(explodeCheckCoroutine);
+
+        if (runTimeCheckCoroutine != null)
+            StopCoroutine(runTimeCheckCoroutine);
 
         boxCollider.enabled = false;
     }
@@ -127,6 +138,14 @@ public class FallAttackObject : GenerateAttackObject
         if(currMyState == ENUM_FALLOBJECTSTATE_TYPE.Fall)
             boxCollider.enabled = true;
         explodeCheckCoroutine = null;
+    }
+
+    private IEnumerator IRunTimeCheck(float _runTime)
+    {
+        yield return new WaitForSeconds(_runTime);
+
+        runTimeCheckCoroutine = null;
+        DestroyMine();
     }
 
     public void AnimEvent_Falling()

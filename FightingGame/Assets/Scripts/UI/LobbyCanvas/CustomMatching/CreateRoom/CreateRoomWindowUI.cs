@@ -84,17 +84,19 @@ public class CreateRoomWindowUI : UIElement
 
     public void OnClick_CreatRoom()
     {
-        if(userInputField.text.Trim() == "")
+        string roomNameStr = userInputField.text.Trim();
+
+        if(roomNameStr == "")
         {
             ErrorTextShakeEffect("방 이름을 입력해주세요.");
             return;
         }
-        else if (userInputField.text.Trim().Length < 4)
+        else if (roomNameStr.Length < 4)
         {
             ErrorTextShakeEffect("방 이름은 4글자 이상이여야 합니다.");
             return;
         }
-        else if(Managers.Data.BadWord_Discriminator(userInputField.text.Trim()))
+        else if(Managers.Data.BadWord_Discriminator(roomNameStr))
         {
             ErrorTextShakeEffect("사용할 수 없는 방 이름입니다.");
             return;
@@ -102,7 +104,7 @@ public class CreateRoomWindowUI : UIElement
 
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Enter);
         Managers.UI.popupCanvas.Open_LoadingPopup();
-        PhotonLogicHandler.Instance.TryCreateRoom(userInputField.text, CreateRoomSuccessCallBack
+        PhotonLogicHandler.Instance.TryCreateRoom(roomNameStr, CreateRoomSuccessCallBack
             , null, true, 2, currMap);
     }
 

@@ -115,8 +115,17 @@ public class DataMgr
     {
         if (badWordStrArray == null)
         {
-            Debug.LogError("badWordStrArray is Null!");
-            return false;
+            string path = Application.dataPath + @"/Resources/Data/BadWordList.txt";
+            if (File.Exists(path))
+            {
+                StreamReader word = new StreamReader(path);
+                string source = word.ReadToEnd();
+                word.Close();
+
+                badWordStrArray = Regex.Split(source, @"\r\n|\n\r|\n|\r");
+            }
+            else
+                Debug.LogError($"경로 오류 : {path}");
         }
 
         for(int i = 0; i < badWordStrArray.Length; i++)
