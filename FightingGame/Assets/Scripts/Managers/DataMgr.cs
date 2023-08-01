@@ -24,6 +24,17 @@ public class DataMgr
     {
         {ENUM_CHARACTER_TYPE.Default, "캐릭터가 선택되지 않았습니다." },
         {ENUM_CHARACTER_TYPE.Knight,
+            "영겁의 시간 동안 리치의 동굴을 수호하는 데스나이트입니다. " +
+            "긴 대검을 사용하며 빠르게 접근하여 난전을 유도합니다." },
+        {ENUM_CHARACTER_TYPE.Wizard,
+            "마법 학교를 졸업 후, 모험을 떠나는 신출내기 마법사입니다. " +
+            "넓은 범위 공격을 이용해 원거리에서 안전하게 공격합니다." },
+        {ENUM_CHARACTER_TYPE.Max, "알 수 없는 캐릭터" },
+    };
+    private Dictionary<ENUM_CHARACTER_TYPE, string> charExplanationDict2 = new Dictionary<ENUM_CHARACTER_TYPE, string>
+    {
+        {ENUM_CHARACTER_TYPE.Default, "캐릭터가 선택되지 않았습니다." },
+        {ENUM_CHARACTER_TYPE.Knight,
             "영겁의 시간 동안 리치의 동굴을 수호하는 데스나이트입니다.\n" +
             "긴 대검을 사용하며 빠르게 접근하여 난전을 유도합니다." },
         {ENUM_CHARACTER_TYPE.Wizard,
@@ -170,7 +181,7 @@ public class DataMgr
         return charNameDict[charType];
     }
 
-    public string Get_CharExplanationDict(ENUM_CHARACTER_TYPE charType)
+    public string Get_CharExplanationDict(ENUM_CHARACTER_TYPE charType, bool isEnter = true)
     {
         if (!charExplanationDict.ContainsKey(charType))
         {
@@ -178,7 +189,7 @@ public class DataMgr
             return null;
         }
 
-        return charExplanationDict[charType];
+        return isEnter? charExplanationDict2[charType] : charExplanationDict[charType];
     }
 
     public Color Get_SelectColor()

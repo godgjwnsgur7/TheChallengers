@@ -24,7 +24,7 @@ public class CustormRoom_MapInfo : MonoBehaviour
         mapNameText.text = Managers.Data.Get_MapNameDict(currMapType);
 
         if (mapExplanationText != null)
-            mapExplanationText.text = Managers.Data.Get_MapExplanationDict(currMapType);
+            mapExplanationText.text = Managers.Data.Get_MapExplanationDict(currMapType, isEnter);
 
         selectionEffectRectTr.position = mapCoverImageObjects[(int)currMapType].GetComponent<RectTransform>().position;
 

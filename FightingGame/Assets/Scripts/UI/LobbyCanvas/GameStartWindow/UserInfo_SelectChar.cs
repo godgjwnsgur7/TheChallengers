@@ -26,6 +26,6 @@ public class UserInfo_SelectChar : MonoBehaviour
     public void Set_SelectionCharacter(ENUM_CHARACTER_TYPE _characterType)
     {
         characterNameText.text = _characterType.ToString().ToUpper();
-        characterDescriptionText.text = Managers.Data.Get_CharExplanationDict(_characterType);
+        characterDescriptionText.text = Managers.Data.Get_CharExplanationDict(_characterType, false);
     }
 }
