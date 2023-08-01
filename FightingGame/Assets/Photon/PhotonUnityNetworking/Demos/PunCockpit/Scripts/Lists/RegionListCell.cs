@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoomListCell.cs" company="Exit Games GmbH">
 //   Part of: Pun Cockpit
 // </copyright>
@@ -23,7 +23,6 @@ namespace Photon.Pun.Demo.Cockpit
 
         public Text CodeText;
         public Text IpText;
-        public Text PingText;
 
 		public LayoutElement LayoutElement;
 
@@ -36,7 +35,6 @@ namespace Photon.Pun.Demo.Cockpit
             this.info = info;
 			CodeText.text = this.info.Code;
 			IpText.text = this.info.HostAndPort;
-			PingText.text = this.info.Ping +"ms";
         }
 
 		public void AddToList(Region info,int index)

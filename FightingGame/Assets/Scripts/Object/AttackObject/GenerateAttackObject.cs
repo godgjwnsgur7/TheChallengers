@@ -29,9 +29,7 @@ public class GenerateAttackObject : AttackObject
     public void Summon_AttackObject(int _attackTypeNum)
     {
         if (attackObject != null && attackObject.isUsing)
-        {
             attackObject.Sync_DestroyMine();
-        }
 
         attackObject = null;
 
@@ -41,13 +39,12 @@ public class GenerateAttackObject : AttackObject
         if (isServerSyncState)
             attackObject = Managers.Resource.InstantiateEveryone(("AttackObjects/"+(ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString(), transform.position).GetComponent<AttackObject>();
         else
-        {
             attackObject = Managers.Resource.GetAttackObject(((ENUM_ATTACKOBJECT_NAME)_attackTypeNum).ToString());
-            attackObject.transform.position = transform.position;   
-        }
         
         if (attackObject != null)
         {
+            attackObject.transform.position = transform.position;
+
             if (isServerSyncState)
             {
                 PhotonLogicHandler.Instance.TryBroadcastMethod<AttackObject, Vector2, ENUM_TEAM_TYPE, bool>

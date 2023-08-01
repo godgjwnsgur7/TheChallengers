@@ -15,6 +15,7 @@ public class CustormRoom_MapInfo : MonoBehaviour
     [SerializeField] RectTransform selectionEffectRectTr;
     
     [SerializeField] GameObject[] mapCoverImageObjects = new GameObject[3];
+    [SerializeField] bool isEnter = false;
 
     private void OnEnable()
     {
@@ -44,7 +45,7 @@ public class CustormRoom_MapInfo : MonoBehaviour
         mapNameText.text = Managers.Data.Get_MapNameDict(_mapType);
         
         if(mapExplanationText != null)
-            mapExplanationText.text = Managers.Data.Get_MapExplanationDict(_mapType);
+            mapExplanationText.text = Managers.Data.Get_MapExplanationDict(_mapType, isEnter);
 
         selectionEffectRectTr.position = mapCoverImageObjects[(int)_mapType].GetComponent<RectTransform>().position;
 
