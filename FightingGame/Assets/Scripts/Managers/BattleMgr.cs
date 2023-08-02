@@ -78,6 +78,17 @@ public class BattleMgr
         }
     }
 
+    public void EndGame_Win()
+    {
+        if (isGamePlayingState == false)
+            return;
+
+        isGamePlayingState = false;
+
+        BattleCanvas battleCanvas = Managers.UI.currCanvas.GetComponent<BattleCanvas>();
+        battleCanvas.Play_GameStateEffect(ENUM_GAMESTATEEFFECT_TYPE.WinTrigger);
+    }
+
     public void EndGame_TimeOut()
     {
         if (isGamePlayingState == false)

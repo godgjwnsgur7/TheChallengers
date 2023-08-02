@@ -56,7 +56,9 @@ public class NetworkMgr : IRoomPostProcess
 
     public void OnExitRoomCallBack(string exitUserNickname)
     {
-        if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Lobby)
+        if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Battle)
+            Managers.Battle.EndGame_Win();
+        else if(Managers.Scene.CurrSceneType == ENUM_SCENE_TYPE.Lobby)
             enemyDBData = null;
 
         PhotonLogicHandler.Instance.RequestEveryPlayerProperty();
