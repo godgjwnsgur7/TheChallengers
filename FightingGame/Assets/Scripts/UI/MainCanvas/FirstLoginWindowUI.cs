@@ -8,7 +8,7 @@ using System;
 /// <summary>
 /// 최초 로그인 시에만
 /// </summary>
-public class FirstLoginWindowUI : UIElement
+public class FirstLoginWindowUI : MonoBehaviour
 {
     [SerializeField] InputField userNicknameInputField;
 
@@ -76,11 +76,9 @@ public class FirstLoginWindowUI : UIElement
         Close();
     }
 
-    public override void OnClick_Exit()
+    public void OnClick_Exit()
     {
         Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Error);
-
-        base.OnClick_Exit();
 
         Close();
     }

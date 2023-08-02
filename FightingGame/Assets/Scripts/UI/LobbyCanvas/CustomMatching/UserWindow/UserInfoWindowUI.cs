@@ -22,16 +22,17 @@ public class UserInfoWindowUI : UIElement
 
     public void Open(DBUserData userData)
     {
+        rankEmblemImage.gameObject.SetActive(true);
+
         if (userData.victoryPoint + userData.defeatPoint == 0 && userData.ratingPoint == 1500)
         {
-            rankEmblemImage.gameObject.SetActive(false);
+            rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_X");
             ratingPointText.text = "Unknown";
             winningRateText.text = "0%";
         }
         else
         {
             char rank = RankingScoreOperator.Get_RankingEmblemChar(userData.ratingPoint);
-            rankEmblemImage.gameObject.SetActive(true);
             rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
 
             float victoryPoint = userData.victoryPoint, defeatPoint = userData.defeatPoint;

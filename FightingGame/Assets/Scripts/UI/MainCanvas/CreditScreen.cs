@@ -91,16 +91,6 @@ public class CreditScreen : UIElement
         backgroundImage.color = new Color(0, 0, 0, 1);
         tempColor = backgroundImage.color;
 
-        while (tempColor.a > 0f)
-        {
-            tempColor.a -= Time.deltaTime / fadeTime;
-            backgroundImage.color = tempColor;
-
-            yield return null;
-        }
-
-        tempColor.a = 0f;
-        backgroundImage.color = tempColor;
         creditEffectCoroutine = null;
 
         OnClick_Exit();

@@ -43,6 +43,7 @@ public class RankingScoreUI : MonoBehaviour
         {
             rankEmblemImage.gameObject.SetActive(false);
             rank = 'X';
+            rankEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
             rankingScoreText.text = "None";
             winningRateText.text = "0%";
             return;

@@ -24,15 +24,16 @@ public class UserInfo_GameStart : MonoBehaviour
 
     public void Set_UserData(DBUserData _userData)
     {
+        ratingEmblemImage.gameObject.SetActive(true);
+
         if (_userData.victoryPoint +_userData.defeatPoint == 0 && _userData.ratingPoint == 1500)
         {
-            ratingEmblemImage.gameObject.SetActive(false);
+            ratingEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_X");
             battleRecordText.text = "0승 0패 (0%)";
             ratingPointText.text = "Unknown";
         }
         else
         {
-            ratingEmblemImage.gameObject.SetActive(true);
             char rank = RankingScoreOperator.Get_RankingEmblemChar(_userData.ratingPoint);
             ratingEmblemImage.sprite = Managers.Resource.Load<Sprite>($"Art/Sprites/RankEmblem/RankEmblem_{rank}");
 

@@ -36,7 +36,8 @@ public class InputKeyController : MonoBehaviour
     
     public void Set_InputKeyPos()
     {
-        inputPanel.Set_InputKeyPos();
+        if(inputPanel != null)  
+            inputPanel.Set_InputKeyPos();
     }
 
     public void Connect_InputArrowKey(Action<float> _OnPointEnterCallBack)
