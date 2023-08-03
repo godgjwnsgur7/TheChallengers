@@ -10,9 +10,9 @@ It's a personal work.
 
 It's based on 2D two-man fighting , Android game. 
 
-> 개발기간 : 2022.05.09 ~ ing
+> 개발기간 : 2022.06.19 ~ 2023.08.03
 
-Dev Period : 2020.05.09 ~ ing
+Dev Period : 2022.06.19 ~ 2023.08.03
 
 ---
 
