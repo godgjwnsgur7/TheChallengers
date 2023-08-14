@@ -4,6 +4,10 @@
 
 It's a personal work.
 
+> 출시 링크 : https://play.google.com/store/apps/details?id=com.company.FightingGame
+
+Release Link
+
 ---
 
 > **2D** / **2인 격투** / **안드로이드** 게임입니다.
