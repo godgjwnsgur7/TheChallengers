@@ -1,4 +1,4 @@
-# Project_FG
+# TheChallengers
 
 > 개인 작품입니다.
 
