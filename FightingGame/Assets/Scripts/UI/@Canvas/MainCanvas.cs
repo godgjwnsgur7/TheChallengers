@@ -45,7 +45,6 @@ public class MainCanvas : BaseCanvas
 
     private void GoTo_Lobby()
     {
-        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
         Managers.UI.popupCanvas.Close_LoadingPopup();
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Lobby);
     }
@@ -71,6 +70,7 @@ public class MainCanvas : BaseCanvas
 
         overlapLock = true;
 
+        Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_JoinGameLobby);
         Managers.UI.popupCanvas.Open_LoadingPopup();
         Managers.Platform.Login(
         _OnSignInSuccess: () =>
