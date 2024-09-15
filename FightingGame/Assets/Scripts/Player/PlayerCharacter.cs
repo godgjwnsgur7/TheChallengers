@@ -22,11 +22,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnEnable()
     {
-        if(!PhotonLogicHandler.IsConnected) // 디버깅용
-        {
-            isDebugState = true;
-            debugCoroutine = StartCoroutine(IOnKeyboard());
-        }
+        isDebugState = true;
+        debugCoroutine = StartCoroutine(IOnKeyboard());
     }
 
     private void OnDisable()
