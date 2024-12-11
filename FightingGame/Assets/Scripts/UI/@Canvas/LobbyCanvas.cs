@@ -9,7 +9,6 @@ public class LobbyCanvas : BaseCanvas
     [SerializeField] CustomMatchingUI customMatching;
     [SerializeField] MatchingWindowUI matchingWindow;
     [SerializeField] GameStartWindowUI gameStartWindow;
-    [SerializeField] DonationWindow donationWindow;
 
     [SerializeField] Image[] images = new Image[3];
 
@@ -22,7 +21,7 @@ public class LobbyCanvas : BaseCanvas
 
         if (!Managers.Data.isInterstitial)
         {
-            Managers.Platform.ShowInterstitial();
+            // Managers.Platform.ShowInterstitial();
             Managers.Data.isInterstitial = true;
         }
 
@@ -92,21 +91,23 @@ public class LobbyCanvas : BaseCanvas
         Managers.Scene.LoadScene(ENUM_SCENE_TYPE.Main);
     }
 
+    /*
     public void OnClick_DonationWindow()
     {
         if (PhotonLogicHandler.IsConnected)
         {
             Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Light);
-            
+
             donationWindow.Open();
         }
         else
         {
             Managers.Sound.Play_SFX(FGDefine.ENUM_SFX_TYPE.UI_Click_Notify);
-            
+
             Managers.UI.popupCanvas.Open_NotifyPopup("서버에 접속해있지 않습니다.\n로그인을 위해 메인화면으로 이동합니다.", GoTo_MainScene);
         }
     }
+    */
 
     public void OnClick_CustomMathing()
     {

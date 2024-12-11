@@ -175,37 +175,37 @@ public class DebugWindow : BaseCanvas, ILobbyPostProcess, IRoomPostProcess
 
 	public void OnClickShowBanner()
 	{
-		Managers.Platform.ShowBanner();
+		// Managers.Platform.ShowBanner();
 	}
 
 	public void OnClickHideBanner()
 	{
-		Managers.Platform.HideBanner();
+		// Managers.Platform.HideBanner();
 	}
 
 	public void OnClickShowInterstitial()
 	{
-		Managers.Platform.ShowInterstitial();
+		// Managers.Platform.ShowInterstitial();
 	}
 
 	public void OnClickHideInterstitial()
 	{
-		Managers.Platform.HideInterstitial();
+		// Managers.Platform.HideInterstitial();
 	}
 
 	public void OnClickShowRewardedAd()
 	{
-		Managers.Platform.ShowRewardedAd();
+		// Managers.Platform.ShowRewardedAd();
 	}
 
 	public void OnClickHideRewardedAd()
 	{
-		Managers.Platform.HideRewardedAd();
+		// Managers.Platform.HideRewardedAd();
 	}
 
 	public void Purchase()
 	{
-		Managers.Platform.Purchase();
+		// Managers.Platform.Purchase();
 	}
 
 	public void OnClickMoveScene(string scenename)

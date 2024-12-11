@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 미사용
+/// </summary>
 public class DonationWindow : UIElement
 {
     [SerializeField] CompanionAnimalWindow companionAnimalWindow;
@@ -27,12 +30,12 @@ public class DonationWindow : UIElement
 
     public void OnClick_Payment()
     {
-        Managers.Platform.Purchase();
+        // Managers.Platform.Purchase();
     }
 
     public void OnClick_Advertising()
     {
-        Managers.Platform.ShowRewardedAd(ShowRewardedAdCallBack);
+        // Managers.Platform.ShowRewardedAd(ShowRewardedAdCallBack);
     }
 
     public override void OnClick_Exit()
