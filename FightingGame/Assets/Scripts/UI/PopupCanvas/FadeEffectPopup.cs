@@ -109,8 +109,6 @@ public class FadeEffectPopup : PopupUI
     {
         yield return new WaitUntil(() => fadeOutCoroutine == null);
 
-        Managers.UI.popupCanvas.Close_LoadingPopup();
-
         _fadeInCallBack?.Invoke();
 
         backgroundImage.color = new Color(0, 0, 0, 1);
@@ -154,8 +152,6 @@ public class FadeEffectPopup : PopupUI
         Managers.UI.popupCanvas.DeactivePopupAll();
 
         _fadeOutInCallBack?.Invoke();
-
-        Managers.UI.popupCanvas.Close_LoadingPopup();
 
         while (tempColor.a > 0f)
         {

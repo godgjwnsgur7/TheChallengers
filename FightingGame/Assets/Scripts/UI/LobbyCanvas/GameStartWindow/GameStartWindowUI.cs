@@ -36,6 +36,7 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
 
     int selectionCharacterTimer = 15;
 
+    ENUM_CHARACTER_TYPE mySelectionCharacterType = ENUM_CHARACTER_TYPE.Default;
     ENUM_CHARACTER_TYPE enemySelectionCharacterType = ENUM_CHARACTER_TYPE.Default;
 
     Coroutine selectCharacterTimerCoroutine = null;
@@ -121,6 +122,9 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
         mapInfo.Open(PhotonLogicHandler.CurrentMapType);
 
         Managers.Sound.Play_SFX(ENUM_SFX_TYPE.UI_Cilck_Transition);
+        Managers.Battle.SetCharacterType(mySelectionCharacterType);
+        Managers.Battle.SetCharacterType(enemySelectionCharacterType);
+
         waitGameStartCoroutine = StartCoroutine(IWaitGameStart(3.0f));
     }
 
@@ -169,6 +173,7 @@ public class GameStartWindowUI : UIElement, IRoomPostProcess
 
     public void CallBack_SelectionCharacter(ENUM_CHARACTER_TYPE _selectedCharType)
     {
+        mySelectionCharacterType = _selectedCharType;
         MyInfoUI.Set_SelectionCharacter(_selectedCharType);
     }
 

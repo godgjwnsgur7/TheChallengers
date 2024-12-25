@@ -1,3 +1,4 @@
+using FGDefine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -122,10 +123,9 @@ public class ObjectPoolMgr
     #endregion
 
     Dictionary<string, Pool> pools = new Dictionary<string, Pool>();
-   
     Transform root;
 
-    int poolCount = 5;
+    const int POOLCOUNT = 3;
 
     public void Init()
     {
@@ -162,7 +162,7 @@ public class ObjectPoolMgr
     public Poolable Pop(GameObject original, Transform parent = null)
     {
         if (pools.ContainsKey(original.name) == false)
-            CreatePool(original, poolCount); // poolCount만큼 생성
+            CreatePool(original, POOLCOUNT); // poolCount만큼 생성
 
         return pools[original.name].Pop(parent);
     }
@@ -170,7 +170,7 @@ public class ObjectPoolMgr
     public Poolable Pop(GameObject original, bool active = true)
     {
         if (pools.ContainsKey(original.name) == false)
-            CreatePool(original, poolCount); // poolCount만큼 생성
+            CreatePool(original, POOLCOUNT); // poolCount만큼 생성
 
         return pools[original.name].Pop(active);
     }
@@ -178,7 +178,7 @@ public class ObjectPoolMgr
     public Poolable Pop(GameObject original, Vector2 position)
     {
         if (pools.ContainsKey(original.name) == false)
-            CreatePool(original, poolCount); // poolCount만큼 생성
+            CreatePool(original, POOLCOUNT); // poolCount만큼 생성
 
         return pools[original.name].Pop(position);
     }
@@ -186,7 +186,7 @@ public class ObjectPoolMgr
     public Poolable Pop(GameObject original, Vector2 position, Quaternion rotation, bool active = false)
     {
         if (pools.ContainsKey(original.name) == false)
-            CreatePool(original, poolCount); // poolCount만큼 생성
+            CreatePool(original, POOLCOUNT); // poolCount만큼 생성
 
         return pools[original.name].Pop(position, rotation, active);
     }
@@ -197,7 +197,7 @@ public class ObjectPoolMgr
         {
             pools.TryGetValue(original.name, out var _pool);
             _pool.Add(original, count);
-            return;        
+            return;
         }
 
         CreatePool(original, count);
@@ -211,16 +211,130 @@ public class ObjectPoolMgr
         return pools[name].Original;
     }
 
+    #region CharacterPool
+    private bool isCharacterCommonPoolState = false;
+    public bool[] isCharacterPoolStates = new bool[(int)ENUM_CHARACTER_TYPE.Max];
+
+    public void GenerateCharacterPoolAll()
+    {
+        for (int i = 1; i < (int)ENUM_CHARACTER_TYPE.Max; i++)
+            GenerateCharacterEffectPool((ENUM_CHARACTER_TYPE)i);
+    }
+
+    public void GenerateCharacterEffectPool(ENUM_CHARACTER_TYPE characterType)
+    {
+        if (isCharacterCommonPoolState == false)
+        {
+            isCharacterCommonPoolState = true;
+            GenerateCommonEffectPool();
+        }
+
+        if (isCharacterPoolStates[(int)characterType] == false)
+        {
+            isCharacterPoolStates[(int)characterType] = true;
+
+            switch (characterType)
+            {
+                case ENUM_CHARACTER_TYPE.Knight:
+                    GenerateKnightEffectPool();
+                    break;
+                case ENUM_CHARACTER_TYPE.Wizard:
+                    GenerateWizardEffectPool();
+                    break;
+                default:
+                    Debug.LogWarning($"없는 캐릭터 : {characterType}");
+                    break;
+            }
+        }
+    }
+
+    private static void GenerateCommonEffectPool()
+    {
+        // Common Effect
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_AttackedEffect3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect4}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Basic_SkillAttackedEffect5}", POOLCOUNT);
+    }
+    private static void GenerateKnightEffectPool()
+    {
+        // Attack
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_Attack3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkill_1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkill_2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkill_3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_JumpAttack}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ThrowSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_SmashSkillObject_3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ComboSkill_1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ComboSkill_2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ComboSkill_3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ComboSkill_4}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ComboSkill_5}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_DashSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Knight_ComboSkillObject}", POOLCOUNT);
+
+        // Effect
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_JumpUp}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Landing}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Move}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_Dash}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_DashSkill}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_ComboSkill1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_ComboSkill2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_ComboSkill3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_ComboSkill4}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_ComboSkill5}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Knight_SmokeEffect_ComboSkill6}", POOLCOUNT);
+    }
+    private static void GenerateWizardEffectPool()
+    {
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_Attack1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_Attack2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThrowAttackObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThrowJumpAttackObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject_1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject_2}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_ThunderSkillObject_3}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_IceSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_IceSkillObject_1}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject_Falling}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_MeteorSkillObject_Explode}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_PushOutSkillObject}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"AttackObjects/{ENUM_ATTACKOBJECT_NAME.Wizard_PushOutSkillObject_1}", POOLCOUNT);
+
+        // Effect
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_ThunderCircleEffect}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_MagicalJinEffect}", 10); // Particle
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_StarlightEffect}", 10); // Particle
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_DashEffect}", POOLCOUNT);
+        Managers.Resource.GenerateInPool($"EffectObjects/{ENUM_EFFECTOBJECT_NAME.Wizard_FlameEffect}", POOLCOUNT);
+    }
+    #endregion // << CharacterPool
+
     public void Clear()
     {
         if (root != null)
         {
             foreach (Transform child in root)
-            {
                 GameObject.Destroy(child.gameObject);
-            }
         }
 
         pools.Clear();
+
+        isCharacterCommonPoolState = false;
+        for (int i = 0; i < isCharacterPoolStates.Length; i++)
+            isCharacterPoolStates[i] = false;
     }
 }

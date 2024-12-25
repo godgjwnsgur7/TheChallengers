@@ -35,6 +35,7 @@ public class UserSyncMediator : MonoBehaviourPhoton
             Debug.LogError("중복으로 UserSyncMediator를 초기화 시도하였습니다.");
             return;
         }
+        isInit = true;
 
         base.Init();
 

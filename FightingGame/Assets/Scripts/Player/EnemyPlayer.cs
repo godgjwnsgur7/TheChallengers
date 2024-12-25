@@ -35,7 +35,6 @@ public class EnemyPlayer : MonoBehaviour
         activeCharacter.transform.parent = this.transform;
 
         activeCharacter.Init();
-        activeCharacter.Skills_Pooling();
         activeCharacter.Set_Character(teamType);
     }
 

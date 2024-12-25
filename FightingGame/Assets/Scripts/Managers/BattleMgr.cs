@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGDefine;
 using System;
+using log4net.Util;
 
 /// <summary>
 /// 배틀 씬에서의 게임 시작 전 후의 임시데이터를 임시저장
@@ -16,7 +17,19 @@ public class BattleMgr
         get;
     } = false;
 
-    ActiveCharacter enemyCharacter;
+    private ActiveCharacter enemyCharacter;
+
+    HashSet<ENUM_CHARACTER_TYPE> playCharacterTypes;
+    public void SetCharacterType(ENUM_CHARACTER_TYPE playCharacterType)
+    {
+        playCharacterTypes.Add(playCharacterType);
+    }
+
+    public void GeneratePlayCharacterEffectPool()
+    {
+        foreach(ENUM_CHARACTER_TYPE characterType in playCharacterTypes)
+            Managers.Pool.GenerateCharacterEffectPool(characterType);
+    }
 
     public void Clear()
     {

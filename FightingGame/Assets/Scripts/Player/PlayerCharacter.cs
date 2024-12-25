@@ -54,7 +54,6 @@ public class PlayerCharacter : MonoBehaviour
             activeCharacter = Managers.Resource.Instantiate($"{_summonCharType}", summonPosVec).GetComponent<ActiveCharacter>();
             activeCharacter.transform.parent = this.transform;
             activeCharacter.Init();
-            activeCharacter.Skills_Pooling();
 
             activeCharacter.Set_Character(teamType);
             playerCamera.Following_Target(activeCharacter.transform);

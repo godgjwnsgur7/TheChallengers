@@ -20,6 +20,7 @@ public class TrainingScene : BaseScene
 
         base.Init();
 
+        Managers.Pool.GenerateCharacterPoolAll();
         mapType = ENUM_MAP_TYPE.CaveMap;
         Summon_MapObject();
     }

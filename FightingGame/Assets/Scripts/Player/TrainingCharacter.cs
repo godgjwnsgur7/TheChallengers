@@ -5,8 +5,6 @@ using FGDefine;
 
 public class TrainingCharacter : MonoBehaviour
 {
-    Dictionary<ENUM_CHARACTER_TYPE, int> skillPoolingCountDict = new Dictionary<ENUM_CHARACTER_TYPE, int>();
-
     [SerializeField] PlayerCamera playerCamera;
     public ActiveCharacter activeCharacter = null;
     public ActiveCharacter enemyCharacter = null;
@@ -32,24 +30,7 @@ public class TrainingCharacter : MonoBehaviour
 
         playerCamera.Init(currMap);
     }
-
-    private bool SkillsPooling_Check(ENUM_CHARACTER_TYPE _charType)
-    {
-        if (skillPoolingCountDict.ContainsKey(_charType))
-        {
-            if (skillPoolingCountDict[_charType] >= 2)
-                return false;
-            else
-                skillPoolingCountDict[_charType]++;
-        }
-        else
-        {
-            skillPoolingCountDict.Add(_charType, 1);
-        }
-
-        return true;
-    }
-
+    
     public void Summon_MyCharacter(ENUM_CHARACTER_TYPE _summonCharType, Vector2 _summonPosVec)
     {
         if (activeCharacter != null)
@@ -69,9 +50,6 @@ public class TrainingCharacter : MonoBehaviour
         Connect_InputController();
 
         playerCamera.Set_Target(activeCharacter.transform);
-
-        if (SkillsPooling_Check(_summonCharType))
-            activeCharacter.Skills_Pooling();
     }
 
     public void Summon_EnemyCharacter(ENUM_CHARACTER_TYPE _summonCharType, Vector2 _summonPosVec)
@@ -85,10 +63,6 @@ public class TrainingCharacter : MonoBehaviour
 
         enemyCharacter.Init();
         enemyCharacter.Set_Character(ENUM_TEAM_TYPE.Red);
-
-        if (SkillsPooling_Check(_summonCharType))
-            enemyCharacter.Skills_Pooling();
-
     }
 
     public void Destroy_MyCharacter()
@@ -106,8 +80,6 @@ public class TrainingCharacter : MonoBehaviour
             return;
 
         Managers.Resource.Destroy(enemyCharacter.gameObject);
-
-        // 카메라 이동
     }
 
     public void Connect_InputController()

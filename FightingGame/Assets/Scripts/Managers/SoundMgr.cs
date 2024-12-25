@@ -62,14 +62,13 @@ public class SoundMgr
         {
             OneShotAudioObject oneShotAudioObject;
 
-            if (soundPoolStack.Count > 0)
-                oneShotAudioObject = soundPoolStack.Pop();
-            else
+            if (soundPoolStack.Count == 0)
                 oneShotAudioObject = Create();
+            else
+                oneShotAudioObject = soundPoolStack.Pop();
 
             oneShotAudioObject.gameObject.SetActive(true);
             oneShotAudioObject.isUsing = true;
-
             return oneShotAudioObject;
         }
     }
@@ -111,7 +110,7 @@ public class SoundMgr
             audioSources[(int)ENUM_SOUND_TYPE.BGM].mute = volumeData.isBgmMute;
             audioSources[(int)ENUM_SOUND_TYPE.SFX].mute = volumeData.isSfxMute;
 
-            soundPool.Init(root.transform, 20);
+            soundPool.Init(root.transform, 10);
         }
     }
     
