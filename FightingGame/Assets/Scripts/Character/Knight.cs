@@ -20,14 +20,5 @@ public class Knight : ActiveCharacter
 		characterType = ENUM_CHARACTER_TYPE.Knight;
 
         base.Init();
-
-        if (PhotonLogicHandler.IsMine(viewID))
-        {
-            Debug.Log("컨트롤이 가능한 객체");
-        }
-        else
-        {
-            Debug.Log("컨트롤이 불가능한 객체");
-        }
     }
 }

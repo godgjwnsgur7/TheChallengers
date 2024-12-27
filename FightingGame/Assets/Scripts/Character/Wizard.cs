@@ -10,8 +10,6 @@ public class Wizard : ActiveCharacter
 
 	public override void Init()
     {
-		base.Init();
-
 		if (isInitialized)
         {
             Debug.Log("중복으로 캐릭터를 초기화 시도하였습니다."); 
@@ -19,16 +17,8 @@ public class Wizard : ActiveCharacter
         }
 
         isInitialized = true;
-
 		characterType = ENUM_CHARACTER_TYPE.Wizard;
 
-        if (PhotonLogicHandler.IsMine(viewID))
-        {
-            Debug.Log("컨트롤이 가능한 객체");
-        }
-        else
-        {
-            Debug.Log("컨트롤이 불가능한 객체");
-        }
+        base.Init();
     }
 }
