@@ -153,6 +153,8 @@ public class FadeEffectPopup : PopupUI
 
         _fadeOutInCallBack?.Invoke();
 
+        Managers.UI.popupCanvas.Close_LoadingPopup();
+
         while (tempColor.a > 0f)
         {
             tempColor.a -= Time.deltaTime / _fadeOutInTime;

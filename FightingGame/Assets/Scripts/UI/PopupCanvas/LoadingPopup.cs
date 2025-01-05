@@ -40,6 +40,9 @@ public class LoadingPopup : PopupUI
 
     public void Close()
     {
+        if (this.gameObject.activeSelf == false)
+            return;
+
         message = "LOADING ";
         loadingText.text = message;
         this.gameObject.SetActive(false);

@@ -253,6 +253,7 @@ public class PopupCanvas : MonoBehaviour
             return;
         }
 
+        loadingPopup.Close();
         fadeEffectPopup.Play_FadeInEffect(_fadeInCallBack);
     }
 

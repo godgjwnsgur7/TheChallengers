@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using FGDefine;
-using System;
-using log4net.Util;
 
 /// <summary>
 /// 배틀 씬에서의 게임 시작 전 후의 임시데이터를 임시저장
@@ -19,7 +15,7 @@ public class BattleMgr
 
     private ActiveCharacter enemyCharacter;
 
-    HashSet<ENUM_CHARACTER_TYPE> playCharacterTypes;
+    HashSet<ENUM_CHARACTER_TYPE> playCharacterTypes = new HashSet<ENUM_CHARACTER_TYPE>();
     public void SetCharacterType(ENUM_CHARACTER_TYPE playCharacterType)
     {
         playCharacterTypes.Add(playCharacterType);
