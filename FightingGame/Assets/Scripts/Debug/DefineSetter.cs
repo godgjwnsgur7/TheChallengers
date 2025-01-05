@@ -46,23 +46,23 @@ public class DefineController : AssetPostprocessor
         characterDefineSetter.SetTestMode();
     }
 
-    [MenuItem(BannerLoginMenuName)]
-    public static void SetBannerMode()
-    {
-        bannerDefineSetter.SetTestMode();
-    }
+    //[MenuItem(BannerLoginMenuName)]
+    //public static void SetBannerMode()
+    //{
+    //    bannerDefineSetter.SetTestMode();
+    //}
 
-    [MenuItem(InterstitialMenuName)]
-    public static void SetInterstitialMode()
-    {
-        interstitialDefineSetter.SetTestMode();
-    }
+    //[MenuItem(InterstitialMenuName)]
+    //public static void SetInterstitialMode()
+    //{
+    //    interstitialDefineSetter.SetTestMode();
+    //}
 
-    [MenuItem(RewardedMenuName)]
-    public static void SetRewardedMode()
-    {
-        rewardedDefineSetter.SetTestMode();
-    }
+    //[MenuItem(RewardedMenuName)]
+    //public static void SetRewardedMode()
+    //{
+    //    rewardedDefineSetter.SetTestMode();
+    //}
 
     [MenuItem(BuildSettingMenuName)]
 	public static void SetBuildMode()

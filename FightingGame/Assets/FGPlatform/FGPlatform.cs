@@ -4,8 +4,6 @@ using UnityEngine;
 using System;
 using FGPlatform.Auth;
 using FGPlatform.Datebase;
-using FGPlatform.Advertisement;
-using FGPlatform.Purchase;
 using Firebase;
 using Firebase.Extensions;
 using WebSocketSharp;
@@ -49,8 +47,8 @@ namespace FGPlatform
 
 		private IPlatformDB DB = new PlatformDB();
 		private IPlatformCrashlytics Crashlytics = new PlatformCrashlytics();	
-		private IAdMobController AdMob = new AdMobController();
-		private CoffeeMachine IAPController = new IAPController();
+		// private IAdMobController AdMob = new AdMobController();
+		// private CoffeeMachine IAPController = new IAPController();
 
 		public long MyCashPoint
 		{
@@ -74,8 +72,8 @@ namespace FGPlatform
 			Clear();
 
 #if UNITY_ANDROID
-			IAPController.Init();
-			AdMob.Init(BannerPosition.Bottom);
+			// IAPController.Init();
+			// AdMob.Init(BannerPosition.Bottom);
 #endif
 
             FirebaseApp.CheckAndFixDependenciesAsync()
@@ -107,8 +105,8 @@ namespace FGPlatform
 			auth = PlatformAuthFactory.Create();
 			DB = new PlatformDB();
 			Crashlytics = new PlatformCrashlytics();
-			AdMob = new AdMobController();
-			IAPController = new IAPController();
+			// AdMob = new AdMobController();
+			// IAPController = new IAPController();
 		}
 
 		public string GetUserID()
@@ -247,40 +245,41 @@ namespace FGPlatform
 
 		public void ShowBanner()
 		{
-			AdMob.ShowAd(AdvertisementType.Banner);
+			// AdMob.ShowAd(AdvertisementType.Banner);
 		}
 
 		public void HideBanner()
 		{
-			AdMob.HideAd(AdvertisementType.Banner);
+			// AdMob.HideAd(AdvertisementType.Banner);
 		}
 
 		public void ShowInterstitial()
 		{
-			AdMob.ShowAd(AdvertisementType.Interstitial);
+			// AdMob.ShowAd(AdvertisementType.Interstitial);
 		}
 
 		public void HideInterstitial()
 		{
-			AdMob.HideAd(AdvertisementType.Interstitial);
+			// AdMob.HideAd(AdvertisementType.Interstitial);
 		}
 
 		public void ShowRewardedAd(Action onRewarded = null)
 		{
-			AdMob.ShowAd(AdvertisementType.Rewarded, null, (arg) =>
-			{
-				onRewarded?.Invoke();
-			});
+			//AdMob.ShowAd(AdvertisementType.Rewarded, null, (arg) =>
+			//{
+			//	onRewarded?.Invoke();
+			//});
 		}
 
 		public void HideRewardedAd()
 		{
-			AdMob.HideAd(AdvertisementType.Rewarded);
+			// AdMob.HideAd(AdvertisementType.Rewarded);
 		}
 
 		public long GetCoffeePrice()
 		{
-			return IAPController.GetCoffeePrice();
+			return 0L;
+			// return IAPController.GetCoffeePrice();
 		}
 
 		public void Purchase()
@@ -288,24 +287,24 @@ namespace FGPlatform
 			if (!Auth.IsLogin)
 				return;
 
-			IAPController.Purchase((price) =>
-			{
-				DBUpdate(DB_CATEGORY.PurchaseCoffee, MyCashPoint + price, (totalCash) =>
-				{
-					Debug.Log($"현재 캐쉬 잔액은 {totalCash} 입니다.");
-					MyCashPoint = totalCash;
+			//IAPController.Purchase((price) =>
+			//{
+			//	DBUpdate(DB_CATEGORY.PurchaseCoffee, MyCashPoint + price, (totalCash) =>
+			//	{
+			//		Debug.Log($"현재 캐쉬 잔액은 {totalCash} 입니다.");
+			//		MyCashPoint = totalCash;
 
-				}, () =>
-				{
-					Debug.LogError($"캐쉬 결제에 실패하였습니다. 데이터베이스 서버에 문제가 있거나, 로그인이 되어있지 않습니다.");
-				});
-			}); 
+			//	}, () =>
+			//	{
+			//		Debug.LogError($"캐쉬 결제에 실패하였습니다. 데이터베이스 서버에 문제가 있거나, 로그인이 되어있지 않습니다.");
+			//	});
+			//}); 
 		}
 
-		public bool IsShowAd(AdvertisementType type = AdvertisementType.Banner)
-		{
-			return AdMob.IsShowAd(type);
-		}
+		//public bool IsShowAd(AdvertisementType type = AdvertisementType.Banner)
+		//{
+		//	return AdMob.IsShowAd(type);
+		//}
 
 		private string GetHashToken(ENUM_LOGIN_TYPE type, string id)
 		{
